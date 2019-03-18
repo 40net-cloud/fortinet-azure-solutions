@@ -51,7 +51,6 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
         It 'Converts from JSON and has the expected properties' {
             $expectedProperties = '$schema',
             'contentVersion',
-            'outputs',
             'parameters',
             'resources',                                
             'variables'
@@ -60,49 +59,50 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
         }
         
         It 'Creates the expected Azure resources' {
-            $expectedResources = 'Microsoft.Compute/availabilitySets',
-            'Microsoft.Network/virtualNetworks',
-            'Microsoft.Network/loadBalancers',
-            'Microsoft.Network/routeTables',
-            'Microsoft.Network/networkSecurityGroups',
-            'Microsoft.Network/publicIPAddresses',
-            'Microsoft.Network/publicIPAddresses',
-            'Microsoft.Network/loadBalancers',
-            'Microsoft.Network/networkInterfaces',
-            'Microsoft.Network/networkInterfaces',
-            'Microsoft.Network/networkInterfaces',
-            'Microsoft.Network/networkInterfaces',
-            'Microsoft.Compute/virtualMachines',
-            'Microsoft.Compute/virtualMachines'
+            $expectedResources = 'Microsoft.Resources/deployments',
+                                 'Microsoft.Compute/availabilitySets',
+                                 'Microsoft.Network/virtualNetworks',
+                                 'Microsoft.Network/loadBalancers',
+                                 'Microsoft.Network/routeTables',
+                                 'Microsoft.Network/networkSecurityGroups',
+                                 'Microsoft.Network/publicIPAddresses',
+                                 'Microsoft.Network/publicIPAddresses',
+                                 'Microsoft.Network/loadBalancers',
+                                 'Microsoft.Network/networkInterfaces',
+                                 'Microsoft.Network/networkInterfaces',
+                                 'Microsoft.Network/networkInterfaces',
+                                 'Microsoft.Network/networkInterfaces',
+                                 'Microsoft.Compute/virtualMachines',
+                                 'Microsoft.Compute/virtualMachines'
             $templateResources = (get-content $templateFileLocation | ConvertFrom-Json -ErrorAction SilentlyContinue).Resources.type
             $templateResources | Should Be $expectedResources
         }
         
         It 'Contains the expected parameters' {
-            $expectedTemplateParameters = 'adminUsername',
-            'adminPassword',
-            'FortiGateNamePrefix',
-            'FortiGateImageSku',
+            $expectedTemplateParameters = 'adminPassword',
+            'adminUsername',
+            'FortiGateImageSKU',
             'FortiGateImageVersion',
+            'FortiGateNamePrefix',
+            'FortinetTags',
             'instanceType',
-            'publicIPNewOrExisting',
             'publicIP2NewOrExisting',
-            'publicIPAddressName',
-            'publicIPAddressResourceGroup',
             'publicIP2AddressName',
             'publicIP2AddressResourceGroup',
+            'publicIPNewOrExisting',
+            'publicIPAddressName',
+            'publicIPAddressResourceGroup',
             'publicIPAddressType',
-            'vnetNewOrExisting',
-            'vnetName',
-            'vnetResourceGroup',
-            'vnetAddressPrefix',
             'subnet1Name',
             'subnet1Prefix',
             'subnet2Name',
             'subnet2Prefix',
             'subnet3Name',
-            'subnet3Prefix',
-            'FortinetTags'
+            'subnet3Prefix'
+            'vnetAddressPrefix',
+            'vnetName',
+            'vnetNewOrExisting',
+            'vnetResourceGroup'
 
             $templateParameters = (get-content $templateFileLocation | ConvertFrom-Json -ErrorAction SilentlyContinue).Parameters | Get-Member -MemberType NoteProperty | % Name
             $templateParameters | Should Be $expectedTemplateParameters
