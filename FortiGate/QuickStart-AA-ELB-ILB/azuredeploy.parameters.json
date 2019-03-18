@@ -1,0 +1,83 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "adminUsername": {
+      "value": "GEN-USERNAME"
+    },
+    "adminPassword": {
+      "value": "GEN-PASSWORD"
+    },
+    "FortiGateNamePrefix": {
+      "value": "GEN-PREFIX"
+    },
+    "FortiGateImageSKU": {
+      "value": "fortinet_fg-vm"
+    },
+    "FortiGateImageVersion": {
+      "value": "latest"
+    },
+    "instanceType": {
+      "value": "Standard_F1s"
+    },
+    "publicIPNewOrExisting": {
+      "value": "new"
+    },
+    "publicIP2NewOrExisting": {
+      "value": "new"
+    },
+    "publicIPAddressName": {
+      "value": "GEN-PREFIX-PIP"
+    },
+    "publicIPAddressResourceGroup": {
+      "value": ""
+    },
+    "publicIPAddress2Name": {
+      "value": "GEN-PREFIX-PIP2"
+    },
+    "publicIPAddress2ResourceGroup": {
+      "value": ""
+    },
+    "publicIPAddressType": {
+      "value": "Static"
+    },
+    "vnetNewOrExisting": {
+      "value": "new"
+    },
+    "vnetName": {
+      "value": "GEN-PREFIX-VNET"
+    },
+    "vnetResourceGroup": {
+      "value": "GEN-PREFIX-RG"
+    },
+    "vnetAddressPrefix": {
+      "value": "10.0.0.0/16"
+    },
+    "Subnet1Name": {
+      "value": "EntrySubnet"
+    },
+    "Subnet1Prefix": {
+      "value": "10.0.1.0/24"
+    },
+    "Subnet2Name": {
+      "value": "TransitSubnet"
+    },
+    "Subnet2Prefix": {
+      "value": "10.0.2.0/24"
+    },
+    "Subnet3Name": {
+      "value": "ProtectedSubnet"
+    },
+    "Subnet3Prefix": {
+      "value": "10.0.3.0/24"
+    },
+    "FortinetTags": {
+      "value": {
+        "provider": "6EB3B02F-50E5-4A3E-8CB8-2E129258317D"
+      }
+    },
+    "artifactsBaseUrl": {
+      "value": "https://raw.githubusercontent.com/fortinetsolutions/Azure-Templates/master/FortiGate/Azure Active-Active LoadBalancer HA-Ports"
+    }
+  }
+}
