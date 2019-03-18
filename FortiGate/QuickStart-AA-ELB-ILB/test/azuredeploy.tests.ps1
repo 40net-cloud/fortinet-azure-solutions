@@ -103,8 +103,9 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
                                           'vnetName',
                                           'vnetNewOrExisting',
                                           'vnetResourceGroup'
-
+            Write-Output "Expected: " + $expectedTemplateParameters
             $templateParameters = (get-content $templateFileLocation | ConvertFrom-Json -ErrorAction SilentlyContinue).Parameters | Get-Member -MemberType NoteProperty | % Name | sort
+            Write-Output "Parameters: " + $templateParameters
             $templateParameters | Should Be $expectedTemplateParameters
         }
 
@@ -159,3 +160,7 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
         Remove-AzureRmResourceGroup -Name $testsResourceGroupName -Force
     }
 }
+
+
+Expected @('adminPassword', 'adminUsername', 'FortiGateImageSKU', 'FortiGateImageVersion', 'FortiGateNamePrefix', 'FortinetTags', 'instanceType', 'publicIP2Name', 'publicIP2NewOrExisting', 'publicIP2ResourceGroup')
+ but got @('adminPassword', 'adminUsername', 'FortiGateImageSKU', 'FortiGateImageVersion', 'FortiGateNamePrefix', 'FortinetTags', 'instanceType', 'publicIP2Name', 'publicIP2NewOrExisting', 'publicIP2ResourceGroup').
