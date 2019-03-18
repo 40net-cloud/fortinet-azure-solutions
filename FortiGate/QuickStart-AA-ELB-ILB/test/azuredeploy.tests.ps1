@@ -98,14 +98,12 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
                                           'subnet2Name',
                                           'subnet2Prefix',
                                           'subnet3Name',
-                                          'subnet3Prefix'
+                                          'subnet3Prefix',
                                           'vnetAddressPrefix',
                                           'vnetName',
                                           'vnetNewOrExisting',
                                           'vnetResourceGroup'
-            Write-Host "Expected: " + $expectedTemplateParameters
             $templateParameters = (get-content $templateFileLocation | ConvertFrom-Json -ErrorAction SilentlyContinue).Parameters | Get-Member -MemberType NoteProperty | % Name | sort
-            Write-Host "Parameters: " + $templateParameters
             $templateParameters | Should Be $expectedTemplateParameters
         }
 
