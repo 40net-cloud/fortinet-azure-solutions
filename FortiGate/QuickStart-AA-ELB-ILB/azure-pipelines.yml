@@ -11,7 +11,7 @@ steps:
   inputs:
     azureSubscription: 'AzureSubscription'
     ScriptPath: 'FortiGate/Quickstart-AA-ELB-ILB/test/invokePester.ps1'
-    ScriptArguments: '-templatename QuickStart-AA-ELB-ILB'
+    ScriptArguments: '-templatename FortiGate/QuickStart-AA-ELB-ILB'
     azurePowerShellVersion: LatestVersion
 
 
