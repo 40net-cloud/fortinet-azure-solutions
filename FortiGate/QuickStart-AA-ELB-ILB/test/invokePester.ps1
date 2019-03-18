@@ -4,7 +4,7 @@ param (
 
 $SourceDir = "$env:BUILD_SOURCESDIRECTORY\$templatename"
 $TempDir = $env:TEMP
- 
+Write-Output "TempDir" + $TempDir 
 $modulePath = Join-Path $TempDir Pester-master\Pester.psm1
  
 if (-not(Test-Path $modulePath)) {
