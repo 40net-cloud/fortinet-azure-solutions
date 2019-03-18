@@ -136,8 +136,8 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
                      'TemplateParameterFile'='azuredeploy.parameters.json';
                      'adminPassword'=$testsAdminPassword;
                      'FortiGateNamePrefix'=$testsPrefix;
-                     'publicIPAddressName'=$testsPrefix + '-PIP';
-                     'publicIPAddress2Name'=$testsPrefix + '-PIP2';
+                     'publicIPName'=$testsPrefix + '-PIP';
+                     'publicIP2Name'=$testsPrefix + '-PIP2';
                      'vnetName'=$testsPrefix + '-VNET';
                      'vnetResourceGroup'=$testsResourceGroupName;
                     }

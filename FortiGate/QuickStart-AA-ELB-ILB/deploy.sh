@@ -71,10 +71,10 @@ az group create --location "$location" --name "$rg"
 # Validate template
 echo "--> Validation deployment in $rg resource group ..."
 az group deployment validate --resource-group "$rg" \
-                           --template-file mainTemplate.1.json \
-                           --parameters "@mainTemplate.parameters.json" \
+                           --template-file azuredeploy.json \
+                           --parameters "@azuredeploy.parameters.json" \
                            --parameters adminPassword=$passwd FortiGateNamePrefix=$prefix \
-                                        publicIPAddressName="$prefix-PIP" publicIPAddress2Name="$prefix-PIP2" \
+                                        publicIPName="$prefix-PIP" publicIP2Name="$prefix-PIP2" \
                                         vnetName="$prefix-VNET" vnetResourceGroup="$rg"
 result=$? 
 if [ $result != 0 ]; 
@@ -86,10 +86,10 @@ fi
 # Deploy NextGen Firewall resources
 echo "--> Deployment of $rg resources ..."
 az group deployment create --resource-group "$rg" \
-                           --template-file mainTemplate.1.json \
-                           --parameters "@mainTemplate.parameters.json" \
+                           --template-file azuredeploy.json \
+                           --parameters "@azuredeploy.parameters.json" \
                            --parameters adminPassword=$passwd FortiGateNamePrefix=$prefix \
-                                        publicIPAddressName="$prefix-PIP" publicIPAddress2Name="$prefix-PIP2" \
+                                        publicIPName="$prefix-PIP" publicIP2Name="$prefix-PIP2" \
                                         vnetName="$prefix-VNET" vnetResourceGroup="$rg"
 result=$? 
 if [[ $result != 0 ]]; 
