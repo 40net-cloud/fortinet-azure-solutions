@@ -26,16 +26,16 @@
     "publicIP2NewOrExisting": {
       "value": "new"
     },
-    "publicIPAddressName": {
+    "publicIPName": {
       "value": "GEN-PREFIX-PIP"
     },
-    "publicIPAddressResourceGroup": {
+    "publicIPResourceGroup": {
       "value": ""
     },
-    "publicIPAddress2Name": {
+    "publicIP2Name": {
       "value": "GEN-PREFIX-PIP2"
     },
-    "publicIPAddress2ResourceGroup": {
+    "publicIP2ResourceGroup": {
       "value": ""
     },
     "publicIPAddressType": {
@@ -53,16 +53,16 @@
     "vnetAddressPrefix": {
       "value": "10.0.0.0/16"
     },
-    "Subnet1Name": {
+    "subnet1Name": {
       "value": "EntrySubnet"
     },
-    "Subnet1Prefix": {
+    "subnet1Prefix": {
       "value": "10.0.1.0/24"
     },
-    "Subnet2Name": {
+    "subnet2Name": {
       "value": "TransitSubnet"
     },
-    "Subnet2Prefix": {
+    "subnet2Prefix": {
       "value": "10.0.2.0/24"
     },
     "Subnet3Name": {
@@ -75,9 +75,6 @@
       "value": {
         "provider": "6EB3B02F-50E5-4A3E-8CB8-2E129258317D"
       }
-    },
-    "artifactsBaseUrl": {
-      "value": "https://raw.githubusercontent.com/fortinetsolutions/Azure-Templates/master/FortiGate/Azure Active-Active LoadBalancer HA-Ports"
     }
   }
 }

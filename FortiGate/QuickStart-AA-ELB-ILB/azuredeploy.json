@@ -69,28 +69,28 @@
         "description": "Whether to use a public IP and if so whether it is new"
       }
     },
-    "publicIPAddressName": {
+    "publicIPName": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
         "description": "Name of Public IP address element."
       }
     },
-    "publicIPAddressResourceGroup": {
+    "publicIPResourceGroup": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
         "description": "Resource group to which the Public IP belongs."
       }
     },
-    "publicIPAddress2Name": {
+    "publicIP2Name": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
         "description": "Name of Public IP address element."
       }
     },
-    "publicIPAddress2ResourceGroup": {
+    "publicIP2ResourceGroup": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
@@ -139,42 +139,42 @@
         "description": "Virtual Network Address prefix"
       }
     },
-    "Subnet1Name": {
+    "subnet1Name": {
       "type": "string",
       "defaultValue": "EntrySubnet",
       "metadata": {
         "description": "Subnet 1 Name"
       }
     },
-    "Subnet1Prefix": {
+    "subnet1Prefix": {
       "type": "string",
       "defaultValue": "10.0.1.0/24",
       "metadata": {
         "description": "Subnet 1 Prefix"
       }
     },
-    "Subnet2Name": {
+    "subnet2Name": {
       "type": "string",
       "defaultValue": "TransitSubnet",
       "metadata": {
         "description": "Subnet 2 Name"
       }
     },
-    "Subnet2Prefix": {
+    "subnet2Prefix": {
       "type": "string",
       "defaultValue": "10.0.2.0/24",
       "metadata": {
         "description": "Subnet 2 Prefix"
       }
     },
-    "Subnet3Name": {
+    "subnet3Name": {
       "type": "string",
       "defaultValue": "ProtectedSubnet",
       "metadata": {
         "description": "Subnet 3 Name"
       }
     },
-    "Subnet3Prefix": {
+    "subnet3Prefix": {
       "type": "string",
       "defaultValue": "10.0.3.0/24",
       "metadata": {
@@ -185,14 +185,6 @@
     "type": "object",
     "defaultValue": {
       "provider": "6EB3B02F-50E5-4A3E-8CB8-2E129258317D"
-      }
-    },
-    "artifactsBaseUrl": {
-      "type": "string",
-      "defaultValue": "https://raw.githubusercontent.com/fortinetsolutions/Azure-Templates/master/FortiGate/Azure Active-Active LoadBalancer HA-Ports",
-      "metadata": {
-        "description": "Base URL of the solution template gallery package",
-        "artifactsBaseUrl": ""
       }
     }
   },
@@ -208,18 +200,18 @@
 
     "vnetName": "[if(equals(parameters('vnetNewOrExisting'),'new'),concat(parameters('FortiGateNamePrefix'),'-VNET'),parameters('vnetName'))]",
     "vnetID": "[if(equals(parameters('vnetNewOrExisting'),'new'),resourceId('Microsoft.Network/virtualNetworks', variables('vnetName')),resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks', variables('vnetName')))]",
-    "subnet1Ref": "[concat(variables('vnetID'),'/subnets/', parameters('Subnet1Name'))]",
-    "subnet2Ref": "[concat(variables('vnetID'),'/subnets/', parameters('Subnet2Name'))]",
+    "subnet1Ref": "[concat(variables('vnetID'),'/subnets/', parameters('subnet1Name'))]",
+    "subnet2Ref": "[concat(variables('vnetID'),'/subnets/', parameters('subnet2Name'))]",
 
     "vmName": "[concat(parameters('FortiGateNamePrefix'),'-A')]",
     "vm2Name": "[concat(parameters('FortiGateNamePrefix'),'-B')]",
 
-    "routeTable3Name": "[concat(parameters('FortiGateNamePrefix'),'-',parameters('Subnet3Name'),'-','RouteTable')]",
+    "routeTable3Name": "[concat(parameters('FortiGateNamePrefix'),'-',parameters('subnet3Name'),'-','RouteTable')]",
     "routeTable3Ref": "[resourceId('Microsoft.Network/routeTables',variables('routeTable3Name'))]",
 
     "internalLBName": "[concat(parameters('FortiGateNamePrefix'),'-InternalLoadBalancer')]",
-    "internalLBFE2Name": "[concat(parameters('FortiGateNamePrefix'),'-ILB-',parameters('Subnet2Name'),'-FrontEnd')]",
-    "internalLBBE2Name": "[concat(parameters('FortiGateNamePrefix'),'-ILB-',parameters('Subnet2Name'),'-BackEnd')]",
+    "internalLBFE2Name": "[concat(parameters('FortiGateNamePrefix'),'-ILB-',parameters('subnet2Name'),'-FrontEnd')]",
+    "internalLBBE2Name": "[concat(parameters('FortiGateNamePrefix'),'-ILB-',parameters('subnet2Name'),'-BackEnd')]",
     "internalLBid": "[resourceID('Microsoft.Network/loadBalancers',variables('internalLBName'))]",
     "internalLB_BE2Id": "[concat(variables('internalLBid'),'/backendAddressPools/',variables('internalLBBE2Name'))]",
 
@@ -235,12 +227,12 @@
     "network_NIC_fg22_Name": "[concat(variables('vm2Name'),'Nic1')]",
     "network_NIC_fg22_Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('network_NIC_fg22_Name'))]",
 
-    "publicIPID": "[if(equals(parameters('publicIPNewOrExisting'),'new'),resourceId('Microsoft.Network/publicIPAddresses',parameters('publicIPAddressName')),resourceId(parameters('publicIPAddressResourceGroup'),'Microsoft.Network/publicIPAddresses',parameters('publicIPAddressName')))]",
-    "publicIP2ID": "[if(equals(parameters('publicIP2NewOrExisting'),'new'),resourceId('Microsoft.Network/publicIPAddresses',parameters('publicIPAddress2Name')),resourceId(parameters('publicIPAddress2ResourceGroup'),'Microsoft.Network/publicIPAddresses',parameters('publicIPAddress2Name')))]",
+    "publicIPID": "[if(equals(parameters('publicIPNewOrExisting'),'new'),resourceId('Microsoft.Network/publicIPAddresses',parameters('publicIPName')),resourceId(parameters('publicIPResourceGroup'),'Microsoft.Network/publicIPAddresses',parameters('publicIPName')))]",
+    "publicIP2ID": "[if(equals(parameters('publicIP2NewOrExisting'),'new'),resourceId('Microsoft.Network/publicIPAddresses',parameters('publicIP2Name')),resourceId(parameters('publicIP2ResourceGroup'),'Microsoft.Network/publicIPAddresses',parameters('publicIP2Name')))]",
 
     "nsgName": "[concat(parameters('FortiGateNamePrefix'),'-',uniqueString(resourceGroup().id),'-NSG')]",
 
-    "sn1IPArray": "[split(parameters('Subnet1Prefix'),'.')]",
+    "sn1IPArray": "[split(parameters('subnet1Prefix'),'.')]",
     "sn1IPArray2ndString": "[string(variables('sn1IPArray')[3])]",
     "sn1IPArray2nd": "[split(variables('sn1IPArray2ndString'),'/')]",
     "sn1CIDRmask": "[string(int(variables('sn1IPArray2nd')[1]))]",
@@ -252,7 +244,7 @@
     "sn1IPfg1": "[concat(variables('sn1IPArray0'),'.',variables('sn1IPArray1'),'.',variables('sn1IPArray2'),'.',add(int(variables('sn1IPArray2nd')[0]),5))]",
     "sn1IPfg2": "[concat(variables('sn1IPArray0'),'.',variables('sn1IPArray1'),'.',variables('sn1IPArray2'),'.',add(int(variables('sn1IPArray2nd')[0]),6))]",
 
-    "sn2IPArray": "[split(parameters('Subnet2Prefix'),'.')]",
+    "sn2IPArray": "[split(parameters('subnet2Prefix'),'.')]",
     "sn2IPArray2ndString": "[string(variables('sn2IPArray')[3])]",
     "sn2IPArray2nd": "[split(variables('sn2IPArray2ndString'),'/')]",
     "sn2CIDRmask": "[string(int(variables('sn2IPArray2nd')[1]))]",
@@ -280,9 +272,7 @@
     "network_LB_Public_FE2Name": "[concat(parameters('FortiGateNamePrefix'),'publicLBFE2')]",
     "network_LB_Public_FE2Id": "[concat(variables('network_LB_Public_Id'),'/frontendIPConfigurations/',variables('network_LB_Public_FE2Name'))]",
     "network_LB_Public_BEName": "[concat(parameters('FortiGateNamePrefix'),'publicLBBE')]",
-    "network_LB_Public_BEId": "[concat(variables('network_LB_Public_Id'),'/backendAddressPools/',variables('network_LB_Public_BEName'))]",
-
-    "updateIPURI": "[concat(parameters('artifactsBaseURL'),'/update-nic.json')]"
+    "network_LB_Public_BEId": "[concat(variables('network_LB_Public_Id'),'/backendAddressPools/',variables('network_LB_Public_BEName'))]"
   },
   "resources": [
     {
@@ -331,21 +321,21 @@
         },
         "subnets": [
           {
-            "name": "[parameters('Subnet1Name')]",
+            "name": "[parameters('subnet1Name')]",
             "properties": {
-              "addressPrefix": "[parameters('Subnet1Prefix')]"
+              "addressPrefix": "[parameters('subnet1Prefix')]"
             }
           },
           {
-            "name": "[parameters('Subnet2Name')]",
+            "name": "[parameters('subnet2Name')]",
             "properties": {
-              "addressPrefix": "[parameters('Subnet2Prefix')]"
+              "addressPrefix": "[parameters('subnet2Prefix')]"
             }
           },
           {
-            "name": "[parameters('Subnet3Name')]",
+            "name": "[parameters('subnet3Name')]",
             "properties": {
-              "addressPrefix": "[parameters('Subnet3Prefix')]",
+              "addressPrefix": "[parameters('subnet3Prefix')]",
               "routeTable": {
                 "id": "[variables('routeTable3Ref')]"
               }
@@ -486,7 +476,7 @@
       "condition": "[equals(parameters('publicIPNewOrExisting'), 'new')]",
       "apiVersion": "[variables('networkApiVersion')]",
       "type": "Microsoft.Network/publicIPAddresses",
-      "name": "[parameters('publicIPAddressName')]",
+      "name": "[parameters('publicIPName')]",
       "location": "[resourceGroup().location]",
       "tags": {
         "provider": "[toUpper(parameters('FortinetTags').provider)]"
@@ -502,7 +492,7 @@
       "condition": "[equals(parameters('publicIP2NewOrExisting'), 'new')]",
       "apiVersion": "[variables('networkApiVersion')]",
       "type": "Microsoft.Network/publicIPAddresses",
-      "name": "[parameters('publicIPAddress2Name')]",
+      "name": "[parameters('publicIP2Name')]",
       "location": "[resourceGroup().location]",
       "tags": {
         "provider": "[toUpper(parameters('FortinetTags').provider)]"

@@ -79,32 +79,32 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
         }
         
         It 'Contains the expected parameters' {
-            $expectedTemplateParameters = 'adminPassword',
-            'adminUsername',
-            'FortiGateImageSKU',
-            'FortiGateImageVersion',
-            'FortiGateNamePrefix',
-            'FortinetTags',
-            'instanceType',
-            'publicIP2NewOrExisting',
-            'publicIP2AddressName',
-            'publicIP2AddressResourceGroup',
-            'publicIPNewOrExisting',
-            'publicIPAddressName',
-            'publicIPAddressResourceGroup',
-            'publicIPAddressType',
-            'subnet1Name',
-            'subnet1Prefix',
-            'subnet2Name',
-            'subnet2Prefix',
-            'subnet3Name',
-            'subnet3Prefix'
-            'vnetAddressPrefix',
-            'vnetName',
-            'vnetNewOrExisting',
-            'vnetResourceGroup'
+            $expectedTemplateParameters = 'FortiGateImageSKU',
+                                          'FortiGateImageVersion',
+                                          'FortiGateNamePrefix',
+                                          'FortinetTags',
+                                          'adminPassword',
+                                          'adminUsername',
+                                          'instanceType',
+                                          'publicIP2Name',
+                                          'publicIP2NewOrExisting',
+                                          'publicIP2ResourceGroup',
+                                          'publicIPAddressType',
+                                          'publicIPName',
+                                          'publicIPNewOrExisting',
+                                          'publicIPResourceGroup',
+                                          'subnet1Name',
+                                          'subnet1Prefix',
+                                          'subnet2Name',
+                                          'subnet2Prefix',
+                                          'subnet3Name',
+                                          'subnet3Prefix'
+                                          'vnetAddressPrefix',
+                                          'vnetName',
+                                          'vnetNewOrExisting',
+                                          'vnetResourceGroup'
 
-            $templateParameters = (get-content $templateFileLocation | ConvertFrom-Json -ErrorAction SilentlyContinue).Parameters | Get-Member -MemberType NoteProperty | % Name
+            $templateParameters = (get-content $templateFileLocation | ConvertFrom-Json -ErrorAction SilentlyContinue).Parameters | Get-Member -MemberType NoteProperty | % Name | sort
             $templateParameters | Should Be $expectedTemplateParameters
         }
 
