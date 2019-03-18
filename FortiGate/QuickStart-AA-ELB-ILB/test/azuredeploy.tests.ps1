@@ -103,9 +103,9 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
                                           'vnetName',
                                           'vnetNewOrExisting',
                                           'vnetResourceGroup'
-            Write-Output "Expected: " + $expectedTemplateParameters
+            Write-Host "Expected: " + $expectedTemplateParameters
             $templateParameters = (get-content $templateFileLocation | ConvertFrom-Json -ErrorAction SilentlyContinue).Parameters | Get-Member -MemberType NoteProperty | % Name | sort
-            Write-Output "Parameters: " + $templateParameters
+            Write-Host "Parameters: " + $templateParameters
             $templateParameters | Should Be $expectedTemplateParameters
         }
 
