@@ -2,6 +2,7 @@
 
 [![Build Status](https://dev.azure.com/jvh-2520/Fortinet-Azure/_apis/build/status/jvhoof.fortinet-azure-solutions?branchName=master)](https://dev.azure.com/jvh-2520/Fortinet-Azure/_build/latest?definitionId=1&branchName=master)
 
+
 The following resources are defined:
 - vnet with three subnets
                 or allows an existing vnet of your selection.  If using an existing vnet, it must already have 3 subnets.
