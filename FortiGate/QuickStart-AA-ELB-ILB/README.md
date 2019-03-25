@@ -85,7 +85,3 @@ Here's the example routing table configuration:
         next
     end
 
-
-
-
-
