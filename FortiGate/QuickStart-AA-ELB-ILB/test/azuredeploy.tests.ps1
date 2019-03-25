@@ -155,6 +155,8 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
             Write-Host ($result | Format-Table | Out-String)
             $result | Should Not Be $null
         }
-        Remove-AzureRmResourceGroup -Name $testsResourceGroupName -Force
+        It "Cleanup of deployment" {
+            Remove-AzureRmResourceGroup -Name $testsResourceGroupName -Force
+        }
     }
 }

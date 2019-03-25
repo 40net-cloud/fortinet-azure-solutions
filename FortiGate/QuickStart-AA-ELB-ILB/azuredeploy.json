@@ -203,8 +203,8 @@
     "subnet1Ref": "[concat(variables('vnetID'),'/subnets/', parameters('subnet1Name'))]",
     "subnet2Ref": "[concat(variables('vnetID'),'/subnets/', parameters('subnet2Name'))]",
 
-    "vmName": "[concat(parameters('FortiGateNamePrefix'),'-A')]",
-    "vm2Name": "[concat(parameters('FortiGateNamePrefix'),'-B')]",
+    "vmName": "[concat(parameters('FortiGateNamePrefix'),'-FGT-A')]",
+    "vm2Name": "[concat(parameters('FortiGateNamePrefix'),'-FGT-B')]",
 
     "routeTable3Name": "[concat(parameters('FortiGateNamePrefix'),'-',parameters('subnet3Name'),'-','RouteTable')]",
     "routeTable3Ref": "[resourceId('Microsoft.Network/routeTables',variables('routeTable3Name'))]",
@@ -218,13 +218,13 @@
     "compute_VM_fg1_Name": "[variables('vmName')]",
     "compute_VM_fg2_Name": "[variables('vm2Name')]",
 
-    "network_NIC_fg11_Name": "[concat(variables('vmName'),'Nic0')]",
+    "network_NIC_fg11_Name": "[concat(variables('vmName'),'-Nic0')]",
     "network_NIC_fg11_Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('network_NIC_fg11_Name'))]",
-    "network_NIC_fg12_Name": "[concat(variables('vmName'),'Nic1')]",
+    "network_NIC_fg12_Name": "[concat(variables('vmName'),'-Nic1')]",
     "network_NIC_fg12_Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('network_NIC_fg12_Name'))]",
-    "network_NIC_fg21_Name": "[concat(variables('vm2Name'),'Nic0')]",
+    "network_NIC_fg21_Name": "[concat(variables('vm2Name'),'-Nic0')]",
     "network_NIC_fg21_Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('network_NIC_fg21_Name'))]",
-    "network_NIC_fg22_Name": "[concat(variables('vm2Name'),'Nic1')]",
+    "network_NIC_fg22_Name": "[concat(variables('vm2Name'),'-Nic1')]",
     "network_NIC_fg22_Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('network_NIC_fg22_Name'))]",
 
     "publicIPID": "[if(equals(parameters('publicIPNewOrExisting'),'new'),resourceId('Microsoft.Network/publicIPAddresses',parameters('publicIPName')),resourceId(parameters('publicIPResourceGroup'),'Microsoft.Network/publicIPAddresses',parameters('publicIPName')))]",
