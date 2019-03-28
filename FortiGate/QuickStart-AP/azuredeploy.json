@@ -338,11 +338,7 @@
     "sn4IPArray0": "[string(int(variables('sn4IPArray')[0]))]",
     "sn4GatewayIP": "[concat(variables('sn4IPArray0'),'.',variables('sn4IPArray1'),'.',variables('sn4IPArray2'),'.',variables('sn4IPArray3'))]",
     "sn4IPfg1": "[concat(variables('sn4IPArray0'),'.',variables('sn4IPArray1'),'.',variables('sn4IPArray2'),'.',add(int(variables('sn4IPArray2nd')[0]),5))]",
-    "sn4IPfg2": "[concat(variables('sn4IPArray0'),'.',variables('sn4IPArray1'),'.',variables('sn4IPArray2'),'.',add(int(variables('sn4IPArray2nd')[0]),6))]",
-
-
-    "updateIPURI": "[concat(parameters('artifactsBaseURL'),'/update-nic.json')]",
-    "updateIP2URI": "[concat(parameters('artifactsBaseURL'),'/update-nic2.json')]"
+    "sn4IPfg2": "[concat(variables('sn4IPArray0'),'.',variables('sn4IPArray1'),'.',variables('sn4IPArray2'),'.',add(int(variables('sn4IPArray2nd')[0]),6))]"
   },
   "resources": [
     {
