@@ -38,7 +38,7 @@ then
     stty $stty_orig     # restore terminal setting.
     if [ -z "$prefix" ] 
     then
-        prefix="FORTI"
+        prefix="CUDA"
     fi
 else
     prefix="$DEPLOY_PREFIX"
