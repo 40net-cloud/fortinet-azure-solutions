@@ -2,18 +2,33 @@
 
 [![Build Status](https://dev.azure.com/jvh-2520/Fortinet-Azure/_apis/build/status/jvhoof.fortinet-azure-solutions?branchName=master)](https://dev.azure.com/jvh-2520/Fortinet-Azure/_build/latest?definitionId=1&branchName=master)
 
+## How to deploy
+
+The FortiGate solution can be deployed using the Azure Portal or Azure CLI. Using the deploy button you will open the Azure portal and you are required to fill in at least 5 variables. You can customize the deployment but referencing the resources like VNET, subnet and other resources.  
+
+### Azure Portal
+
+<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fjvhoof%2Ffortinet-azure-solutions%2Fmaster%2QuickStart-AA-ELB-ILB%2Fazuredeploy.json" target="_blank"><img src="http://azuredeploy.net/deploybutton.png"/></a>
+<a href="http://armviz.io/#/?load=https%3A%2F%2Fraw.githubusercontent.com%2Fjvhoof%2Ffortinet-azure-solutions$2Fmaster%2FQuickStart-AA-ELB-ILB%2Fazuredeploy.json" target="_blank">
+    <img src="http://armviz.io/visualizebutton.png"/>
+</a>
+
+### Azure CLI
+
+To deploy via Azure Cloud Shell you can connect via the Azure Portal or directly to [https://shell.azure.com/](https://shell.azure.com/).
+
+- Login into the Azure Cloud Shell 
+- Run the following command in the Azure Cloud:
+`cd ~/clouddrive/ && wget -qO- https://github.com/jvhoof/fortinet-azure-solutions/archive/master.zip | jar x && cd ~/clouddrive/fortinet-azure-solutions/FortiGate/QuickStart-AP/ && ./deploy.sh`
+- The script will ask you a few questions to bootstrap a full deployment.
+
+
+## Deployed resources
 
 The following resources are defined:
-- vnet with three subnets
-                or allows an existing vnet of your selection.  If using an existing vnet, it must already have 3 subnets.
-                
-- Two standard load balancers - one public and one internal
-                The internal load balancer has an HA Ports rule enabled to forward all traffic to the FortiGates' internal NICs
-                The public load balancer has admin ports (22 & 443) configured to forward individually to each FortiGate as "NAT Rules"
-                The public load balancer also has sample port 80 load balancer rules and a udp rule on port 10551.  At least one tcp and one udp rule must be enabled to allow outbound SNAT (https://docs.microsoft.com/en-us/azure/load-balancer/load-balancer-outbound-connections#preallocatedports)
-                
+- vnet with three subnets or allows an existing vnet of your selection.  If using an existing vnet, it must already have 3 subnets.
+- Two standard load balancers - one public and one internal The internal load balancer has an HA Ports rule enabled to forward all traffic to the FortiGates' internal NICs The public load balancer has admin ports (22 & 443) configured to forward individually to each FortiGate as "NAT Rules" The public load balancer also has sample port 80 load balancer rules and a udp rule on port 10551.  At least one tcp and one udp rule must be enabled to allow outbound SNAT (https://docs.microsoft.com/en-us/azure/load-balancer/load-balancer-outbound-connections#preallocatedports)
 - Two public IPs connected as frontends to an Azure public load balancer.
-
 - Two FortiGates
 
 The deployed template will look like the following diagram:

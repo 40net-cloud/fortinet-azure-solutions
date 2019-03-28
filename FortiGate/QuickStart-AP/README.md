@@ -1,7 +1,27 @@
-## This template set is designed for A/P HA in Azure.  The following are created:
-	- vnet with five subnets
-                or uses an existing vnet of your selection.  If using an existing vnet, it must already have 5 subnets.
-	- three public IPs.  The first public IP is for cluster access to/through the active FortiGate.  The other two PIPs are for Management access
+
+## How to deploy
+
+The FortiGate solution can be deployed using the Azure Portal or Azure CLI. Using the deploy button you will open the Azure portal and you are required to fill in at least 5 variables. You can customize the deployment but referencing the resources like VNET, subnet and other resources.  
+
+### Azure Portal
+
+<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fjvhoof%2Ffortinet-azure-solutions%2Fmaster%2QuickStart-AP%2Fazuredeploy.json" target="_blank"><img src="http://azuredeploy.net/deploybutton.png"/></a>
+<a href="http://armviz.io/#/?load=https%3A%2F%2Fraw.githubusercontent.com%2Fjvhoof%2Ffortinet-azure-solutions$2Fmaster%2FQuickStart-AP%2Fazuredeploy.json" target="_blank">
+    <img src="http://armviz.io/visualizebutton.png"/>
+</a>
+
+### Azure CLI
+
+To deploy via Azure Cloud Shell you can connect via the Azure Portal or directly to [https://shell.azure.com/](https://shell.azure.com/).
+
+- Login into the Azure Cloud Shell 
+- Run the following command in the Azure Cloud:
+`cd ~/clouddrive/ && wget -qO- https://github.com/jvhoof/fortinet-azure-solutions/archive/master.zip | jar x && cd ~/clouddrive/fortinet-azure-solutions/FortiGate/QuickStart-AP/ && ./deploy.sh`
+- The script will ask you a few questions to bootstrap a full deployment.
+
+## Deployed resources
+	- vnet with five subnets or uses an existing vnet of your selection.  If using an existing vnet, it must already have 5 subnets.
+	- three public IPs. The first public IP is for cluster access to/through the active FortiGate.  The other two PIPs are for Management access
 	- Two FortiGate virtual appliances
 
 A typical use case will be for Site-to-Site VPN termination as in the following diagram:
