@@ -99,9 +99,6 @@
             "value": {
                 "provider": "6EB3B02F-50E5-4A3E-8CB8-2E129258317D"
             }
-        },
-        "artifactsBaseUrl": {
-            "value": "https://raw.githubusercontent.com/fortinetclouddev/FortiGate-AP-HA/master"
         }
     }
 }

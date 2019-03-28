@@ -7,6 +7,8 @@ echo "
 ##############################################################################################################
 
 "
+echo "--> Auto accepting terms for Azure Marketplace deployments ..."
+az vm image accept-terms --publisher fortinet --offer fortinet_fortigate-vm_v5 --plan fortinet_fg-vm
 
 # Stop on error
 set +e

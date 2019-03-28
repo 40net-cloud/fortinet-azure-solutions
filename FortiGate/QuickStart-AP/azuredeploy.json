@@ -155,7 +155,6 @@
     },
     "vnetResourceGroup": {
       "type": "string",
-      "defaultValue": "",
       "metadata": {
         "description": "Resource Group containing the virtual network - or new resource group from above (if new vnet)"
       }
@@ -248,14 +247,6 @@
     "type": "object",
     "defaultValue": {
       "provider": "6EB3B02F-50E5-4A3E-8CB8-2E129258317D"
-      }
-    },
-    "artifactsBaseUrl": {
-      "type": "string",
-      "defaultValue": "https://raw.githubusercontent.com/fortinetclouddev/FortiGate-AP-HA/master",
-      "metadata": {
-        "description": "Base URL of the solution template gallery package",
-        "artifactsBaseUrl": ""
       }
     }
   },
