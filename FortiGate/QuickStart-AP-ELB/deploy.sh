@@ -26,7 +26,7 @@ else
     location="$DEPLOY_LOCATION"
 fi
 echo ""
-echo "--> Deployment in $location location ..."
+echo "--> Deployment in '$location' location ..."
 echo ""
 
 if [ -z "$DEPLOY_PREFIX" ]
@@ -38,13 +38,13 @@ then
     stty $stty_orig     # restore terminal setting.
     if [ -z "$prefix" ] 
     then
-        prefix="CUDA"
+        prefix="FORTI"
     fi
 else
     prefix="$DEPLOY_PREFIX"
 fi
 echo ""
-echo "--> Using prefix $prefix for all resources ..."
+echo "--> Using prefix '$prefix' for all resources ..."
 echo ""
 rg="$prefix-RG"
 
@@ -63,6 +63,16 @@ else
     echo ""
 fi
 
+if [ -z "$DEPLOY_USERNAME" ]
+then
+    username="azureuser"
+else
+    username="$DEPLOY_USERNAME"
+fi
+echo ""
+echo "--> Using username '$username' ..."
+echo ""
+
 # Create resource group for NextGen Firewall resources
 echo ""
 echo "--> Creating $rg resource group ..."
@@ -73,8 +83,9 @@ echo "--> Validation deployment in $rg resource group ..."
 az group deployment validate --resource-group "$rg" \
                            --template-file azuredeploy.json \
                            --parameters "@azuredeploy.parameters.json" \
-                           --parameters adminPassword=$passwd FortiGateNamePrefix=$prefix \
-                                        publicIPName="$prefix-PIP" publicIP2Name="$prefix-PIP2" \
+                           --parameters adminUsername="$username" adminPassword=$passwd FortiGateNamePrefix=$prefix \
+                                        publicIPName="$prefix-PIP" publicIP2Name="$prefix-PIP-MGMT-FGTA" \
+                                        publicIP3Name="$prefix-PIP-MGMT-FGTB" \
                                         vnetName="$prefix-VNET" vnetResourceGroup="$rg"
 result=$? 
 if [ $result != 0 ]; 
@@ -88,8 +99,9 @@ echo "--> Deployment of $rg resources ..."
 az group deployment create --resource-group "$rg" \
                            --template-file azuredeploy.json \
                            --parameters "@azuredeploy.parameters.json" \
-                           --parameters adminPassword=$passwd FortiGateNamePrefix=$prefix \
-                                        publicIPName="$prefix-PIP" publicIP2Name="$prefix-PIP2" \
+                           --parameters adminUsername="$username" adminPassword=$passwd FortiGateNamePrefix=$prefix \
+                                        publicIPName="$prefix-PIP" publicIP2Name="$prefix-PIP-MGMT-FGTA" \
+                                        publicIP3Name="$prefix-PIP-MGMT-FGTB" \
                                         vnetName="$prefix-VNET" vnetResourceGroup="$rg"
 result=$? 
 if [[ $result != 0 ]]; 
