@@ -554,6 +554,9 @@
             "properties": {
               "privateIPAddress": "[variables('sn1IPfg1')]",
               "privateIPAllocationMethod": "Static",
+              "publicIPAddress": {
+                "id": "[variables('publicIPID')]"
+              },
               "subnet": {
                 "id": "[variables('subnet1Ref')]"
               }
@@ -586,9 +589,6 @@
             "properties": {
               "privateIPAddress": "[variables('sn1IPfg2')]",
               "privateIPAllocationMethod": "Static",
-              "publicIPAddress": {
-                "id": "[variables('publicIPID')]"
-              },
               "subnet": {
                 "id": "[variables('subnet1Ref')]"
               }

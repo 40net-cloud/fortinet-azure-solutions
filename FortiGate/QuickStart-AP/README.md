@@ -16,7 +16,7 @@ To deploy via Azure Cloud Shell you can connect via the Azure Portal or directly
 
 - Login into the Azure Cloud Shell 
 - Run the following command in the Azure Cloud:
-`cd ~/clouddrive/ && wget -qO- https://github.com/jvhoof/fortinet-azure-solutions/archive/master.zip | jar x && cd ~/clouddrive/fortinet-azure-solutions/FortiGate/QuickStart-AP/ && ./deploy.sh`
+`cd ~/clouddrive/ && wget -qO- https://github.com/jvhoof/fortinet-azure-solutions/archive/master.zip | jar x && cd ~/clouddrive/fortinet-azure-solutions-master/FortiGate/QuickStart-AP/ && ./deploy.sh`
 - The script will ask you a few questions to bootstrap a full deployment.
 
 ## Deployed resources
