@@ -738,7 +738,10 @@
             }
           }
         ],
-        "enableIPForwarding": true
+        "enableIPForwarding": true,
+        "networkSecurityGroup": {
+          "id": "[resourceID('Microsoft.Network/networkSecurityGroups/',variables('NSGName'))]"
+        }
       }
     },
     {
@@ -769,7 +772,10 @@
             }
           }
         ],
-        "enableIPForwarding": true
+        "enableIPForwarding": true,
+        "networkSecurityGroup": {
+          "id": "[resourceID('Microsoft.Network/networkSecurityGroups/',variables('NSGName'))]"
+        }
       }
     },
     {
