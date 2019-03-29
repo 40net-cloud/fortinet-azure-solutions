@@ -31,7 +31,7 @@
         "description": "Identifies whether to to use PAYG (on demand licensing) or BYOL license model (where license is purchased separately)"
       }
     },
-    "FortiGateVersion": {
+    "FortiGateImageVersion": {
       "type": "string",
       "defaultValue": "latest",
       "allowedValues": [
@@ -166,77 +166,77 @@
         "description": "Virtual Network Address prefix"
       }
     },
-    "Subnet1Name": {
+    "subnet1Name": {
       "type": "string",
       "defaultValue": "EntrySubnet",
       "metadata": {
         "description": "Subnet 1 Name"
       }
     },
-    "Subnet1Prefix": {
+    "subnet1Prefix": {
       "type": "string",
       "defaultValue": "10.0.1.0/24",
       "metadata": {
         "description": "Subnet 1 Prefix"
       }
     },
-    "Subnet2Name": {
+    "subnet2Name": {
       "type": "string",
       "defaultValue": "TransitSubnet",
       "metadata": {
         "description": "Subnet 2 Name"
       }
     },
-    "Subnet2Prefix": {
+    "subnet2Prefix": {
       "type": "string",
       "defaultValue": "10.0.2.0/24",
       "metadata": {
         "description": "Subnet 2 Prefix"
       }
     },
-    "FGT-A-IP-Subnet2": {
+    "FGT-A-IP-subnet2": {
       "type": "string",
       "defaultValue": "10.0.2.4",
       "metadata": {
         "description": "FortiGate A IP for Subnet 2"
       }
     },
-    "Subnet3Name": {
+    "subnet3Name": {
       "type": "string",
       "defaultValue": "HASyncSubnet",
       "metadata": {
         "description": "Subnet 3 Name"
       }
     },
-    "Subnet3Prefix": {
+    "subnet3Prefix": {
       "type": "string",
       "defaultValue": "10.0.3.0/28",
       "metadata": {
         "description": "Subnet 3 Prefix"
       }
     },
-    "Subnet4Name": {
+    "subnet4Name": {
       "type": "string",
       "defaultValue": "ManagementSubnet",
       "metadata": {
         "description": "Subnet 4 Name"
       }
     },
-    "Subnet4Prefix": {
+    "subnet4Prefix": {
       "type": "string",
       "defaultValue": "10.0.4.0/28",
       "metadata": {
         "description": "Subnet 4 Prefix"
       }
     },
-    "Subnet5Name": {
+    "subnet5Name": {
       "type": "string",
       "defaultValue": "ProtectedSubnet",
       "metadata": {
         "description": "Subnet 5 Name"
       }
     },
-    "Subnet5Prefix": {
+    "subnet5Prefix": {
       "type": "string",
       "defaultValue": "10.0.5.0/24",
       "metadata": {
@@ -255,10 +255,10 @@
     "compute_AvailabilitySet_FG_Id": "[resourceId('Microsoft.Compute/availabilitySets', variables('compute_AvailabilitySet_FG_Name'))]",
 
     "vnetID": "[resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks', parameters('vnetName'))]",
-    "subnet1Ref": "[concat(variables('vnetID'),'/subnets/', parameters('Subnet1Name'))]",
-    "subnet2Ref": "[concat(variables('vnetID'),'/subnets/', parameters('Subnet2Name'))]",
-    "subnet3Ref": "[concat(variables('vnetID'),'/subnets/', parameters('Subnet3Name'))]",
-    "subnet4Ref": "[concat(variables('vnetID'),'/subnets/', parameters('Subnet4Name'))]",
+    "subnet1Ref": "[concat(variables('vnetID'),'/subnets/', parameters('subnet1Name'))]",
+    "subnet2Ref": "[concat(variables('vnetID'),'/subnets/', parameters('subnet2Name'))]",
+    "subnet3Ref": "[concat(variables('vnetID'),'/subnets/', parameters('subnet3Name'))]",
+    "subnet4Ref": "[concat(variables('vnetID'),'/subnets/', parameters('subnet4Name'))]",
 
     "vmName": "[concat(parameters('FortiGateNamePrefix'),'-A')]",
     "vm2Name": "[concat(parameters('FortiGateNamePrefix'),'-B')]",
@@ -292,7 +292,7 @@
 
     "NSGName": "[concat(parameters('FortiGateNamePrefix'),'-',uniqueString(resourceGroup().id),'-NSG')]",
 
-    "sn1IPArray": "[split(parameters('Subnet1Prefix'),'.')]",
+    "sn1IPArray": "[split(parameters('subnet1Prefix'),'.')]",
     "sn1IPArray2ndString": "[string(variables('sn1IPArray')[3])]",
     "sn1IPArray2nd": "[split(variables('sn1IPArray2ndString'),'/')]",
     "sn1CIDRmask": "[string(int(variables('sn1IPArray2nd')[1]))]",
@@ -304,7 +304,7 @@
     "sn1IPfg1": "[concat(variables('sn1IPArray0'),'.',variables('sn1IPArray1'),'.',variables('sn1IPArray2'),'.',add(int(variables('sn1IPArray2nd')[0]),5))]",
     "sn1IPfg2": "[concat(variables('sn1IPArray0'),'.',variables('sn1IPArray1'),'.',variables('sn1IPArray2'),'.',add(int(variables('sn1IPArray2nd')[0]),6))]",
 
-    "sn2IPArray": "[split(parameters('Subnet2Prefix'),'.')]",
+    "sn2IPArray": "[split(parameters('subnet2Prefix'),'.')]",
     "sn2IPArray2ndString": "[string(variables('sn2IPArray')[3])]",
     "sn2IPArray2nd": "[split(variables('sn2IPArray2ndString'),'/')]",
     "sn2CIDRmask": "[string(int(variables('sn2IPArray2nd')[1]))]",
@@ -316,7 +316,7 @@
     "sn2IPfg1": "[concat(variables('sn2IPArray0'),'.',variables('sn2IPArray1'),'.',variables('sn2IPArray2'),'.',add(int(variables('sn2IPArray2nd')[0]),5))]",
     "sn2IPfg2": "[concat(variables('sn2IPArray0'),'.',variables('sn2IPArray1'),'.',variables('sn2IPArray2'),'.',add(int(variables('sn2IPArray2nd')[0]),6))]",
 
-    "sn3IPArray": "[split(parameters('Subnet3Prefix'),'.')]",
+    "sn3IPArray": "[split(parameters('subnet3Prefix'),'.')]",
     "sn3IPArray2ndString": "[string(variables('sn3IPArray')[3])]",
     "sn3IPArray2nd": "[split(variables('sn3IPArray2ndString'),'/')]",
     "sn3CIDRmask": "[string(int(variables('sn3IPArray2nd')[1]))]",
@@ -328,7 +328,7 @@
     "sn3IPfg1": "[concat(variables('sn3IPArray0'),'.',variables('sn3IPArray1'),'.',variables('sn3IPArray2'),'.',add(int(variables('sn3IPArray2nd')[0]),5))]",
     "sn3IPfg2": "[concat(variables('sn3IPArray0'),'.',variables('sn3IPArray1'),'.',variables('sn3IPArray2'),'.',add(int(variables('sn3IPArray2nd')[0]),6))]",
 
-    "sn4IPArray": "[split(parameters('Subnet4Prefix'),'.')]",
+    "sn4IPArray": "[split(parameters('subnet4Prefix'),'.')]",
     "sn4IPArray2ndString": "[string(variables('sn4IPArray')[3])]",
     "sn4IPArray2nd": "[split(variables('sn4IPArray2ndString'),'/')]",
     "sn4CIDRmask": "[string(int(variables('sn4IPArray2nd')[1]))]",
@@ -408,33 +408,33 @@
         },
         "subnets": [
           {
-            "name": "[parameters('Subnet1Name')]",
+            "name": "[parameters('subnet1Name')]",
             "properties": {
-              "addressPrefix": "[parameters('Subnet1Prefix')]"
+              "addressPrefix": "[parameters('subnet1Prefix')]"
             }
           },
           {
-            "name": "[parameters('Subnet2Name')]",
+            "name": "[parameters('subnet2Name')]",
             "properties": {
-              "addressPrefix": "[parameters('Subnet2Prefix')]"
+              "addressPrefix": "[parameters('subnet2Prefix')]"
             }
           },
           {
-            "name": "[parameters('Subnet3Name')]",
+            "name": "[parameters('subnet3Name')]",
             "properties": {
-              "addressPrefix": "[parameters('Subnet3Prefix')]"
+              "addressPrefix": "[parameters('subnet3Prefix')]"
             }
           },
           {
-            "name": "[parameters('Subnet4Name')]",
+            "name": "[parameters('subnet4Name')]",
             "properties": {
-              "addressPrefix": "[parameters('Subnet4Prefix')]"
+              "addressPrefix": "[parameters('subnet4Prefix')]"
             }
           },
           {
-            "name": "[parameters('Subnet5Name')]",
+            "name": "[parameters('subnet5Name')]",
             "properties": {
-              "addressPrefix": "[parameters('Subnet5Prefix')]",
+              "addressPrefix": "[parameters('subnet5Prefix')]",
               "routeTable": {
                 "id": "[variables('routeTableId')]"
               }
@@ -625,7 +625,10 @@
             }
           }
         ],
-        "enableIPForwarding": true
+        "enableIPForwarding": true,
+        "networkSecurityGroup": {
+          "id": "[resourceID('Microsoft.Network/networkSecurityGroups/',variables('NSGName'))]"
+        }
       }
     },
     {
@@ -653,7 +656,10 @@
             }
           }
         ],
-        "enableIPForwarding": true
+        "enableIPForwarding": true,
+        "networkSecurityGroup": {
+          "id": "[resourceID('Microsoft.Network/networkSecurityGroups/',variables('NSGName'))]"
+        }
       }
     },
     {
@@ -680,7 +686,10 @@
             }
           }
         ],
-        "enableIPForwarding": true
+        "enableIPForwarding": true,
+        "networkSecurityGroup": {
+          "id": "[resourceID('Microsoft.Network/networkSecurityGroups/',variables('NSGName'))]"
+        }
       }
     },
     {
@@ -708,7 +717,10 @@
             }
           }
         ],
-        "enableIPForwarding": true
+        "enableIPForwarding": true,
+        "networkSecurityGroup": {
+          "id": "[resourceID('Microsoft.Network/networkSecurityGroups/',variables('NSGName'))]"
+        }
       }
     },
     {
@@ -815,7 +827,7 @@
             "publisher": "fortinet",
             "offer": "fortinet_fortigate-vm_v5",
             "sku": "[parameters('FortiGateImageSKU')]",
-            "version": "[parameters('FortiGateVersion')]"
+            "version": "[parameters('FortigateImageVersion')]"
           },
           "osDisk": {
             "createOption": "FromImage"
@@ -895,7 +907,7 @@
             "publisher": "fortinet",
             "offer": "fortinet_fortigate-vm_v5",
             "sku": "[parameters('FortiGateImageSKU')]",
-            "version": "[parameters('FortiGateVersion')]"
+            "version": "[parameters('FortigateImageVersion')]"
           },
           "osDisk": {
             "createOption": "FromImage"

@@ -24,7 +24,7 @@ Function random-password ($length = 15) {
     return $password
 }
 
-$templateName = "QuickStart-AA-ELB-ILB"
+$templateName = "QuickStart-AP"
 $sourcePath = "$env:BUILD_SOURCESDIRECTORY\FortiGate\$templateName"
 $scriptPath = "$env:BUILD_SOURCESDIRECTORY\FortiGate\$templateName\test"
 $templateFileName = "azuredeploy.json"
@@ -61,13 +61,16 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
         It 'Creates the expected Azure resources' {
             $expectedResources = 'Microsoft.Resources/deployments',
                                  'Microsoft.Compute/availabilitySets',
-                                 'Microsoft.Network/virtualNetworks',
-                                 'Microsoft.Network/loadBalancers',
                                  'Microsoft.Network/routeTables',
+                                 'Microsoft.Network/virtualNetworks',
                                  'Microsoft.Network/networkSecurityGroups',
                                  'Microsoft.Network/publicIPAddresses',
                                  'Microsoft.Network/publicIPAddresses',
-                                 'Microsoft.Network/loadBalancers',
+                                 'Microsoft.Network/publicIPAddresses',
+                                 'Microsoft.Network/networkInterfaces',
+                                 'Microsoft.Network/networkInterfaces',
+                                 'Microsoft.Network/networkInterfaces',
+                                 'Microsoft.Network/networkInterfaces',
                                  'Microsoft.Network/networkInterfaces',
                                  'Microsoft.Network/networkInterfaces',
                                  'Microsoft.Network/networkInterfaces',
@@ -89,6 +92,9 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
                                           'publicIP2Name',
                                           'publicIP2NewOrExisting',
                                           'publicIP2ResourceGroup',
+                                          'publicIP3Name',
+                                          'publicIP3NewOrExisting',
+                                          'publicIP3ResourceGroup',
                                           'publicIPAddressType',
                                           'publicIPName',
                                           'publicIPNewOrExisting',
@@ -99,6 +105,10 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
                                           'subnet2Prefix',
                                           'subnet3Name',
                                           'subnet3Prefix',
+                                          'subnet4Name',
+                                          'subnet4Prefix',
+                                          'subnet5Name',
+                                          'subnet5Prefix',
                                           'vnetAddressPrefix',
                                           'vnetName',
                                           'vnetNewOrExisting',
@@ -137,6 +147,7 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
                      'FortiGateNamePrefix'=$testsPrefix;
                      'publicIPName'=$testsPrefix + '-PIP';
                      'publicIP2Name'=$testsPrefix + '-PIP2';
+                     'publicIP3Name'=$testsPrefix + '-PIP3';
                      'vnetName'=$testsPrefix + '-VNET';
                      'vnetResourceGroup'=$testsResourceGroupName;
                     }
@@ -155,6 +166,23 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
             Write-Host ($result | Format-Table | Out-String)
             $result | Should Not Be $null
         }
+
+        8443, 22 | Foreach-Object {
+            it "Port [$_] is listening" {
+                $host = Get-AzPublicIpAddress -Name $params['publicIPName'] -ResourceGroupName $params['ResourceGroupeName']
+                $portListening = (Test-NetConnection -Port $_ -ComputerName $host).TcpTestSucceeded
+                $portListening | Should -Be $true
+                $host = Get-AzPublicIpAddress -Name $params['publicIP2Name'] -ResourceGroupName $params['ResourceGroupeName']
+                $portListening = (Test-NetConnection -Port $_ -ComputerName $host).TcpTestSucceeded
+                $portListening | Should -Be $true
+                $host = Get-AzPublicIpAddress -Name $params['publicIP3Name'] -ResourceGroupName $params['ResourceGroupeName']
+                $portListening = (Test-NetConnection -Port $_ -ComputerName $host).TcpTestSucceeded
+                $portListening | Should -Be $true
+            }
+        }
+    }
+
+    Context 'Cleanup' {
         It "Cleanup of deployment" {
             Remove-AzureRmResourceGroup -Name $testsResourceGroupName -Force
         }

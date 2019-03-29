@@ -14,7 +14,7 @@
         "FortiGateImageSKU": {
             "value": "fortinet_fg-vm"
         },
-        "FortiGateVersion": {
+        "FortiGateImageVersion": {
             "value": "latest"
         },
         "instanceType": {
@@ -62,37 +62,34 @@
         "vnetAddressPrefix": {
             "value": "10.0.0.0/16"
         },
-        "Subnet1Name": {
+        "subnet1Name": {
             "value": "EntrySubnet"
         },
-        "Subnet1Prefix": {
+        "subnet1Prefix": {
             "value": "10.0.1.0/24"
         },
-        "Subnet2Name": {
+        "subnet2Name": {
             "value": "TransitSubnet"
         },
-        "Subnet2Prefix": {
+        "subnet2Prefix": {
             "value": "10.0.2.0/24"
         },
-        "FGT-A-IP-Subnet2": {
-            "value": "10.0.2.4"
-        },
-        "Subnet3Name": {
+        "subnet3Name": {
             "value": "HASyncSubnet"
         },
-        "Subnet3Prefix": {
+        "subnet3Prefix": {
             "value": "10.0.3.0/28"
         },
-        "Subnet4Name": {
+        "subnet4Name": {
             "value": "ManagementSubnet"
         },
-        "Subnet4Prefix": {
+        "subnet4Prefix": {
             "value": "10.0.4.0/28"
         },
-        "Subnet5Name": {
+        "subnet5Name": {
             "value": "ProtectedSubnet"
         },
-        "Subnet5Prefix": {
+        "subnet5Prefix": {
             "value": "10.0.5.0/24"
         },
         "FortinetTags": {
