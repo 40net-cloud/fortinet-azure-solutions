@@ -34,6 +34,13 @@ $templateMetadataFileLocation = "$sourcePath\$templateMetadataFileName"
 $templateParameterFileName = "azuredeploy.parameters.json"
 $templateParameterFileLocation = "$sourcePath\$templateParameterFileName" 
 
+# Basic Variables
+$testsRandom = Get-Random 10001
+$testsPrefix = "FORTIQA"
+$testsResourceGroupName = "FORTIQA-$testsRandom-$templateName"
+$testsAdminPassword = $testsResourceGroupName | ConvertTo-SecureString -AsPlainText -Force
+$testsResourceGroupLocation = "East US2"
+
 Describe 'ARM Templates Test : Validation & Test Deployment' {
     Context 'Template Validation' {
         It 'Has a JSON template' {        
@@ -121,18 +128,6 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
 
     Context 'Template Test Deployment' {
 
-        # Basic Variables
-        $testsRandom = Get-Random 10001
-        $testsPrefix = "FORTIQA"
-        $testsResourceGroupName = "FORTIQA-$testsRandom-$templateName"
-        $testsAdminPassword = $testsResourceGroupName | ConvertTo-SecureString -AsPlainText -Force
-        $testsResourceGroupLocation = "East US2"
-
-        # List of all scripts + parameter files
-        $testsTemplateList = @()
-        ## dummy parameter file to test default parameters
-        $testsTemplateList += , @("azuredeploy.json", "azuredeploy.parameters.json")
-
         # Set working directory & create resource group
         Set-Location $sourcePath
         New-AzureRmResourceGroup -Name $testsResourceGroupName -Location "$testsResourceGroupLocation"
@@ -152,10 +147,10 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
                      'vnetResourceGroup'=$testsResourceGroupName;
                     }
 
-        It "Test Deployment of ARM template $testsTemplateFile with parameter file $testsTemplateParemeterFile" {
+        It "Test Deployment of ARM template $templateFileName with parameter file $templateParameterFileName" {
             (Test-AzureRmResourceGroupDeployment @params ).Count | Should not BeGreaterThan 0
         }
-        It "Deployment of ARM template $testsTemplateFile with parameter file $testsTemplateParemeterFile" {
+        It "Deployment of ARM template $templateFileName with parameter file $templateParameterFileName" {
             $resultDeployment = New-AzureRmResourceGroupDeployment @params
             Write-Host ($resultDeployment | Format-Table | Out-String)
             Write-Host "Deployment state: $resultDeployment.ProvisioningState"
@@ -181,7 +176,9 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
                 $portListening | Should -Be $true
             }
         }
+    }
 
+    Context 'Cleanup' {
         It "Cleanup of deployment" {
             Remove-AzureRmResourceGroup -Name $testsResourceGroupName -Force
         }
