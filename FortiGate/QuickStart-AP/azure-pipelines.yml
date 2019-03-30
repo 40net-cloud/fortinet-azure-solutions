@@ -27,5 +27,7 @@ trigger:
     include:
     - master
   paths:
+    exclude:
+    - FortiGate/QuickStart-AP/*.md 
     include:
     - FortiGate/QuickStart-AP/*
