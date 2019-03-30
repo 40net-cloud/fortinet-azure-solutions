@@ -153,7 +153,7 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
         It "Deployment of ARM template $templateFileName with parameter file $templateParameterFileName" {
             $resultDeployment = New-AzureRmResourceGroupDeployment @params
             Write-Host ($resultDeployment | Format-Table | Out-String)
-            Write-Host "Deployment state: $resultDeployment.ProvisioningState"
+            Write-Host ("Deployment state: " + $resultDeployment.ProvisioningState | Out-String)
             $resultDeployment.ProvisioningState | Should Be "Succeeded"
         }
         It "Deployment in Azure validation" {
@@ -165,7 +165,6 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
         8443, 22 | Foreach-Object {
             it "Port [$_] is listening" {
                 $result = Get-AzureRmPublicIpAddress -Name $params['publicIPName'] -ResourceGroupName $params['ResourceGroupName']
-                Write-Host ("Checking PIP: " + $result.IpAddress)
                 $portListening = (Test-NetConnection -Port $_ -ComputerName $result.IpAddress).TcpTestSucceeded
                 $portListening | Should -Be $true
                 $result = Get-AzureRmPublicIpAddress -Name $params['publicIP2Name'] -ResourceGroupName $params['ResourceGroupName']
