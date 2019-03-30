@@ -22,7 +22,7 @@ steps:
     testResultsFiles: '**\TEST-*.xml'
     testRunTitle: 'FortiGate ARM Template test Active/Passive'
 
-- trigger:
+trigger:
   paths:
     include:
     - FortiGate/QuickStart-AP/*
