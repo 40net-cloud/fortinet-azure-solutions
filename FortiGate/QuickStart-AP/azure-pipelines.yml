@@ -23,6 +23,9 @@ steps:
     testRunTitle: 'FortiGate ARM Template test Active/Passive'
 
 trigger:
+  branches:
+    include:
+    - master
   paths:
     include:
     - FortiGate/QuickStart-AP/*

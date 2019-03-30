@@ -169,14 +169,14 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
 
         8443, 22 | Foreach-Object {
             it "Port [$_] is listening" {
-                $host = Get-AzureRmPublicIpAddress -Name $params['publicIPName'] -ResourceGroupName $params['ResourceGroupName']
-                $portListening = (Test-NetConnection -Port $_ -ComputerName $host).TcpTestSucceeded
+                $result = Get-AzureRmPublicIpAddress -Name $params['publicIPName'] -ResourceGroupName $params['ResourceGroupName']
+                $portListening = (Test-NetConnection -Port $_ -ComputerName $result).TcpTestSucceeded
                 $portListening | Should -Be $true
-                $host = Get-AzureRmPublicIpAddress -Name $params['publicIP2Name'] -ResourceGroupName $params['ResourceGroupName']
-                $portListening = (Test-NetConnection -Port $_ -ComputerName $host).TcpTestSucceeded
+                $result = Get-AzureRmPublicIpAddress -Name $params['publicIP2Name'] -ResourceGroupName $params['ResourceGroupName']
+                $portListening = (Test-NetConnection -Port $_ -ComputerName $result).TcpTestSucceeded
                 $portListening | Should -Be $true
-                $host = Get-AzureRmPublicIpAddress -Name $params['publicIP3Name'] -ResourceGroupName $params['ResourceGroupName']
-                $portListening = (Test-NetConnection -Port $_ -ComputerName $host).TcpTestSucceeded
+                $result = Get-AzureRmPublicIpAddress -Name $params['publicIP3Name'] -ResourceGroupName $params['ResourceGroupName']
+                $portListening = (Test-NetConnection -Port $_ -ComputerName $result).TcpTestSucceeded
                 $portListening | Should -Be $true
             }
         }
