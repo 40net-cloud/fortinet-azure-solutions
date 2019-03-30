@@ -21,3 +21,8 @@ steps:
     testRunner: NUnit
     testResultsFiles: '**\TEST-*.xml'
     testRunTitle: 'FortiGate ARM Template test Active/Passive'
+
+- trigger:
+  paths:
+    include:
+    - FortiGate/QuickStart-AP/*

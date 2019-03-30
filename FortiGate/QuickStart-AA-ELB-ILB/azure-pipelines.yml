@@ -21,3 +21,8 @@ steps:
     testRunner: NUnit
     testResultsFiles: '**\TEST-*.xml'
     testRunTitle: 'FortiGate ARM Template test Active/Active QS AS ELB ILB'
+
+- trigger:
+  paths:
+    include:
+    - FortiGate/QuickStart-AA-ELB-ILB/*
