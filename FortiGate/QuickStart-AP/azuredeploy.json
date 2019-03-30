@@ -194,13 +194,6 @@
         "description": "Subnet 2 Prefix"
       }
     },
-    "FGT-A-IP-subnet2": {
-      "type": "string",
-      "defaultValue": "10.0.2.4",
-      "metadata": {
-        "description": "FortiGate A IP for Subnet 2"
-      }
-    },
     "subnet3Name": {
       "type": "string",
       "defaultValue": "HASyncSubnet",
