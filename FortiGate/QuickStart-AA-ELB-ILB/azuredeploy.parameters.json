@@ -27,13 +27,13 @@
       "value": "new"
     },
     "publicIPName": {
-      "value": "GEN-PREFIX-PIP"
+      "value": ""
     },
     "publicIPResourceGroup": {
       "value": ""
     },
     "publicIP2Name": {
-      "value": "GEN-PREFIX-PIP2"
+      "value": ""
     },
     "publicIP2ResourceGroup": {
       "value": ""
@@ -45,10 +45,10 @@
       "value": "new"
     },
     "vnetName": {
-      "value": "GEN-PREFIX-VNET"
+      "value": ""
     },
     "vnetResourceGroup": {
-      "value": "GEN-PREFIX-RG"
+      "value": ""
     },
     "vnetAddressPrefix": {
       "value": "10.0.0.0/16"

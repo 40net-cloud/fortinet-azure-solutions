@@ -71,7 +71,7 @@
     },
     "publicIPName": {
       "type": "string",
-      "defaultValue": "FGTAPClusterPublicIP",
+      "defaultValue": "",
       "metadata": {
         "description": "Name of Public IP address element."
       }
@@ -85,7 +85,7 @@
     },
     "publicIP2Name": {
       "type": "string",
-      "defaultValue": "FGTBPClusterPublicIP",
+      "defaultValue": "",
       "metadata": {
         "description": "Name of Public IP address element."
       }
@@ -121,6 +121,7 @@
     },
     "vnetName": {
       "type": "string",
+      "defaultValue": "",
       "metadata": {
         "description": "Name of the Azure virtual network."
       }
@@ -198,7 +199,7 @@
     "compute_AvailabilitySet_FG_Name": "[concat(parameters('FortiGateNamePrefix'),'-AvailabilitySet')]",
     "compute_AvailabilitySet_FG_Id": "[resourceId('Microsoft.Compute/availabilitySets', variables('compute_AvailabilitySet_FG_Name'))]",
 
-    "vnetName": "[if(equals(parameters('vnetNewOrExisting'),'new'),concat(parameters('FortiGateNamePrefix'),'-VNET'),parameters('vnetName'))]",
+    "vnetName": "[if(equals(parameters('vnetName'),''),concat(parameters('FortiGateNamePrefix'),'-VNET'),parameters('vnetName'))]",
     "vnetID": "[if(equals(parameters('vnetNewOrExisting'),'new'),resourceId('Microsoft.Network/virtualNetworks', variables('vnetName')),resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks', variables('vnetName')))]",
     "subnet1Ref": "[concat(variables('vnetID'),'/subnets/', parameters('subnet1Name'))]",
     "subnet2Ref": "[concat(variables('vnetID'),'/subnets/', parameters('subnet2Name'))]",
@@ -208,12 +209,6 @@
 
     "routeTable3Name": "[concat(parameters('FortiGateNamePrefix'),'-',parameters('subnet3Name'),'-','RouteTable')]",
     "routeTable3Ref": "[resourceId('Microsoft.Network/routeTables',variables('routeTable3Name'))]",
-
-    "internalLBName": "[concat(parameters('FortiGateNamePrefix'),'-InternalLoadBalancer')]",
-    "internalLBFE2Name": "[concat(parameters('FortiGateNamePrefix'),'-ILB-',parameters('subnet2Name'),'-FrontEnd')]",
-    "internalLBBE2Name": "[concat(parameters('FortiGateNamePrefix'),'-ILB-',parameters('subnet2Name'),'-BackEnd')]",
-    "internalLBid": "[resourceID('Microsoft.Network/loadBalancers',variables('internalLBName'))]",
-    "internalLB_BE2Id": "[concat(variables('internalLBid'),'/backendAddressPools/',variables('internalLBBE2Name'))]",
 
     "compute_VM_fg1_Name": "[variables('vmName')]",
     "compute_VM_fg2_Name": "[variables('vm2Name')]",
@@ -227,8 +222,10 @@
     "network_NIC_fg22_Name": "[concat(variables('vm2Name'),'-Nic1')]",
     "network_NIC_fg22_Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('network_NIC_fg22_Name'))]",
 
-    "publicIPID": "[if(equals(parameters('publicIPNewOrExisting'),'new'),resourceId('Microsoft.Network/publicIPAddresses',parameters('publicIPName')),resourceId(parameters('publicIPResourceGroup'),'Microsoft.Network/publicIPAddresses',parameters('publicIPName')))]",
-    "publicIP2ID": "[if(equals(parameters('publicIP2NewOrExisting'),'new'),resourceId('Microsoft.Network/publicIPAddresses',parameters('publicIP2Name')),resourceId(parameters('publicIP2ResourceGroup'),'Microsoft.Network/publicIPAddresses',parameters('publicIP2Name')))]",
+    "publicIPName": "[if(equals(parameters('publicIPName'),''),concat(parameters('FortiGateNamePrefix'),'-FGT-PIP'),parameters('publicIPName'))]",
+    "publicIP2Name": "[if(equals(parameters('publicIP2Name'),''),concat(parameters('FortiGateNamePrefix'),'-FGT-PIP2'),parameters('publicIP2Name'))]",
+    "publicIPID": "[if(equals(parameters('publicIPNewOrExisting'),'new'),resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPName')),resourceId(parameters('publicIPResourceGroup'),'Microsoft.Network/publicIPAddresses',variables('publicIPName')))]",
+    "publicIP2ID": "[if(equals(parameters('publicIP2NewOrExisting'),'new'),resourceId('Microsoft.Network/publicIPAddresses',variables('publicIP2Name')),resourceId(parameters('publicIP2ResourceGroup'),'Microsoft.Network/publicIPAddresses',variables('publicIP2Name')))]",
 
     "nsgName": "[concat(parameters('FortiGateNamePrefix'),'-',uniqueString(resourceGroup().id),'-NSG')]",
 
@@ -256,6 +253,12 @@
     "sn2IPlb": "[concat(variables('sn2IPArray0'),'.',variables('sn2IPArray1'),'.',variables('sn2IPArray2'),'.',add(int(variables('sn2IPArray2nd')[0]),4))]",
     "sn2IPfg1": "[concat(variables('sn2IPArray0'),'.',variables('sn2IPArray1'),'.',variables('sn2IPArray2'),'.',add(int(variables('sn2IPArray2nd')[0]),5))]",
     "sn2IPfg2": "[concat(variables('sn2IPArray0'),'.',variables('sn2IPArray1'),'.',variables('sn2IPArray2'),'.',add(int(variables('sn2IPArray2nd')[0]),6))]",
+
+    "internalLBName": "[concat(parameters('FortiGateNamePrefix'),'-InternalLoadBalancer')]",
+    "internalLBFE2Name": "[concat(parameters('FortiGateNamePrefix'),'-ILB-',parameters('subnet2Name'),'-FrontEnd')]",
+    "internalLBBE2Name": "[concat(parameters('FortiGateNamePrefix'),'-ILB-',parameters('subnet2Name'),'-BackEnd')]",
+    "internalLBid": "[resourceID('Microsoft.Network/loadBalancers',variables('internalLBName'))]",
+    "internalLB_BE2Id": "[concat(variables('internalLBid'),'/backendAddressPools/',variables('internalLBBE2Name'))]",
 
     "network_LB_Public_NatRule_FGAdminPerm_fg1_Name": "[concat(variables('VMName'),'FGAdminPerm')]",
     "network_LB_Public_NatRule_FGAdminPerm_fg1_Id": "[concat(variables('network_LB_Public_Id'),'/inboundNatRules/',variables('network_LB_Public_NatRule_FGAdminPerm_fg1_Name'))]",
@@ -476,7 +479,7 @@
       "condition": "[equals(parameters('publicIPNewOrExisting'), 'new')]",
       "apiVersion": "[variables('networkApiVersion')]",
       "type": "Microsoft.Network/publicIPAddresses",
-      "name": "[parameters('publicIPName')]",
+      "name": "[variables('publicIPName')]",
       "location": "[resourceGroup().location]",
       "tags": {
         "provider": "[toUpper(parameters('FortinetTags').provider)]"
@@ -492,7 +495,7 @@
       "condition": "[equals(parameters('publicIP2NewOrExisting'), 'new')]",
       "apiVersion": "[variables('networkApiVersion')]",
       "type": "Microsoft.Network/publicIPAddresses",
-      "name": "[parameters('publicIP2Name')]",
+      "name": "[variables('publicIP2Name')]",
       "location": "[resourceGroup().location]",
       "tags": {
         "provider": "[toUpper(parameters('FortinetTags').provider)]"
