@@ -65,6 +65,16 @@ else
     echo ""
 fi
 
+if [ -z "$DEPLOY_USERNAME" ]
+then
+    username="azureuser"
+else
+    username="$DEPLOY_USERNAME"
+fi
+echo ""
+echo "--> Using username '$username' ..."
+echo ""
+
 # Create resource group for NextGen Firewall resources
 echo ""
 echo "--> Creating $rg resource group ..."
@@ -75,9 +85,7 @@ echo "--> Validation deployment in $rg resource group ..."
 az group deployment validate --resource-group "$rg" \
                            --template-file azuredeploy.json \
                            --parameters "@azuredeploy.parameters.json" \
-                           --parameters adminPassword=$passwd FortiGateNamePrefix=$prefix \
-                                        publicIPName="$prefix-PIP" publicIP2Name="$prefix-PIP2" \
-                                        vnetName="$prefix-VNET" vnetResourceGroup="$rg"
+                           --parameters adminUsername="$username" adminPassword=$passwd FortiGateNamePrefix=$prefix
 result=$? 
 if [ $result != 0 ]; 
 then 
@@ -90,9 +98,7 @@ echo "--> Deployment of $rg resources ..."
 az group deployment create --resource-group "$rg" \
                            --template-file azuredeploy.json \
                            --parameters "@azuredeploy.parameters.json" \
-                           --parameters adminPassword=$passwd FortiGateNamePrefix=$prefix \
-                                        publicIPName="$prefix-PIP" publicIP2Name="$prefix-PIP2" \
-                                        vnetName="$prefix-VNET" vnetResourceGroup="$rg"
+                           --parameters adminUsername="$username" adminPassword=$passwd FortiGateNamePrefix=$prefix
 result=$? 
 if [[ $result != 0 ]]; 
 then 
