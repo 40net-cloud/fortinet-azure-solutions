@@ -10,8 +10,8 @@ steps:
   displayName: 'Azure PowerShell script: FilePath'
   inputs:
     azureSubscription: 'AzureSubscription'
-    ScriptPath: 'FortiGate/Quickstart-AP/test/invokePester.ps1'
-    ScriptArguments: '-templatename FortiGate/QuickStart-AP'
+    ScriptPath: 'FortiGate/Quickstart-AP-ELB-ILB/test/invokePester.ps1'
+    ScriptArguments: '-templatename FortiGate/QuickStart-AP-ELB-ILB'
     azurePowerShellVersion: LatestVersion
 
 
@@ -28,6 +28,6 @@ trigger:
     - master
   paths:
     exclude:
-    - FortiGate/QuickStart-AP/*.md 
+    - FortiGate/QuickStart-AP-ELB-ILB/*.md 
     include:
-    - FortiGate/QuickStart-AP/*
+    - FortiGate/QuickStart-AP-ELB-ILB/*
