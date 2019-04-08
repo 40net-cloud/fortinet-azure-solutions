@@ -710,6 +710,7 @@
       "location": "[resourceGroup().location]",
       "dependsOn": [
         "[variables('vnetName')]",
+        "[variables('externalLBId')]",
         "[variables('NSGName')]"
       ],
       "properties": {
@@ -740,8 +741,8 @@
       "name": "[variables('network_NIC_fg21_Name')]",
       "location": "[resourceGroup().location]",
       "dependsOn": [
-        "[variables('network_NIC_fg11_Name')]",
         "[variables('vnetName')]",
+        "[variables('externalLBId')]",
         "[variables('NSGName')]"
       ],
       "properties": {
@@ -772,7 +773,8 @@
       "name": "[variables('network_NIC_fg12_Name')]",
       "location": "[resourceGroup().location]",
       "dependsOn": [
-        "[variables('vnetName')]"
+        "[variables('vnetName')]",
+        "[variables('internalLBId')]"
       ],
       "properties": {
         "ipConfigurations": [
@@ -808,7 +810,7 @@
       "location": "[resourceGroup().location]",
       "dependsOn": [
         "[variables('vnetName')]",
-        "[variables('network_NIC_fg12_Name')]"
+        "[variables('internalLBId')]"
       ],
       "properties": {
         "ipConfigurations": [
