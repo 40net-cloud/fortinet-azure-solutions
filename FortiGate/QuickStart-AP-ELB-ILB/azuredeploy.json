@@ -344,15 +344,20 @@
     "internalLBName": "[concat(parameters('FortiGateNamePrefix'),'-InternalLoadBalancer')]",
     "internalLBId": "[resourceID('Microsoft.Network/loadBalancers',variables('internalLBName'))]",
     "internalLBFEName": "[concat(parameters('FortiGateNamePrefix'),'-ILB-',parameters('subnet2Name'),'-FrontEnd')]",
+    "internalLBFEId": "[concat(variables('internalLBId'),'/frontendIPConfigurations/',variables('internalLBFEName'))]",
     "internalLBBEName": "[concat(parameters('FortiGateNamePrefix'),'-ILB-',parameters('subnet2Name'),'-BackEnd')]",
     "internalLBBEId": "[concat(variables('internalLBId'),'/backendAddressPools/',variables('internalLBBEName'))]",
+    "internalLBProbeName": "lbprobe",
+    "internalLBProbeId": "[concat(variables('internalLBId'),'/probes/',variables('internalLBProbeName'))]",
 
     "externalLBName": "[concat(parameters('FortiGateNamePrefix'),'-ExternalLoadBalancer')]",
     "externalLBId": "[resourceId('Microsoft.Network/loadBalancers',variables('externalLBName'))]",
     "externalLBFEName": "[concat(parameters('FortiGateNamePrefix'),'publicLBFE')]",
     "externalLBFEId": "[concat(variables('externalLBId'),'/frontendIPConfigurations/',variables('externalLBFEName'))]",
     "externalLBBEName": "[concat(parameters('FortiGateNamePrefix'),'publicLBBE')]",
-    "externalLBBEId": "[concat(variables('externalLBId'),'/backendAddressPools/',variables('externalLBBEName'))]"
+    "externalLBBEId": "[concat(variables('externalLBId'),'/backendAddressPools/',variables('externalLBBEName'))]",
+    "externalLBProbeName": "lbprobe",
+    "externalLBProbeId": "[concat(variables('externalLBId'),'/probes/',variables('externalLBProbeName'))]"
   },
   "resources": [
     {
@@ -493,13 +498,13 @@
           {
             "properties": {
               "frontendIPConfiguration": {
-                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', variables('internalLBName')), '/frontendIpConfigurations/', variables('internalLBFEName'))]"
+                "id": "[variables('internalLBFEId')]"
               },
               "backendAddressPool": {
-                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', variables('internalLBName')), '/backendAddressPools/', variables('internalLBBEName'))]"
+                "id": "[variables('internalLBBEId')]"
               },
               "probe": {
-                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', variables('internalLBName')), '/probes/lbprobe')]"
+                "id": "[variables('internalLBProbeId')]"
               },
               "protocol": "all",
               "frontendPort": 0,
@@ -518,7 +523,7 @@
               "intervalInSeconds": 5,
               "numberOfProbes": 2
             },
-            "name": "lbprobe"
+            "name": "[variables('internalLBProbeName')]"
           }
         ]
       }
@@ -650,13 +655,13 @@
           {
             "properties": {
               "frontendIPConfiguration": {
-                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', variables('externalLBName')), '/frontendIpConfigurations/', variables('externalLBFEName'))]"
+                "id": "[variables('externalLBFEId')]"
               },
               "backendAddressPool": {
-                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', variables('externalLBName')), '/backendAddressPools/', variables('externalLBBEName'))]"
+                "id": "[variables('externalLBBEId')]"
               },
               "probe": {
-                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', variables('externalLBName')), '/probes/lbprobe')]"
+                "id": "[variables('externalLBProbeId')]"
               },
               "protocol": "Tcp",
               "frontendPort": 80,
@@ -669,13 +674,13 @@
           {
             "properties": {
               "frontendIPConfiguration": {
-                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', variables('externalLBName')), '/frontendIpConfigurations/', variables('externalLBFEName'))]"
+                "id": "[variables('externalLBFEId')]"
               },
               "backendAddressPool": {
-                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', variables('externalLBName')), '/backendAddressPools/', variables('externalLBBEName'))]"
+                "id": "[variables('externalLBBEId')]"
               },
               "probe": {
-                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', variables('externalLBName')), '/probes/lbprobe')]"
+                "id": "[variables('externalLBProbeId')]"
               },
               "protocol": "Udp",
               "frontendPort": 10551,
@@ -695,7 +700,7 @@
               "intervalInSeconds": 5,
               "numberOfProbes": 2
             },
-            "name": "lbprobe"
+            "name": "[variables('externalLBProbeName')]"
           }
         ]
       }
@@ -725,7 +730,7 @@
               },
               "loadBalancerBackendAddressPools": [
                 {
-                  "id": "[variables('externalLBId')]"
+                  "id": "[variables('externalLBBEId')]"
                 }
               ]
             }
@@ -762,7 +767,7 @@
               },
               "loadBalancerBackendAddressPools": [
                 {
-                  "id": "[variables('externalLBId')]"
+                  "id": "[variables('externalLBBEId')]"
                 }
               ]
             }
