@@ -31,14 +31,14 @@ To deploy via Azure Cloud Shell you can connect via the Azure Portal or directly
 A typical use case will be for Site-to-Site VPN termination as in the following diagram:
 ---
 
-![Example Diagram](https://raw.githubusercontent.com/fortinetclouddev/FortiGate-AP-HA/master/APDiagram1.png)
+![Example Diagram](APDiagram1.png)
 
 ---
 
 This second diagram shows what will happen in the event FortiGate A is shut down:
 ---
 
-![Example Diagram](https://raw.githubusercontent.com/fortinetclouddev/FortiGate-AP-HA/master/APDiagram2.png)
+![Example Diagram](APDiagram2.png)
 
 ---
 
