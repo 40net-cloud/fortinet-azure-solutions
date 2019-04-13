@@ -931,9 +931,6 @@
       "tags": {
        "provider": "[toUpper(parameters('FortinetTags').provider)]"
       },
-      "zones": [
-        "1"
-      ],
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[variables('network_NIC_fg24_Name')]",
       "location": "[resourceGroup().location]",
@@ -971,7 +968,7 @@
        "provider": "[toUpper(parameters('FortinetTags').provider)]"
       },
       "zones": [
-        "2"
+        "1"
       ],
       "location": "[resourceGroup().location]",
       "plan": {
@@ -1050,6 +1047,9 @@
       "tags": {
        "provider": "[toUpper(parameters('FortinetTags').provider)]"
       },
+      "zones": [
+        "2"
+      ],
       "location": "[resourceGroup().location]",
       "plan": {
         "name": "[parameters('FortiGateImageSKU')]",
