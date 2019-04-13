@@ -1,0 +1,33 @@
+resources: 
+- repo: self
+
+pool:
+  vmImage: 'vs2017-win2016'
+  demands: azureps
+
+steps:
+- task: AzurePowerShell@2
+  displayName: 'Azure PowerShell script: FilePath'
+  inputs:
+    azureSubscription: 'AzureSubscription'
+    ScriptPath: 'FortiGate/Quickstart-AA-ELB-ILB-AZ/test/invokePester.ps1'
+    ScriptArguments: '-templatename FortiGate/QuickStart-AA-ELB-ILB-AZ'
+    azurePowerShellVersion: LatestVersion
+
+
+- task: PublishTestResults@2
+  displayName: 'Publish Test Results **\TEST-*.xml'
+  inputs:
+    testRunner: NUnit
+    testResultsFiles: '**\TEST-*.xml'
+    testRunTitle: 'FortiGate ARM Template test Active/Active QS AS ELB ILB AZ'
+
+trigger:
+  branches:
+    include:
+    - master
+  paths:
+    exclude:
+    - FortiGate/QuickStart-AA-ELB-ILB-AZ/*.md
+    include:
+    - FortiGate/QuickStart-AA-ELB-ILB-AZ/*
