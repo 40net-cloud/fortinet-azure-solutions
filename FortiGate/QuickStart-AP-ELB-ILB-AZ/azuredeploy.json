@@ -1066,9 +1066,6 @@
         "hardwareProfile": {
           "vmSize": "[parameters('instanceType')]"
         },
-        "availabilitySet": {
-          "id": "[variables('compute_AvailabilitySet_FG_Id')]"
-        },
         "osProfile": {
           "computerName": "[variables('fg2VmName')]",
           "adminUsername": "[parameters('adminUsername')]",
