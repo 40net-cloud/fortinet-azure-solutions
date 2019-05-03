@@ -45,7 +45,8 @@
     },
     "instanceType": {
       "type": "string",
-      "defaultValue": "Standard_F4",
+      "defaultValue": "Standard_F4s",
+      "allowedValues": [ "Standard_F4", "Standard_F4s", "Standard_F8", "Standard_F8s", "Standard_F8s_v2", "Standard_F16", "Standard_F16s", "Standard_F16s_v2" ],
       "metadata": {
         "description": "Virtual Machine size selection - must be F4 or other instance that supports 4 NICs"
       }
