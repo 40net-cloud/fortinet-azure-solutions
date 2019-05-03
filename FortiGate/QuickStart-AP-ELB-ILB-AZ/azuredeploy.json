@@ -491,7 +491,7 @@
               "frontendPort": 0,
               "backendPort": 0,
               "enableFloatingIP": true,
-              "idleTimeoutInMinutes": 15
+              "idleTimeoutInMinutes": 5
             },
             "name": "lbruleFE2all"
           }
@@ -648,7 +648,7 @@
               "frontendPort": 80,
               "backendPort": 80,
               "enableFloatingIP": true,
-              "idleTimeoutInMinutes": 15
+              "idleTimeoutInMinutes": 5
             },
             "name": "PublicLBRule-FE1-http"
           },
@@ -667,7 +667,7 @@
               "frontendPort": 10551,
               "backendPort": 10551,
               "enableFloatingIP": false,
-              "idleTimeoutInMinutes": 15
+              "idleTimeoutInMinutes": 5
             },
             "name": "PublicLBRule-FE1-udp10551"
           }
