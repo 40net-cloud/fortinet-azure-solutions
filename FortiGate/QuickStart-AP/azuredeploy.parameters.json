@@ -54,7 +54,7 @@
             "value": "new"
         },
         "vnetName": {
-            "value": "## TO BE DEFINED ##"
+            "value": ""
         },
         "vnetResourceGroup": {
             "value": ""
