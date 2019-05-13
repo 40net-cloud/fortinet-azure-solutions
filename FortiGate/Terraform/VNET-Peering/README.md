@@ -35,7 +35,11 @@ For Microsoft Azure there is a fast track option by using the Azure Cloud Shell.
 
 `cd ~/clouddrive/ && wget -qO- https://github.com/jvhoof/fortinet-azure-solutions/archive/master.zip | jar x && cd ~/clouddrive/fortinet-azure-solutions-master/FortiGate/Terraform/VNET-Peering/ && ./deploy.sh`
 
+![Azure Cloud Shell](images/azure-cloud-shell.png)
+
 After deployment you will be shown the IP address of all deployed components, this information is also stored in the output directory in the summary.out file. You can access both management GUI's using the public management IP's using HTTPS on port 8443.
+
+> Beware that the output directory, Terraform Plan file and Terraform State files contain deployment information such as password, usernames, IP addresses and others.
 
 # Requirements and limitations
 
