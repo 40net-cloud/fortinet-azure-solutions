@@ -4,7 +4,7 @@ More and more enterprises are turning to Microsoft Azure to extend internal data
 
 # Design
 
-In Microsoft Azure, this central security service hub is commonly implemented using local VNET peering. The central security services hub component will receive, using user defined routing (UDR), all or specific traffic that needs inspection going to/comming from on-prem networks or public internet.
+In Microsoft Azure you can deploy a Active Passive pair of FortiGate VM's that communicate with each other and the Azure fabric. The ForitGate setup will receive the to be inspected traffic using user defined routing (UDR). You can send all or specific traffic that needs inspection going to/coming from on-prem networks or public internet by changing the UDR routing.
 
 This Terraform template will automatically deploy a full working environment containing the the following components.
 
