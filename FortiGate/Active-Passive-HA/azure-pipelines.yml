@@ -10,8 +10,8 @@ steps:
   displayName: 'Azure PowerShell script: FilePath'
   inputs:
     azureSubscription: 'AzureSubscription'
-    ScriptPath: 'FortiGate/Quickstart-AP/test/invokePester.ps1'
-    ScriptArguments: '-templatename FortiGate/QuickStart-AP'
+    ScriptPath: 'FortiGate/Active-Passive-HA/test/invokePester.ps1'
+    ScriptArguments: '-templatename FortiGate/Active-Passive-HA'
     azurePowerShellVersion: LatestVersion
 
 
@@ -28,6 +28,6 @@ trigger:
     - master
   paths:
     exclude:
-    - FortiGate/QuickStart-AP/*.md 
+    - FortiGate/Active-Passive-HA/*.md 
     include:
-    - FortiGate/QuickStart-AP/*
+    - FortiGate/Active-Passive-HA/*
