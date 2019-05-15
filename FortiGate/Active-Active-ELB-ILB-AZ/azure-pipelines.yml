@@ -10,7 +10,7 @@ steps:
   displayName: 'Azure PowerShell script: FilePath'
   inputs:
     azureSubscription: 'AzureSubscription'
-    ScriptPath: 'FortiGate/Quickstart-AA-ELB-ILB-AZ/test/invokePester.ps1'
+    ScriptPath: 'FortiGate/Active-Active-ELB-ILB-AZ/test/invokePester.ps1'
     ScriptArguments: '-templatename FortiGate/Active-Active-ELB-ILB-AZ'
     azurePowerShellVersion: LatestVersion
 
