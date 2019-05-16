@@ -17,7 +17,7 @@
     "FortiGateNamePrefix": {
       "type": "string",
       "metadata": {
-        "description": "Name for FortiGate virtual appliances (A & B will be appended to the end of each respectively)."
+        "description": "Naming prefix for all deployed resources"
       }
     },
     "FortiGateImageSKU": {

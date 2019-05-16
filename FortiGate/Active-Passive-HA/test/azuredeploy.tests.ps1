@@ -24,7 +24,7 @@ Function random-password ($length = 15) {
     return $password
 }
 
-$templateName = "Active-Passive-HA"
+$templateName = "Active-Passive-SDN"
 $sourcePath = "$env:BUILD_SOURCESDIRECTORY\FortiGate\$templateName"
 $scriptPath = "$env:BUILD_SOURCESDIRECTORY\FortiGate\$templateName\test"
 $templateFileName = "azuredeploy.json"
