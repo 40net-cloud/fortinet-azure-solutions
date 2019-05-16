@@ -136,9 +136,9 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
         # Validate all ARM templates one by one
         $testsErrorFound = $false
 
-        $params = @{ 'adminUsername'=$testsAdminUsername;
-                     'adminPassword'=$testsAdminPassword;
-                     'FortiGateNamePrefix'=$testsPrefix;
+        $params = @{ 'adminUsername'=$testsAdminUsername
+                     'adminPassword'=$testsAdminPassword
+                     'FortiGateNamePrefix'=$testsPrefix
                     }
 
         It "Test Deployment of ARM template $templateFileName with parameter file $templateParameterFileName" {
