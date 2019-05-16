@@ -18,7 +18,7 @@
             "value": "latest"
         },
         "instanceType": {
-            "value": "Standard_F4"
+            "value": "Standard_F4s"
         },
         "publicIPNewOrExisting": {
             "value": "new"
