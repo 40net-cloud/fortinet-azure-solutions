@@ -145,7 +145,9 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
         $publicIP3Name = "FGTAMgmtPublicIP"
 
         It "Test Deployment of ARM template $templateFileName with parameter file $templateParameterFileName" {
-            (Test-AzureRmResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName" -TemplateFile "$templateFileName" -TemplateParameterObject $params ).Count | Should not BeGreaterThan 0
+            $result = Test-AzureRmResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName" -TemplateFile "$templateFileName" -TemplateParameterObject $params ).Count | Should not BeGreaterThan 0
+            $deploymentOutput = ($result.Item(32) -split 'Body:' | Select-Object -Skip 1 | ConvertFrom-Json).properties
+            $deploymentOutput.provisioningState | Should Be 'Succeeded'
         }
         It "Deployment of ARM template $templateFileName with parameter file $templateParameterFileName" {
             $resultDeployment = New-AzureRmResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName" -TemplateFile "$templateFileName" -TemplateParameterObject $params
@@ -172,6 +174,16 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
                 $portListening | Should -Be $true
             }
         }
+        It "Does VM Have The Correct URI" {
+            $vm = $deploymentOutput.validatedResources | Where-Object { $_.type -eq 'Microsoft.Compute/virtualMachines' }
+            $vm.properties.storageProfile.osDisk.vhd.uri | Should Be $null
+        }
+        It "Does Availability Set Have Correct SKU" {
+            $av = $deploymentOutput.validatedResources | Where-Object { $_.type -eq 'Microsoft.Compute/availabilitySets' }
+ 
+            $av.sku.name | Should Be 'Aligned'
+        }
+
     }
 
     Context 'Cleanup' {
