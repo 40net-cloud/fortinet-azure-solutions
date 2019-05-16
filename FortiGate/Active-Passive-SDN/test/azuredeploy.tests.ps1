@@ -140,6 +140,9 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
                      'adminPassword'=$testsResourceGroupName
                      'FortiGateNamePrefix'=$testsPrefix
                     }
+        $publicIPName = "FGTAPClusterPublicIP"
+        $publicIP2Name = "FGTAMgmtPublicIP"
+        $publicIP3Name = "FGTAMgmtPublicIP"
 
         It "Test Deployment of ARM template $templateFileName with parameter file $templateParameterFileName" {
             (Test-AzureRmResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName" -TemplateFile "$templateFileName" -TemplateParameterObject $params ).Count | Should not BeGreaterThan 0
@@ -158,13 +161,13 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
 
         8443, 22 | Foreach-Object {
             it "Port [$_] is listening" {
-                $result = Get-AzureRmPublicIpAddress -Name $params['publicIPName'] -ResourceGroupName $params['ResourceGroupName']
+                $result = Get-AzureRmPublicIpAddress -Name $publicIPName -ResourceGroupName $params['ResourceGroupName']
                 $portListening = (Test-NetConnection -Port $_ -ComputerName $result.IpAddress).TcpTestSucceeded
                 $portListening | Should -Be $true
-                $result = Get-AzureRmPublicIpAddress -Name $params['publicIP2Name'] -ResourceGroupName $params['ResourceGroupName']
+                $result = Get-AzureRmPublicIpAddress -Name $publicIP2Name -ResourceGroupName $params['ResourceGroupName']
                 $portListening = (Test-NetConnection -Port $_ -ComputerName $result.IpAddress).TcpTestSucceeded
                 $portListening | Should -Be $true
-                $result = Get-AzureRmPublicIpAddress -Name $params['publicIP3Name'] -ResourceGroupName $params['ResourceGroupName']
+                $result = Get-AzureRmPublicIpAddress -Name $publicIP3Name -ResourceGroupName $params['ResourceGroupName']
                 $portListening = (Test-NetConnection -Port $_ -ComputerName $result.IpAddress).TcpTestSucceeded
                 $portListening | Should -Be $true
             }
