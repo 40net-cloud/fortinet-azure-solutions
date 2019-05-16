@@ -1,6 +1,6 @@
 ## Active/Active loadbalanced pair of standalone FortiGates for resilience and scale in Availability Zones
 
-[![Build Status](https://dev.azure.com/jvh-2520/Fortinet-Azure/_apis/build/status/Active-Active-ELB-ILB-AZ?branchName=master)](https://dev.azure.com/jvh-2520/Fortinet-Azure/_build/latest?definitionId=11&branchName=master)
+[![Build Status](https://dev.azure.com/jvh-2520/Fortinet-Azure/_apis/build/status/Active-Active-ELB-ILB-AZ?branchName=master)](https://dev.azure.com/jvh-2520/Fortinet-Azure/_build/latest?definitionId=14&branchName=master)
 
 ## How to deploy
 
