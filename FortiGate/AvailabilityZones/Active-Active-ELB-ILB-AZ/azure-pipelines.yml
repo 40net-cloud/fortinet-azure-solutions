@@ -10,8 +10,8 @@ steps:
   displayName: 'Azure PowerShell script: FilePath'
   inputs:
     azureSubscription: 'AzureSubscription'
-    ScriptPath: 'FortiGate/Active-Active-ELB-ILB-AZ/test/invokePester.ps1'
-    ScriptArguments: '-templatename FortiGate/Active-Active-ELB-ILB-AZ'
+    ScriptPath: 'FortiGate/AvailabilityZones/Active-Active-ELB-ILB-AZ/test/invokePester.ps1'
+    ScriptArguments: '-templatename FortiGate/AvailabilityZones/Active-Active-ELB-ILB-AZ'
     azurePowerShellVersion: LatestVersion
 
 
@@ -20,7 +20,7 @@ steps:
   inputs:
     testRunner: NUnit
     testResultsFiles: '**\TEST-*.xml'
-    testRunTitle: 'FortiGate ARM Template test Active/Active QS AS ELB ILB AZ'
+    testRunTitle: 'FortiGate ARM Template test Active/Active ELB ILB AZ'
 
 trigger:
   branches:
@@ -28,6 +28,6 @@ trigger:
     - master
   paths:
     exclude:
-    - FortiGate/Active-Active-ELB-ILB-AZ/*.md
+    - FortiGate/AvailabilityZones/Active-Active-ELB-ILB-AZ/*.md
     include:
-    - FortiGate/Active-Active-ELB-ILB-AZ/*
+    - FortiGate/AvailabilityZones/Active-Active-ELB-ILB-AZ/*
