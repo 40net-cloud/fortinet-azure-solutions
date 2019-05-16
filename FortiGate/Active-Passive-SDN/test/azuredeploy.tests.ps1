@@ -39,7 +39,7 @@ $testsRandom = Get-Random 10001
 $testsPrefix = "FORTIQA"
 $testsResourceGroupName = "FORTIQA-$testsRandom-$templateName"
 $testsAdminUsername = "azureuser"
-$testsAdminPassword = $testsResourceGroupName | ConvertTo-SecureString -AsPlainText -Force
+#$testsAdminPassword = $testsResourceGroupName | ConvertTo-SecureString -AsPlainText -Force
 $testsResourceGroupLocation = "West Europe"
 
 Describe 'ARM Templates Test : Validation & Test Deployment' {
@@ -144,8 +144,8 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
         $publicIP2Name = "FGTAMgmtPublicIP"
         $publicIP3Name = "FGTAMgmtPublicIP"
 
-        It "Test Deployment of ARM template $templateFileName with parameter file $templateParameterFileName" {
-            $result = Test-AzureRmResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName" -TemplateFile "$templateFileName" -TemplateParameterObject $params ).Count | Should not BeGreaterThan 0
+        It "Test Deployment of ARM template $templateFileName" {
+            $result = Test-AzureRmResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName" -TemplateFile "$templateFileName" -TemplateParameterObject $params
             $deploymentOutput = ($result.Item(32) -split 'Body:' | Select-Object -Skip 1 | ConvertFrom-Json).properties
             $deploymentOutput.provisioningState | Should Be 'Succeeded'
         }
@@ -180,7 +180,6 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
         }
         It "Does Availability Set Have Correct SKU" {
             $av = $deploymentOutput.validatedResources | Where-Object { $_.type -eq 'Microsoft.Compute/availabilitySets' }
- 
             $av.sku.name | Should Be 'Aligned'
         }
 
