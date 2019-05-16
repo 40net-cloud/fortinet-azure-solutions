@@ -38,6 +38,7 @@ $templateParameterFileLocation = "$sourcePath\$templateParameterFileName"
 $testsRandom = Get-Random 10001
 $testsPrefix = "FORTIQA"
 $testsResourceGroupName = "FORTIQA-$testsRandom-$templateName"
+$testsAdminUsername = "azureuser"
 $testsAdminPassword = $testsResourceGroupName | ConvertTo-SecureString -AsPlainText -Force
 $testsResourceGroupLocation = "West Europe"
 
@@ -138,14 +139,9 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
 
         $params = @{ 'ResourceGroupName'=$testsResourceGroupName;
                      'TemplateFile'='azuredeploy.json';
-                     'TemplateParameterFile'='azuredeploy.parameters.json';
+                     'adminUsername'=$testsAdminUsername;
                      'adminPassword'=$testsAdminPassword;
                      'FortiGateNamePrefix'=$testsPrefix;
-                     'publicIPName'=$testsPrefix + '-PIP';
-                     'publicIP2Name'=$testsPrefix + '-PIP2';
-                     'publicIP3Name'=$testsPrefix + '-PIP3';
-                     'vnetName'=$testsPrefix + '-VNET';
-                     'vnetResourceGroup'=$testsResourceGroupName;
                     }
 
         It "Test Deployment of ARM template $templateFileName with parameter file $templateParameterFileName" {
