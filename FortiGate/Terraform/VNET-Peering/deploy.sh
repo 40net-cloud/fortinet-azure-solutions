@@ -23,8 +23,6 @@ TF_VAR_FGT_LICENSE_LOCATION="../licenses"
 TF_VAR_FGT_LICENSE_FILE_A=""
 TF_VAR_FGT_LICENSE_FILE_B=""
 
-az account show
-
 PLAN="terraform.tfplan"
 
 if [ -z "$DEPLOY_LOCATION" ]
