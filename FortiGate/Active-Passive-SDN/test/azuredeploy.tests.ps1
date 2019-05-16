@@ -146,10 +146,10 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
 
         It "Test Deployment of ARM template $templateFileName" {
             $result = Test-AzureRmResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName" -TemplateFile "$templateFileName" -TemplateParameterObject $params
-            $deploymentOutput = ($result.Item(32) -split 'Body:' | Select-Object -Skip 1 | ConvertFrom-Json).properties
+            $deploymentOutput = ($result.Item(17) -split 'Body:' | Select-Object -Skip 1 | ConvertFrom-Json).properties
             $deploymentOutput.provisioningState | Should Be 'Succeeded'
         }
-        It "Deployment of ARM template $templateFileName with parameter file $templateParameterFileName" {
+        It "Deployment of ARM template $templateFileName" {
             $resultDeployment = New-AzureRmResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName" -TemplateFile "$templateFileName" -TemplateParameterObject $params
             Write-Host ($resultDeployment | Format-Table | Out-String)
             Write-Host ("Deployment state: " + $resultDeployment.ProvisioningState | Out-String)
