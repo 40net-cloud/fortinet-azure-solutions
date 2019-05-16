@@ -137,11 +137,10 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
         $testsErrorFound = $false
 
         $params = @{ 'adminUsername'=$testsAdminUsername
-                     'adminPassword'=$testsAdminPassword
+                     'adminPassword'=$testsResourceGroupName
                      'FortiGateNamePrefix'=$testsPrefix
                     }
-        Write-Host "PARAMS: " + $params
-        Write-Host "PWD: " + $testsAdminPassword
+
         It "Test Deployment of ARM template $templateFileName with parameter file $templateParameterFileName" {
             (Test-AzureRmResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName" -TemplateFile "$templateFileName" -TemplateParameterObject $params ).Count | Should not BeGreaterThan 0
         }
