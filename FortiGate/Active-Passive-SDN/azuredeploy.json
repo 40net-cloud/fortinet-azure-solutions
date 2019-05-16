@@ -150,12 +150,14 @@
     },
     "vnetName": {
       "type": "string",
+      "defaultValue": "",
       "metadata": {
         "description": "Name of the Azure virtual network."
       }
     },
     "vnetResourceGroup": {
       "type": "string",
+      "defaultValue": "",
       "metadata": {
         "description": "Resource Group containing the virtual network - or new resource group from above (if new vnet)"
       }
@@ -394,7 +396,7 @@
       "condition": "[equals(parameters('vnetNewOrExisting'), 'new')]",
       "type": "Microsoft.Network/virtualNetworks",
       "apiVersion": "[variables('networkApiVersion')]",
-      "name": "[parameters('vnetName')]",
+      "name": "[variables('vnetName')]",
       "location": "[resourceGroup().location]",
       "dependsOn": [
         "[concat('Microsoft.Network/routeTables/', variables('routeTableName'))]"
@@ -509,8 +511,7 @@
       },
       "name": "[parameters('publicIP2Name')]",
       "location": "[resourceGroup().location]",
-      "sku": 
-      {
+      "sku": {
         "name": "Standard"
       },
       "properties": {
@@ -526,8 +527,7 @@
       },
       "name": "[parameters('publicIP3Name')]",
       "location": "[resourceGroup().location]",
-      "sku": 
-      {
+      "sku": {
         "name": "Standard"
       },
       "properties": {
@@ -543,7 +543,7 @@
       "name": "[variables('network_NIC_fg11_Name')]",
       "location": "[resourceGroup().location]",
       "dependsOn": [
-        "[parameters('vnetName')]",
+        "[variables('vnetName')]",
         "[variables('NSGName')]"
       ],
       "properties": {
@@ -578,7 +578,7 @@
       "location": "[resourceGroup().location]",
       "dependsOn": [
         "[variables('network_NIC_fg11_Name')]",
-        "[parameters('vnetName')]",
+        "[variables('vnetName')]",
         "[variables('NSGName')]"
       ],
       "properties": {
@@ -609,7 +609,7 @@
       "name": "[variables('network_NIC_fg12_Name')]",
       "location": "[resourceGroup().location]",
       "dependsOn": [
-        "[parameters('vnetName')]"
+        "[variables('vnetName')]"
       ],
       "properties": {
         "ipConfigurations": [
@@ -639,7 +639,7 @@
       "name": "[variables('network_NIC_fg22_Name')]",
       "location": "[resourceGroup().location]",
       "dependsOn": [
-        "[parameters('vnetName')]",
+        "[variables('vnetName')]",
         "[variables('network_NIC_fg12_Name')]"
       ],
       "properties": {
@@ -670,7 +670,7 @@
       "name": "[variables('network_NIC_fg13_Name')]",
       "location": "[resourceGroup().location]",
       "dependsOn": [
-        "[parameters('vnetName')]"
+        "[variables('vnetName')]"
       ],
       "properties": {
         "ipConfigurations": [
@@ -700,7 +700,7 @@
       "name": "[variables('network_NIC_fg23_Name')]",
       "location": "[resourceGroup().location]",
       "dependsOn": [
-        "[parameters('vnetName')]",
+        "[variables('vnetName')]",
         "[variables('network_NIC_fg13_Name')]"
       ],
       "properties": {
@@ -731,7 +731,7 @@
       "name": "[variables('network_NIC_fg14_Name')]",
       "location": "[resourceGroup().location]",
       "dependsOn": [
-        "[parameters('vnetName')]"
+        "[variables('vnetName')]"
       ],
       "properties": {
         "ipConfigurations": [
@@ -764,7 +764,7 @@
       "name": "[variables('network_NIC_fg24_Name')]",
       "location": "[resourceGroup().location]",
       "dependsOn": [
-        "[parameters('vnetName')]",
+        "[variables('vnetName')]",
         "[variables('network_NIC_fg14_Name')]"
       ],
       "properties": {
