@@ -174,7 +174,7 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
 #                $portListening = (Test-NetConnection -Port $_ -ComputerName $result.IpAddress).TcpTestSucceeded
 #                $portListening | Should -Be $true
 #            }
-        }
+#        }
 #        It "Does VM Have The Correct URI" {
 #            $vm = $deploymentOutput.validatedResources | Where-Object { $_.type -eq 'Microsoft.Compute/virtualMachines' }
 #            $vm.properties.storageProfile.osDisk.vhd.uri | Should Be $null
