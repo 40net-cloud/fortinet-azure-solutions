@@ -150,17 +150,17 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
 #            $deploymentOutput = ($result.Item(17) -split 'Body:' | Select-Object -Skip 1 | ConvertFrom-Json).properties
 #            $deploymentOutput.provisioningState | Should Be 'Succeeded'
         }
-        It "Deployment of ARM template $templateFileName" {
+#        It "Deployment of ARM template $templateFileName" {
 #            $resultDeployment = New-AzureRmResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName" -TemplateFile "$templateFileName" -TemplateParameterObject $params
 #            Write-Host ($resultDeployment | Format-Table | Out-String)
 #            Write-Host ("Deployment state: " + $resultDeployment.ProvisioningState | Out-String)
 #            $resultDeployment.ProvisioningState | Should Be "Succeeded"
-        }
-        It "Deployment in Azure validation" {
+#        }
+#        It "Deployment in Azure validation" {
 #            $result = Get-AzureRmVM | Where-Object { $_.Name -like "$testsPrefix*" } 
 #            Write-Host ($result | Format-Table | Out-String)
 #            $result | Should Not Be $null
-        }
+#        }
 
 #        8443, 22 | Foreach-Object {
 #            it "Port [$_] is listening" {
