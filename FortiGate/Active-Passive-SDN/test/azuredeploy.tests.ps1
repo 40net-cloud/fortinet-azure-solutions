@@ -147,6 +147,7 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
         It "Test Deployment of ARM template $templateFileName" {
             $result = Test-AzureRmResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName" -TemplateFile "$templateFileName" -TemplateParameterObject $params
             $result
+            Write-Output ("--> " + $result)
 #            $deploymentOutput = ($result.Item(17) -split 'Body:' | Select-Object -Skip 1 | ConvertFrom-Json).properties
 #            $deploymentOutput.provisioningState | Should Be 'Succeeded'
         }
