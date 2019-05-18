@@ -5,7 +5,6 @@ echo "
 # Deployment of a Fortigate Active/Passive cluster
 #
 ##############################################################################################################
-
 "
 
 # Stop on error
