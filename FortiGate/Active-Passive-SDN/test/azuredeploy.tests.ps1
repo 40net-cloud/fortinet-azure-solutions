@@ -142,7 +142,7 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
                     }
         $publicIPName = "FGTAPClusterPublicIP"
         $publicIP2Name = "FGTAMgmtPublicIP"
-        $publicIP3Name = "FGTAMgmtPublicIP"
+        $publicIP3Name = "FGTBMgmtPublicIP"
 
         It "Test Deployment of ARM template $templateFileName" {
             (Test-AzureRmResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName" -TemplateFile "$templateFileName" -TemplateParameterObject $params).Count | Should not BeGreaterThan 0
