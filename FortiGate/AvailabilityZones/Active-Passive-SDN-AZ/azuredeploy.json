@@ -150,12 +150,14 @@
     },
     "vnetName": {
       "type": "string",
+      "defaultValue": "",
       "metadata": {
         "description": "Name of the Azure virtual network."
       }
     },
     "vnetResourceGroup": {
       "type": "string",
+      "defaultValue": "",
       "metadata": {
         "description": "Resource Group containing the virtual network - or new resource group from above (if new vnet)"
       }
