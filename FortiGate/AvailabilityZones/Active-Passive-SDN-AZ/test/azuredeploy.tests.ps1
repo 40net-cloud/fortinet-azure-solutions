@@ -134,23 +134,19 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
         # Validate all ARM templates one by one
         $testsErrorFound = $false
 
-        $params = @{ 'ResourceGroupName'=$testsResourceGroupName;
-                     'TemplateFile'='azuredeploy.json';
-                     'TemplateParameterFile'='azuredeploy.parameters.json';
-                     'adminPassword'=$testsAdminPassword;
-                     'FortiGateNamePrefix'=$testsPrefix;
-                     'publicIPName'=$testsPrefix + '-PIP';
-                     'publicIP2Name'=$testsPrefix + '-PIP2';
-                     'publicIP3Name'=$testsPrefix + '-PIP3';
-                     'vnetName'=$testsPrefix + '-VNET';
-                     'vnetResourceGroup'=$testsResourceGroupName;
+        $params = @{ 'adminUsername'=$testsAdminUsername
+                     'adminPassword'=$testsResourceGroupName
+                     'FortiGateNamePrefix'=$testsPrefix
                     }
+        $publicIPName = "FGTAPClusterPublicIP"
+        $publicIP2Name = "FGTAMgmtPublicIP"
+        $publicIP3Name = "FGTBMgmtPublicIP"
 
         It "Test Deployment of ARM template $templateFileName with parameter file $templateParameterFileName" {
-            (Test-AzureRmResourceGroupDeployment @params ).Count | Should not BeGreaterThan 0
+            (Test-AzureRmResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName" -TemplateFile "$templateFileName" -TemplateParameterObject $params).Count | Should not BeGreaterThan 0
         }
-        It "Deployment of ARM template $templateFileName with parameter file $templateParameterFileName" {
-            $resultDeployment = New-AzureRmResourceGroupDeployment @params
+        It "Deployment of ARM template $templateFileName" {
+            $resultDeployment = New-AzureRmResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName" -TemplateFile "$templateFileName" -TemplateParameterObject $params
             Write-Host ($resultDeployment | Format-Table | Out-String)
             Write-Host ("Deployment state: " + $resultDeployment.ProvisioningState | Out-String)
             $resultDeployment.ProvisioningState | Should Be "Succeeded"
