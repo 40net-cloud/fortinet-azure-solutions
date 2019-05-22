@@ -159,12 +159,12 @@
       "type": "string",
       "defaultValue": "",
       "metadata": {
-        "description": "Resource Group containing the virtual network - or new resource group from above (if new vnet)"
+        "description": "Resource Group containing the existing virtual network (with new vnet the current resourcegroup is used)"
       }
     },
     "vnetAddressPrefix": {
       "type": "string",
-      "defaultValue": "10.0.0.0/16",
+      "defaultValue": "172.16.136.0/22",
       "metadata": {
         "description": "Virtual Network Address prefix"
       }
@@ -178,7 +178,7 @@
     },
     "subnet1Prefix": {
       "type": "string",
-      "defaultValue": "10.0.1.0/24",
+      "defaultValue": "172.16.136.0/26",
       "metadata": {
         "description": "External Subnet Prefix"
       }
@@ -201,42 +201,148 @@
       "type": "string",
       "defaultValue": "HASyncSubnet",
       "metadata": {
-        "description": "Subnet 3 Name"
+        "description": "HA Sync Subnet 3 Name"
       }
     },
     "subnet3Prefix": {
       "type": "string",
-      "defaultValue": "10.0.3.0/28",
+      "defaultValue": "172.16.136.128/26",
       "metadata": {
-        "description": "Subnet 3 Prefix"
+        "description": "HA Sync Subnet 3 Prefix"
       }
     },
     "subnet4Name": {
       "type": "string",
       "defaultValue": "ManagementSubnet",
       "metadata": {
-        "description": "Subnet 4 Name"
+        "description": "Management Subnet 4 Name"
       }
     },
     "subnet4Prefix": {
       "type": "string",
-      "defaultValue": "10.0.4.0/28",
+      "defaultValue": "172.16.136.192/26",
       "metadata": {
-        "description": "Subnet 4 Prefix"
+        "description": "Management Subnet 4 Prefix"
       }
     },
     "subnet5Name": {
       "type": "string",
-      "defaultValue": "ProtectedSubnet",
+      "defaultValue": "ProtectedASubnet",
       "metadata": {
-        "description": "Subnet 5 Name"
+        "description": "Protected A Subnet 5 Name"
       }
     },
     "subnet5Prefix": {
       "type": "string",
-      "defaultValue": "10.0.5.0/24",
+      "defaultValue": "172.16.137.0/24",
       "metadata": {
-        "description": "Subnet 5 Prefix"
+        "description": "Protected A Subnet 5 Prefix"
+      }
+    },
+    "subnet6Name": {
+      "type": "string",
+      "defaultValue": "ProtectedBSubnet",
+      "metadata": {
+        "description": "Protected B Subnet 6 Name"
+      }
+    },
+    "subnet6Prefix": {
+      "type": "string",
+      "defaultValue": "172.16.138.0/24",
+      "metadata": {
+        "description": "Protected B Subnet 6 Prefix"
+      }
+    },
+    "vnetNewOrExistingSpoke1": {
+      "type": "string",
+      "defaultValue": "new",
+      "allowedValues": [
+        "new",
+        "existing"
+      ],
+      "metadata": {
+        "description": "Identify whether to use a new or existing vnet"
+      }
+    },
+    "vnetNameSpoke1": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Name of the Azure virtual network for Spoke1"
+      }
+    },
+    "vnetResourceGroupSpoke1": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Resource Group containing the existing virtual network Spoke 1 (with new vnet the current resourcegroup is used)"
+      }
+    },
+    "subnet1Spoke1Name": {
+      "type": "string",
+      "defaultValue": "Spoke1Subnet",
+      "metadata": {
+        "description": "Subnet 1 Spoke 1"
+      }
+    },
+    "subnet1Spoke1Prefix": {
+      "type": "string",
+      "defaultValue": "172.16.140.0/26",
+      "metadata": {
+        "description": "Subnet 1 Spoke 1"
+      }
+    },
+    "vnetAddressPrefixSpoke1": {
+      "type": "string",
+      "defaultValue": "172.16.140.0/24",
+      "metadata": {
+        "description": "Virtual Network Address prefix for Spoke 1"
+      }
+    },
+    "vnetNewOrExistingSpoke2": {
+      "type": "string",
+      "defaultValue": "new",
+      "allowedValues": [
+        "new",
+        "existing"
+      ],
+      "metadata": {
+        "description": "Identify whether to use a new or existing vnet"
+      }
+    },
+    "vnetNameSpoke2": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Name of the Azure virtual network for Spoke1"
+      }
+    },
+    "vnetResourceGroupSpoke2": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Resource Group containing the existing virtual network Spoke 1 (with new vnet the current resourcegroup is used)"
+      }
+    },
+    "vnetAddressPrefixSpoke2": {
+      "type": "string",
+      "defaultValue": "172.16.142.0/24",
+      "metadata": {
+        "description": "Virtual Network Address prefix for Spoke 2"
+      }
+    },
+    "subnet1Spoke2Name": {
+      "type": "string",
+      "defaultValue": "Spoke2Subnet",
+      "metadata": {
+        "description": "Subnet 1 Spoke 2"
+      }
+    },
+    "subnet1Spoke2Prefix": {
+      "type": "string",
+      "defaultValue": "172.16.142.0/26",
+      "metadata": {
+        "description": "Subnet 1 Spoke 2"
       }
     },
     "FortinetTags": {
@@ -260,12 +366,27 @@
     "subnet2Ref": "[concat(variables('vnetID'),'/subnets/', parameters('subnet2Name'))]",
     "subnet3Ref": "[concat(variables('vnetID'),'/subnets/', parameters('subnet3Name'))]",
     "subnet4Ref": "[concat(variables('vnetID'),'/subnets/', parameters('subnet4Name'))]",
+    "vnetNameSpoke1": "[if(equals(parameters('vnetNameSpoke1'),''),concat(parameters('FortiGateNamePrefix'),'-VNET-SPOKE1'),parameters('vnetName'))]",
+    "vnetIDSpoke1": "[if(equals(parameters('vnetNewOrExistingSpoke1'),'new'),resourceId('Microsoft.Network/virtualNetworks', variables('vnetNameSpoke1')),resourceId(parameters('vnetResourceGroupSpoke1'),'Microsoft.Network/virtualNetworks', variables('vnetNameSpoke1')))]",
+    "vnetNameSpoke2": "[if(equals(parameters('vnetNameSpoke2'),''),concat(parameters('FortiGateNamePrefix'),'-VNET-SPOKE2'),parameters('vnetName'))]",
+    "vnetIDSpoke2": "[if(equals(parameters('vnetNewOrExistingSpoke2'),'new'),resourceId('Microsoft.Network/virtualNetworks', variables('vnetNameSpoke2')),resourceId(parameters('vnetResourceGroupSpoke2'),'Microsoft.Network/virtualNetworks', variables('vnetNameSpoke2')))]",
 
     "fg1VmName": "[concat(parameters('FortiGateNamePrefix'),'-FGT-A')]",
     "fg2VmName": "[concat(parameters('FortiGateNamePrefix'),'-FGT-B')]",
 
-    "routeTableName": "FGTDefaultAPRouteTable",
-    "routeTableId": "[resourceId('Microsoft.Network/routeTables',variables('routeTableName'))]",
+    "routeTableProtectedAName": "[concat(parameters('FortiGateNamePrefix'),'-RT-PROTECTED-A')]",
+    "routeTableProtectedAId": "[resourceId('Microsoft.Network/routeTables',variables('routeTableProtectedAName'))]",
+    "routeTableProtectedBName": "[concat(parameters('FortiGateNamePrefix'),'-RT-PROTECTED-B')]",
+    "routeTableProtectedBId": "[resourceId('Microsoft.Network/routeTables',variables('routeTableProtectedBName'))]",
+    "routeTableSpoke1Name": "[concat(parameters('FortiGateNamePrefix'),'-RT-SPOKE-1')]",
+    "routeTableSpoke1Id": "[resourceId('Microsoft.Network/routeTables',variables('routeTableSpoke1Name'))]",
+    "routeTableSpoke2Name": "[concat(parameters('FortiGateNamePrefix'),'-RT-SPOKE-2')]",
+    "routeTableSpoke2Id": "[resourceId('Microsoft.Network/routeTables',variables('routeTableSpoke2Name'))]",
+
+    "hubtoSpoke1PeeringName": "[concat(variables('vnetName'), '/', variables('vnetName'), 'To', variables('vnetNameSpoke1'))]",
+    "spoke1toHubPeeringName": "[concat(variables('vnetNameSpoke1'), '/', variables('vnetNameSpoke1'), 'To', variables('vNetName'))]",
+    "hubtoSpoke2PeeringName": "[concat(variables('vnetName'), '/', variables('vnetName'), 'To', variables('vnetNameSpoke2'))]",
+    "spoke2toHubPeeringName": "[concat(variables('vnetNameSpoke2'), '/', variables('vnetNameSpoke2'), 'To', variables('vnetName'))]",
 
     "network_NIC_fg11_Name": "[concat(variables('fg1VmName'),'-Nic1')]",
     "network_NIC_fg11_Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('network_NIC_fg11_Name'))]",
@@ -392,7 +513,7 @@
     },
     {
       "type": "Microsoft.Network/routeTables",
-      "name": "[variables('routeTableName')]",
+      "name": "[variables('routeTableProtectedAName')]",
       "apiVersion": "[variables('networkApiVersion')]",
       "tags": {
        "provider": "[toUpper(parameters('FortinetTags').provider)]"
@@ -401,7 +522,130 @@
       "properties": {
         "routes": [
           {
-            "name": "toDefault",
+            "name": "VirtualNetwork",
+            "properties": {
+              "addressPrefix": "[parameters('vnetAddressPrefix')]",
+              "nextHopType": "VirtualAppliance",
+              "nextHopIPAddress": "[variables('sn2IPlb')]"
+            }
+          },
+          {
+            "name": "Subnet",
+            "properties": {
+              "addressPrefix": "[parameters('subnet5Prefix')]",
+              "nextHopType": "VnetLocal"
+            }
+          },
+          {
+            "name": "Default",
+            "properties": {
+              "addressPrefix": "0.0.0.0/0",
+              "nextHopType": "VirtualAppliance",
+              "nextHopIPAddress": "[variables('sn2IPlb')]"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "type": "Microsoft.Network/routeTables",
+      "name": "[variables('routeTableProtectedBName')]",
+      "apiVersion": "[variables('networkApiVersion')]",
+      "tags": {
+       "provider": "[toUpper(parameters('FortinetTags').provider)]"
+      },
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "routes": [
+          {
+            "name": "VirtualNetwork",
+            "properties": {
+              "addressPrefix": "[parameters('vnetAddressPrefix')]",
+              "nextHopType": "VirtualAppliance",
+              "nextHopIPAddress": "[variables('sn2IPlb')]"
+            }
+          },
+          {
+            "name": "Subnet",
+            "properties": {
+              "addressPrefix": "[parameters('subnet6Prefix')]",
+              "nextHopType": "VnetLocal"
+            }
+          },
+          {
+            "name": "Default",
+            "properties": {
+              "addressPrefix": "0.0.0.0/0",
+              "nextHopType": "VirtualAppliance",
+              "nextHopIPAddress": "[variables('sn2IPlb')]"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "type": "Microsoft.Network/routeTables",
+      "name": "[variables('routeTableSpoke1Name')]",
+      "apiVersion": "[variables('networkApiVersion')]",
+      "tags": {
+       "provider": "[toUpper(parameters('FortinetTags').provider)]"
+      },
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "routes": [
+          {
+            "name": "VirtualNetwork",
+            "properties": {
+              "addressPrefix": "[parameters('vnetAddressPrefixSpoke1')]",
+              "nextHopType": "VirtualAppliance",
+              "nextHopIPAddress": "[variables('sn2IPlb')]"
+            }
+          },
+          {
+            "name": "Subnet",
+            "properties": {
+              "addressPrefix": "[parameters('subnet1Spoke1Prefix')]",
+              "nextHopType": "VnetLocal"
+            }
+          },
+          {
+            "name": "Default",
+            "properties": {
+              "addressPrefix": "0.0.0.0/0",
+              "nextHopType": "VirtualAppliance",
+              "nextHopIPAddress": "[variables('sn2IPlb')]"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "type": "Microsoft.Network/routeTables",
+      "name": "[variables('routeTableSpoke2Name')]",
+      "apiVersion": "[variables('networkApiVersion')]",
+      "tags": {
+       "provider": "[toUpper(parameters('FortinetTags').provider)]"
+      },
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "routes": [
+          {
+            "name": "VirtualNetwork",
+            "properties": {
+              "addressPrefix": "[parameters('vnetAddressPrefixSpoke2')]",
+              "nextHopType": "VirtualAppliance",
+              "nextHopIPAddress": "[variables('sn2IPlb')]"
+            }
+          },
+          {
+            "name": "Subnet",
+            "properties": {
+              "addressPrefix": "[parameters('subnet1Spoke2Prefix')]",
+              "nextHopType": "VnetLocal"
+            }
+          },
+          {
+            "name": "Default",
             "properties": {
               "addressPrefix": "0.0.0.0/0",
               "nextHopType": "VirtualAppliance",
@@ -418,7 +662,8 @@
       "name": "[variables('vnetName')]",
       "location": "[resourceGroup().location]",
       "dependsOn": [
-        "[concat('Microsoft.Network/routeTables/', variables('routeTableName'))]"
+        "[variables('routeTableProtectedAId')]",
+        "[variables('routeTableProtectedBId')]"
       ],
       "properties": {
         "addressSpace": {
@@ -456,11 +701,156 @@
             "properties": {
               "addressPrefix": "[parameters('subnet5Prefix')]",
               "routeTable": {
-                "id": "[variables('routeTableId')]"
+                "id": "[variables('routeTableProtectedAId')]"
+              }
+            }
+          },
+          {
+            "name": "[parameters('subnet6Name')]",
+            "properties": {
+              "addressPrefix": "[parameters('subnet6Prefix')]",
+              "routeTable": {
+                "id": "[variables('routeTableProtectedBId')]"
               }
             }
           }
         ]
+      }
+    },
+    {
+      "condition": "[equals(parameters('vnetNewOrExistingSpoke1'), 'new')]",
+      "type": "Microsoft.Network/virtualNetworks",
+      "apiVersion": "[variables('networkApiVersion')]",
+      "name": "[variables('vnetNameSpoke1')]",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[variables('routeTableSpoke1Id')]"
+      ],
+      "properties": {
+        "addressSpace": {
+          "addressPrefixes": [
+            "[parameters('vnetAddressPrefixSpoke1')]"
+          ]
+        },
+        "subnets": [
+          {
+            "name": "[parameters('subnet1Spoke1Name')]",
+            "properties": {
+              "addressPrefix": "[parameters('subnet1Spoke1Prefix')]",
+              "routeTable": {
+                "id": "[variables('routeTableSpoke1Id')]"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "condition": "[equals(parameters('vnetNewOrExistingSpoke2'), 'new')]",
+      "type": "Microsoft.Network/virtualNetworks",
+      "apiVersion": "[variables('networkApiVersion')]",
+      "name": "[variables('vnetNameSpoke2')]",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[variables('routeTableSpoke2Id')]"
+      ],
+      "properties": {
+        "addressSpace": {
+          "addressPrefixes": [
+            "[parameters('vnetAddressPrefixSpoke2')]"
+          ]
+        },
+        "subnets": [
+          {
+            "name": "[parameters('subnet1Spoke2Name')]",
+            "properties": {
+              "addressPrefix": "[parameters('subnet1Spoke2Prefix')]",
+              "routeTable": {
+                "id": "[variables('routeTableSpoke2Id')]"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "apiVersion": "2016-06-01",
+      "type": "Microsoft.Network/virtualNetworks/virtualNetworkPeerings",
+      "name": "[variables('hubtoSpoke1PeeringName')]",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+          "[concat('Microsoft.Network/virtualNetworks/', variables('vnetName'))]",
+          "[concat('Microsoft.Network/virtualNetworks/', variables('vnetNameSpoke1'))]"
+      ],
+      "comments": "Hub to Spoke 1",
+      "properties": {
+          "allowVirtualNetworkAccess": "true",
+          "allowForwardedTraffic": "true",
+          "allowGatewayTransit": "false",
+          "useRemoteGateways": "false",
+          "remoteVirtualNetwork": {
+              "id": "[variables('vnetIDSpoke1')]"
+          }
+      }
+    },
+    {
+      "apiVersion": "[variables('networkApiVersion')]",
+      "type": "Microsoft.Network/virtualNetworks/virtualNetworkPeerings",
+      "name": "[variables('hubtoSpoke2PeeringName')]",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+          "[concat('Microsoft.Network/virtualNetworks/', variables('vnetName'))]",
+          "[concat('Microsoft.Network/virtualNetworks/', variables('vnetNameSpoke2'))]"
+      ],
+      "comments": "HUB to Spoke 2",
+      "properties": {
+          "allowVirtualNetworkAccess": "true",
+          "allowForwardedTraffic": "true",
+          "allowGatewayTransit": "false",
+          "useRemoteGateways": "false",
+          "remoteVirtualNetwork": {
+              "id": "[variables('vnetIDSpoke2')]"
+          }
+      }
+    },
+    {
+      "apiVersion": "[variables('networkApiVersion')]",
+      "type": "Microsoft.Network/virtualNetworks/virtualNetworkPeerings",
+      "name": "[variables('spoke1toHubPeeringName')]",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+          "[concat('Microsoft.Network/virtualNetworks/', variables('vnetName'))]",
+          "[concat('Microsoft.Network/virtualNetworks/', variables('vnetNameSpoke1'))]"
+      ],
+      "comments": "Spoke 1 to Hub",
+      "properties": {
+          "allowVirtualNetworkAccess": "true",
+          "allowForwardedTraffic": "true",
+          "allowGatewayTransit": "false",
+          "useRemoteGateways": "false",
+          "remoteVirtualNetwork": {
+              "id": "[variables('vnetID')]"
+          }
+      }
+    },
+    {
+      "apiVersion": "[variables('networkApiVersion')]",
+      "type": "Microsoft.Network/virtualNetworks/virtualNetworkPeerings",
+      "name": "[variables('spoke2toHubPeeringName')]",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+          "[concat('Microsoft.Network/virtualNetworks/', variables('vnetName'))]",
+          "[concat('Microsoft.Network/virtualNetworks/', variables('vnetNameSpoke2'))]"
+      ],
+      "comments": "Spoke 2 to Hub",
+      "properties": {
+          "allowVirtualNetworkAccess": "true",
+          "allowForwardedTraffic": "true",
+          "allowGatewayTransit": "false",
+          "useRemoteGateways": "false",
+          "remoteVirtualNetwork": {
+              "id": "[variables('vnetID')]"
+          }
       }
     },
     {
