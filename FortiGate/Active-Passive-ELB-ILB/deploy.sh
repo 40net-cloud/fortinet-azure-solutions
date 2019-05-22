@@ -2,7 +2,7 @@
 echo "
 ##############################################################################################################
 #
-# Deployment of a Fortigate Active/Passive cluster
+# Deployment of a Fortigate Active / Passive cluster with External + Internal Load Balancer
 #
 ##############################################################################################################
 
