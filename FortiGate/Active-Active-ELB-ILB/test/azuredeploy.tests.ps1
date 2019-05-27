@@ -38,6 +38,7 @@ $templateParameterFileLocation = "$sourcePath\$templateParameterFileName"
 $testsRandom = Get-Random 10001
 $testsPrefix = "FORTIQA"
 $testsResourceGroupName = "FORTIQA-$testsRandom-$templateName"
+$testsAdminUsername = "azureuser"
 $testsAdminPassword = $testsResourceGroupName | ConvertTo-SecureString -AsPlainText -Force
 $testsResourceGroupLocation = "West Europe"
 
