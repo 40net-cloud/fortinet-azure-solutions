@@ -33,7 +33,7 @@
     },
     "FortiGateImageVersion": {
       "type": "string",
-      "defaultValue": "latest",
+      "defaultValue": "6.0.4",
       "allowedValues": [ "latest", "6.2.0", "6.0.4", "6.0.3", "6.0.2", "6.0.0", "5.6.6" ],
       "metadata": {
         "description": "Select image version."
@@ -623,8 +623,8 @@
                 "id": "[variables('externalLBIdFE')]"
               },
               "protocol": "Tcp",
-              "frontendPort": 8443,
-              "backendPort": 8443,
+              "frontendPort": 443,
+              "backendPort": 443,
               "enableFloatingIP": false
             }
           },
@@ -647,8 +647,8 @@
                 "id": "[variables('externalLBIdFE2')]"
               },
               "protocol": "Tcp",
-              "frontendPort": 8443,
-              "backendPort": 8443,
+              "frontendPort": 443,
+              "backendPort": 443,
               "enableFloatingIP": false
             }
           }
@@ -657,7 +657,7 @@
           {
             "properties": {
               "protocol": "Tcp",
-              "port": 22,
+              "port": 8008,
               "intervalInSeconds": 5,
               "numberOfProbes": 2
             },
@@ -851,7 +851,7 @@
           "computerName": "[variables('fg1VmName')]",
           "adminUsername": "[parameters('adminUsername')]",
           "adminPassword": "[parameters('adminPassword')]",
-          "customData": "[base64(concat('config system global\n set admin-sport 8443\n end\n config router static\n edit 1\n set gateway ', variables('sn1GatewayIP'), '\n set device port1\n next\n edit 2\n set dst ', parameters('vnetAddressPrefix'), '\n set gateway ', variables('sn2GatewayIP'), '\n set device port2\n next\n edit 3\nset dst 168.63.129.16 255.255.255.255\nset device port2\n set gateway ', variables ('sn2GatewayIP'), '\n next\nedit 4\nset dst 168.63.129.16 255.255.255.255\nset device port1\n set gateway ', variables ('sn1GatewayIP'), '\n next\n end\n config system interface\n edit port1\n set mode static\n set ip ', variables('sn1IPfg1'), '/', variables('sn1CIDRmask'), '\n set description external\n next\n edit port2\n set mode static\n set ip ', variables('sn2IPfg1'), '/', variables('sn2CIDRmask'), '\n set description internal\n  set allowaccess ping ssh\n next\n end'))]"
+          "customData": "[base64(concat('config system probe-response\n set mode http-probe\n end\n config router static\n edit 1\n set gateway ', variables('sn1GatewayIP'), '\n set device port1\n next\n edit 2\n set dst ', parameters('vnetAddressPrefix'), '\n set gateway ', variables('sn2GatewayIP'), '\n set device port2\n next\n edit 3\nset dst 168.63.129.16 255.255.255.255\nset device port2\n set gateway ', variables ('sn2GatewayIP'), '\n next\nedit 4\nset dst 168.63.129.16 255.255.255.255\nset device port1\n set gateway ', variables ('sn1GatewayIP'), '\n next\n end\n config system interface\n edit port1\n set mode static\n set ip ', variables('sn1IPfg1'), '/', variables('sn1CIDRmask'), '\n set description external\n next\n edit port2\n set mode static\n set ip ', variables('sn2IPfg1'), '/', variables('sn2CIDRmask'), '\n set description internal\n  set allowaccess ping ssh\n next\n end'))]"
         },
         "storageProfile": {
           "imageReference": {
@@ -916,7 +916,7 @@
           "computerName": "[variables('fg2VmName')]",
           "adminUsername": "[parameters('adminUsername')]",
           "adminPassword": "[parameters('adminPassword')]",
-          "customData": "[base64(concat('config system global\n set admin-sport 8443\n end\n config router static\n edit 1\n set gateway ', variables('sn1GatewayIP'), '\n set device port1\n next\n edit 2\n set dst ', parameters('vnetAddressPrefix'), '\n set gateway ', variables('sn2GatewayIP'), '\n set device port2\n next\n edit 3\nset dst 168.63.129.16 255.255.255.255\nset device port2\n set gateway ', variables ('sn2GatewayIP'), '\n next\nedit 4\nset dst 168.63.129.16 255.255.255.255\nset device port1\n set gateway ', variables ('sn1GatewayIP'), '\n next\n end\n config system interface\n edit port1\n set mode static\n set ip ', variables('sn1IPfg2'), '/', variables('sn1CIDRmask'), '\n set description external\n next\n edit port2\n set mode static\n set ip ', variables('sn2IPfg2'), '/', variables('sn2CIDRmask'), '\n set description internal\n set allowaccess ping ssh\n next\n end'))]"
+          "customData": "[base64(concat('config system probe-response\n set mode http-probe\n end\n config router static\n edit 1\n set gateway ', variables('sn1GatewayIP'), '\n set device port1\n next\n edit 2\n set dst ', parameters('vnetAddressPrefix'), '\n set gateway ', variables('sn2GatewayIP'), '\n set device port2\n next\n edit 3\nset dst 168.63.129.16 255.255.255.255\nset device port2\n set gateway ', variables ('sn2GatewayIP'), '\n next\nedit 4\nset dst 168.63.129.16 255.255.255.255\nset device port1\n set gateway ', variables ('sn1GatewayIP'), '\n next\n end\n config system interface\n edit port1\n set mode static\n set ip ', variables('sn1IPfg2'), '/', variables('sn1CIDRmask'), '\n set description external\n next\n edit port2\n set mode static\n set ip ', variables('sn2IPfg2'), '/', variables('sn2CIDRmask'), '\n set description internal\n set allowaccess ping ssh\n next\n end'))]"
         },
         "storageProfile": {
           "imageReference": {
