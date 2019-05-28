@@ -149,7 +149,7 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
             $result | Should Not Be $null
         }
 
-        8443, 22 | Foreach-Object {
+        443, 22 | Foreach-Object {
             it "Port [$_] is listening" {
                 $result = Get-AzureRmPublicIpAddress -Name $params['publicIPName'] -ResourceGroupName $params['ResourceGroupName']
                 $portListening = (Test-NetConnection -Port $_ -ComputerName $result.IpAddress).TcpTestSucceeded
