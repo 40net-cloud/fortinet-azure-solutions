@@ -38,8 +38,8 @@ $templateParameterFileLocation = "$sourcePath\$templateParameterFileName"
 $testsRandom = Get-Random 10001
 $testsPrefix = "FORTIQA"
 $testsResourceGroupName = "FORTIQA-$testsRandom-$templateName"
-$testsAdminPassword = $testsResourceGroupName | ConvertTo-SecureString -AsPlainText -Force
-$testsResourceGroupLocation = "West Europe"
+$testsAdminUsername = "azureuser"
+$testsResourceGroupLocation = "westeurope"
 
 Describe 'ARM Templates Test : Validation & Test Deployment' {
     Context 'Template Validation' {
@@ -125,22 +125,18 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
         # Validate all ARM templates one by one
         $testsErrorFound = $false
 
-        $params = @{ 'ResourceGroupName'=$testsResourceGroupName;
-                     'TemplateFile'='azuredeploy.json';
-                     'TemplateParameterFile'='azuredeploy.parameters.json';
-                     'adminPassword'=$testsAdminPassword;
-                     'FortiGateNamePrefix'=$testsPrefix;
-                     'publicIPName'=$testsPrefix + '-PIP';
-                     'publicIP2Name'=$testsPrefix + '-PIP2';
-                     'vnetName'=$testsPrefix + '-VNET';
-                     'vnetResourceGroup'=$testsResourceGroupName;
+        $params = @{ 'adminUsername'=$testsAdminUsername
+                     'adminPassword'=$testsResourceGroupName
+                     'FortiGateNamePrefix'=$testsPrefix
                     }
+        $publicIPName = "FGTLBPublicIP"
+        $publicIP2Name = "FGTLBPublicIP2"
 
-        It "Test Deployment of ARM template $templateFileName with parameter file $templateParameterFileName" {
-            (Test-AzureRmResourceGroupDeployment @params ).Count | Should not BeGreaterThan 0
+        It "Test Deployment of ARM template $templateFileName" {
+            (Test-AzureRmResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName" -TemplateFile "$templateFileName" -TemplateParameterObject $params).Count | Should not BeGreaterThan 0
         }
-        It "Deployment of ARM template $templateFileName with parameter file $templateParameterFileName" {
-            $resultDeployment = New-AzureRmResourceGroupDeployment @params
+        It "Deployment of ARM template $templateFileName" {
+            $resultDeployment = New-AzureRmResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName" -TemplateFile "$templateFileName" -TemplateParameterObject $params
             Write-Host ($resultDeployment | Format-Table | Out-String)
             Write-Host ("Deployment state: " + $resultDeployment.ProvisioningState | Out-String)
             $resultDeployment.ProvisioningState | Should Be "Succeeded"
@@ -151,12 +147,12 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
             $result | Should Not Be $null
         }
 
-        8443, 22 | Foreach-Object {
+        443, 22 | Foreach-Object {
             it "Port [$_] is listening" {
-                $result = Get-AzureRmPublicIpAddress -Name $params['publicIPName'] -ResourceGroupName $params['ResourceGroupName']
+                $result = Get-AzureRmPublicIpAddress -Name $publicIPName -ResourceGroupName $testsResourceGroupName
                 $portListening = (Test-NetConnection -Port $_ -ComputerName $result.IpAddress).TcpTestSucceeded
                 $portListening | Should -Be $true
-                $result = Get-AzureRmPublicIpAddress -Name $params['publicIP2Name'] -ResourceGroupName $params['ResourceGroupName']
+                $result = Get-AzureRmPublicIpAddress -Name $publicIP2Name -ResourceGroupName $testsResourceGroupName
                 $portListening = (Test-NetConnection -Port $_ -ComputerName $result.IpAddress).TcpTestSucceeded
                 $portListening | Should -Be $true
             }

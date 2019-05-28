@@ -15,7 +15,7 @@
       "value": "fortinet_fg-vm"
     },
     "FortiGateImageVersion": {
-      "value": "latest"
+      "value": "6.0.4"
     },
     "instanceType": {
       "value": "Standard_F1s"
@@ -27,13 +27,13 @@
       "value": "new"
     },
     "publicIPName": {
-      "value": ""
+      "value": "FGTLBPublicIP"
     },
     "publicIPResourceGroup": {
       "value": ""
     },
     "publicIP2Name": {
-      "value": ""
+      "value": "FGTLBPublicIP"
     },
     "publicIP2ResourceGroup": {
       "value": ""

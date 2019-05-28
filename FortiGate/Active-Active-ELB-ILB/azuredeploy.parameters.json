@@ -27,13 +27,13 @@
       "value": "new"
     },
     "publicIPName": {
-      "value": "FGTAPClusterPublicIP"
+      "value": "FGTLBPublicIP"
     },
     "publicIPResourceGroup": {
       "value": ""
     },
     "publicIP2Name": {
-      "value": "FGTAPClusterPublicIP2"
+      "value": "FGTLBPublicIP2"
     },
     "publicIP2ResourceGroup": {
       "value": ""

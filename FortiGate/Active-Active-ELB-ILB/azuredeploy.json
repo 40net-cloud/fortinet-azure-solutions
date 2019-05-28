@@ -73,7 +73,7 @@
       "type": "string",
       "defaultValue": "FGTLBPublicIP",
       "metadata": {
-        "description": "Name of Public IP address element."
+        "description": "Name of Public IP address 1"
       }
     },
     "publicIPResourceGroup": {
@@ -87,7 +87,7 @@
       "type": "string",
       "defaultValue": "FGTLBPublicIP2",
       "metadata": {
-        "description": "Name of Public IP address element."
+        "description": "Name of Public IP address 2"
       }
     },
     "publicIP2ResourceGroup": {
