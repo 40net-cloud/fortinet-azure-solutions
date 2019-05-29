@@ -64,7 +64,7 @@ Next, connect via HTTPS to both FortiGates via their management addresses and up
 
 Once, licensed and rebooted, you can proceed to configure firewall policy and other security features of the FortiGate as you like. The SDN connector can be used to pull information from Azure using the Azure API.
 
-A step by step guide can be found on our ![documentation site](https://docs2.fortinet.com/vm/azure/fortigate/6.0/about-fortigate-for-azure/6.0.0/128029/overview)
+A step by step guide can be found on our ![documentation site](https://docs2.fortinet.com/vm/azure/fortigate/6.0/use-case-automatically-updating-dynamic-addresses-using-fabric-connector/6.0.0/502895/overview)
     
 
 # Requirements and limitations
