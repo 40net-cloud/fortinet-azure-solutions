@@ -8,7 +8,7 @@ More and more enterprises are turning to Microsoft Azure to extend internal data
 
 # Design
 
-In Microsoft Azure you can deploy a Active Passive pair of FortiGate VM's that communicate with each other and the Azure fabric. The ForitGate setup will receive the to be inspected traffic using user defined routing (UDR). You can send all or specific traffic that needs inspection going to/coming from on-prem networks or public internet by changing the UDR routing.
+In Microsoft Azure you can deploy a Active Passive pair of FortiGate VM's that communicate with each other and the Azure fabric. The FortiGate setup will receive the to be inspected traffic using user defined routing (UDR). You can send all or specific traffic that needs inspection going to/coming from on-prem networks or public internet by changing the UDR routing.
 
 This ARM template will automatically deploy a full working environment containing the the following components.
 
@@ -20,7 +20,7 @@ This ARM template will automatically deploy a full working environment containin
 
 ![VNET peering design](images/fgt-ha.png)
 
-This ARM template can also be used to extend or customize based on your requirements. Additional subnets besides the one's mentioned above are not automatically generated. By adapting the Terraform templates you can additional subnets and/or which also require their own routing tables and VNET peering configuration.
+This ARM template can also be used to extend or customize based on your requirements. Additional subnets besides the one's mentioned above are not automatically generated. By adapting the ARM templates you can add additional subnets which prefereably require their own routing tables.
 
 ## How to deploy
 
