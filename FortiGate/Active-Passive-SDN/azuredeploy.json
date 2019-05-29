@@ -42,7 +42,7 @@
         "latest"
       ],
       "metadata": {
-        "description": "Only 6.0.0 has the A/P HA feature currently"
+        "description": "Only 6.x has the A/P HA feature currently"
       }
     },
     "instanceType": {

@@ -166,35 +166,35 @@
     },
     "vnetAddressPrefix": {
       "type": "string",
-      "defaultValue": "10.0.0.0/16",
+      "defaultValue": "172.16.136.0/22",
       "metadata": {
         "description": "Virtual Network Address prefix"
       }
     },
     "subnet1Name": {
       "type": "string",
-      "defaultValue": "EntrySubnet",
+      "defaultValue": "ExternalSubnet",
       "metadata": {
         "description": "Subnet 1 Name"
       }
     },
     "subnet1Prefix": {
       "type": "string",
-      "defaultValue": "10.0.1.0/24",
+      "defaultValue": "172.16.136.0/26",
       "metadata": {
         "description": "Subnet 1 Prefix"
       }
     },
     "subnet2Name": {
       "type": "string",
-      "defaultValue": "TransitSubnet",
+      "defaultValue": "InternalSubnet",
       "metadata": {
         "description": "Subnet 2 Name"
       }
     },
     "subnet2Prefix": {
       "type": "string",
-      "defaultValue": "10.0.2.0/24",
+      "defaultValue": "172.16.136.64/26",
       "metadata": {
         "description": "Subnet 2 Prefix"
       }
@@ -208,7 +208,7 @@
     },
     "subnet3Prefix": {
       "type": "string",
-      "defaultValue": "10.0.3.0/28",
+      "defaultValue": "172.16.138.128/26",
       "metadata": {
         "description": "Subnet 3 Prefix"
       }
@@ -222,7 +222,7 @@
     },
     "subnet4Prefix": {
       "type": "string",
-      "defaultValue": "10.0.4.0/28",
+      "defaultValue": "172.16.136.192/26",
       "metadata": {
         "description": "Subnet 4 Prefix"
       }
@@ -236,7 +236,7 @@
     },
     "subnet5Prefix": {
       "type": "string",
-      "defaultValue": "10.0.5.0/24",
+      "defaultValue": "172.16.137.0/24",
       "metadata": {
         "description": "Subnet 5 Prefix"
       }
