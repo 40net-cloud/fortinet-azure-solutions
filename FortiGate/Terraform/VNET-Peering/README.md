@@ -2,7 +2,7 @@
 
 As organizations grow, and their consumption of the cloud increases and expands, the need to separate security management from application development increases. Different organizational units tent to build applications in different virtual networks and even different clouds and datacenters. Securing all disperse locations becomes challenging.
 
-By building a central hub (transit network) for security functionality, that securely interconnects all disperse networks, locations, clouds and datacenters and can effectively enforce security policies between the different virtual networks and locations as well as offer central security filtering for traffic between these networks and the internet, organizations can effectively split the role of security management from application development.
+By building a central hub (transit network) for security functionality, that securely interconnects all disperse networks, locations, clouds and datacenters and can effectively enforce security policies between the different virtual networks and locations as well as offer central security filtering for traffic between these networks and the internet. Organizations can effectively split the role of security management from application development.
 
 # Design
 
@@ -19,7 +19,7 @@ This Terraform template will automatically deploy a full working environment con
 
 ![VNET peering design](images/fgt-ha-vnet-peering.png)
 
-This Terraform template can also be used to extend or customize based on your requirements. Additional subnets besides the one's mentioned above are not automatically generated. By adapting the Terraform templates you can additional subnets and/or which also require their own routing tables and VNET peering configuration.
+This Terraform template can also be used to extend or customize based on your requirements. Additional subnets besides the one's mentioned above are not automatically generated. By adapting the Terraform templates you can add additional subnets and/or which also require their own routing tables and VNET peering configuration.
 
 
 # Deployment
