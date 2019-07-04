@@ -1,8 +1,8 @@
 # Introduction
 
-As organizations grow, and their consumption of the cloud increases and expands, the need to separate security management from application development increases. Different organizational units tent to build applications in different virtual networks and even different clouds and datacenters. Securing all disperse locations becomes challenging.
+As organizations grow, and their consumption of the cloud increases and expands, the need to separate security management from application development increases. Different organizational units tent to build applications in different virtual networks and even different clouds and data centers. Securing all disperse locations becomes challenging.
 
-By building a central hub (transit network) for security functionality, that securely interconnects all disperse networks, locations, clouds and datacenters and can effectively enforce security policies between the different virtual networks and locations as well as offer central security filtering for traffic between these networks and the internet. Organizations can effectively split the role of security management from application development.
+By building a central hub (transit network) for security functionality, that securely interconnects all disperse networks, locations, clouds and data centers and can effectively enforce security policies between the different virtual networks and locations as well as offer central security filtering for traffic between these networks and the internet. Organizations can effectively split the role of security management from application development.
 
 # Design
 
@@ -43,17 +43,16 @@ After deployment you will be shown the IP address of all deployed components, th
 
 # Requirements and limitations
 
-The Terraform template deployment different resource and it is required to have the access rights and quota in your Microsoft Azure subscription to deploy the resources. 
+The Terraform template deployment different resource and it is required to have the access rights and quota in your Microsoft Azure subscription to deploy the resources.
 
 - The template will deploy Standard F4s VM's to deploy the required active/passive setup
-- Licenses for Fortigate 
+- Licenses for Fortigate
   - BYOL: Demo license can be made available via your Fortinet partner or on our website. These can be injected during deployment or added after deployment.
   - PAYG or OnDemand: These licenses are automaticaly generated during the deployment of the FortiGate systems.
 - With the current Terraform AzureRM provider (1.27.0) it is required to have the configuration for both spokes in the same terraform template file. We have observed that sometimes the VNET peering timing is gives issues with the provider not retrying. You can relaunch the script or Terraform apply command to complete the deployment. This is issues is known with Terraform and will be solved in future version of the provider. This issue is tracked [here](https://github.com/terraform-providers/terraform-provider-azurerm/issues/260).
  
 
 # CI/CD pipeline and testing
-
 
 
 # License
