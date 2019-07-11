@@ -99,6 +99,8 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
             $templateResources | Should Be $expectedResources
         }
 
+        (get-content $templateFileLocation | ConvertFrom-Json -ErrorAction SilentlyContinue).Parameters | Get-Member -MemberType NoteProperty | % Name | Sort-Object
+
         It 'Contains the expected parameters' {
             $expectedTemplateParameters = 'adminPassword',
                                           'adminUsername',
