@@ -1,10 +1,10 @@
 ## Active/Active loadbalanced pair of standalone FortiGates for resilience and scale
 
-[![Build Status](https://dev.azure.com/jvh-2520/Fortinet-Azure/_apis/build/status/Active-Active-ELB-ILB-AZ?branchName=master)](https://dev.azure.com/jvh-2520/Fortinet-Azure/_build/latest?definitionId=11&branchName=master)
+[![Build Status](https://dev.azure.com/jvh-2520/Fortinet-Azure/_apis/build/status/Active-Active-ELB-ILB?branchName=master)](https://dev.azure.com/jvh-2520/Fortinet-Azure/_build/latest?definitionId=9&branchName=master)
 
 ## How to deploy
 
-The FortiGate solution can be deployed using the Azure Portal or Azure CLI. Using the deploy button you will open the Azure portal and you are required to fill in at least 5 variables. You can customize the deployment but referencing the resources like VNET, subnet and other resources.  
+The FortiGate solution can be deployed using the Azure Portal or Azure CLI. Using the deploy button you will open the Azure portal and you are required to fill in at least 5 variables. You can customize the deployment but referencing the resources like VNET, subnet and other resources.
 
 ### Azure Portal
 
@@ -17,7 +17,7 @@ The FortiGate solution can be deployed using the Azure Portal or Azure CLI. Usin
 
 To deploy via Azure Cloud Shell you can connect via the Azure Portal or directly to [https://shell.azure.com/](https://shell.azure.com/).
 
-- Login into the Azure Cloud Shell 
+- Login into the Azure Cloud Shell
 - Run the following command in the Azure Cloud:
 
 `cd ~/clouddrive/ && wget -qO- https://github.com/jvhoof/fortinet-azure-solutions/archive/master.zip | jar x && cd ~/clouddrive/fortinet-azure-solutions/FortiGate/Active-Active-ELB-ILB/ && ./deploy.sh`

@@ -1,10 +1,10 @@
 # Active / Passive High Available FortiGate pair with exterrnal and internal Azure Standard Load Balancer
 
-[![Build Status](https://dev.azure.com/jvh-2520/Fortinet-Azure/_apis/build/status/jvhoof.fortinet-azure-solutions?branchName=master)](https://dev.azure.com/jvh-2520/Fortinet-Azure/_build/latest?definitionId=13&branchName=master)
+[![Build Status](https://dev.azure.com/jvh-2520/Fortinet-Azure/_apis/build/status/Azure-Passive-ELB-ILB?branchName=master)](https://dev.azure.com/jvh-2520/Fortinet-Azure/_build/latest?definitionId=13&branchName=master)
 
 # Introduction
 
-More and more enterprises are turning to Microsoft Azure to extend internal data centers and take advantage of the elasticity of the public cloud. While Azure secures the infrastructure, you are responsible for protecting everything you put in it. Fortinet Security Fabric provides Azure and Office 365 users the broad protection, native integration and automated management enabling customers with consistent enforcement and visibility across their multi-cloud infrastructure. 
+More and more enterprises are turning to Microsoft Azure to extend internal data centers and take advantage of the elasticity of the public cloud. While Azure secures the infrastructure, you are responsible for protecting everything you put in it. Fortinet Security Fabric provides Azure and Office 365 users the broad protection, native integration and automated management enabling customers with consistent enforcement and visibility across their multi-cloud infrastructure.
 
 # Design
 
@@ -43,7 +43,7 @@ The FortiGate solution can be deployed using the Azure Portal or Azure CLI. Ther
 For Microsoft Azure there is a second option by using the Azure Cloud Shell. The Azure Cloud Shell is an in-browser CLI that contains all tools for deployment into Microsoft Azure. It is accesible via the Azure Portal or directly via [https://shell.azure.com/](https://shell.azure.com). You can copy and past the below one-liner to get start with your deployment.
 To deploy via Azure Cloud Shell you can connect via the Azure Portal or directly to [https://shell.azure.com/](https://shell.azure.com/).
 
-- Login into the Azure Cloud Shell 
+- Login into the Azure Cloud Shell
 - Run the following command in the Azure Cloud:
 
 `cd ~/clouddrive/ && wget -qO- https://github.com/jvhoof/fortinet-azure-solutions/archive/master.zip | jar x && cd ~/clouddrive/fortinet-azure-solutions-master/FortiGate/Active-Passive-ELB-ILB/ && ./deploy.sh`
@@ -56,7 +56,7 @@ After deployment you will be shown the IP address of all deployed components, th
 
 ## Post deployment
 
-During the deployment the FortiGate systems are pre-configured with the required routing, clustering information, ... This information can be found in the 'customdata' field in the ARM template. 
+During the deployment the FortiGate systems are pre-configured with the required routing, clustering information, ... This information can be found in the 'customdata' field in the ARM template.
 
 After deployment you need to apply the license unless you are using PAYG licensing.  To apply BYOL licenses, first register the licenses with http://support.fortinet.com and download the .lic files.  Note, these files may not work until 30 minutes after it's initial created.
 
@@ -65,17 +65,17 @@ Next, connect via HTTPS to both FortiGates via their management addresses and up
 Once, licensed and rebooted, you can proceed to configure firewall policy and other security features of the FortiGate as you like. The SDN connector can be used to pull information from Azure using the Azure API.
 
 A step by step guide can be found on our [documentation site](https://docs2.fortinet.com/vm/azure/fortigate/6.0/use-case-automatically-updating-dynamic-addresses-using-fabric-connector/6.0.0/502895/overview)
-    
+
 
 # Requirements and limitations
 
-The ARM template deployment different resource and it is required to have the access rights and quota in your Microsoft Azure subscription to deploy the resources. 
+The ARM template deployment different resource and it is required to have the access rights and quota in your Microsoft Azure subscription to deploy the resources.
 
 - The template will deploy Standard F4s VM's to deploy the required active/passive setup
-- Licenses for Fortigate 
+- Licenses for Fortigate
   - BYOL: Demo license can be made available via your Fortinet partner or on our website. These can be injected during deployment or added after deployment.
   - PAYG or OnDemand: These licenses are automaticaly generated during the deployment of the FortiGate systems.
- 
+
 # CI/CD pipeline and testing
 
 
