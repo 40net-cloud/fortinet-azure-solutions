@@ -69,7 +69,16 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
             $expectedResources = 'Microsoft.Resources/deployments',
                                  'Microsoft.Compute/availabilitySets',
                                  'Microsoft.Network/routeTables',
+                                 'Microsoft.Network/routeTables',
+                                 'Microsoft.Network/routeTables',
+                                 'Microsoft.Network/routeTables',
                                  'Microsoft.Network/virtualNetworks',
+                                 'Microsoft.Network/virtualNetworks',
+                                 'Microsoft.Network/virtualNetworks',
+                                 'Microsoft.Network/virtualNetworks/virtualNetworkPeerings',
+                                 'Microsoft.Network/virtualNetworks/virtualNetworkPeerings',
+                                 'Microsoft.Network/virtualNetworks/virtualNetworkPeerings',
+                                 'Microsoft.Network/virtualNetworks/virtualNetworkPeerings',
                                  'Microsoft.Network/loadBalancers',
                                  'Microsoft.Network/networkSecurityGroups',
                                  'Microsoft.Network/publicIPAddresses',
@@ -118,10 +127,20 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
                                           'subnet4Prefix',
                                           'subnet5Name',
                                           'subnet5Prefix',
+                                          'subnet6Name',
+                                          'subnet6Prefix',
                                           'vnetAddressPrefix',
+                                          'vnetAddressPrefixSpoke1',
+                                          'vnetAddressPrefixSpoke2',
                                           'vnetName',
+                                          'vnetNameSpoke1',
+                                          'vnetNameSpoke2',
                                           'vnetNewOrExisting',
-                                          'vnetResourceGroup'
+                                          'vnetNewOrExistingSpoke1',
+                                          'vnetNewOrExistingSpoke2',
+                                          'vnetResourceGroup',
+                                          'vnetResourceGroupSpoke1',
+                                          'vnetResourceGroupSpoke2'
             $templateParameters = (get-content $templateFileLocation | ConvertFrom-Json -ErrorAction SilentlyContinue).Parameters | Get-Member -MemberType NoteProperty | % Name | sort
             $templateParameters | Should Be $expectedTemplateParameters
         }
@@ -137,23 +156,18 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
         # Validate all ARM templates one by one
         $testsErrorFound = $false
 
-        $params = @{ 'ResourceGroupName'=$testsResourceGroupName;
-                     'TemplateFile'='azuredeploy.json';
-                     'TemplateParameterFile'='azuredeploy.parameters.json';
-                     'adminPassword'=$testsAdminPassword;
-                     'FortiGateNamePrefix'=$testsPrefix;
-                     'publicIPName'=$testsPrefix + '-PIP';
-                     'publicIP2Name'=$testsPrefix + '-PIP2';
-                     'publicIP3Name'=$testsPrefix + '-PIP3';
-                     'vnetName'=$testsPrefix + '-VNET';
-                     'vnetResourceGroup'=$testsResourceGroupName;
+        $params = @{ 'adminUsername'=$testsAdminUsername
+                     'adminPassword'=$testsResourceGroupName
+                     'FortiGateNamePrefix'=$testsPrefix
                     }
+        $publicIPName = "FGTAMgmtPublicIP"
+        $publicIP2Name = "FGTBMgmtPublicIP"
 
-        It "Test Deployment of ARM template $templateFileName with parameter file $templateParameterFileName" {
-            (Test-AzureRmResourceGroupDeployment @params ).Count | Should not BeGreaterThan 0
+        It "Test Deployment of ARM template $templateFileName" {
+            (Test-AzureRmResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName" -TemplateFile "$templateFileName" -TemplateParameterObject $params).Count | Should not BeGreaterThan 0
         }
-        It "Deployment of ARM template $templateFileName with parameter file $templateParameterFileName" {
-            $resultDeployment = New-AzureRmResourceGroupDeployment @params
+        It "Deployment of ARM template $templateFileName" {
+            $resultDeployment = New-AzureRmResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName" -TemplateFile "$templateFileName" -TemplateParameterObject $params
             Write-Host ($resultDeployment | Format-Table | Out-String)
             Write-Host ("Deployment state: " + $resultDeployment.ProvisioningState | Out-String)
             $resultDeployment.ProvisioningState | Should Be "Succeeded"
