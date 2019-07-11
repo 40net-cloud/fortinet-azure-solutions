@@ -88,7 +88,7 @@
     },
     "publicIPName": {
       "type": "string",
-      "defaultValue": "",
+      "defaultValue": "FGTAPClusterPublicIP",
       "metadata": {
         "description": "Name of Public IP address element"
       }
@@ -102,7 +102,7 @@
     },
     "publicIP2Name": {
       "type": "string",
-      "defaultValue": "",
+      "defaultValue": "FGTAMgmtPublicIP",
       "metadata": {
         "description": "Name of Public IP address element"
       }
@@ -116,7 +116,7 @@
     },
     "publicIP3Name": {
       "type": "string",
-      "defaultValue": "",
+      "defaultValue": "FGTBMgmtPublicIP",
       "metadata": {
         "description": "Name of Public IP address element"
       }

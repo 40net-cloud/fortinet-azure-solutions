@@ -41,8 +41,6 @@ $testsResourceGroupName = "FORTIQA-$testsRandom-$templateName"
 $testsAdminUsername = "azureuser"
 $testsResourceGroupLocation = "westeurope"
 
-(get-content $templateFileLocation | ConvertFrom-Json -ErrorAction SilentlyContinue).Parameters | Get-Member -MemberType NoteProperty | % Name | Sort-Object
-
 Describe 'ARM Templates Test : Validation & Test Deployment' {
     Context 'Template Validation' {
         It 'Has a JSON template' {
@@ -144,8 +142,8 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
                                           'vnetResourceGroupSpoke1',
                                           'vnetResourceGroupSpoke2'
             $templateParameters = (get-content $templateFileLocation | ConvertFrom-Json -ErrorAction SilentlyContinue).Parameters | Get-Member -MemberType NoteProperty | % Name | Sort-Object
-            $templateParameters | Should Be $expectedTemplateParameters
             Write-Host ( $templateParameters | Out-String )
+            $templateParameters | Should Be $expectedTemplateParameters
         }
 
     }
