@@ -38,8 +38,8 @@ $templateParameterFileLocation = "$sourcePath\$templateParameterFileName"
 $testsRandom = Get-Random 10001
 $testsPrefix = "FORTIQA"
 $testsResourceGroupName = "FORTIQA-$testsRandom-$templateName"
-$testsAdminPassword = $testsResourceGroupName | ConvertTo-SecureString -AsPlainText -Force
-$testsResourceGroupLocation = "West Europe"
+$testsAdminUsername = "azureuser"
+$testsResourceGroupLocation = "westeurope"
 
 Describe 'ARM Templates Test : Validation & Test Deployment' {
     Context 'Template Validation' {
