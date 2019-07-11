@@ -10,8 +10,8 @@ steps:
   displayName: 'Azure PowerShell script: FilePath'
   inputs:
     azureSubscription: 'AzureSubscription'
-    ScriptPath: 'FortiGate/Active-Passive-ELB-ILB/test/invokePester.ps1'
-    ScriptArguments: '-templatename FortiGate/Active-Passive-ELB-ILB'
+    ScriptPath: 'FortiGate/VNET-Peering/test/invokePester.ps1'
+    ScriptArguments: '-templatename FortiGate/VNET-Peering'
     azurePowerShellVersion: LatestVersion
 
 
@@ -20,7 +20,7 @@ steps:
   inputs:
     testRunner: NUnit
     testResultsFiles: '**\TEST-*.xml'
-    testRunTitle: 'FortiGate ARM Template test Active/Passive'
+    testRunTitle: 'FortiGate ARM Template test Active/Passive VNET Peering'
 
 trigger:
   branches:
@@ -28,6 +28,6 @@ trigger:
     - master
   paths:
     exclude:
-    - FortiGate/Active-Passive-ELB-ILB/*.md
+    - FortiGate/VNET-Peering/*.md
     include:
-    - FortiGate/Active-Passive-ELB-ILB/*
+    - FortiGate/VNET-Peering/*
