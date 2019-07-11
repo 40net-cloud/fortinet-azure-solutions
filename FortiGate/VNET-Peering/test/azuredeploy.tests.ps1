@@ -41,6 +41,9 @@ $testsResourceGroupName = "FORTIQA-$testsRandom-$templateName"
 $testsAdminUsername = "azureuser"
 $testsResourceGroupLocation = "westeurope"
 
+(get-content $templateFileLocation | ConvertFrom-Json -ErrorAction SilentlyContinue).Parameters | Get-Member -MemberType NoteProperty | % Name | Sort-Object
+
+
 Describe 'ARM Templates Test : Validation & Test Deployment' {
     Context 'Template Validation' {
         It 'Has a JSON template' {
@@ -98,8 +101,6 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
             $templateResources = (get-content $templateFileLocation | ConvertFrom-Json -ErrorAction SilentlyContinue).Resources.type
             $templateResources | Should Be $expectedResources
         }
-
-        (get-content $templateFileLocation | ConvertFrom-Json -ErrorAction SilentlyContinue).Parameters | Get-Member -MemberType NoteProperty | % Name | Sort-Object
 
         It 'Contains the expected parameters' {
             $expectedTemplateParameters = 'adminPassword',
