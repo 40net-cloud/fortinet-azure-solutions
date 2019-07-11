@@ -141,7 +141,7 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
                                           'vnetResourceGroup',
                                           'vnetResourceGroupSpoke1',
                                           'vnetResourceGroupSpoke2'
-            $templateParameters = (get-content $templateFileLocation | ConvertFrom-Json -ErrorAction SilentlyContinue).Parameters | Get-Member -MemberType NoteProperty | % Name | sort
+            $templateParameters = (get-content $templateFileLocation | ConvertFrom-Json -ErrorAction SilentlyContinue).Parameters | Get-Member -MemberType NoteProperty | % Name | Sort-Object
             $templateParameters | Should Be $expectedTemplateParameters
         }
 
