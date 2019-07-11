@@ -43,7 +43,6 @@ $testsResourceGroupLocation = "westeurope"
 
 (get-content $templateFileLocation | ConvertFrom-Json -ErrorAction SilentlyContinue).Parameters | Get-Member -MemberType NoteProperty | % Name | Sort-Object
 
-
 Describe 'ARM Templates Test : Validation & Test Deployment' {
     Context 'Template Validation' {
         It 'Has a JSON template' {
@@ -146,6 +145,7 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
                                           'vnetResourceGroupSpoke2'
             $templateParameters = (get-content $templateFileLocation | ConvertFrom-Json -ErrorAction SilentlyContinue).Parameters | Get-Member -MemberType NoteProperty | % Name | Sort-Object
             $templateParameters | Should Be $expectedTemplateParameters
+            Write-Host ( $templateParameters | Out-String )
         }
 
     }
@@ -163,8 +163,8 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
                      'adminPassword'=$testsResourceGroupName
                      'FortiGateNamePrefix'=$testsPrefix
                     }
-        $publicIPName = "FGTAMgmtPublicIP"
-        $publicIP2Name = "FGTBMgmtPublicIP"
+        $publicIP2Name = "FGTAMgmtPublicIP"
+        $publicIP3Name = "FGTBMgmtPublicIP"
 
         It "Test Deployment of ARM template $templateFileName" {
             (Test-AzureRmResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName" -TemplateFile "$templateFileName" -TemplateParameterObject $params).Count | Should not BeGreaterThan 0
@@ -181,16 +181,12 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
             $result | Should Not Be $null
         }
 
-        8443, 22 | Foreach-Object {
+        443, 22 | Foreach-Object {
             it "Port [$_] is listening" {
-#               The public IP on the ELB doesn't respond to management ports in this setup
-                #$result = Get-AzureRmPublicIpAddress -Name $params['publicIPName'] -ResourceGroupName $params['ResourceGroupName']
-                #$portListening = (Test-NetConnection -Port $_ -ComputerName $result.IpAddress).TcpTestSucceeded
-                #$portListening | Should -Be $true
-                $result = Get-AzureRmPublicIpAddress -Name $params['publicIP2Name'] -ResourceGroupName $params['ResourceGroupName']
+                $result = Get-AzureRmPublicIpAddress -Name $publicIP2Name -ResourceGroupName $testsResourceGroupName
                 $portListening = (Test-NetConnection -Port $_ -ComputerName $result.IpAddress).TcpTestSucceeded
                 $portListening | Should -Be $true
-                $result = Get-AzureRmPublicIpAddress -Name $params['publicIP3Name'] -ResourceGroupName $params['ResourceGroupName']
+                $result = Get-AzureRmPublicIpAddress -Name $publicIP3Name -ResourceGroupName $testsResourceGroupName
                 $portListening = (Test-NetConnection -Port $_ -ComputerName $result.IpAddress).TcpTestSucceeded
                 $portListening | Should -Be $true
             }
