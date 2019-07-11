@@ -13,12 +13,12 @@ set +e
 
 if [ -z "$DEPLOY_LOCATION" ]
 then
-    # Input location 
+    # Input location
     echo -n "Enter location (e.g. eastus2): "
     stty_orig=`stty -g` # save original terminal setting.
     read location         # read the location
     stty $stty_orig     # restore terminal setting.
-    if [ -z "$location" ] 
+    if [ -z "$location" ]
     then
         location="eastus2"
     fi
@@ -31,12 +31,12 @@ echo ""
 
 if [ -z "$DEPLOY_PREFIX" ]
 then
-    # Input prefix 
+    # Input prefix
     echo -n "Enter prefix: "
     stty_orig=`stty -g` # save original terminal setting.
     read prefix         # read the prefix
     stty $stty_orig     # restore terminal setting.
-    if [ -z "$prefix" ] 
+    if [ -z "$prefix" ]
     then
         prefix="FORTI"
     fi
@@ -50,7 +50,7 @@ rg="$prefix-RG"
 
 if [ -z "$DEPLOY_PASSWORD" ]
 then
-    # Input password 
+    # Input password
     echo -n "Enter password: "
     stty_orig=`stty -g` # save original terminal setting.
     stty -echo          # turn-off echoing.
@@ -83,11 +83,11 @@ echo "--> Validation deployment in $rg resource group ..."
 az group deployment validate --resource-group "$rg" \
                            --template-file azuredeploy.json \
                            --parameters adminUsername="$username" adminPassword=$passwd FortiGateNamePrefix=$prefix
-result=$? 
-if [ $result != 0 ]; 
-then 
+result=$?
+if [ $result != 0 ];
+then
     echo "--> Validation failed ..."
-    exit $rc; 
+    exit $rc;
 fi
 
 # Deploy NextGen Firewall resources
@@ -95,12 +95,12 @@ echo "--> Deployment of $rg resources ..."
 az group deployment create --resource-group "$rg" \
                            --template-file azuredeploy.json \
                            --parameters adminUsername="$username" adminPassword=$passwd FortiGateNamePrefix=$prefix
-result=$? 
-if [[ $result != 0 ]]; 
-then 
+result=$?
+if [[ $result != 0 ]];
+then
     echo "--> Deployment failed ..."
-    exit $rc; 
-else 
+    exit $rc;
+else
 echo "
 ##############################################################################################################
  IP Assignment:

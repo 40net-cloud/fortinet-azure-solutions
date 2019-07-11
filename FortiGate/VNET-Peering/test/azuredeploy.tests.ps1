@@ -3,7 +3,7 @@
 .SYNOPSIS
     Tests a specific ARM template
 .EXAMPLE
-    Invoke-Pester 
+    Invoke-Pester
 .NOTES
     This file has been created as an example of using Pester to evaluate ARM templates
 #>
@@ -32,7 +32,7 @@ $templateFileLocation = "$sourcePath\$templateFileName"
 $templateMetadataFileName = "metadata.json"
 $templateMetadataFileLocation = "$sourcePath\$templateMetadataFileName"
 $templateParameterFileName = "azuredeploy.parameters.json"
-$templateParameterFileLocation = "$sourcePath\$templateParameterFileName" 
+$templateParameterFileLocation = "$sourcePath\$templateParameterFileName"
 
 # Basic Variables
 $testsRandom = Get-Random 10001
@@ -43,15 +43,15 @@ $testsResourceGroupLocation = "West Europe"
 
 Describe 'ARM Templates Test : Validation & Test Deployment' {
     Context 'Template Validation' {
-        It 'Has a JSON template' {        
+        It 'Has a JSON template' {
             $templateFileLocation | Should Exist
         }
-        
-        It 'Has a parameters file' {        
+
+        It 'Has a parameters file' {
             $templateParameterFileLocation | Should Exist
         }
-		
-        It 'Has a metadata file' {        
+
+        It 'Has a metadata file' {
             $templateMetadataFileLocation | Should Exist
         }
 
@@ -59,12 +59,12 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
             $expectedProperties = '$schema',
             'contentVersion',
             'parameters',
-            'resources',                                
+            'resources',
             'variables'
             $templateProperties = (get-content $templateFileLocation | ConvertFrom-Json -ErrorAction SilentlyContinue) | Get-Member -MemberType NoteProperty | % Name
             $templateProperties | Should Be $expectedProperties
         }
-        
+
         It 'Creates the expected Azure resources' {
             $expectedResources = 'Microsoft.Resources/deployments',
                                  'Microsoft.Compute/availabilitySets',
@@ -89,7 +89,7 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
             $templateResources = (get-content $templateFileLocation | ConvertFrom-Json -ErrorAction SilentlyContinue).Resources.type
             $templateResources | Should Be $expectedResources
         }
-        
+
         It 'Contains the expected parameters' {
             $expectedTemplateParameters = 'adminPassword',
                                           'adminUsername',
@@ -159,7 +159,7 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
             $resultDeployment.ProvisioningState | Should Be "Succeeded"
         }
         It "Deployment in Azure validation" {
-            $result = Get-AzureRmVM | Where-Object { $_.Name -like "$testsPrefix*" } 
+            $result = Get-AzureRmVM | Where-Object { $_.Name -like "$testsPrefix*" }
             Write-Host ($result | Format-Table | Out-String)
             $result | Should Not Be $null
         }

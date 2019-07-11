@@ -5,19 +5,19 @@
     "adminUsername": {
       "type": "string",
       "metadata": {
-        "description": "Username for the Virtual Machine."
+        "description": "Username for the Virtual Machine"
       }
     },
     "adminPassword": {
       "type": "securestring",
       "metadata": {
-        "description": "Password for the Virtual Machine."
+        "description": "Password for the Virtual Machine"
       }
     },
     "FortiGateNamePrefix": {
       "type": "string",
       "metadata": {
-        "description": "Name for FortiGate virtual appliances (A & B will be appended to the end of each respectively)."
+        "description": "Name for FortiGate virtual appliances (A & B will be appended to the end of each respectively)"
       }
     },
     "FortiGateImageSKU": {
@@ -61,7 +61,7 @@
         "existing"
       ],
       "metadata": {
-        "description": "Identify if to use a public IP, and if so whether it's new"
+        "description": "Choose between an existing or new public IP for the External Azure Load Balancer"
       }
     },
     "publicIP2NewOrExisting": {
@@ -72,7 +72,7 @@
         "existing"
       ],
       "metadata": {
-        "description": "Whether to use a public IP and if so whether it is new"
+        "description": "Choose between an existing or new public IP for the Active Fortigate"
       }
     },
     "publicIP3NewOrExisting": {
@@ -83,49 +83,49 @@
         "existing"
       ],
       "metadata": {
-        "description": "Whether to use a public IP and if so whether it is new"
+        "description": "Choose between an existing or new public IP for the Passive Fortigate"
       }
     },
     "publicIPName": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
-        "description": "Name of Public IP address element."
+        "description": "Name of Public IP address element"
       }
     },
     "publicIPResourceGroup": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
-        "description": "Resource group to which the Public IP belongs."
+        "description": "Resource group to which the Public IP belongs"
       }
     },
     "publicIP2Name": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
-        "description": "Name of Public IP address element."
+        "description": "Name of Public IP address element"
       }
     },
     "publicIP2ResourceGroup": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
-        "description": "Resource group to which the Public IP belongs."
+        "description": "Resource group to which the Public IP belongs"
       }
     },
     "publicIP3Name": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
-        "description": "Name of Public IP address element."
+        "description": "Name of Public IP address element"
       }
     },
     "publicIP3ResourceGroup": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
-        "description": "Resource group to which the Public IP belongs."
+        "description": "Resource group to which the Public IP belongs"
       }
     },
     "publicIPAddressType": {
@@ -154,7 +154,7 @@
       "type": "string",
       "defaultValue": "",
       "metadata": {
-        "description": "Name of the Azure virtual network."
+        "description": "Name of the Azure virtual network"
       }
     },
     "vnetResourceGroup": {
@@ -494,7 +494,7 @@
          "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deplymentTemplate.json#",
          "contentVersion": "1.0.0.0",
          "resources": []
-       } 
+       }
       }
     },
     {
@@ -971,7 +971,7 @@
       },
       "name": "[variables('publicIPName')]",
       "location": "[resourceGroup().location]",
-      "sku": 
+      "sku":
       {
         "name": "Standard"
       },
@@ -988,7 +988,7 @@
       },
       "name": "[variables('publicIP2Name')]",
       "location": "[resourceGroup().location]",
-      "sku": 
+      "sku":
       {
         "name": "Standard"
       },
@@ -1005,7 +1005,7 @@
       },
       "name": "[variables('publicIP3Name')]",
       "location": "[resourceGroup().location]",
-      "sku": 
+      "sku":
       {
         "name": "Standard"
       },
@@ -1021,7 +1021,7 @@
       "tags": {
         "provider": "[toUpper(parameters('FortinetTags').provider)]"
       },
-      "sku": 
+      "sku":
       {
         "name": "Standard"
       },
