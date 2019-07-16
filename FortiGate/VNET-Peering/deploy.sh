@@ -2,7 +2,7 @@
 echo "
 ##############################################################################################################
 #
-# Deployment of a Fortigate VNET peering
+# Deployment of a Fortigate VNET peering setup
 #
 ##############################################################################################################
 
@@ -73,12 +73,12 @@ echo ""
 echo "--> Using username '$username' ..."
 echo ""
 
-# Create resource group for NextGen Firewall resources
+# Create resource group
 echo ""
 echo "--> Creating $rg resource group ..."
 az group create --location "$location" --name "$rg"
 
-# Validate template
+# Template validation
 echo "--> Validation deployment in $rg resource group ..."
 az group deployment validate --resource-group "$rg" \
                            --template-file azuredeploy.json \
@@ -90,7 +90,7 @@ then
     exit $rc;
 fi
 
-# Deploy NextGen Firewall resources
+# Template deployment
 echo "--> Deployment of $rg resources ..."
 az group deployment create --resource-group "$rg" \
                            --template-file azuredeploy.json \
@@ -103,10 +103,16 @@ then
 else
 echo "
 ##############################################################################################################
- IP Assignment:
+ Deployed FortiGate IP addesses
 "
 query="[?virtualMachine.name.starts_with(@, '$prefix')].{virtualMachine:virtualMachine.name, publicIP:virtualMachine.network.publicIpAddresses[0].ipAddress,privateIP:virtualMachine.network.privateIpAddresses[0]}"
 az vm list-ip-addresses --query "$query" --output tsv
+echo "
+ IP Public Azure Load Balancer:"
+publicIpIds=$(az network lb show -g "$rg" -n "$prefix-ExternalLoadBalancer" --query "frontendIpConfigurations[].publicIpAddress.id" --out tsv)
+while read publicIpId; do
+    az network public-ip show --ids "$publicIpId" --query "{ ipAddress: ipAddress, fqdn: dnsSettings.fqdn }" --out tsv
+done <<< "$publicIpIds"
 echo "
 ##############################################################################################################
 "
