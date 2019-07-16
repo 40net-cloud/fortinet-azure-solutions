@@ -385,10 +385,10 @@
     "routeTableSpoke2Name": "[concat(parameters('FortiGateNamePrefix'),'-RT-SPOKE-2')]",
     "routeTableSpoke2Id": "[resourceId('Microsoft.Network/routeTables',variables('routeTableSpoke2Name'))]",
 
-    "hubtoSpoke1PeeringName": "[concat(variables('vnetName'), '/', variables('vnetName'), 'To', variables('vnetNameSpoke1'))]",
-    "spoke1toHubPeeringName": "[concat(variables('vnetNameSpoke1'), '/', variables('vnetNameSpoke1'), 'To', variables('vNetName'))]",
-    "hubtoSpoke2PeeringName": "[concat(variables('vnetName'), '/', variables('vnetName'), 'To', variables('vnetNameSpoke2'))]",
-    "spoke2toHubPeeringName": "[concat(variables('vnetNameSpoke2'), '/', variables('vnetNameSpoke2'), 'To', variables('vnetName'))]",
+    "hubtoSpoke1PeeringName": "[concat(variables('vnetName'), 'To', variables('vnetNameSpoke1'))]",
+    "spoke1toHubPeeringName": "[concat(variables('vnetNameSpoke1'), 'To', variables('vNetName'))]",
+    "hubtoSpoke2PeeringName": "[concat(variables('vnetName'), 'To', variables('vnetNameSpoke2'))]",
+    "spoke2toHubPeeringName": "[concat(variables('vnetNameSpoke2'), 'To', variables('vnetName'))]",
 
     "network_NIC_fg11_Name": "[concat(variables('fg1VmName'),'-Nic1')]",
     "network_NIC_fg11_Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('network_NIC_fg11_Name'))]",
@@ -720,7 +720,49 @@
             }
           }
         ]
-      }
+      },
+      "resources": [
+        {
+          "apiVersion": "2016-06-01",
+          "type": "virtualNetworkPeerings",
+          "name": "[variables('hubtoSpoke1PeeringName')]",
+          "location": "[resourceGroup().location]",
+          "dependsOn": [
+              "[concat('Microsoft.Network/virtualNetworks/', variables('vnetName'))]",
+              "[concat('Microsoft.Network/virtualNetworks/', variables('vnetNameSpoke1'))]"
+          ],
+          "comments": "Hub to Spoke 1",
+          "properties": {
+              "allowVirtualNetworkAccess": "true",
+              "allowForwardedTraffic": "true",
+              "allowGatewayTransit": "false",
+              "useRemoteGateways": "false",
+              "remoteVirtualNetwork": {
+                  "id": "[variables('vnetIDSpoke1')]"
+              }
+          }
+        },
+        {
+          "apiVersion": "[variables('networkApiVersion')]",
+          "type": "virtualNetworkPeerings",
+          "name": "[variables('hubtoSpoke2PeeringName')]",
+          "location": "[resourceGroup().location]",
+          "dependsOn": [
+              "[concat('Microsoft.Network/virtualNetworks/', variables('vnetName'))]",
+              "[concat('Microsoft.Network/virtualNetworks/', variables('vnetNameSpoke2'))]"
+          ],
+          "comments": "HUB to Spoke 2",
+          "properties": {
+              "allowVirtualNetworkAccess": "true",
+              "allowForwardedTraffic": "true",
+              "allowGatewayTransit": "false",
+              "useRemoteGateways": "false",
+              "remoteVirtualNetwork": {
+                  "id": "[variables('vnetIDSpoke2')]"
+              }
+          }
+        }
+      ]
     },
     {
       "condition": "[equals(parameters('vnetNewOrExistingSpoke1'), 'new')]",
@@ -748,7 +790,29 @@
             }
           }
         ]
-      }
+      },
+      "resources": [
+        {
+          "apiVersion": "[variables('networkApiVersion')]",
+          "type": "virtualNetworkPeerings",
+          "name": "[variables('spoke1toHubPeeringName')]",
+          "location": "[resourceGroup().location]",
+          "dependsOn": [
+              "[concat('Microsoft.Network/virtualNetworks/', variables('vnetName'))]",
+              "[concat('Microsoft.Network/virtualNetworks/', variables('vnetNameSpoke1'))]"
+          ],
+          "comments": "Spoke 1 to Hub",
+          "properties": {
+              "allowVirtualNetworkAccess": "true",
+              "allowForwardedTraffic": "true",
+              "allowGatewayTransit": "false",
+              "useRemoteGateways": "false",
+              "remoteVirtualNetwork": {
+                  "id": "[variables('vnetID')]"
+              }
+          }
+        }
+      ]
     },
     {
       "condition": "[equals(parameters('vnetNewOrExistingSpoke2'), 'new')]",
@@ -776,87 +840,29 @@
             }
           }
         ]
-      }
-    },
-    {
-      "apiVersion": "2016-06-01",
-      "type": "Microsoft.Network/virtualNetworks/virtualNetworkPeerings",
-      "name": "[variables('hubtoSpoke1PeeringName')]",
-      "location": "[resourceGroup().location]",
-      "dependsOn": [
-          "[concat('Microsoft.Network/virtualNetworks/', variables('vnetName'))]",
-          "[concat('Microsoft.Network/virtualNetworks/', variables('vnetNameSpoke1'))]"
-      ],
-      "comments": "Hub to Spoke 1",
-      "properties": {
-          "allowVirtualNetworkAccess": "true",
-          "allowForwardedTraffic": "true",
-          "allowGatewayTransit": "false",
-          "useRemoteGateways": "false",
-          "remoteVirtualNetwork": {
-              "id": "[variables('vnetIDSpoke1')]"
+      },
+      "resources": [
+        {
+          "apiVersion": "[variables('networkApiVersion')]",
+          "type": "virtualNetworkPeerings",
+          "name": "[variables('spoke2toHubPeeringName')]",
+          "location": "[resourceGroup().location]",
+          "dependsOn": [
+              "[concat('Microsoft.Network/virtualNetworks/', variables('vnetName'))]",
+              "[concat('Microsoft.Network/virtualNetworks/', variables('vnetNameSpoke2'))]"
+          ],
+          "comments": "Spoke 2 to Hub",
+          "properties": {
+              "allowVirtualNetworkAccess": "true",
+              "allowForwardedTraffic": "true",
+              "allowGatewayTransit": "false",
+              "useRemoteGateways": "false",
+              "remoteVirtualNetwork": {
+                  "id": "[variables('vnetID')]"
+              }
           }
-      }
-    },
-    {
-      "apiVersion": "[variables('networkApiVersion')]",
-      "type": "Microsoft.Network/virtualNetworks/virtualNetworkPeerings",
-      "name": "[variables('hubtoSpoke2PeeringName')]",
-      "location": "[resourceGroup().location]",
-      "dependsOn": [
-          "[concat('Microsoft.Network/virtualNetworks/', variables('vnetName'))]",
-          "[concat('Microsoft.Network/virtualNetworks/', variables('vnetNameSpoke2'))]"
-      ],
-      "comments": "HUB to Spoke 2",
-      "properties": {
-          "allowVirtualNetworkAccess": "true",
-          "allowForwardedTraffic": "true",
-          "allowGatewayTransit": "false",
-          "useRemoteGateways": "false",
-          "remoteVirtualNetwork": {
-              "id": "[variables('vnetIDSpoke2')]"
-          }
-      }
-    },
-    {
-      "apiVersion": "[variables('networkApiVersion')]",
-      "type": "Microsoft.Network/virtualNetworks/virtualNetworkPeerings",
-      "name": "[variables('spoke1toHubPeeringName')]",
-      "location": "[resourceGroup().location]",
-      "dependsOn": [
-          "[concat('Microsoft.Network/virtualNetworks/', variables('vnetName'))]",
-          "[concat('Microsoft.Network/virtualNetworks/', variables('vnetNameSpoke1'))]"
-      ],
-      "comments": "Spoke 1 to Hub",
-      "properties": {
-          "allowVirtualNetworkAccess": "true",
-          "allowForwardedTraffic": "true",
-          "allowGatewayTransit": "false",
-          "useRemoteGateways": "false",
-          "remoteVirtualNetwork": {
-              "id": "[variables('vnetID')]"
-          }
-      }
-    },
-    {
-      "apiVersion": "[variables('networkApiVersion')]",
-      "type": "Microsoft.Network/virtualNetworks/virtualNetworkPeerings",
-      "name": "[variables('spoke2toHubPeeringName')]",
-      "location": "[resourceGroup().location]",
-      "dependsOn": [
-          "[concat('Microsoft.Network/virtualNetworks/', variables('vnetName'))]",
-          "[concat('Microsoft.Network/virtualNetworks/', variables('vnetNameSpoke2'))]"
-      ],
-      "comments": "Spoke 2 to Hub",
-      "properties": {
-          "allowVirtualNetworkAccess": "true",
-          "allowForwardedTraffic": "true",
-          "allowGatewayTransit": "false",
-          "useRemoteGateways": "false",
-          "remoteVirtualNetwork": {
-              "id": "[variables('vnetID')]"
-          }
-      }
+        }
+      ]
     },
     {
       "apiVersion": "[variables('networkApiVersion')]",

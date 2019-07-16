@@ -51,10 +51,6 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
             $templateParameterFileLocation | Should Exist
         }
 
-        It 'Has a metadata file' {
-            $templateMetadataFileLocation | Should Exist
-        }
-
         It 'Converts from JSON and has the expected properties' {
             $expectedProperties = '$schema',
             'contentVersion',
