@@ -2,14 +2,9 @@
 echo "
 ##############################################################################################################
 #
-# Deployment of a Fortigate VNET peering setup
-#
 ##############################################################################################################
 
 "
-
-# Stop on error
-set +e
 
 if [ -z "$DEPLOY_LOCATION" ]
 then
@@ -20,13 +15,13 @@ then
     stty $stty_orig     # restore terminal setting.
     if [ -z "$location" ]
     then
-        location="eastus2"
+        location="westeurope"
     fi
 else
     location="$DEPLOY_LOCATION"
 fi
 echo ""
-echo "--> Deployment in '$location' location ..."
+echo "--> Deployment in $location location ..."
 echo ""
 
 if [ -z "$DEPLOY_PREFIX" ]
@@ -38,13 +33,13 @@ then
     stty $stty_orig     # restore terminal setting.
     if [ -z "$prefix" ]
     then
-        prefix="FORTI"
+        prefix="CUDA"
     fi
 else
     prefix="$DEPLOY_PREFIX"
 fi
 echo ""
-echo "--> Using prefix '$prefix' for all resources ..."
+echo "--> Using prefix $prefix for all resources ..."
 echo ""
 rg="$prefix-RG"
 
@@ -63,59 +58,53 @@ else
     echo ""
 fi
 
-if [ -z "$DEPLOY_USERNAME" ]
-then
-    username="azureuser"
-else
-    username="$DEPLOY_USERNAME"
-fi
-echo ""
-echo "--> Using username '$username' ..."
-echo ""
+for TIER in ProtectedA ProtectedB SPOKE1 SPOKE2
+do
+    echo "--> Deployment $TIER NIC ..."
+    az vm nic show --resource-group "$rg" --nic "$prefix-VM-$TIER-NIC" --vm-name "$prefix-VM-$TIER"  &> /dev/null
+    if [[ $? != 0 ]];
+    then
+        vnet="$prefix-VNET"
+        if [[ "$TIER" == "SPOKE1" || "$TIER" == "SPOKE2" ]]
+        then
+            vnet="$prefix-VNET-$TIER"
+        fi
+        az network nic create --resource-group "$rg" --name "$prefix-VM-$TIER-NIC" --vnet-name "$vnet" --subnet "${TIER}Subnet"
+        result=$?
+        if [[ $result != 0 ]];
+        then
+            echo "--> Deployment $TIER NIC failed ..."
+            exit $rc;
+        fi
+    else
+            echo "--> Deployment $TIER NIC found ..."
+    fi
 
-# Create resource group
-echo ""
-echo "--> Creating $rg resource group ..."
-az group create --location "$location" --name "$rg"
+    echo "--> Deployment $TIER VM ..."
+    az vm show -g "$rg" -n "$prefix-VM-$TIER" &> /dev/null
+    if [[ $? != 0 ]];
+    then
+        az vm create --resource-group "$rg" --name "$prefix-VM-$TIER" --nics "$prefix-VM-$TIER-NIC" --image UbuntuLTS \
+            --admin-username azureuser --admin-password "$passwd" --output json
+        result=$?
+        if [[ $result != 0 ]];
+        then
+            echo "--> Deployment $TIER VM failed ..."
+            exit $rc;
+        fi
+    else
+            echo "--> Deployment $TIER VM found ..."
+    fi
+done
 
-# Template validation
-echo "--> Validation deployment in $rg resource group ..."
-az group deployment validate --resource-group "$rg" \
-                           --template-file azuredeploy.json \
-                           --parameters adminUsername="$username" adminPassword=$passwd FortiGateNamePrefix=$prefix
-result=$?
-if [ $result != 0 ];
-then
-    echo "--> Validation failed ..."
-    exit $rc;
-fi
-
-# Template deployment
-echo "--> Deployment of $rg resources ..."
-az group deployment create --resource-group "$rg" \
-                           --template-file azuredeploy.json \
-                           --parameters adminUsername="$username" adminPassword=$passwd FortiGateNamePrefix=$prefix
-result=$?
-if [[ $result != 0 ]];
-then
-    echo "--> Deployment failed ..."
-    exit $rc;
-else
 echo "
 ##############################################################################################################
- Deployed FortiGate IP addesses
+#
+##############################################################################################################
+ IP Assignment:
 "
 query="[?virtualMachine.name.starts_with(@, '$prefix')].{virtualMachine:virtualMachine.name, publicIP:virtualMachine.network.publicIpAddresses[0].ipAddress,privateIP:virtualMachine.network.privateIpAddresses[0]}"
 az vm list-ip-addresses --query "$query" --output tsv
 echo "
- IP Public Azure Load Balancer:"
-publicIpIds=$(az network lb show -g "$rg" -n "$prefix-ExternalLoadBalancer" --query "frontendIpConfigurations[].publicIpAddress.id" --out tsv)
-while read publicIpId; do
-    az network public-ip show --ids "$publicIpId" --query "{ ipAddress: ipAddress, fqdn: dnsSettings.fqdn }" --out tsv
-done <<< "$publicIpIds"
-echo "
 ##############################################################################################################
 "
-fi
-
-exit 0
