@@ -88,7 +88,7 @@ else
     osDiskVhdUri="$DEPLOY_VHD"
 fi
 echo ""
-echo "--> Using prefix $prefix for all resources ..."
+echo "--> Using VHD location [$osDiskVhdURI] ..."
 echo ""
 
 # Create resource group
