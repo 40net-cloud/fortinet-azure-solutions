@@ -13,10 +13,11 @@ resource "azurerm_public_ip" "fgtbpip" {
 }
 
 resource "azurerm_network_interface" "fgtbifcext" {
-  name                 = "${var.PREFIX}-B-VM-FGT-IFC-EXT"
-  location             = "${azurerm_resource_group.resourcegroupb.location}"
-  resource_group_name  = "${azurerm_resource_group.resourcegroupb.name}"
-  enable_ip_forwarding = true
+  name                            = "${var.PREFIX}-B-VM-FGT-IFC-EXT"
+  location                        = "${azurerm_resource_group.resourcegroupb.location}"
+  resource_group_name             = "${azurerm_resource_group.resourcegroupb.name}"
+  enable_ip_forwarding            = true
+  enable_accelerated_networking   = true
 
   ip_configuration {
     name                                    = "interface1"
@@ -28,10 +29,11 @@ resource "azurerm_network_interface" "fgtbifcext" {
 }
 
 resource "azurerm_network_interface" "fgtbifcint" {
-  name                 = "${var.PREFIX}-B-VM-FGT-IFC-INT"
-  location             = "${azurerm_resource_group.resourcegroupb.location}"
-  resource_group_name  = "${azurerm_resource_group.resourcegroupb.name}"
-  enable_ip_forwarding = true
+  name                            = "${var.PREFIX}-B-VM-FGT-IFC-INT"
+  location                        = "${azurerm_resource_group.resourcegroupb.location}"
+  resource_group_name             = "${azurerm_resource_group.resourcegroupb.name}"
+  enable_ip_forwarding            = true
+  enable_accelerated_networking   = true
 
   ip_configuration {
     name                                    = "interface1"
