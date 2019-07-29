@@ -33,7 +33,7 @@
     },
     "FortiGateImageVersion": {
       "type": "string",
-      "defaultValue": "6.0.4",
+      "defaultValue": "latest",
       "allowedValues": [
         "6.0.4",
         "6.0.5",
