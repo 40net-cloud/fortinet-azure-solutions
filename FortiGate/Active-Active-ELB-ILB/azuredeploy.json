@@ -25,7 +25,7 @@
       "defaultValue": "fortinet_fg-vm",
       "allowedValues": [
         "fortinet_fg-vm",
-        "fortinet_fg-vm_payg"
+        "fortinet_fg-vm_payg_20190624"
       ],
       "metadata": {
         "description": "Identifies whether to to use PAYG (on demand licensing) or BYOL license model (where license is purchased separately)"
@@ -33,15 +33,22 @@
     },
     "FortiGateImageVersion": {
       "type": "string",
-      "defaultValue": "6.0.4",
-      "allowedValues": [ "latest", "6.2.0", "6.0.4", "6.0.3", "6.0.2", "6.0.0", "5.6.6" ],
+      "defaultValue": "latest",
+      "allowedValues": [
+        "6.0.4",
+        "6.0.5",
+        "6.0.6",
+        "6.2.0",
+        "6.2.1",
+        "latest"
+      ],
       "metadata": {
-        "description": "Select image version."
+        "description": "Select the image version"
       }
     },
     "instanceType": {
       "type": "string",
-      "defaultValue": "Standard_F1s",
+      "defaultValue": "Standard_F2s",
       "allowedValues": [ "Standard_F1s", "Standard_F2s", "Standard_F4s", "Standard_F8s", "Standard_F1", "Standard_F2", "Standard_F4", "Standard_F8", "Standard_F1s_v2", "Standard_F2s_v2", "Standard_F4s_v2", "Standard_F8s_v2" ],
       "metadata": {
         "description": "Virtual Machine size selection"
@@ -285,7 +292,7 @@
          "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deplymentTemplate.json#",
          "contentVersion": "1.0.0.0",
          "resources": []
-       } 
+       }
       }
     },
     {
@@ -512,7 +519,7 @@
       "tags": {
         "provider": "[toUpper(parameters('FortinetTags').provider)]"
       },
-      "sku": 
+      "sku":
       {
         "name": "Standard"
       },
