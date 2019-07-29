@@ -85,10 +85,10 @@ then
         echo " e.g.: Add-AzVhd -LocalFilePath ./fortios-v6-build5163.vhd -ResourceGroupName XXX-RG -Destination 'https://xxxstorage.blob.core.windows.net/vhds/fortios-v6-build5163.vhd'"
     fi
 else
-    prefix="$DEPLOY_PREFIX"
+    osDiskVhdUri="$DEPLOY_VHD"
 fi
 echo ""
-echo "--> Using prefix $prefix for all resources ..."
+echo "--> Using VHD location [$osDiskVhdURI] ..."
 echo ""
 
 # Create resource group
