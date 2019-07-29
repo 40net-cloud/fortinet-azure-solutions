@@ -28,8 +28,8 @@
     },
     "instanceType": {
       "type": "string",
-      "defaultValue": "Standard_F2s",
-      "allowedValues": [ "Standard_F1s", "Standard_F2s", "Standard_F4s", "Standard_F8s", "Standard_F1", "Standard_F2", "Standard_F4", "Standard_F8", "Standard_F1s_v2", "Standard_F2s_v2", "Standard_F4s_v2", "Standard_F8s_v2" ],
+      "defaultValue": "Standard_F4s",
+      "allowedValues": [ "Standard_F2s", "Standard_F4s", "Standard_F8s", "Standard_F2", "Standard_F4", "Standard_F8", "Standard_F2s_v2", "Standard_F4s_v2", "Standard_F8s_v2" ],
       "metadata": {
         "description": "Virtual Machine size selection"
       }
