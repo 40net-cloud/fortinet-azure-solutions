@@ -3,14 +3,14 @@ echo "
 ################################################################################
 #
 # Fortinet VPN IPSEC testing
-# 
-# Deploy a VPN IPSEC testing setup using 2x FortiGate and 2x LNX systems in 2 
+#
+# Deploy a VPN IPSEC testing setup using 2x FortiGate and 2x LNX systems in 2
 # separate VNET's
 #
-# To get started you need provide the Azure Service Principal Access if you are 
-# not usig Azure Cloud Shell. If you want the provision the FortiGate systems 
-# automatically with a license file you need to add the licenses into the 
-# licenses directory and add the filename in the environment variable 
+# To get started you need provide the Azure Service Principal Access if you are
+# not usig Azure Cloud Shell. If you want the provision the FortiGate systems
+# automatically with a license file you need to add the licenses into the
+# licenses directory and add the filename in the environment variable
 # TF_VAR_FGT_LICENSE_FILE_A and TF_VAR_FGT_LICENSE_FILE_B.
 #
 ################################################################################
@@ -34,7 +34,7 @@ set -e
 # Examples
 # export TF_VAR_FGT_LICENSE_FILE_A="../licenses/FGVM04xxx.lic"
 # export TF_VAR_FGT_LICENSE_FILE_A="../licenses/FGVM04yyy.lic"
-# 
+#
 ##############################################################################################################
 #export TF_VAR_FGT_LICENSE_FILE_A=""
 #export TF_VAR_FGT_LICENSE_FILE_B=""
@@ -44,12 +44,12 @@ PLAN="terraform.tfplan"
 
 if [ -z "$DEPLOY_LOCATION" ]
 then
-    # Input location 
+    # Input location
     echo -n "Enter location (e.g. eastus2): "
     stty_orig=`stty -g` # save original terminal setting.
     read location         # read the location
     stty $stty_orig     # restore terminal setting.
-    if [ -z "$location" ] 
+    if [ -z "$location" ]
     then
         location="eastus2"
     fi
@@ -63,12 +63,12 @@ echo ""
 
 if [ -z "$DEPLOY_PREFIX" ]
 then
-    # Input prefix 
+    # Input prefix
     echo -n "Enter prefix: "
     stty_orig=`stty -g` # save original terminal setting.
     read prefix         # read the prefix
     stty $stty_orig     # restore terminal setting.
-    if [ -z "$prefix" ] 
+    if [ -z "$prefix" ]
     then
         prefix="FORTI"
     fi
@@ -83,7 +83,7 @@ rg_cgf="$prefix-RG"
 
 if [ -z "$DEPLOY_PASSWORD" ]
 then
-    # Input password 
+    # Input password
     echo -n "Enter password: "
     stty_orig=`stty -g` # save original terminal setting.
     stty -echo          # turn-off echoing.
@@ -110,18 +110,18 @@ echo "--> Using username '$USERNAME' ..."
 echo ""
 
 # Generate SSH key
-echo ""
-echo "==> Generate and verify SSH key location and permissions"
-echo ""
-SSH_PRIVATE_KEY_FILE="output/ssh_key"
-if [ ! -f output/ssh_key ]; then
-    ssh-keygen -q -t rsa -b 2048 -f "$SSH_PRIVATE_KEY_FILE" -C "" -N ""
-fi
-SSH_PUBLIC_KEY_FILE="output/ssh_key.pub"
-chmod 700 `dirname $SSH_PUBLIC_KEY_FILE`
-chmod 600 $SSH_PUBLIC_KEY_FILE
-FGT_SSH_PUBLIC_KEY_FILE="../$SSH_PUBLIC_KEY_FILE"
-FGT_SSH_PRIVATE_KEY_FILE="../$SSH_PRIVATE_KEY_FILE"
+#echo ""
+#echo "==> Generate and verify SSH key location and permissions"
+#echo ""
+#SSH_PRIVATE_KEY_FILE="output/ssh_key"
+#if [ ! -f output/ssh_key ]; then
+#    ssh-keygen -q -t rsa -b 2048 -f "$SSH_PRIVATE_KEY_FILE" -C "" -N ""
+#fi
+#SSH_PUBLIC_KEY_FILE="output/ssh_key.pub"
+#chmod 700 `dirname $SSH_PUBLIC_KEY_FILE`
+#chmod 600 $SSH_PUBLIC_KEY_FILE
+#FGT_SSH_PUBLIC_KEY_FILE="../$SSH_PUBLIC_KEY_FILE"
+#FGT_SSH_PRIVATE_KEY_FILE="../$SSH_PRIVATE_KEY_FILE"
 
 SUMMARY="summary.out"
 
@@ -140,18 +140,18 @@ echo "==> Terraform plan"
 echo ""
 terraform plan --out "$PLAN" \
                 -var "USERNAME=$USERNAME" \
-                -var "PASSWORD=$PASSWORD" \
-                -var "FGT_SSH_PUBLIC_KEY_FILE=$FGT_SSH_PUBLIC_KEY_FILE" 
+                -var "PASSWORD=$PASSWORD"
+#                -var "FGT_SSH_PUBLIC_KEY_FILE=$FGT_SSH_PUBLIC_KEY_FILE"
 
 echo ""
 echo "==> Terraform apply"
 echo ""
 terraform apply "$PLAN"
-if [[ $? != 0 ]]; 
-then 
+if [[ $? != 0 ]];
+then
     echo "--> ERROR: Deployment failed ..."
-    exit $rc; 
-fi 
+    exit $rc;
+fi
 
 echo ""
 echo "==> Terraform output deployment summary"
@@ -164,13 +164,13 @@ echo "
 #
 # Fortinet VPN IPSEC testing
 #
-# The FortiGate systems are reachable on their public IP on port HTTPS/8443 and 
-# SSH/22. The backend linux systems are reachable on their public IP on SSH/22 
+# The FortiGate systems are reachable on their public IP on port HTTPS/8443 and
+# SSH/22. The backend linux systems are reachable on their public IP on SSH/22
 # to start the tests.
-# 
-# BEWARE: The state files contain sensitive data like passwords and others. 
+#
+# BEWARE: The state files contain sensitive data like passwords and others.
 #         After the demo clean up your clouddrive directory.
-# 
+#
 ################################################################################
 
  Deployment information:
