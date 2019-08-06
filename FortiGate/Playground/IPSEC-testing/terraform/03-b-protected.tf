@@ -13,10 +13,11 @@ resource "azurerm_public_ip" "lnxbpip" {
 }
 
 resource "azurerm_network_interface" "lnxbifc" {
-  name                 = "${var.PREFIX}-B-VM-LNX-IFC"
-  location             = "${azurerm_resource_group.resourcegroupb.location}"
-  resource_group_name  = "${azurerm_resource_group.resourcegroupb.name}"
-  enable_ip_forwarding = true
+  name                            = "${var.PREFIX}-B-VM-LNX-IFC"
+  location                        = "${azurerm_resource_group.resourcegroupb.location}"
+  resource_group_name             = "${azurerm_resource_group.resourcegroupb.name}"
+  enable_ip_forwarding            = false
+  enable_accelerated_networking   = true
 
   ip_configuration {
     name                          = "interface1"
@@ -59,7 +60,7 @@ resource "azurerm_virtual_machine" "lnxbvm" {
     disable_password_authentication = false
   }
 
-  tags {
+  tags = {
     environment = "IPSEC test"
     vendor = "Fortinet"
   }
@@ -68,7 +69,7 @@ resource "azurerm_virtual_machine" "lnxbvm" {
 data "template_file" "lnx_b_custom_data" {
   template = "${file("${path.module}/customdata-lnx.tpl")}"
 
-  vars {
+  vars = {
   }
 }
 

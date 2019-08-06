@@ -1,5 +1,5 @@
 ##############################################################################################################
-#                                                    
+#
 # Fortinet FortiGate Terraform deployment template to deploy a IPSEC test setup
 #
 ##############################################################################################################
@@ -47,7 +47,7 @@ terraform {
 }
 
 ##############################################################################################################
-# Deployment in Microsoft Azure 
+# Deployment in Microsoft Azure
 ##############################################################################################################
 
 provider "azurerm" {
@@ -167,18 +167,26 @@ variable "backend_srv_ipaddress" {
   }
 }
 
+##############################################################################################################
+# Virtual Machines sizes
+##############################################################################################################
+
 variable "fgt_vmsize" {
   default = "Standard_F4s"
 }
 
-resource "azurerm_resource_group" "resourcegroupa" {
-  name     = "${var.PREFIX}-A-RG"
-  location = "${var.LOCATION}"
+variable "lnx_vmsize" {
+  default = "Standard_D4s_v3"
 }
 
 ##############################################################################################################
 # Resource Groups
 ##############################################################################################################
+
+resource "azurerm_resource_group" "resourcegroupa" {
+  name     = "${var.PREFIX}-A-RG"
+  location = "${var.LOCATION}"
+}
 
 resource "azurerm_resource_group" "resourcegroupb" {
   name     = "${var.PREFIX}-B-RG"

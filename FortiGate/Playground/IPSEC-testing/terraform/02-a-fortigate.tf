@@ -86,7 +86,7 @@ resource "azurerm_virtual_machine" "fgtavm" {
     disable_password_authentication = false
   }
 
-  tags {
+  tags = {
     environment = "IPSEC-test"
     vendor = "Fortinet"
   }
@@ -95,7 +95,7 @@ resource "azurerm_virtual_machine" "fgtavm" {
 data "template_file" "fgt_a_custom_data" {
   template = "${file("${path.module}/customdata.tpl")}"
 
-  vars {
+  vars = {
     fgt_vm_name = "${var.PREFIX}-A-VM-FGT"
     fgt_license_file = "${var.FGT_LICENSE_FILE_A}"
     fgt_username = "${var.USERNAME}"

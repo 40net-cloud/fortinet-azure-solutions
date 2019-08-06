@@ -13,10 +13,11 @@ resource "azurerm_public_ip" "lnxapip" {
 }
 
 resource "azurerm_network_interface" "lnxaifc" {
-  name                 = "${var.PREFIX}-A-VM-LNX-IFC"
-  location             = "${azurerm_resource_group.resourcegroupa.location}"
-  resource_group_name  = "${azurerm_resource_group.resourcegroupa.name}"
-  enable_ip_forwarding = true
+  name                            = "${var.PREFIX}-A-VM-LNX-IFC"
+  location                        = "${azurerm_resource_group.resourcegroupa.location}"
+  resource_group_name             = "${azurerm_resource_group.resourcegroupa.name}"
+  enable_ip_forwarding            = false
+  enable_accelerated_networking   = true
 
   ip_configuration {
     name                          = "interface1"
@@ -32,7 +33,7 @@ resource "azurerm_virtual_machine" "lnxavm" {
   location              = "${azurerm_resource_group.resourcegroupa.location}"
   resource_group_name   = "${azurerm_resource_group.resourcegroupa.name}"
   network_interface_ids = ["${azurerm_network_interface.lnxaifc.id}"]
-  vm_size               = "Standard_D4s_v3"
+  vm_size               = "${var.lnx_vmsize}"
 
   storage_image_reference {
     publisher = "Canonical"
@@ -59,7 +60,7 @@ resource "azurerm_virtual_machine" "lnxavm" {
     disable_password_authentication = false
   }
 
-  tags {
+  tags = {
     environment = "IPSEC test"
     vendor = "Fortinet"
   }
@@ -68,7 +69,7 @@ resource "azurerm_virtual_machine" "lnxavm" {
 data "template_file" "lnx_a_custom_data" {
   template = "${file("${path.module}/customdata-lnx.tpl")}"
 
-  vars {
+  vars = {
   }
 }
 

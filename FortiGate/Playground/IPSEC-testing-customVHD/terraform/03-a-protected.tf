@@ -33,7 +33,7 @@ resource "azurerm_virtual_machine" "lnxavm" {
   location              = "${azurerm_resource_group.resourcegroupa.location}"
   resource_group_name   = "${azurerm_resource_group.resourcegroupa.name}"
   network_interface_ids = ["${azurerm_network_interface.lnxaifc.id}"]
-  vm_size               = "Standard_D4s_v3"
+  vm_size               = "${var.lnx_vmsize}"
 
   storage_image_reference {
     publisher = "Canonical"
