@@ -60,10 +60,7 @@ resource "azurerm_virtual_machine" "lnxavm" {
     disable_password_authentication = false
   }
 
-  tags = {
-    environment = "IPSEC test"
-    vendor = "Fortinet"
-  }
+  tags = "${var.TAGS}"
 }
 
 data "template_file" "lnx_a_custom_data" {

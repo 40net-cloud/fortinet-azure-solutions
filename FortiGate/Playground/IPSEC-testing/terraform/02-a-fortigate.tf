@@ -1,4 +1,4 @@
-###############################################################################################################
+##############################################################################################################
 #
 # Fortinet FortiGate Terraform deployment template to deploy a IPSEC test setup
 #
@@ -51,10 +51,6 @@ resource "azurerm_virtual_machine" "fgtavm" {
   primary_network_interface_id = "${azurerm_network_interface.fgtaifcext.id}"
   vm_size               = "${var.fgt_vmsize}"
 
-  identity {
-    type      = "SystemAssigned"
-  }
-
   storage_image_reference {
     publisher = "fortinet"
     offer     = "fortinet_fortigate-vm_v5"
@@ -86,9 +82,11 @@ resource "azurerm_virtual_machine" "fgtavm" {
     disable_password_authentication = false
   }
 
-  tags = {
-    environment = "IPSEC-test"
-    vendor = "Fortinet"
+  tags = "${var.TAGS}"
+
+  boot_diagnostics {
+    enabled     = "${var.BOOT_DIAGNOSTICS}"
+    storage_uri = "${var.BOOT_DIAGNOSTICS == "true" ? join(",", azurerm_storage_account.sadiaga.*.primary_blob_endpoint) : "" }"
   }
 }
 
@@ -126,21 +124,3 @@ data "azurerm_public_ip" "fgtapip" {
 output "fgt_a_public_ip_address" {
   value = "${data.azurerm_public_ip.fgtapip.ip_address}"
 }
-
-#data "external" "fgt_a_token" {
-#  program = ["sh", "${path.module}/get-token.sh"]
-#  query = {
-#    fgt_public_ipaddress = "${data.azurerm_public_ip.fgtapip.ip_address}"
-#    fgt_username = "${var.USERNAME}"
-#    fgt_ssh_private_key = "${var.FGT_SSH_PRIVATE_KEY_FILE}"
-#  }
-#  depends_on = ["azurerm_virtual_machine.fgtavm"]
-#}
-# ssh -l azureuser -i output/ssh_key -oStrictHostKeyChecking=no 104.40.209.70 "exec api generate-key restapi" | grep "New API key" | sed -e "s/^.*New API key: //" > test2
-#resource "null_resource" "export_rendered_template" {
-#  provisioner "local-exec" {
-#    command = "echo ${data.azurerm_public_ip.webpip.ip_address} > test.output"
-#  }
-#
-#  depends_on = ["azurerm_virtual_machine.webvm"]
-#}

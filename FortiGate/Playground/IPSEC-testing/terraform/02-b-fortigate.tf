@@ -51,10 +51,6 @@ resource "azurerm_virtual_machine" "fgtbvm" {
   primary_network_interface_id = "${azurerm_network_interface.fgtbifcext.id}"
   vm_size               = "${var.fgt_vmsize}"
 
-  identity {
-    type      = "SystemAssigned"
-  }
-
   storage_image_reference {
     publisher = "fortinet"
     offer     = "fortinet_fortigate-vm_v5"
@@ -86,10 +82,14 @@ resource "azurerm_virtual_machine" "fgtbvm" {
     disable_password_authentication = false
   }
 
-  tags = {
-    environment = "IPSEC-test"
-    vendor = "Fortinet"
+  tags = "${var.TAGS}"
+
+  boot_diagnostics {
+    enabled     = "${var.BOOT_DIAGNOSTICS}"
+    storage_uri = "${var.BOOT_DIAGNOSTICS == "true" ? join(",", azurerm_storage_account.sadiagb.*.primary_blob_endpoint) : "" }"
   }
+
+  depends_on = ["azurerm_virtual_machine.fgtavm"]
 }
 
 data "template_file" "fgt_b_custom_data" {
