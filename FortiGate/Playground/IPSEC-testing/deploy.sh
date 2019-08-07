@@ -164,7 +164,7 @@ echo "
 #
 # Fortinet VPN IPSEC testing
 #
-# The FortiGate systems are reachable on their public IP on port HTTPS/8443 and
+# The FortiGate systems are reachable on their public IP on port HTTPS/443 and
 # SSH/22. The backend linux systems are reachable on their public IP on SSH/22
 # to start the tests.
 #

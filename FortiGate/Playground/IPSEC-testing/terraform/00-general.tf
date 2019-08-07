@@ -34,8 +34,33 @@ variable "FGT_LICENSE_FILE_B" {
   default = ""
 }
 
+##############################################################################################################
+# VM options
+##############################################################################################################
+
 variable "FGT_SSH_PUBLIC_KEY_FILE" {
   default = ""
+}
+
+variable "BOOT_DIAGNOSTICS" {
+  description = "(Optional) Enable or Disable boot diagnostics (default: true)"
+  default     = "true"
+}
+
+variable "ENABLE_ACCELERATED_NETWORKING" {
+  type        = "string"
+  description = "(Optional) Enable/Disable accelerated networking (default: true)"
+  default     = "true"
+}
+
+variable "TAGS" {
+  type        = "map"
+  description = "A map of tags added to the deployed resources"
+
+  default = {
+    environment = "IPSEC-test"
+    vendor = "Fortinet"
+  }
 }
 
 ##############################################################################################################
@@ -186,13 +211,47 @@ variable "lnx_vmsize" {
 resource "azurerm_resource_group" "resourcegroupa" {
   name     = "${var.PREFIX}-A-RG"
   location = "${var.LOCATION}"
+
+  tags = "${var.TAGS}"
 }
 
 resource "azurerm_resource_group" "resourcegroupb" {
   name     = "${var.PREFIX}-B-RG"
   location = "${var.LOCATION}"
+
+  tags = "${var.TAGS}"
 }
+
 ##############################################################################################################
+# Storage Accounts for boot diagnostics
+##############################################################################################################
+
+resource "random_id" "saname" {
+
+  byte_length = 6
+}
+
+resource "azurerm_storage_account" "sadiaga" {
+  count                    = "${var.BOOT_DIAGNOSTICS == "true" ? 1 : 0}"
+  name                     = "${lower(var.PREFIX)}a${lower(random_id.saname.hex)}"
+  resource_group_name      = "${azurerm_resource_group.resourcegroupa.name}"
+  location                 = "${var.LOCATION}"
+  account_tier             = "Standard"
+  account_replication_type = "LRS"
+
+  tags = "${var.TAGS}"
+}
+
+resource "azurerm_storage_account" "sadiagb" {
+  count                    = "${var.BOOT_DIAGNOSTICS == "true" ? 1 : 0}"
+  name                     = "${lower(var.PREFIX)}b${lower(random_id.saname.hex)}"
+  resource_group_name      = "${azurerm_resource_group.resourcegroupb.name}"
+  location                 = "${var.LOCATION}"
+  account_tier             = "Standard"
+  account_replication_type = "LRS"
+
+  tags = "${var.TAGS}"
+}
 
 ##############################################################################################################
 # Generate IPSEC PSK key for VPN tunnel between FGT A and B

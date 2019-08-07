@@ -11,46 +11,7 @@ config sys global
     set admintimeout 120
     set hostname "${fgt_vm_name}"
     set timezone 26
-    set admin-sport 8443
     set gui-theme mariner
-end
-config vpn ssl settings
-    set port 7443
-end
-config router static
-    edit 1
-        set gateway ${fgt_external_gw}
-        set device port1
-    next
-    edit 2
-        set dst ${vnet_network}
-        set gateway ${fgt_internal_gw}
-        set device port2
-    next
-    edit 3
-        set dst 168.63.129.16 255.255.255.255
-        set device port2
-        set gateway ${fgt_internal_gw}
-    next
-    edit 4
-        set dst 168.63.129.16 255.255.255.255
-        set device port1
-        set gateway ${fgt_external_gw}
-    next
-    edit 5
-        set dst ${remote_protected_net}
-        set device "IPSEC-A-B"
-        set comment "VPN: IPSEC-A-B"
-        set dstaddr "IPSEC-A-B_remote"
-    next
-    edit 6
-        set dst ${remote_protected_net}
-        set distance 254
-        set comment "VPN: IPSEC-A-B"
-        set blackhole enable
-        set dstaddr "IPSEC-A-B_remote"
-    next
-
 end
 config system interface
     edit port1
@@ -129,7 +90,7 @@ end
 config vpn ipsec phase2-interface
     edit "IPSEC-A-B"
         set phase1name "IPSEC-A-B"
-        set proposal aes128-sha1 aes256-sha1 aes128-sha256 aes256-sha256 aes128gcm aes256gcm chacha20poly1305
+        set proposal aes128-sha1
         set comments "VPN: IPSEC-A-B"
         set src-addr-type name
         set dst-addr-type name
@@ -165,6 +126,34 @@ config firewall policy
         set comments "VPN: IPSEC-A-B"
     next
 end
+config router static
+    edit 1
+        set gateway ${fgt_external_gw}
+        set device port1
+    next
+    edit 2
+        set dst ${vnet_network}
+        set gateway ${fgt_internal_gw}
+        set device port2
+    next
+    edit 3
+        set dst 168.63.129.16 255.255.255.255
+        set device port2
+        set gateway ${fgt_internal_gw}
+    next
+    edit 4
+        set dst 168.63.129.16 255.255.255.255
+        set device port1
+        set gateway ${fgt_external_gw}
+    next
+    edit 5
+        set dst ${remote_protected_net}
+        set device "IPSEC-A-B"
+        set comment "VPN: IPSEC-A-B"
+        set dstaddr "IPSEC-A-B_remote"
+    next
+end
+
 
 %{ if fgt_license_file != "" }
 --===============0086047718136476635==

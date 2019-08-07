@@ -33,7 +33,7 @@ resource "azurerm_virtual_machine" "lnxbvm" {
   location              = "${azurerm_resource_group.resourcegroupb.location}"
   resource_group_name   = "${azurerm_resource_group.resourcegroupb.name}"
   network_interface_ids = ["${azurerm_network_interface.lnxbifc.id}"]
-  vm_size               = "Standard_D4s_v3"
+  vm_size               = "${var.lnx_vmsize}"
 
   storage_image_reference {
     publisher = "Canonical"
@@ -60,10 +60,9 @@ resource "azurerm_virtual_machine" "lnxbvm" {
     disable_password_authentication = false
   }
 
-  tags = {
-    environment = "IPSEC test"
-    vendor = "Fortinet"
-  }
+  tags = "${var.TAGS}"
+
+  depends_on = ["azurerm_virtual_machine.lnxavm"]
 }
 
 data "template_file" "lnx_b_custom_data" {
