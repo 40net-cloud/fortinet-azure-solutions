@@ -604,7 +604,7 @@
               "protocol": "Udp",
               "frontendPort": 10551,
               "backendPort": 10551,
-              "enableFloatingIP": false,
+              "enableFloatingIP": true,
               "idleTimeoutInMinutes": 5
             },
             "name": "PublicLBRule-FE1-udp10551"
