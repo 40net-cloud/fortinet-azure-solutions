@@ -1,4 +1,4 @@
-resources: 
+resources:
 - repo: self
 
 pool:
@@ -28,6 +28,6 @@ trigger:
     - master
   paths:
     exclude:
-    - FortiGate/Active-Active-ELB-ILB/*.md
-    include:
     - FortiGate/Active-Active-ELB-ILB/*
+    include:
+    - FortiGate/Active-Active-ELB-ILB/*.json
