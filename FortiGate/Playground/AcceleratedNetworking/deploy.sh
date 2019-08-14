@@ -2,7 +2,7 @@
 echo "
 ##############################################################################################################
 #
-# Deployment of a Fortigate using a custom VHD from support.fortinet.com
+# Deployment of a Fortigate with Accelerated Networking
 #
 ##############################################################################################################
 
@@ -72,25 +72,6 @@ echo ""
 echo "--> Using username '$username' ..."
 echo ""
 
-if [ -z "$DEPLOY_VHD" ]
-then
-    # Input VHD location
-    echo -n "Enter location of the VHD: "
-    stty_orig=`stty -g` # save original terminal setting.
-    read osDiskVhdUri         # read the osDiskVhdUri
-    stty $stty_orig     # restore terminal setting.
-    if [ -z "$osDiskVhdUri" ]
-    then
-        echo "Required variable deploy this VHD to an Azure Storage Account."
-        echo " e.g.: Add-AzVhd -LocalFilePath ./fortios-v6-build5163.vhd -ResourceGroupName XXX-RG -Destination 'https://xxxstorage.blob.core.windows.net/vhds/fortios-v6-build5163.vhd'"
-    fi
-else
-    osDiskVhdUri="$DEPLOY_VHD"
-fi
-echo ""
-echo "--> Using VHD location [$osDiskVhdURI] ..."
-echo ""
-
 # Create resource group
 echo ""
 echo "--> Creating $rg resource group ..."
@@ -100,8 +81,7 @@ az group create --location "$location" --name "$rg"
 echo "--> Validation deployment in $rg resource group ..."
 az group deployment validate --resource-group "$rg" \
                            --template-file azuredeploy.json \
-                           --parameters adminUsername="$username" adminPassword="$passwd" FortiGateNamePrefix="$prefix" \
-                                        osDiskVhdUri="$osDiskVhdUri"
+                           --parameters adminUsername="$username" adminPassword="$passwd" FortiGateNamePrefix="$prefix"
 result=$?
 if [ $result != 0 ];
 then
@@ -113,8 +93,7 @@ fi
 echo "--> Deployment of $rg resources ..."
 az group deployment create --resource-group "$rg" \
                            --template-file azuredeploy.json \
-                           --parameters adminUsername="$username" adminPassword="$passwd" FortiGateNamePrefix="$prefix" \
-                                        osDiskVhdUri="$osDiskVhdUri"
+                           --parameters adminUsername="$username" adminPassword="$passwd" FortiGateNamePrefix="$prefix"
 result=$?
 if [[ $result != 0 ]];
 then
