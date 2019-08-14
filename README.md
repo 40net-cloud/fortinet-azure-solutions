@@ -1,3 +1,1 @@
-# fortinet-azure-solutions
-
-Change is coming
+# Fortinet Azure Templates
