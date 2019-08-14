@@ -20,16 +20,34 @@
         "description": "Name for FortiGate virtual appliances (A & B will be appended to the end of each respectively)."
       }
     },
-    "osDiskVhdUri": {
+    "FortiGateImageSKU": {
       "type": "string",
+      "defaultValue": "fortinet_fg-vm",
+      "allowedValues": [
+        "fortinet_fg-vm",
+        "fortinet_fg-vm_payg"
+      ],
       "metadata": {
-        "description": "Uri of the existing VHD in ARM standard or premium storage"
+        "description": "Identifies whether to to use PAYG (on demand licensing) or BYOL license model (where license is purchased separately)"
+      }
+    },
+    "FortiGateImageVersion": {
+      "type": "string",
+      "defaultValue": "latest",
+      "allowedValues": [
+        "5.6.10",
+        "6.0.6",
+        "6.2.1",
+        "latest"
+      ],
+      "metadata": {
+        "description": "Only 6.0.0 has the A/P HA feature currently"
       }
     },
     "instanceType": {
       "type": "string",
       "defaultValue": "Standard_F4s",
-      "allowedValues": [ "Standard_F2s", "Standard_F4s", "Standard_F8s", "Standard_F2", "Standard_F4", "Standard_F8", "Standard_F2s_v2", "Standard_F4s_v2", "Standard_F8s_v2" ],
+      "allowedValues": [ "Standard_F2s", "Standard_F4s", "Standard_F8s", "Standard_F2", "Standard_F4", "Standard_F8", "Standard_F2s_v2", "Standard_F4s_v2", "Standard_F8s_v2", "Standard_DS2_v2", "Standard_DS3_v2", "Standard_DS4_v2", "Standard_DS2_v3", "Standard_DS4_v3", "Standard_DS8_v3" ],
       "metadata": {
         "description": "Virtual Machine size selection"
       }
@@ -181,7 +199,6 @@
     "subnet2Ref": "[concat(variables('vnetID'),'/subnets/', parameters('subnet2Name'))]",
 
     "fg1VmName": "[concat(parameters('FortiGateNamePrefix'),'-FGT-A')]",
-    "fg1ImageName": "[concat(variables('fg1VmName'), '-image')]",
 
     "routeTable3Name": "[concat(parameters('FortiGateNamePrefix'),'-',parameters('subnet3Name'),'-','RouteTable')]",
     "routeTable3Ref": "[resourceId('Microsoft.Network/routeTables',variables('routeTable3Name'))]",
@@ -220,7 +237,6 @@
     "sn2IPArray0": "[string(int(variables('sn2IPArray')[0]))]",
     "sn2GatewayIP": "[concat(variables('sn2IPArray0'),'.',variables('sn2IPArray1'),'.',variables('sn2IPArray2'),'.',variables('sn2IPArray3'))]",
     "sn2IPfg1": "[concat(variables('sn2IPArray0'),'.',variables('sn2IPArray1'),'.',variables('sn2IPArray2'),'.',add(int(variables('sn2IPArray2nd')[0]),5))]"
-
   },
   "resources": [
     {
@@ -493,23 +509,6 @@
       }
     },
     {
-      "type": "Microsoft.Compute/images",
-      "apiVersion": "[variables('computeApiVersion')]",
-      "name": "[variables('fg1ImageName')]",
-      "location": "[resourceGroup().location]",
-      "properties": {
-        "storageProfile": {
-          "osDisk": {
-            "osType": "Linux",
-            "osState": "Generalized",
-            "blobUri": "[parameters('osDiskVhdUri')]",
-            "caching": "ReadWrite",
-            "storageAccountType": "Premium_LRS"
-          }
-        }
-      }
-    },
-    {
       "apiVersion": "[variables('computeApiVersion')]",
       "type": "Microsoft.Compute/virtualMachines",
       "name": "[variables('fg1VmName')]",
@@ -517,9 +516,13 @@
       "tags": {
        "provider": "[toUpper(parameters('FortinetTags').provider)]"
       },
+      "plan": {
+        "name": "[parameters('FortiGateImageSKU')]",
+        "publisher": "fortinet",
+        "product": "fortinet_fortigate-vm_v5"
+      },
       "dependsOn": [
         "[variables('network_NIC_fg12_Name')]",
-        "[variables('fg1ImageName')]"
       ],
       "properties": {
         "hardwareProfile": {
@@ -536,7 +539,10 @@
         },
         "storageProfile": {
           "imageReference": {
-            "id": "[resourceId('Microsoft.Compute/images', variables('fg1ImageName'))]"
+            "publisher": "fortinet",
+            "offer": "fortinet_fortigate-vm_v5",
+            "sku": "[parameters('FortiGateImageSKU')]",
+            "version": "[parameters('FortigateImageVersion')]"
           },
           "osDisk": {
             "createOption": "FromImage"
