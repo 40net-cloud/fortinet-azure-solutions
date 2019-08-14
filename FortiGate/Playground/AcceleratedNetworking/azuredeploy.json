@@ -522,7 +522,7 @@
         "product": "fortinet_fortigate-vm_v5"
       },
       "dependsOn": [
-        "[variables('network_NIC_fg12_Name')]",
+        "[variables('network_NIC_fg12_Name')]"
       ],
       "properties": {
         "hardwareProfile": {
