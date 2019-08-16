@@ -21,12 +21,37 @@ This Azure ARM template can also be extended or customized based on your require
 
 ## Deployment
 
-For the deployment, you can use the Azure Portal, Azure CLI, Powershell or Azure Cloud Shell. The Azure ARM templates are exclusive to Microsoft Azure and can't be used in other cloud environments. The main template is the `azuredeploy.json` which you can use in the Azure Portal. A `deploy.sh` script is provided to facilitate the deployment. You'll be prompted to provide the 4 required variables:
+For the deployment, you can use the Azure Portal, Azure CLI, Powershell or Azure Cloud Shell. The Azure ARM templates are exclusive to Microsoft Azure and can't be used in other cloud environments. The main template is the `azuredeploy.json` which you can use in the Azure Portal.
+
+### Azure Portal
+
+In the Azure Portal you can deploy the template either by clicking the buttons below or by pasting the contents of the 'azuredeploy.json' file in the 'Deploy a custom template' location.
+
+<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fjvhoof%2Ffortinet-azure-solutions%2Fmaster%2FFortiGate%2FPlayground%2FCustomVHD%2Fazuredeploy.json" target="_blank"><img src="http://azuredeploy.net/deploybutton.png"/></a>
+<a href="http://armviz.io/#/?load=https%3A%2F%2Fraw.githubusercontent.com%2Fjvhoof%2Ffortinet-azure-solutions$2Fmaster%2FFortiGate%2FPlayground%2FCustomVHD%2Fazuredeploy.json" target="_blank">
+    <img src="http://armviz.io/visualizebutton.png"/>
+</a>
+
+#### Manual deployment
+
+- Search for 'Deploy a customer template' in the top search bar of the Azure portal
+![Azure Portal 1](images/azure-portal-1.png)
+- Select the option 'Build your own template in the editor
+![Azure Portal 2](images/azure-portal-1.png)
+- Copy in the contents of the 'azuredeploy.json' file into the editor
+![Azure Portal 3](images/azure-portal-1.png)
+- Complete the required variables. THe VHD uri is created using the 'Add-AzVhd' command as explained in the [Requirements and limitations](#requirements-and-limiations)
+![Azure Portal 4](images/azure-portal-1.png)
+
+### Azure CLI and Azure Cloud Shell
+
+A `deploy.sh` script is provided to facilitate the deployment. You'll be prompted to provide the 4 required variables:
 
 - PREFIX : This prefix will be added to each of the resources created by the template for ease of use and visibility.
 - LOCATION : This is the Azure region where the deployment will be deployed.
 - USERNAME : The username used to login to the FortiGate GUI and SSH management UI.
 - PASSWORD : The password used for the FortiGate GUI and SSH management UI.
+- OSDISKVHDURI: The link to the custom VHD uploaded using the 'Add-AzVhd' command.
 
 To fast track the deployment, use the Azure Cloud Shell. The Azure Cloud Shell is an in-browser CLI that contains Terraform and other tools for deployment into Microsoft Azure. It is accessible via the Azure Portal or directly at [https://shell.azure.com/](https://shell.azure.com). You can copy and paste the below one-liner to get started with your deployment.
 
@@ -35,6 +60,60 @@ To fast track the deployment, use the Azure Cloud Shell. The Azure Cloud Shell i
 ![Azure Cloud Shell](images/azure-cloud-shell.png)
 
 After deployment, you will be shown the IP addresses of the deployed FortiGate. You can access the FortiGate using the public ip linked to VM using HTTPS on port 443.
+
+### Powershell and Azure Cloud Shell
+
+The below is an example on how to deploy a customer VHD using powershell instead of using an ARM Template. Verify and replace the variables in the begining and run the commands one by one to verify.
+
+```powershell
+
+# Variables to be changed
+$location = "westeurope"
+$rg = "FORTI-RG"
+$username = "azureuser"
+$password = "xxxxxxxxxxxxxxxxxxxx"
+$osdiskvhduri = "https://xxxxxxxxxxx.blob.core.windows.net/vhds/fortios-v6-buildxxxxx.vhd"
+
+# Resource group
+New-AzResourceGroup -Name $rg -Location $location
+
+# Image
+$image = New-AzImageConfig -Location $location
+$image = Set-AzImageOsDisk -Image $image -OsState Generalized -OsType Linux -BlobUri $osdiskvhduri
+$imagedisk = New-AzImage -ImageName "FORTI-IMAGE" -ResourceGroupName $rg -Image $image
+
+# Virtual network and subnets
+$virtualNetwork = New-AzVirtualNetwork -ResourceGroupName “FORTI-RG” -Location “westeurope” -Name “FORTI-VNET” -AddressPrefix “172.16.136.0/22”
+$subnet1 = Add-AzVirtualNetworkSubnetConfig -Name “FORTI-SUBNET-EXTERNAL” -AddressPrefix 172.16.136.0/26 -VirtualNetwork $virtualNetwork
+$subnet2 = Add-AzVirtualNetworkSubnetConfig -Name “FORTI-SUBNET-INTERNAL” -AddressPrefix 172.16.136.64/26 -VirtualNetwork $virtualNetwork
+$subnet3 = Add-AzVirtualNetworkSubnetConfig -Name “FORTI-SUBNET-PROTECTED” -AddressPrefix 172.16.137.0/24 -VirtualNetwork $virtualNetwork
+$virtualNetwork | Set-AzVirtualNetwork
+
+# Network security groups (required when using standard SKU IPs)
+$rule2 = New-AzNetworkSecurityRuleConfig -Name "Allow_All_Outbound" -Protocol * -SourcePortRange * -DestinationPortRange * -SourceAddressPrefix * -DestinationAddressPrefix * -Access Allow -Priority 100 -Direction Outbound
+$rule1 = New-AzNetworkSecurityRuleConfig -Name "Allow_All_Inbound" -Protocol * -SourcePortRange * -DestinationPortRange * -SourceAddressPrefix * -DestinationAddressPrefix * -Access Allow -Priority 100 -Direction Inbound
+$nsg = New-AzNetworkSecurityGroup -Name "FORTI-NSG" -ResourceGroupName $rg -Location $location -SecurityRules $rule1,$rule2
+
+# Network interfaces for external and internal of the FGT
+$virtualNetwork = Get-AzVirtualNetwork -Name "FORTI-VNET" -ResourceGroupName $rg
+
+$nic1 = New-AzNetworkInterface -ResourceGroupName $rg -Location $location -Name "FORTI-FGT-A-NIC1" -PublicIpAddressId $pip.Id -SubnetId $virtualNetwork.Subnets[0].Id -EnableIPForwarding -NetworkSecurityGroupId $nsg.Id -EnableAcceleratedNetworking
+$nic2 = New-AzNetworkInterface -ResourceGroupName $rg -Location $location -Name "FORTI-FGT-A-NIC2" -SubnetId $virtualNetwork.Subnets[1].Id -EnableIPForwarding -NetworkSecurityGroupId $nsg.Id -EnableAcceleratedNetworking
+
+$nic1 = New-AzNetworkInterface -ResourceGroupName $rg -Location $location -Name "FORTI-FGT-A-NIC1" -PublicIpAddressId $pip.Id -SubnetId $virtualNetwork.Subnets[0].Id -EnableIPForwarding -NetworkSecurityGroupId $nsg.Id -EnableAcceleratedNetworking
+$nic2 = New-AzNetworkInterface -ResourceGroupName $rg -Location $location -Name "FORTI-FGT-A-NIC2" -SubnetId $virtualNetwork.Subnets[1].Id -EnableIPForwarding -NetworkSecurityGroupId $nsg.Id -EnableAcceleratedNetworking
+
+# Virtual Machine
+$vm = New-AzVMConfig -VMName "FORTI-FGT-A" -VMSize "Standard_F4s"
+$credentials = New-Object PSCredential $username, ($password | ConvertTo-SecureString -AsPlainText -Force)
+$vm = Set-AzVMOperatingSystem -VM $vm -Linux -ComputerName "FORTI-FGT-A" -Credential $credentials
+$vm = Add-AzVMNetworkInterface -VM $vm -Id $nic1.Id -Primary
+$vm = Add-AzVMNetworkInterface -VM $vm -Id $nic2.Id
+$vm = Set-AzVMSourceImage -VM $vm -Id $imagedisk.Id
+$vm = Set-AzVMBootDiagnostic -VM $vm -Disable
+$result = New-AzVM -ResourceGroupName $rg -Location $location -VM $vm
+
+```
 
 ## Requirements and limitations
 
