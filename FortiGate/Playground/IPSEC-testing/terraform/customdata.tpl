@@ -12,6 +12,8 @@ config sys global
     set hostname "${fgt_vm_name}"
     set timezone 26
     set gui-theme mariner
+    set ipsec-soft-dec-async enable
+end
 end
 config system interface
     edit port1
