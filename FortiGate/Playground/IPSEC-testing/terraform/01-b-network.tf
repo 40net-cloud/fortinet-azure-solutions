@@ -49,3 +49,48 @@ resource "azurerm_route_table" "protectedbroute" {
     next_hop_in_ip_address = "${var.fgt_internal_ipaddress["b"]}"
   }
 }
+
+
+resource "azurerm_network_security_group" "fgtbnsg" {
+  name                = "${var.PREFIX}-B-NSG"
+  location            = "${azurerm_resource_group.resourcegroupb.location}"
+  resource_group_name = "${azurerm_resource_group.resourcegroupb.name}"
+}
+
+resource "azurerm_network_security_rule" "fgtbnsgrule1" {
+  name                        = "AllOutbound"
+  priority                    = 100
+  direction                   = "Outbound"
+  access                      = "Allow"
+  protocol                    = "*"
+  source_port_range           = "*"
+  destination_port_range      = "*"
+  source_address_prefix       = "*"
+  destination_address_prefix  = "*"
+  resource_group_name         = "${azurerm_resource_group.resourcegroupb.name}"
+  network_security_group_name = "${azurerm_network_security_group.fgtbnsg.name}"
+}
+
+resource "azurerm_network_security_rule" "fgtbnsgrule2" {
+  name                        = "AllInbound"
+  priority                    = 100
+  direction                   = "Inbound"
+  access                      = "Allow"
+  protocol                    = "*"
+  source_port_range           = "*"
+  destination_port_range      = "*"
+  source_address_prefix       = "*"
+  destination_address_prefix  = "*"
+  resource_group_name         = "${azurerm_resource_group.resourcegroupb.name}"
+  network_security_group_name = "${azurerm_network_security_group.fgtbnsg.name}"
+}
+
+resource "azurerm_subnet_network_security_group_association" "fgtbnsgassociation1" {
+  subnet_id                 = "${azurerm_subnet.subnetb1.id}"
+  network_security_group_id = "${azurerm_network_security_group.fgtbnsg.id}"
+}
+
+resource "azurerm_subnet_network_security_group_association" "fgtbnsgassociation2" {
+  subnet_id                 = "${azurerm_subnet.subnetb2.id}"
+  network_security_group_id = "${azurerm_network_security_group.fgtbnsg.id}"
+}

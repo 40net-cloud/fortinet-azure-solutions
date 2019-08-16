@@ -88,8 +88,6 @@ resource "azurerm_virtual_machine" "fgtbvm" {
     enabled     = "${var.BOOT_DIAGNOSTICS}"
     storage_uri = "${var.BOOT_DIAGNOSTICS == "true" ? join(",", azurerm_storage_account.sadiagb.*.primary_blob_endpoint) : "" }"
   }
-
-  depends_on = ["azurerm_virtual_machine.fgtavm"]
 }
 
 data "template_file" "fgt_b_custom_data" {
