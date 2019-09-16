@@ -1,26 +1,26 @@
-# Active / Passive High Available FortiGate pair with external and internal Azure Standard Load Balancer
+# Active - Passive High Available FortiGate pair with external and internal Azure Standard Load Balancer
 
 [![Build Status](https://dev.azure.com/jvh-2520/Fortinet-Azure/_apis/build/status/Azure-Passive-ELB-ILB?branchName=master)](https://dev.azure.com/jvh-2520/Fortinet-Azure/_build/latest?definitionId=13&branchName=master)
 
 # Introduction
 
-More and more enterprises are turning to Microsoft Azure to extend internal data centers and take advantage of the elasticity of the public cloud. While Azure secures the infrastructure, you are responsible for protecting everything you put in it. Fortinet Security Fabric provides Azure and Office 365 users the broad protection, native integration and automated management enabling customers with consistent enforcement and visibility across their multi-cloud infrastructure.
+More and more enterprises are turning to Microsoft Azure to extend internal data centers and take advantage of the elasticity of the public cloud. While Azure secures the infrastructure, you are responsible for protecting everything you put in it. Fortinet Security Fabric provides Azure the broad protection, native integration and automated management enabling customers with consistent enforcement and visibility across their multi-cloud infrastructure.
 
 # Design
 
-In Microsoft Azure you can deploy a Active Passive pair of FortiGate VM's that communicate with each other and the Azure fabric. The FortiGate setup will receive the to be inspected traffic using user defined routing (UDR). You can send all or specific traffic that needs inspection going to/coming from on-prem networks or public internet by changing the UDR routing.
+In Microsoft Azure you can deploy a Active Passive pair of FortiGate VM's that communicate with each other and the Azure fabric. This FortiGate setup will receive the to be inspected traffic using user defined routing (UDR) and public IPs. You can send all or specific traffic that needs inspection, going to/coming from on-prem networks or public internet by adapting the UDR routing.
 
-This ARM template will automatically deploy a full working environment containing the the following components.
+This Azure ARM template will automatically deploy a full working environment containing the the following components.
 
-  - 2 x FortiGate firewall's in an active/passive deployment
-  - 1 x external Azure Standard Load Balancer for communication with internet
-  - 1 x internal Azure Standard Load Balancer to receive all internal traffic and forwarding towards Azure Gateways connecting ExpressRoute or Azure VPN's.
-  - 1 x VNET with 2 protected subnets
+  - 2 FortiGate firewall's in an active/passive deployment
+  - 1 external Azure Standard Load Balancer for communication with internet
+  - 1 internal Azure Standard Load Balancer to receive all internal traffic and forwarding towards Azure Gateways connecting ExpressRoute or Azure VPN's
+  - 1 VNET with 2 protected subnets and 4 subnets required for the FortiGate deployment (external, internal, ha mgmt and ha sync)
   - User Defined Routes (UDR) for the protected subnets
 
 ![VNET peering design](images/fgt-ha.png)
 
-This ARM template can also be used to extend or customize based on your requirements. Additional subnets besides the one's mentioned above are not automatically generated. By adapting the ARM templates you can add additional subnets which prefereably require their own routing tables.
+This ARM template can also be used to extend or customized based on your requirements. Additional subnets besides the one's mentioned above are not automatically generated. By adapting the ARM templates you can add additional subnets which prefereably require their own routing tables.
 
 ## How to deploy
 
