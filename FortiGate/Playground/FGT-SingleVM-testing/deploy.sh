@@ -1,12 +1,19 @@
 #!/bin/bash
 echo "
-##############################################################################################################
+################################################################################
 #
-# Fortinet FortiGate Terraform deployment template
-# Cloud security services hub deployment - VNET peering
+# Fortinet testing
 #
-##############################################################################################################
-
+# Deploy a testing setup using a FortiGate and 2x LNX systems in 2
+# separate SUBNET's
+#
+# To get started you need provide the Azure Service Principal Access if you are
+# not usig Azure Cloud Shell. If you want the provision the FortiGate systems
+# automatically with a license file you need to add the licenses into the
+# licenses directory and add the filename in the environment variable
+# TF_VAR_FGT_LICENSE_FILE.
+#
+################################################################################
 "
 
 # Stop running when command returns error
@@ -19,11 +26,17 @@ set -e
 # AZURE_CLIENT_SECRET=''
 # AZURE_SUBSCRIPTION_ID=''
 # AZURE_TENANT_ID=''
+##############################################################################################################
 
-# LICENSE FILE HANDLING
-TF_VAR_FGT_LICENSE_LOCATION="../licenses"
-TF_VAR_FGT_LICENSE_FILE_A=""
-TF_VAR_FGT_LICENSE_FILE_B=""
+##############################################################################################################
+# LICENSE FILE Location
+#
+# Examples
+# export TF_VAR_FGT_LICENSE_FILE="../licenses/FGVM04xxx.lic"
+#
+##############################################################################################################
+#export TF_VAR_FGT_LICENSE_FILE=""
+##############################################################################################################
 
 PLAN="terraform.tfplan"
 
@@ -82,6 +95,7 @@ else
     echo ""
 fi
 PASSWORD="$passwd"
+DB_PASSWORD="$passwd"
 
 if [ -z "$DEPLOY_USERNAME" ]
 then
@@ -92,20 +106,6 @@ fi
 echo ""
 echo "--> Using username '$USERNAME' ..."
 echo ""
-
-# Generate SSH key
-echo ""
-echo "==> Generate and verify SSH key location and permissions"
-echo ""
-SSH_PRIVATE_KEY_FILE="output/ssh_key"
-if [ ! -f output/ssh_key ]; then
-    ssh-keygen -q -t rsa -b 2048 -f "$SSH_PRIVATE_KEY_FILE" -C "" -N ""
-fi
-SSH_PUBLIC_KEY_FILE="output/ssh_key.pub"
-chmod 700 `dirname $SSH_PUBLIC_KEY_FILE`
-chmod 600 $SSH_PUBLIC_KEY_FILE
-FGT_SSH_PUBLIC_KEY_FILE="../$SSH_PUBLIC_KEY_FILE"
-FGT_SSH_PRIVATE_KEY_FILE="../$SSH_PRIVATE_KEY_FILE"
 
 SUMMARY="summary.out"
 
@@ -143,17 +143,18 @@ terraform output deployment_summary > "../output/$SUMMARY"
 
 cd ../
 echo "
-##############################################################################################################
+################################################################################
 #
-# Fortinet FortiGate Terraform deployment template
-# Cloud security services hub deployment - VNET peering
+# Fortinet FortiGate testing
 #
-# The FortiGate systems are reachable on their managment public IP on port HTTPS/8443 and SSH/22.
+# The FortiGate system is reachable on their public IP on port HTTPS/443 and
+# SSH/22. The backend linux systems are reachable on their public IP on SSH/22
+# to start the tests.
 #
-# BEWARE: The state files contain sensitive data like passwords and others. After the demo clean up your
-#         clouddrive directory.
+# BEWARE: The state files contain sensitive data like passwords and others.
+#         After the demo clean up your clouddrive directory.
 #
-##############################################################################################################
+################################################################################
 
  Deployment information:
 
@@ -162,4 +163,5 @@ Username: $USERNAME
 cat "output/$SUMMARY"
 echo "
 
-##############################################################################################################"
+################################################################################
+"
