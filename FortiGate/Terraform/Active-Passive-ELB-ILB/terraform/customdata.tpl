@@ -11,7 +11,6 @@ config sys global
     set admintimeout 120
     set hostname "${fgt_vm_name}"
     set timezone 26
-    set admin-sport 8443
     set gui-theme mariner
 end
 config vpn ssl settings

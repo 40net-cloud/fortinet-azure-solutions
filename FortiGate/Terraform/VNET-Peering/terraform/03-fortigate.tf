@@ -298,7 +298,7 @@ resource "azurerm_virtual_machine" "fgtavm" {
     disable_password_authentication = false
   }
 
-  tags {
+  tags = {
     environment = "Quickstart-VNET-Peering"
     vendor = "Fortinet"
   }
@@ -307,7 +307,7 @@ resource "azurerm_virtual_machine" "fgtavm" {
 data "template_file" "fgt_a_custom_data" {
   template = "${file("${path.module}/customdata.tpl")}"
 
-  vars {
+  vars = {
     fgt_vm_name = "${var.PREFIX}-A-VM-FGT"
     fgt_license_file = "${var.FGT_LICENSE_FILE_A}"
     fgt_username = "${var.USERNAME}"
@@ -457,7 +457,7 @@ resource "azurerm_virtual_machine" "fgtbvm" {
     disable_password_authentication = false
   }
 
-  tags {
+  tags = {
     environment = "Quickstart-VNET-Peering"
     vendor = "Fortinet"
   }
@@ -466,7 +466,7 @@ resource "azurerm_virtual_machine" "fgtbvm" {
 data "template_file" "fgt_b_custom_data" {
   template = "${file("${path.module}/customdata.tpl")}"
 
-  vars {
+  vars = {
     fgt_vm_name = "${var.PREFIX}-B-VM-FGT"
     fgt_license_file = "${var.FGT_LICENSE_FILE_B}"
     fgt_username = "${var.USERNAME}"

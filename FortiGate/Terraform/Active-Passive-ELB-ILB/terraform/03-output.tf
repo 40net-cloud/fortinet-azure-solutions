@@ -1,13 +1,14 @@
 ##############################################################################################################
-#                                                    
-# Terraform configuration
+#
+# Fortinet FortiGate Terraform deployment template
+# Active Passive High Availability with Azure Standard Load Balancer - External and Internal
 #
 ##############################################################################################################
 
 data "template_file" "summary" {
   template = "${file("${path.module}/summary.tpl")}"
 
-  vars {
+  vars = {
     location = "${var.LOCATION}"
     elb_ipaddress = "${data.azurerm_public_ip.elbpip.ip_address}"
     fgt_a_private_ip_address_ext = "${azurerm_network_interface.fgtaifcext.private_ip_address}"

@@ -1,6 +1,7 @@
 ##############################################################################################################
-#                                                    
-# Fortinet FortiGate Terraform deployment template to deploy a IPSEC test setup
+#
+# Fortinet FortiGate Terraform deployment template
+# Active Passive High Availability with Azure Standard Load Balancer - External and Internal
 #
 ##############################################################################################################
 
@@ -51,7 +52,7 @@ terraform {
 }
 
 ##############################################################################################################
-# Deployment in Microsoft Azure 
+# Deployment in Microsoft Azure
 ##############################################################################################################
 
 provider "azurerm" {
