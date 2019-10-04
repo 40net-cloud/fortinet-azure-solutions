@@ -84,10 +84,10 @@ resource "azurerm_virtual_machine" "fgtvm" {
 
   tags = "${var.TAGS}"
 
-  boot_diagnostics {
-    enabled     = "${var.BOOT_DIAGNOSTICS}"
-    storage_uri = "${var.BOOT_DIAGNOSTICS == "true" ? join(",", azurerm_storage_account.sadiaga.*.primary_blob_endpoint) : "" }"
-  }
+#  boot_diagnostics {
+#    enabled     = "${var.BOOT_DIAGNOSTICS}"
+#    storage_uri = "${var.BOOT_DIAGNOSTICS == "true" ? join(",", azurerm_storage_account.sadiaga.*.primary_blob_endpoint) : "" }"
+#  }
 }
 
 data "template_file" "fgt_custom_data" {

@@ -113,12 +113,12 @@ resource "azurerm_subnet_network_security_group_association" "fgtnsgassociation1
   subnet_id                 = "${azurerm_subnet.subnet1.id}"
   network_security_group_id = "${azurerm_network_security_group.fgtnsg.id}"
 
-  depends_on = [azurerm_network_interface.fgtifcext]
+  depends_on = ["azurerm_network_interface.fgtifcext"]
 }
 
 resource "azurerm_subnet_network_security_group_association" "fgtnsgassociation2" {
   subnet_id                 = "${azurerm_subnet.subnet2.id}"
   network_security_group_id = "${azurerm_network_security_group.fgtnsg.id}"
 
-  depends_on = [azurerm_network_interface.fgtifcint]
+  depends_on = ["azurerm_network_interface.fgtifcint"]
 }
