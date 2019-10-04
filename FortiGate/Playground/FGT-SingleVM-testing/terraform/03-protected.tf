@@ -17,7 +17,7 @@ resource "azurerm_network_interface" "lnxaifc" {
   location                        = "${azurerm_resource_group.resourcegroupa.location}"
   resource_group_name             = "${azurerm_resource_group.resourcegroupa.name}"
   enable_ip_forwarding            = false
-  enable_accelerated_networking   = true
+  enable_accelerated_networking   = false
 
   ip_configuration {
     name                          = "interface1"
@@ -96,7 +96,7 @@ resource "azurerm_network_interface" "lnxbifc" {
   location                        = "${azurerm_resource_group.resourcegroupa.location}"
   resource_group_name             = "${azurerm_resource_group.resourcegroupa.name}"
   enable_ip_forwarding            = false
-  enable_accelerated_networking   = true
+  enable_accelerated_networking   = false
 
   ip_configuration {
     name                          = "interface1"

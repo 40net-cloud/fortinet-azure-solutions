@@ -199,7 +199,7 @@ variable "fgt_vmsize" {
 }
 
 variable "lnx_vmsize" {
-  default = "Standard_D4s_v3"
+  default = "Standard_DS1_v2"
 }
 
 ##############################################################################################################
@@ -221,15 +221,16 @@ resource "random_id" "saname" {
   byte_length = 6
 }
 
-resource "azurerm_storage_account" "sadiaga" {
-  count                    = "${var.BOOT_DIAGNOSTICS == "true" ? 1 : 0}"
-  name                     = "${lower(var.PREFIX)}a${lower(random_id.saname.hex)}"
-  resource_group_name      = "${azurerm_resource_group.resourcegroupa.name}"
-  location                 = "${var.LOCATION}"
-  account_tier             = "Standard"
-  account_replication_type = "LRS"
-
-  tags = "${var.TAGS}"
-}
+#resource "azurerm_storage_account" "sadiaga" {
+#  count                             = "${var.BOOT_DIAGNOSTICS == "true" ? 1 : 0}"
+#  name                              = "${lower(var.PREFIX)}a${lower(random_id.saname.hex)}"
+#  resource_group_name               = "${azurerm_resource_group.resourcegroupa.name}"
+#  location                          = "${var.LOCATION}"
+#  account_tier                      = "Standard"
+#  account_replication_type          = "LRS"
+#  enable_advanced_threat_protection = false
+#
+#  tags = "${var.TAGS}"
+#}
 
 ##############################################################################################################

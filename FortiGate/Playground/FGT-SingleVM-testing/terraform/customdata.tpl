@@ -74,7 +74,7 @@ config firewall policy
         set comments "Allow protected networks to talk to each other"
     next
     edit 2
-        set name "protected-b-2-protected-b"
+        set name "protected-b-2-protected-a"
         set srcintf "port2"
         set dstintf "port2"
         set srcaddr "${prefix}-SUBNET-PROTECTED-B"
