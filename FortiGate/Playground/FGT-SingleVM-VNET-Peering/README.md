@@ -1,6 +1,4 @@
-# Cloud security services hub deployment - VNET peering
-
-[![Build Status](https://dev.azure.com/jvh-2520/Fortinet-Azure/_apis/build/status/VNET%20Peering?branchName=master)](https://dev.azure.com/jvh-2520/Fortinet-Azure/_build/latest?definitionId=31&branchName=master)
+# Cloud security services hub deployment - VNET peering with a Single FortiGate
 
 ## Introduction
 
