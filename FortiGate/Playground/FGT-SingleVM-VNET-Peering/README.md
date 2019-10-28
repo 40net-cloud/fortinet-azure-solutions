@@ -1,4 +1,5 @@
-# Cloud security services hub deployment - VNET peering with a Single FortiGate
+# Cloud security services hub deployment - VNET peering
+# with a Single FortiGate
 
 ## Introduction
 
