@@ -19,7 +19,7 @@ This Azure ARM template will automatically deploy a full working environment con
 - VNET peering between HUB and spoke networks
 - User Defined Routes (UDR) for the different protected subnets
 
-![VNET peering design](images/fgt-ha-vnet-peering.png)
+![VNET peering design](images/fgt-singlevm-vnet-peering.png)
 
 This Azure ARM template can also be extended or customized based on your requirements. Additional subnets besides the ones mentioned above are not automatically generated. By extending the Azure ARM templates additional subnets can be added. Additional subnets will require their own routing tables and VNET peering configuration.
 
