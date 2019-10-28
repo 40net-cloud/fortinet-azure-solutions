@@ -195,11 +195,11 @@ variable "protected_srv_ipaddress" {
 ##############################################################################################################
 
 variable "fgt_vmsize" {
-  default = "Standard_F4s"
+  default = "Standard_F8s"
 }
 
 variable "lnx_vmsize" {
-  default = "Standard_DS1_v2"
+  default = "Standard_DS4_v2"
 }
 
 ##############################################################################################################

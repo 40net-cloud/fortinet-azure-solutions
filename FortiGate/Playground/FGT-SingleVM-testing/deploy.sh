@@ -117,20 +117,20 @@ cd terraform/
 echo ""
 echo "==> Terraform init"
 echo ""
-./terraform -v
-./terraform init
+terraform -v
+terraform init
 
 echo ""
 echo "==> Terraform plan"
 echo ""
-./terraform plan --out "$PLAN" \
+terraform plan --out "$PLAN" \
                 -var "USERNAME=$USERNAME" \
                 -var "PASSWORD=$PASSWORD"
 
 echo ""
 echo "==> Terraform apply"
 echo ""
-./terraform apply "$PLAN"
+terraform apply "$PLAN"
 if [[ $? != 0 ]];
 then
     echo "--> ERROR: Deployment failed ..."
@@ -140,7 +140,7 @@ fi
 echo ""
 echo "==> Terraform output deployment summary"
 echo ""
-./terraform output deployment_summary > "../output/$SUMMARY"
+terraform output deployment_summary > "../output/$SUMMARY"
 
 cd ../
 echo "
