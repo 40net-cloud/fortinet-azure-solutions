@@ -1,5 +1,4 @@
-# Fortinet FortiGate Terraform deployment template
-# Active Passive High Availability with Azure Standard Load Balancer - External and Internal
+# Fortinet FortiGate Terraform deployment template (Active Passive High Availability with Azure Standard Load Balancer - External and Internal)
 
 ## Introduction
 
