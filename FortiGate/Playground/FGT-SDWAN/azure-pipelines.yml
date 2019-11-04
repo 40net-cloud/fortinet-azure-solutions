@@ -1,9 +1,9 @@
-resources:
+resources: 
 - repo: self
 
 pool:
   name: Hosted Ubuntu 1604
-
+  
 steps:
 - task: charleszipp.azure-pipelines-tasks-terraform.azure-pipelines-tasks-terraform-installer.TerraformInstaller@0
   displayName: 'Verify Terraform installation'
@@ -39,6 +39,6 @@ trigger:
     - master
   paths:
     exclude:
-    - FortiGate/Terraform/VNET-Peering/*.md
+    - FortiGate/Terraform/VNET-Peering/*.md 
     include:
     - FortiGate/Terrafrom/VNET-Peering/*

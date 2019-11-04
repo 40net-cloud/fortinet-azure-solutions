@@ -1,8 +1,13 @@
+###############################################################################################################
+#
+# FortiGate Cloud Security Services Hub deployment
+# using Terraform and Azure VNET Peering
+#
 ##############################################################################################################
 #
-# Fortinet FortiGate Terraform deployment template
+# Deployment of the spoke networks and VNET peering
 #
-# https://github.com/terraform-providers/terraform-provider-azurerm/issues/2605
+# Known issue during deployment: https://github.com/terraform-providers/terraform-provider-azurerm/issues/2605
 #
 ##############################################################################################################
 

@@ -1,6 +1,6 @@
 ##############################################################################################################
 #
-# Fortinet FortiGate Terraform deployment template
+# FortiGate Terraform deployment
 # Active Passive High Availability with Azure Standard Load Balancer - External and Internal
 #
 ##############################################################################################################
@@ -22,25 +22,36 @@ variable "PASSWORD" {}
 # FortiGate license type
 ##############################################################################################################
 
-variable "IMAGESKU" {
-  description = "Azure Marketplace Image SKU hourly (PAYG) or byol (Bring your own license)"
-  default = "fortinet_fg-vm"
+variable "FGT_IMAGE_SKU" {
+  description = "Azure Marketplace default image sku hourly (PAYG 'fortinet_fg-vm_payg_20190624') or byol (Bring your own license 'fortinet_fg-vm')"
+  default = "fortinet_fg-vm_payg_20190624"
 }
 
-variable "FGT_LICENSE_LOCATION" {
+variable "FGT_VERSION" {
+  description = "FortiGate version by default the 'latest' available version in the Azure Marketplace is selected"
+  default = "latest"
+}
+
+variable "FGT_BYOL_LICENSE_FILE_A" {
   default = ""
 }
 
-variable "FGT_LICENSE_FILE_A" {
-  default = ""
-}
-
-variable "FGT_LICENSE_FILE_B" {
+variable "FGT_BYOL_LICENSE_FILE_B" {
   default = ""
 }
 
 variable "FGT_SSH_PUBLIC_KEY_FILE" {
   default = ""
+}
+
+##############################################################################################################
+# Accelerated Networking
+# Only supported on specific VM series and CPU count: D/DSv2, D/DSv3, E/ESv3, F/FS, FSv2, and Ms/Mms
+# https://azure.microsoft.com/en-us/blog/maximize-your-vm-s-performance-with-accelerated-networking-now-generally-available-for-both-windows-and-linux/
+##############################################################################################################
+variable "FGT_ACCELERATED_NETWORKING" {
+  description = "Enables Accelerated Networking for the network interfaces of the FortiGate"
+  default = "true"
 }
 
 ##############################################################################################################
@@ -150,27 +161,4 @@ resource "azurerm_resource_group" "resourcegroup" {
   location = "${var.LOCATION}"
 }
 
-##############################################################################################################
-
-##############################################################################################################
-# Retrieve client public IP for Rest API ACL
-##############################################################################################################
-
-data "external" "client_public_ip" {
-  program = ["sh", "${path.module}/get-public-ip.sh"]
-}
-
-output "ip" {
-    value = "${data.external.client_public_ip.result["ip"]}"
-}
-##############################################################################################################
-
-##############################################################################################################
-# Generate random key for api usage
-##############################################################################################################
-
-resource "random_string" "fgt_api_key" {
-  length = 16
-  special = true
-}
 ##############################################################################################################

@@ -19,10 +19,22 @@ set -e
 # AZURE_SUBSCRIPTION_ID=''
 # AZURE_TENANT_ID=''
 
-# LICENSE FILE HANDLING
-TF_VAR_FGT_LICENSE_LOCATION="../licenses"
-TF_VAR_FGT_LICENSE_FILE_A=""
-TF_VAR_FGT_LICENSE_FILE_B=""
+##############################################################################################################
+# FortiGate variables
+#
+# FortiGate License type PAYG or BYOL
+# Default = PAYG
+# FGT_IMAGE_SKU PAYG/ONDEMAND = fortinet_fg-vm_payg_20190624
+# FGT_IMAGE_SKU BYOL = fortinet_fg-vm
+#
+# FortiGate version
+# Default = latest
+#
+##############################################################################################################
+#export TF_VAR_FGT_IMAGE_SKU=""
+#export TF_VAR_FGT_VERSION=""
+#export TF_VAR_FGT_BYOL_LICENSE_FILE_A=""
+#export TF_VAR_FGT_BYOL_LICENSE_FILE_B=""
 
 PLAN="terraform.tfplan"
 
@@ -130,7 +142,7 @@ cd ../
 echo "
 ##############################################################################################################
 #
-# Fortinet FortiGate Terraform deployment template
+# FortiGate Terraform deployment
 # Active Passive High Availability with Azure Standard Load Balancer - External and Internal
 #
 # The FortiGate systems are reachable on their managment public IP on port HTTPS/443 and SSH/22.

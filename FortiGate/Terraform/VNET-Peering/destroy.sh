@@ -1,11 +1,13 @@
 #!/bin/bash
 echo "
-################################################################################
+##############################################################################################################
 #
-# Fortinet Quickstart VNET Peering
-# 
-# Remove the deployed environment based on the state file.
-################################################################################
+# FortiGate Cloud Security Services Hub deployment
+# using Terraform and Azure VNET Peering
+#
+# Remove the deployed environment based on the state file
+#
+##############################################################################################################
 "
 
 # Stop running when command returns error
@@ -31,4 +33,4 @@ terraform plan -var "USERNAME=x" -var "PASSWORD=x" -var "LOCATION=x" -var "PREFI
 echo ""
 echo "==> Terraform destroy"
 echo ""
-terraform destroy -var "USERNAME=x" -var "PASSWORD=x" -var "LOCATION=x" -var "PREFIX=x" -auto-approve 
+terraform destroy -var "USERNAME=x" -var "PASSWORD=x" -var "LOCATION=x" -var "PREFIX=x" -auto-approve
