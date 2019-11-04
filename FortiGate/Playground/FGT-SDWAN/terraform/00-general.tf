@@ -1,11 +1,6 @@
-###############################################################################################################
-#
-# FortiGate Cloud Security Services Hub deployment
-# using Terraform and Azure VNET Peering
-#
 ##############################################################################################################
 #
-# Input variables
+# Fortinet FortiGate Terraform deployment template
 #
 ##############################################################################################################
 
@@ -23,24 +18,31 @@ variable "USERNAME" {}
 variable "PASSWORD" {}
 
 ##############################################################################################################
-# FortiGate variables
+# FortiGate license type
 ##############################################################################################################
 
-variable "FGT_IMAGE_SKU" {
-  description = "Azure Marketplace default image sku hourly (PAYG 'fortinet_fg-vm_payg_20190624') or byol (Bring your own license 'fortinet_fg-vm')"
-  default = "fortinet_fg-vm_payg_20190624"
+variable "IMAGESKU" {
+  description = "Azure Marketplace Image SKU hourly (PAYG) or byol (Bring your own license)"
+  default = "fortinet_fg-vm"
 }
 
-variable "FGT_VERSION" {
-  description = "FortiGate version by default the 'latest' available version in the Azure Marketplace is selected"
-  default = "latest"
-}
-
-variable "FGT_BYOL_LICENSE_FILE_A" {
+variable "FGT_LICENSE_LOCATION" {
   default = ""
 }
 
-variable "FGT_BYOL_LICENSE_FILE_B" {
+variable "FGT_LICENSE_FILE_A" {
+  default = ""
+}
+
+variable "FGT_LICENSE_FILE_B" {
+  default = ""
+}
+
+variable "FGT_LICENSE_FILE_C" {
+  default = ""
+}
+
+variable "FGT_LICENSE_FILE_D" {
   default = ""
 }
 
@@ -49,21 +51,11 @@ variable "FGT_SSH_PUBLIC_KEY_FILE" {
 }
 
 ##############################################################################################################
-# Accelerated Networking
-# Only supported on specific VM series and CPU count: D/DSv2, D/DSv3, E/ESv3, F/FS, FSv2, and Ms/Mms
-# https://azure.microsoft.com/en-us/blog/maximize-your-vm-s-performance-with-accelerated-networking-now-generally-available-for-both-windows-and-linux/
-##############################################################################################################
-variable "FGT_ACCELERATED_NETWORKING" {
-  description = "Enables Accelerated Networking for the network interfaces of the FortiGate"
-  default = "true"
-}
-
-##############################################################################################################
 # Microsoft Azure Storage Account for storage of Terraform state file
 ##############################################################################################################
 
 terraform {
-  required_version = ">= 0.11"
+  required_version = ">= 0.12"
 }
 
 ##############################################################################################################
@@ -157,38 +149,118 @@ variable "fgt_vmsize" {
 }
 
 ##############################################################################################################
-# Static variables - SPOKE 1 network
+# Static variables - BRANCH 1 network
 ##############################################################################################################
 
-variable "vnetspoke1" {
+variable "vnetbranch1" {
   description = ""
-  default = "172.16.140.0/24"
+  default = "172.16.140.0/23"
 }
 
-variable "subnetspoke1" {
+variable "subnetbranch1" {
   type        = "map"
   description = ""
 
   default = {
-    "1" = "172.16.140.0/26"        # SUBNET 1 in SPOKE 1
+    "1" = "172.16.140.0/26"           # SUBNET 1 in BRANCH 1
+    "2" = "172.16.140.64/26"          # SUBNET 2 in BRANCH 1
+    "3" = "172.16.140.128/26"         # SUBNET 3 in BRANCH 1
+    "4" = "172.16.141.0/26"           # SUBNET 4 in BRANCH 1
+    "5" = "172.16.141.64/26"          # SUBNET 5 in BRANCH 1
+  }
+}
+
+variable "fgt_ipaddress_branch1" {
+  type        = "map"
+  description = ""
+
+  default = {
+    "1" = "172.16.140.5"        # External
+    "2" = "172.16.140.69"       # External2
+    "3" = "172.16.140.132"       # Internal
+  }
+}
+
+variable "gateway_ipaddress_branch1" {
+  type        = "map"
+  description = ""
+
+  default = {
+    "1" = "172.16.140.1"        # External
+    "2" = "172.16.140.65"       # External2
+    "3" = "172.16.140.129"       # Internal
   }
 }
 
 ##############################################################################################################
-# Static variables - SPOKE 2 network
+# Static variables - BRANCH 2 network
 ##############################################################################################################
 
-variable "vnetspoke2" {
+variable "vnetbranch2" {
   description = ""
-  default = "172.16.142.0/24"
+  default = "172.16.142.0/23"
 }
 
-variable "subnetspoke2" {
+variable "subnetbranch2" {
   type        = "map"
   description = ""
 
   default = {
-    "1" = "172.16.142.0/26"        # SUBNET 1 in SPOKE 2
+    "1" = "172.16.142.0/26"           # SUBNET 1 in BRANCH 2
+    "2" = "172.16.142.64/26"          # SUBNET 2 in BRANCH 2
+    "3" = "172.16.142.128/26"         # SUBNET 3 in BRANCH 2
+    "4" = "172.16.143.0/26"         # SUBNET 4 in BRANCH 2
+    "5" = "172.16.143.64/26"         # SUBNET 4 in BRANCH 2
+  }
+}
+
+variable "fgt_ipaddress_branch2" {
+  type        = "map"
+  description = ""
+
+  default = {
+    "1" = "172.16.142.5"        # External
+    "2" = "172.16.142.69"       # External2
+    "3" = "172.16.142.132"       # Internal
+  }
+}
+
+variable "gateway_ipaddress_branch2" {
+  type        = "map"
+  description = ""
+
+  default = {
+    "1" = "172.16.142.1"        # External
+    "2" = "172.16.142.65"       # External2
+    "2" = "172.16.142.129"       # Internal
+  }
+}
+
+##############################################################################################################
+# Static variables - FMG network
+##############################################################################################################
+
+variable "vnetfmg" {
+  description = ""
+  default = "172.16.144.0/23"
+}
+
+variable "subnetfmg" {
+  type        = "map"
+  description = ""
+
+  default = {
+    "1" = "172.16.144.0/26"           # SUBNET 1 in BRANCH 2
+    "2" = "172.16.144.64/26"          # SUBNET 2 in BRANCH 2
+  }
+}
+
+variable "fmg_ipaddress" {
+  type        = "map"
+  description = ""
+
+  default = {
+    "1" = "172.16.145.5"        # External
   }
 }
 
@@ -201,4 +273,27 @@ resource "azurerm_resource_group" "resourcegroup" {
   location = "${var.LOCATION}"
 }
 
+##############################################################################################################
+
+##############################################################################################################
+# Retrieve client public IP for Rest API ACL
+##############################################################################################################
+
+data "external" "client_public_ip" {
+  program = ["sh", "${path.module}/get-public-ip.sh"]
+}
+
+output "ip" {
+    value = "${data.external.client_public_ip.result["ip"]}"
+}
+##############################################################################################################
+
+##############################################################################################################
+# Generate random key for api usage
+##############################################################################################################
+
+resource "random_string" "fgt_api_key" {
+  length = 16
+  special = true
+}
 ##############################################################################################################

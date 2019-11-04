@@ -1,6 +1,6 @@
-###############################################################################################################
+##############################################################################################################
 #
-# Fortinet FortiGate Terraform deployment template
+# FortiGate Terraform deployment
 # Active Passive High Availability with Azure Standard Load Balancer - External and Internal
 #
 ##############################################################################################################
@@ -144,11 +144,12 @@ resource "azurerm_lb_rule" "lb_haports_rule" {
 }
 
 resource "azurerm_network_interface" "fgtaifcext" {
-  name                      = "${var.PREFIX}-VM-FGT-A-IFC-EXT"
-  location                  = "${azurerm_resource_group.resourcegroup.location}"
-  resource_group_name       = "${azurerm_resource_group.resourcegroup.name}"
-  enable_ip_forwarding      = true
-  network_security_group_id = "${azurerm_network_security_group.fgtnsg.id}"
+  name                            = "${var.PREFIX}-VM-FGT-A-IFC-EXT"
+  location                        = "${azurerm_resource_group.resourcegroup.location}"
+  resource_group_name             = "${azurerm_resource_group.resourcegroup.name}"
+  enable_ip_forwarding            = true
+  enable_accelerated_networking   = "${var.FGT_ACCELERATED_NETWORKING}"
+  network_security_group_id       = "${azurerm_network_security_group.fgtnsg.id}"
 
   ip_configuration {
     name                                    = "interface1"
@@ -212,11 +213,12 @@ resource "azurerm_public_ip" "fgtamgmtpip" {
 }
 
 resource "azurerm_network_interface" "fgtaifcmgmt" {
-  name                      = "${var.PREFIX}-A-VM-FGT-IFC-MGMT"
-  location                  = "${azurerm_resource_group.resourcegroup.location}"
-  resource_group_name       = "${azurerm_resource_group.resourcegroup.name}"
-  enable_ip_forwarding      = true
-  network_security_group_id = "${azurerm_network_security_group.fgtnsg.id}"
+  name                            = "${var.PREFIX}-A-VM-FGT-IFC-MGMT"
+  location                        = "${azurerm_resource_group.resourcegroup.location}"
+  resource_group_name             = "${azurerm_resource_group.resourcegroup.name}"
+  enable_ip_forwarding            = true
+  enable_accelerated_networking   = "${var.FGT_ACCELERATED_NETWORKING}"
+  network_security_group_id       = "${azurerm_network_security_group.fgtnsg.id}"
 
   ip_configuration {
     name                                    = "interface1"
@@ -243,14 +245,14 @@ resource "azurerm_virtual_machine" "fgtavm" {
   storage_image_reference {
     publisher = "fortinet"
     offer     = "fortinet_fortigate-vm_v5"
-    sku       = "${var.IMAGESKU}"
-    version   = "latest"
+    sku       = "${var.FGT_IMAGE_SKU}"
+    version   = "${var.FGT_VERSION}"
   }
 
   plan {
     publisher = "fortinet"
     product   = "fortinet_fortigate-vm_v5"
-    name      = "${var.IMAGESKU}"
+    name      = "${var.FGT_IMAGE_SKU}"
   }
 
   storage_os_disk {
@@ -282,7 +284,7 @@ data "template_file" "fgt_a_custom_data" {
 
   vars = {
     fgt_vm_name = "${var.PREFIX}-A-VM-FGT"
-    fgt_license_file = "${var.FGT_LICENSE_FILE_A}"
+    fgt_license_file = "${var.FGT_BYOL_LICENSE_FILE_A}"
     fgt_username = "${var.USERNAME}"
     fgt_ssh_public_key = "${var.FGT_SSH_PUBLIC_KEY_FILE}"
     fgt_external_ipaddr = "${var.fgt_ipaddress_a["1"]}"
@@ -304,11 +306,12 @@ data "template_file" "fgt_a_custom_data" {
 }
 
 resource "azurerm_network_interface" "fgtbifcext" {
-  name                      = "${var.PREFIX}-VM-FGT-B-IFC-EXT"
-  location                  = "${azurerm_resource_group.resourcegroup.location}"
-  resource_group_name       = "${azurerm_resource_group.resourcegroup.name}"
-  enable_ip_forwarding      = true
-  network_security_group_id = "${azurerm_network_security_group.fgtnsg.id}"
+  name                            = "${var.PREFIX}-VM-FGT-B-IFC-EXT"
+  location                        = "${azurerm_resource_group.resourcegroup.location}"
+  resource_group_name             = "${azurerm_resource_group.resourcegroup.name}"
+  enable_ip_forwarding            = true
+  enable_accelerated_networking   = "${var.FGT_ACCELERATED_NETWORKING}"
+  network_security_group_id       = "${azurerm_network_security_group.fgtnsg.id}"
 
   ip_configuration {
     name                                    = "interface1"
@@ -325,11 +328,12 @@ resource "azurerm_network_interface_backend_address_pool_association" "fgtbifcex
 }
 
 resource "azurerm_network_interface" "fgtbifcint" {
-  name                      = "${var.PREFIX}-B-VM-FGT-IFC-INT"
-  location                  = "${azurerm_resource_group.resourcegroup.location}"
-  resource_group_name       = "${azurerm_resource_group.resourcegroup.name}"
-  enable_ip_forwarding      = true
-  network_security_group_id = "${azurerm_network_security_group.fgtnsg.id}"
+  name                            = "${var.PREFIX}-B-VM-FGT-IFC-INT"
+  location                        = "${azurerm_resource_group.resourcegroup.location}"
+  resource_group_name             = "${azurerm_resource_group.resourcegroup.name}"
+  enable_ip_forwarding            = true
+  enable_accelerated_networking   = "${var.FGT_ACCELERATED_NETWORKING}"
+  network_security_group_id       = "${azurerm_network_security_group.fgtnsg.id}"
 
   ip_configuration {
     name                                    = "interface1"
@@ -346,11 +350,12 @@ resource "azurerm_network_interface_backend_address_pool_association" "fgtaifcix
 }
 
 resource "azurerm_network_interface" "fgtbifchasync" {
-  name                      = "${var.PREFIX}-B-VM-FGT-IFC-HASYNC"
-  location                  = "${azurerm_resource_group.resourcegroup.location}"
-  resource_group_name       = "${azurerm_resource_group.resourcegroup.name}"
-  enable_ip_forwarding      = true
-  network_security_group_id = "${azurerm_network_security_group.fgtnsg.id}"
+  name                            = "${var.PREFIX}-B-VM-FGT-IFC-HASYNC"
+  location                        = "${azurerm_resource_group.resourcegroup.location}"
+  resource_group_name             = "${azurerm_resource_group.resourcegroup.name}"
+  enable_ip_forwarding            = true
+  enable_accelerated_networking   = "${var.FGT_ACCELERATED_NETWORKING}"
+  network_security_group_id       = "${azurerm_network_security_group.fgtnsg.id}"
 
 
   ip_configuration {
@@ -371,11 +376,12 @@ resource "azurerm_public_ip" "fgtbmgmtpip" {
 }
 
 resource "azurerm_network_interface" "fgtbifcmgmt" {
-  name                      = "${var.PREFIX}-B-VM-FGT-IFC-MGMT"
-  location                  = "${azurerm_resource_group.resourcegroup.location}"
-  resource_group_name       = "${azurerm_resource_group.resourcegroup.name}"
-  enable_ip_forwarding      = true
-  network_security_group_id = "${azurerm_network_security_group.fgtnsg.id}"
+  name                            = "${var.PREFIX}-B-VM-FGT-IFC-MGMT"
+  location                        = "${azurerm_resource_group.resourcegroup.location}"
+  resource_group_name             = "${azurerm_resource_group.resourcegroup.name}"
+  enable_ip_forwarding            = true
+  enable_accelerated_networking   = "${var.FGT_ACCELERATED_NETWORKING}"
+  network_security_group_id       = "${azurerm_network_security_group.fgtnsg.id}"
 
   ip_configuration {
     name                                    = "interface1"
@@ -402,14 +408,14 @@ resource "azurerm_virtual_machine" "fgtbvm" {
   storage_image_reference {
     publisher = "fortinet"
     offer     = "fortinet_fortigate-vm_v5"
-    sku       = "${var.IMAGESKU}"
-    version   = "latest"
+    sku       = "${var.FGT_IMAGE_SKU}"
+    version   = "${var.FGT_VERSION}"
   }
 
   plan {
     publisher = "fortinet"
     product   = "fortinet_fortigate-vm_v5"
-    name      = "${var.IMAGESKU}"
+    name      = "${var.FGT_IMAGE_SKU}"
   }
 
   storage_os_disk {
@@ -441,7 +447,7 @@ data "template_file" "fgt_b_custom_data" {
 
   vars = {
     fgt_vm_name = "${var.PREFIX}-B-VM-FGT"
-    fgt_license_file = "${var.FGT_LICENSE_FILE_B}"
+    fgt_license_file = "${var.FGT_BYOL_LICENSE_FILE_B}"
     fgt_username = "${var.USERNAME}"
     fgt_ssh_public_key = "${var.FGT_SSH_PUBLIC_KEY_FILE}"
     fgt_external_ipaddr = "${var.fgt_ipaddress_b["1"]}"

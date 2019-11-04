@@ -2,8 +2,8 @@
 echo "
 ##############################################################################################################
 #
-# FortiGate Cloud Security Services Hub deployment
-# using Terraform and Azure VNET Peering
+# Fortinet FortiGate Terraform deployment template
+# Cloud security services hub deployment - VNET peering
 #
 ##############################################################################################################
 
@@ -20,22 +20,10 @@ set -e
 # AZURE_SUBSCRIPTION_ID=''
 # AZURE_TENANT_ID=''
 
-##############################################################################################################
-# FortiGate variables
-#
-# FortiGate License type PAYG or BYOL
-# Default = PAYG
-# FGT_IMAGE_SKU PAYG/ONDEMAND = fortinet_fg-vm_payg_20190624
-# FGT_IMAGE_SKU BYOL = fortinet_fg-vm
-#
-# FortiGate version
-# Default = latest
-#
-##############################################################################################################
-#export TF_VAR_FGT_IMAGE_SKU=""
-#export TF_VAR_FGT_VERSION=""
-#export TF_VAR_FGT_BYOL_LICENSE_FILE_A=""
-#export TF_VAR_FGT_BYOL_LICENSE_FILE_B=""
+# LICENSE FILE HANDLING
+TF_VAR_FGT_LICENSE_LOCATION="../licenses"
+TF_VAR_FGT_LICENSE_FILE_A=""
+TF_VAR_FGT_LICENSE_FILE_B=""
 
 PLAN="terraform.tfplan"
 
@@ -105,20 +93,6 @@ echo ""
 echo "--> Using username '$USERNAME' ..."
 echo ""
 
-# Generate SSH key
-echo ""
-echo "==> Generate and verify SSH key location and permissions"
-echo ""
-SSH_PRIVATE_KEY_FILE="output/ssh_key"
-if [ ! -f output/ssh_key ]; then
-    ssh-keygen -q -t rsa -b 2048 -f "$SSH_PRIVATE_KEY_FILE" -C "" -N ""
-fi
-SSH_PUBLIC_KEY_FILE="output/ssh_key.pub"
-chmod 700 `dirname $SSH_PUBLIC_KEY_FILE`
-chmod 600 $SSH_PUBLIC_KEY_FILE
-FGT_SSH_PUBLIC_KEY_FILE="../$SSH_PUBLIC_KEY_FILE"
-FGT_SSH_PRIVATE_KEY_FILE="../$SSH_PRIVATE_KEY_FILE"
-
 SUMMARY="summary.out"
 
 echo ""
@@ -135,6 +109,8 @@ echo ""
 echo "==> Terraform plan"
 echo ""
 terraform plan --out "$PLAN" \
+                -var "PREFIX=$PREFIX" \
+                -var "LOCATION=$LOCATION" \
                 -var "USERNAME=$USERNAME" \
                 -var "PASSWORD=$PASSWORD"
 
@@ -157,8 +133,8 @@ cd ../
 echo "
 ##############################################################################################################
 #
-# FortiGate Cloud Security Services Hub deployment
-# using Terraform and Azure VNET Peering
+# Fortinet FortiGate Terraform deployment template
+# Cloud security services hub deployment - VNET peering
 #
 # The FortiGate systems are reachable on their managment public IP on port HTTPS/8443 and SSH/22.
 #
