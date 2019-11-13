@@ -138,10 +138,7 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
 
         443, 22 | Foreach-Object {
             it "Port [$_] is listening" {
-                $result = Get-AzureRmPublicIpAddress -Name $publicIP2Name -ResourceGroupName $testsResourceGroupName
-                $portListening = (Test-NetConnection -Port $_ -ComputerName $result.IpAddress).TcpTestSucceeded
-                $portListening | Should -Be $true
-                $result = Get-AzureRmPublicIpAddress -Name $publicIP3Name -ResourceGroupName $testsResourceGroupName
+                $result = Get-AzureRmPublicIpAddress -Name $publicIPName -ResourceGroupName $testsResourceGroupName
                 $portListening = (Test-NetConnection -Port $_ -ComputerName $result.IpAddress).TcpTestSucceeded
                 $portListening | Should -Be $true
             }
