@@ -1,5 +1,7 @@
 # FortiGate Next-Generation Firewall - Single VM
 
+[![Build Status](https://dev.azure.com/jvh-2520/Fortinet-Azure/_apis/build/status/Azure-Passive-ELB-ILB?branchName=master)](https://dev.azure.com/jvh-2520/Fortinet-Azure/_apis/build/status/A-FortiGate-Single-VM?branchName=master)
+
 ## Introduction
 
 As organizations increase their compute footprint in the cloud, Fortinet provides customers with a broad array of security solutions to protect Azure based resources and workloads. Fortinet solutions are tightly integrated and designed to help customers maintain a consistent security posture across applications, clouds and datacenters. Fortinet protects and provides SD WAN connectivity to Azure-based applications with the FortiGate-VM next generation firewalls.
