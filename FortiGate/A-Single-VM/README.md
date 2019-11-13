@@ -1,4 +1,4 @@
-# Cloud security services hub deployment - VNET peering (Single FortiGate)
+# FortiGate Next-Generation Firewall - Single VM
 
 ## Introduction
 
