@@ -118,8 +118,7 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
                      'adminPassword'=$testsResourceGroupName
                      'FortiGateNamePrefix'=$testsPrefix
                     }
-        $publicIP2Name = "FGTAMgmtPublicIP"
-        $publicIP3Name = "FGTBMgmtPublicIP"
+        $publicIPName = "FGTPublicIP"
 
         It "Test Deployment of ARM template $templateFileName" {
             (Test-AzureRmResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName" -TemplateFile "$templateFileName" -TemplateParameterObject $params).Count | Should not BeGreaterThan 0

@@ -67,7 +67,7 @@
     },
     "publicIPName": {
       "type": "string",
-      "defaultValue": "FGTAPClusterPublicIP",
+      "defaultValue": "FGTPublicIP",
       "metadata": {
         "description": "Name of Public IP address element"
       }
