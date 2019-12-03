@@ -7,13 +7,17 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 Content-Disposition: attachment; filename="config"
 
+config system sdn-connector
+	edit AzureSDN
+		set type azure
+	end
+end
 config sys global
     set admintimeout 120
     set hostname "${fgt_vm_name}"
     set timezone 26
     set gui-theme mariner
     set ipsec-soft-dec-async enable
-end
 end
 config system interface
     edit port1

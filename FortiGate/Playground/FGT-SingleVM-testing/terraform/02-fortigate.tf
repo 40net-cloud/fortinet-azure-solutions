@@ -51,6 +51,10 @@ resource "azurerm_virtual_machine" "fgtvm" {
   primary_network_interface_id = "${azurerm_network_interface.fgtifcext.id}"
   vm_size               = "${var.fgt_vmsize}"
 
+  identity {
+    type      = "SystemAssigned"
+  }
+
   storage_image_reference {
     publisher = "fortinet"
     offer     = "fortinet_fortigate-vm_v5"
