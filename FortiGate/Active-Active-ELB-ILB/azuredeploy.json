@@ -191,9 +191,9 @@
       }
     },
     "FortinetTags": {
-    "type": "object",
-    "defaultValue": {
-      "provider": "6EB3B02F-50E5-4A3E-8CB8-2E129258317D"
+      "type": "object",
+      "defaultValue": {
+        "provider": "6EB3B02F-50E5-4A3E-8CB8-2E129258317D"
       }
     }
   },
@@ -840,6 +840,9 @@
       "tags": {
        "provider": "[toUpper(parameters('FortinetTags').provider)]"
       },
+      "identity": {
+        "type": "SystemAssigned"
+      },
       "plan": {
         "name": "[parameters('FortiGateImageSKU')]",
         "publisher": "[variables('imagePublisher')]",
@@ -859,7 +862,7 @@
           "computerName": "[variables('fg1VmName')]",
           "adminUsername": "[parameters('adminUsername')]",
           "adminPassword": "[parameters('adminPassword')]",
-          "customData": "[base64(concat('config system probe-response\n set mode http-probe\n end\n config router static\n edit 1\n set gateway ', variables('sn1GatewayIP'), '\n set device port1\n next\n edit 2\n set dst ', parameters('vnetAddressPrefix'), '\n set gateway ', variables('sn2GatewayIP'), '\n set device port2\n next\n edit 3\nset dst 168.63.129.16 255.255.255.255\nset device port2\n set gateway ', variables ('sn2GatewayIP'), '\n next\nedit 4\nset dst 168.63.129.16 255.255.255.255\nset device port1\n set gateway ', variables ('sn1GatewayIP'), '\n next\n end\n config system interface\n edit port1\n set mode static\n set ip ', variables('sn1IPfg1'), '/', variables('sn1CIDRmask'), '\n set description external\n next\n edit port2\n set mode static\n set ip ', variables('sn2IPfg1'), '/', variables('sn2CIDRmask'), '\n set description internal\n  set allowaccess ping ssh\n next\n end'))]"
+          "customData": "[base64(concat('config system sdn-connector\nedit AzureSDN\nset type azure\nend\nend\nconfig system probe-response\n set mode http-probe\n end\n config router static\n edit 1\n set gateway ', variables('sn1GatewayIP'), '\n set device port1\n next\n edit 2\n set dst ', parameters('vnetAddressPrefix'), '\n set gateway ', variables('sn2GatewayIP'), '\n set device port2\n next\n edit 3\nset dst 168.63.129.16 255.255.255.255\nset device port2\n set gateway ', variables ('sn2GatewayIP'), '\n next\nedit 4\nset dst 168.63.129.16 255.255.255.255\nset device port1\n set gateway ', variables ('sn1GatewayIP'), '\n next\n end\n config system interface\n edit port1\n set mode static\n set ip ', variables('sn1IPfg1'), '/', variables('sn1CIDRmask'), '\n set description external\n next\n edit port2\n set mode static\n set ip ', variables('sn2IPfg1'), '/', variables('sn2CIDRmask'), '\n set description internal\n  set allowaccess ping ssh\n next\n end'))]"
         },
         "storageProfile": {
           "imageReference": {
@@ -905,6 +908,9 @@
       "tags": {
        "provider": "[toUpper(parameters('FortinetTags').provider)]"
       },
+      "identity": {
+        "type": "SystemAssigned"
+      },
       "plan": {
         "name": "[parameters('FortiGateImageSKU')]",
         "publisher": "[variables('imagePublisher')]",
@@ -924,7 +930,7 @@
           "computerName": "[variables('fg2VmName')]",
           "adminUsername": "[parameters('adminUsername')]",
           "adminPassword": "[parameters('adminPassword')]",
-          "customData": "[base64(concat('config system probe-response\n set mode http-probe\n end\n config router static\n edit 1\n set gateway ', variables('sn1GatewayIP'), '\n set device port1\n next\n edit 2\n set dst ', parameters('vnetAddressPrefix'), '\n set gateway ', variables('sn2GatewayIP'), '\n set device port2\n next\n edit 3\nset dst 168.63.129.16 255.255.255.255\nset device port2\n set gateway ', variables ('sn2GatewayIP'), '\n next\nedit 4\nset dst 168.63.129.16 255.255.255.255\nset device port1\n set gateway ', variables ('sn1GatewayIP'), '\n next\n end\n config system interface\n edit port1\n set mode static\n set ip ', variables('sn1IPfg2'), '/', variables('sn1CIDRmask'), '\n set description external\n next\n edit port2\n set mode static\n set ip ', variables('sn2IPfg2'), '/', variables('sn2CIDRmask'), '\n set description internal\n set allowaccess ping ssh\n next\n end'))]"
+          "customData": "[base64(concat('config system sdn-connector\nedit “AzureSDN”\nset type azure\nend\nconfig system probe-response\n set mode http-probe\n end\n config router static\n edit 1\n set gateway ', variables('sn1GatewayIP'), '\n set device port1\n next\n edit 2\n set dst ', parameters('vnetAddressPrefix'), '\n set gateway ', variables('sn2GatewayIP'), '\n set device port2\n next\n edit 3\nset dst 168.63.129.16 255.255.255.255\nset device port2\n set gateway ', variables ('sn2GatewayIP'), '\n next\nedit 4\nset dst 168.63.129.16 255.255.255.255\nset device port1\n set gateway ', variables ('sn1GatewayIP'), '\n next\n end\n config system interface\n edit port1\n set mode static\n set ip ', variables('sn1IPfg2'), '/', variables('sn1CIDRmask'), '\n set description external\n next\n edit port2\n set mode static\n set ip ', variables('sn2IPfg2'), '/', variables('sn2CIDRmask'), '\n set description internal\n set allowaccess ping ssh\n next\n end'))]"
         },
         "storageProfile": {
           "imageReference": {
