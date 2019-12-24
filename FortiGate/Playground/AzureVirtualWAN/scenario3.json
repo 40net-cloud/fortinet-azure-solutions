@@ -195,8 +195,8 @@
 
         "hub2Name": "[if(equals(parameters('hub2Name'),''),concat(parameters('prefix'),'-HUB-',parameters('hub2Location')),parameters('hub2Name'))]",
         "vpnGateway2Name": "[if(equals(parameters('vpnGateway2Name'),''),concat(parameters('prefix'),'-VPNGW-',parameters('hub2Location')),parameters('hub2Name'))]",
-        "vpnsite2Name": "[if(equals(parameters('vpnsite2Name'),''),concat(parameters('prefix'), '-', parameters('vpnsite2Prefix'),'-VPN-'),parameters('vpnsiteName'))]",
-        "connection2Name": "[if(equals(parameters('connection2Name'),''),concat(parameters('prefix'), '-', parameters('vpnsitePrefix'),'-VPN-CONNECTION-',resourceGroup().location),parameters('connectionName'))]"
+        "vpnsite2Name": "[if(equals(parameters('vpnsite2Name'),''),concat(parameters('prefix'), '-', parameters('vpnsite2Prefix'),'-VPN-',parameters('hub2Location')),parameters('vpnsiteName'))]",
+        "connection2Name": "[if(equals(parameters('connection2Name'),''),concat(parameters('prefix'), '-', parameters('vpnsitePrefix'),'-VPN-CONNECTION-',parameters('hub2Location')),parameters('connectionName'))]"
     },
     "resources": [
         {
