@@ -29,21 +29,21 @@
                 "description": "The Azure Virtual Hub 1 IP address range. This address prefix will be used as the address prefix for the HUB vnet."
             }
         },
-        "vpnGatewayName": {
+        "vpnGateway1Name": {
             "type": "string",
             "defaultValue": "",
             "metadata": {
                 "description": "Name of the VPN Gateway in the Azure Virtual Hub 1. A VPN gateway is created inside an Azure Virtual Hub. If no name is provide a name is generated."
             }
         },
-        "vpnsiteName": {
+        "vpnsite1Name": {
             "type": "string",
             "defaultValue": "",
             "metadata": {
                 "description": "Name of the VPN site connecting to Azure Virtual Hub 1. A VPN site represents the on-premise vpn device. If no name is provide a name is generated."
             }
         },
-        "vpnsitePrefix": {
+        "vpnsite1Prefix": {
             "type": "string",
             "metadata": {
               "description": "Naming prefix for all on-premise resources connecting to Azure Virtual Hub 1"
@@ -182,14 +182,14 @@
 
         "vWanName": "[if(equals(parameters('vWanName'),''),concat(parameters('prefix'),'-VWAN'),parameters('vWanName'))]",
         "hub1Name": "[if(equals(parameters('hub1Name'),''),concat(parameters('prefix'),'-HUB-',resourceGroup().location),parameters('hub1Name'))]",
-        "vpnGatewayName": "[if(equals(parameters('vpnGatewayName'),''),concat(parameters('prefix'),'-VPNGW-',resourceGroup().location),parameters('hub1Name'))]",
-        "vpnsiteName": "[if(equals(parameters('vpnsiteName'),''),concat(parameters('prefix'), '-', parameters('vpnsitePrefix'),'-VPN-',resourceGroup().location),parameters('vpnsiteName'))]",
-        "connectionName": "[if(equals(parameters('connectionName'),''),concat(parameters('prefix'), '-', parameters('vpnsitePrefix'),'-VPN-CONNECTION-',resourceGroup().location),parameters('connectionName'))]",
+        "vpnGateway1Name": "[if(equals(parameters('vpnGateway1Name'),''),concat(parameters('prefix'),'-VPNGW-',resourceGroup().location),parameters('hub1Name'))]",
+        "vpnsite1Name": "[if(equals(parameters('vpnsite1Name'),''),concat(parameters('prefix'), '-', parameters('vpnsite1Prefix'),'-VPN-',resourceGroup().location),parameters('vpnsite1Name'))]",
+        "connection1Name": "[if(equals(parameters('connectionName'),''),concat(parameters('prefix'), '-', parameters('vpnsite1Prefix'),'-VPN-CONNECTION-',resourceGroup().location),parameters('connectionName'))]",
 
         "hub2Name": "[if(equals(parameters('hub2Name'),''),concat(parameters('prefix'),'-HUB-',parameters('hub2Location')),parameters('hub2Name'))]",
         "vpnGateway2Name": "[if(equals(parameters('vpnGateway2Name'),''),concat(parameters('prefix'),'-VPNGW-',parameters('hub2Location')),parameters('hub2Name'))]",
-        "vpnsite2Name": "[if(equals(parameters('vpnsite2Name'),''),concat(parameters('prefix'), '-', parameters('vpnsite2Prefix'),'-VPN-',parameters('hub2Location')),parameters('vpnsiteName'))]",
-        "connection2Name": "[if(equals(parameters('connection2Name'),''),concat(parameters('prefix'), '-', parameters('vpnsitePrefix'),'-VPN-CONNECTION-',parameters('hub2Location')),parameters('connectionName'))]"
+        "vpnsite2Name": "[if(equals(parameters('vpnsite2Name'),''),concat(parameters('prefix'), '-', parameters('vpnsite2Prefix'),'-VPN-',parameters('hub2Location')),parameters('vpnsite2Name'))]",
+        "connection2Name": "[if(equals(parameters('connection2Name'),''),concat(parameters('prefix'), '-', parameters('vpnsite2Prefix'),'-VPN-CONNECTION-',parameters('hub2Location')),parameters('connection2Name'))]"
     },
     "resources": [
         {
@@ -216,7 +216,7 @@
         },
         {
             "type": "Microsoft.Network/vpnSites",
-            "name": "[variables('vpnsiteName')]",
+            "name": "[variables('vpnsite2Name')]",
             "apiVersion": "[variables('apiVersion')]",
             "location": "[resourceGroup().location]",
             "dependsOn": [
@@ -242,22 +242,22 @@
         },
         {
             "type": "Microsoft.Network/vpnGateways",
-            "name": "[variables('vpnGatewayName')]",
+            "name": "[variables('vpnGateway1Name')]",
             "apiVersion": "2018-08-01",
             "location": "[resourceGroup().location]",
             "dependsOn": [
                 "[concat('Microsoft.Network/virtualHubs/', variables('hub1Name'))]",
-                "[concat('Microsoft.Network/vpnSites/', variables('vpnsitename'))]"
+                "[concat('Microsoft.Network/vpnSites/', variables('vpnsite1Name'))]"
             ],
             "properties": {
                 "connections": [
                     {
-                        "name": "[variables('connectionName')]",
+                        "name": "[variables('connection1Name')]",
                         "properties": {
                             "connectionBandwidth": 10,
                             "enableBgp": "[parameters('enableBgp')]",
                             "remoteVpnSite": {
-                                "id": "[resourceId('Microsoft.Network/vpnSites', variables('vpnsitename'))]"
+                                "id": "[resourceId('Microsoft.Network/vpnSites', variables('vpnsite1Name'))]"
                             }
                         }
                     }
@@ -276,7 +276,8 @@
             "apiVersion": "[variables('apiVersion')]",
             "location": "[parameters('hub2Location')]",
             "dependsOn": [
-                "[concat('Microsoft.Network/virtualWans/', variables('vWanName'))]"
+                "[concat('Microsoft.Network/virtualWans/', variables('vWanName'))]",
+                "[concat('Microsoft.Network/virtualHubs/', variables('hub1Name'))]"
             ],
             "properties": {
                 "addressPrefix": "[parameters('hub2AddressPrefix')]",
@@ -291,7 +292,8 @@
             "apiVersion": "[variables('apiVersion')]",
             "location": "[resourceGroup().location]",
             "dependsOn": [
-                "[concat('Microsoft.Network/virtualWans/', variables('vWanName'))]"
+                "[concat('Microsoft.Network/virtualWans/', variables('vWanName'))]",
+                "[concat('Microsoft.Network/vpnSites/', variables('vpnsite1name'))]"
             ],
             "properties": {
                 "addressSpace": {
@@ -318,7 +320,7 @@
             "location": "[resourceGroup().location]",
             "dependsOn": [
                 "[concat('Microsoft.Network/virtualHubs/', variables('hub2Name'))]",
-                "[concat('Microsoft.Network/vpnSites/', variables('vpnsitename'))]"
+                "[concat('Microsoft.Network/vpnSites/', variables('vpnsite2name'))]"
             ],
             "properties": {
                 "connections": [
@@ -328,7 +330,7 @@
                             "connectionBandwidth": 10,
                             "enableBgp": "[parameters('enableBgp')]",
                             "remoteVpnSite": {
-                                "id": "[resourceId('Microsoft.Network/vpnSites', variables('vpnsitename'))]"
+                                "id": "[resourceId('Microsoft.Network/vpnSites', variables('vpnsite2Name'))]"
                             }
                         }
                     }
