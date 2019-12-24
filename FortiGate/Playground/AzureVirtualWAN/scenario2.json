@@ -1,0 +1,194 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "prefix": {
+            "type": "string",
+            "metadata": {
+              "description": "Naming prefix for all deployed resources."
+            }
+        },
+        "vWanName": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Name of the Azure Virtual WAN."
+            }
+        },
+        "hub1Name": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Name of Azure Virtual Hub 1. An Azure Virtual Hub is created inside a Azure Virtual WAN."
+            }
+        },
+        "hub1AddressPrefix": {
+            "type": "string",
+            "defaultValue": "172.16.160/24",
+            "metadata": {
+                "description": "The Azure Virtual Hub 1 IP address range. This address prefix will be used as the address prefix for the HUB vnet."
+            }
+        },
+        "vpnGateway1Name": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Name of the VPN Gateway in the Azure Virtual Hub 1. A VPN gateway is created inside an Azure Virtual Hub. If no name is provide a name is generated."
+            }
+        },
+        "vpnsite1Name": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Name of the VPN site connecting to Azure Virtual Hub 1. A VPN site represents the on-premise vpn device. If no name is provide a name is generated."
+            }
+        },
+        "vpnsite1Prefix": {
+            "type": "string",
+            "metadata": {
+              "description": "Naming prefix for all on-premise resources connecting to Azure Virtual Hub 1"
+            }
+        },
+        "connectionName": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Name of the VPN connection connecting to Azure Virtual Hub 1. A VPN connection is established between a VPN site and a VPN gateway."
+            }
+        },
+        "vpnsiteAddressspaceList": {
+            "type": "array",
+            "defaultValue": [ ],
+            "metadata": {
+                "description": "A list of static routes corresponding to the VPN site. These are configured on the VPN gateway."
+            }
+        },
+        "vpnsitePublicIPAddress": {
+            "type": "string",
+            "metadata": {
+                "description": "The public IP address of the VPN site connecting to Azure Virtual Hub 1."
+            }
+        },
+        "vpnsiteBgpAsn": {
+            "type": "int",
+            "defaultValue": 65512,
+            "metadata": {
+                "description": "The BGP ASN number of the VPN site connecting to Azure Virtual Hub 1."
+            }
+        },
+        "vpnsiteBgpPeeringAddress": {
+            "type": "string",
+            "defaultValue": "169.254.111.1",
+            "metadata": {
+                "description": "The BGP peer IP address of the VPN site connecting to Azure Virtual Hub 1."
+            }
+        },
+        "vpnGwBgpAsn": {
+            "type": "int",
+            "defaultValue": 65515,
+            "metadata": {
+                "description": "The BGP ASN number of the Azure Virtual Gateway"
+            }
+        },
+        "enableBgp": {
+            "type": "string",
+            "defaultValue": "true",
+            "metadata": {
+                "description": "This needs to be set to true if BGP needs to enabled on the vpn connection."
+            },
+            "allowedValues": [
+                "true",
+                "false"
+            ]
+        }
+    },
+    "variables": {
+        "apiVersion": "2018-08-01",
+
+        "vWanName": "[if(equals(parameters('vWanName'),''),concat(parameters('prefix'),'-VWAN'),parameters('vWanName'))]",
+        "hub1Name": "[if(equals(parameters('hub1Name'),''),concat(parameters('prefix'),'-HUB-',resourceGroup().location),parameters('hub1Name'))]",
+        "vpnGateway1Name": "[if(equals(parameters('vpnGateway1Name'),''),concat(parameters('prefix'),'-VPNGW-',resourceGroup().location),parameters('hub1Name'))]",
+        "vpnsite1Name": "[if(equals(parameters('vpnsite1Name'),''),concat(parameters('prefix'), '-', parameters('vpnsite1Prefix'),'-VPN-',resourceGroup().location),parameters('vpnsite1Name'))]",
+        "connection1Name": "[if(equals(parameters('connectionName'),''),concat(parameters('prefix'), '-', parameters('vpnsite1Prefix'),'-VPN-CONNECTION-',resourceGroup().location),parameters('connectionName'))]"
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Network/virtualWans",
+            "name": "[variables('vWanName')]",
+            "apiVersion": "[variables('apiVersion')]",
+            "location": "[resourceGroup().location]",
+            "properties": { }
+        },
+        {
+            "type": "Microsoft.Network/virtualHubs",
+            "name": "[variables('hub1Name')]",
+            "apiVersion": "[variables('apiVersion')]",
+            "location": "[resourceGroup().location]",
+            "dependsOn": [
+                "[concat('Microsoft.Network/virtualWans/', variables('vWanName'))]"
+            ],
+            "properties": {
+                "addressPrefix": "[parameters('hub1AddressPrefix')]",
+                "virtualWan": {
+                    "id": "[resourceId('Microsoft.Network/virtualWans',variables('vWanName'))]"
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Network/vpnSites",
+            "name": "[variables('vpnsite1Name')]",
+            "apiVersion": "[variables('apiVersion')]",
+            "location": "[resourceGroup().location]",
+            "dependsOn": [
+                "[concat('Microsoft.Network/virtualWans/', variables('vWanName'))]"
+            ],
+            "properties": {
+                "addressSpace": {
+                    "addressPrefixes": "[parameters('vpnsiteAddressspaceList')]"
+                },
+                "bgpProperties": {
+                    "asn":  "[parameters('vpnsiteBgpAsn')]",
+                    "bgpPeeringAddress": "[parameters('vpnsiteBgpPeeringAddress')]",
+                    "peerWeight": 0
+                },
+                "deviceProperties": {
+                    "linkSpeedInMbps": 0
+                },
+                "ipAddress": "[parameters('vpnsitePublicIPAddress')]",
+                "virtualWan": {
+                    "id": "[resourceId('Microsoft.Network/virtualWans',variables('vWanName'))]"
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Network/vpnGateways",
+            "name": "[variables('vpnGateway1Name')]",
+            "apiVersion": "2018-08-01",
+            "location": "[resourceGroup().location]",
+            "dependsOn": [
+                "[concat('Microsoft.Network/virtualHubs/', variables('hub1Name'))]",
+                "[concat('Microsoft.Network/vpnSites/', variables('vpnsite1Name'))]"
+            ],
+            "properties": {
+                "connections": [
+                    {
+                        "name": "[variables('connection1Name')]",
+                        "properties": {
+                            "connectionBandwidth": 10,
+                            "enableBgp": "[parameters('enableBgp')]",
+                            "remoteVpnSite": {
+                                "id": "[resourceId('Microsoft.Network/vpnSites', variables('vpnsite1Name'))]"
+                            }
+                        }
+                    }
+                ],
+                "virtualHub": {
+                    "id": "[resourceId('Microsoft.Network/virtualHubs',variables('hub1Name'))]"
+                },
+                "bgpSettings": {
+                    "asn": "[parameters('vpnGwBgpAsn')]"
+                }
+            }
+        }
+    ]
+}
