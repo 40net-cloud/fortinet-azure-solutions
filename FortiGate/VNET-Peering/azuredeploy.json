@@ -57,8 +57,9 @@
       }
     },
     "acceleratedNetworking": {
-      "type": "bool",
+      "type": "string",
       "defaultValue": "true",
+      "allowedValues": [ "true", "false" ],
       "metadata": {
         "description": "Accelerated Networking enables direct connection between the VM and network card. Only available on 2 CPU D/DSv2 and F/Fs and 4 CPU D/Dsv3, E/Esv3, Fsv2, Lsv2, Ms/Mms and Ms/Mmsv2"
       }
