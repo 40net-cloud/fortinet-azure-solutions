@@ -2,7 +2,7 @@
 echo "
 ##############################################################################################################
 #
-# Deployment of a Fortigate Active / Passive cluster with External + Internal Load Balancer
+# Deployment of a different Azure Virtual WAN Scenario's
 #
 ##############################################################################################################
 
@@ -107,7 +107,7 @@ az group create --location "$location" --name "$rg"
 # Validate template
 echo "--> Validation deployment in $rg resource group ..."
 az group deployment validate --resource-group "$rg" \
-                           --template-file azuredeploy.json \
+                           --template-file scenario1.json \
                            --parameters prefix=$prefix vpnsitePrefix=$vpnsiteprefix sharedkey=$psk vpnsitePublicIPAddress=$vpnsitepublicipaddress
 result=$?
 if [ $result != 0 ];
@@ -119,7 +119,7 @@ fi
 # Deploy resources
 echo "--> Deployment of $rg resources ..."
 az group deployment create --resource-group "$rg" \
-                           --template-file azuredeploy.json \
+                           --template-file scenario1.json \
                            --parameters prefix=$prefix vpnsitePrefix=$vpnsiteprefix sharedkey=$psk vpnsitePublicIPAddress=$vpnsitepublicipaddress
 result=$?
 if [[ $result != 0 ]];
