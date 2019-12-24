@@ -12,28 +12,28 @@
             "type": "string",
             "defaultValue": "",
             "metadata": {
-                "description": "Name of the Azure Virtual Wan."
+                "description": "Name of the Azure Virtual WAN."
             }
         },
         "hub1Name": {
             "type": "string",
             "defaultValue": "",
             "metadata": {
-                "description": "Name of Azure Virtual Hub 1. An Azure Virtual Hub is created inside a Azure Virtual Wan."
+                "description": "Name of Azure Virtual Hub 1. An Azure Virtual Hub is created inside a Azure Virtual WAN."
             }
         },
         "hub1AddressPrefix": {
             "type": "string",
             "defaultValue": "172.16.160/24",
             "metadata": {
-                "description": "The Azure Virtual Hub 1 IP address range. This address prefix will be used as the address prefix for the hub vnet."
+                "description": "The Azure Virtual Hub 1 IP address range. This address prefix will be used as the address prefix for the HUB vnet."
             }
         },
         "vpnGatewayName": {
             "type": "string",
             "defaultValue": "",
             "metadata": {
-                "description": "Name of the VPN Gateway in the Azure Virtual Hub 1. A VPN gateway is created inside an Azure Virtual Hub."
+                "description": "Name of the VPN Gateway in the Azure Virtual Hub 1. A VPN gateway is created inside an Azure Virtual Hub. If no name is provide a name is generated."
             }
         },
         "vpnGwBgpAsn": {
@@ -73,39 +73,21 @@
         "vpnsitePublicIPAddress": {
             "type": "string",
             "metadata": {
-                "description": "The public IP address of a VPN site."
+                "description": "The public IP address of the VPN site connecting to Azure Virtual Hub 1."
             }
         },
         "vpnsiteBgpAsn": {
             "type": "int",
             "defaultValue": 65516,
             "metadata": {
-                "description": "The BGP ASN number of a VPN site."
+                "description": "The BGP ASN number of the VPN site connecting to Azure Virtual Hub 1."
             }
         },
         "vpnsiteBgpPeeringAddress": {
             "type": "string",
             "defaultValue": "169.254.111.1",
             "metadata": {
-                "description": "The BGP peer IP address of a VPN site."
-            }
-        },
-        "enableBgp": {
-            "type": "string",
-            "defaultValue": "true",
-            "metadata": {
-                "description": "This needs to be set to true if BGP needs to enabled on the vpn connection."
-            },
-            "allowedValues": [
-                "true",
-                "false"
-            ]
-        },
-        "hub2Name": {
-            "type": "string",
-            "defaultValue": "",
-            "metadata": {
-                "description": "Name of the Azure Virtual Hub 2. An Azure Virtual Hub is created inside an Azure Virtual Wan"
+                "description": "The BGP peer IP address of the VPN site connecting to Azure Virtual Hub 1."
             }
         },
         "hub2Location": {
@@ -115,18 +97,25 @@
                 "description": "Location of the Azure Virtual Hub 2"
             }
         },
+        "hub2Name": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Name of the Azure Virtual Hub 2. An Azure Virtual Hub is created inside an Azure Virtual WAN"
+            }
+        },
         "hub2AddressPrefix": {
             "type": "string",
             "defaultValue": "172.16.161.0/24",
             "metadata": {
-                "description": "The Azure Virtual Hub 2 address prefix. This address prefix will be used as the address prefix for the hub vnet"
+                "description": "The Azure Virtual Hub 2 address prefix. This address prefix will be used as the address prefix for the HUB vnet"
             }
         },
         "vpnGateway2Name": {
             "type": "string",
             "defaultValue": "",
             "metadata": {
-                "description": "Name of the VPN gateway. A VPN gateway is created inside an Azure Virtual Hub"
+                "description": "Name of the VPN gateway in the Azure Virtual Hub 2. A VPN gateway is created inside an Azure Virtual Hub. If no name is provide a name is generated."
             }
         },
         "vpnGw2BgpAsn": {
@@ -140,13 +129,20 @@
             "type": "string",
             "defaultValue": "",
             "metadata": {
-                "description": "Name of the VPN site connecting to Azure Virtual Hub 1. A VPN site represents the on-premise vpn device. If no name is provide a name is generated."
+                "description": "Name of the VPN site connecting to Azure Virtual Hub 2. A VPN site represents the on-premise vpn device. If no name is provide a name is generated."
             }
         },
         "vpnsite2Prefix": {
             "type": "string",
             "metadata": {
               "description": "Naming prefix for all on-premise resources connecting to Azure Virtual Hub 2"
+            }
+        },
+        "connection2Name": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Name of the VPN connection connecting to Azure Virtual Hub 2. A VPN connection is established between a VPN site and a VPN gateway."
             }
         },
         "vpnsite2AddressspaceList": {
@@ -159,22 +155,33 @@
         "vpnsite2PublicIPAddress": {
             "type": "string",
             "metadata": {
-                "description": "The public IP address of a vpn site."
+                "description": "The public IP address of the VPN site connecting to Azure Virtual Hub 2."
             }
         },
         "vpnsite2BgpAsn": {
             "type": "int",
             "defaultValue": 65526,
             "metadata": {
-                "description": "The bgp asn number of a vpnsite."
+                "description": "The BGP ASN number of the VPN site connecting to Azure Virtual Hub 2."
             }
         },
         "vpnsite2BgpPeeringAddress": {
             "type": "string",
             "defaultValue": "169.254.121.1",
             "metadata": {
-                "description": "The bgp peer IP address of a vpnsite."
+                "description": "The BGP peer IP address of the VPN site connecting to Azure Virtual Hub 2."
             }
+        },
+        "enableBgp": {
+            "type": "string",
+            "defaultValue": "true",
+            "metadata": {
+                "description": "This needs to be set to true if BGP needs to enabled on the vpn connection."
+            },
+            "allowedValues": [
+                "true",
+                "false"
+            ]
         }
     },
     "variables": {
@@ -182,12 +189,14 @@
 
         "vWanName": "[if(equals(parameters('vWanName'),''),concat(parameters('prefix'),'-VWAN'),parameters('vWanName'))]",
         "hub1Name": "[if(equals(parameters('hub1Name'),''),concat(parameters('prefix'),'-HUB-',resourceGroup().location),parameters('hub1Name'))]",
-        "hub2Name": "[if(equals(parameters('hub2Name'),''),concat(parameters('prefix'),'-HUB-',resourceGroup().location),parameters('hub2Name'))]",
-        "vpnGatewayName": "[if(equals(parameters('vpnGatewayName'),''),concat(parameters('prefix'),'-VPNGW'),parameters('hub1Name'))]",
-        "vpnGateway2Name": "[if(equals(parameters('vpnGateway2Name'),''),concat(parameters('prefix'),'-VPNGW'),parameters('hub2Name'))]",
-        "vpnsiteName": "[if(equals(parameters('vpnsiteName'),''),concat(parameters('prefix'), '-', parameters('vpnsitePrefix'),'-VPN'),parameters('vpnsiteName'))]",
-        "vpnsite2Name": "[if(equals(parameters('vpnsite2Name'),''),concat(parameters('prefix'), '-', parameters('vpnsite2Prefix'),'-VPN'),parameters('vpnsiteName'))]",
-        "connectionName": "[if(equals(parameters('connectionName'),''),concat(parameters('prefix'), '-', parameters('vpnsitePrefix'),'-VPN-CONNECTION'),parameters('connectionName'))]"
+        "vpnGatewayName": "[if(equals(parameters('vpnGatewayName'),''),concat(parameters('prefix'),'-VPNGW-',resourceGroup().location),parameters('hub1Name'))]",
+        "vpnsiteName": "[if(equals(parameters('vpnsiteName'),''),concat(parameters('prefix'), '-', parameters('vpnsitePrefix'),'-VPN-',resourceGroup().location),parameters('vpnsiteName'))]",
+        "connectionName": "[if(equals(parameters('connectionName'),''),concat(parameters('prefix'), '-', parameters('vpnsitePrefix'),'-VPN-CONNECTION-',resourceGroup().location),parameters('connectionName'))]",
+
+        "hub2Name": "[if(equals(parameters('hub2Name'),''),concat(parameters('prefix'),'-HUB-',parameters('hub2Location')),parameters('hub2Name'))]",
+        "vpnGateway2Name": "[if(equals(parameters('vpnGateway2Name'),''),concat(parameters('prefix'),'-VPNGW-',parameters('hub2Location')),parameters('hub2Name'))]",
+        "vpnsite2Name": "[if(equals(parameters('vpnsite2Name'),''),concat(parameters('prefix'), '-', parameters('vpnsite2Prefix'),'-VPN-'),parameters('vpnsiteName'))]",
+        "connection2Name": "[if(equals(parameters('connection2Name'),''),concat(parameters('prefix'), '-', parameters('vpnsitePrefix'),'-VPN-CONNECTION-',resourceGroup().location),parameters('connectionName'))]"
     },
     "resources": [
         {
@@ -321,7 +330,7 @@
             "properties": {
                 "connections": [
                     {
-                        "name": "[variables('connectionName')]",
+                        "name": "[variables('connection2Name')]",
                         "properties": {
                             "connectionBandwidth": 10,
                             "enableBgp": "[parameters('enableBgp')]",
