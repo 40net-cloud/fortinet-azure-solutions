@@ -36,13 +36,6 @@
                 "description": "Name of the VPN Gateway in the Azure Virtual Hub 1. A VPN gateway is created inside an Azure Virtual Hub. If no name is provide a name is generated."
             }
         },
-        "vpnGwBgpAsn": {
-            "type": "int",
-            "defaultValue": 65515,
-            "metadata": {
-                "description": "The BGP ASN number of the Azure Virtual Hub 1"
-            }
-        },
         "vpnsiteName": {
             "type": "string",
             "defaultValue": "",
@@ -118,13 +111,6 @@
                 "description": "Name of the VPN gateway in the Azure Virtual Hub 2. A VPN gateway is created inside an Azure Virtual Hub. If no name is provide a name is generated."
             }
         },
-        "vpnGw2BgpAsn": {
-            "type": "int",
-            "defaultValue": 65525,
-            "metadata": {
-                "description": "The bgp asn number of the Azure Virtual Hub 2"
-            }
-        },
         "vpnsite2Name": {
             "type": "string",
             "defaultValue": "",
@@ -160,7 +146,7 @@
         },
         "vpnsite2BgpAsn": {
             "type": "int",
-            "defaultValue": 65526,
+            "defaultValue": 65517,
             "metadata": {
                 "description": "The BGP ASN number of the VPN site connecting to Azure Virtual Hub 2."
             }
@@ -170,6 +156,13 @@
             "defaultValue": "169.254.121.1",
             "metadata": {
                 "description": "The BGP peer IP address of the VPN site connecting to Azure Virtual Hub 2."
+            }
+        },
+        "vpnGwBgpAsn": {
+            "type": "int",
+            "defaultValue": 65515,
+            "metadata": {
+                "description": "The BGP ASN number of the Azure Virtual Gateway"
             }
         },
         "enableBgp": {
@@ -344,7 +337,7 @@
                     "id": "[resourceId('Microsoft.Network/virtualHubs',variables('hub1Name'))]"
                 },
                 "bgpSettings": {
-                    "asn": "[parameters('vpnGw2BgpAsn')]"
+                    "asn": "[parameters('vpnGwBgpAsn')]"
                 }
             }
         }
