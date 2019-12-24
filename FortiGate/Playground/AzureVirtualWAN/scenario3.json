@@ -71,7 +71,7 @@
         },
         "vpnsiteBgpAsn": {
             "type": "int",
-            "defaultValue": 65516,
+            "defaultValue": 65512,
             "metadata": {
                 "description": "The BGP ASN number of the VPN site connecting to Azure Virtual Hub 1."
             }
@@ -146,7 +146,7 @@
         },
         "vpnsite2BgpAsn": {
             "type": "int",
-            "defaultValue": 65517,
+            "defaultValue": 65513,
             "metadata": {
                 "description": "The BGP ASN number of the VPN site connecting to Azure Virtual Hub 2."
             }
