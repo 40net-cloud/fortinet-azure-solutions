@@ -1,6 +1,6 @@
-# FortiGate Next-Generation Firewall - Single VM
+# FortiGate Next-Generation Firewall - A Single VM
 
-[![Build Status](https://dev.azure.com/jvh-2520/Fortinet-Azure/_apis/build/status/Azure-Passive-ELB-ILB?branchName=master)](https://dev.azure.com/jvh-2520/Fortinet-Azure/_apis/build/status/A-FortiGate-Single-VM?branchName=master)
+[![Build Status](https://dev.azure.com/jvh-2520/Fortinet-Azure/_apis/build/status/A-FortiGate-Single-VM?branchName=master)](https://dev.azure.com/jvh-2520/Fortinet-Azure/_build/latest?definitionId=32&branchName=master)
 
 ## Introduction
 
