@@ -216,7 +216,7 @@
         },
         {
             "type": "Microsoft.Network/vpnSites",
-            "name": "[variables('vpnsite2Name')]",
+            "name": "[variables('vpnsite1Name')]",
             "apiVersion": "[variables('apiVersion')]",
             "location": "[resourceGroup().location]",
             "dependsOn": [
