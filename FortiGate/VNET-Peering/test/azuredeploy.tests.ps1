@@ -92,7 +92,8 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
         }
 
         It 'Contains the expected parameters' {
-            $expectedTemplateParameters = 'adminPassword',
+            $expectedTemplateParameters = 'acceleratedNetworking',
+                                          'adminPassword',
                                           'adminUsername',
                                           'FortiGateImageSKU',
                                           'FortiGateImageVersion',

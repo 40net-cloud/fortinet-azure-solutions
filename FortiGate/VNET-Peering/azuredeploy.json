@@ -35,11 +35,13 @@
       "type": "string",
       "defaultValue": "latest",
       "allowedValues": [
-        "6.0.5",
         "6.0.6",
+        "6.0.7",
+        "6.0.8",
         "6.2.0",
         "6.2.1",
         "6.2.2",
+        "6.2.3",
         "latest"
       ],
       "metadata": {
@@ -52,6 +54,13 @@
       "allowedValues": [ "Standard_F4s", "Standard_F8s", "Standard_F4", "Standard_F8", "Standard_F4s_v2", "Standard_F8s_v2", "Standard_DS3_v2", "Standard_DS4_v2", "Standard_DS8_v3" ],
       "metadata": {
         "description": "Virtual Machine size selection - must be F4 or other instance that supports 4 NICs"
+      }
+    },
+    "acceleratedNetworking": {
+      "type": "bool",
+      "defaultValue": "true",
+      "metadata": {
+        "description": "Accelerated Networking enables direct connection between the VM and network card. Only available on 2 CPU D/DSv2 and F/Fs and 4 CPU D/Dsv3, E/Esv3, Fsv2, Lsv2, Ms/Mms and Ms/Mmsv2"
       }
     },
     "publicIPNewOrExisting": {
@@ -1140,6 +1149,7 @@
           }
         ],
         "enableIPForwarding": true,
+        "enableAcceleratedNetworking": "[parameters('acceleratedNetworking')]",
         "networkSecurityGroup": {
           "id": "[resourceID('Microsoft.Network/networkSecurityGroups/',variables('NSGName'))]"
         }
@@ -1177,6 +1187,7 @@
           }
         ],
         "enableIPForwarding": true,
+        "enableAcceleratedNetworking": "[parameters('acceleratedNetworking')]",
         "networkSecurityGroup": {
           "id": "[resourceID('Microsoft.Network/networkSecurityGroups/',variables('NSGName'))]"
         }
@@ -1213,6 +1224,7 @@
           }
         ],
         "enableIPForwarding": true,
+        "enableAcceleratedNetworking": "[parameters('acceleratedNetworking')]",
         "networkSecurityGroup": {
           "id": "[resourceID('Microsoft.Network/networkSecurityGroups/',variables('NSGName'))]"
         }
@@ -1249,6 +1261,7 @@
           }
         ],
         "enableIPForwarding": true,
+        "enableAcceleratedNetworking": "[parameters('acceleratedNetworking')]",
         "networkSecurityGroup": {
           "id": "[resourceID('Microsoft.Network/networkSecurityGroups/',variables('NSGName'))]"
         }
@@ -1279,6 +1292,7 @@
           }
         ],
         "enableIPForwarding": true,
+        "enableAcceleratedNetworking": "[parameters('acceleratedNetworking')]",
         "networkSecurityGroup": {
           "id": "[resourceID('Microsoft.Network/networkSecurityGroups/',variables('NSGName'))]"
         }
@@ -1309,6 +1323,7 @@
           }
         ],
         "enableIPForwarding": true,
+        "enableAcceleratedNetworking": "[parameters('acceleratedNetworking')]",
         "networkSecurityGroup": {
           "id": "[resourceID('Microsoft.Network/networkSecurityGroups/',variables('NSGName'))]"
         }
@@ -1342,6 +1357,7 @@
           }
         ],
         "enableIPForwarding": true,
+        "enableAcceleratedNetworking": "[parameters('acceleratedNetworking')]",
         "networkSecurityGroup": {
           "id": "[resourceID('Microsoft.Network/networkSecurityGroups/',variables('NSGName'))]"
         }
@@ -1375,6 +1391,7 @@
           }
         ],
         "enableIPForwarding": true,
+        "enableAcceleratedNetworking": "[parameters('acceleratedNetworking')]",
         "networkSecurityGroup": {
           "id": "[resourceID('Microsoft.Network/networkSecurityGroups/',variables('NSGName'))]"
         }
