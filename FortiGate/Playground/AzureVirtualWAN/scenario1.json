@@ -14,12 +14,6 @@
               "description": "Naming prefix for all on-premise resources"
             }
         },
-        "sharedKey": {
-            "type": "securestring",
-            "metadata": {
-              "description": "PSK for VPN connection"
-            }
-        },
         "vWanName": {
             "type": "string",
             "defaultValue": "",
@@ -36,7 +30,7 @@
         },
         "hubAddressPrefix": {
             "type": "string",
-            "defaultValue": "172.16.160/24",
+            "defaultValue": "172.16.160.0/24",
             "metadata": {
                 "description": "The hub address prefix. This address prefix will be used as the address prefix for the hub vnet"
             }
@@ -84,7 +78,7 @@
         },
         "vpnsiteBgpAsn": {
             "type": "int",
-            "defaultValue": 65516,
+            "defaultValue": 65010,
             "metadata": {
                 "description": "The bgp asn number of a vpnsite."
             }
@@ -184,8 +178,7 @@
                             "enableBgp": "[parameters('enableBgp')]",
                             "remoteVpnSite": {
                                 "id": "[resourceId('Microsoft.Network/vpnSites', variables('vpnsitename'))]"
-                            },
-                            "sharedKey": "[parameters('sharedKey')]"
+                            }
                         }
                     }
                 ],
