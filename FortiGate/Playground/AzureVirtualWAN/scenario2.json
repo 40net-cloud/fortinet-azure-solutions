@@ -24,7 +24,7 @@
         },
         "hub1AddressPrefix": {
             "type": "string",
-            "defaultValue": "172.16.160/24",
+            "defaultValue": "172.16.160.0/24",
             "metadata": {
                 "description": "The Azure Virtual Hub 1 IP address range. This address prefix will be used as the address prefix for the HUB vnet."
             }

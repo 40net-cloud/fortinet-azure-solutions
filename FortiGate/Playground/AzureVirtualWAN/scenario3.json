@@ -24,7 +24,7 @@
         },
         "hub1AddressPrefix": {
             "type": "string",
-            "defaultValue": "172.16.160/24",
+            "defaultValue": "172.16.160.0/24",
             "metadata": {
                 "description": "The Azure Virtual Hub 1 IP address range. This address prefix will be used as the address prefix for the HUB vnet."
             }
@@ -71,7 +71,7 @@
         },
         "vpnsiteBgpAsn": {
             "type": "int",
-            "defaultValue": 65512,
+            "defaultValue": 65010,
             "metadata": {
                 "description": "The BGP ASN number of the VPN site connecting to Azure Virtual Hub 1."
             }
@@ -146,7 +146,7 @@
         },
         "vpnsite2BgpAsn": {
             "type": "int",
-            "defaultValue": 65513,
+            "defaultValue": 65011,
             "metadata": {
                 "description": "The BGP ASN number of the VPN site connecting to Azure Virtual Hub 2."
             }
