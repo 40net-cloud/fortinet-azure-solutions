@@ -243,7 +243,7 @@
         {
             "type": "Microsoft.Network/vpnGateways",
             "name": "[variables('vpnGateway1Name')]",
-            "apiVersion": "2018-08-01",
+            "apiVersion": "[variables('apiVersion')]",
             "location": "[resourceGroup().location]",
             "dependsOn": [
                 "[concat('Microsoft.Network/virtualHubs/', variables('hub1Name'))]",
@@ -289,7 +289,7 @@
             "type": "Microsoft.Network/vpnSites",
             "name": "[variables('vpnsite2Name')]",
             "apiVersion": "[variables('apiVersion')]",
-            "location": "[resourceGroup().location]",
+            "location": "[parameters('hub2Location')]",
             "dependsOn": [
                 "[concat('Microsoft.Network/virtualWans/', variables('vWanName'))]"
             ],
@@ -314,8 +314,8 @@
         {
             "type": "Microsoft.Network/vpnGateways",
             "name": "[variables('vpnGateway2Name')]",
-            "apiVersion": "2018-08-01",
-            "location": "[resourceGroup().location]",
+            "apiVersion": "[variables('apiVersion')]",
+            "location": "[parameters('hub2Location')]",
             "dependsOn": [
                 "[concat('Microsoft.Network/virtualHubs/', variables('hub2Name'))]",
                 "[concat('Microsoft.Network/vpnSites/', variables('vpnsite2name'))]"
