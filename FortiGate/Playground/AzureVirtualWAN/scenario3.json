@@ -276,8 +276,7 @@
             "apiVersion": "[variables('apiVersion')]",
             "location": "[parameters('hub2Location')]",
             "dependsOn": [
-                "[concat('Microsoft.Network/virtualWans/', variables('vWanName'))]",
-                "[concat('Microsoft.Network/virtualHubs/', variables('hub1Name'))]"
+                "[concat('Microsoft.Network/virtualWans/', variables('vWanName'))]"
             ],
             "properties": {
                 "addressPrefix": "[parameters('hub2AddressPrefix')]",
@@ -292,8 +291,7 @@
             "apiVersion": "[variables('apiVersion')]",
             "location": "[resourceGroup().location]",
             "dependsOn": [
-                "[concat('Microsoft.Network/virtualWans/', variables('vWanName'))]",
-                "[concat('Microsoft.Network/vpnSites/', variables('vpnsite1name'))]"
+                "[concat('Microsoft.Network/virtualWans/', variables('vWanName'))]"
             ],
             "properties": {
                 "addressSpace": {
@@ -336,7 +334,7 @@
                     }
                 ],
                 "virtualHub": {
-                    "id": "[resourceId('Microsoft.Network/virtualHubs',variables('hub1Name'))]"
+                    "id": "[resourceId('Microsoft.Network/virtualHubs',variables('hub2Name'))]"
                 },
                 "bgpSettings": {
                     "asn": "[parameters('vpnGwBgpAsn')]"
