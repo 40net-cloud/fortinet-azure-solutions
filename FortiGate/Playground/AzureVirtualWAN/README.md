@@ -1,57 +1,106 @@
-# Azure Virtual WAN deployment
+# Fortigate NGFW for Microsoft Azure Virtual WAN
 
 ## Introduction
 
+Microsoft Azure Virtual WAN provides easy, unified and global connectivity. It support large-scale branch connectivity and optimal routing using the Microsoft global network. The FortiGate appliances located in branch and datacenter locations can connect into Microsoft Azure Virtual HUB. From the Azure Virtual HUB connections can be made to peered VNETs as well as other Virtual HUBs in different regions.
+
+## Design
+
+On this webpage we have created different scenarios on how to integrate FortiGate and Microsoft Azure Virtual WAN. All of these scenarios can be deployed using the associated ARM template into your Azure Subscription. Once connected and configured there is a webpage contained on this github that will convert the JSON configuration provided by Microsoft Azure Virtual WAN into a FortiGate VPN configuration that you can copy and paste into your device.
+
+* Scenario 1 : FortiGate branch connection into Virtual HUB
+* Scenario 2 : FortiGate branch connection into Virtual HUB with peered VNETs secured by a FortiGate Active/Passive cluster
+* Scenario 3 : FortiGate branch connection into Virtual HUB and onto a Virtual HUB in a different region with a FortiGate branch connected
+* Scenario 4 : FortiGate branch connection into FortiGate in Azure using Virtual WAN to connect to different regions across the Microsoft global network
+
+*Currently scenario 3 is not supported by Microsoft as mentioned in their [documentation](https://docs.microsoft.com/en-us/azure/virtual-wan/virtual-wan-global-transit-network-architecture).*
+
 ## Deployment
 
+For the deployment, you can use the Azure Portal, Azure CLI, Powershell or Azure Cloud Shell. The Azure ARM templates are exclusive to Microsoft Azure and can't be used in other cloud environments. The main templates are `scenarioX.json` where the X is the number of the scenario. You can use these templates in the Azure Portal by clicking on the 'Deploy to Azure' button. Alternatively, a `deploy.sh` script is provided to facilitate the deployment. This script can use the Azure Cloud Shell. The Azure Cloud Shell is an in-browser CLI that contains all the required tools for deployment in to Microsoft Azure. It is accessible via the Azure Portal or directly at [https://shell.azure.com/](https://shell.azure.com). You can copy and paste the below one-liner to get started with your deployment.
+
+You'll be prompted to provide a minimum of 2 required variables as well as specific variables per scenario:
+
+- PREFIX : This prefix will be prepended to each of the resources names created by the template for ease of use and visibility.
+- LOCATION : This is the Azure region where the deployment will be deployed.
+
 ### Scenario 1
+
+![Azure Virtual WAN design](images/scenario1.png)
+
+- VPNSITE PREFIX : This prefix will be prepended to each of the resources regarding the VPN Branch connecting into Virtual WAN.
+- VPNSITE PUBLIC IP ADDRESS : This is the public IP address of the FortiGate device connecting into Virtual WAN.
+
+#### Azure Portal
 
 <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fjvhoof%2Ffortinet-azure-solutions%2Fmaster%2FFortiGate%2FPlayground%2FAzureVirtualWAN%2Fscenario1.json" target="_blank"><img src="http://azuredeploy.net/deploybutton.png"/></a>
 <a href="http://armviz.io/#/?load=https%3A%2F%2Fraw.githubusercontent.com%2Fjvhoof%2Ffortinet-azure-solutions$2Fmaster%2FFortiGate%2FPlayground%2FAzureVirtualWAN%2Fscenario1.json" target="_blank">
     <img src="http://armviz.io/visualizebutton.png"/>
 </a>
 
+#### Azure CLI
+
+`cd ~/clouddrive/ && wget -qO- https://github.com/jvhoof/fortinet-azure-solutions/archive/master.zip | jar x && cd ~/clouddrive/fortinet-azure-solutions-master/FortiGate/Playground/AzureVirtualWAN/ && ./scenario1.sh`
+
 ### Scenario 2
+
+![Azure Virtual WAN design](images/scenario2.png)
+
+<!---
+#### Azure Portal
 
 <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fjvhoof%2Ffortinet-azure-solutions%2Fmaster%2FFortiGate%2FPlayground%2FAzureVirtualWAN%2Fscenario2.json" target="_blank"><img src="http://azuredeploy.net/deploybutton.png"/></a>
 <a href="http://armviz.io/#/?load=https%3A%2F%2Fraw.githubusercontent.com%2Fjvhoof%2Ffortinet-azure-solutions$2Fmaster%2FFortiGate%2FPlayground%2FAzureVirtualWAN%2Fscenario2.json" target="_blank">
     <img src="http://armviz.io/visualizebutton.png"/>
 </a>
 
+#### Azure CLI
+
+`cd ~/clouddrive/ && wget -qO- https://github.com/jvhoof/fortinet-azure-solutions/archive/master.zip | jar x && cd ~/clouddrive/fortinet-azure-solutions-master/FortiGate/Playground/AzureVirtualWAN/ && ./scenario2.sh`
+-->
 ### Scenario 3
+
+![Azure Virtual WAN design](images/scenario3.png)
+
+#### Azure Portal
 
 <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fjvhoof%2Ffortinet-azure-solutions%2Fmaster%2FFortiGate%2FPlayground%2FAzureVirtualWAN%2Fscenario3.json" target="_blank"><img src="http://azuredeploy.net/deploybutton.png"/></a>
 <a href="http://armviz.io/#/?load=https%3A%2F%2Fraw.githubusercontent.com%2Fjvhoof%2Ffortinet-azure-solutions$2Fmaster%2FFortiGate%2FPlayground%2FAzureVirtualWAN%2Fscenario3.json" target="_blank">
     <img src="http://armviz.io/visualizebutton.png"/>
 </a>
 
-### Azure CLI
+#### Azure CLI
 
-A `deploy.sh` script is provided to facilitate the deployment. You'll be prompted to provide the 4 required variables:
+`cd ~/clouddrive/ && wget -qO- https://github.com/jvhoof/fortinet-azure-solutions/archive/master.zip | jar x && cd ~/clouddrive/fortinet-azure-solutions-master/FortiGate/Playground/AzureVirtualWAN/ && ./scenario3.sh`
 
-- LOCATION : This is the Azure region where the deployment will be deployed
-- PREFIX : This prefix will be added to each of the resources created by the template for ease of use and visibility
-- VPN SITE PREFIX : This prefix will be added to each of the resources concerning resources related to on-premise
-- PSK : Pre shared key used for the VPN connection
-- VPN SITE IP ADDRESS : This is the public ip of the FortiGate firewall connecting to Azure Virtual WAN
+<!---
+### Scenario 4
 
-To fast track the deployment, use the Azure Cloud Shell. The Azure Cloud Shell is an in-browser CLI that contains Terraform and other tools for deployment into Microsoft Azure. It is accessible via the Azure Portal or directly at [https://shell.azure.com/](https://shell.azure.com). You can copy and paste the below one-liner to get started with your deployment.
+![Azure Virtual WAN design](images/scenario4.png)
 
-`cd ~/clouddrive/ && wget -qO- https://github.com/jvhoof/fortinet-azure-solutions/archive/master.zip | jar x && cd ~/clouddrive/fortinet-azure-solutions-master/FortiGate/Playground/AzureVirtualWAN/ && ./deploy.sh`
+#### Azure Portal
 
-![Azure Cloud Shell](images/azure-cloud-shell.png)
-
-After deployment, you will be shown the IP addresses of the deployed FortiGate. You can access the FortiGate using the public ip linked to VM using HTTPS on port 443.
+<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fjvhoof%2Ffortinet-azure-solutions%2Fmaster%2FFortiGate%2FPlayground%2FAzureVirtualWAN%2Fscenario4.json" target="_blank"><img src="http://azuredeploy.net/deploybutton.png"/></a>
+<a href="http://armviz.io/#/?load=https%3A%2F%2Fraw.githubusercontent.com%2Fjvhoof%2Ffortinet-azure-solutions$2Fmaster%2FFortiGate%2FPlayground%2FAzureVirtualWAN%2Fscenario3.json" target="_blank">
+    <img src="http://armviz.io/visualizebutton.png"/>
+</a>
+--->
 
 ## Requirements and limitations
 
 The Azure ARM template deployment deploys different resources and is required to have the access rights and quota in your Microsoft Azure subscription to deploy the resources.
 
+- The template will deploy Standard F4s VMs to deploy the required active/passive setup
+- Licenses for Fortigate
+  - BYOL: A demo license can be made available via your Fortinet partner or on our website. These can be injected during deployment or added after deployment.
+  - PAYG or OnDemand: These licenses are automatically generated during the deployment of the FortiGate systems.
+
+The FortiGate-VM uses [Managed Identities](https://docs.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/)for the SDN Fabric Connector. A SDN Fabric Connector is created automatically during deployment. After deployment, it is required apply the 'Reader' role to Azure Subscription you want the FortiGate-VM(s) to resolve Azure Resources from.
+
+## Support
+Fortinet-provided scripts in this and other GitHub projects do not fall under the regular Fortinet technical support scope and are not supported by FortiCare Support Services.
+For direct issues, please refer to the [Issues](https://github.com/fortinet/azure-templates/issues) tab of this GitHub project.
+For other questions related to this project, contact [github@fortinet.com](mailto:github@fortinet.com).
+
 ## License
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+[License](LICENSE) © Fortinet Technologies. All rights reserved.

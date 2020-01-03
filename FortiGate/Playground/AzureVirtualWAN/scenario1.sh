@@ -66,21 +66,6 @@ echo ""
 echo "--> Using on-premise prefix '$VPNSITEPREFIX' ..."
 echo ""
 
-if [ -z "$DEPLOY_PSK" ]
-then
-    # Input psk
-    echo -n "Enter VPN pre shared key: "
-    stty_orig=`stty -g` # save original terminal setting.
-    stty -echo          # turn-off echoing.
-    read psk            # read the pre shared key
-    stty $stty_orig     # restore terminal setting.
-else
-    psk="$DEPLOY_PSK"
-    echo ""
-    echo "--> Using pre shared key found in env variable DEPLOY_PSK ..."
-    echo ""
-fi
-
 if [ -z "$DEPLOY_VPNSITEPUBLICIPADDRESS" ]
 then
     # Input prefix
@@ -108,7 +93,7 @@ az group create --location "$location" --name "$rg"
 echo "--> Validation deployment in $rg resource group ..."
 az group deployment validate --resource-group "$rg" \
                            --template-file scenario1.json \
-                           --parameters prefix=$prefix vpnsitePrefix=$vpnsiteprefix sharedkey=$psk vpnsitePublicIPAddress=$vpnsitepublicipaddress
+                           --parameters prefix=$prefix vpnsitePrefix=$vpnsiteprefix vpnsitePublicIPAddress=$vpnsitepublicipaddress
 result=$?
 if [ $result != 0 ];
 then
@@ -120,7 +105,7 @@ fi
 echo "--> Deployment of $rg resources ..."
 az group deployment create --resource-group "$rg" \
                            --template-file scenario1.json \
-                           --parameters prefix=$prefix vpnsitePrefix=$vpnsiteprefix sharedkey=$psk vpnsitePublicIPAddress=$vpnsitepublicipaddress
+                           --parameters prefix=$prefix vpnsitePrefix=$vpnsiteprefix vpnsitePublicIPAddress=$vpnsitepublicipaddress
 result=$?
 if [[ $result != 0 ]];
 then
@@ -129,23 +114,27 @@ then
 else
 
 # Display connection information
-az extension show --name virtual-wan
-result=$?
-if [[ $result != 0 ]];
-then
-    echo "--> Installing Azure CLI extension for Virtual WAN ..."
-    az extension install --name virtual-wan
-    result=$?
-    if [[ $result != 0 ]];
-    then
-        echo "--> Unable to add Azure CLI extension for Virtual WAN ..."
-        exit $result;
-    fi
-    echo "
+#az extension show --name virtual-wan
+#result=$?
+#if [[ $result != 0 ]];
+#then
+#    echo "--> Installing Azure CLI extension for Virtual WAN ..."
+#    az extension install --name virtual-wan
+#    result=$?
+#    if [[ $result != 0 ]];
+#    then
+#        echo "--> Unable to add Azure CLI extension for Virtual WAN ..."
+#        exit $result;
+#    fi
+#fi
+echo "
 ##############################################################################################################
-
-#############################################################################################################
+#
+# Deployment of Microsoft Azure Virtual WAN can time some time (> 30min). Verify in the Azure Portal the
+# status of the deployment and retrieve the VPN configuration to finish the configuration on the FortiGate
+# branch side.
+#
+##############################################################################################################
 "
-fi
 
 exit 0
