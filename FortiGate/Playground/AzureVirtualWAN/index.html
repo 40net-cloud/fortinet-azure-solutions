@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name=Keywords content="Microsoft Azure Virtual Wan VWan sdwan sd-wan expressroute" />
+  <meta name=Description
+    content="Online convertor of the Microsoft Azure Virtual WAN config to a FortiGate NGFW configuration" />
+  <meta name=Copyright content="Copyright (C) 2019 Fortinet Joeri Van Hoof" />
+  <meta name=robots content="index,follow" />
+  <meta name=Distribution content=Global />
+  <meta name=Rating content=General />
+  <meta charset="utf-8">
+  <title>Fortinet - FortiGate integration in Microsoft Azure Virtual WAN</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <script src="https://kit.fontawesome.com/1f556038de.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <link href="/favicon.ico" rel=icon type="image/x-icon" />
+
+  <!--[if lt IE 9]>
+<script src="//oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+<script src="//oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+<![endif]-->
+</head>
+
+<body>
+
+  <div class="container">
+      <div class="col-xl-12">
+        <div class="well clearfix">
+          <img src="images/fortinetlogo.png" class="mx-auto d-block">
+          <h1>FortiGate and Microsoft Azure Virtual WAN</h1>
+          <p class="lead">
+            Convert the Virtual WAN JSON configuration into a FortiGate configuration.
+          </p>
+          <p>
+            This tool supports converting the JSON configuration you can download from Azure Portal into a FortiGate configuration.
+            Paste the JSON configuration in the first text box. It will give you the selection of detected vpn sites available.
+            Clicking on the convert button will convert the selected VPN site configuration into a FortiGate configuration which you can then copy and paste into your FortiGate.
+            Beware that this might adapt settings like BGP that have been previously configured.
+          </p>
+          <form>
+            <div class="row">
+              <div class="col-sm-12 form-group">
+                <h1>Microsoft Azure Virtual WAN</h1>
+                <textarea class="form-control" rows="5" oninput="readAzureConfig()"
+                  placeholder="Paste content Azure Virtual WAN configuration file here" id="azurevwan"></textarea>
+                <div class="alert alert-danger alert-dismissible fade show" style="display: none;" id="errorvwan"></div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-12 form-group">
+                <h1>FortiGate config</h1>
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1">Select VPN Site</span>
+                  </div>
+                  <select class="form-control" id="vpnSiteConfiguration"></select>
+                  <div class="input-group-append">
+                    <button class="btn btn-success" type="button" onclick="readAzureConfig()"><span
+                      class="fas fa-sync-alt"></span></button>
+                    <button class="btn btn-success" type="button" onclick="convert()">Convert</button>
+                    <button class="btn btn-success" type="button" onclick="copyToClipboard()" id="fortioscopy"><span class="fas fa-clipboard"></span></button>
+                  </div>
+                </div>
+                <div class="alert alert-danger alert-dismissible fade show" style="display: none;" id="errorfortios"></div>
+                <textarea class="form-control" rows="15"
+                  placeholder="SGVscCBpJ20gdHJhcHBlZCBpbiBhbiBqYXZhc2NyaXB0IGZhY3RvcnkhIQ==" id="fortios"></textarea>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+      <footer>
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-12">
+              <ul class="list-unstyled text-muted">
+                <li class="pull-right"><a href="#top">Back to top</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+    <script>
+      function readAzureConfig() {
+        var error = document.getElementById("errorvwan");
+        error.style.display = 'none';
+        error.innerHTML = "";
+        var select = document.getElementById("vpnSiteConfiguration");
+
+        try {
+          var input = document.getElementById("azurevwan").value;
+
+          var parsedInput = JSON.parse(input);
+          let resultSet = new Set();
+
+          for (var i = 0; i < parsedInput.length; i++) {
+            resultSet.add(parsedInput[i].vpnSiteConfiguration.Name);
+          }
+
+          select.options.length = 0;
+          for (let item of resultSet) {
+            select.options[select.options.length] = new Option(item, item);
+          }
+        } catch (err) {
+          error.style.display = 'block';
+          select.options.length = 0;
+          if (err.message.includes("JSON.parse")) {
+            error.innerHTML = "Failed reading the provided configuration. Check console log."
+            console.log("Failed reading the provided VPN configuration: " + err.message);
+          } else {
+            error.innerHTML = "Unknown error. Check console log."
+            console.log("Unknown error: ") + err.message;
+          }
+        }
+      };
+
+      function convert() {
+        var error = document.getElementById("errorfortios");
+        error.style.display = 'none';
+        error.innerHTML = "";
+        document.getElementById("fortioscopy").innerHTML = "<span class='fas fa-clipboard'></span>"
+
+        try {
+          var template = $("#vpnSiteTemplate").html();
+          var vpnSiteTemplate = Handlebars.compile(template);
+          var template2 = $("#generalTemplate").html();
+          var generalTemplate = Handlebars.compile(template2);
+          var result = "";
+
+          var input = document.getElementById("azurevwan").value;
+          var parsedInput = JSON.parse(input);
+          var select = document.getElementById("vpnSiteConfiguration");
+
+          //result += generalTemplate();
+          for (var i = 0; i < parsedInput.length; i++) {
+            if ( parsedInput[i].vpnSiteConfiguration.Name == select.value ) {
+              error.innerHTML = "Found index: " + i;
+              result += vpnSiteTemplate(parsedInput[i]);
+            }
+          }
+          document.getElementById("fortios").value = result;
+        } catch (err) {
+          error.style.display = 'block';
+
+          error.innerHTML = "Unknown error. Check console log."
+          console.log("Unknown error: ") + err.message;
+        }
+      };
+
+      function copyToClipboard() {
+        var copyText = document.getElementById("fortios");
+
+        /* Select the text field */
+        copyText.select();
+        copyText.setSelectionRange(0, 99999); /*For mobile devices*/
+
+        /* Copy the text inside the text field */
+        document.execCommand("copy");
+
+        /* Alert the copied text */
+        document.getElementById("fortioscopy").innerHTML = "<span class='fas fa-clipboard-check'></span>"
+      };
+    </script>
+    <script id="vpnSiteTemplate" type="text/template">{{#vpnSiteConnections}}
+config vpn ipsec phase1-interface
+edit "{{ ../vpnSiteConfiguration.Name }}-{{ ../vpnSiteConfiguration.LinkName }}-1"
+set interface "{{ ../vpnSiteConfiguration.LinkName }}"
+set ike-version 2
+set keylife 28800
+set peertype any
+set proposal aes256-sha1
+set dhgrp 2
+set remote-gw {{ gatewayConfiguration.IpAddresses.Instance0 }}
+set psksecret {{ connectionConfiguration.PSK }}
+next
+edit "{{ ../vpnSiteConfiguration.Name }}-{{ ../vpnSiteConfiguration.LinkName }}-2"
+set interface "{{ ../vpnSiteConfiguration.LinkName }}"
+set ike-version 2
+set keylife 28800
+set peertype any
+set proposal aes256-sha1
+set dhgrp 2
+set remote-gw {{ gatewayConfiguration.IpAddresses.Instance1 }}
+set psksecret {{ connectionConfiguration.PSK }}
+next
+end
+config vpn ipsec phase2-interface
+edit "{{ ../vpnSiteConfiguration.Name }}-{{ ../vpnSiteConfiguration.LinkName }}-1"
+set phase1name "{{ ../vpnSiteConfiguration.Name }}-{{ ../vpnSiteConfiguration.LinkName }}-1"
+set proposal aes256-sha1
+set dhgrp 2
+set keylifeseconds {{ connectionConfiguration.IPsecParameters.SALifeTimeInSeconds }}
+next
+edit "{{ ../vpnSiteConfiguration.Name }}-{{ ../vpnSiteConfiguration.LinkName }}-2"
+set phase1name "{{ ../vpnSiteConfiguration.Name }}-{{ ../vpnSiteConfiguration.LinkName }}-2"
+set proposal aes256-sha1
+set dhgrp 2
+set keylifeseconds {{ connectionConfiguration.IPsecParameters.SALifeTimeInSeconds }}
+next
+end
+config system interface
+edit "{{ ../vpnSiteConfiguration.Name }}-{{ ../vpnSiteConfiguration.LinkName }}-1"
+set vdom "root"
+set ip {{ ../vpnSiteConfiguration.BgpSetting.BgpPeeringAddress }} 255.255.255.255
+set type tunnel
+set remote-ip {{ gatewayConfiguration.BgpSetting.BgpPeeringAddresses.Instance0 }} 255.255.255.255
+set interface "{{ ../vpnSiteConfiguration.LinkName }}"
+next
+edit "{{ ../vpnSiteConfiguration.Name }}-{{ ../vpnSiteConfiguration.LinkName }}-2"
+set vdom "root"
+set ip {{ ../vpnSiteConfiguration.BgpSetting.BgpPeeringAddress }} 255.255.255.255
+set type tunnel
+set remote-ip {{ gatewayConfiguration.BgpSetting.BgpPeeringAddresses.Instance1 }} 255.255.255.255
+set interface "{{ ../vpnSiteConfiguration.LinkName }}"
+next
+end
+config router bgp
+set as {{ ../vpnSiteConfiguration.BgpSetting.Asn }}
+set router-id {{ ../vpnSiteConfigurationBgpSetting.BgpPeeringAddress }}
+config neighbor
+edit "{{ gatewayConfiguration.BgpSetting.BgpPeeringAddresses.Instance0 }}"
+set remote-as {{ gatewayConfiguration.BgpSetting.Asn }}
+next
+edit "{{ gatewayConfiguration.BgpSetting.BgpPeeringAddresses.Instance1 }}"
+set remote-as {{ gatewayConfiguration.BgpSetting.Asn }}
+next
+end
+{{/vpnSiteConnections}}
+    </script>
+    <script id="generalTemplate" type="text/template">
+config system settings
+  set allow-subnet-overlap enable
+end
+    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
+</html>
