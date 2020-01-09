@@ -20,7 +20,7 @@
         "instanceType": {
             "value": "Standard_F4s"
         },
-        "accelertedNetworking": {
+        "acceleratedNetworking": {
             "value": "true"
         },
         "publicIPNewOrExisting": {
