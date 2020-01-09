@@ -46,6 +46,21 @@ You'll be prompted to provide a minimum of 2 required variables as well as speci
 
 ![Azure Virtual WAN design](images/scenario2.png)
 
+- VPNSITE PREFIX : This prefix will be prepended to each of the resources regarding the VPN Branch connecting into Virtual WAN.
+- VPNSITE PUBLIC IP ADDRESS : This is the public IP address of the FortiGate device connecting into Virtual WAN.
+- ADMINPASSWORD : Password for the FortiGate cluster deployed in Azure
+
+#### Azure Portal
+
+<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fjvhoof%2Ffortinet-azure-solutions%2Fmaster%2FFortiGate%2FPlayground%2FAzureVirtualWAN%2Fscenario1.json" target="_blank"><img src="http://azuredeploy.net/deploybutton.png"/></a>
+<a href="http://armviz.io/#/?load=https%3A%2F%2Fraw.githubusercontent.com%2Fjvhoof%2Ffortinet-azure-solutions$2Fmaster%2FFortiGate%2FPlayground%2FAzureVirtualWAN%2Fscenario1.json" target="_blank">
+    <img src="http://armviz.io/visualizebutton.png"/>
+</a>
+
+#### Azure CLI
+
+`cd ~/clouddrive/ && wget -qO- https://github.com/jvhoof/fortinet-azure-solutions/archive/master.zip | jar x && cd ~/clouddrive/fortinet-azure-solutions-master/FortiGate/Playground/AzureVirtualWAN/ && ./scenario1.sh`
+
 <!---
 #### Azure Portal
 
