@@ -63,7 +63,7 @@ else
     vpnsiteprefix="$DEPLOY_VPNSITEPREFIX"
 fi
 echo ""
-echo "--> Using on-premise prefix '$VPNSITEPREFIX' ..."
+echo "--> Using on-premise prefix '$vpnsiteprefix' ..."
 echo ""
 
 if [ -z "$DEPLOY_VPNSITEPUBLICIPADDRESS" ]
@@ -139,19 +139,26 @@ then
 else
 
 # Display connection information
-#az extension show --name virtual-wan
-#result=$?
-#if [[ $result != 0 ]];
-#then
-#    echo "--> Installing Azure CLI extension for Virtual WAN ..."
-#    az extension install --name virtual-wan
-#    result=$?
-#    if [[ $result != 0 ]];
-#    then
-#        echo "--> Unable to add Azure CLI extension for Virtual WAN ..."
-#        exit $result;
-#    fi
-#fi
+az extension show --name virtual-wan
+result=$?
+if [[ $result != 0 ]];
+then
+    echo "--> Installing Azure CLI extension for Virtual WAN ..."
+    az extension install --name virtual-wan
+    result=$?
+    if [[ $result != 0 ]];
+    then
+        echo "--> Unable to add Azure CLI extension for Virtual WAN ..."
+        exit $result;
+    fi
+fi
+if [[ $result == 0 ]];
+then
+    az network vhub connection create --name "$prefix-VNET" --remote-vnet "$prefix-VNET" --resource-group $rg --vhub-name "$prefix-VHUB-$location"
+    az network vhub connection create --name "$prefix-VNET-SPOKE1" --remote-vnet "$prefix-VNET-SPOKE1" --resource-group $rg --vhub-name "$prefix-VHUB-$location"
+    az network vhub connection create --name "$prefix-VNET-SPOKE2" --remote-vnet "$prefix-VNET-SPOKE2" --resource-group $rg --vhub-name "$prefix-VHUB-$location"
+fi
+
 echo "
 ##############################################################################################################
 #
