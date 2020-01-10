@@ -30,13 +30,13 @@ The deployment of the VPN Gateway inside the Azure Virtual HUB takes some time (
 
 ![VPN Site configuration](images/config1.png)
 
-![VPN Site configuration](images/config2.png)
+<img src="images/config2.png" align="left" height="300" />
 
 Using [this webpage](https://jvhoof.github.io/fortinet-azure-solutions/FortiGate/Playground/AzureVirtualWAN/) you can convert the Microsoft JSON configuration file of a vpn site into a FortiGate configuration that can be added into the FortiGate branch configuration. This webpage can also be downloaded but only processes data locally in your browser using Javascript. No data is send to a server for processing.
 
 Also you will need to change update your external interface of the FortiGate in the resulting configuration. Search for "## EXTERNAL INTERFACE ##".
 
-``
+```
 config system interface
 edit "VPNSITE1-1"
 set vdom "root"
@@ -53,7 +53,7 @@ set remote-ip 172.16.110.12 255.255.255.255
 set interface "## EXTERNAL INTERFACE ##"
 next
 end
-``
+```
 
 ### Scenario 1
 
