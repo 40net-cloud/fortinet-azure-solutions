@@ -229,6 +229,31 @@ edit "{{ gatewayConfiguration.BgpSetting.BgpPeeringAddresses.Instance1 }}"
 set remote-as {{ gatewayConfiguration.BgpSetting.Asn }}
 next
 end
+config system settings
+    set gui-multiple-interface-policy enable
+end
+config firewall policy
+edit 0
+set srcintf "{{ ../vpnSiteConfiguration.Name }}-{{ ../vpnSiteConfiguration.LinkName }}-1" "{{ ../vpnSiteConfiguration.Name }}-{{ ../vpnSiteConfiguration.LinkName }}-2"
+set dstintf "## INTERNAL INTERFACE ##"
+ set srcaddr all
+ set dstaddr all
+set action accept
+set schedule always
+ set service ANY
+next
+end
+config firewall policy
+edit 0
+set srcintf "## INTERNAL INTERFACE ##"
+set dstintf "{{ ../vpnSiteConfiguration.Name }}-{{ ../vpnSiteConfiguration.LinkName }}-1" "{{ ../vpnSiteConfiguration.Name }}-{{ ../vpnSiteConfiguration.LinkName }}-2"
+ set srcaddr all
+ set dstaddr all
+set action accept
+set schedule always
+ set service ANY
+next
+end
 {{/vpnSiteConnections}}
     </script>
     <script id="generalTemplate" type="text/template">
