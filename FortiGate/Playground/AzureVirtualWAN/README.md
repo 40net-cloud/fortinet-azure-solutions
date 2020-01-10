@@ -13,7 +13,7 @@ On this webpage we have created different scenarios on how to integrate FortiGat
 * Scenario 3 : FortiGate branch connection into Virtual HUB and onto a Virtual HUB in a different region with a FortiGate branch connected
 * Scenario 4 : FortiGate branch connection into FortiGate in Azure using Virtual WAN to connect to different regions across the Microsoft global network
 
-*Currently scenario 3 is not supported by Microsoft as mentioned in their [documentation](https://docs.microsoft.com/en-us/azure/virtual-wan/virtual-wan-global-transit-network-architecture).*
+*Currently scenario 3 is on the roadmap by Microsoft as mentioned in their [documentation](https://docs.microsoft.com/en-us/azure/virtual-wan/virtual-wan-global-transit-network-architecture).*
 
 ## Deployment
 
