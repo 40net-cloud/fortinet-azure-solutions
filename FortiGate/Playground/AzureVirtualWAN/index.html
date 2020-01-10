@@ -208,14 +208,14 @@ set vdom "root"
 set ip {{ ../vpnSiteConfiguration.BgpSetting.BgpPeeringAddress }} 255.255.255.255
 set type tunnel
 set remote-ip {{ gatewayConfiguration.BgpSetting.BgpPeeringAddresses.Instance0 }} 255.255.255.255
-set interface "{{ ../vpnSiteConfiguration.LinkName }}"
+set interface "## EXTERNAL INTERFACE ##"
 next
 edit "{{ ../vpnSiteConfiguration.Name }}-{{ ../vpnSiteConfiguration.LinkName }}-2"
 set vdom "root"
 set ip {{ ../vpnSiteConfiguration.BgpSetting.BgpPeeringAddress }} 255.255.255.255
 set type tunnel
 set remote-ip {{ gatewayConfiguration.BgpSetting.BgpPeeringAddresses.Instance1 }} 255.255.255.255
-set interface "{{ ../vpnSiteConfiguration.LinkName }}"
+set interface "## EXTERNAL INTERFACE ##"
 next
 end
 config router bgp
