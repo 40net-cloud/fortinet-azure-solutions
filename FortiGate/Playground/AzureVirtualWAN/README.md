@@ -34,24 +34,49 @@ The deployment of the VPN Gateway inside the Azure Virtual HUB takes some time (
 
 Using [this webpage](https://jvhoof.github.io/fortinet-azure-solutions/FortiGate/Playground/AzureVirtualWAN/) you can convert the Microsoft JSON configuration file of a vpn site into a FortiGate configuration that can be added into the FortiGate branch configuration. This webpage can also be downloaded but only processes data locally in your browser using Javascript. No data is send to a server for processing.
 
-Also you will need to change update your external interface of the FortiGate in the resulting configuration. Search for "## EXTERNAL INTERFACE ##".
+The external and internal interface of the FortiGate needs to be added into the resulting configuration. Search for "## EXTERNAL INTERFACE ##" and "## INTERNAL INTERFACE ##".
 
 ```
 config system interface
-edit "VPNSITE1-1"
-set vdom "root"
-set ip 169.127.32.1 255.255.255.255
-set type tunnel
-set remote-ip 172.16.110.13 255.255.255.255
-set interface "## EXTERNAL INTERFACE ##"
-next
-edit "VPNSITE1-2"
-set vdom "root"
-set ip 169.127.32.1 255.255.255.255
-set type tunnel
-set remote-ip 172.16.110.12 255.255.255.255
-set interface "## EXTERNAL INTERFACE ##"
-next
+  edit "VPNSITE1-1"
+    set vdom "root"
+    set ip 169.127.32.1 255.255.255.255
+    set type tunnel
+    set remote-ip 172.16.110.13 255.255.255.255
+    set interface "## EXTERNAL INTERFACE ##"
+  next
+  edit "VPNSITE1-2"
+    set vdom "root"
+    set ip 169.127.32.1 255.255.255.255
+    set type tunnel
+    set remote-ip 172.16.110.12 255.255.255.255
+    set interface "## EXTERNAL INTERFACE ##"
+  next
+end
+```
+
+```
+config firewall policy
+  edit 0
+    set srcintf "VPNSITE1-1" "VPNSITE2-2"
+    set dstintf "## INTERNAL INTERFACE ##"
+    set srcaddr all
+    set dstaddr all
+    set action accept
+    set schedule always
+    set service ANY
+  next
+end
+config firewall policy
+  edit 0
+    set srcintf "## INTERNAL INTERFACE ##"
+    set srcintf "VPNSITE1-1" "VPNSITE2-2"
+    set srcaddr all
+    set dstaddr all
+    set action accept
+    set schedule always
+    set service ANY
+  next
 end
 ```
 
