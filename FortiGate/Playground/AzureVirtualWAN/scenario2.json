@@ -325,7 +325,7 @@
     },
     "subnet3Prefix": {
       "type": "string",
-      "defaultValue": "172.16.138.128/26",
+      "defaultValue": "172.16.136.128/26",
       "metadata": {
         "description": "Subnet 3 Prefix"
       }
@@ -346,7 +346,7 @@
     },
     "subnet5Name": {
       "type": "string",
-      "defaultValue": "ProtectedSubnet",
+      "defaultValue": "ProtectedASubnet",
       "metadata": {
         "description": "Protected A Subnet 5 Name"
       }
@@ -390,6 +390,13 @@
         "description": "Name of the Azure virtual network for Spoke1"
       }
     },
+    "vnetAddressPrefixSpoke1": {
+      "type": "string",
+      "defaultValue": "172.16.140.0/24",
+      "metadata": {
+        "description": "Virtual Network Address prefix for Spoke 1"
+      }
+    },
     "vnetResourceGroupSpoke1": {
       "type": "string",
       "defaultValue": "",
@@ -411,13 +418,6 @@
         "description": "Subnet 1 Spoke 1"
       }
     },
-    "vnetAddressPrefixSpoke1": {
-      "type": "string",
-      "defaultValue": "172.16.140.0/24",
-      "metadata": {
-        "description": "Virtual Network Address prefix for Spoke 1"
-      }
-    },
     "vnetNewOrExistingSpoke2": {
       "type": "string",
       "defaultValue": "new",
@@ -436,18 +436,18 @@
         "description": "Name of the Azure virtual network for Spoke1"
       }
     },
-    "vnetResourceGroupSpoke2": {
-      "type": "string",
-      "defaultValue": "",
-      "metadata": {
-        "description": "Resource Group containing the existing virtual network Spoke 1 (with new vnet the current resourcegroup is used)"
-      }
-    },
     "vnetAddressPrefixSpoke2": {
       "type": "string",
       "defaultValue": "172.16.142.0/24",
       "metadata": {
         "description": "Virtual Network Address prefix for Spoke 2"
+      }
+    },
+    "vnetResourceGroupSpoke2": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Resource Group containing the existing virtual network Spoke 1 (with new vnet the current resourcegroup is used)"
       }
     },
     "subnet1Spoke2Name": {
@@ -512,7 +512,7 @@
       "location": "[resourceGroup().location]",
       "dependsOn": [
         "[concat('Microsoft.Network/virtualWans/', variables('vWanName'))]",
-        "[resourceId('Microsoft.Resources/deployments/', 'fortigateAPELBILB')]"
+        "[resourceId('Microsoft.Resources/deployments/', 'FGT-Active-Passive-ELB-ILB')]"
       ],
       "properties": {
         "addressPrefix": "[parameters('hubAddressPrefix')]",
@@ -528,54 +528,8 @@
               "enableInternetSecurity": false
             },
             "type": "Microsoft.Network/virtualHubs/hubVirtualNetworkConnections"
-          },
-          {
-            "name": "[variables('vnetNameSpoke1')]",
-            "properties": {
-              "remoteVirtualNetwork": {
-                "id": "[variables('vnetIDSpoke1')]"
-              },
-              "allowHubToRemoteVnetTransit": true,
-              "allowRemoteVnetToUseHubVnetGateways": true,
-              "enableInternetSecurity": false
-            },
-            "type": "Microsoft.Network/virtualHubs/hubVirtualNetworkConnections"
-          },
-          {
-            "name": "[variables('vnetNameSpoke2')]",
-            "properties": {
-              "remoteVirtualNetwork": {
-                "id": "[variables('vnetIDSpoke2')]"
-              },
-              "allowHubToRemoteVnetTransit": true,
-              "allowRemoteVnetToUseHubVnetGateways": true,
-              "enableInternetSecurity": false
-            },
-            "type": "Microsoft.Network/virtualHubs/hubVirtualNetworkConnections"
           }
         ],
-        "routeTable": {
-          "routes": [
-            {
-              "addressPrefixes": [
-                "[parameters('vnetAddressPrefix')]"
-              ],
-              "nextHopIpAddress": "[variables('sn2IPlb')]"
-            },
-            {
-              "addressPrefixes": [
-                "[parameters('vnetAddressPrefixSpoke1')]"
-              ],
-              "nextHopIpAddress": "[variables('sn2IPlb')]"
-            },
-            {
-              "addressPrefixes": [
-                "[parameters('vnetAddressPrefixSpoke2')]"
-              ],
-              "nextHopIpAddress": "[variables('sn2IPlb')]"
-            }
-          ]
-        },
         "virtualWan": {
           "id": "[resourceId('Microsoft.Network/virtualWans',variables('vWanName'))]"
         }
@@ -640,12 +594,12 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "[variables('apiVersion')]",
-      "name": "fortigateAPELBILB",
+      "name": "FGT-Active-Passive-ELB-ILB",
       "properties": {
         "mode": "Incremental",
         "templateLink": {
-          "uri": "https://raw.githubusercontent.com/fortinet/azure-templates/master/FortiGate/VNET-Peering/azuredeploy.json",
-          "contentVersion": "1.0.0.1"
+          "uri": "https://raw.githubusercontent.com/jvhoof/fortinet-azure-solutions/master/FortiGate/VNET-Peering/azuredeploy.json",
+          "contentVersion": "1.0.0.0"
         },
         "parameters": {
           "adminUsername": {
