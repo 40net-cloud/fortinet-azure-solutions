@@ -24,6 +24,36 @@ You'll be prompted to provide a minimum of 2 required variables as well as speci
 - PREFIX : This prefix will be prepended to each of the resources names created by the template for ease of use and visibility.
 - LOCATION : This is the Azure region where the deployment will be deployed.
 
+### Post deployment
+
+The deployment of the VPN Gateway inside the Azure Virtual HUB takes some time (>30min). Once everything is in the 'Succeeded' state. The VPN Site configuration can be downloaded from the Azure Portal.
+
+![VPN Site configuration](images/config1.png)
+![VPN Site configuration](images/config2.png)
+
+Using (this webpage)[https://github.com/jvhoof/fortinet-azure-solutions/tree/master/FortiGate/Playground/AzureVirtualWAN] you can convert the Microsoft JSON configuration file of a vpn site into a FortiGate configuration that can be added into the FortiGate branch configuration.
+
+Also you will need to change update your external interface of the FortiGate in the resulting configuration. Search for "## EXTERNAL INTERFACE ##".
+
+``
+config system interface
+edit "VPNSITE1-1"
+set vdom "root"
+set ip 169.127.32.1 255.255.255.255
+set type tunnel
+set remote-ip 172.16.110.13 255.255.255.255
+set interface "## EXTERNAL INTERFACE ##"
+next
+edit "VPNSITE1-2"
+set vdom "root"
+set ip 169.127.32.1 255.255.255.255
+set type tunnel
+set remote-ip 172.16.110.12 255.255.255.255
+set interface "## EXTERNAL INTERFACE ##"
+next
+end
+``
+
 ### Scenario 1
 
 ![Azure Virtual WAN design](images/scenario1.png)
@@ -61,18 +91,6 @@ You'll be prompted to provide a minimum of 2 required variables as well as speci
 
 `cd ~/clouddrive/ && wget -qO- https://github.com/jvhoof/fortinet-azure-solutions/archive/master.zip | jar x && cd ~/clouddrive/fortinet-azure-solutions-master/FortiGate/Playground/AzureVirtualWAN/ && ./scenario2.sh`
 
-<!---
-#### Azure Portal
-
-<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fjvhoof%2Ffortinet-azure-solutions%2Fmaster%2FFortiGate%2FPlayground%2FAzureVirtualWAN%2Fscenario2.json" target="_blank"><img src="http://azuredeploy.net/deploybutton.png"/></a>
-<a href="http://armviz.io/#/?load=https%3A%2F%2Fraw.githubusercontent.com%2Fjvhoof%2Ffortinet-azure-solutions$2Fmaster%2FFortiGate%2FPlayground%2FAzureVirtualWAN%2Fscenario2.json" target="_blank">
-    <img src="http://armviz.io/visualizebutton.png"/>
-</a>
-
-#### Azure CLI
-
-`cd ~/clouddrive/ && wget -qO- https://github.com/jvhoof/fortinet-azure-solutions/archive/master.zip | jar x && cd ~/clouddrive/fortinet-azure-solutions-master/FortiGate/Playground/AzureVirtualWAN/ && ./scenario2.sh`
--->
 ### Scenario 3
 
 ![Azure Virtual WAN design](images/scenario3.png)
