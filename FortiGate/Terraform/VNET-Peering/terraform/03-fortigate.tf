@@ -334,6 +334,7 @@ data "template_file" "fgt_a_custom_data" {
     fgt_mgmt_mask = "${var.subnetmask["4"]}"
     fgt_mgmt_gw =  "${var.gateway_ipaddress["4"]}"
     fgt_ha_peerip = "${var.fgt_ipaddress_b["3"]}"
+    fgt_ha_priority = "255"
     fgt_protected_net = "${var.subnet["5"]}"
     vnet_network =  "${var.vnet}"
   }
@@ -497,6 +498,7 @@ data "template_file" "fgt_b_custom_data" {
     fgt_mgmt_mask = "${var.subnetmask["4"]}"
     fgt_mgmt_gw =  "${var.gateway_ipaddress["4"]}"
     fgt_ha_peerip = "${var.fgt_ipaddress_a["3"]}"
+    fgt_ha_priority = "1"
     fgt_protected_net = "${var.subnet["5"]}"
     vnet_network =  "${var.vnet}"
   }
