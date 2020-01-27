@@ -26,11 +26,14 @@ You'll be prompted to provide a minimum of 2 required variables as well as speci
 
 ### Post deployment
 
-The deployment of the VPN Gateway inside the Azure Virtual HUB takes some time (>30min). Once everything is in the 'Succeeded' state. The VPN Site configuration can be downloaded from the Azure Portal.
+The deployment of the VPN Gateway inside the Azure Virtual HUB can take some time (>30min). Once everything is in the 'Succeeded' state. The VPN Site configuration can be downloaded from the Azure Portal.
 
 <img src="images/config1.png" align="center" width="600" />
 
 <img src="images/config2.png" align="center" width="300" />
+
+
+[FortiGate Azure Virtual WAN convertor](https://jvhoof.github.io/fortinet-azure-solutions/FortiGate/Playground/AzureVirtualWAN/)
 
 Using [this webpage](https://jvhoof.github.io/fortinet-azure-solutions/FortiGate/Playground/AzureVirtualWAN/) you can convert the Microsoft JSON configuration file of a vpn site into a FortiGate configuration that can be added into the FortiGate branch configuration. This webpage can also be downloaded but only processes data locally in your browser using Javascript. No data is send to a server for processing.
 
