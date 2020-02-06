@@ -35,9 +35,9 @@
       "type": "string",
       "defaultValue": "latest",
       "allowedValues": [
-        "6.0.6",
         "6.0.7",
         "6.0.8",
+        "6.0.9",
         "6.2.0",
         "6.2.1",
         "6.2.2",
@@ -54,6 +54,14 @@
       "allowedValues": [ "Standard_F2s", "Standard_F4s", "Standard_F8s", "Standard_F2", "Standard_F4", "Standard_F8", "Standard_F2s_v2", "Standard_F4s_v2", "Standard_F8s_v2", "Standard_DS2_v2", "Standard_DS3_v2", "Standard_DS4_v2", "Standard_DS4_v3", "Standard_DS8_v3" ],
       "metadata": {
         "description": "Virtual Machine size selection - must be F4 or other instance that supports 4 NICs"
+      }
+    },
+    "acceleratedNetworking": {
+      "type": "string",
+      "defaultValue": "no",
+      "allowedValues": [ "no", "yes"],
+      "metadata": {
+        "description": "Enable"
       }
     },
     "publicIPNewOrExisting": {
@@ -192,7 +200,7 @@
     "networkApiVersion": "2018-11-01",
     "resourceApiVersion": "2018-05-01",
 
-    "acceleratedNetworking": "[if(or(equals(parameters('instanceType'),'Standard_F2s_v2'),equals(parameters('instanceType'),'Standard_DS2_v3')),'false','true')]",
+    "acceleratedNetworking": "[if(equals(parameters('acceleratedNetworking'),'no'),'false','true')]",
 
     "vnetName": "[if(equals(parameters('vnetName'),''),concat(parameters('FortiGateNamePrefix'),'-VNET'),parameters('vnetName'))]",
     "vnetID": "[if(equals(parameters('vnetNewOrExisting'),'new'),resourceId('Microsoft.Network/virtualNetworks', variables('vnetName')),resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks', variables('vnetName')))]",
