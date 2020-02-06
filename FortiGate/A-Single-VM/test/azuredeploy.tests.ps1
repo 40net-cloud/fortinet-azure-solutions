@@ -117,6 +117,7 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
         $params = @{ 'adminUsername'=$testsAdminUsername
                      'adminPassword'=$testsResourceGroupName
                      'FortiGateNamePrefix'=$testsPrefix
+                     'FortiGateImageVersion'="6.2.2"
                     }
         $publicIPName = "FGTPublicIP"
 
