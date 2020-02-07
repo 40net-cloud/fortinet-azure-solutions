@@ -315,7 +315,7 @@
                             "enableBgp": "[parameters('enableBgp')]",
                             "remoteVpnSite": {
                                 "id": "[resourceId('Microsoft.Network/vpnSites', variables('vpnsite1Name'))]"
-                            },
+                            }
                         }
                     }
                 ],
