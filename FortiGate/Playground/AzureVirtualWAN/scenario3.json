@@ -309,13 +309,13 @@
             "properties": {
                 "connections": [
                     {
-                        "remoteVpnSite": {
-                            "id": "[resourceId('Microsoft.Network/vpnSites', variables('vpnsite1Name'))]"
-                        },
                         "name": "[variables('connection1Name')]",
                         "properties": {
                             "connectionBandwidth": 10,
-                            "enableBgp": "[parameters('enableBgp')]"
+                            "enableBgp": "[parameters('enableBgp')]",
+                            "remoteVpnSite": {
+                                "id": "[resourceId('Microsoft.Network/vpnSites', variables('vpnsite1Name'))]"
+                            },
                         }
                     }
                 ],
