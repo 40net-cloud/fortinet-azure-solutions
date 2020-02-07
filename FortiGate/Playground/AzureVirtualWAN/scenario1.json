@@ -105,7 +105,7 @@
     "variables": {
         "apiVersion": "2018-08-01",
 
-        "vWanName": "[if(equals(parameters('vWanName'),''),concat(parameters('prefix'),'-VWAN-',resourceGroup().location),parameters('vWanName'))]",
+        "vWanName": "[if(equals(parameters('vWanName'),''),concat(parameters('prefix'),'-VWAN'),parameters('vWanName'))]",
         "hubName": "[if(equals(parameters('hubName'),''),concat(parameters('prefix'),'-HUB-',resourceGroup().location),parameters('hubName'))]",
         "vpnGatewayName": "[if(equals(parameters('vpnGatewayName'),''),concat(parameters('prefix'),'-VPNGW'),parameters('hubName'))]",
         "vpnsiteName": "[if(equals(parameters('vpnsiteName'),''),concat(parameters('prefix'), '-', parameters('vpnsitePrefix'),'-VPN'),parameters('vpnsiteName'))]",
@@ -117,7 +117,9 @@
             "name": "[variables('vWanName')]",
             "apiVersion": "[variables('apiVersion')]",
             "location": "[resourceGroup().location]",
-            "properties": { }
+            "properties": {
+                "type": "Standard"
+            }
         },
         {
             "type": "Microsoft.Network/virtualHubs",
@@ -143,21 +145,33 @@
                 "[concat('Microsoft.Network/virtualWans/', variables('vWanName'))]"
             ],
             "properties": {
+                "deviceProperties": {
+                    "deviceVendor": "Fortinet",
+                    "deviceModel": "FortiGate",
+                    "linkSpeedInMbps": 0
+                },
                 "addressSpace": {
                     "addressPrefixes": "[parameters('vpnsiteAddressspaceList')]"
                 },
-                "bgpProperties": {
-                    "asn":  "[parameters('vpnsiteBgpAsn')]",
-                    "bgpPeeringAddress": "[parameters('vpnsiteBgpPeeringAddress')]",
-                    "peerWeight": 0
-                },
-                "deviceProperties": {
-                    "linkSpeedInMbps": 0
-                },
-                "ipAddress": "[parameters('vpnsitePublicIPAddress')]",
                 "virtualWan": {
                     "id": "[resourceId('Microsoft.Network/virtualWans',variables('vWanName'))]"
-                }
+                },
+                "vpnSiteLinks": [
+                    {
+                        "properties": {
+                            "linkProperties": {
+                                "linkProviderName": "Provider1",
+                                "linkSpeedInMbps": 0
+                            },
+                            "ipAddress": "[parameters('vpnsitePublicIPAddress')]",
+                            "bgpProperties": {
+                                "asn": "[parameters('vpnsiteBgpAsn')]",
+                                "bgpPeeringAddress": "[parameters('vpnsiteBgpPeeringAddress')]"
+                            }
+                        },
+                        "name": "port2"
+                    }
+                ]
             }
         },
         {

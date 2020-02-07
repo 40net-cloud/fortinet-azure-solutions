@@ -284,7 +284,7 @@
                         "properties": {
                             "linkProperties": {
                                 "linkProviderName": "Provider1",
-                                "linkSpeedInMbps": "0"
+                                "linkSpeedInMbps": 0
                             },
                             "ipAddress": "[parameters('vpnsite1PublicIPAddress')]",
                             "bgpProperties": {
@@ -393,13 +393,13 @@
             "properties": {
                 "connections": [
                     {
-                        "remoteVpnSite": {
-                            "id": "[resourceId('Microsoft.Network/vpnSites', variables('vpnsite2Name'))]"
-                        },
                         "name": "[variables('connection2Name')]",
                         "properties": {
                             "connectionBandwidth": 10,
-                            "enableBgp": "[parameters('enableBgp')]"
+                            "enableBgp": "[parameters('enableBgp')]",
+                            "remoteVpnSite": {
+                                "id": "[resourceId('Microsoft.Network/vpnSites', variables('vpnsite2Name'))]"
+                            }
                         }
                     }
                 ],
