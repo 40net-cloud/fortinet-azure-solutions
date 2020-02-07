@@ -103,7 +103,7 @@
         }
     },
     "variables": {
-        "apiVersion": "2018-08-01",
+        "apiVersion": "2019-06-01",
 
         "vWanName": "[if(equals(parameters('vWanName'),''),concat(parameters('prefix'),'-VWAN'),parameters('vWanName'))]",
         "hubName": "[if(equals(parameters('hubName'),''),concat(parameters('prefix'),'-HUB-',resourceGroup().location),parameters('hubName'))]",
@@ -177,7 +177,7 @@
         {
             "type": "Microsoft.Network/vpnGateways",
             "name": "[variables('vpnGatewayName')]",
-            "apiVersion": "2018-08-01",
+            "apiVersion": "[variables('apiVersion')]",
             "location": "[resourceGroup().location]",
             "dependsOn": [
                 "[concat('Microsoft.Network/virtualHubs/', variables('hubName'))]",
