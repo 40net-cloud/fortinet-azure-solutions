@@ -241,6 +241,7 @@
             "apiVersion": "[variables('apiVersion')]",
             "location": "[resourceGroup().location]",
             "properties": {
+                "type": "Standard"
             }
         },
         {
@@ -314,7 +315,7 @@
                         "name": "[variables('connection1Name')]",
                         "properties": {
                             "connectionBandwidth": 10,
-                            "enableBgp": "[parameters('enableBgp')]",
+                            "enableBgp": "[parameters('enableBgp')]"
                         }
                     }
                 ],
@@ -398,7 +399,7 @@
                         "name": "[variables('connection2Name')]",
                         "properties": {
                             "connectionBandwidth": 10,
-                            "enableBgp": "[parameters('enableBgp')]",
+                            "enableBgp": "[parameters('enableBgp')]"
                         }
                     }
                 ],
