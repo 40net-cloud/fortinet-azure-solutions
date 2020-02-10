@@ -119,7 +119,7 @@ $result = New-AzVM -ResourceGroupName $rg -Location $location -VM $vm
 
 This template will not deploy the default Azure Marketplace images. You can deploy using this template a custom VHD. These specific VHD's can be downloaded from support.fortinet.com. Once downloaded you need to upload this VHD to an Azure storage account. You can find more information on how to create the storage account on [this link](https://docs.microsoft.com/en-us/azure/storage/common/storage-quickstart-create-account?tabs=azure-portal). Once you have the URI for the storage account you need to use the below 'Add-AzVhd' powershell command to upload the image. The FortiGate image is very compressed and needs to extracted during the upload process. This is only working well using this powershell command. In the end you need to have a 2Gb VHD in your storage account.
 
-`Add-AzVhd -LocalFilePath ./fortios-v6-build5163.vhd -ResourceGroupName XXX-RG -Destination 'https://xxxstorage.blob.core.windows.net/vhds/fortios-v6-build5163.vhd'`
+`Add-AzVhd -LocalFilePath ./fortios-v6-build5163.vhd -ResourceGroupName XXX-RG -Destination 'https://xxx.blob.core.windows.net/vhds/fortiosv6build5163.vhd'`
 
 ![Storage Account](images/storageaccount.png)
 
