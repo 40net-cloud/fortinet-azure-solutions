@@ -14,32 +14,33 @@ set +e
 RELEASE_VERSION="2.0.5"
 
 DOWNLOAD_LINK="https://github.com/fortinet/fortigate-autoscale/releases/download/$RELEASE_VERSION/fortigate-autoscale-azure-template-deployment.zip"
+DOWNLOAD_DIRECTORY="download"
 DOWNLOAD_FILENAME="$RELEASE_VERSION.zip"
 DEPLOY_PACKAGE_URL="https://github.com/fortinet/fortigate-autoscale/releases/download/$RELEASE_VERSION/fortigate-autoscale-azure-funcapp.zip"
 
-if [ -f "$DOWNLOAD_FILENAME" ] || [ -d "$RELEASE_VERSION" ]
+if [ -f "$DOWNLOAD_DIRECTORY/$DOWNLOAD_FILENAME" ] || [ -d "$DOWNLOAD_DIRECTORY/$RELEASE_VERSION" ]
 then
 	echo "--> Cleanup previous deployment..."
 	echo ""
-	rm -rf "$RELEASE_VERSION/" "$DOWNLOAD_FILENAME"
+	rm -rf "$DOWNLOAD_DIRECTORY/$RELEASE_VERSION/" "$DOWNLOAD_DIRECTORY/$DOWNLOAD_FILENAME"
 fi
 
 echo ""
 echo "--> Download FortiGate Autoscale package from github ..."
 echo ""
-wget –quiet -O $DOWNLOAD_FILENAME $DOWNLOAD_LINK
-if [ -f "$DOWNLOAD_FILENAME" ]
+wget –quiet -O "$DOWNLOAD_DIRECTORY/$DOWNLOAD_FILENAME" $DOWNLOAD_LINK
+if [ -f "$DOWNLOAD_DIRECTORY/$DOWNLOAD_FILENAME" ]
 then
     echo "--> Preparing and extracting package ..."
     echo ""
-    mkdir -p "$RELEASE_VERSION"
-    unzip -d "$RELEASE_VERSION" $DOWNLOAD_FILENAME
+    mkdir -p "$DOWNLOAD_DIRECTORY/$RELEASE_VERSION"
+    unzip -d "$DOWNLOAD_DIRECTORY/$RELEASE_VERSION" $DOWNLOAD_DIRECTORY/$DOWNLOAD_FILENAME
 else
     echo "--> Download of Autoscale deployment package failed from [$DOWNLOAD_LINK] ..."
     exit 1
 fi
 
-templatefilename="$RELEASE_VERSION/templates/deploy_fortigate_autoscale.hybrid_licensing.json"
+templatefilename="$DOWNLOAD_DIRECTORY/$RELEASE_VERSION/templates/deploy_fortigate_autoscale.hybrid_licensing.json"
 if [ "2.0.5" == "$RELEASE_VERSION" ]
 then
 	echo ""
@@ -202,13 +203,19 @@ then
     echo "--> Deployment failed ..."
     exit $rc;
 else
+    echo "--> Add local baseconfig to github baseconfig ..."
+    if [ -f "configset/baseconfig" ]
+    then
+        cat "configset/baseconfig" >> "$RELEASE_VERSION/assets/configset/baseconfig"
+    fi
+
     echo "--> Copy configset to Azure Storage Account ..."
     storageAccountName=`az group deployment show --resource-group "$rg" --name "$rg-$location" \
                             --query 'properties.outputs.storageAccountName.value' -o tsv`
     storageAccountAccessKey=`az group deployment show --resource-group "$rg" --name "$rg-$location" \
                             --query 'properties.outputs.storageAccountAccessKey.value' -o tsv`
     echo "--> Azure Storage Account found [$storageAccountName] ..."
-    az storage blob upload-batch --account-name "$storageAccountName" --account-key "$storageAccountAccessKey" -s "$RELEASE_VERSION/assets/configset" -d "configset"
+    az storage blob upload-batch --account-name "$storageAccountName" --account-key "$storageAccountAccessKey" -s "$DOWNLOAD_DIRECTORY/$RELEASE_VERSION/assets/configset" -d "configset"
 
     if [ -d "licenses" ]
     then
@@ -227,8 +234,8 @@ else
 ##############################################################################################################
  FortiGate Autoscaling cluster on Microsoft Azure
 
-Thank you for the deployment of the Azure Azure Autoscaling cluster of FortiGate NGFWs. You can now create 
-loadbalancing rules for your services. 
+Thank you for the deployment of the Azure Azure Autoscaling cluster of FortiGate NGFWs. You can now create
+loadbalancing rules for your services.
 
 The FortiGate instances can be accesss on the public IP on port 40030 and above using HTTPS and 50030 for SSH
 "
