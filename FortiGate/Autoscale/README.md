@@ -12,7 +12,7 @@ Autoscaling is documented on the [Fortinet documenation site](https://docs.forti
 
 The combined solution for the Autoscale deployment is available on the [Fortinet GitHub](https://github.com/fortinet/fortigate-autoscale/tree/master/azure). Combined with the step by step guide to setup all the different components. Or you can use the the script on this GitHub page to automate this process.
 
-There are 4 variables needed to complete kickstart the deployment. The deploy.sh script will ask them automatically. When you deploy the ARM template the Azure Portal will request the variables as a requirement.
+There are 5 variables needed to complete kickstart the deployment. The deploy.sh script will ask them automatically. When you deploy the ARM template the Azure Portal will request the variables as a requirement.
 
   - PREFIX : This prefix will be added to each of the resources created by the templates for easy of use, manageability and visibility.
   - LOCATION : This is the Azure region where the deployment will be deployed
