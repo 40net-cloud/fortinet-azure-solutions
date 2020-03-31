@@ -1,11 +1,7 @@
-###############################################################################################################
-#
-# FortiGate Cloud Security Services Hub deployment
-# using Terraform and Azure VNET Peering
-#
 ##############################################################################################################
 #
-# Input variables
+# FortiGate Terraform deployment
+# Active Active with Azure Standard Load Balancer - External and Internal
 #
 ##############################################################################################################
 
@@ -25,7 +21,7 @@ variable "PASSWORD" {
 }
 
 ##############################################################################################################
-# FortiGate variables
+# FortiGate license type
 ##############################################################################################################
 
 variable "FGT_IMAGE_SKU" {
@@ -78,7 +74,7 @@ provider "azurerm" {
 }
 
 ##############################################################################################################
-# Static variables - HUB network
+# Static variables
 ##############################################################################################################
 
 variable "vnet" {
@@ -91,12 +87,10 @@ variable "subnet" {
   description = ""
 
   default = {
-    "1" = "172.16.136.0/26"   # External
-    "2" = "172.16.136.64/26"  # Internal
-    "3" = "172.16.136.128/26" # HASYNC
-    "4" = "172.16.136.192/26" # MGMT
-    "5" = "172.16.137.0/24"   # Protected a
-    "6" = "172.16.138.0/24"   # Protected b
+    "1" = "172.16.136.0/26"  # External
+    "2" = "172.16.136.64/26" # Internal
+    "3" = "172.16.137.0/24"  # Protected a
+    "4" = "172.16.138.0/24"  # Protected b
   }
 }
 
@@ -107,10 +101,8 @@ variable "subnetmask" {
   default = {
     "1" = "26" # External
     "2" = "26" # Internal
-    "3" = "26" # HASYNC
-    "4" = "26" # MGMT
-    "5" = "24" # Protected a
-    "6" = "24" # Protected b
+    "3" = "24" # Protected a
+    "4" = "24" # Protected b
   }
 }
 
@@ -119,10 +111,8 @@ variable "fgt_ipaddress_a" {
   description = ""
 
   default = {
-    "1" = "172.16.136.5"   # External
-    "2" = "172.16.136.69"  # Internal
-    "3" = "172.16.136.133" # HASYNC
-    "4" = "172.16.136.197" # MGMT
+    "1" = "172.16.136.5"  # External
+    "2" = "172.16.136.69" # Internal
   }
 }
 
@@ -131,10 +121,8 @@ variable "fgt_ipaddress_b" {
   description = ""
 
   default = {
-    "1" = "172.16.136.6"   # External
-    "2" = "172.16.136.70"  # Internal
-    "3" = "172.16.136.134" # HASYNC
-    "4" = "172.16.136.198" # MGMT
+    "1" = "172.16.136.6"  # External
+    "2" = "172.16.136.70" # Internal
   }
 }
 
@@ -143,10 +131,8 @@ variable "gateway_ipaddress" {
   description = ""
 
   default = {
-    "1" = "172.16.136.1"   # External
-    "2" = "172.16.136.65"  # Internal
-    "3" = "172.16.136.133" # HASYNC
-    "4" = "172.16.136.193" # MGMT
+    "1" = "172.16.136.1"  # External
+    "2" = "172.16.136.65" # Internal
   }
 }
 
@@ -158,42 +144,6 @@ variable "lb_internal_ipaddress" {
 
 variable "fgt_vmsize" {
   default = "Standard_F4s"
-}
-
-##############################################################################################################
-# Static variables - SPOKE 1 network
-##############################################################################################################
-
-variable "vnetspoke1" {
-  description = ""
-  default     = "172.16.140.0/24"
-}
-
-variable "subnetspoke1" {
-  type        = map(string)
-  description = ""
-
-  default = {
-    "1" = "172.16.140.0/26" # SUBNET 1 in SPOKE 1
-  }
-}
-
-##############################################################################################################
-# Static variables - SPOKE 2 network
-##############################################################################################################
-
-variable "vnetspoke2" {
-  description = ""
-  default     = "172.16.142.0/24"
-}
-
-variable "subnetspoke2" {
-  type        = map(string)
-  description = ""
-
-  default = {
-    "1" = "172.16.142.0/26" # SUBNET 1 in SPOKE 2
-  }
 }
 
 ##############################################################################################################

@@ -1,7 +1,7 @@
 ##############################################################################################################
 #
 # FortiGate Terraform deployment
-# Active Passive High Availability with Azure Standard Load Balancer - External and Internal
+# Active Active with Azure Standard Load Balancer - External and Internal
 #
 ##############################################################################################################
 #
@@ -31,36 +31,26 @@ resource "azurerm_subnet" "subnet2" {
 }
 
 resource "azurerm_subnet" "subnet3" {
-  name                 = "${var.PREFIX}-SUBNET-FGT-HASYNC"
+  name                 = "${var.PREFIX}-SUBNET-PROTECTED-A"
   resource_group_name  = azurerm_resource_group.resourcegroup.name
   virtual_network_name = azurerm_virtual_network.vnet.name
   address_prefix       = var.subnet["3"]
 }
 
 resource "azurerm_subnet" "subnet4" {
-  name                 = "${var.PREFIX}-SUBNET-FGT-MGMT"
+  name                 = "${var.PREFIX}-SUBNET-PROTECTED-B"
   resource_group_name  = azurerm_resource_group.resourcegroup.name
   virtual_network_name = azurerm_virtual_network.vnet.name
   address_prefix       = var.subnet["4"]
 }
 
-resource "azurerm_subnet" "subnet5" {
-  name                 = "${var.PREFIX}-SUBNET-PROTECTED-A"
-  resource_group_name  = azurerm_resource_group.resourcegroup.name
-  virtual_network_name = azurerm_virtual_network.vnet.name
-  address_prefix       = var.subnet["5"]
-}
-
-resource "azurerm_subnet" "subnet6" {
-  name                 = "${var.PREFIX}-SUBNET-PROTECTED-B"
-  resource_group_name  = azurerm_resource_group.resourcegroup.name
-  virtual_network_name = azurerm_virtual_network.vnet.name
-  address_prefix       = var.subnet["6"]
-}
-
 resource "azurerm_subnet_route_table_association" "subnet5rt" {
-  subnet_id      = azurerm_subnet.subnet5.id
+  subnet_id      = azurerm_subnet.subnet3.id
   route_table_id = azurerm_route_table.protectedaroute.id
+
+  lifecycle {
+    ignore_changes = [route_table_id]
+  }
 }
 
 resource "azurerm_route_table" "protectedaroute" {
@@ -76,7 +66,7 @@ resource "azurerm_route_table" "protectedaroute" {
   }
   route {
     name           = "Subnet"
-    address_prefix = var.subnet["5"]
+    address_prefix = var.subnet["3"]
     next_hop_type  = "VnetLocal"
   }
   route {
@@ -88,8 +78,12 @@ resource "azurerm_route_table" "protectedaroute" {
 }
 
 resource "azurerm_subnet_route_table_association" "subnet6rt" {
-  subnet_id      = azurerm_subnet.subnet6.id
+  subnet_id      = azurerm_subnet.subnet4.id
   route_table_id = azurerm_route_table.protectedbroute.id
+
+  lifecycle {
+    ignore_changes = [route_table_id]
+  }
 }
 
 resource "azurerm_route_table" "protectedbroute" {
@@ -105,7 +99,7 @@ resource "azurerm_route_table" "protectedbroute" {
   }
   route {
     name           = "Subnet"
-    address_prefix = var.subnet["6"]
+    address_prefix = var.subnet["4"]
     next_hop_type  = "VnetLocal"
   }
   route {
