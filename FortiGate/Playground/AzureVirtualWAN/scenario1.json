@@ -153,25 +153,15 @@
                 "addressSpace": {
                     "addressPrefixes": "[parameters('vpnsiteAddressspaceList')]"
                 },
+                "bgpProperties": {
+                    "asn": "[parameters('vpnsiteBgpAsn')]",
+                    "bgpPeeringAddress": "[parameters('vpnsiteBgpPeeringAddress')]",
+                    "peerWeight": 0
+                },
+                "ipAddress": "[parameters('vpnsitePublicIPAddress')]",
                 "virtualWan": {
                     "id": "[resourceId('Microsoft.Network/virtualWans',variables('vWanName'))]"
-                },
-                "vpnSiteLinks": [
-                    {
-                        "properties": {
-                            "linkProperties": {
-                                "linkProviderName": "Provider1",
-                                "linkSpeedInMbps": 0
-                            },
-                            "ipAddress": "[parameters('vpnsitePublicIPAddress')]",
-                            "bgpProperties": {
-                                "asn": "[parameters('vpnsiteBgpAsn')]",
-                                "bgpPeeringAddress": "[parameters('vpnsiteBgpPeeringAddress')]"
-                            }
-                        },
-                        "name": "port2"
-                    }
-                ]
+                }
             }
         },
         {

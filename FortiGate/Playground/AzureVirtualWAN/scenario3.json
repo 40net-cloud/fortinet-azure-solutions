@@ -276,25 +276,15 @@
                 "addressSpace": {
                     "addressPrefixes": "[parameters('vpnsite1AddressspaceList')]"
                 },
+                "bgpProperties": {
+                    "asn": "[parameters('vpnsite1BgpAsn')]",
+                    "bgpPeeringAddress": "[parameters('vpnsite1BgpPeeringAddress')]",
+                    "peerWeight": 0
+                },
+                "ipAddress": "[parameters('vpnsite1PublicIPAddress')]",
                 "virtualWan": {
                     "id": "[resourceId('Microsoft.Network/virtualWans',variables('vWanName'))]"
-                },
-                "vpnSiteLinks": [
-                    {
-                        "properties": {
-                            "linkProperties": {
-                                "linkProviderName": "Provider1",
-                                "linkSpeedInMbps": 0
-                            },
-                            "ipAddress": "[parameters('vpnsite1PublicIPAddress')]",
-                            "bgpProperties": {
-                                "asn": "[parameters('vpnsite1BgpAsn')]",
-                                "bgpPeeringAddress": "[parameters('vpnsite1BgpPeeringAddress')]"
-                            }
-                        },
-                        "name": "port2"
-                    }
-                ]
+                }
             }
         },
         {
@@ -359,25 +349,15 @@
                 "addressSpace": {
                     "addressPrefixes": "[parameters('vpnsite2AddressspaceList')]"
                 },
+                "bgpProperties": {
+                    "asn": "[parameters('vpnsite2BgpAsn')]",
+                    "bgpPeeringAddress": "[parameters('vpnsite2BgpPeeringAddress')]",
+                    "peerWeight": 0
+                },
+                "ipAddress": "[parameters('vpnsite2PublicIPAddress')]",
                 "virtualWan": {
                     "id": "[resourceId('Microsoft.Network/virtualWans',variables('vWanName'))]"
-                },
-                "vpnSiteLinks": [
-                    {
-                        "properties": {
-                            "linkProperties": {
-                                "linkProviderName": "Provider1",
-                                "linkSpeedInMbps": "0"
-                            },
-                            "ipAddress": "[parameters('vpnsite2PublicIPAddress')]",
-                            "bgpProperties": {
-                                "asn": "[parameters('vpnsite2BgpAsn')]",
-                                "bgpPeeringAddress": "[parameters('vpnsite2BgpPeeringAddress')]"
-                            }
-                        },
-                        "name": "port2"
-                    }
-                ]
+                }
             }
         },
         {
