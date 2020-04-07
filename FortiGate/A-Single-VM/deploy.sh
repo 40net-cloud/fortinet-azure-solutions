@@ -65,7 +65,15 @@ fi
 
 if [ -z "$DEPLOY_USERNAME" ]
 then
-    username="azureuser"
+    # Input username
+    echo -n "Enter username: "
+    stty_orig=`stty -g` # save original terminal setting.
+    read username         # read the prefix
+    stty $stty_orig     # restore terminal setting.
+    if [ -z "$username" ]
+    then
+        username="azureuser"
+    fi
 else
     username="$DEPLOY_USERNAME"
 fi
@@ -103,7 +111,19 @@ then
 else
 echo "
 ##############################################################################################################
- Deployed FortiGate IP addesses
+#
+# FortiGate Azure deployment using ARM Template
+# A single FortiGate
+#
+# The FortiGate systems is reachable via the public IP address of the firewall on HTTPS/443 and SSH/22.
+#
+##############################################################################################################
+
+Deployment information:
+
+Username: $USERNAME
+
+FortiGate IP addesses
 "
 query="[?virtualMachine.name.starts_with(@, '$prefix')].{virtualMachine:virtualMachine.name, publicIP:virtualMachine.network.publicIpAddresses[0].ipAddress,privateIP:virtualMachine.network.privateIpAddresses[0]}"
 az vm list-ip-addresses --query "$query" --output tsv

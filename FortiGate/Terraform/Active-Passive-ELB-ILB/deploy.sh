@@ -3,7 +3,7 @@ echo "
 ##############################################################################################################
 #
 # Fortinet FortiGate Terraform deployment template
-# Active Passive High Availability with Azure Standard Load Balancer - External and Internal
+# Active/Passive High Availability with Azure Standard Load Balancer - External and Internal
 #
 ##############################################################################################################
 "
@@ -96,12 +96,20 @@ PASSWORD="$passwd"
 
 if [ -z "$DEPLOY_USERNAME" ]
 then
-    USERNAME="azureuser"
+    # Input username
+    echo -n "Enter username: "
+    stty_orig=`stty -g` # save original terminal setting.
+    read username         # read the prefix
+    stty $stty_orig     # restore terminal setting.
+    if [ -z "$username" ]
+    then
+        username="azureuser"
+    fi
 else
-    USERNAME="$DEPLOY_USERNAME"
+    username="$DEPLOY_USERNAME"
 fi
 echo ""
-echo "--> Using username '$USERNAME' ..."
+echo "--> Using username '$username' ..."
 echo ""
 
 SUMMARY="summary.out"
@@ -143,16 +151,16 @@ echo "
 ##############################################################################################################
 #
 # FortiGate Terraform deployment
-# Active Passive High Availability with Azure Standard Load Balancer - External and Internal
+# Active/Passive High Availability with Azure Standard Load Balancer - External and Internal
 #
-# The FortiGate systems are reachable on their managment public IP on port HTTPS/443 and SSH/22.
+# The FortiGate VMs are reachable on their managment public IP on port HTTPS/443 and SSH/22.
 #
 # BEWARE: The state files contain sensitive data like passwords and others. After the demo clean up your
 #         clouddrive directory.
 #
 ##############################################################################################################
 
- Deployment information:
+Deployment information:
 
 Username: $USERNAME
 "

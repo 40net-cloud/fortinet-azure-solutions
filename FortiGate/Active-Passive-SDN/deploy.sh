@@ -65,7 +65,15 @@ fi
 
 if [ -z "$DEPLOY_USERNAME" ]
 then
-    username="azureuser"
+    # Input username
+    echo -n "Enter username: "
+    stty_orig=`stty -g` # save original terminal setting.
+    read username         # read the prefix
+    stty $stty_orig     # restore terminal setting.
+    if [ -z "$username" ]
+    then
+        username="azureuser"
+    fi
 else
     username="$DEPLOY_USERNAME"
 fi

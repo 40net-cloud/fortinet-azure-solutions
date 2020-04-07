@@ -12,7 +12,7 @@ In Microsoft Azure, this central security service hub is commonly implemented us
 
 This Terraform template will automatically deploy a full working environment containing the the following components.
 
-  - 2 FortiGate firewalls in an Active/Active deployment
+  - 2 FortiGate firewalls in an active/active deployment
   - 1 external Azure Standard Load Balancer for communication with internet
   - 1 internal Azure Standard Load Balancer to receive all internal traffic and forwarding towards Azure Gateways connecting ExpressRoute or Azure VPNs.
   - 1 VNET with 2 protected subnets

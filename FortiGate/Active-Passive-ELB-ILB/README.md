@@ -1,4 +1,4 @@
-# Active - Passive High Available FortiGate pair with external and internal Azure Standard Load Balancer
+# Active/Passive High Available FortiGate pair with external and internal Azure Standard Load Balancer
 
 [![Build Status](https://dev.azure.com/jvh-2520/Fortinet-Azure/_apis/build/status/Azure-Passive-ELB-ILB?branchName=master)](https://dev.azure.com/jvh-2520/Fortinet-Azure/_build/latest?definitionId=13&branchName=master)
 
@@ -6,9 +6,11 @@
 
 More and more enterprises are turning to Microsoft Azure to extend internal data centers and take advantage of the elasticity of the public cloud. While Azure secures the infrastructure, you are responsible for protecting everything you put in it. Fortinet Security Fabric provides Azure the broad protection, native integration and automated management enabling customers with consistent enforcement and visibility across their multi-cloud infrastructure.
 
+This ARM template deploys a High Availability pair of FortiGate Next-Generation Firewallis accompanied by the required infrastructure. Additionally, Fortinet Fabric Connectors deliver the ability to create dynamic security policies.
+
 # Design
 
-In Microsoft Azure you can deploy a Active Passive pair of FortiGate VM's that communicate with each other and the Azure fabric. This FortiGate setup will receive the to be inspected traffic using user defined routing (UDR) and public IPs. You can send all or specific traffic that needs inspection, going to/coming from on-prem networks or public internet by adapting the UDR routing.
+In Microsoft Azure, you can deploy an active/passive pair of FortiGate VMs that communicate with each other and the Azure fabric. This FortiGate setup will receive the to be inspected traffic using user defined routing (UDR) and public IPs. You can send all or specific traffic that needs inspection, going to/coming from on-prem networks or public internet by adapting the UDR routing.
 
 This Azure ARM template will automatically deploy a full working environment containing the the following components.
 
@@ -54,29 +56,19 @@ To deploy via Azure Cloud Shell you can connect via the Azure Portal or directly
 
 After deployment you will be shown the IP address of all deployed components, this information is also stored in the output directory in the summary.out file. You can access both management GUI's using the public management IP's using HTTPS on port 443.
 
-## Post deployment
-
-During the deployment the FortiGate systems are pre-configured with the required routing, clustering information, ... This information can be found in the 'customdata' field in the ARM template.
-
-After deployment you need to apply the license unless you are using PAYG licensing.  To apply BYOL licenses, first register the licenses with http://support.fortinet.com and download the .lic files.  Note, these files may not work until 30 minutes after it's initial created.
-
-Next, connect via HTTPS to both FortiGates via their management addresses and upload unique license files for each.
-
-Once, licensed and rebooted, you can proceed to configure firewall policy and other security features of the FortiGate as you like. The SDN connector can be used to pull information from Azure using the Azure API.
-
-A step by step guide can be found on our [documentation site](https://docs2.fortinet.com/vm/azure/fortigate/6.0/use-case-automatically-updating-dynamic-addresses-using-fabric-connector/6.0.0/502895/overview)
-
-
 # Requirements and limitations
 
 The ARM template deployment different resource and it is required to have the access rights and quota in your Microsoft Azure subscription to deploy the resources.
 
-- The template will deploy Standard F4s VM's to deploy the required active/passive setup
-- Licenses for Fortigate
-  - BYOL: Demo license can be made available via your Fortinet partner or on our website. These can be injected during deployment or added after deployment.
-  - PAYG or OnDemand: These licenses are automaticaly generated during the deployment of the FortiGate systems.
+### Licenses
 
-The FortiGate-VM uses [Managed Identities](https://docs.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/)for the SDN Fabric Connector. A SDN Fabric Connector is created automatically during deployment. After deployment, it is required apply the 'Reader' role to Azure Subscription you want the FortiGate-VM(s) to resolve Azure Resources from.
+- The template will deploy Standard F4s VMs for this architecture. Other VM instances are supported as well with a minimum of 2 NICs. A list can be found [here](https://docs.fortinet.com/document/fortigate/6.2.0/azure-cookbook/562841/instance-type-support)
+- Licenses for Fortigate
+  - BYOL: A demo license can be made available via your Fortinet partner or on our website. These can be injected during deployment or added after deployment.
+  - PAYG or OnDemand: These licenses are automatically generated during the deployment of the FortiGate systems.
+
+### Fabric Connector
+The FortiGate-VM uses [Managed Identities](https://docs.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/)for the SDN Fabric Connector. A SDN Fabric Connector is created automatically during deployment. After deployment, it is required apply the 'Reader' role to Azure Subscription you want the FortiGate-VM(s) to resolve Azure Resources from. More information can be found on the [Fortinet Documenation Libary](https://docs.fortinet.com/vm/azure/fortigate/6.2/azure-cookbook/6.2.0/236610/creating-a-fabric-connector-using-a-managed-identity).
 
 # License
 
