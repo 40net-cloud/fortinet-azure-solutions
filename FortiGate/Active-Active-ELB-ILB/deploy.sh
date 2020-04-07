@@ -2,13 +2,14 @@
 echo "
 ##############################################################################################################
 #
-# Deployment of a Fortigate Active/Active cluster
+# Fortinet FortiGate ARM deployment template
+# Active/Active loadbalanced pair of standalone FortiGates for resilience and scale
 #
 ##############################################################################################################
 
 "
-echo "--> Auto accepting terms for Azure Marketplace deployments ..."
-az vm image terms accept --publisher fortinet --offer fortinet_fortigate-vm_v5 --plan fortinet_fg-vm
+#echo "--> Auto accepting terms for Azure Marketplace deployments ..."
+#az vm image terms accept --publisher fortinet --offer fortinet_fortigate-vm_v5 --plan fortinet_fg-vm
 
 # Stop on error
 set +e
@@ -105,11 +106,25 @@ then
 else
 echo "
 ##############################################################################################################
- IP Assignment:
+#
+# FortiGate Azure deployment using ARM Template
+# Active/Active loadbalanced pair of standalone FortiGates for resilience and scale
+#
+# The FortiGate systems is reachable via the public IP addresses of the load balancers
+# on HTTPS/443 and SSH/22.
+#
+##############################################################################################################
+
+Deployment information:
+
+Username: $USERNAME
+
+FortiGate IP addesses
 "
 query="[?virtualMachine.name.starts_with(@, '$prefix')].{virtualMachine:virtualMachine.name, publicIP:virtualMachine.network.publicIpAddresses[0].ipAddress,privateIP:virtualMachine.network.privateIpAddresses[0]}"
 az vm list-ip-addresses --query "$query" --output tsv
 echo "
+
 ##############################################################################################################
 "
 fi

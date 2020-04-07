@@ -37,7 +37,7 @@ For Microsoft Azure there is a fast track option by using the Azure Cloud Shell.
 
 ![Azure Cloud Shell](images/azure-cloud-shell.png)
 
-After deployment you will be shown the IP address of all deployed components, this information is also stored in the output directory in the `summary.out` file. You can access both management GUI's using the public management IP addresses using HTTPS on port 443.
+After deployment you will be shown the IP address of all deployed components, this information is also stored in the output directory in the `summary.out` file. # The FortiGate VMs are reachable via the public IP address of the load balancer. Management GUI HTTPS on port 40030, 40031 and for SSH on port 50030 and 50031.
 
 !!! Beware that the output directory, Terraform Plan file and Terraform State files contain deployment information such as password, usernames, IP addresses and others.
 
@@ -53,7 +53,7 @@ The Terraform template deployment deploys different resources and is required to
   - PAYG or OnDemand: These licenses are automatically generated during the deployment of the FortiGate systems.
 
 ### Fabric Connector
-The FortiGate-VM uses [Managed Identities](https://docs.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/)for the SDN Fabric Connector. A SDN Fabric Connector is created automatically during deployment. After deployment, it is required apply the 'Reader' role to Azure Subscription you want the FortiGate-VM(s) to resolve Azure Resources from. More information can be found on the [Fortinet Documenation Libary](https://docs.fortinet.com/vm/azure/fortigate/6.2/azure-cookbook/6.2.0/236610/creating-a-fabric-connector-using-a-managed-identity).
+The FortiGate-VM uses [Managed Identities](https://docs.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/) for the SDN Fabric Connector. A SDN Fabric Connector is created automatically during deployment. After deployment, it is required apply the 'Reader' role to Azure Subscription you want the FortiGate-VM(s) to resolve Azure Resources from. More information can be found on the [Fortinet Documentation Libary](https://docs.fortinet.com/vm/azure/fortigate/6.2/azure-cookbook/6.2.0/236610/creating-a-fabric-connector-using-a-managed-identity).
 
 ## Support
 Fortinet-provided scripts in this and other GitHub projects do not fall under the regular Fortinet technical support scope and are not supported by FortiCare Support Services.

@@ -1,7 +1,7 @@
 ##############################################################################################################
 #
 # FortiGate Terraform deployment
-# Active Passive High Availability with Azure Standard Load Balancer - External and Internal
+# Active/Active Load Balanced pair of standalone FortiGate VMs for resilience and scale
 #
 ##############################################################################################################
 #
