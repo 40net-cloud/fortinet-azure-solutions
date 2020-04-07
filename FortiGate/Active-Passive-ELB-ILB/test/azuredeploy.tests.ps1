@@ -39,7 +39,7 @@ $testsRandom = Get-Random 10001
 $testsPrefix = "FORTIQA"
 $testsResourceGroupName = "FORTIQA-$testsRandom-$templateName"
 $testsAdminUsername = "azureuser"
-$testsResourceGroupLocation = "northeurope"
+$testsResourceGroupLocation = "eastus2"
 
 Describe 'ARM Templates Test : Validation & Test Deployment' {
     Context 'Template Validation' {
