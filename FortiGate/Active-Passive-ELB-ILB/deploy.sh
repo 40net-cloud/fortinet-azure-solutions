@@ -2,7 +2,8 @@
 echo "
 ##############################################################################################################
 #
-# Deployment of a Fortigate active/passive cluster with External + Internal Load Balancer
+# FortiGate Azure deployment using ARM Template
+# Fortigate Active/Passive cluster with External + Internal Load Balancer
 #
 ##############################################################################################################
 
