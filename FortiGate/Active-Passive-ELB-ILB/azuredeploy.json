@@ -212,7 +212,7 @@
     },
     "subnet3Prefix": {
       "type": "string",
-      "defaultValue": "172.16.138.128/26",
+      "defaultValue": "172.16.136.128/26",
       "metadata": {
         "description": "Subnet 3 Prefix"
       }
