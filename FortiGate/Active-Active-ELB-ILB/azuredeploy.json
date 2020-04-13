@@ -780,6 +780,7 @@
         "product": "[variables('imageOffer')]"
       },
       "dependsOn": [
+        "[variables('network_NIC_fg11_Name')]",
         "[variables('network_NIC_fg12_Name')]"
       ],
       "properties": {
@@ -848,6 +849,7 @@
         "product": "[variables('imageOffer')]"
       },
       "dependsOn": [
+        "[variables('network_NIC_fg21_Name')]",
         "[variables('network_NIC_fg22_Name')]"
       ],
       "properties": {
