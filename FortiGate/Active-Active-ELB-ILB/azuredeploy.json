@@ -484,7 +484,7 @@
         "name": "Standard"
       },
       "dependsOn": [
-        "[variables('publicIPID')]",
+        "[variables('publicIPID')]"
       ],
       "properties": {
         "frontendIPConfigurations": [
