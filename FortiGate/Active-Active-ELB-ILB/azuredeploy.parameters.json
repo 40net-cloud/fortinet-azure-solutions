@@ -32,12 +32,6 @@
     "publicIPResourceGroup": {
       "value": ""
     },
-    "publicIP2Name": {
-      "value": "FGTLBPublicIP2"
-    },
-    "publicIP2ResourceGroup": {
-      "value": ""
-    },
     "publicIPAddressType": {
       "value": "Static"
     },
@@ -51,29 +45,29 @@
       "value": ""
     },
     "vnetAddressPrefix": {
-      "value": "10.0.0.0/16"
+      "value": "172.16.136.0/22"
     },
     "subnet1Name": {
-      "value": "EntrySubnet"
+      "value": "ExternalSubnet"
     },
     "subnet1Prefix": {
-      "value": "10.0.1.0/24"
+      "value": "172.16.136.0/26"
     },
     "subnet2Name": {
-      "value": "TransitSubnet"
+      "value": "InternalSubnet"
     },
     "subnet2Prefix": {
-      "value": "10.0.2.0/24"
+      "value": "172.16.136.64/26"
     },
     "Subnet3Name": {
       "value": "ProtectedSubnet"
     },
     "Subnet3Prefix": {
-      "value": "10.0.3.0/24"
+      "value": "172.16.137.0/24"
     },
     "FortinetTags": {
       "value": {
-        "provider": "6EB3B02F-50E5-4A3E-8CB8-2E129258317D"
+        "provider": "6EB3B02F-50E5-4A3E-8CB8-2E12925831AA"
       }
     }
   }
