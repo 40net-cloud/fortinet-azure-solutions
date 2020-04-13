@@ -254,8 +254,6 @@
     "externalLBId": "[resourceId('Microsoft.Network/loadBalancers',variables('externalLBName'))]",
     "externalLBNameFE": "[concat(parameters('FortiGateNamePrefix'),'ExternalLBFE')]",
     "externalLBIdFE": "[concat(variables('externalLBId'),'/frontendIPConfigurations/',variables('externalLBNameFE'))]",
-    "externalLBNameFE2": "[concat(parameters('FortiGateNamePrefix'),'ExternalLBFE2')]",
-    "externalLBIdFE2": "[concat(variables('externalLBId'),'/frontendIPConfigurations/',variables('externalLBNameFE2'))]",
     "externalLBNameBE": "[concat(parameters('FortiGateNamePrefix'),'ExternalLBBE')]",
     "externalLBIdBE": "[concat(variables('externalLBId'),'/backendAddressPools/',variables('externalLBNameBE'))]"
   },
