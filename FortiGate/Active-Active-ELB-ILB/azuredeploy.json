@@ -209,7 +209,7 @@
     "publicIPName": "[if(equals(parameters('publicIPName'),''),concat(parameters('FortiGateNamePrefix'),'-FGT-PIP'),parameters('publicIPName'))]",
     "publicIPID": "[if(equals(parameters('publicIPNewOrExisting'),'new'),resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPName')),resourceId(parameters('publicIPResourceGroup'),'Microsoft.Network/publicIPAddresses',variables('publicIPName')))]",
 
-    "nsgName": "[concat(parameters('FortiGateNamePrefix'),'-','-NSG-Allow-All')]",
+    "nsgName": "[concat(parameters('FortiGateNamePrefix'),'-NSG-Allow-All')]",
 
     "sn1IPArray": "[split(parameters('subnet1Prefix'),'.')]",
     "sn1IPArray2ndString": "[string(variables('sn1IPArray')[3])]",
