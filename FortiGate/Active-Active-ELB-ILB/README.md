@@ -18,6 +18,7 @@ This Azure ARM template will automatically deploy a full working environment con
   - 1 external Azure Standard Load Balancer for communication with internet
   - 1 internal Azure Standard Load Balancer to receive all internal traffic and forwarding towards Azure Gateways connecting ExpressRoute or Azure VPNs.
   - 1 VNET with 2 protected subnets
+  - 1 public IP for services and FortiGate management
   - User Defined Routes (UDR) for the protected subnets
 
 ![active/active design](images/fgt-aa.png)
@@ -55,7 +56,7 @@ To deploy via Azure Cloud Shell you can connect via the Azure Portal or directly
 
 ![Azure Cloud Shell](images/azure-cloud-shell.png)
 
-After deployment you will be shown the IP address of all deployed components. Both FortiGate VMs are accessible using the public IPs attached on the external Load Balancer or their private IPs on the management subnet using HTTPS on port 443 and SSH on port 22.
+After deployment you will be shown the IP address of all deployed components. Both FortiGate VMs are accessible using the public IP attached on the external Load Balancer using HTTPS port 40030, 40031 and SSH port 50030 50031. They are also acessible using their private IPs on the internal subnet using HTTPS on port 443 and SSH on port 22.
 
 ## Requirements and limitations
 
