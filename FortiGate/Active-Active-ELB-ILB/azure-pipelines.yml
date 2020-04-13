@@ -28,6 +28,6 @@ trigger:
     - master
   paths:
     exclude:
-    - FortiGate/Active-Active-ELB-ILB/*
+    - FortiGate/Active-Active-ELB-ILB/*.md
     include:
-    - FortiGate/Active-Active-ELB-ILB/*.json
+    - FortiGate/Active-Active-ELB-ILB/*
