@@ -1,0 +1,74 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "adminUsername": {
+      "value": "GEN-USERNAME"
+    },
+    "adminPassword": {
+      "value": "GEN-PASSWORD"
+    },
+    "FortiGateNamePrefix": {
+      "value": "GEN-PREFIX"
+    },
+    "FortiGateImageSKU": {
+      "value": "fortinet_fg-vm"
+    },
+    "FortiGateImageVersion": {
+      "value": "6.2.3"
+    },
+    "instanceType": {
+      "value": "Standard_F1s"
+    },
+    "publicIPNewOrExisting": {
+      "value": "new"
+    },
+    "publicIP2NewOrExisting": {
+      "value": "new"
+    },
+    "publicIPName": {
+      "value": "FGTAPublicIP"
+    },
+    "publicIPResourceGroup": {
+      "value": ""
+    },
+    "publicIP2Name": {
+      "value": "FGTBPublicIP"
+    },
+    "publicIP2ResourceGroup": {
+      "value": ""
+    },
+    "publicIPAddressType": {
+      "value": "Static"
+    },
+    "vnetNewOrExisting": {
+      "value": "new"
+    },
+    "vnetName": {
+      "value": ""
+    },
+    "vnetResourceGroup": {
+      "value": ""
+    },
+    "vnetAddressPrefix": {
+      "value": "172.16.136.0/22"
+    },
+    "subnet1Name": {
+      "value": "InternalSubnet"
+    },
+    "subnet1Prefix": {
+      "value": "172.16.136.0/24"
+    },
+    "subnet2Name": {
+      "value": "ProtectedSubnet"
+    },
+    "subnet2Prefix": {
+      "value": "172.16.137.0/24"
+    },
+    "FortinetTags": {
+      "value": {
+        "provider": "6EB3B02F-50E5-4A3E-8CB8-2E12925831AA-1NIC"
+      }
+    }
+  }
+}
