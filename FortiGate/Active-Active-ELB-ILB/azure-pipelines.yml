@@ -20,7 +20,7 @@ steps:
   inputs:
     testRunner: NUnit
     testResultsFiles: '**\TEST-*.xml'
-    testRunTitle: 'FortiGate ARM Template test Active/Active QS AS ELB ILB'
+    testRunTitle: 'FortiGate ARM Template test Active/Active ELB ILB'
 
 trigger:
   branches:
