@@ -120,7 +120,7 @@
     },
     "vnetAddressPrefix": {
       "type": "string",
-      "defaultValue": "10.0.0.0/16",
+      "defaultValue": "172.16.136.0/22",
       "metadata": {
         "description": "Virtual Network Address prefix"
       }
