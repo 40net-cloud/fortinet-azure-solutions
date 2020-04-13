@@ -237,10 +237,10 @@
     "sn2IPfg2": "[concat(variables('sn2IPArray0'),'.',variables('sn2IPArray1'),'.',variables('sn2IPArray2'),'.',add(int(variables('sn2IPArray2nd')[0]),6))]",
 
     "internalLBName": "[concat(parameters('FortiGateNamePrefix'),'-InternalLoadBalancer')]",
-    "internalLBFE2Name": "[concat(parameters('FortiGateNamePrefix'),'-ILB-',parameters('subnet2Name'),'-FrontEnd')]",
-    "internalLBBE2Name": "[concat(parameters('FortiGateNamePrefix'),'-ILB-',parameters('subnet2Name'),'-BackEnd')]",
     "internalLBid": "[resourceID('Microsoft.Network/loadBalancers',variables('internalLBName'))]",
-    "internalLB_BE2Id": "[concat(variables('internalLBid'),'/backendAddressPools/',variables('internalLBBE2Name'))]",
+    "internalLBFEName": "[concat(parameters('FortiGateNamePrefix'),'-ILB-',parameters('subnet2Name'),'-FrontEnd')]",
+    "internalLBBEName": "[concat(parameters('FortiGateNamePrefix'),'-ILB-',parameters('subnet2Name'),'-BackEnd')]",
+    "internalLBBEId": "[concat(variables('internalLBid'),'/backendAddressPools/',variables('internalLBBEName'))]",
 
     "externalLBName_NatRule_FGAdminPerm_fg1": "[concat(variables('fg1VmName'),'FGAdminPerm')]",
     "externalLBId_NatRule_FGAdminPerm_fg1": "[concat(variables('externalLBId'),'/inboundNatRules/',variables('externalLBName_NatRule_FGAdminPerm_fg1'))]",
@@ -344,7 +344,7 @@
       "properties": {
         "frontendIPConfigurations": [
           {
-            "name": "[variables('internalLBFE2Name')]",
+            "name": "[variables('internalLBFEName')]",
             "properties": {
               "privateIPAddress": "[variables('sn2IPlb')]",
               "privateIPAllocationMethod": "Static",
@@ -356,17 +356,17 @@
         ],
         "backendAddressPools": [
           {
-            "name": "[variables('internalLBBE2Name')]"
+            "name": "[variables('internalLBBEName')]"
           }
         ],
         "loadBalancingRules": [
           {
             "properties": {
               "frontendIPConfiguration": {
-                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', variables('internalLBName')), '/frontendIpConfigurations/', variables('internalLBFE2Name'))]"
+                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', variables('internalLBName')), '/frontendIpConfigurations/', variables('internalLBFEName'))]"
               },
               "backendAddressPool": {
-                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', variables('internalLBName')), '/backendAddressPools/', variables('internalLBBE2Name'))]"
+                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', variables('internalLBName')), '/backendAddressPools/', variables('internalLBBEName'))]"
               },
               "probe": {
                 "id": "[concat(resourceId('Microsoft.Network/loadBalancers', variables('internalLBName')), '/probes/lbprobe')]"
@@ -377,14 +377,14 @@
               "enableFloatingIP": true,
               "idleTimeoutInMinutes": 5
             },
-            "name": "lbruleFE2all"
+            "name": "lbruleFEall"
           }
         ],
         "probes": [
           {
             "properties": {
               "protocol": "Tcp",
-              "port": 22,
+              "port": 8008,
               "intervalInSeconds": 5,
               "numberOfProbes": 2
             },
@@ -571,7 +571,7 @@
             "name": "[variables('externalLBName_NatRule_SSH_fg2')]",
             "properties": {
               "frontendIPConfiguration": {
-                "id": "[variables('externalLBIdFE2')]"
+                "id": "[variables('externalLBIdFE')]"
               },
               "protocol": "Tcp",
               "frontendPort": 50031,
@@ -583,7 +583,7 @@
             "name": "[variables('externalLBName_NatRule_FGAdminPerm_fg2')]",
             "properties": {
               "frontendIPConfiguration": {
-                "id": "[variables('externalLBIdFE2')]"
+                "id": "[variables('externalLBIdFE')]"
               },
               "protocol": "Tcp",
               "frontendPort": 40031,
@@ -720,7 +720,7 @@
               },
               "loadBalancerBackendAddressPools": [
                 {
-                  "id": "[variables('internalLB_BE2Id')]"
+                  "id": "[variables('internalLBBEId')]"
                 }
               ]
             }
@@ -754,7 +754,7 @@
               },
               "loadBalancerBackendAddressPools": [
                 {
-                  "id": "[variables('internalLB_BE2Id')]"
+                  "id": "[variables('internalLBBEId')]"
                 }
               ]
             }
