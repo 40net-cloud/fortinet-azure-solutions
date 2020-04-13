@@ -68,17 +68,6 @@
         "description": "Identify if to use a public IP, and if so whether it's new"
       }
     },
-    "publicIP2NewOrExisting": {
-      "type": "string",
-      "defaultValue": "new",
-      "allowedValues": [
-        "new",
-        "existing"
-      ],
-      "metadata": {
-        "description": "Whether to use a public IP and if so whether it is new"
-      }
-    },
     "publicIPName": {
       "type": "string",
       "defaultValue": "FGTLBPublicIP",
@@ -87,20 +76,6 @@
       }
     },
     "publicIPResourceGroup": {
-      "type": "string",
-      "defaultValue": "",
-      "metadata": {
-        "description": "Resource group to which the Public IP belongs."
-      }
-    },
-    "publicIP2Name": {
-      "type": "string",
-      "defaultValue": "FGTLBPublicIP2",
-      "metadata": {
-        "description": "Name of Public IP address 2"
-      }
-    },
-    "publicIP2ResourceGroup": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
@@ -152,28 +127,28 @@
     },
     "subnet1Name": {
       "type": "string",
-      "defaultValue": "EntrySubnet",
+      "defaultValue": "ExteralSubnet",
       "metadata": {
         "description": "Subnet 1 Name"
       }
     },
     "subnet1Prefix": {
       "type": "string",
-      "defaultValue": "10.0.1.0/24",
+      "defaultValue": "172.16.136.0/26",
       "metadata": {
         "description": "Subnet 1 Prefix"
       }
     },
     "subnet2Name": {
       "type": "string",
-      "defaultValue": "TransitSubnet",
+      "defaultValue": "InternalSubnet",
       "metadata": {
         "description": "Subnet 2 Name"
       }
     },
     "subnet2Prefix": {
       "type": "string",
-      "defaultValue": "10.0.2.0/24",
+      "defaultValue": "172.16.136.64/26",
       "metadata": {
         "description": "Subnet 2 Prefix"
       }
@@ -187,21 +162,23 @@
     },
     "subnet3Prefix": {
       "type": "string",
-      "defaultValue": "10.0.3.0/24",
+      "defaultValue": "172.16.137.0/24",
       "metadata": {
-        "description": "Subnet 2 Prefix"
+        "description": "Subnet 3 Prefix"
       }
     },
     "FortinetTags": {
       "type": "object",
       "defaultValue": {
-        "provider": "6EB3B02F-50E5-4A3E-8CB8-2E129258317D"
+        "publisher": "Fortinet",
+        "provider": "6EB3B02F-50E5-4A3E-8CB8-2E12925831AA"
       }
     }
   },
   "variables": {
     "computeApiVersion": "2018-06-01",
     "networkApiVersion": "2018-11-01",
+    "resourceApiVersion": "2018-05-01",
 
     "imagePublisher": "fortinet",
     "imageOffer": "fortinet_fortigate-vm_v5",
@@ -230,9 +207,7 @@
     "network_NIC_fg22_Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('network_NIC_fg22_Name'))]",
 
     "publicIPName": "[if(equals(parameters('publicIPName'),''),concat(parameters('FortiGateNamePrefix'),'-FGT-PIP'),parameters('publicIPName'))]",
-    "publicIP2Name": "[if(equals(parameters('publicIP2Name'),''),concat(parameters('FortiGateNamePrefix'),'-FGT-PIP2'),parameters('publicIP2Name'))]",
     "publicIPID": "[if(equals(parameters('publicIPNewOrExisting'),'new'),resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPName')),resourceId(parameters('publicIPResourceGroup'),'Microsoft.Network/publicIPAddresses',variables('publicIPName')))]",
-    "publicIP2ID": "[if(equals(parameters('publicIP2NewOrExisting'),'new'),resourceId('Microsoft.Network/publicIPAddresses',variables('publicIP2Name')),resourceId(parameters('publicIP2ResourceGroup'),'Microsoft.Network/publicIPAddresses',variables('publicIP2Name')))]",
 
     "nsgName": "[concat(parameters('FortiGateNamePrefix'),'-',uniqueString(resourceGroup().id),'-NSG')]",
 
@@ -275,18 +250,18 @@
     "externalLBId_NatRule_FGAdminPerm_fg2": "[concat(variables('externalLBId'),'/inboundNatRules/',variables('externalLBName_NatRule_FGAdminPerm_fg2'))]",
     "externalLBName_NatRule_SSH_fg2": "[concat(variables('fg2VmName'),'SSH')]",
     "externalLBId_NatRule_SSH_fg2": "[concat(variables('externalLBId'),'/inboundNatRules/',variables('externalLBName_NatRule_SSH_fg2'))]",
-    "externalLBName": "[concat(parameters('FortiGateNamePrefix'),'-PublicLoadBalancer')]",
+    "externalLBName": "[concat(parameters('FortiGateNamePrefix'),'-ExternalLoadBalancer')]",
     "externalLBId": "[resourceId('Microsoft.Network/loadBalancers',variables('externalLBName'))]",
-    "externalLBNameFE": "[concat(parameters('FortiGateNamePrefix'),'publicLBFE')]",
+    "externalLBNameFE": "[concat(parameters('FortiGateNamePrefix'),'ExternalLBFE')]",
     "externalLBIdFE": "[concat(variables('externalLBId'),'/frontendIPConfigurations/',variables('externalLBNameFE'))]",
-    "externalLBNameFE2": "[concat(parameters('FortiGateNamePrefix'),'publicLBFE2')]",
+    "externalLBNameFE2": "[concat(parameters('FortiGateNamePrefix'),'ExternalLBFE2')]",
     "externalLBIdFE2": "[concat(variables('externalLBId'),'/frontendIPConfigurations/',variables('externalLBNameFE2'))]",
-    "externalLBNameBE": "[concat(parameters('FortiGateNamePrefix'),'publicLBBE')]",
+    "externalLBNameBE": "[concat(parameters('FortiGateNamePrefix'),'ExternalLBBE')]",
     "externalLBIdBE": "[concat(variables('externalLBId'),'/backendAddressPools/',variables('externalLBNameBE'))]"
   },
   "resources": [
     {
-      "apiVersion": "2018-02-01",
+      "apiVersion": "[variables('resourceApiVersion')]",
       "name": "pid-09ed3dc3-4cf7-5410-b01c-c9bdfc039530",
       "type": "Microsoft.Resources/deployments",
       "properties":{
@@ -499,22 +474,6 @@
       }
     },
     {
-      "condition": "[equals(parameters('publicIP2NewOrExisting'), 'new')]",
-      "apiVersion": "[variables('networkApiVersion')]",
-      "type": "Microsoft.Network/publicIPAddresses",
-      "name": "[variables('publicIP2Name')]",
-      "location": "[resourceGroup().location]",
-      "tags": {
-        "provider": "[toUpper(parameters('FortinetTags').provider)]"
-      },
-      "sku": {
-        "name": "Standard"
-      },
-      "properties": {
-        "publicIPAllocationMethod": "[parameters('publicIPAddressType')]"
-      }
-    },
-    {
       "apiVersion": "[variables('networkApiVersion')]",
       "type": "Microsoft.Network/loadBalancers",
       "name": "[variables('externalLBName')]",
@@ -528,7 +487,6 @@
       },
       "dependsOn": [
         "[variables('publicIPID')]",
-        "[variables('publicIP2ID')]"
       ],
       "properties": {
         "frontendIPConfigurations": [
@@ -537,14 +495,6 @@
             "properties": {
               "publicIPAddress": {
                 "id": "[variables('publicIPID')]"
-              }
-            }
-          },
-          {
-            "name": "[variables('externalLBNameFE2')]",
-            "properties": {
-              "publicIPAddress": {
-                "id": "[variables('publicIP2ID')]"
               }
             }
           }
@@ -572,26 +522,7 @@
               "enableFloatingIP": true,
               "idleTimeoutInMinutes": 5
             },
-            "name": "PublicLBRule-FE1-http"
-          },
-          {
-            "properties": {
-              "frontendIPConfiguration": {
-                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', variables('externalLBName')), '/frontendIpConfigurations/', variables('externalLBNameFE2'))]"
-              },
-              "backendAddressPool": {
-                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', variables('externalLBName')), '/backendAddressPools/', variables('externalLBNameBE'))]"
-              },
-              "probe": {
-                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', variables('externalLBName')), '/probes/lbprobe')]"
-              },
-              "protocol": "Tcp",
-              "frontendPort": 80,
-              "backendPort": 80,
-              "enableFloatingIP": true,
-              "idleTimeoutInMinutes": 5
-            },
-            "name": "PublicLBRule-FE2-http"
+            "name": "ExternalLBRule-FE-http"
           },
           {
             "properties": {
@@ -610,7 +541,7 @@
               "enableFloatingIP": true,
               "idleTimeoutInMinutes": 5
             },
-            "name": "PublicLBRule-FE1-udp10551"
+            "name": "ExternalLBRule-FE-udp10551"
           }
         ],
         "inboundNatRules": [
@@ -621,7 +552,7 @@
                 "id": "[variables('externalLBIdFE')]"
               },
               "protocol": "Tcp",
-              "frontendPort": 22,
+              "frontendPort": 50030,
               "backendPort": 22,
               "enableFloatingIP": false
             }
@@ -633,7 +564,7 @@
                 "id": "[variables('externalLBIdFE')]"
               },
               "protocol": "Tcp",
-              "frontendPort": 443,
+              "frontendPort": 40030,
               "backendPort": 443,
               "enableFloatingIP": false
             }
@@ -645,7 +576,7 @@
                 "id": "[variables('externalLBIdFE2')]"
               },
               "protocol": "Tcp",
-              "frontendPort": 22,
+              "frontendPort": 50031,
               "backendPort": 22,
               "enableFloatingIP": false
             }
@@ -657,7 +588,7 @@
                 "id": "[variables('externalLBIdFE2')]"
               },
               "protocol": "Tcp",
-              "frontendPort": 443,
+              "frontendPort": 40031,
               "backendPort": 443,
               "enableFloatingIP": false
             }
@@ -864,7 +795,7 @@
           "computerName": "[variables('fg1VmName')]",
           "adminUsername": "[parameters('adminUsername')]",
           "adminPassword": "[parameters('adminPassword')]",
-          "customData": "[base64(concat('config system sdn-connector\nedit AzureSDN\nset type azure\nend\nend\nconfig system probe-response\n set mode http-probe\n end\n config router static\n edit 1\n set gateway ', variables('sn1GatewayIP'), '\n set device port1\n next\n edit 2\n set dst ', parameters('vnetAddressPrefix'), '\n set gateway ', variables('sn2GatewayIP'), '\n set device port2\n next\n edit 3\nset dst 168.63.129.16 255.255.255.255\nset device port2\n set gateway ', variables ('sn2GatewayIP'), '\n next\nedit 4\nset dst 168.63.129.16 255.255.255.255\nset device port1\n set gateway ', variables ('sn1GatewayIP'), '\n next\n end\n config system interface\n edit port1\n set mode static\n set ip ', variables('sn1IPfg1'), '/', variables('sn1CIDRmask'), '\n set description external\n next\n edit port2\n set mode static\n set ip ', variables('sn2IPfg1'), '/', variables('sn2CIDRmask'), '\n set description internal\n  set allowaccess ping ssh\n next\n end'))]"
+          "customData": "[base64(concat('config system sdn-connector\nedit AzureSDN\nset type azure\nend\nend\nconfig system probe-response\n set mode http-probe\n end\n config router static\n edit 1\n set gateway ', variables('sn1GatewayIP'), '\n set device port1\n next\n edit 2\n set dst ', parameters('vnetAddressPrefix'), '\n set gateway ', variables('sn2GatewayIP'), '\n set device port2\n next\n edit 3\nset dst 168.63.129.16 255.255.255.255\nset device port2\n set gateway ', variables ('sn2GatewayIP'), '\n next\nedit 4\nset dst 168.63.129.16 255.255.255.255\nset device port1\n set gateway ', variables ('sn1GatewayIP'), '\n next\n end\n config system interface\n edit port1\n set mode static\n set ip ', variables('sn1IPfg1'), '/', variables('sn1CIDRmask'), '\n set description external\n set allowaccess ping ssh https probe-response\n next\n edit port2\n set mode static\n set ip ', variables('sn2IPfg1'), '/', variables('sn2CIDRmask'), '\n set description internal\n  set allowaccess ping ssh https probe-response\n next\n end'))]"
         },
         "storageProfile": {
           "imageReference": {
@@ -932,7 +863,7 @@
           "computerName": "[variables('fg2VmName')]",
           "adminUsername": "[parameters('adminUsername')]",
           "adminPassword": "[parameters('adminPassword')]",
-          "customData": "[base64(concat('config system sdn-connector\nedit “AzureSDN”\nset type azure\nend\nconfig system probe-response\n set mode http-probe\n end\n config router static\n edit 1\n set gateway ', variables('sn1GatewayIP'), '\n set device port1\n next\n edit 2\n set dst ', parameters('vnetAddressPrefix'), '\n set gateway ', variables('sn2GatewayIP'), '\n set device port2\n next\n edit 3\nset dst 168.63.129.16 255.255.255.255\nset device port2\n set gateway ', variables ('sn2GatewayIP'), '\n next\nedit 4\nset dst 168.63.129.16 255.255.255.255\nset device port1\n set gateway ', variables ('sn1GatewayIP'), '\n next\n end\n config system interface\n edit port1\n set mode static\n set ip ', variables('sn1IPfg2'), '/', variables('sn1CIDRmask'), '\n set description external\n next\n edit port2\n set mode static\n set ip ', variables('sn2IPfg2'), '/', variables('sn2CIDRmask'), '\n set description internal\n set allowaccess ping ssh\n next\n end'))]"
+          "customData": "[base64(concat('config system sdn-connector\nedit “AzureSDN”\nset type azure\nend\nconfig system probe-response\n set mode http-probe\n end\n config router static\n edit 1\n set gateway ', variables('sn1GatewayIP'), '\n set device port1\n next\n edit 2\n set dst ', parameters('vnetAddressPrefix'), '\n set gateway ', variables('sn2GatewayIP'), '\n set device port2\n next\n edit 3\nset dst 168.63.129.16 255.255.255.255\nset device port2\n set gateway ', variables ('sn2GatewayIP'), '\n next\nedit 4\nset dst 168.63.129.16 255.255.255.255\nset device port1\n set gateway ', variables ('sn1GatewayIP'), '\n next\n end\n config system interface\n edit port1\n set mode static\n set ip ', variables('sn1IPfg2'), '/', variables('sn1CIDRmask'), '\n set description external\n set allowaccess ping ssh https probe-response\n next\n edit port2\n set mode static\n set ip ', variables('sn2IPfg2'), '/', variables('sn2CIDRmask'), '\n set description internal\n set allowaccess ping ssh https probe-response\n next\n end'))]"
         },
         "storageProfile": {
           "imageReference": {
