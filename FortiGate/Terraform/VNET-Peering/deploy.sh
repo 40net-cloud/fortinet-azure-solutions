@@ -2,9 +2,9 @@
 echo "
 ##############################################################################################################
 #
+# Cloud Security Services Hub
+# using VNET peering and FortiGate Active/Passive High Availability with Azure Standard Load Balancer - External and Internal
 # Fortinet FortiGate Terraform deployment template
-# FortiGate Cloud Security Services Hub deployment using Azure VNET Peering
-# Active/Passive High Availability with Azure Standard Load Balancer - External and Internal
 #
 ##############################################################################################################
 

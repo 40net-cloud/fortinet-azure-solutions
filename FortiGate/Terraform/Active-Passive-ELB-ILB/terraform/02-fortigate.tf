@@ -1,7 +1,7 @@
 ##############################################################################################################
 #
-# FortiGate Terraform deployment
-# Active Passive High Availability with Azure Standard Load Balancer - External and Internal
+# FortiGate Active/Passive High Availability with Azure Standard Load Balancer - External and Internal
+# Terraform deployment template for Microsoft Azure
 #
 ##############################################################################################################
 
@@ -276,6 +276,15 @@ resource "azurerm_virtual_machine" "fgtavm" {
     managed_disk_type = "Standard_LRS"
   }
 
+  storage_data_disk {
+    name = "${var.PREFIX}-A-FGT-VM-DATADISK"
+    managed_disk_type = "Premium_LRS"
+    create_option = "Empty"
+    lun = 0
+    disk_size_gb = "10"
+  }
+
+
   os_profile {
     computer_name  = "${var.PREFIX}-A-VM-FGT"
     admin_username = var.USERNAME
@@ -301,6 +310,7 @@ data "template_file" "fgt_a_custom_data" {
     fgt_license_file    = var.FGT_BYOL_LICENSE_FILE_A
     fgt_username        = var.USERNAME
     fgt_ssh_public_key  = var.FGT_SSH_PUBLIC_KEY_FILE
+    fgt_config_ha       = var.FGT_CONFIG_HA
     fgt_external_ipaddr = var.fgt_ipaddress_a["1"]
     fgt_external_mask   = var.subnetmask["1"]
     fgt_external_gw     = var.gateway_ipaddress["1"]
@@ -366,8 +376,8 @@ resource "azurerm_network_interface_security_group_association" "fgtbifcintnsg" 
   network_security_group_id = azurerm_network_security_group.fgtnsg.id
 }
 
-resource "azurerm_network_interface_backend_address_pool_association" "fgtaifcixt2ilbbackendpool" {
-  network_interface_id    = azurerm_network_interface.fgtbifcext.id
+resource "azurerm_network_interface_backend_address_pool_association" "fgtbifcint2ilbbackendpool" {
+  network_interface_id    = azurerm_network_interface.fgtbifcint.id
   ip_configuration_name   = "interface1"
   backend_address_pool_id = azurerm_lb_backend_address_pool.ilbbackend.id
 }
@@ -455,6 +465,14 @@ resource "azurerm_virtual_machine" "fgtbvm" {
     managed_disk_type = "Standard_LRS"
   }
 
+  storage_data_disk {
+    name = "${var.PREFIX}-B-FGT-VM-DATADISK"
+    managed_disk_type = "Premium_LRS"
+    create_option = "Empty"
+    lun = 0
+    disk_size_gb = "10"
+  }
+
   os_profile {
     computer_name  = "${var.PREFIX}-B-VM-FGT"
     admin_username = var.USERNAME
@@ -480,6 +498,7 @@ data "template_file" "fgt_b_custom_data" {
     fgt_license_file    = var.FGT_BYOL_LICENSE_FILE_B
     fgt_username        = var.USERNAME
     fgt_ssh_public_key  = var.FGT_SSH_PUBLIC_KEY_FILE
+    fgt_config_ha       = var.FGT_CONFIG_HA
     fgt_external_ipaddr = var.fgt_ipaddress_b["1"]
     fgt_external_mask   = var.subnetmask["1"]
     fgt_external_gw     = var.gateway_ipaddress["1"]

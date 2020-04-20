@@ -2,8 +2,8 @@
 echo "
 ##############################################################################################################
 #
-# Fortinet FortiGate Terraform deployment template
-# Active/Active loadbalanced pair of standalone FortiGates for resilience and scale
+# FortiGate Active/Active Load Balanced pair of standalone FortiGate VMs for resilience and scale
+# Terraform deployment template for Microsoft Azure
 #
 ##############################################################################################################
 "
@@ -150,8 +150,8 @@ cd ../
 echo "
 ##############################################################################################################
 #
-# FortiGate Terraform deployment
-# Active/Active loadbalanced pair of standalone FortiGates for resilience and scale
+# FortiGate Active/Active Load Balanced pair of standalone FortiGate VMs for resilience and scale
+# Terraform deployment template for Microsoft Azure
 #
 # The FortiGate VMs are reachable via the public IP address of the load balancer.
 # Management GUI HTTPS on port 40030, 40031 and for SSH on port 50030 and 50031.

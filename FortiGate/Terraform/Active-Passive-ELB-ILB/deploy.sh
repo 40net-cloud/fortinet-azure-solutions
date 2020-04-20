@@ -2,8 +2,8 @@
 echo "
 ##############################################################################################################
 #
-# Fortinet FortiGate Terraform deployment template
-# Active/Passive High Availability with Azure Standard Load Balancer - External and Internal
+# FortiGate Active/Passive High Availability with Azure Standard Load Balancer - External and Internal
+# Terraform deployment template for Microsoft Azure
 #
 ##############################################################################################################
 "
@@ -77,27 +77,10 @@ echo "--> Using prefix $prefix for all resources ..."
 echo ""
 rg_cgf="$prefix-RG"
 
-if [ -z "$DEPLOY_PASSWORD" ]
-then
-    # Input password
-    echo -n "Enter password: "
-    stty_orig=`stty -g` # save original terminal setting.
-    stty -echo          # turn-off echoing.
-    read passwd         # read the password
-    stty $stty_orig     # restore terminal setting.
-    echo ""
-else
-    passwd="$DEPLOY_PASSWORD"
-    echo ""
-    echo "--> Using password found in env variable DEPLOY_PASSWORD ..."
-    echo ""
-fi
-PASSWORD="$passwd"
-
 if [ -z "$DEPLOY_USERNAME" ]
 then
     # Input username
-    echo -n "Enter username: "
+    echo -n "Enter username (default: azureuser): "
     stty_orig=`stty -g` # save original terminal setting.
     read username         # read the prefix
     stty $stty_orig     # restore terminal setting.
@@ -111,6 +94,23 @@ fi
 echo ""
 echo "--> Using username '$username' ..."
 echo ""
+
+if [ -z "$DEPLOY_PASSWORD" ]
+then
+    # Input password
+    echo -n "Enter password: "
+    stty_orig=`stty -g` # save original terminal setting.
+    stty -echo          # turn-off echoing.
+    read password         # read the password
+    stty $stty_orig     # restore terminal setting.
+    echo ""
+else
+    password="$DEPLOY_PASSWORD"
+    echo ""
+    echo "--> Using password found in env variable DEPLOY_PASSWORD ..."
+    echo ""
+fi
+
 
 SUMMARY="summary.out"
 
@@ -128,8 +128,8 @@ echo ""
 echo "==> Terraform plan"
 echo ""
 terraform plan --out "$PLAN" \
-                -var "USERNAME=$USERNAME" \
-                -var "PASSWORD=$PASSWORD"
+                -var "USERNAME=$username" \
+                -var "PASSWORD=$password"
 
 echo ""
 echo "==> Terraform apply"
@@ -150,8 +150,8 @@ cd ../
 echo "
 ##############################################################################################################
 #
-# FortiGate Terraform deployment
-# Active/Passive High Availability with Azure Standard Load Balancer - External and Internal
+# FortiGate Active/Passive High Availability with Azure Standard Load Balancer - External and Internal
+# Terraform deployment template for Microsoft Azure
 #
 # The FortiGate VMs are reachable on their managment public IP on port HTTPS/443 and SSH/22.
 #

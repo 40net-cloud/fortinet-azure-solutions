@@ -1,4 +1,4 @@
-# Active/Active loadbalanced pair of standalone FortiGates for resilience and scale
+# Active/Active loadbalanced pair of standalone FortiGates in 1 NIC configuration to protect internal networks
 
 [![Build Status](https://dev.azure.com/jvh-2520/Fortinet-Azure/_apis/build/status/Active-Active-ELB-ILB?branchName=master)](https://dev.azure.com/jvh-2520/Fortinet-Azure/_build/latest?definitionId=9&branchName=master)
 
@@ -15,10 +15,9 @@ In Microsoft Azure, you can deploy an active/active pair of FortiGate VMs that c
 This Azure ARM template will automatically deploy a full working environment containing the the following components.
 
   - 2 FortiGate firewalls in an active/active deployment
-  - 1 external Azure Standard Load Balancer for communication with internet
   - 1 internal Azure Standard Load Balancer to receive all internal traffic and forwarding towards Azure Gateways connecting ExpressRoute or Azure VPNs.
-  - 1 VNET with 2 protected subnets
-  - 1 public IP for services and FortiGate management
+  - 1 VNET with 1 protected subnets
+  - 2 public IP for FortiGate management
   - User Defined Routes (UDR) for the protected subnets
 
 ![active/active design](images/fgt-aa.png)
