@@ -1,5 +1,5 @@
-# Fortinet FortiGate Terraform deployment template
-# Cloud security services hub deployment - VNET peering
+# Cloud Security Services Hub using VNET peering and FortiGate Active/Passive High Availability with Azure Standard Load Balancer - External and Internal
+* Fortinet FortiGate Terraform deployment template *
 
 ## Introduction
 

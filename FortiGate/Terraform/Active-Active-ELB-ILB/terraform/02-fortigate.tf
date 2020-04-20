@@ -1,7 +1,7 @@
 ##############################################################################################################
 #
-# FortiGate Terraform deployment
-# Active/Active Load Balanced pair of standalone FortiGate VMs for resilience and scale
+# FortiGate Active/Active Load Balanced pair of standalone FortiGate VMs for resilience and scale
+# Terraform deployment template for Microsoft Azure
 #
 ##############################################################################################################
 
@@ -364,8 +364,8 @@ resource "azurerm_network_interface_security_group_association" "fgtbifcintnsg" 
   network_security_group_id = azurerm_network_security_group.fgtnsg.id
 }
 
-resource "azurerm_network_interface_backend_address_pool_association" "fgtaifcixt2ilbbackendpool" {
-  network_interface_id    = azurerm_network_interface.fgtbifcext.id
+resource "azurerm_network_interface_backend_address_pool_association" "fgtbifcint2ilbbackendpool" {
+  network_interface_id    = azurerm_network_interface.fgtbifcint.id
   ip_configuration_name   = "interface1"
   backend_address_pool_id = azurerm_lb_backend_address_pool.ilbbackend.id
 }

@@ -1,7 +1,7 @@
 ##############################################################################################################
 #
-# FortiGate Terraform deployment
-# Active Active with Azure Standard Load Balancer - External and Internal
+# FortiGate Active/Active Load Balanced pair of standalone FortiGate VMs for resilience and scale
+# Terraform deployment template for Microsoft Azure
 #
 # Deployment location: ${location}
 #

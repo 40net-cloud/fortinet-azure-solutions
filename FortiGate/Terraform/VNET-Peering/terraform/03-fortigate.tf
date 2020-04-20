@@ -1,7 +1,8 @@
 ###############################################################################################################
 #
-# FortiGate Cloud Security Services Hub deployment
-# using Terraform and Azure VNET Peering
+# Cloud Security Services Hub
+# using VNET peering and FortiGate Active/Passive High Availability with Azure Standard Load Balancer - External and Internal
+# Fortinet FortiGate Terraform deployment template
 #
 ##############################################################################################################
 #
@@ -310,6 +311,14 @@ resource "azurerm_virtual_machine" "fgtavm" {
     managed_disk_type = "Standard_LRS"
   }
 
+  storage_data_disk {
+    name = "${var.PREFIX}-A-FGT-VM-DATADISK"
+    managed_disk_type = "Premium_LRS"
+    create_option = "Empty"
+    lun = 0
+    disk_size_gb = "10"
+  }
+
   os_profile {
     computer_name  = "${var.PREFIX}-A-VM-FGT"
     admin_username = var.USERNAME
@@ -487,6 +496,14 @@ resource "azurerm_virtual_machine" "fgtbvm" {
     caching           = "ReadWrite"
     create_option     = "FromImage"
     managed_disk_type = "Standard_LRS"
+  }
+
+  storage_data_disk {
+    name = "${var.PREFIX}-B-FGT-VM-DATADISK"
+    managed_disk_type = "Premium_LRS"
+    create_option = "Empty"
+    lun = 0
+    disk_size_gb = "10"
   }
 
   os_profile {

@@ -57,7 +57,7 @@ config system interface
         set mode static
         set ip ${fgt_internal_ipaddr}/${fgt_internal_mask}
         set description internal
-        set allowaccess probe-response
+        set allowaccess probe-response ping https ssh ftm
     next
 end
 %{ if fgt_ssh_public_key != "" }
