@@ -1039,7 +1039,8 @@
         "[variables('network_NIC_fg11_Name')]",
         "[variables('network_NIC_fg12_Name')]",
         "[variables('network_NIC_fg13_Name')]",
-        "[variables('network_NIC_fg14_Name')]"
+        "[variables('network_NIC_fg14_Name')]",
+        "[variables('fgImageName')]"
       ],
       "properties": {
         "hardwareProfile": {
@@ -1122,7 +1123,8 @@
         "[variables('network_NIC_fg21_Name')]",
         "[variables('network_NIC_fg22_Name')]",
         "[variables('network_NIC_fg23_Name')]",
-        "[variables('network_NIC_fg24_Name')]"
+        "[variables('network_NIC_fg24_Name')]",
+        "[variables('fgImageName')]"
       ],
       "properties": {
         "hardwareProfile": {
