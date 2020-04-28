@@ -1030,11 +1030,6 @@
         "type": "SystemAssigned"
       },
       "location": "[resourceGroup().location]",
-      "plan": {
-        "name": "[parameters('FortiGateImageSKU')]",
-        "publisher": "fortinet",
-        "product": "fortinet_fortigate-vm_v5"
-      },
       "dependsOn": [
         "[variables('network_NIC_fg11_Name')]",
         "[variables('network_NIC_fg12_Name')]",
@@ -1114,11 +1109,6 @@
         "type": "SystemAssigned"
       },
       "location": "[resourceGroup().location]",
-      "plan": {
-        "name": "[parameters('FortiGateImageSKU')]",
-        "publisher": "fortinet",
-        "product": "fortinet_fortigate-vm_v5"
-      },
       "dependsOn": [
         "[variables('network_NIC_fg21_Name')]",
         "[variables('network_NIC_fg22_Name')]",
