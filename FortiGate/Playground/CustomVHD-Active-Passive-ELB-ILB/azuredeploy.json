@@ -1052,10 +1052,7 @@
         },
         "storageProfile": {
           "imageReference": {
-            "publisher": "fortinet",
-            "offer": "fortinet_fortigate-vm_v5",
-            "sku": "[parameters('FortiGateImageSKU')]",
-            "version": "[parameters('FortigateImageVersion')]"
+            "id": "[resourceId('Microsoft.Compute/images', variables('fgImageName'))]"
           },
           "osDisk": {
             "createOption": "FromImage"
