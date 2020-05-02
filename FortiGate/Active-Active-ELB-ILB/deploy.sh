@@ -117,7 +117,7 @@ echo "
 
 Deployment information:
 
-Username: $USERNAME
+Username: 
 
 FortiGate IP addesses
 "

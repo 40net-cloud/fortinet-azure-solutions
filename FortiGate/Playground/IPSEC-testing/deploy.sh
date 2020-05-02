@@ -106,7 +106,7 @@ else
     USERNAME="$DEPLOY_USERNAME"
 fi
 echo ""
-echo "--> Using username '$USERNAME' ..."
+echo "--> Using username '' ..."
 echo ""
 
 # Generate SSH key
@@ -139,7 +139,7 @@ echo ""
 echo "==> Terraform plan"
 echo ""
 terraform plan --out "$PLAN" \
-                -var "USERNAME=$USERNAME" \
+                -var "USERNAME=" \
                 -var "PASSWORD=$PASSWORD"
 #                -var "FGT_SSH_PUBLIC_KEY_FILE=$FGT_SSH_PUBLIC_KEY_FILE"
 
@@ -175,7 +175,7 @@ echo "
 
  Deployment information:
 
-Username: $USERNAME
+Username: 
 "
 cat "output/$SUMMARY"
 echo "

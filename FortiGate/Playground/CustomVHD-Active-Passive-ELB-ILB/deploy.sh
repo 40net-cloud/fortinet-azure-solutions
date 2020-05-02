@@ -49,21 +49,6 @@ echo "--> Using prefix '$prefix' for all resources ..."
 echo ""
 rg="$prefix-RG"
 
-if [ -z "$DEPLOY_PASSWORD" ]
-then
-    # Input password
-    echo -n "Enter password: "
-    stty_orig=`stty -g` # save original terminal setting.
-    stty -echo          # turn-off echoing.
-    read passwd         # read the password
-    stty $stty_orig     # restore terminal setting.
-else
-    passwd="$DEPLOY_PASSWORD"
-    echo ""
-    echo "--> Using password found in env variable DEPLOY_PASSWORD ..."
-    echo ""
-fi
-
 if [ -z "$DEPLOY_USERNAME" ]
 then
     # Input username
@@ -82,6 +67,41 @@ echo ""
 echo "--> Using username '$username' ..."
 echo ""
 
+if [ -z "$DEPLOY_PASSWORD" ]
+then
+    # Input password
+    echo -n "Enter password: "
+    stty_orig=`stty -g` # save original terminal setting.
+    stty -echo          # turn-off echoing.
+    read passwd         # read the password
+    stty $stty_orig     # restore terminal setting.
+    echo ""
+else
+    passwd="$DEPLOY_PASSWORD"
+    echo ""
+    echo "--> Using password found in env variable DEPLOY_PASSWORD ..."
+    echo ""
+fi
+
+if [ -z "$DEPLOY_VHD" ]
+then
+    # Input VHD location
+    echo -n "Enter location of the VHD: "
+    stty_orig=`stty -g` # save original terminal setting.
+    read osDiskVhdUri         # read the osDiskVhdUri
+    stty $stty_orig     # restore terminal setting.
+    if [ -z "$osDiskVhdUri" ]
+    then
+        echo "Required variable deploy this VHD to an Azure Storage Account."
+        echo " e.g.: Add-AzVhd -LocalFilePath ./fortios-v6-build5163.vhd -ResourceGroupName XXX-RG -Destination 'https://xxxstorage.blob.core.windows.net/vhds/fortios-v6-build5163.vhd'"
+    fi
+else
+    osDiskVhdUri="$DEPLOY_VHD"
+fi
+echo ""
+echo "--> Using VHD location [$osDiskVhdUri] ..."
+echo ""
+
 # Create resource group
 echo ""
 echo "--> Creating $rg resource group ..."
@@ -91,7 +111,8 @@ az group create --location "$location" --name "$rg"
 echo "--> Validation deployment in $rg resource group ..."
 az group deployment validate --resource-group "$rg" \
                            --template-file azuredeploy.json \
-                           --parameters adminUsername="$username" adminPassword=$passwd FortiGateNamePrefix=$prefix
+                           --parameters adminUsername="$username" adminPassword=$passwd FortiGateNamePrefix=$prefix \
+                                        osDiskVhdUri="$osDiskVhdUri"
 result=$?
 if [ $result != 0 ];
 then
@@ -103,7 +124,8 @@ fi
 echo "--> Deployment of $rg resources ..."
 az group deployment create --resource-group "$rg" \
                            --template-file azuredeploy.json \
-                           --parameters adminUsername="$username" adminPassword=$passwd FortiGateNamePrefix=$prefix
+                           --parameters adminUsername="$username" adminPassword=$passwd FortiGateNamePrefix=$prefix \
+                                        osDiskVhdUri="$osDiskVhdUri"
 result=$?
 if [[ $result != 0 ]];
 then
@@ -123,7 +145,7 @@ echo "
 
 Deployment information:
 
-Username: $USERNAME
+Username: $username
 
 FortiGate IP addesses
 "
