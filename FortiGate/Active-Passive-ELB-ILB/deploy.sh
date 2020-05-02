@@ -123,7 +123,7 @@ echo "
 
 Deployment information:
 
-Username: $USERNAME
+Username: $username
 
 FortiGate IP addesses
 "

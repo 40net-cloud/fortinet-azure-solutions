@@ -104,7 +104,7 @@ else
     USERNAME="$DEPLOY_USERNAME"
 fi
 echo ""
-echo "--> Using username '$USERNAME' ..."
+echo "--> Using username '' ..."
 echo ""
 
 SUMMARY="summary.out"
@@ -124,7 +124,7 @@ echo ""
 echo "==> Terraform plan"
 echo ""
 terraform plan --out "$PLAN" \
-                -var "USERNAME=$USERNAME" \
+                -var "USERNAME=" \
                 -var "PASSWORD=$PASSWORD"
 
 echo ""
@@ -159,7 +159,7 @@ echo "
 
  Deployment information:
 
-Username: $USERNAME
+Username: 
 "
 cat "output/$SUMMARY"
 echo "
