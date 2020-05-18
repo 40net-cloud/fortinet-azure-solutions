@@ -59,10 +59,10 @@
     },
     "acceleratedNetworking": {
       "type": "string",
-      "defaultValue": "enable",
+      "defaultValue": "true",
       "allowedValues": [
-        "enable",
-        "disable"
+        "true",
+        "false"
       ],
       "metadata": {
         "description": "Enable/Disable the accelerated networking for the FortiGate VM"
