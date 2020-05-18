@@ -369,8 +369,8 @@
     }
   },
   "variables": {
-    "computeApiVersion": "2018-06-01",
-    "networkApiVersion": "2018-11-01",
+    "computeApiVersion": "2019-03-01",
+    "networkApiVersion": "2019-02-01",
     "resourceApiVersion": "2018-05-01",
 
     "compute_AvailabilitySet_FG_Name": "[concat(parameters('FortiGateNamePrefix'),'-AvailabilitySet')]",
@@ -737,7 +737,7 @@
       },
       "resources": [
         {
-          "apiVersion": "2016-06-01",
+          "apiVersion": "[variables('networkApiVersion')]",
           "type": "virtualNetworkPeerings",
           "name": "[variables('hubtoSpoke1PeeringName')]",
           "location": "[resourceGroup().location]",
@@ -1122,7 +1122,7 @@
       }
     },
     {
-      "apiVersion": "[variables('networkApiVersion')]",
+      "apiVersion": "[variables('computeApiVersion')]",
       "tags": {
         "provider": "[toUpper(parameters('FortinetTags').provider)]"
       },
@@ -1160,7 +1160,7 @@
       }
     },
     {
-      "apiVersion": "[variables('networkApiVersion')]",
+      "apiVersion": "[variables('computeApiVersion')]",
       "tags": {
         "provider": "[toUpper(parameters('FortinetTags').provider)]"
       },
@@ -1198,7 +1198,7 @@
       }
     },
     {
-      "apiVersion": "[variables('networkApiVersion')]",
+      "apiVersion": "[variables('computeApiVersion')]",
       "tags": {
        "provider": "[toUpper(parameters('FortinetTags').provider)]"
       },
@@ -1235,7 +1235,7 @@
       }
     },
     {
-      "apiVersion": "[variables('networkApiVersion')]",
+      "apiVersion": "[variables('computeApiVersion')]",
       "tags": {
        "provider": "[toUpper(parameters('FortinetTags').provider)]"
       },
@@ -1272,7 +1272,7 @@
       }
     },
     {
-      "apiVersion": "[variables('networkApiVersion')]",
+      "apiVersion": "[variables('computeApiVersion')]",
       "tags": {
        "provider": "[toUpper(parameters('FortinetTags').provider)]"
       },
@@ -1303,7 +1303,7 @@
       }
     },
     {
-      "apiVersion": "[variables('networkApiVersion')]",
+      "apiVersion": "[variables('computeApiVersion')]",
       "tags": {
        "provider": "[toUpper(parameters('FortinetTags').provider)]"
       },
@@ -1334,7 +1334,7 @@
       }
     },
     {
-      "apiVersion": "[variables('networkApiVersion')]",
+      "apiVersion": "[variables('computeApiVersion')]",
       "tags": {
        "provider": "[toUpper(parameters('FortinetTags').provider)]"
       },
@@ -1368,7 +1368,7 @@
       }
     },
     {
-      "apiVersion": "[variables('networkApiVersion')]",
+      "apiVersion": "[variables('computeApiVersion')]",
       "tags": {
        "provider": "[toUpper(parameters('FortinetTags').provider)]"
       },
