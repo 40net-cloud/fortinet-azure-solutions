@@ -60,12 +60,9 @@
     "acceleratedNetworking": {
       "type": "string",
       "defaultValue": "true",
-      "allowedValues": [
-        "true",
-        "false"
-      ],
+      "allowedValues": [ "true", "false" ],
       "metadata": {
-        "description": "Enable/Disable the accelerated networking for the FortiGate VM"
+        "description": "Accelerated Networking enables direct connection between the VM and network card. Only available on 2 CPU D/DSv2 and F/Fs and 4 CPU D/Dsv3, E/Esv3, Fsv2, Lsv2, Ms/Mms and Ms/Mmsv2"
       }
     },
     "publicIPNewOrExisting": {
@@ -269,8 +266,6 @@
     "computeApiVersion": "2019-03-01",
     "networkApiVersion": "2019-02-01",
     "resourceApiVersion": "2018-05-01",
-
-    "acceleratedNetworking": "[parameters('acceleratedNetworking')]",
 
     "compute_AvailabilitySet_FG_Name": "[concat(parameters('FortiGateNamePrefix'),'-AvailabilitySet')]",
     "compute_AvailabilitySet_FG_Id": "[resourceId('Microsoft.Compute/availabilitySets', variables('compute_AvailabilitySet_FG_Name'))]",
@@ -759,7 +754,7 @@
           }
         ],
         "enableIPForwarding": true,
-        "enableAcceleratedNetworking": "[variables('acceleratedNetworking')]",
+        "enableAcceleratedNetworking": "[parameters('acceleratedNetworking')]",
         "networkSecurityGroup": {
           "id": "[resourceID('Microsoft.Network/networkSecurityGroups/',variables('NSGName'))]"
         }
@@ -797,7 +792,7 @@
           }
         ],
         "enableIPForwarding": true,
-        "enableAcceleratedNetworking": "[variables('acceleratedNetworking')]",
+        "enableAcceleratedNetworking": "[parameters('acceleratedNetworking')]",
         "networkSecurityGroup": {
           "id": "[resourceID('Microsoft.Network/networkSecurityGroups/',variables('NSGName'))]"
         }
@@ -834,7 +829,7 @@
           }
         ],
         "enableIPForwarding": true,
-        "enableAcceleratedNetworking": "[variables('acceleratedNetworking')]",
+        "enableAcceleratedNetworking": "[parameters('acceleratedNetworking')]",
         "networkSecurityGroup": {
           "id": "[resourceID('Microsoft.Network/networkSecurityGroups/',variables('NSGName'))]"
         }
@@ -871,7 +866,7 @@
           }
         ],
         "enableIPForwarding": true,
-        "enableAcceleratedNetworking": "[variables('acceleratedNetworking')]",
+        "enableAcceleratedNetworking": "[parameters('acceleratedNetworking')]",
         "networkSecurityGroup": {
           "id": "[resourceID('Microsoft.Network/networkSecurityGroups/',variables('NSGName'))]"
         }
@@ -902,7 +897,7 @@
           }
         ],
         "enableIPForwarding": true,
-        "enableAcceleratedNetworking": "[variables('acceleratedNetworking')]",
+        "enableAcceleratedNetworking": "[parameters('acceleratedNetworking')]",
         "networkSecurityGroup": {
           "id": "[resourceID('Microsoft.Network/networkSecurityGroups/',variables('NSGName'))]"
         }
@@ -933,7 +928,7 @@
           }
         ],
         "enableIPForwarding": true,
-        "enableAcceleratedNetworking": "[variables('acceleratedNetworking')]",
+        "enableAcceleratedNetworking": "[parameters('acceleratedNetworking')]",
         "networkSecurityGroup": {
           "id": "[resourceID('Microsoft.Network/networkSecurityGroups/',variables('NSGName'))]"
         }
@@ -967,7 +962,7 @@
           }
         ],
         "enableIPForwarding": true,
-        "enableAcceleratedNetworking": "[variables('acceleratedNetworking')]",
+        "enableAcceleratedNetworking": "[parameters('acceleratedNetworking')]",
         "networkSecurityGroup": {
           "id": "[resourceID('Microsoft.Network/networkSecurityGroups/',variables('NSGName'))]"
         }
@@ -1001,7 +996,7 @@
           }
         ],
         "enableIPForwarding": true,
-        "enableAcceleratedNetworking": "[variables('acceleratedNetworking')]",
+        "enableAcceleratedNetworking": "[parameters('acceleratedNetworking')]",
         "networkSecurityGroup": {
           "id": "[resourceID('Microsoft.Network/networkSecurityGroups/',variables('NSGName'))]"
         }
