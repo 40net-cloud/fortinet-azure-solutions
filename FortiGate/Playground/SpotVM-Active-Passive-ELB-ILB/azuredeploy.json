@@ -57,6 +57,17 @@
         "description": "Virtual Machine size selection - must be F4 or other instance that supports 4 NICs"
       }
     },
+    "acceleratedNetworking": {
+      "type": "string",
+      "defaultValue": "enable",
+      "allowedValues": [
+        "enable",
+        "disable"
+      ],
+      "metadata": {
+        "description": "Enable/Disable the accelerated networking for the FortiGate VM"
+      }
+    },
     "publicIPNewOrExisting": {
       "type": "string",
       "defaultValue": "new",
@@ -248,16 +259,18 @@
     "FortinetTags": {
     "type": "object",
     "defaultValue": {
-      "provider": "6EB3B02F-50E5-4A3E-8CB8-2E129258317D"
+      "publisher": "Fortinet",
+      "template": "SpotVM-Active-Passive-ELB-ILB",
+      "provider": "6EB3B02F-50E5-4A3E-8CB8-2E12925831AB-SpotVM"
       }
     }
   },
   "variables": {
-    "computeApiVersion": "2018-06-01",
-    "networkApiVersion": "2018-11-01",
+    "computeApiVersion": "2019-03-01",
+    "networkApiVersion": "2019-02-01",
     "resourceApiVersion": "2018-05-01",
 
-    "acceleratedNetworking": "[if(or(equals(parameters('FortiGateImageVersion'),'6.0.6'),equals(parameters('FortiGateImageVersion'),'6.2.1'),equals(parameters('FortiGateImageVersion'),'latest')),'true','false')]",
+    "acceleratedNetworking": "[parameters('acceleratedNetworking')]",
 
     "compute_AvailabilitySet_FG_Name": "[concat(parameters('FortiGateNamePrefix'),'-AvailabilitySet')]",
     "compute_AvailabilitySet_FG_Id": "[resourceId('Microsoft.Compute/availabilitySets', variables('compute_AvailabilitySet_FG_Name'))]",
