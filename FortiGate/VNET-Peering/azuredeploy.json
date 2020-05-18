@@ -362,7 +362,9 @@
     "FortinetTags": {
     "type": "object",
     "defaultValue": {
-      "provider": "6EB3B02F-50E5-4A3E-8CB8-2E129258317D"
+      "publisher": "Fortinet",
+      "template": "SpotVM-Active-Passive-ELB-ILB",
+      "provider": "6EB3B02F-50E5-4A3E-8CB8-2E12925831AB-SpotVM"
       }
     }
   },
