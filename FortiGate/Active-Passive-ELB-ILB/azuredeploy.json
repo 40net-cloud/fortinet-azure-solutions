@@ -752,7 +752,7 @@
           }
         ],
         "enableIPForwarding": true,
-        "enableAcceleratedNetworking": "[paramaters('acceleratedNetworking')]",
+        "enableAcceleratedNetworking": "[parameters('acceleratedNetworking')]",
         "networkSecurityGroup": {
           "id": "[resourceID('Microsoft.Network/networkSecurityGroups/',variables('NSGName'))]"
         }
@@ -790,7 +790,7 @@
           }
         ],
         "enableIPForwarding": true,
-        "enableAcceleratedNetworking": "[paramaters('acceleratedNetworking')]",
+        "enableAcceleratedNetworking": "[parameters('acceleratedNetworking')]",
         "networkSecurityGroup": {
           "id": "[resourceID('Microsoft.Network/networkSecurityGroups/',variables('NSGName'))]"
         }
@@ -827,7 +827,7 @@
           }
         ],
         "enableIPForwarding": true,
-        "enableAcceleratedNetworking": "[paramaters('acceleratedNetworking')]",
+        "enableAcceleratedNetworking": "[parameters('acceleratedNetworking')]",
         "networkSecurityGroup": {
           "id": "[resourceID('Microsoft.Network/networkSecurityGroups/',variables('NSGName'))]"
         }
@@ -864,7 +864,7 @@
           }
         ],
         "enableIPForwarding": true,
-        "enableAcceleratedNetworking": "[paramaters('acceleratedNetworking')]",
+        "enableAcceleratedNetworking": "[parameters('acceleratedNetworking')]",
         "networkSecurityGroup": {
           "id": "[resourceID('Microsoft.Network/networkSecurityGroups/',variables('NSGName'))]"
         }
@@ -895,7 +895,7 @@
           }
         ],
         "enableIPForwarding": true,
-        "enableAcceleratedNetworking": "[paramaters('acceleratedNetworking')]",
+        "enableAcceleratedNetworking": "[parameters('acceleratedNetworking')]",
         "networkSecurityGroup": {
           "id": "[resourceID('Microsoft.Network/networkSecurityGroups/',variables('NSGName'))]"
         }
@@ -926,7 +926,7 @@
           }
         ],
         "enableIPForwarding": true,
-        "enableAcceleratedNetworking": "[paramaters('acceleratedNetworking')]",
+        "enableAcceleratedNetworking": "[parameters('acceleratedNetworking')]",
         "networkSecurityGroup": {
           "id": "[resourceID('Microsoft.Network/networkSecurityGroups/',variables('NSGName'))]"
         }
@@ -960,7 +960,7 @@
           }
         ],
         "enableIPForwarding": true,
-        "enableAcceleratedNetworking": "[paramaters('acceleratedNetworking')]",
+        "enableAcceleratedNetworking": "[parameters('acceleratedNetworking')]",
         "networkSecurityGroup": {
           "id": "[resourceID('Microsoft.Network/networkSecurityGroups/',variables('NSGName'))]"
         }
@@ -994,7 +994,7 @@
           }
         ],
         "enableIPForwarding": true,
-        "enableAcceleratedNetworking": "[paramaters('acceleratedNetworking')]",
+        "enableAcceleratedNetworking": "[parameters('acceleratedNetworking')]",
         "networkSecurityGroup": {
           "id": "[resourceID('Microsoft.Network/networkSecurityGroups/',variables('NSGName'))]"
         }
