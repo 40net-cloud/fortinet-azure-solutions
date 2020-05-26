@@ -437,7 +437,7 @@
       "location": "[resourceGroup().location]",
       "sku":
       {
-        "name": "Standard"
+        "name": "Basic"
       },
       "properties": {
         "publicIPAllocationMethod": "[parameters('publicIPAddressType')]"
