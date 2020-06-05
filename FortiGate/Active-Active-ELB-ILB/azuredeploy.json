@@ -243,7 +243,7 @@
     "internalLBFEName": "[concat(parameters('FortiGateNamePrefix'),'-ILB-',parameters('subnet2Name'),'-FrontEnd')]",
     "internalLBFEid": "[concat(resourceId('Microsoft.Network/loadBalancers', variables('internalLBName')), '/frontendIpConfigurations/', variables('internalLBFEName'))]",
     "internalLBBEName": "[concat(parameters('FortiGateNamePrefix'),'-ILB-',parameters('subnet2Name'),'-BackEnd')]",
-    "internalLBBEid": "[concat('Microsoft.Network/loadBalancers',variables('internalLBName'),'/backendAddressPools/',variables('internalLBBEName'))]",
+    "internalLBBEid": "[concat(resourceId('Microsoft.Network/loadBalancers',variables('internalLBName')),'/backendAddressPools/',variables('internalLBBEName'))]",
     "internalLBProbeId": "[concat(resourceId('Microsoft.Network/loadBalancers', variables('internalLBName')), '/probes/', 'lbprobe')]",
 
     "externalLBName_NatRule_FGAdminPerm_fg1": "[concat(variables('fg1VmName'),'FGAdminPerm')]",
