@@ -377,7 +377,7 @@
     "externalLBBEName": "[concat(parameters('FortiGateNamePrefix'),'publicLBBE')]",
     "externalLBBEId": "[concat(variables('externalLBId'),'/backendAddressPools/',variables('externalLBBEName'))]",
     "externalLBProbeName": "lbprobe",
-    "externalLBProbeId": "[resourceId('Microsoft.Network/loadBalancers',variables('externalLBName','/probes/',variables('externalLBProbeName'))]"
+    "externalLBProbeId": "[concat(variables('externalLBId'),'/probes/',variables('externalLBProbeName'))]"
   },
   "resources": [
     {
