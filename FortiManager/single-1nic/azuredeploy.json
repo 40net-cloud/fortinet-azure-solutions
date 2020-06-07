@@ -188,8 +188,7 @@
   },
   "variables": {
     "vnetName": "[if(equals(parameters('vnetName'),''),concat(parameters('namePrefix'),'-VNET'),parameters('vnetName'))]",
-    "vnetID": "[if(equals(parameters('vnetNewOrExisting'),'new'),resourceId('Microsoft.Network/virtualNetworks', variables('vnetName')),resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks', variables('vnetName')))]",
-    "subnet1Ref": "[concat(variables('vnetID'),'/subnets/', parameters('subnet1Name'))]",
+    "subnet1Ref": "[if(equals(parameters('vnetNewOrExisting'),'new'),resourceId('Microsoft.Network/virtualNetworks', variables('vnetName'),'/subnets/', parameters('subnet1Name')),resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks', variables('vnetName'),'/subnets/',parameters('subnet1Name')))]",
 
     "vmName": "[concat(parameters('namePrefix'),'-FMG-A')]",
 
@@ -204,12 +203,9 @@
     "sn1IPArray": "[split(parameters('subnet1Prefix'),'.')]",
     "sn1IPArray2ndString": "[string(variables('sn1IPArray')[3])]",
     "sn1IPArray2nd": "[split(variables('sn1IPArray2ndString'),'/')]",
-    "sn1CIDRmask": "[string(int(variables('sn1IPArray2nd')[1]))]",
-    "sn1IPArray3": "[string(add(int(variables('sn1IPArray2nd')[0]),1))]",
     "sn1IPArray2": "[string(int(variables('sn1IPArray')[2]))]",
     "sn1IPArray1": "[string(int(variables('sn1IPArray')[1]))]",
     "sn1IPArray0": "[string(int(variables('sn1IPArray')[0]))]",
-    "sn1GatewayIP": "[concat(variables('sn1IPArray0'),'.',variables('sn1IPArray1'),'.',variables('sn1IPArray2'),'.',variables('sn1IPArray3'))]",
     "sn1IPfg1": "[concat(variables('sn1IPArray0'),'.',variables('sn1IPArray1'),'.',variables('sn1IPArray2'),'.',add(int(variables('sn1IPArray2nd')[0]),5))]",
 
     "customData": "[base64(concat('config system admin setting\nset gui-theme melongene\nend'))]"
@@ -272,10 +268,6 @@
                   "access": "Allow",
                   "priority": 100,
                   "direction": "Inbound",
-                  "sourcePortRanges": [],
-                  "destinationPortRanges": [],
-                  "sourceAddressPrefixes": [],
-                  "destinationAddressPrefixes": []
               }
           },
           {
@@ -290,10 +282,6 @@
                   "access": "Allow",
                   "priority": 110,
                   "direction": "Inbound",
-                  "sourcePortRanges": [],
-                  "destinationPortRanges": [],
-                  "sourceAddressPrefixes": [],
-                  "destinationAddressPrefixes": []
               }
           },
           {
@@ -308,10 +296,6 @@
                   "access": "Allow",
                   "priority": 120,
                   "direction": "Inbound",
-                  "sourcePortRanges": [],
-                  "destinationPortRanges": [],
-                  "sourceAddressPrefixes": [],
-                  "destinationAddressPrefixes": []
               }
           },
           {
@@ -326,10 +310,6 @@
                   "access": "Allow",
                   "priority": 130,
                   "direction": "Inbound",
-                  "sourcePortRanges": [],
-                  "destinationPortRanges": [],
-                  "sourceAddressPrefixes": [],
-                  "destinationAddressPrefixes": []
               }
           },
           {
@@ -395,7 +375,7 @@
           }
         ],
         "networkSecurityGroup": {
-          "id": "[resourceID('Microsoft.Network/networkSecurityGroups/',variables('NSGName'))]"
+          "id": "[resourceId('Microsoft.Network/networkSecurityGroups/',variables('NSGName'))]"
         }
       }
     },
