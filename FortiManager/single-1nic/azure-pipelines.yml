@@ -14,12 +14,17 @@ steps:
     ScriptArguments: '-templatename FortiManager/single-1nic'
     azurePowerShellVersion: LatestVersion
 
+- task: RunARMTTKTests@1
+  displayName: 'Run ARM TTK tests'
+  inputs:
+    templatelocation: '$(System.DefaultWorkingDirectory)\FortiManager\single-1nic'
+    resultLocation: '$(System.DefaultWorkingDirectory)\results'
 
 - task: PublishTestResults@2
   displayName: 'Publish Test Results **\TEST-*.xml'
   inputs:
     testRunner: NUnit
-    testResultsFiles: '**\TEST-*.xml'
+    testResultsFiles: '**\TEST-*.xml;*-armttk.xml'
     testRunTitle: 'FortiGate-VM Single VM ARM Template test'
 
 trigger:
