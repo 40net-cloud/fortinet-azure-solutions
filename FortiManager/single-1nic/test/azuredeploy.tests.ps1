@@ -24,8 +24,7 @@ Function random-password ($length = 15) {
     return $password
 }
 
-# Basic Variables
-$templateName = "Active-Active-ELB-ILB"
+$templateName = "A-Single-VM"
 $sourcePath = "$env:BUILD_SOURCESDIRECTORY\FortiGate\$templateName"
 $scriptPath = "$env:BUILD_SOURCESDIRECTORY\FortiGate\$templateName\test"
 $templateFileName = "azuredeploy.json"
@@ -35,11 +34,12 @@ $templateMetadataFileLocation = "$sourcePath\$templateMetadataFileName"
 $templateParameterFileName = "azuredeploy.parameters.json"
 $templateParameterFileLocation = "$sourcePath\$templateParameterFileName"
 
+# Basic Variables
 $testsRandom = Get-Random 10001
 $testsPrefix = "FORTIQA"
 $testsResourceGroupName = "FORTIQA-$testsRandom-$templateName"
 $testsAdminUsername = "azureuser"
-$testsResourceGroupLocation = "northeurope"
+$testsResourceGroupLocation = "westeurope"
 
 Describe 'ARM Templates Test : Validation & Test Deployment' {
     Context 'Template Validation' {
@@ -49,10 +49,6 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
 
         It 'Has a parameters file' {
             $templateParameterFileLocation | Should Exist
-        }
-
-        It 'Has a metadata file' {
-            $templateMetadataFileLocation | Should Exist
         }
 
         It 'Converts from JSON and has the expected properties' {
@@ -67,32 +63,27 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
 
         It 'Creates the expected Azure resources' {
             $expectedResources = 'Microsoft.Resources/deployments',
-                                 'Microsoft.Compute/availabilitySets',
-                                 'Microsoft.Network/virtualNetworks',
-                                 'Microsoft.Network/loadBalancers',
                                  'Microsoft.Network/routeTables',
+                                 'Microsoft.Network/routeTables',
+                                 'Microsoft.Network/virtualNetworks',
                                  'Microsoft.Network/networkSecurityGroups',
                                  'Microsoft.Network/publicIPAddresses',
-                                 'Microsoft.Network/loadBalancers',
                                  'Microsoft.Network/networkInterfaces',
                                  'Microsoft.Network/networkInterfaces',
-                                 'Microsoft.Network/networkInterfaces',
-                                 'Microsoft.Network/networkInterfaces',
-                                 'Microsoft.Compute/virtualMachines',
                                  'Microsoft.Compute/virtualMachines'
             $templateResources = (get-content $templateFileLocation | ConvertFrom-Json -ErrorAction SilentlyContinue).Resources.type
             $templateResources | Should Be $expectedResources
         }
 
         It 'Contains the expected parameters' {
-            $expectedTemplateParameters = 'adminPassword',
+            $expectedTemplateParameters = 'acceleratedNetworking',
+                                          'adminPassword',
                                           'adminUsername',
                                           'FortiGateImageSKU',
                                           'FortiGateImageVersion',
                                           'FortiGateNamePrefix',
                                           'FortinetTags',
                                           'instanceType',
-                                          'location',
                                           'publicIPAddressType',
                                           'publicIPName',
                                           'publicIPNewOrExisting',
@@ -103,18 +94,19 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
                                           'subnet2Prefix',
                                           'subnet3Name',
                                           'subnet3Prefix',
+                                          'subnet4Name',
+                                          'subnet4Prefix',
                                           'vnetAddressPrefix',
                                           'vnetName',
                                           'vnetNewOrExisting',
                                           'vnetResourceGroup'
-            $templateParameters = (get-content $templateFileLocation | ConvertFrom-Json -ErrorAction SilentlyContinue).Parameters | Get-Member -MemberType NoteProperty | % Name | sort
+            $templateParameters = (get-content $templateFileLocation | ConvertFrom-Json -ErrorAction SilentlyContinue).Parameters | Get-Member -MemberType NoteProperty | % Name | Sort-Object
             $templateParameters | Should Be $expectedTemplateParameters
         }
 
     }
 
     Context 'Template Test Deployment' {
-
 
         # Set working directory & create resource group
         Set-Location $sourcePath
@@ -126,9 +118,9 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
         $params = @{ 'adminUsername'=$testsAdminUsername
                      'adminPassword'=$testsResourceGroupName
                      'FortiGateNamePrefix'=$testsPrefix
+                     'FortiGateImageVersion'="latest"
                     }
-        $publicIPName = "FGTLBPublicIP"
-        $publicIP2Name = "FGTLBPublicIP2"
+        $publicIPName = "FGTPublicIP"
 
         It "Test Deployment of ARM template $templateFileName" {
             (Test-AzureRmResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName" -TemplateFile "$templateFileName" -TemplateParameterObject $params).Count | Should not BeGreaterThan 0
@@ -145,7 +137,7 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
             $result | Should Not Be $null
         }
 
-        40030, 50030, 40031, 50031 | Foreach-Object {
+        443, 22 | Foreach-Object {
             it "Port [$_] is listening" {
                 $result = Get-AzureRmPublicIpAddress -Name $publicIPName -ResourceGroupName $testsResourceGroupName
                 $portListening = (Test-NetConnection -Port $_ -ComputerName $result.IpAddress).TcpTestSucceeded
