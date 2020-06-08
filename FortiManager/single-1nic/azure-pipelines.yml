@@ -6,25 +6,25 @@ pool:
   demands: azureps
 
 steps:
-- task: AzurePowerShell@2
-  displayName: 'Azure PowerShell script: FilePath'
-  inputs:
-    azureSubscription: 'AzureSubscription'
-    ScriptPath: 'FortiManager/single-1nic/test/invokePester.ps1'
-    ScriptArguments: '-templatename FortiManager/single-1nic'
-    azurePowerShellVersion: LatestVersion
+#- task: AzurePowerShell@1
+#  displayName: 'Azure PowerShell script: FilePath'
+#  inputs:
+#    azureSubscription: 'AzureSubscription'
+#    ScriptPath: 'FortiManager/single-1nic/test/invokePester.ps1'
+#    ScriptArguments: '-templatename FortiManager/single-1nic'
+#    azurePowerShellVersion: LatestVersion
 
-- task: RunARMTTKTests@1
+- task: RunARMTTKTests@2
   displayName: 'Run ARM TTK tests'
   inputs:
     templatelocation: '$(System.DefaultWorkingDirectory)\FortiManager\single-1nic'
-    resultLocation: '$(System.DefaultWorkingDirectory)\results'
+    resultLocation: '$(System.DefaultWorkingDirectory)\FortiManager\single-1nic'
 
-- task: PublishTestResults@2
+- task: PublishTestResults@3
   displayName: 'Publish Test Results **\TEST-*.xml'
   inputs:
     testRunner: NUnit
-    testResultsFiles: '**\TEST-*.xml;*-armttk.xml'
+    testResultsFiles: '**\**\TEST-*.xml;**\**\*-armttk.xml'
     testRunTitle: 'FortiGate-VM Single VM ARM Template test'
 
 trigger:
