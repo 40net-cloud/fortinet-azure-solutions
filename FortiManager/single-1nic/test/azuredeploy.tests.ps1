@@ -24,9 +24,9 @@ Function random-password ($length = 15) {
     return $password
 }
 
-$templateName = "A-Single-VM"
-$sourcePath = "$env:BUILD_SOURCESDIRECTORY\FortiGate\$templateName"
-$scriptPath = "$env:BUILD_SOURCESDIRECTORY\FortiGate\$templateName\test"
+$templateName = "single-1nic"
+$sourcePath = "$env:BUILD_SOURCESDIRECTORY\FortiManager\$templateName"
+$scriptPath = "$env:BUILD_SOURCESDIRECTORY\FortiManager\$templateName\test"
 $templateFileName = "azuredeploy.json"
 $templateFileLocation = "$sourcePath\$templateFileName"
 $templateMetadataFileName = "metadata.json"
@@ -41,8 +41,8 @@ $testsResourceGroupName = "FORTIQA-$testsRandom-$templateName"
 $testsAdminUsername = "azureuser"
 $testsResourceGroupLocation = "westeurope"
 
-Describe 'ARM Templates Test : Validation & Test Deployment' {
-    Context 'Template Validation' {
+Describe 'ARM template' {
+    Context 'validation' {
         It 'Has a JSON template' {
             $templateFileLocation | Should Exist
         }
@@ -76,26 +76,21 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
         }
 
         It 'Contains the expected parameters' {
-            $expectedTemplateParameters = 'acceleratedNetworking',
-                                          'adminPassword',
+            $expectedTemplateParameters = 'adminPassword',
                                           'adminUsername',
-                                          'FortiGateImageSKU',
-                                          'FortiGateImageVersion',
-                                          'FortiGateNamePrefix',
+                                          'dataDiskSize',
                                           'FortinetTags',
+                                          'imageSKU',
+                                          'imageVersion',
                                           'instanceType',
+                                          'location',
+                                          'namePrefix',
                                           'publicIPAddressType',
                                           'publicIPName',
-                                          'publicIPNewOrExisting',
+                                          'publicIPNewOrExistingOrNone',
                                           'publicIPResourceGroup',
                                           'subnet1Name',
                                           'subnet1Prefix',
-                                          'subnet2Name',
-                                          'subnet2Prefix',
-                                          'subnet3Name',
-                                          'subnet3Prefix',
-                                          'subnet4Name',
-                                          'subnet4Prefix',
                                           'vnetAddressPrefix',
                                           'vnetName',
                                           'vnetNewOrExisting',
@@ -106,7 +101,7 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
 
     }
 
-    Context 'Template Test Deployment' {
+    Context 'deployment' {
 
         # Set working directory & create resource group
         Set-Location $sourcePath
@@ -117,28 +112,27 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
 
         $params = @{ 'adminUsername'=$testsAdminUsername
                      'adminPassword'=$testsResourceGroupName
-                     'FortiGateNamePrefix'=$testsPrefix
-                     'FortiGateImageVersion'="latest"
+                     'namePrefix'=$testsPrefix
                     }
-        $publicIPName = "FGTPublicIP"
+        $publicIPName = "FMGPublicIP"
 
-        It "Test Deployment of ARM template $templateFileName" {
+        It "Test Deployment $templateFileName" {
             (Test-AzureRmResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName" -TemplateFile "$templateFileName" -TemplateParameterObject $params).Count | Should not BeGreaterThan 0
         }
-        It "Deployment of ARM template $templateFileName" {
+        It "Deployment $templateFileName" {
             $resultDeployment = New-AzureRmResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName" -TemplateFile "$templateFileName" -TemplateParameterObject $params
             Write-Host ($resultDeployment | Format-Table | Out-String)
             Write-Host ("Deployment state: " + $resultDeployment.ProvisioningState | Out-String)
             $resultDeployment.ProvisioningState | Should Be "Succeeded"
         }
-        It "Deployment in Azure validation" {
+        It "Find deployment" {
             $result = Get-AzureRmVM | Where-Object { $_.Name -like "$testsPrefix*" }
             Write-Host ($result | Format-Table | Out-String)
             $result | Should Not Be $null
         }
 
         443, 22 | Foreach-Object {
-            it "Port [$_] is listening" {
+            It "Port [$_] is listening" {
                 $result = Get-AzureRmPublicIpAddress -Name $publicIPName -ResourceGroupName $testsResourceGroupName
                 $portListening = (Test-NetConnection -Port $_ -ComputerName $result.IpAddress).TcpTestSucceeded
                 $portListening | Should -Be $true
@@ -146,8 +140,8 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
         }
     }
 
-    Context 'Cleanup' {
-        It "Cleanup of deployment" {
+    Context 'cleanup' {
+        It "remove resource group" {
             Remove-AzureRmResourceGroup -Name $testsResourceGroupName -Force
         }
     }
