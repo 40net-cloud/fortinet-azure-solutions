@@ -24,7 +24,7 @@ steps:
   displayName: 'Publish Test Results **\TEST-*.xml'
   inputs:
     testRunner: NUnit
-    testResultsFiles: '**\**\TEST-*.xml;**\*-armttk.xml'
+    testResultsFiles: '**\*-armttk.xml'
     testRunTitle: 'FortiGate-VM Single VM ARM Template test'
 
 trigger:
