@@ -6,7 +6,7 @@ pool:
   demands: azureps
 
 steps:
-- task: AzurePowerShell@1
+- task: AzurePowerShell@2
   displayName: 'Azure PowerShell script: FilePath'
   inputs:
     azureSubscription: 'AzureSubscription'
@@ -20,14 +20,14 @@ steps:
     templatelocation: '$(System.DefaultWorkingDirectory)\FortiManager\single-1nic'
     resultLocation: '$(System.DefaultWorkingDirectory)\FortiManager\single-1nic'
 
-- task: PublishTestResults@3
+- task: PublishTestResults@2
   displayName: 'Publish Test Results **\TEST-*.xml'
   inputs:
     testRunner: NUnit
     testResultsFiles: '**\TEST-*.xml'
     testRunTitle: 'FortiManager ARM Template verification'
 
-- task: PublishTestResults@4
+- task: PublishTestResults@2
   displayName: 'Publish Test Results **\TEST-*.xml'
   inputs:
     testRunner: NUnit
