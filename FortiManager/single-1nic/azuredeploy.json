@@ -83,7 +83,7 @@
     },
     "publicIPNewOrExistingOrNone": {
       "type": "string",
-      "defaultValue": "new",
+      "defaultValue": "none",
       "allowedValues": [
         "new",
         "existing",
@@ -188,7 +188,7 @@
   },
   "variables": {
     "vnetName": "[if(equals(parameters('vnetName'),''),concat(parameters('namePrefix'),'-VNET'),parameters('vnetName'))]",
-    "subnet1Ref": "[if(equals(parameters('vnetNewOrExisting'),'new'),resourceId('Microsoft.Network/virtualNetworks', variables('vnetName'),'/subnets/', parameters('subnet1Name')),resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks', variables('vnetName'),'/subnets/',parameters('subnet1Name')))]",
+    "subnet1Ref": "[if(equals(parameters('vnetNewOrExisting'),'new'),resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'), parameters('subnet1Name')),resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet1Name')))]",
 
     "vmName": "[concat(parameters('namePrefix'),'-FMG-A')]",
 
@@ -196,7 +196,7 @@
     "network_NIC_fg11_Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('network_NIC_fg11_Name'))]",
 
     "publicIPName": "[if(equals(parameters('publicIPName'),''),concat(parameters('namePrefix'),'-FMG-PIP'),parameters('publicIPName'))]",
-    "publicIPID": "[if(equals(parameters('publicIPNewOrExistingOrNone'),'new'),resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPName')),resourceId(parameters('publicIPResourceGroup'),'Microsoft.Network/publicIPAddresses',variables('publicIPName')))]",
+    "publicIPID": "[if(equals(parameters('publicIPNewOrExistingOrNone'),'new'),resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPName')),if(equals(parameters('publicIPNewOrExistingOrNone'),'existing'),resourceId(parameters('publicIPResourceGroup'),'Microsoft.Network/publicIPAddresses',variables('publicIPName')),''))]",
 
     "NSGName": "[concat(parameters('namePrefix'),'-',uniqueString(resourceGroup().id),'-NSG')]",
 
@@ -267,7 +267,7 @@
                   "destinationAddressPrefix": "*",
                   "access": "Allow",
                   "priority": 100,
-                  "direction": "Inbound",
+                  "direction": "Inbound"
               }
           },
           {
@@ -281,7 +281,7 @@
                   "destinationAddressPrefix": "*",
                   "access": "Allow",
                   "priority": 110,
-                  "direction": "Inbound",
+                  "direction": "Inbound"
               }
           },
           {
@@ -295,7 +295,7 @@
                   "destinationAddressPrefix": "*",
                   "access": "Allow",
                   "priority": 120,
-                  "direction": "Inbound",
+                  "direction": "Inbound"
               }
           },
           {
@@ -309,7 +309,7 @@
                   "destinationAddressPrefix": "*",
                   "access": "Allow",
                   "priority": 130,
-                  "direction": "Inbound",
+                  "direction": "Inbound"
               }
           },
           {
