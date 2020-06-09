@@ -63,12 +63,9 @@ Describe 'ARM template' {
 
         It 'Creates the expected Azure resources' {
             $expectedResources = 'Microsoft.Resources/deployments',
-                                 'Microsoft.Network/routeTables',
-                                 'Microsoft.Network/routeTables',
                                  'Microsoft.Network/virtualNetworks',
                                  'Microsoft.Network/networkSecurityGroups',
                                  'Microsoft.Network/publicIPAddresses',
-                                 'Microsoft.Network/networkInterfaces',
                                  'Microsoft.Network/networkInterfaces',
                                  'Microsoft.Compute/virtualMachines'
             $templateResources = (get-content $templateFileLocation | ConvertFrom-Json -ErrorAction SilentlyContinue).Resources.type
@@ -87,7 +84,7 @@ Describe 'ARM template' {
                                           'namePrefix',
                                           'publicIPAddressType',
                                           'publicIPName',
-                                          'publicIPNewOrExistingOrNone',
+                                          'publicIPNewOrExisting',
                                           'publicIPResourceGroup',
                                           'subnet1Name',
                                           'subnet1Prefix',
