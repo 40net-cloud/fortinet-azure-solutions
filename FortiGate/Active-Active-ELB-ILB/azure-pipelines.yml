@@ -6,21 +6,33 @@ pool:
   demands: azureps
 
 steps:
+- task: RunARMTTKTests@1
+  displayName: 'ARM TTK tests'
+  inputs:
+    templatelocation: '$(System.DefaultWorkingDirectory)\FortiGate\Active-Active-ELB-ILB'
+    resultLocation: '$(System.DefaultWorkingDirectory)\FortiGate\Active-Active-ELB-ILB'
+
+- task: PublishTestResults@2
+  displayName: 'Publish FortiGate Active/Active ELB-ILB ARM TTK results'
+  inputs:
+    testRunner: NUnit
+    testResultsFiles: '**\*-armttk.xml'
+    testRunTitle: 'FortiGate Active/Active ELB-ILB ARM TTK verification'
+
 - task: AzurePowerShell@2
-  displayName: 'Azure PowerShell script: FilePath'
+  displayName: 'Custom tests: FilePath'
   inputs:
     azureSubscription: 'AzureSubscription'
     ScriptPath: 'FortiGate/Active-Active-ELB-ILB/test/invokePester.ps1'
     ScriptArguments: '-templatename FortiGate/Active-Active-ELB-ILB'
     azurePowerShellVersion: LatestVersion
 
-
 - task: PublishTestResults@2
-  displayName: 'Publish Test Results **\TEST-*.xml'
+  displayName: 'Publish custom test result'
   inputs:
     testRunner: NUnit
     testResultsFiles: '**\TEST-*.xml'
-    testRunTitle: 'FortiGate ARM Template test Active/Active ELB ILB'
+    testRunTitle: 'FortiGate ARM Template Active/Active ELB ILB verificatio'
 
 trigger:
   branches:

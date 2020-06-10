@@ -2,7 +2,7 @@ resources:
 - repo: self
 
 pool:
-  vmImage: 'vs2017-win2016'
+  vmImage: 'ubuntu-latest'
   demands: azureps
 
 steps:
@@ -11,6 +11,13 @@ steps:
   inputs:
     templatelocation: '$(System.DefaultWorkingDirectory)\FortiManager\single-1nic'
     resultLocation: '$(System.DefaultWorkingDirectory)\FortiManager\single-1nic'
+
+- task: PublishTestResults@2
+  displayName: 'Publish FortiManager ARM TTK results'
+  inputs:
+    testRunner: NUnit
+    testResultsFiles: '**\*-armttk.xml'
+    testRunTitle: 'FortiManager ARM TTK verification'
 
 - task: AzurePowerShell@2
   displayName: 'Custom tests: FilePath'
@@ -26,13 +33,6 @@ steps:
     testRunner: NUnit
     testResultsFiles: '**\TEST-*.xml'
     testRunTitle: 'FortiManager ARM Template verification'
-
-- task: PublishTestResults@2
-  displayName: 'Publish FortiManager ARM TTK results'
-  inputs:
-    testRunner: NUnit
-    testResultsFiles: '**\*-armttk.xml'
-    testRunTitle: 'FortiManager ARM TTK verification'
 
 
 trigger:
