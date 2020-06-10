@@ -41,7 +41,7 @@ $testsResourceGroupName = "FORTIQA-$testsRandom-$templateName"
 $testsAdminUsername = "azureuser"
 $testsResourceGroupLocation = "westeurope"
 
-Describe 'FMG-$templateName' {
+Describe 'FMG' {
     Context 'validation' {
         It 'Has a JSON template' {
             $templateFileLocation | Should Exist
