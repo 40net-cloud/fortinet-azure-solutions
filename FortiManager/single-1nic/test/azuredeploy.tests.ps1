@@ -24,6 +24,7 @@ Function random-password ($length = 15) {
     return $password
 }
 
+# Basic Variables
 $templateName = "single-1nic"
 $sourcePath = "$env:BUILD_SOURCESDIRECTORY\FortiManager\$templateName"
 $scriptPath = "$env:BUILD_SOURCESDIRECTORY\FortiManager\$templateName\test"
@@ -34,7 +35,6 @@ $templateMetadataFileLocation = "$sourcePath\$templateMetadataFileName"
 $templateParameterFileName = "azuredeploy.parameters.json"
 $templateParameterFileLocation = "$sourcePath\$templateParameterFileName"
 
-# Basic Variables
 $testsRandom = Get-Random 10001
 $testsPrefix = "FORTIQA"
 $testsResourceGroupName = "FORTIQA-$testsRandom-$templateName"
@@ -42,7 +42,7 @@ $testsAdminUsername = "azureuser"
 $testsResourceGroupLocation = "westeurope"
 
 Describe 'FMG' {
-    Context 'validation' {
+    Context 'Validation' {
         It 'Has a JSON template' {
             $templateFileLocation | Should Exist
         }
@@ -98,7 +98,7 @@ Describe 'FMG' {
 
     }
 
-    Context 'deployment' {
+    Context 'Deployment' {
         # Set working directory & create resource group
         Set-Location $sourcePath
         New-AzureRmResourceGroup -Name $testsResourceGroupName -Location "$testsResourceGroupLocation"
@@ -109,18 +109,18 @@ Describe 'FMG' {
                     }
         $publicIPName = "FMGPublicIP"
 
-        It "test deployment" {
+        It "Test deployment" {
             (Test-AzureRmResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName" -TemplateFile "$templateFileName" -TemplateParameterObject $params).Count | Should not BeGreaterThan 0
         }
 
-        It "deployment" {
+        It "Deployment" {
             $resultDeployment = New-AzureRmResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName" -TemplateFile "$templateFileName" -TemplateParameterObject $params
             Write-Host ($resultDeployment | Format-Table | Out-String)
             Write-Host ("Deployment state: " + $resultDeployment.ProvisioningState | Out-String)
             $resultDeployment.ProvisioningState | Should Be "Succeeded"
         }
 
-        It "search deployment" {
+        It "Search deployment" {
             $result = Get-AzureRmVM | Where-Object { $_.Name -like "$testsPrefix*" }
             Write-Host ($result | Format-Table | Out-String)
             $result | Should Not Be $null
@@ -134,7 +134,7 @@ Describe 'FMG' {
             }
         }
 
-        It "cleanup" {
+        It "Cleanup" {
             Remove-AzureRmResourceGroup -Name $testsResourceGroupName -Force
         }
     }
