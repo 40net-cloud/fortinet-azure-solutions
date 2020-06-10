@@ -18,6 +18,7 @@ steps:
     testRunner: NUnit
     testResultsFiles: '**\*-armttk.xml'
     testRunTitle: 'FortiGate Active/Active ELB-ILB ARM TTK verification'
+  condition: always()
 
 - task: AzurePowerShell@2
   displayName: 'Custom tests: FilePath'

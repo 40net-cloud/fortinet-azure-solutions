@@ -115,7 +115,6 @@ Describe 'FGT A/A' {
 
     Context 'Deployment' {
 
-
         # Set working directory & create resource group
         Set-Location $sourcePath
         New-AzureRmResourceGroup -Name $testsResourceGroupName -Location "$testsResourceGroupLocation"
