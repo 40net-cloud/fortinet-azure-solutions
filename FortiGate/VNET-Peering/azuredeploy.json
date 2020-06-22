@@ -742,8 +742,8 @@
           "name": "[variables('hubtoSpoke1PeeringName')]",
           "location": "[resourceGroup().location]",
           "dependsOn": [
-              "[concat('Microsoft.Network/virtualNetworks/', variables('vnetName'))]",
-              "[concat('Microsoft.Network/virtualNetworks/', variables('vnetNameSpoke1'))]"
+              "[variables('vnetID')]",
+              "[variables('vnetIDSpoke1')]"
           ],
           "comments": "Hub to Spoke 1",
           "properties": {
@@ -762,8 +762,8 @@
           "name": "[variables('hubtoSpoke2PeeringName')]",
           "location": "[resourceGroup().location]",
           "dependsOn": [
-              "[concat('Microsoft.Network/virtualNetworks/', variables('vnetName'))]",
-              "[concat('Microsoft.Network/virtualNetworks/', variables('vnetNameSpoke2'))]"
+              "[variables('vnetID')]",
+              "[variables('vnetIDSpoke2')]"
           ],
           "comments": "HUB to Spoke 2",
           "properties": {
@@ -812,8 +812,8 @@
           "name": "[variables('spoke1toHubPeeringName')]",
           "location": "[resourceGroup().location]",
           "dependsOn": [
-              "[concat('Microsoft.Network/virtualNetworks/', variables('vnetName'))]",
-              "[concat('Microsoft.Network/virtualNetworks/', variables('vnetNameSpoke1'))]"
+              "[variables('vnetID')]",
+              "[variables('vnetIDSpoke1')]"
           ],
           "comments": "Spoke 1 to Hub",
           "properties": {
@@ -862,8 +862,8 @@
           "name": "[variables('spoke2toHubPeeringName')]",
           "location": "[resourceGroup().location]",
           "dependsOn": [
-              "[concat('Microsoft.Network/virtualNetworks/', variables('vnetName'))]",
-              "[concat('Microsoft.Network/virtualNetworks/', variables('vnetNameSpoke2'))]"
+              "[variables('vnetID')]",
+              "[variables('vnetIDSpoke2')]"
           ],
           "comments": "Spoke 2 to Hub",
           "properties": {
@@ -1130,7 +1130,7 @@
       "name": "[variables('network_NIC_fg11_Name')]",
       "location": "[resourceGroup().location]",
       "dependsOn": [
-        "[variables('vnetName')]",
+        "[variables('vnetID')]",
         "[variables('externalLBId')]",
         "[variables('NSGName')]"
       ],
@@ -1168,7 +1168,7 @@
       "name": "[variables('network_NIC_fg21_Name')]",
       "location": "[resourceGroup().location]",
       "dependsOn": [
-        "[variables('vnetName')]",
+        "[variables('vnetID')]",
         "[variables('externalLBId')]",
         "[variables('NSGName')]"
       ],
@@ -1206,7 +1206,7 @@
       "name": "[variables('network_NIC_fg12_Name')]",
       "location": "[resourceGroup().location]",
       "dependsOn": [
-        "[variables('vnetName')]",
+        "[variables('vnetID')]",
         "[variables('internalLBId')]"
       ],
       "properties": {
