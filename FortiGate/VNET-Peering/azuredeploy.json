@@ -502,7 +502,7 @@
   },
   "resources": [
     {
-      "apiVersion": "[variables('resourceApiVersion')]",
+      "apiVersion": "2019-10-01",
       "name": "pid-2dc4b447-552f-557f-b1cc-2faec6f9f133",
       "type": "Microsoft.Resources/deployments",
       "properties":{
@@ -515,9 +515,9 @@
       }
     },
     {
+      "apiVersion": "2019-12-01",
       "type": "Microsoft.Compute/availabilitySets",
       "name": "[variables('compute_AvailabilitySet_FG_Name')]",
-      "apiVersion": "[variables('computeApiVersion')]",
       "tags": {
        "provider": "[toUpper(parameters('FortinetTags').provider)]"
       },
@@ -533,7 +533,7 @@
     {
       "type": "Microsoft.Network/routeTables",
       "name": "[variables('routeTableProtectedAName')]",
-      "apiVersion": "[variables('networkApiVersion')]",
+      "apiVersion": "2020-04-01",
       "tags": {
        "provider": "[toUpper(parameters('FortinetTags').provider)]"
       },
@@ -569,7 +569,7 @@
     {
       "type": "Microsoft.Network/routeTables",
       "name": "[variables('routeTableProtectedBName')]",
-      "apiVersion": "[variables('networkApiVersion')]",
+      "apiVersion": "2020-04-01",
       "tags": {
        "provider": "[toUpper(parameters('FortinetTags').provider)]"
       },
@@ -605,7 +605,7 @@
     {
       "type": "Microsoft.Network/routeTables",
       "name": "[variables('routeTableSpoke1Name')]",
-      "apiVersion": "[variables('networkApiVersion')]",
+      "apiVersion": "2020-04-01",
       "tags": {
        "provider": "[toUpper(parameters('FortinetTags').provider)]"
       },
@@ -641,7 +641,7 @@
     {
       "type": "Microsoft.Network/routeTables",
       "name": "[variables('routeTableSpoke2Name')]",
-      "apiVersion": "[variables('networkApiVersion')]",
+      "apiVersion": "2020-04-01",
       "tags": {
        "provider": "[toUpper(parameters('FortinetTags').provider)]"
       },
@@ -677,7 +677,7 @@
     {
       "condition": "[equals(parameters('vnetNewOrExisting'), 'new')]",
       "type": "Microsoft.Network/virtualNetworks",
-      "apiVersion": "[variables('networkApiVersion')]",
+      "apiVersion": "2020-04-01",
       "name": "[variables('vnetName')]",
       "location": "[resourceGroup().location]",
       "dependsOn": [
@@ -737,7 +737,7 @@
       },
       "resources": [
         {
-          "apiVersion": "[variables('networkApiVersion')]",
+          "apiVersion": "2020-04-01",
           "type": "virtualNetworkPeerings",
           "name": "[variables('hubtoSpoke1PeeringName')]",
           "location": "[resourceGroup().location]",
@@ -757,7 +757,7 @@
           }
         },
         {
-          "apiVersion": "[variables('networkApiVersion')]",
+          "apiVersion": "2020-04-01",
           "type": "virtualNetworkPeerings",
           "name": "[variables('hubtoSpoke2PeeringName')]",
           "location": "[resourceGroup().location]",
@@ -781,7 +781,7 @@
     {
       "condition": "[equals(parameters('vnetNewOrExistingSpoke1'), 'new')]",
       "type": "Microsoft.Network/virtualNetworks",
-      "apiVersion": "[variables('networkApiVersion')]",
+      "apiVersion": "2020-04-01",
       "name": "[variables('vnetNameSpoke1')]",
       "location": "[resourceGroup().location]",
       "dependsOn": [
@@ -807,7 +807,7 @@
       },
       "resources": [
         {
-          "apiVersion": "[variables('networkApiVersion')]",
+          "apiVersion": "2020-04-01",
           "type": "virtualNetworkPeerings",
           "name": "[variables('spoke1toHubPeeringName')]",
           "location": "[resourceGroup().location]",
@@ -831,7 +831,7 @@
     {
       "condition": "[equals(parameters('vnetNewOrExistingSpoke2'), 'new')]",
       "type": "Microsoft.Network/virtualNetworks",
-      "apiVersion": "[variables('networkApiVersion')]",
+      "apiVersion": "2020-04-01",
       "name": "[variables('vnetNameSpoke2')]",
       "location": "[resourceGroup().location]",
       "dependsOn": [
@@ -857,7 +857,7 @@
       },
       "resources": [
         {
-          "apiVersion": "[variables('networkApiVersion')]",
+          "apiVersion": "2020-04-01",
           "type": "virtualNetworkPeerings",
           "name": "[variables('spoke2toHubPeeringName')]",
           "location": "[resourceGroup().location]",
@@ -879,7 +879,7 @@
       ]
     },
     {
-      "apiVersion": "[variables('networkApiVersion')]",
+      "apiVersion": "2020-04-01",
       "type": "Microsoft.Network/loadBalancers",
       "name": "[variables('internalLBName')]",
       "location": "[resourceGroup().location]",
@@ -890,7 +890,7 @@
         "name": "Standard"
       },
       "dependsOn": [
-        "[variables('vnetName')]"
+        "[variables('vnetID')]"
       ],
       "properties": {
         "frontendIPConfigurations": [
@@ -945,7 +945,7 @@
       }
     },
     {
-      "apiVersion": "[variables('networkApiVersion')]",
+      "apiVersion": "2020-04-01",
       "tags": {
         "provider": "[toUpper(parameters('FortinetTags').provider)]"
       },
@@ -988,7 +988,7 @@
     {
       "condition": "[equals(parameters('publicIPNewOrExisting'), 'new')]",
       "type": "Microsoft.Network/publicIPAddresses",
-      "apiVersion": "[variables('networkApiVersion')]",
+      "apiVersion": "2020-04-01",
       "tags": {
         "provider": "[toUpper(parameters('FortinetTags').provider)]"
       },
@@ -1005,7 +1005,7 @@
     {
       "condition": "[equals(parameters('publicIP2NewOrExisting'), 'new')]",
       "type": "Microsoft.Network/publicIPAddresses",
-      "apiVersion": "[variables('networkApiVersion')]",
+      "apiVersion": "2020-04-01",
       "tags": {
         "provider": "[toUpper(parameters('FortinetTags').provider)]"
       },
@@ -1022,7 +1022,7 @@
     {
       "condition": "[equals(parameters('publicIP3NewOrExisting'), 'new')]",
       "type": "Microsoft.Network/publicIPAddresses",
-      "apiVersion": "[variables('networkApiVersion')]",
+      "apiVersion": "2020-04-01",
       "tags": {
         "provider": "[toUpper(parameters('FortinetTags').provider)]"
       },
@@ -1037,7 +1037,7 @@
       }
     },
     {
-      "apiVersion": "[variables('networkApiVersion')]",
+      "apiVersion": "2020-04-01",
       "type": "Microsoft.Network/loadBalancers",
       "name": "[variables('externalLBName')]",
       "location": "[resourceGroup().location]",
@@ -1122,7 +1122,7 @@
       }
     },
     {
-      "apiVersion": "[variables('computeApiVersion')]",
+      "apiVersion": "2020-04-01",
       "tags": {
         "provider": "[toUpper(parameters('FortinetTags').provider)]"
       },
@@ -1160,7 +1160,7 @@
       }
     },
     {
-      "apiVersion": "[variables('computeApiVersion')]",
+      "apiVersion": "2020-04-01",
       "tags": {
         "provider": "[toUpper(parameters('FortinetTags').provider)]"
       },
@@ -1198,7 +1198,7 @@
       }
     },
     {
-      "apiVersion": "[variables('computeApiVersion')]",
+      "apiVersion": "2020-04-01",
       "tags": {
        "provider": "[toUpper(parameters('FortinetTags').provider)]"
       },
@@ -1235,7 +1235,7 @@
       }
     },
     {
-      "apiVersion": "[variables('computeApiVersion')]",
+      "apiVersion": "2019-10-01",
       "tags": {
        "provider": "[toUpper(parameters('FortinetTags').provider)]"
       },
@@ -1272,7 +1272,7 @@
       }
     },
     {
-      "apiVersion": "[variables('computeApiVersion')]",
+      "apiVersion": "2020-04-01",
       "tags": {
        "provider": "[toUpper(parameters('FortinetTags').provider)]"
       },
@@ -1303,7 +1303,7 @@
       }
     },
     {
-      "apiVersion": "[variables('computeApiVersion')]",
+      "apiVersion": "2020-04-01",
       "tags": {
        "provider": "[toUpper(parameters('FortinetTags').provider)]"
       },
@@ -1334,7 +1334,7 @@
       }
     },
     {
-      "apiVersion": "[variables('computeApiVersion')]",
+      "apiVersion": "2020-04-01",
       "tags": {
        "provider": "[toUpper(parameters('FortinetTags').provider)]"
       },
@@ -1368,7 +1368,7 @@
       }
     },
     {
-      "apiVersion": "[variables('computeApiVersion')]",
+      "apiVersion": "2020-04-01",
       "tags": {
        "provider": "[toUpper(parameters('FortinetTags').provider)]"
       },
@@ -1404,7 +1404,7 @@
     {
       "type": "Microsoft.Compute/virtualMachines",
       "name": "[variables('fg1VmName')]",
-      "apiVersion": "[variables('computeApiVersion')]",
+      "apiVersion": "2019-12-01",
       "tags": {
        "provider": "[toUpper(parameters('FortinetTags').provider)]"
       },
@@ -1487,7 +1487,7 @@
     {
       "type": "Microsoft.Compute/virtualMachines",
       "name": "[variables('fg2VmName')]",
-      "apiVersion": "[variables('computeApiVersion')]",
+      "apiVersion": "2019-12-01",
       "tags": {
        "provider": "[toUpper(parameters('FortinetTags').provider)]"
       },
