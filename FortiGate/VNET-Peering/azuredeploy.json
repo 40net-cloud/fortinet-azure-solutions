@@ -369,10 +369,6 @@
     }
   },
   "variables": {
-    "computeApiVersion": "2019-03-01",
-    "networkApiVersion": "2019-02-01",
-    "resourceApiVersion": "2018-05-01",
-
     "compute_AvailabilitySet_FG_Name": "[concat(parameters('FortiGateNamePrefix'),'-AvailabilitySet')]",
     "compute_AvailabilitySet_FG_Id": "[resourceId('Microsoft.Compute/availabilitySets', variables('compute_AvailabilitySet_FG_Name'))]",
 
