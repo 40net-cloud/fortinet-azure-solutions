@@ -20,7 +20,7 @@ This Azure ARM template will automatically deploy a full working environment con
   - 1 VNET with 2 protected subnets and 4 subnets required for the FortiGate deployment (external, internal, ha mgmt and ha sync)
   - User Defined Routes (UDR) for the protected subnets
 
-![VNET peering design](images/fgt-ha.png)
+![active/passive design](images/fgt-ha.png)
 
 This ARM template can also be used to extend or customized based on your requirements. Additional subnets besides the one's mentioned above are not automatically generated. By adapting the ARM templates you can add additional subnets which prefereably require their own routing tables.
 
