@@ -1,5 +1,5 @@
 {
-  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
     "adminUsername": {
@@ -191,8 +191,8 @@
 
     "vnetName": "[if(equals(parameters('vnetName'),''),concat(parameters('FortiGateNamePrefix'),'-VNET'),parameters('vnetName'))]",
     "vnetId": "[if(equals(parameters('vnetNewOrExisting'),'new'),resourceId('Microsoft.Network/virtualNetworks', variables('vnetName')),resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks', variables('vnetName')))]",
-    "subnet1Id": "[resourceId('Microsoft.Network/virtualNetworks/subnets',variables('vnetId'),parameters('subnet1Name'))]",
-    "subnet2Id": "[resourceId('Microsoft.Network/virtualNetworks/subnets',variables('vnetId'),parameters('subnet2Name'))]",
+    "subnet1Id": "[resourceId('Microsoft.Network/virtualNetworks/subnets',variables('vnetName'),parameters('subnet1Name'))]",
+    "subnet2Id": "[resourceId('Microsoft.Network/virtualNetworks/subnets',variables('vnetName'),parameters('subnet2Name'))]",
 
     "fgaVmName": "[concat(parameters('FortiGateNamePrefix'),'-FGT-A')]",
     "fgbVmName": "[concat(parameters('FortiGateNamePrefix'),'-FGT-B')]",
@@ -243,11 +243,11 @@
     "internalLBName": "[concat(parameters('FortiGateNamePrefix'),'-InternalLoadBalancer')]",
     "internalLBId": "[resourceId('Microsoft.Network/loadBalancers',variables('internalLBName'))]",
     "internalLBFEName": "[concat(parameters('FortiGateNamePrefix'),'-ILB-',parameters('subnet2Name'),'-FrontEnd')]",
-    "internalLBFEId": "[resourceId('Microsoft.Network/loadBalancers/frontendIPConfigurations/',variables('internalLBName'),variables('internalLBFEName'))]",
+    "internalLBFEId": "[resourceId('Microsoft.Network/loadBalancers/frontendIPConfigurations',variables('internalLBName'),variables('internalLBFEName'))]",
     "internalLBBEName": "[concat(parameters('FortiGateNamePrefix'),'-ILB-',parameters('subnet2Name'),'-BackEnd')]",
-    "internalLBBEId": "[resourceId('Microsoft.Network/loadBalancers/backendAddressPools/',variables('internalLBName'),variables('internalLBBEName'))]",
+    "internalLBBEId": "[resourceId('Microsoft.Network/loadBalancers/backendAddressPools',variables('internalLBName'),variables('internalLBBEName'))]",
     "internalLBProbeName": "lbprobe",
-    "internalLBProbeId": "[resourceId('Microsoft.Network/loadBalancers/probes/',variables('internalLBName'),variables('internalLBProbeName'))]",
+    "internalLBProbeId": "[resourceId('Microsoft.Network/loadBalancers/probes',variables('internalLBName'),variables('internalLBProbeName'))]",
 
     "externalLBName_NatRule_FGAdminPerm_fga": "[concat(variables('fgaVmName'),'FGAdminPerm')]",
     "externalLBId_NatRule_FGAdminPerm_fga": "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBId'),variables('externalLBName_NatRule_FGAdminPerm_fga'))]",
@@ -260,11 +260,11 @@
     "externalLBName": "[concat(parameters('FortiGateNamePrefix'),'-ExternalLoadBalancer')]",
     "externalLBId": "[resourceId('Microsoft.Network/loadBalancers',variables('externalLBName'))]",
     "externalLBFEName": "[concat(parameters('FortiGateNamePrefix'),'-ELB-',parameters('subnet1Name'),'-FrontEnd')]",
-    "externalLBFEId": "[resourceId('Microsoft.Network/loadBalancers/frontendIPConfigurations/',variables('externalLBId'),variables('externalLBFEName'))]",
+    "externalLBFEId": "[resourceId('Microsoft.Network/loadBalancers/frontendIPConfigurations',variables('externalLBId'),variables('externalLBFEName'))]",
     "externalLBBEName": "[concat(parameters('FortiGateNamePrefix'),'-ELB-',parameters('subnet1Name'),'-BackEnd')]",
-    "externalLBBEId": "[resourceId('Microsoft.Network/loadBalancers/backendAddressPools/',variables('externalLBId'),variables('externalLBBEName'))]",
+    "externalLBBEId": "[resourceId('Microsoft.Network/loadBalancers/backendAddressPools',variables('externalLBId'),variables('externalLBBEName'))]",
     "externalLBProbeName": "lbprobe",
-    "externalLBProbeId": "[resourceId('Microsoft.Network/loadBalancers/probes/',variables('externalLBName'),variables('externalLBProbeName'))]"
+    "externalLBProbeId": "[resourceId('Microsoft.Network/loadBalancers/probes',variables('externalLBName'),variables('externalLBProbeName'))]"
   },
   "resources": [
     {
