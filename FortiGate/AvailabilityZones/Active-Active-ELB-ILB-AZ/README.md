@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This design operates almost exactly the same as the more common variant using Availability Sets that can be found [here](../Active-Active-ELB-ILB). The main difference between both is that this uses Availability Zones vs the Availability Sets.
+This design operates almost exactly the same as the more common variant using Availability Sets that can be found [here](../../Active-Active-ELB-ILB/README.md). The main difference between both is that this uses Availability Zones vs the Availability Sets.
 
 ## Design
 
