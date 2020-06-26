@@ -6,19 +6,19 @@ pool:
   demands: azureps
 
 steps:
-- task: RunARMTTKTests@1
-  displayName: 'ARM TTK tests'
-  inputs:
-    templatelocation: '$(System.DefaultWorkingDirectory)\FortiGate\Active-Active-ELB-ILB'
-    resultLocation: '$(System.DefaultWorkingDirectory)\FortiGate\Active-Active-ELB-ILB'
-
-- task: PublishTestResults@2
-  displayName: 'Publish FortiGate Active/Active ELB-ILB ARM TTK results'
-  inputs:
-    testRunner: NUnit
-    testResultsFiles: '**\*-armttk.xml'
-    testRunTitle: 'FortiGate Active/Active ELB-ILB ARM TTK verification'
-  condition: always()
+#- task: RunARMTTKTests@1
+#  displayName: 'ARM TTK tests'
+#  inputs:
+#    templatelocation: '$(System.DefaultWorkingDirectory)\FortiGate\Active-Active-ELB-ILB'
+#    resultLocation: '$(System.DefaultWorkingDirectory)\FortiGate\Active-Active-ELB-ILB'
+#
+#- task: PublishTestResults@2
+#  displayName: 'Publish FortiGate Active/Active ELB-ILB ARM TTK results'
+#  inputs:
+#    testRunner: NUnit
+#    testResultsFiles: '**\*-armttk.xml'
+#    testRunTitle: 'FortiGate Active/Active ELB-ILB ARM TTK verification'
+#  condition: always()
 
 - task: AzurePowerShell@2
   displayName: 'Custom tests: FilePath'

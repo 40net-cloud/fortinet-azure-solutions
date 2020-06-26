@@ -22,9 +22,8 @@ if (-not(Test-Path $modulePath)) {
 
 Import-Module $modulePath -DisableNameChecking
 
-$outputFile = Join-Path $SourceDir "TEST-pester.xml";
 "Running ARM TTK"
-Test-AzTemplate -TemplatePath $SourceDir
+Test-AzTemplate -TemplatePath $SourceDir -Pester
 
 $modulePath = Join-Path $TempDir Pester-master\Pester.psm1
 
