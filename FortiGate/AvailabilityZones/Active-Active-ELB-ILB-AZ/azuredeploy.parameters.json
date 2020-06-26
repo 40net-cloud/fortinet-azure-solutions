@@ -15,27 +15,18 @@
             "value": "fortinet_fg-vm"
         },
         "FortiGateImageVersion": {
-            "value": "6.0.4"
+            "value": "6.2.3"
         },
         "instanceType": {
-            "value": "Standard_F1s"
+            "value": "Standard_F2s"
         },
         "publicIPNewOrExisting": {
-            "value": "new"
-        },
-        "publicIP2NewOrExisting": {
             "value": "new"
         },
         "publicIPName": {
             "value": "FGTLBPublicIP"
         },
         "publicIPResourceGroup": {
-            "value": ""
-        },
-        "publicIP2Name": {
-            "value": "FGTLBPublicIP2"
-        },
-        "publicIP2ResourceGroup": {
             "value": ""
         },
         "publicIPAddressType": {
@@ -51,29 +42,33 @@
             "value": ""
         },
         "vnetAddressPrefix": {
-            "value": "10.0.0.0/16"
+            "value": "172.16.136.0/22"
         },
         "subnet1Name": {
-            "value": "EntrySubnet"
+            "value": "ExteralSubnet"
         },
         "subnet1Prefix": {
-            "value": "10.0.1.0/24"
+            "value": "172.16.136.0/26"
         },
         "subnet2Name": {
-            "value": "TransitSubnet"
+            "value": "InternalSubnet"
         },
         "subnet2Prefix": {
-            "value": "10.0.2.0/24"
+            "value": "172.16.136.64/26"
         },
         "subnet3Name": {
             "value": "ProtectedSubnet"
         },
         "subnet3Prefix": {
-            "value": "10.0.3.0/24"
+            "value": "172.16.137.0/24"
+        },
+        "location": {
+            "value": "[resourceGroup().location]"
         },
         "FortinetTags": {
             "value": {
-                "provider": "6EB3B02F-50E5-4A3E-8CB8-2E129258317D"
+                "publisher": "Fortinet",
+                "provider": "6EB3B02F-50E5-4A3E-8CB8-2E12925831AA"
             }
         }
     }
