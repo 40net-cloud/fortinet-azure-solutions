@@ -51,30 +51,38 @@ echo "--> Using prefix $prefix for all resources ..."
 echo ""
 rg="$prefix-RG"
 
-if [ -z "$DEPLOY_PASSWORD" ]
-then
-    # Input password
-    echo -n "Enter password: "
-    stty_orig=`stty -g` # save original terminal setting.
-    stty -echo          # turn-off echoing.
-    read passwd         # read the password
-    stty $stty_orig     # restore terminal setting.
-else
-    passwd="$DEPLOY_PASSWORD"
-    echo ""
-    echo "--> Using password found in env variable DEPLOY_PASSWORD ..."
-    echo ""
-fi
-
 if [ -z "$DEPLOY_USERNAME" ]
 then
-    username="azureuser"
+    # Input username
+    echo -n "Enter username (default: azureuser): "
+    stty_orig=`stty -g` # save original terminal setting.
+    read username         # read the prefix
+    stty $stty_orig     # restore terminal setting.
+    if [ -z "$username" ]
+    then
+        username="azureuser"
+    fi
 else
     username="$DEPLOY_USERNAME"
 fi
 echo ""
 echo "--> Using username '$username' ..."
 echo ""
+
+if [ -z "$DEPLOY_PASSWORD" ]
+then
+    # Input password
+    echo -n "Enter password: "
+    stty_orig=`stty -g` # save original terminal setting.
+    stty -echo          # turn-off echoing.
+    read password         # read the password
+    stty $stty_orig     # restore terminal setting.
+else
+    password="$DEPLOY_PASSWORD"
+    echo ""
+    echo "--> Using password found in env variable DEPLOY_PASSWORD ..."
+    echo ""
+fi
 
 # Create resource group
 echo ""
@@ -118,7 +126,7 @@ echo "
 
 Deployment information:
 
-Username:
+Username: $username
 
 FortiGate IP addesses
 "
