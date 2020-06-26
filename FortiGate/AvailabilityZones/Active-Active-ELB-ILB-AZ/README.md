@@ -1,27 +1,16 @@
-# Active/Active loadbalanced pair of standalone FortiGates for resilience and scale
+# Availability Zone - Active/Active loadbalanced pair of standalone FortiGates for resilience and scale
 
 ## Introduction
 
-More and more enterprises are turning to Microsoft Azure to extend or replace internal data centers and take advantage of the elasticity of the public cloud. While Azure secures the infrastructure, you are responsible for protecting the resources you put in it. As workloads are being moved from local data centers connectivity and security are key elements to take into account. FortiGate-VM offers a consistent security posture and protects connectivity across public and private clouds, while high-speed VPN connections protect data.
-
-This Azure ARM template deploys an Active/Active pair combined with the Microsoft Azure Standard Load Balancer both on the external and the internal side. Additionally, Fortinet Fabric Connectors deliver the ability to create dynamic security policies.
+This design operates almost exactly the same as the more common variant using Availability Sets that can be found [here](../Active-Active-ELB-ILB). The main difference between both is that this uses Availability Zones vs the Availability Sets.
 
 ## Design
 
-In Microsoft Azure, you can deploy an active/active pair of FortiGate VMs that communicate with each other and the Azure fabric. This FortiGate setup will receive the to be inspected traffic using user defined routing (UDR) and public IPs. You can send all or specific traffic that needs inspection, going to/coming from on-prem networks or public internet by adapting the UDR routing.
-
-This Azure ARM template will automatically deploy a full working environment containing the the following components.
-
-  - 2 FortiGate firewalls in an active/active deployment
-  - 1 external Azure Standard Load Balancer for communication with internet
-  - 1 internal Azure Standard Load Balancer to receive all internal traffic and forwarding towards Azure Gateways connecting ExpressRoute or Azure VPNs.
-  - 1 VNET with 2 protected subnets
-  - 1 public IP for services and FortiGate management
-  - User Defined Routes (UDR) for the protected subnets
+VMs running in Azure in Availability Zones have a better SLA provided by the platform. Each individual VM in this setup as a 99.99% uptime SLA compared to 99.95% for the VMs running in a Availability Set. A cluster of FortiGates will have a cross region/paralle; SLA of 99,999999%. More information about the uptime of the Azure datacenter can be found on [this blog post](https://kvaes.wordpress.com/2020/02/16/is-azure-a-tier-3-datacenter-and-what-about-service-levels-in-a-broader-sense/). FortiGate A will be deployed in Zone 1. FortiGate B will deployed in Zone 2. The template can off course be changed to use other zones.
 
 ![active/active design](images/fgt-aa.png)
 
-This ARM template can also be used to extend or customized based on your requirements. Additional subnets besides the one's mentioned above are not automatically generated. By adapting the ARM templates you can add additional subnets which prefereably require their own routing tables.
+This ARM template can also be used to extend or customized based on your requirements. Additional subnets besides the one's mentioned above are not automatically generated. By adapting the ARM templates you can add additional subnets which preferably require their own routing tables.
 
 ## How to deploy
 
@@ -33,7 +22,7 @@ The FortiGate solution can be deployed using the Azure Portal or Azure CLI. Ther
   - PASSWORD : The password used for the FortiGate GUI and SSH management UI.
 
 ### Azure Portal
-Z
+
 <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fjvhoof%2Ffortinet-azure-solutions%2Fmaster%2FFortiGate%2FAvailabilityZones%2FActive-Active-ELB-ILB-AZ%2Fazuredeploy.json" target="_blank">
   <img src="https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.svg?sanitize=true"/>
 </a>
@@ -48,7 +37,7 @@ To deploy via Azure Cloud Shell you can connect via the Azure Portal or directly
 - Login into the Azure Cloud Shell
 - Run the following command in the Azure Cloud:
 
-`cd ~/clouddrive/ && wget -qO- https://github.com/jvhoof/fortinet-azure-solutions/archive/master.zip | jar x && cd ~/clouddrive/fortinet-azure-solutions/FortiGate/Active-Active-ELB-ILB/ && ./deploy.sh`
+`cd ~/clouddrive/ && wget -qO- https://github.com/jvhoof/fortinet-azure-solutions/archive/master.zip | jar x && cd ~/clouddrive/fortinet-azure-solutions/FortiGate/AvailabilityZones/Active-Active-ELB-ILB-AZ/ && ./deploy.sh`
 
 - The script will ask you a few questions to bootstrap a full deployment.
 
@@ -58,67 +47,7 @@ After deployment you will be shown the IP address of all deployed components. Yo
 
 ## Requirements and limitations
 
-The Terraform template deployment deploys different resources and is required to have the access rights and quota in your Microsoft Azure subscription to deploy the resources.
-
-### Licenses
-
-- The template will deploy Standard F4s VMs to deploy the required active/active setup. Other VM instances are supported as well with a minimum of 2 NICs. A list can be found [here](https://docs.fortinet.com/document/fortigate/6.2.0/azure-cookbook/562841/instance-type-support)
-- Licenses for Fortigate
-  - BYOL: Demo license can be made available via your Fortinet partner or on our website. These can be injected during deployment or added after deployment.
-  - PAYG or OnDemand: These licenses are automatically generated during the deployment of the FortiGate systems.
-
-### Fabric Connector
-The FortiGate-VM uses [Managed Identities](https://docs.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/) for the SDN Fabric Connector. A SDN Fabric Connector is created automatically during deployment. After deployment, it is required apply the 'Reader' role to Azure Subscription you want the FortiGate-VM(s) to resolve Azure Resources from. More information can be found on the [Fortinet Documentation Libary](https://docs.fortinet.com/vm/azure/fortigate/6.2/azure-cookbook/6.2.0/236610/creating-a-fabric-connector-using-a-managed-identity).
-
-### North South traffic
-When configuring the policies on the FortiGates to allow and forward traffic to internal hosts, it is recommended that you enable the NAT checkbox (this will S-NAT the packets to the IP of port2). Doing so will enforce symmetric return.
-
-It is possible to use FGSP to synchronize sessions and thereby allow assymetric return traffic. However this is not best practice from a security perspective, because it limits the ability of IPS by potentially only seeing one side of the conversation on each FGT. The FortiGate IPS takes both sides of the conversation into account for increased security and visibility. Reducing this visibility on the FortiGate may decrease the IPS efficacy.
-
-Often S-NAT is not desired because it's necessary to retain the original source IP. For HTTP or HTTPS traffic in particular, you can enable the Load Balancing feature on the FortiGate which gives you the option to copy the source IP into the X-Forwarded-For header (See https://docs.fortinet.com/uploaded/files/3637/fortigate-load-balancing-56.pdf)
-
-If you do prefer to use FGSP for session synchronization. It can be enable during deployment by uncommenting the section in the customdata.tpl file or adding this recomended configuration to both FortiGate VMs.
-
-```
-config system ha
-    set session-pickup enable
-    set session-pickup-connectionless enable
-    set session-pickup-nat enable
-    set session-pickup-expectation enable
-    set override disable
-end
-
-config system cluster-sync
-    edit 0
-        set peerip 10.0.1.x
-        set syncvd "root"
-    next
-end
-```
-* Where x in 10.0.1.x is the IP of port 1 of the opposite FortiGate. With the default values this would be either 5 or 6.
-
-### Configuration synchronization
-The FortiGate VMs are in this Active/Active setup independent units. They don't use FGCP as a protocol to sync the configuration like in the Active/Passive setup. To enable configuration sync between both unit the sync from the autoscaling setup can be used. This will sync all configuration except for the specific configuration item proper to the specific VM like hostname, routing and others. To enable the configuration sync the config below can be used on both
-
-FortiGate A
-```
-config system auto-scale
-    set status enable
-    set role master
-    set sync-interface "port2"
-    set psksecret "a big secret"
-end
-```
-
-FortiGate B
-```
-config system auto-scale
-    set status enable
-    set sync-interface "port2"
-    set master-ip 172.16.136.69
-    set psksecret "a big secret"
-end
-```
+More documentation can be found on [the Availability Set version of this template](../Active-Active-ELB-ILB/README.md).
 
 ## Support
 Fortinet-provided scripts in this and other GitHub projects do not fall under the regular Fortinet technical support scope and are not supported by FortiCare Support Services.

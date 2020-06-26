@@ -277,11 +277,11 @@ resource "azurerm_virtual_machine" "fgtavm" {
   }
 
   storage_data_disk {
-    name = "${var.PREFIX}-A-FGT-VM-DATADISK"
+    name              = "${var.PREFIX}-A-FGT-VM-DATADISK"
     managed_disk_type = "Premium_LRS"
-    create_option = "Empty"
-    lun = 0
-    disk_size_gb = "10"
+    create_option     = "Empty"
+    lun               = 0
+    disk_size_gb      = "10"
   }
 
 
@@ -466,11 +466,11 @@ resource "azurerm_virtual_machine" "fgtbvm" {
   }
 
   storage_data_disk {
-    name = "${var.PREFIX}-B-FGT-VM-DATADISK"
+    name              = "${var.PREFIX}-B-FGT-VM-DATADISK"
     managed_disk_type = "Premium_LRS"
-    create_option = "Empty"
-    lun = 0
-    disk_size_gb = "10"
+    create_option     = "Empty"
+    lun               = 0
+    disk_size_gb      = "10"
   }
 
   os_profile {
