@@ -6,7 +6,9 @@ This design operates almost exactly the same as the more common variant using Av
 
 ## Design
 
-VMs running in Azure in Availability Zones have a better SLA provided by the platform. Each individual VM in this setup as a 99.99% uptime SLA compared to 99.95% for the VMs running in a Availability Set. A cluster of FortiGates will have a cross region/paralle; SLA of 99,999999%. More information about the uptime of the Azure datacenter can be found on [this blog post](https://kvaes.wordpress.com/2020/02/16/is-azure-a-tier-3-datacenter-and-what-about-service-levels-in-a-broader-sense/). FortiGate A will be deployed in Zone 1. FortiGate B will deployed in Zone 2. The template can off course be changed to use other zones.
+VMs running in Microsoft Azure using Availability Zones have a better SLA provided by the platform. Each individual VM in this setup has a 99.99% uptime SLA compared to 99.95% for the VMs running in a Availability Set. SLA documentation from Microsoft can be found [here](https://azure.microsoft.com/en-us/support/legal/sla/virtual-machines/v1_9/)
+
+A cluster of FortiGate VMs will have a cross region/parallel SLA of 99,999999%. More information about the uptime of the Azure datacenter can be found on [this blog post](https://kvaes.wordpress.com/2020/02/16/is-azure-a-tier-3-datacenter-and-what-about-service-levels-in-a-broader-sense/). FortiGate A will be deployed in Zone 1. FortiGate B will deployed in Zone 2. The template can off course be changed to use other zones.
 
 ![active/active design](images/fgt-aa.png)
 
@@ -47,7 +49,7 @@ After deployment you will be shown the IP address of all deployed components. Yo
 
 ## Requirements and limitations
 
-More documentation can be found on [the Availability Set version of this template](../Active-Active-ELB-ILB/README.md).
+More documentation can be found on [the Availability Set version of this template](../../Active-Active-ELB-ILB/README.md).
 
 ## Support
 Fortinet-provided scripts in this and other GitHub projects do not fall under the regular Fortinet technical support scope and are not supported by FortiCare Support Services.
