@@ -41,7 +41,7 @@ Import-Module $modulePath -DisableNameChecking
 $outputFile = Join-Path $SourceDir "TEST-armttk.xml";
 
 "Running ARM TTK"
-Test-AzTemplate -TemplatePath $SourceDir -Pester
+Test-AzTemplate -TemplatePath $SourceDir -Pester -OutputFile $outputFile -OutputFormat NUnitXml
 
 $outputFile = Join-Path $SourceDir "TEST-pester.xml";
 
