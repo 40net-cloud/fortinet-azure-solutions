@@ -4,7 +4,7 @@ param (
 
 $SourceDir = "$env:BUILD_SOURCESDIRECTORY\$templatename"
 $TempDir = $env:TEMP
-$modulePath = Join-Path $TempDir Pester-master\Pester.psm1
+$modulePath = Join-Path $TempDir arm-ttk-master\arm-ttk\arm-ttk.psd1
 
 if (-not(Test-Path $modulePath)) {
 
@@ -23,6 +23,8 @@ Import-Module $modulePath -DisableNameChecking
 
 "Running ARM TTK"
 Test-AzTemplate -TemplatePath $SourceDir -Pester
+
+$modulePath = Join-Path $TempDir Pester-master\Pester.psm1
 
 if (-not(Test-Path $modulePath)) {
 
