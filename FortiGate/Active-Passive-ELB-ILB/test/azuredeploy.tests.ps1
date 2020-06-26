@@ -3,7 +3,7 @@
 .SYNOPSIS
     Tests a specific ARM template
 .EXAMPLE
-    Invoke-Pester 
+    Invoke-Pester
 .NOTES
     This file has been created as an example of using Pester to evaluate ARM templates
 #>
@@ -33,7 +33,7 @@ $templateFileLocation = "$sourcePath\$templateFileName"
 $templateMetadataFileName = "metadata.json"
 $templateMetadataFileLocation = "$sourcePath\$templateMetadataFileName"
 $templateParameterFileName = "azuredeploy.parameters.json"
-$templateParameterFileLocation = "$sourcePath\$templateParameterFileName" 
+$templateParameterFileLocation = "$sourcePath\$templateParameterFileName"
 
 $testsRandom = Get-Random 10001
 $testsPrefix = "FORTIQA"
@@ -41,17 +41,17 @@ $testsResourceGroupName = "FORTIQA-$testsRandom-$templateName"
 $testsAdminUsername = "azureuser"
 $testsResourceGroupLocation = "eastus2"
 
-Describe 'ARM Templates Test : Validation & Test Deployment' {
-    Context 'Template Validation' {
-        It 'Has a JSON template' {        
+Describe 'FGT A/P LB' {
+    Context 'Validation' {
+        It 'Has a JSON template' {
             $templateFileLocation | Should Exist
         }
-        
-        It 'Has a parameters file' {        
+
+        It 'Has a parameters file' {
             $templateParameterFileLocation | Should Exist
         }
-		
-        It 'Has a metadata file' {        
+
+        It 'Has a metadata file' {
             $templateMetadataFileLocation | Should Exist
         }
 
@@ -59,12 +59,12 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
             $expectedProperties = '$schema',
             'contentVersion',
             'parameters',
-            'resources',                                
+            'resources',
             'variables'
             $templateProperties = (get-content $templateFileLocation | ConvertFrom-Json -ErrorAction SilentlyContinue) | Get-Member -MemberType NoteProperty | % Name
             $templateProperties | Should Be $expectedProperties
         }
-        
+
         It 'Creates the expected Azure resources' {
             $expectedResources = 'Microsoft.Resources/deployments',
                                  'Microsoft.Compute/availabilitySets',
@@ -89,15 +89,17 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
             $templateResources = (get-content $templateFileLocation | ConvertFrom-Json -ErrorAction SilentlyContinue).Resources.type
             $templateResources | Should Be $expectedResources
         }
-        
+
         It 'Contains the expected parameters' {
-            $expectedTemplateParameters = 'adminPassword',
+            $expectedTemplateParameters = 'acceleratedNetworking',
+                                          'adminPassword',
                                           'adminUsername',
                                           'FortiGateImageSKU',
                                           'FortiGateImageVersion',
                                           'FortiGateNamePrefix',
                                           'FortinetTags',
                                           'instanceType',
+                                          'location',
                                           'publicIP2Name',
                                           'publicIP2NewOrExisting',
                                           'publicIP2ResourceGroup',
@@ -128,7 +130,7 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
 
     }
 
-    Context 'Template Test Deployment' {
+    Context 'Deployment' {
 
         # Set working directory & create resource group
         Set-Location $sourcePath
@@ -144,17 +146,17 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
         $publicIPName = "FGTAMgmtPublicIP"
         $publicIP2Name = "FGTBMgmtPublicIP"
 
-        It "Test Deployment of ARM template $templateFileName" {
+        It "Test Deployment" {
             (Test-AzureRmResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName" -TemplateFile "$templateFileName" -TemplateParameterObject $params).Count | Should not BeGreaterThan 0
         }
-        It "Deployment of ARM template $templateFileName" {
+        It "Deployment" {
             $resultDeployment = New-AzureRmResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName" -TemplateFile "$templateFileName" -TemplateParameterObject $params
             Write-Host ($resultDeployment | Format-Table | Out-String)
             Write-Host ("Deployment state: " + $resultDeployment.ProvisioningState | Out-String)
             $resultDeployment.ProvisioningState | Should Be "Succeeded"
         }
-        It "Deployment in Azure validation" {
-            $result = Get-AzureRmVM | Where-Object { $_.Name -like "$testsPrefix*" } 
+        It "Search deployment" {
+            $result = Get-AzureRmVM | Where-Object { $_.Name -like "$testsPrefix*" }
             Write-Host ($result | Format-Table | Out-String)
             $result | Should Not Be $null
         }
@@ -169,9 +171,7 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
                 $portListening | Should -Be $true
             }
         }
-    }
 
-    Context 'Cleanup' {
         It "Cleanup of deployment" {
             Remove-AzureRmResourceGroup -Name $testsResourceGroupName -Force
         }

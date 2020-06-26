@@ -1,0 +1,47 @@
+resources:
+- repo: self
+
+pool:
+  vmImage: 'windows-latest'
+  demands: azureps
+
+steps:
+#- task: RunARMTTKTests@1
+#  displayName: 'ARM TTK tests'
+#  inputs:
+#    templatelocation: '$(System.DefaultWorkingDirectory)\FortiManager\single-1nic'
+#    resultLocation: '$(System.DefaultWorkingDirectory)\FortiManager\single-1nic'
+
+#- task: PublishTestResults@2
+#  displayName: 'Publish FortiManager ARM TTK results'
+#  inputs:
+#    testRunner: NUnit
+#    testResultsFiles: '**\*-armttk.xml'
+#    testRunTitle: 'FortiManager ARM TTK verification'
+#  condition: always()
+
+- task: AzurePowerShell@2
+  displayName: 'Custom tests: FilePath'
+  inputs:
+    azureSubscription: 'AzureSubscription'
+    ScriptPath: 'FortiManager/single-1nic/test/invokePester.ps1'
+    ScriptArguments: '-templatename FortiManager/single-1nic'
+    azurePowerShellVersion: LatestVersion
+
+- task: PublishTestResults@2
+  displayName: 'Publish custom tests results'
+  inputs:
+    testRunner: NUnit
+    testResultsFiles: '**\TEST-*.xml'
+    testRunTitle: 'FortiManager ARM Template verification'
+
+
+trigger:
+  branches:
+    include:
+    - master
+  paths:
+    exclude:
+    - FortiManager/single-1nic/*.md
+    include:
+    - FortiManager/single-1nic/*

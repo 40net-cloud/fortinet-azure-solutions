@@ -1,4 +1,4 @@
-resources: 
+resources:
 - repo: self
 
 pool:
@@ -6,17 +6,30 @@ pool:
   demands: azureps
 
 steps:
+- task: RunARMTTKTests@1
+  displayName: 'ARM TTK tests'
+  inputs:
+    templatelocation: '$(System.DefaultWorkingDirectory)\FortiManager\single-1nic'
+    resultLocation: '$(System.DefaultWorkingDirectory)\FortiManager\single-1nic'
+
+- task: PublishTestResults@2
+  displayName: 'Publish FortiGate A/P LB ARM TTK results'
+  inputs:
+    testRunner: NUnit
+    testResultsFiles: '**\*-armttk.xml'
+    testRunTitle: 'FortiGate ARM TTK verification'
+  condition: always()
+
 - task: AzurePowerShell@2
-  displayName: 'Azure PowerShell script: FilePath'
+  displayName: 'Custom tests: FilePath'
   inputs:
     azureSubscription: 'AzureSubscription'
     ScriptPath: 'FortiGate/Active-Passive-ELB-ILB/test/invokePester.ps1'
     ScriptArguments: '-templatename FortiGate/Active-Passive-ELB-ILB'
     azurePowerShellVersion: LatestVersion
 
-
 - task: PublishTestResults@2
-  displayName: 'Publish Test Results **\TEST-*.xml'
+  displayName: 'Publish custom tests results'
   inputs:
     testRunner: NUnit
     testResultsFiles: '**\TEST-*.xml'
@@ -28,6 +41,6 @@ trigger:
     - master
   paths:
     exclude:
-    - FortiGate/Active-Passive-ELB-ILB/*.md 
+    - FortiGate/Active-Passive-ELB-ILB/*.md
     include:
     - FortiGate/Active-Passive-ELB-ILB/*
