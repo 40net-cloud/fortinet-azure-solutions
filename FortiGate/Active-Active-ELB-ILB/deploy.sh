@@ -75,10 +75,10 @@ then
     echo -n "Enter password: "
     stty_orig=`stty -g` # save original terminal setting.
     stty -echo          # turn-off echoing.
-    read passwd         # read the password
+    read password         # read the password
     stty $stty_orig     # restore terminal setting.
 else
-    passwd="$DEPLOY_PASSWORD"
+    password="$DEPLOY_PASSWORD"
     echo ""
     echo "--> Using password found in env variable DEPLOY_PASSWORD ..."
     echo ""
