@@ -54,7 +54,7 @@ $outputFile = Join-Path $SourceDir "TEST-armttk.xml";
 "Running ARM TTK"
 $results = @(Test-AzTemplate -TemplatePath $SourceDir)
 
-Export-NUnitXml -TestResults $results -Path $resultlocation
+Export-NUnitXml -TestResults $results -Path $SourceDir
 
 $outputFile = Join-Path $SourceDir "TEST-custom.xml";
 
