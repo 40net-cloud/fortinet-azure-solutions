@@ -53,9 +53,10 @@ $outputFile = Join-Path $SourceDir "TEST-armttk.xml";
 
 "Running ARM TTK"
 $results = @(Test-AzTemplate -TemplatePath $SourceDir)
-
+$results
 Export-NUnitXml -TestResults $results -Path $SourceDir
 
 $outputFile = Join-Path $SourceDir "TEST-custom.xml";
 
+"Running custom tests"
 Invoke-Pester -Path $SourceDir -PassThru -OutputFile $outputFile -OutputFormat NUnitXml -EnableExit
