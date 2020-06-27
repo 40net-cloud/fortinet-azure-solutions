@@ -26,8 +26,8 @@ Function random-password ($length = 15) {
 
 # Basic Variables
 $templateName = "Active-Active-ELB-ILB-AZ"
-$sourcePath = "$env:BUILD_SOURCESDIRECTORY\FortiGate\AvailabilityZones\$templateName"
-$scriptPath = "$env:BUILD_SOURCESDIRECTORY\FortiGate\AvailabilityZones\$templateName\test"
+$sourcePath = "$env:BUILD_SOURCESDIRECTORY\FortiGate\$templateName"
+$scriptPath = "$env:BUILD_SOURCESDIRECTORY\FortiGate\$templateName\test"
 $templateFileName = "azuredeploy.json"
 $templateFileLocation = "$sourcePath\$templateFileName"
 $templateMetadataFileName = "metadata.json"
@@ -41,8 +41,8 @@ $testsResourceGroupName = "FORTIQA-$testsRandom-$templateName"
 $testsAdminUsername = "azureuser"
 $testsResourceGroupLocation = "northeurope"
 
-Describe 'ARM Templates Test : Validation & Test Deployment' {
-    Context 'Template Validation' {
+Describe 'FGT A/A' {
+    Context 'Validation' {
         It 'Has a JSON template' {
             $templateFileLocation | Should Exist
         }
@@ -72,7 +72,6 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
                                  'Microsoft.Network/routeTables',
                                  'Microsoft.Network/networkSecurityGroups',
                                  'Microsoft.Network/publicIPAddresses',
-                                 'Microsoft.Network/publicIPAddresses',
                                  'Microsoft.Network/loadBalancers',
                                  'Microsoft.Network/networkInterfaces',
                                  'Microsoft.Network/networkInterfaces',
@@ -93,9 +92,6 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
                                           'FortinetTags',
                                           'instanceType',
                                           'location',
-                                          'publicIP2Name',
-                                          'publicIP2NewOrExisting',
-                                          'publicIP2ResourceGroup',
                                           'publicIPAddressType',
                                           'publicIPName',
                                           'publicIPNewOrExisting',
@@ -116,8 +112,7 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
 
     }
 
-    Context 'Template Test Deployment' {
-
+    Context 'Deployment' {
 
         # Set working directory & create resource group
         Set-Location $sourcePath
@@ -133,35 +128,30 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
         $publicIPName = "FGTLBPublicIP"
         $publicIP2Name = "FGTLBPublicIP2"
 
-        It "Test Deployment of ARM template $templateFileName" {
+        It "Test deployment" {
             (Test-AzureRmResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName" -TemplateFile "$templateFileName" -TemplateParameterObject $params).Count | Should not BeGreaterThan 0
         }
-        It "Deployment of ARM template $templateFileName" {
+        It "Deployment" {
             $resultDeployment = New-AzureRmResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName" -TemplateFile "$templateFileName" -TemplateParameterObject $params
             Write-Host ($resultDeployment | Format-Table | Out-String)
             Write-Host ("Deployment state: " + $resultDeployment.ProvisioningState | Out-String)
             $resultDeployment.ProvisioningState | Should Be "Succeeded"
         }
-        It "Deployment in Azure validation" {
+        It "Search deployment" {
             $result = Get-AzureRmVM | Where-Object { $_.Name -like "$testsPrefix*" }
             Write-Host ($result | Format-Table | Out-String)
             $result | Should Not Be $null
         }
 
-        443, 22 | Foreach-Object {
+        40030, 50030, 40031, 50031 | Foreach-Object {
             it "Port [$_] is listening" {
                 $result = Get-AzureRmPublicIpAddress -Name $publicIPName -ResourceGroupName $testsResourceGroupName
                 $portListening = (Test-NetConnection -Port $_ -ComputerName $result.IpAddress).TcpTestSucceeded
                 $portListening | Should -Be $true
-                $result = Get-AzureRmPublicIpAddress -Name $publicIP2Name -ResourceGroupName $testsResourceGroupName
-                $portListening = (Test-NetConnection -Port $_ -ComputerName $result.IpAddress).TcpTestSucceeded
-                $portListening | Should -Be $true
             }
         }
-    }
 
-    Context 'Cleanup' {
-        It "Cleanup of deployment" {
+        It "Cleanup" {
             Remove-AzureRmResourceGroup -Name $testsResourceGroupName -Force
         }
     }
