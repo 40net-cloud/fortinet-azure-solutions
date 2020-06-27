@@ -188,8 +188,8 @@
 
     "vnetName": "[if(equals(parameters('vnetName'),''),concat(parameters('FortiGateNamePrefix'),'-VNET'),parameters('vnetName'))]",
     "vnetId": "[if(equals(parameters('vnetNewOrExisting'),'new'),resourceId('Microsoft.Network/virtualNetworks', variables('vnetName')),resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks', variables('vnetName')))]",
-    "subnet1Id": "[resourceId('Microsoft.Network/virtualNetworks/subnets',variables('vnetId'),parameters('subnet1Name'))]",
-    "subnet2Id": "[resourceId('Microsoft.Network/virtualNetworks/subnets',variables('vnetId'),parameters('subnet2Name'))]",
+    "subnet1Id": "[resourceId('Microsoft.Network/virtualNetworks/subnets',variables('vnetName'),parameters('subnet1Name'))]",
+    "subnet2Id": "[resourceId('Microsoft.Network/virtualNetworks/subnets',variables('vnetName'),parameters('subnet2Name'))]",
 
     "fgaVmName": "[concat(parameters('FortiGateNamePrefix'),'-FGT-A')]",
     "fgbVmName": "[concat(parameters('FortiGateNamePrefix'),'-FGT-B')]",
