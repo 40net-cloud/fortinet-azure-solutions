@@ -485,7 +485,7 @@
     "internalLBName": "[concat(parameters('FortiGateNamePrefix'),'-InternalLoadBalancer')]",
     "internalLBId": "[resourceId('Microsoft.Network/loadBalancers',variables('internalLBName'))]",
     "internalLBFEName": "[concat(parameters('FortiGateNamePrefix'),'-ILB-',parameters('subnet2Name'),'-FrontEnd')]",
-    "internalLBFEId": "[resourceId('Microsoft.Network/loadBalancers/frontendIPConfigurations/',variables('internalLBName'),,variables('internalLBFEName'))]",
+    "internalLBFEId": "[resourceId('Microsoft.Network/loadBalancers/frontendIPConfigurations/',variables('internalLBName'),variables('internalLBFEName'))]",
     "internalLBBEName": "[concat(parameters('FortiGateNamePrefix'),'-ILB-',parameters('subnet2Name'),'-BackEnd')]",
     "internalLBBEId": "[resourceId('Microsoft.Network/loadBalancers/backendAddressPools/',variables('internalLBName'),variables('internalLBBEName'))]",
     "internalLBProbeName": "lbprobe",
