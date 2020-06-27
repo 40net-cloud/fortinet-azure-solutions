@@ -100,6 +100,7 @@ Describe 'VNET Peering' {
                                           'FortiGateNamePrefix',
                                           'FortinetTags',
                                           'instanceType',
+                                          'location',
                                           'publicIP2Name',
                                           'publicIP2NewOrExisting',
                                           'publicIP2ResourceGroup',
