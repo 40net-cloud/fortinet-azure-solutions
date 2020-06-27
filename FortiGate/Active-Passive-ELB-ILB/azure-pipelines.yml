@@ -10,8 +10,8 @@ steps:
   displayName: 'Running tests: FilePath'
   inputs:
     azureSubscription: 'AzureSubscription'
-    ScriptPath: 'FortiGate/AvailabilityZones/Active-Passive-ELB-ILB/test/invokePester.ps1'
-    ScriptArguments: '-templatename FortiGate/AvailabilityZones/Active-Passive-ELB-ILB'
+    ScriptPath: 'FortiGate/Active-Passive-ELB-ILB/test/invokePester.ps1'
+    ScriptArguments: '-templatename FortiGate/Active-Passive-ELB-ILB'
     azurePowerShellVersion: LatestVersion
 
 - task: PublishTestResults@2
