@@ -21,7 +21,7 @@ steps:
 #  condition: always()
 
 - task: AzurePowerShell@2
-  displayName: 'Custom tests: FilePath'
+  displayName: 'Running tests: FilePath'
   inputs:
     azureSubscription: 'AzureSubscription'
     ScriptPath: 'FortiGate/Active-Active-ELB-ILB/test/invokePester.ps1'
@@ -29,11 +29,19 @@ steps:
     azurePowerShellVersion: LatestVersion
 
 - task: PublishTestResults@2
+  displayName: 'Publish ARM TTK results'
+  inputs:
+    testRunner: NUnit
+    testResultsFiles: '**\*-armttk.xml'
+    testRunTitle: 'FortiGate Active/Active ELB-ILB ARM TTK verification'
+  condition: always()
+
+- task: PublishTestResults@2
   displayName: 'Publish custom test result'
   inputs:
     testRunner: NUnit
     testResultsFiles: '**\TEST-*.xml'
-    testRunTitle: 'FortiGate ARM Template Active/Active ELB ILB verificatio'
+    testRunTitle: 'FortiGate ARM Template Active/Active ELB ILB verification'
 
 trigger:
   branches:
