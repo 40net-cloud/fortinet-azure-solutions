@@ -2,11 +2,11 @@ resources:
 - repo: self
 
 pool:
-  vmImage: 'windows-lates'
+  vmImage: 'windows-latest'
   demands: azureps
 
 steps:
- - task: AzurePowerShell@2
+- task: AzurePowerShell@2
   displayName: 'Running tests: FilePath'
   inputs:
     azureSubscription: 'AzureSubscription'

@@ -2,7 +2,7 @@ resources:
 - repo: self
 
 pool:
-  vmImage: 'ubuntu-latest'
+  vmImage: 'windows-latest'
   demands: azureps
 
 steps:
