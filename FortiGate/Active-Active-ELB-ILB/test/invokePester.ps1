@@ -55,6 +55,7 @@ $outputFile = Join-Path $SourceDir "TEST-armttk.xml";
 $results = @(Test-AzTemplate -TemplatePath $SourceDir)
 $results
 Export-NUnitXml -TestResults $results -Path $SourceDir
+dir $SourceDir
 
 $outputFile = Join-Path $SourceDir "TEST-custom.xml";
 
