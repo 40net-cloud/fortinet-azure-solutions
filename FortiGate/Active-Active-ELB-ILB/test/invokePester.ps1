@@ -42,15 +42,9 @@ $modulePath = Join-Path $TempDir Export-NUnitXml.psm1
 
 if (-not(Test-Path $modulePath)) {
 
-    # Note: PSGet and chocolatey are not supported in hosted vsts build agent
-    $tempFile = Join-Path $TempDir pester.zip
+    $tempFile = Join-Path $TempDir Export-NUnitXml.psm1
     [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
     Invoke-WebRequest https://raw.githubusercontent.com/sam-cogan/arm-ttk-extension/master/task/Export-NUnitXml.psm1 -OutFile $tempFile
-
-    [System.Reflection.Assembly]::LoadWithPartialName('System.IO.Compression.FileSystem') | Out-Null
-    [System.IO.Compression.ZipFile]::ExtractToDirectory($tempFile, $tempDir)
-
-    Remove-Item $tempFile
 }
 
 Import-Module $modulePath -DisableNameChecking
