@@ -41,8 +41,8 @@ $testsResourceGroupName = "FORTIQA-$testsRandom-$templateName"
 $testsAdminUsername = "azureuser"
 $testsResourceGroupLocation = "westeurope"
 
-Describe 'ARM Templates Test : Validation & Test Deployment' {
-    Context 'Template Validation' {
+Describe 'VNET Peering' {
+    Context 'Validation' {
         It 'Has a JSON template' {
             $templateFileLocation | Should Exist
         }
@@ -144,7 +144,7 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
 
     }
 
-    Context 'Template Test Deployment' {
+    Context 'Deployment' {
 
         # Set working directory & create resource group
         Set-Location $sourcePath
@@ -160,16 +160,16 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
         $publicIP2Name = "FGTAMgmtPublicIP"
         $publicIP3Name = "FGTBMgmtPublicIP"
 
-        It "Test Deployment of ARM template $templateFileName" {
+        It "Test Deployment" {
             (Test-AzureRmResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName" -TemplateFile "$templateFileName" -TemplateParameterObject $params).Count | Should not BeGreaterThan 0
         }
-        It "Deployment of ARM template $templateFileName" {
+        It "Deployment" {
             $resultDeployment = New-AzureRmResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName" -TemplateFile "$templateFileName" -TemplateParameterObject $params
             Write-Host ($resultDeployment | Format-Table | Out-String)
             Write-Host ("Deployment state: " + $resultDeployment.ProvisioningState | Out-String)
             $resultDeployment.ProvisioningState | Should Be "Succeeded"
         }
-        It "Deployment in Azure validation" {
+        It "Search deployment" {
             $result = Get-AzureRmVM | Where-Object { $_.Name -like "$testsPrefix*" }
             Write-Host ($result | Format-Table | Out-String)
             $result | Should Not Be $null
@@ -185,10 +185,8 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
                 $portListening | Should -Be $true
             }
         }
-    }
 
-    Context 'Cleanup' {
-        It "Cleanup of deployment" {
+        It "Cleanup" {
             Remove-AzureRmResourceGroup -Name $testsResourceGroupName -Force
         }
     }
