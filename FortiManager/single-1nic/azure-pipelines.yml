@@ -6,22 +6,8 @@ pool:
   demands: azureps
 
 steps:
-#- task: RunARMTTKTests@1
-#  displayName: 'ARM TTK tests'
-#  inputs:
-#    templatelocation: '$(System.DefaultWorkingDirectory)\FortiManager\single-1nic'
-#    resultLocation: '$(System.DefaultWorkingDirectory)\FortiManager\single-1nic'
-
-#- task: PublishTestResults@2
-#  displayName: 'Publish FortiManager ARM TTK results'
-#  inputs:
-#    testRunner: NUnit
-#    testResultsFiles: '**\*-armttk.xml'
-#    testRunTitle: 'FortiManager ARM TTK verification'
-#  condition: always()
-
 - task: AzurePowerShell@2
-  displayName: 'Custom tests: FilePath'
+  displayName: 'Custom tests:'
   inputs:
     azureSubscription: 'AzureSubscription'
     ScriptPath: 'FortiManager/single-1nic/test/invokePester.ps1'
@@ -29,12 +15,19 @@ steps:
     azurePowerShellVersion: LatestVersion
 
 - task: PublishTestResults@2
+  displayName: 'Publish ARM TTK results'
+  inputs:
+    testRunner: NUnit
+    testResultsFiles: '**\*-armttk.xml'
+    testRunTitle: 'ARM TTK verification'
+  condition: always()
+
+- task: PublishTestResults@2
   displayName: 'Publish custom tests results'
   inputs:
     testRunner: NUnit
     testResultsFiles: '**\TEST-*.xml'
-    testRunTitle: 'FortiManager ARM Template verification'
-
+    testRunTitle: 'ARM Template verification'
 
 trigger:
   branches:
