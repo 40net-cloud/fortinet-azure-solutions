@@ -26,8 +26,8 @@ Function random-password ($length = 15) {
 
 # Basic Variables
 $templateName = "Active-Active-ELB-ILB-AZ"
-$sourcePath = "$env:BUILD_SOURCESDIRECTORY\FortiGate\$templateName"
-$scriptPath = "$env:BUILD_SOURCESDIRECTORY\FortiGate\$templateName\test"
+$sourcePath = "$env:BUILD_SOURCESDIRECTORY\FortiGate\AvailabilityZones\$templateName"
+$scriptPath = "$env:BUILD_SOURCESDIRECTORY\FortiGate\AvailabilityZones\$templateName\test"
 $templateFileName = "azuredeploy.json"
 $templateFileLocation = "$sourcePath\$templateFileName"
 $templateMetadataFileName = "metadata.json"
