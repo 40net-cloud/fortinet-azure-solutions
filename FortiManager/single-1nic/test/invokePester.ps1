@@ -4,7 +4,6 @@ param (
 
 $SourceDir = "$env:BUILD_SOURCESDIRECTORY\$templatename"
 $TempDir = $env:TEMP
-
 $modulePath = Join-Path $TempDir arm-ttk-master\arm-ttk\arm-ttk.psd1
 
 if (-not(Test-Path $modulePath)) {
@@ -21,10 +20,6 @@ if (-not(Test-Path $modulePath)) {
 }
 
 Import-Module $modulePath -DisableNameChecking
-
-$outputFile = Join-Path $SourceDir "TEST-pester.xml";
-"Running ARM TTK"
-Test-AzTemplate -TemplatePath $SourceDir
 
 $modulePath = Join-Path $TempDir Pester-master\Pester.psm1
 
@@ -43,6 +38,26 @@ if (-not(Test-Path $modulePath)) {
 
 Import-Module $modulePath -DisableNameChecking
 
-$outputFile = Join-Path $SourceDir "TEST-pester.xml";
+$modulePath = Join-Path $TempDir Export-NUnitXml.psm1
 
+if (-not(Test-Path $modulePath)) {
+
+    $tempFile = Join-Path $TempDir Export-NUnitXml.psm1
+    [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+    Invoke-WebRequest https://raw.githubusercontent.com/sam-cogan/arm-ttk-extension/master/task/Export-NUnitXml.psm1 -OutFile $tempFile
+}
+
+Import-Module $modulePath -DisableNameChecking
+
+$outputFile = Join-Path $SourceDir "TEST-armttk.xml";
+
+"Running ARM TTK"
+$results = @(Test-AzTemplate -TemplatePath $SourceDir)
+$results
+Export-NUnitXml -TestResults $results -Path $SourceDir
+dir $SourceDir
+
+$outputFile = Join-Path $SourceDir "TEST-custom.xml";
+
+"Running custom tests"
 Invoke-Pester -Path $SourceDir -PassThru -OutputFile $outputFile -OutputFormat NUnitXml -EnableExit
