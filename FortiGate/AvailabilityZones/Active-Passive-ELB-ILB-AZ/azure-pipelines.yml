@@ -6,7 +6,7 @@ pool:
   demands: azureps
 
 steps:
-- task: AzurePowerShell@2
+- task: AzurePowerShell@4
   displayName: 'Running tests: FilePath'
   inputs:
     azureSubscription: 'AzureSubscription'
