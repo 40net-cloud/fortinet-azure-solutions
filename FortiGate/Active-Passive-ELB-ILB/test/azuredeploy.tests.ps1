@@ -94,10 +94,10 @@ Describe 'FGT A/P LB' {
             $expectedTemplateParameters = 'acceleratedNetworking',
                                           'adminPassword',
                                           'adminUsername',
-                                          'FortiGateImageSKU',
-                                          'FortiGateImageVersion',
-                                          'FortiGateNamePrefix',
-                                          'FortinetTags',
+                                          'fortiGateImageSKU',
+                                          'fortiGateImageVersion',
+                                          'fortiGateNamePrefix',
+                                          'fortinetTags',
                                           'instanceType',
                                           'location',
                                           'publicIP2Name',
@@ -141,7 +141,7 @@ Describe 'FGT A/P LB' {
 
         $params = @{ 'adminUsername'=$testsAdminUsername
                      'adminPassword'=$testsResourceGroupName
-                     'FortiGateNamePrefix'=$testsPrefix
+                     'fortiGateNamePrefix'=$testsPrefix
                     }
         $publicIPName = "FGTAMgmtPublicIP"
         $publicIP2Name = "FGTBMgmtPublicIP"
@@ -162,12 +162,19 @@ Describe 'FGT A/P LB' {
         }
 
         443, 22 | Foreach-Object {
-            it "Port [$_] is listening" {
-                $result = Get-AzureRmPublicIpAddress -Name $publicIPName -ResourceGroupName $testsResourceGroupName
-                $portListening = (Test-NetConnection -Port $_ -ComputerName $result.IpAddress).TcpTestSucceeded
+            it "FGT A: Port [$_] is listening" {
+                $result = Get-AzPublicIpAddress -Name $publicIPName -ResourceGroupName $testsResourceGroupName
+                $portListening = (Test-Connection -TargetName $result.IpAddress -TCPPort $_ -TimeoutSeconds 100)
+                Write-Host $portListening
                 $portListening | Should -Be $true
-                $result = Get-AzureRmPublicIpAddress -Name $publicIP2Name -ResourceGroupName $testsResourceGroupName
-                $portListening = (Test-NetConnection -Port $_ -ComputerName $result.IpAddress).TcpTestSucceeded
+            }
+        }
+
+        443, 22 | Foreach-Object {
+            it "FGT B: Port [$_] is listening" {
+                $result = Get-AzPublicIpAddress -Name $publicIP2Name -ResourceGroupName $testsResourceGroupName
+                $portListening = (Test-Connection -TargetName $result.IpAddress -TCPPort $_ -TimeoutSeconds 100)
+                Write-Host $portListening
                 $portListening | Should -Be $true
             }
         }

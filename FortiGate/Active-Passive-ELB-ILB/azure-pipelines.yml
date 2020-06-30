@@ -2,23 +2,24 @@ resources:
 - repo: self
 
 pool:
-  vmImage: 'windows-latest'
+  vmImage: 'ubuntu-latest'
   demands: azureps
 
 steps:
-- task: AzurePowerShell@2
-  displayName: 'Running tests: FilePath'
+- task: AzurePowerShell@5
+  displayName: 'Running tests'
   inputs:
     azureSubscription: 'AzureSubscription'
     ScriptPath: 'FortiGate/Active-Passive-ELB-ILB/test/invokePester.ps1'
     ScriptArguments: '-templatename FortiGate/Active-Passive-ELB-ILB'
     azurePowerShellVersion: LatestVersion
+    pwsh: true
 
 - task: PublishTestResults@2
   displayName: 'Publish ARM TTK results'
   inputs:
     testRunner: NUnit
-    testResultsFiles: '**\*-armttk.xml'
+    testResultsFiles: '**/*-armttk.xml'
     testRunTitle: 'ARM TTK verification'
   condition: always()
 
@@ -26,7 +27,7 @@ steps:
   displayName: 'Publish Test Results **\TEST-*.xml'
   inputs:
     testRunner: NUnit
-    testResultsFiles: '**\TEST-*.xml'
+    testResultsFiles: '**/TEST-*.xml'
     testRunTitle: 'ARM template and deployment test'
 
 trigger:
