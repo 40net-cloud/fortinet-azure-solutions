@@ -21,7 +21,7 @@ if (-not(Test-Path $modulePath)) {
 
 Import-Module $modulePath -DisableNameChecking
 
-$modulePath = Join-Path $TempDir Pester-master\Pester.psm1
+$modulePath = Join-Path $TempDir Pester-master/Pester.psm1
 
 if (-not(Test-Path $modulePath)) {
 
@@ -55,7 +55,6 @@ $outputFile = Join-Path $SourceDir "TEST-armttk.xml";
 $results = @(Test-AzTemplate -TemplatePath $SourceDir)
 $results
 Export-NUnitXml -TestResults $results -Path $SourceDir
-dir $SourceDir
 
 $outputFile = Join-Path $SourceDir "TEST-custom.xml";
 
