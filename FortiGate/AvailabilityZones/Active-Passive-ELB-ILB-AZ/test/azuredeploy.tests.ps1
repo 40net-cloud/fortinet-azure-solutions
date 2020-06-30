@@ -93,9 +93,9 @@ Describe 'FGT A/P LB' {
             $expectedTemplateParameters = 'acceleratedNetworking',
                                           'adminPassword',
                                           'adminUsername',
-                                          'FortiGateImageSKU',
-                                          'FortiGateImageVersion',
-                                          'FortiGateNamePrefix',
+                                          'fortigateImageSKU',
+                                          'fortigateImageVersion',
+                                          'fortigateNamePrefix',
                                           'FortinetTags',
                                           'instanceType',
                                           'location',
@@ -140,7 +140,7 @@ Describe 'FGT A/P LB' {
 
         $params = @{ 'adminUsername'=$testsAdminUsername
                      'adminPassword'=$testsResourceGroupName
-                     'FortiGateNamePrefix'=$testsPrefix
+                     'fortigateNamePrefix'=$testsPrefix
                     }
         $publicIPName = "FGTAMgmtPublicIP"
         $publicIP2Name = "FGTBMgmtPublicIP"
@@ -161,11 +161,16 @@ Describe 'FGT A/P LB' {
         }
 
         443, 22 | Foreach-Object {
-            it "Port [$_] is listening" {
+            it "FGT A: Port [$_] is listening" {
                 $result = Get-AzPublicIpAddress -Name $publicIPName -ResourceGroupName $testsResourceGroupName
                 $portListening = (Test-Connection -TargetName $result.IpAddress -TCPPort $_ -TimeoutSeconds 100)
                 Write-Host $portListening
                 $portListening | Should -Be $true
+            }
+        }
+
+        443, 22 | Foreach-Object {
+            it "FGT B: Port [$_] is listening" {
                 $result = Get-AzPublicIpAddress -Name $publicIP2Name -ResourceGroupName $testsResourceGroupName
                 $portListening = (Test-Connection -TargetName $result.IpAddress -TCPPort $_ -TimeoutSeconds 100)
                 Write-Host $portListening
@@ -173,8 +178,8 @@ Describe 'FGT A/P LB' {
             }
         }
 
-#        It "Cleanup of deployment" {
-#            Remove-AzResourceGroup -Name $testsResourceGroupName -Force
-#        }
+        It "Cleanup of deployment" {
+            Remove-AzResourceGroup -Name $testsResourceGroupName -Force
+        }
     }
 }
