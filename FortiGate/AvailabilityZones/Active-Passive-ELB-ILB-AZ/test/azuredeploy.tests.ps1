@@ -164,9 +164,11 @@ Describe 'FGT A/P LB' {
             it "Port [$_] is listening" {
                 $result = Get-AzPublicIpAddress -Name $publicIPName -ResourceGroupName $testsResourceGroupName
                 $portListening = (Test-Connection -TargetName $result.IpAddress -TCPPort $_ -TimeoutSeconds 100)
+                $portListening
                 $portListening | Should -Be $true
                 $result = Get-AzPublicIpAddress -Name $publicIP2Name -ResourceGroupName $testsResourceGroupName
                 $portListening = (Test-Connection -TargetName $result.IpAddress -TCPPort $_ -TimeoutSeconds 100)
+                $portListening
                 $portListening | Should -Be $true
             }
         }
