@@ -163,10 +163,10 @@ Describe 'FGT A/P LB' {
         443, 22 | Foreach-Object {
             it "Port [$_] is listening" {
                 $result = Get-AzPublicIpAddress -Name $publicIPName -ResourceGroupName $testsResourceGroupName
-                $portListening = (Test-Connection $result.IpAddress -TCPPort $_ -TimeoutSeconds 100)
+                $portListening = (Test-Connection -TargetName $result.IpAddress -TCPPort $_ -TimeoutSeconds 100)
                 $portListening | Should -Be $true
                 $result = Get-AzPublicIpAddress -Name $publicIP2Name -ResourceGroupName $testsResourceGroupName
-                $portListening = (Test-Connection $result.IpAddress -TCPPort $_ -TimeoutSeconds 100)
+                $portListening = (Test-Connection -TargetName $result.IpAddress -TCPPort $_ -TimeoutSeconds 100)
                 $portListening | Should -Be $true
             }
         }
