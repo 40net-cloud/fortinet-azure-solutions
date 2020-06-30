@@ -98,9 +98,10 @@
         "location": {
             "value": "[resourceGroup().location]"
         },
-        "FortinetTags": {
+        "fortinetTags": {
             "value": {
-                "provider": "6EB3B02F-50E5-4A3E-8CB8-2E129258317D"
+                "publisher": "Fortinet",
+                "provider": "6EB3B02F-50E5-4A3E-8CB8-2E12925831AP-AZ"
             }
         }
     }

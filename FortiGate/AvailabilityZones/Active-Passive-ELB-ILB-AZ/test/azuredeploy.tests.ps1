@@ -96,7 +96,7 @@ Describe 'FGT A/P LB' {
                                           'fortigateImageSKU',
                                           'fortigateImageVersion',
                                           'fortigateNamePrefix',
-                                          'FortinetTags',
+                                          'fortinetTags',
                                           'instanceType',
                                           'location',
                                           'publicIP2Name',
