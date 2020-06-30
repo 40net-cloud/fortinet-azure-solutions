@@ -260,7 +260,7 @@
         "description": "Location for all resources."
       }
     },
-    "FortinetTags": {
+    "fortinetTags": {
     "type": "object",
     "defaultValue": {
       "provider": "6EB3B02F-50E5-4A3E-8CB8-2E129258317D"
@@ -396,7 +396,7 @@
       "name": "[variables('compute_AvailabilitySet_FG_Name')]",
       "apiVersion": "2019-12-01",
       "tags": {
-       "provider": "[toUpper(parameters('FortinetTags').provider)]"
+       "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
       "location": "[parameters('location')]",
       "properties": {
@@ -412,7 +412,7 @@
       "name": "[variables('routeTableName')]",
       "apiVersion": "2020-04-01",
       "tags": {
-       "provider": "[toUpper(parameters('FortinetTags').provider)]"
+       "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
       "location": "[parameters('location')]",
       "properties": {
@@ -486,7 +486,7 @@
       "name": "[variables('internalLBName')]",
       "location": "[parameters('location')]",
       "tags": {
-       "provider": "[toUpper(parameters('FortinetTags').provider)]"
+       "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
       "sku": {
         "name": "Standard"
@@ -549,7 +549,7 @@
     {
       "apiVersion": "2020-04-01",
       "tags": {
-        "provider": "[toUpper(parameters('FortinetTags').provider)]"
+        "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
       "type": "Microsoft.Network/networkSecurityGroups",
       "name": "[variables('NSGName')]",
@@ -592,7 +592,7 @@
       "type": "Microsoft.Network/publicIPAddresses",
       "apiVersion": "2020-04-01",
       "tags": {
-        "provider": "[toUpper(parameters('FortinetTags').provider)]"
+        "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
       "name": "[variables('publicIPName')]",
       "location": "[parameters('location')]",
@@ -609,7 +609,7 @@
       "type": "Microsoft.Network/publicIPAddresses",
       "apiVersion": "2020-04-01",
       "tags": {
-        "provider": "[toUpper(parameters('FortinetTags').provider)]"
+        "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
       "name": "[variables('publicIP2Name')]",
       "location": "[parameters('location')]",
@@ -626,7 +626,7 @@
       "type": "Microsoft.Network/publicIPAddresses",
       "apiVersion": "2020-04-01",
       "tags": {
-        "provider": "[toUpper(parameters('FortinetTags').provider)]"
+        "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
       "name": "[variables('publicIP3Name')]",
       "location": "[parameters('location')]",
@@ -644,7 +644,7 @@
       "name": "[variables('externalLBName')]",
       "location": "[parameters('location')]",
       "tags": {
-        "provider": "[toUpper(parameters('FortinetTags').provider)]"
+        "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
       "sku":
       {
@@ -725,7 +725,7 @@
     {
       "apiVersion": "2020-04-01",
       "tags": {
-        "provider": "[toUpper(parameters('FortinetTags').provider)]"
+        "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[variables('network_NIC_fga1_Name')]",
@@ -763,7 +763,7 @@
     {
       "apiVersion": "2020-04-01",
       "tags": {
-        "provider": "[toUpper(parameters('FortinetTags').provider)]"
+        "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[variables('network_NIC_fgb1_Name')]",
@@ -801,7 +801,7 @@
     {
       "apiVersion": "2020-04-01",
       "tags": {
-       "provider": "[toUpper(parameters('FortinetTags').provider)]"
+       "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[variables('network_NIC_fga2_Name')]",
@@ -838,7 +838,7 @@
     {
       "apiVersion": "2020-04-01",
       "tags": {
-       "provider": "[toUpper(parameters('FortinetTags').provider)]"
+       "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[variables('network_NIC_fgb2_Name')]",
@@ -875,7 +875,7 @@
     {
       "apiVersion": "2020-04-01",
       "tags": {
-       "provider": "[toUpper(parameters('FortinetTags').provider)]"
+       "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[variables('network_NIC_fga3_Name')]",
@@ -906,7 +906,7 @@
     {
       "apiVersion": "2020-04-01",
       "tags": {
-       "provider": "[toUpper(parameters('FortinetTags').provider)]"
+       "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[variables('network_NIC_fgb3_Name')]",
@@ -937,7 +937,7 @@
     {
       "apiVersion": "2020-04-01",
       "tags": {
-       "provider": "[toUpper(parameters('FortinetTags').provider)]"
+       "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[variables('network_NIC_fga4_Name')]",
@@ -971,7 +971,7 @@
     {
       "apiVersion": "2020-04-01",
       "tags": {
-       "provider": "[toUpper(parameters('FortinetTags').provider)]"
+       "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[variables('network_NIC_fgb4_Name')]",
@@ -1007,7 +1007,7 @@
       "name": "[variables('fgaVmName')]",
       "apiVersion": "2019-12-01",
       "tags": {
-       "provider": "[toUpper(parameters('FortinetTags').provider)]"
+       "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
       "identity": {
         "type": "SystemAssigned"
@@ -1090,7 +1090,7 @@
       "name": "[variables('fgbVmName')]",
       "apiVersion": "2019-12-01",
       "tags": {
-       "provider": "[toUpper(parameters('FortinetTags').provider)]"
+       "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
       "identity": {
         "type": "SystemAssigned"
