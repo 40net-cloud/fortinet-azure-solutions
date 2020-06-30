@@ -6,13 +6,14 @@ pool:
   demands: azureps
 
 steps:
-- task: AzurePowerShell@4
+- task: AzurePowerShell@5
   displayName: 'Running tests: FilePath'
   inputs:
     azureSubscription: 'AzureSubscription'
     ScriptPath: 'FortiGate/AvailabilityZones/Active-Passive-ELB-ILB-AZ/test/invokePester.ps1'
     ScriptArguments: '-templatename FortiGate/AvailabilityZones/Active-Passive-ELB-ILB-AZ'
     azurePowerShellVersion: LatestVersion
+    pwsh: true
 
 - task: PublishTestResults@2
   displayName: 'Publish ARM TTK results'
