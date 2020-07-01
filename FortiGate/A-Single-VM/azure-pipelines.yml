@@ -14,13 +14,6 @@ steps:
     ScriptArguments: '-templatename FortiGate/A-Single-VM'
     azurePowerShellVersion: LatestVersion
     pwsh: true
-- task: AzurePowerShell@2
-  displayName: 'Azure PowerShell script: FilePath'
-  inputs:
-    azureSubscription: 'AzureSubscription'
-    ScriptPath: 'FortiGate/A-Single-VM/test/invokePester.ps1'
-    ScriptArguments: '-templatename FortiGate/A-Single-VM'
-    azurePowerShellVersion: LatestVersion
 
 - task: PublishTestResults@2
   displayName: 'Publish ARM TTK results'
