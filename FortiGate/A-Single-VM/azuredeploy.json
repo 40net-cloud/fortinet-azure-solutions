@@ -213,25 +213,27 @@
 
     "vnetName": "[if(equals(parameters('vnetName'),''),concat(parameters('fortigateNamePrefix'),'-VNET'),parameters('vnetName'))]",
     "vnetID": "[if(equals(parameters('vnetNewOrExisting'),'new'),resourceId('Microsoft.Network/virtualNetworks', variables('vnetName')),resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks', variables('vnetName')))]",
-    "subnet1Ref": "[concat(variables('vnetID'),'/subnets/', parameters('subnet1Name'))]",
-    "subnet2Ref": "[concat(variables('vnetID'),'/subnets/', parameters('subnet2Name'))]",
+    "subnet1Id": "[resourceId('Microsoft.Network/virtualNetworks/subnets',variables('vnetName'),parameters('subnet1Name'))]",
+    "subnet2Id": "[resourceId('Microsoft.Network/virtualNetworks/subnets',variables('vnetName'),parameters('subnet2Name'))]",
 
-    "fg1VmName": "[concat(parameters('fortigateNamePrefix'),'-FGT-A')]",
+    "fgaVmName": "[concat(parameters('fortigateNamePrefix'),'-FGT-A')]",
+    "fgaCustomData": "[base64(concat('config system sdn-connector\nedit AzureSDN\nset type azure\nend\nend\nconfig router static\nedit 1\nset gateway ', variables('sn1GatewayIP'), '\nset device port1\nnext\nedit 2\nset dst ', parameters('vnetAddressPrefix'), '\nset gateway ', variables('sn2GatewayIP'), '\nset device port2\nnext\nconfig system interface\nedit port1\nset mode static\nset ip ',  variables('sn1IPfga'), '/', variables('sn1CIDRmask'), '\nset description external\nset allowaccess ping https ssh ftm\nnext\nedit port2\nset mode static\nset ip ', variables('sn2IPfga'), '/', variables('sn2CIDRmask'), '\nset description internal\nset allowaccess probe-response\nnext\nend\nconfig firewall address\nnext\nedit ProtectedASubnet\nset associated-interface port2\nset subnet ', parameters('subnet3Prefix'), '\nnext\nedit ProtectedBSubnet\nset associated-interface port2\nset subnet ', parameters('subnet4Prefix'), '\nnext\nend\nconfig firewall policy\nedit 1\nset name ProtectedSubnets-to-Internet\nset srcintf port2\nset dstintf port1\nset srcaddr ProtectedASubnet ProtectedBSubnet\nset dstaddr all\nset action accept\nset schedule always\nset service ALL\nset utm-status enable\nset fsso disable\nset av-profile default\nset webfilter-profile default\nset dnsfilter-profile default\nset ips-sensor default\nset application-list default\nset ssl-ssh-profile certificate-inspection\nset nat enable\nnext\nend\n'))]",
 
     "routeTableProtectedAName": "[concat(parameters('fortigateNamePrefix'),'-RT-PROTECTED-A')]",
     "routeTableProtectedAId": "[resourceId('Microsoft.Network/routeTables',variables('routeTableProtectedAName'))]",
     "routeTableProtectedBName": "[concat(parameters('fortigateNamePrefix'),'-RT-PROTECTED-B')]",
     "routeTableProtectedBId": "[resourceId('Microsoft.Network/routeTables',variables('routeTableProtectedBName'))]",
 
-    "network_NIC_fg11_Name": "[concat(variables('fg1VmName'),'-Nic1')]",
-    "network_NIC_fg11_Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('network_NIC_fg11_Name'))]",
-    "network_NIC_fg12_Name": "[concat(variables('fg1VmName'),'-Nic2')]",
-    "network_NIC_fg12_Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('network_NIC_fg12_Name'))]",
+    "network_NIC_fga1_Name": "[concat(variables('fgaVmName'),'-Nic1')]",
+    "network_NIC_fga1_Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('network_NIC_fga1_Name'))]",
+    "network_NIC_fga2_Name": "[concat(variables('fgaVmName'),'-Nic2')]",
+    "network_NIC_fga2_Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('network_NIC_fga2_Name'))]",
 
     "publicIPName": "[if(equals(parameters('publicIPName'),''),concat(parameters('fortigateNamePrefix'),'-FGT-PIP'),parameters('publicIPName'))]",
     "publicIPID": "[if(equals(parameters('publicIPNewOrExisting'),'new'),resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPName')),resourceId(parameters('publicIPResourceGroup'),'Microsoft.Network/publicIPAddresses',variables('publicIPName')))]",
 
     "NSGName": "[concat(parameters('fortigateNamePrefix'),'-',uniqueString(resourceGroup().id),'-NSG')]",
+    "NSGId": "[resourceID('Microsoft.Network/networkSecurityGroups/',variables('NSGName'))]",
 
     "sn1IPArray": "[split(parameters('subnet1Prefix'),'.')]",
     "sn1IPArray2ndString": "[string(variables('sn1IPArray')[3])]",
@@ -242,7 +244,7 @@
     "sn1IPArray1": "[string(int(variables('sn1IPArray')[1]))]",
     "sn1IPArray0": "[string(int(variables('sn1IPArray')[0]))]",
     "sn1GatewayIP": "[concat(variables('sn1IPArray0'),'.',variables('sn1IPArray1'),'.',variables('sn1IPArray2'),'.',variables('sn1IPArray3'))]",
-    "sn1IPfg1": "[concat(variables('sn1IPArray0'),'.',variables('sn1IPArray1'),'.',variables('sn1IPArray2'),'.',add(int(variables('sn1IPArray2nd')[0]),5))]",
+    "sn1IPfga": "[concat(variables('sn1IPArray0'),'.',variables('sn1IPArray1'),'.',variables('sn1IPArray2'),'.',add(int(variables('sn1IPArray2nd')[0]),5))]",
 
     "sn2IPArray": "[split(parameters('subnet2Prefix'),'.')]",
     "sn2IPArray2ndString": "[string(variables('sn2IPArray')[3])]",
@@ -253,9 +255,7 @@
     "sn2IPArray1": "[string(int(variables('sn2IPArray')[1]))]",
     "sn2IPArray0": "[string(int(variables('sn2IPArray')[0]))]",
     "sn2GatewayIP": "[concat(variables('sn2IPArray0'),'.',variables('sn2IPArray1'),'.',variables('sn2IPArray2'),'.',variables('sn2IPArray3'))]",
-    "sn2IPfg1": "[concat(variables('sn2IPArray0'),'.',variables('sn2IPArray1'),'.',variables('sn2IPArray2'),'.',add(int(variables('sn2IPArray2nd')[0]),5))]",
-
-    "customDataFG1": "[base64(concat('config system sdn-connector\nedit AzureSDN\nset type azure\nend\nend\nconfig router static\nedit 1\nset gateway ', variables('sn1GatewayIP'), '\nset device port1\nnext\nedit 2\nset dst ', parameters('vnetAddressPrefix'), '\nset gateway ', variables('sn2GatewayIP'), '\nset device port2\nnext\nconfig system interface\nedit port1\nset mode static\nset ip ',  variables('sn1IPfg1'), '/', variables('sn1CIDRmask'), '\nset description external\nset allowaccess ping https ssh ftm\nnext\nedit port2\nset mode static\nset ip ', variables('sn2IPfg1'), '/', variables('sn2CIDRmask'), '\nset description internal\nset allowaccess probe-response\nnext\nend\nconfig firewall address\nnext\nedit ProtectedASubnet\nset associated-interface port2\nset subnet ', parameters('subnet3Prefix'), '\nnext\nedit ProtectedBSubnet\nset associated-interface port2\nset subnet ', parameters('subnet4Prefix'), '\nnext\nend\nconfig firewall policy\nedit 1\nset name ProtectedSubnets-to-Internet\nset srcintf port2\nset dstintf port1\nset srcaddr ProtectedASubnet ProtectedBSubnet\nset dstaddr all\nset action accept\nset schedule always\nset service ALL\nset utm-status enable\nset fsso disable\nset av-profile default\nset webfilter-profile default\nset dnsfilter-profile default\nset ips-sensor default\nset application-list default\nset ssl-ssh-profile certificate-inspection\nset nat enable\nnext\nend\n'))]"
+    "sn2IPfga": "[concat(variables('sn2IPArray0'),'.',variables('sn2IPArray1'),'.',variables('sn2IPArray2'),'.',add(int(variables('sn2IPArray2nd')[0]),5))]"
   },
   "resources": [
     {
@@ -286,7 +286,7 @@
             "properties": {
               "addressPrefix": "[parameters('vnetAddressPrefix')]",
               "nextHopType": "VirtualAppliance",
-              "nextHopIPAddress": "[variables('sn2IPfg1')]"
+              "nextHopIPAddress": "[variables('sn2IPfga')]"
             }
           },
           {
@@ -301,7 +301,7 @@
             "properties": {
               "addressPrefix": "0.0.0.0/0",
               "nextHopType": "VirtualAppliance",
-              "nextHopIPAddress": "[variables('sn2IPfg1')]"
+              "nextHopIPAddress": "[variables('sn2IPfga')]"
             }
           }
         ]
@@ -322,7 +322,7 @@
             "properties": {
               "addressPrefix": "[parameters('vnetAddressPrefix')]",
               "nextHopType": "VirtualAppliance",
-              "nextHopIPAddress": "[variables('sn2IPfg1')]"
+              "nextHopIPAddress": "[variables('sn2IPfga')]"
             }
           },
           {
@@ -337,7 +337,7 @@
             "properties": {
               "addressPrefix": "0.0.0.0/0",
               "nextHopType": "VirtualAppliance",
-              "nextHopIPAddress": "[variables('sn2IPfg1')]"
+              "nextHopIPAddress": "[variables('sn2IPfga')]"
             }
           }
         ]
@@ -457,24 +457,24 @@
         "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
       "type": "Microsoft.Network/networkInterfaces",
-      "name": "[variables('network_NIC_fg11_Name')]",
+      "name": "[variables('network_NIC_fga1_Name')]",
       "location": "[parameters('location')]",
       "dependsOn": [
-        "[variables('vnetName')]",
-        "[variables('NSGName')]"
+        "[variables('vnetId')]",
+        "[variables('NSGId')]"
       ],
       "properties": {
         "ipConfigurations": [
           {
             "name": "ipconfig1",
             "properties": {
-              "privateIPAddress": "[variables('sn1IPfg1')]",
+              "privateIPAddress": "[variables('sn1IPfga')]",
               "privateIPAllocationMethod": "Static",
               "publicIPAddress": {
                 "id": "[variables('publicIPID')]"
               },
               "subnet": {
-                "id": "[variables('subnet1Ref')]"
+                "id": "[variables('subnet1Id')]"
               }
             }
           }
@@ -482,7 +482,7 @@
         "enableIPForwarding": true,
         "enableAcceleratedNetworking": "[variables('acceleratedNetworking')]",
         "networkSecurityGroup": {
-          "id": "[resourceID('Microsoft.Network/networkSecurityGroups/',variables('NSGName'))]"
+          "id": "[variables('NSGId')]"
         }
       }
     },
@@ -492,10 +492,10 @@
        "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
       "type": "Microsoft.Network/networkInterfaces",
-      "name": "[variables('network_NIC_fg12_Name')]",
+      "name": "[variables('network_NIC_fga2_Name')]",
       "location": "[parameters('location')]",
       "dependsOn": [
-        "[variables('vnetName')]"
+        "[variables('vnetId')]"
       ],
       "properties": {
         "ipConfigurations": [
@@ -503,9 +503,9 @@
             "name": "ipconfig1",
             "properties": {
               "privateIPAllocationMethod": "Static",
-              "privateIPAddress": "[variables('sn2IPfg1')]",
+              "privateIPAddress": "[variables('sn2IPfga')]",
               "subnet": {
-                "id": "[variables('subnet2Ref')]"
+                "id": "[variables('subnet2Id')]"
               }
             }
           }
@@ -513,13 +513,13 @@
         "enableIPForwarding": true,
         "enableAcceleratedNetworking": "[variables('acceleratedNetworking')]",
         "networkSecurityGroup": {
-          "id": "[resourceID('Microsoft.Network/networkSecurityGroups/',variables('NSGName'))]"
+          "id": "[variables('NSGId')]"
         }
       }
     },
     {
       "type": "Microsoft.Compute/virtualMachines",
-      "name": "[variables('fg1VmName')]",
+      "name": "[variables('fgaVmName')]",
       "apiVersion": "2019-12-01",
       "tags": {
        "provider": "[toUpper(parameters('fortinetTags').provider)]"
@@ -534,18 +534,18 @@
         "product": "fortinet_fortigate-vm_v5"
       },
       "dependsOn": [
-        "[variables('network_NIC_fg11_Name')]",
-        "[variables('network_NIC_fg12_Name')]"
+        "[variables('network_NIC_fga1_Id')]",
+        "[variables('network_NIC_fga2_Id')]"
       ],
       "properties": {
         "hardwareProfile": {
           "vmSize": "[parameters('instanceType')]"
         },
         "osProfile": {
-          "computerName": "[variables('fg1VmName')]",
+          "computerName": "[variables('fgaVmName')]",
           "adminUsername": "[parameters('adminUsername')]",
           "adminPassword": "[parameters('adminPassword')]",
-          "customData": "[variables('customDataFG1')]"
+          "customData": "[variables('fgaCustomData')]"
         },
         "storageProfile": {
           "imageReference": {
@@ -571,13 +571,13 @@
               "properties": {
                 "primary": true
               },
-              "id": "[variables('network_NIC_fg11_Id')]"
+              "id": "[variables('network_NIC_fga1_Id')]"
             },
             {
               "properties": {
                 "primary": false
               },
-              "id": "[variables('network_NIC_fg12_Id')]"
+              "id": "[variables('network_NIC_fga2_Id')]"
             }
           ]
         }

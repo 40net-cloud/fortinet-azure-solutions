@@ -312,6 +312,7 @@
     "publicIP3ID": "[if(equals(parameters('publicIP3NewOrExisting'),'new'),resourceId('Microsoft.Network/publicIPAddresses',variables('publicIP3Name')),resourceId(parameters('publicIP3ResourceGroup'),'Microsoft.Network/publicIPAddresses',variables('publicIP3Name')))]",
 
     "NSGName": "[concat(parameters('fortigateNamePrefix'),'-',uniqueString(resourceGroup().id),'-NSG')]",
+    "NSGId": "[resourceID('Microsoft.Network/networkSecurityGroups/',variables('NSGName'))]",
 
     "sn1IPArray": "[split(parameters('subnet1Prefix'),'.')]",
     "sn1IPArray2ndString": "[string(variables('sn1IPArray')[3])]",
@@ -734,7 +735,7 @@
       "dependsOn": [
         "[variables('vnetId')]",
         "[variables('externalLBId')]",
-        "[variables('NSGName')]"
+        "[variables('NSGId')]"
       ],
       "properties": {
         "ipConfigurations": [
@@ -757,7 +758,7 @@
         "enableIPForwarding": true,
         "enableAcceleratedNetworking": "[parameters('acceleratedNetworking')]",
         "networkSecurityGroup": {
-          "id": "[resourceID('Microsoft.Network/networkSecurityGroups/',variables('NSGName'))]"
+          "id": "[variables('NSGId')]"
         }
       }
     },
@@ -772,7 +773,7 @@
       "dependsOn": [
         "[variables('vnetId')]",
         "[variables('externalLBId')]",
-        "[variables('NSGName')]"
+        "[variables('NSGId')]"
       ],
       "properties": {
         "ipConfigurations": [
@@ -795,7 +796,7 @@
         "enableIPForwarding": true,
         "enableAcceleratedNetworking": "[parameters('acceleratedNetworking')]",
         "networkSecurityGroup": {
-          "id": "[resourceID('Microsoft.Network/networkSecurityGroups/',variables('NSGName'))]"
+          "id": "[variables('NSGId')]"
         }
       }
     },
@@ -832,7 +833,7 @@
         "enableIPForwarding": true,
         "enableAcceleratedNetworking": "[parameters('acceleratedNetworking')]",
         "networkSecurityGroup": {
-          "id": "[resourceID('Microsoft.Network/networkSecurityGroups/',variables('NSGName'))]"
+          "id": "[variables('NSGId')]"
         }
       }
     },
@@ -869,7 +870,7 @@
         "enableIPForwarding": true,
         "enableAcceleratedNetworking": "[parameters('acceleratedNetworking')]",
         "networkSecurityGroup": {
-          "id": "[resourceID('Microsoft.Network/networkSecurityGroups/',variables('NSGName'))]"
+          "id": "[variables('NSGId')]"
         }
       }
     },
@@ -900,7 +901,7 @@
         "enableIPForwarding": true,
         "enableAcceleratedNetworking": "[parameters('acceleratedNetworking')]",
         "networkSecurityGroup": {
-          "id": "[resourceID('Microsoft.Network/networkSecurityGroups/',variables('NSGName'))]"
+          "id": "[variables('NSGId')]"
         }
       }
     },
@@ -931,7 +932,7 @@
         "enableIPForwarding": true,
         "enableAcceleratedNetworking": "[parameters('acceleratedNetworking')]",
         "networkSecurityGroup": {
-          "id": "[resourceID('Microsoft.Network/networkSecurityGroups/',variables('NSGName'))]"
+          "id": "[variables('NSGId')]"
         }
       }
     },
@@ -965,7 +966,7 @@
         "enableIPForwarding": true,
         "enableAcceleratedNetworking": "[parameters('acceleratedNetworking')]",
         "networkSecurityGroup": {
-          "id": "[resourceID('Microsoft.Network/networkSecurityGroups/',variables('NSGName'))]"
+          "id": "[variables('NSGId')]"
         }
       }
     },
@@ -999,7 +1000,7 @@
         "enableIPForwarding": true,
         "enableAcceleratedNetworking": "[parameters('acceleratedNetworking')]",
         "networkSecurityGroup": {
-          "id": "[resourceID('Microsoft.Network/networkSecurityGroups/',variables('NSGName'))]"
+          "id": "[variables('NSGId')]"
         }
       }
     },
@@ -1020,10 +1021,10 @@
         "product": "fortinet_fortigate-vm_v5"
       },
       "dependsOn": [
-        "[variables('network_NIC_fga1_Name')]",
-        "[variables('network_NIC_fga2_Name')]",
-        "[variables('network_NIC_fga3_Name')]",
-        "[variables('network_NIC_fga4_Name')]"
+        "[variables('network_NIC_fga1_Id')]",
+        "[variables('network_NIC_fga2_Id')]",
+        "[variables('network_NIC_fga3_Id')]",
+        "[variables('network_NIC_fga4_Id')]"
       ],
       "properties": {
         "hardwareProfile": {
@@ -1103,10 +1104,10 @@
         "product": "fortinet_fortigate-vm_v5"
       },
       "dependsOn": [
-        "[variables('network_NIC_fgb1_Name')]",
-        "[variables('network_NIC_fgb2_Name')]",
-        "[variables('network_NIC_fgb3_Name')]",
-        "[variables('network_NIC_fgb4_Name')]"
+        "[variables('network_NIC_fgb1_Id')]",
+        "[variables('network_NIC_fgb2_Id')]",
+        "[variables('network_NIC_fgb3_Id')]",
+        "[variables('network_NIC_fgb4_Id')]"
       ],
       "properties": {
         "hardwareProfile": {
