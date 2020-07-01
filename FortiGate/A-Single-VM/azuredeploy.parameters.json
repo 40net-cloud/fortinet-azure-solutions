@@ -1,5 +1,5 @@
 {
-    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
         "adminUsername": {
@@ -8,23 +8,26 @@
         "adminPassword": {
             "value": "## TO BE DEFINED ##"
         },
-        "FortiGateNamePrefix": {
+        "fortigateNamePrefix": {
             "value": "## TO BE DEFINED ##"
         },
-        "FortiGateImageSKU": {
+        "fortigateImageSKU": {
             "value": "fortinet_fg-vm"
         },
-        "FortiGateImageVersion": {
-            "value": "latest"
+        "fortigateImageVersion": {
+            "value": "6.2.4"
         },
         "instanceType": {
             "value": "Standard_F2s"
+        },
+        "acceleratedNetworking": {
+            "value": "no"
         },
         "publicIPNewOrExisting": {
             "value": "new"
         },
         "publicIPName": {
-            "value": "FGTAPClusterPublicIP"
+            "value": "FGTPublicIP"
         },
         "publicIPResourceGroup": {
             "value": ""
@@ -42,7 +45,7 @@
             "value": ""
         },
         "vnetAddressPrefix": {
-            "value": "172.16.136.0/26"
+            "value": "172.16.136.0/22"
         },
         "subnet1Name": {
             "value": "ExternalSubnet"
@@ -68,9 +71,13 @@
         "subnet4Prefix": {
             "value": "172.16.138.0/24"
         },
-        "FortinetTags": {
+        "location": {
+            "value": "[parameters('location')]"
+        },
+        "fortinetTags": {
             "value": {
-                "provider": "6EB3B02F-50E5-4A3E-8CB8-2E129258317D"
+                "publisher": "Fortinet",
+                "provider": "6EB3B02F-50E5-4A3E-8CB8-2E12925831VM"
             }
         }
     }

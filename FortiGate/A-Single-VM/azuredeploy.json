@@ -14,13 +14,13 @@
         "description": "Password for the Virtual Machine"
       }
     },
-    "FortiGateNamePrefix": {
+    "fortigateNamePrefix": {
       "type": "string",
       "metadata": {
         "description": "Name for FortiGate virtual appliances (A & B will be appended to the end of each respectively)"
       }
     },
-    "FortiGateImageSKU": {
+    "fortigateImageSKU": {
       "type": "string",
       "defaultValue": "fortinet_fg-vm",
       "allowedValues": [
@@ -31,7 +31,7 @@
         "description": "Identifies whether to to use PAYG (on demand licensing) or BYOL license model (where license is purchased separately)"
       }
     },
-    "FortiGateImageVersion": {
+    "fortigateImageVersion": {
       "type": "string",
       "defaultValue": "6.2.4",
       "allowedValues": [
@@ -189,10 +189,18 @@
         "description": "Protected B Subnet 4 Prefix"
       }
     },
-    "FortinetTags": {
+    "location": {
+      "type": "string",
+      "defaultValue": "[parameters('location')]",
+      "metadata": {
+        "description": "Location for all resources."
+      }
+    },
+    "fortinetTags": {
     "type": "object",
     "defaultValue": {
-      "provider": "6EB3B02F-50E5-4A3E-8CB8-2E129258317D"
+      "publisher": "Fortinet",
+      "provider": "6EB3B02F-50E5-4A3E-8CB8-2E12925831VM"
       }
     }
   },
@@ -203,16 +211,16 @@
 
     "acceleratedNetworking": "[if(equals(parameters('acceleratedNetworking'),'no'),'false','true')]",
 
-    "vnetName": "[if(equals(parameters('vnetName'),''),concat(parameters('FortiGateNamePrefix'),'-VNET'),parameters('vnetName'))]",
+    "vnetName": "[if(equals(parameters('vnetName'),''),concat(parameters('fortigateNamePrefix'),'-VNET'),parameters('vnetName'))]",
     "vnetID": "[if(equals(parameters('vnetNewOrExisting'),'new'),resourceId('Microsoft.Network/virtualNetworks', variables('vnetName')),resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks', variables('vnetName')))]",
     "subnet1Ref": "[concat(variables('vnetID'),'/subnets/', parameters('subnet1Name'))]",
     "subnet2Ref": "[concat(variables('vnetID'),'/subnets/', parameters('subnet2Name'))]",
 
-    "fg1VmName": "[concat(parameters('FortiGateNamePrefix'),'-FGT-A')]",
+    "fg1VmName": "[concat(parameters('fortigateNamePrefix'),'-FGT-A')]",
 
-    "routeTableProtectedAName": "[concat(parameters('FortiGateNamePrefix'),'-RT-PROTECTED-A')]",
+    "routeTableProtectedAName": "[concat(parameters('fortigateNamePrefix'),'-RT-PROTECTED-A')]",
     "routeTableProtectedAId": "[resourceId('Microsoft.Network/routeTables',variables('routeTableProtectedAName'))]",
-    "routeTableProtectedBName": "[concat(parameters('FortiGateNamePrefix'),'-RT-PROTECTED-B')]",
+    "routeTableProtectedBName": "[concat(parameters('fortigateNamePrefix'),'-RT-PROTECTED-B')]",
     "routeTableProtectedBId": "[resourceId('Microsoft.Network/routeTables',variables('routeTableProtectedBName'))]",
 
     "network_NIC_fg11_Name": "[concat(variables('fg1VmName'),'-Nic1')]",
@@ -220,10 +228,10 @@
     "network_NIC_fg12_Name": "[concat(variables('fg1VmName'),'-Nic2')]",
     "network_NIC_fg12_Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('network_NIC_fg12_Name'))]",
 
-    "publicIPName": "[if(equals(parameters('publicIPName'),''),concat(parameters('FortiGateNamePrefix'),'-FGT-PIP'),parameters('publicIPName'))]",
+    "publicIPName": "[if(equals(parameters('publicIPName'),''),concat(parameters('fortigateNamePrefix'),'-FGT-PIP'),parameters('publicIPName'))]",
     "publicIPID": "[if(equals(parameters('publicIPNewOrExisting'),'new'),resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPName')),resourceId(parameters('publicIPResourceGroup'),'Microsoft.Network/publicIPAddresses',variables('publicIPName')))]",
 
-    "NSGName": "[concat(parameters('FortiGateNamePrefix'),'-',uniqueString(resourceGroup().id),'-NSG')]",
+    "NSGName": "[concat(parameters('fortigateNamePrefix'),'-',uniqueString(resourceGroup().id),'-NSG')]",
 
     "sn1IPArray": "[split(parameters('subnet1Prefix'),'.')]",
     "sn1IPArray2ndString": "[string(variables('sn1IPArray')[3])]",
@@ -251,7 +259,7 @@
   },
   "resources": [
     {
-      "apiVersion": "[variables('resourceApiVersion')]",
+      "apiVersion": "2019-10-01",
       "name": "pid-2dc4b447-552f-557f-b1cc-2faec6f9f133",
       "type": "Microsoft.Resources/deployments",
       "properties":{
@@ -266,11 +274,11 @@
     {
       "type": "Microsoft.Network/routeTables",
       "name": "[variables('routeTableProtectedAName')]",
-      "apiVersion": "[variables('networkApiVersion')]",
+      "apiVersion": "2020-04-01",
       "tags": {
        "provider": "[toUpper(parameters('FortinetTags').provider)]"
       },
-      "location": "[resourceGroup().location]",
+      "location": "[parameters('location')]",
       "properties": {
         "routes": [
           {
@@ -302,11 +310,11 @@
     {
       "type": "Microsoft.Network/routeTables",
       "name": "[variables('routeTableProtectedBName')]",
-      "apiVersion": "[variables('networkApiVersion')]",
+      "apiVersion": "2020-04-01",
       "tags": {
        "provider": "[toUpper(parameters('FortinetTags').provider)]"
       },
-      "location": "[resourceGroup().location]",
+      "location": "[parameters('location')]",
       "properties": {
         "routes": [
           {
@@ -338,9 +346,9 @@
     {
       "condition": "[equals(parameters('vnetNewOrExisting'), 'new')]",
       "type": "Microsoft.Network/virtualNetworks",
-      "apiVersion": "[variables('networkApiVersion')]",
+      "apiVersion": "2020-04-01",
       "name": "[variables('vnetName')]",
-      "location": "[resourceGroup().location]",
+      "location": "[parameters('location')]",
       "dependsOn": [
         "[variables('routeTableProtectedAId')]",
         "[variables('routeTableProtectedBId')]"
@@ -386,13 +394,13 @@
       }
     },
     {
-      "apiVersion": "[variables('networkApiVersion')]",
+      "apiVersion": "2020-04-01",
       "tags": {
         "provider": "[toUpper(parameters('FortinetTags').provider)]"
       },
       "type": "Microsoft.Network/networkSecurityGroups",
       "name": "[variables('NSGName')]",
-      "location": "[resourceGroup().location]",
+      "location": "[parameters('location')]",
       "properties": {
         "securityRules": [
           {
@@ -429,12 +437,12 @@
     {
       "condition": "[equals(parameters('publicIPNewOrExisting'), 'new')]",
       "type": "Microsoft.Network/publicIPAddresses",
-      "apiVersion": "[variables('networkApiVersion')]",
+      "apiVersion": "2020-04-01",
       "tags": {
-        "provider": "[toUpper(parameters('FortinetTags').provider)]"
+        "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
       "name": "[variables('publicIPName')]",
-      "location": "[resourceGroup().location]",
+      "location": "[parameters('location')]",
       "sku":
       {
         "name": "Basic"
@@ -444,13 +452,13 @@
       }
     },
     {
-      "apiVersion": "[variables('networkApiVersion')]",
+      "apiVersion": "2020-04-01",
       "tags": {
-        "provider": "[toUpper(parameters('FortinetTags').provider)]"
+        "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[variables('network_NIC_fg11_Name')]",
-      "location": "[resourceGroup().location]",
+      "location": "[parameters('location')]",
       "dependsOn": [
         "[variables('vnetName')]",
         "[variables('NSGName')]"
@@ -479,13 +487,13 @@
       }
     },
     {
-      "apiVersion": "[variables('networkApiVersion')]",
+      "apiVersion": "2020-04-01",
       "tags": {
-       "provider": "[toUpper(parameters('FortinetTags').provider)]"
+       "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[variables('network_NIC_fg12_Name')]",
-      "location": "[resourceGroup().location]",
+      "location": "[parameters('location')]",
       "dependsOn": [
         "[variables('vnetName')]"
       ],
@@ -512,16 +520,16 @@
     {
       "type": "Microsoft.Compute/virtualMachines",
       "name": "[variables('fg1VmName')]",
-      "apiVersion": "[variables('computeApiVersion')]",
+      "apiVersion": "2019-12-01",
       "tags": {
-       "provider": "[toUpper(parameters('FortinetTags').provider)]"
+       "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
       "identity": {
         "type": "SystemAssigned"
       },
-      "location": "[resourceGroup().location]",
+      "location": "[parameters('location')]",
       "plan": {
-        "name": "[parameters('FortiGateImageSKU')]",
+        "name": "[parameters('fortigateImageSKU')]",
         "publisher": "fortinet",
         "product": "fortinet_fortigate-vm_v5"
       },
@@ -543,7 +551,7 @@
           "imageReference": {
             "publisher": "fortinet",
             "offer": "fortinet_fortigate-vm_v5",
-            "sku": "[parameters('FortiGateImageSKU')]",
+            "sku": "[parameters('fortigateImageSKU')]",
             "version": "[parameters('FortigateImageVersion')]"
           },
           "osDisk": {
