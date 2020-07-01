@@ -33,7 +33,7 @@
     },
     "fortigateImageVersion": {
       "type": "string",
-      "defaultValue": "6.2.4",
+      "defaultValue": "latest",
       "allowedValues": [
         "6.0.9",
         "6.2.0",
@@ -261,9 +261,10 @@
       }
     },
     "fortinetTags": {
-    "type": "object",
-    "defaultValue": {
-      "provider": "6EB3B02F-50E5-4A3E-8CB8-2E129258317D"
+      "type": "object",
+      "defaultValue": {
+        "publisher": "Fortinet",
+        "provider": "6EB3B02F-50E5-4A3E-8CB8-2E12925831AP"
       }
     }
   },
