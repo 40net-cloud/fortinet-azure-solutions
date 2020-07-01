@@ -6,6 +6,14 @@ pool:
   demands: azureps
 
 steps:
+- task: AzurePowerShell@5
+  displayName: 'Running tests'
+  inputs:
+    azureSubscription: 'AzureSubscription'
+    ScriptPath: 'FortiGate/A-Single-VM/test/invokePester.ps1'
+    ScriptArguments: '-templatename FortiGate/A-Single-VM'
+    azurePowerShellVersion: LatestVersion
+    pwsh: true
 - task: AzurePowerShell@2
   displayName: 'Azure PowerShell script: FilePath'
   inputs:
