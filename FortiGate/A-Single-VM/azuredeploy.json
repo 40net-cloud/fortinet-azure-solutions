@@ -205,10 +205,6 @@
     }
   },
   "variables": {
-    "computeApiVersion": "2018-06-01",
-    "networkApiVersion": "2018-11-01",
-    "resourceApiVersion": "2018-05-01",
-
     "acceleratedNetworking": "[if(equals(parameters('acceleratedNetworking'),'no'),'false','true')]",
 
     "vnetName": "[if(equals(parameters('vnetName'),''),concat(parameters('fortigateNamePrefix'),'-VNET'),parameters('vnetName'))]",
