@@ -2,8 +2,8 @@ param (
     [string]$templatename
 )
 
-$SourceDir = "$env:BUILD_SOURCESDIRECTORY\$templatename"
-$TempDir = $env:TEMP
+$SourceDir = Join-Path $env:BUILD_SOURCESDIRECTORY "$templatename"
+$TempDir = [IO.Path]::GetTempPath()
 $modulePath = Join-Path $TempDir arm-ttk-master\arm-ttk\arm-ttk.psd1
 
 if (-not(Test-Path $modulePath)) {

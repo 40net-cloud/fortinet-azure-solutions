@@ -81,42 +81,6 @@
         "description": "Virtual Machine size selection - must be F4 or other instance that supports 4 NICs"
       }
     },
-    "publicIPNewOrExisting": {
-      "type": "string",
-      "defaultValue": "new",
-      "allowedValues": [
-        "new",
-        "existing"
-      ],
-      "metadata": {
-        "description": "Choose between an existing, new or no public IP for the External Azure Load Balancer"
-      }
-    },
-    "publicIPName": {
-      "type": "string",
-      "defaultValue": "FMGPublicIP",
-      "metadata": {
-        "description": "Name of Public IP address element"
-      }
-    },
-    "publicIPResourceGroup": {
-      "type": "string",
-      "defaultValue": "",
-      "metadata": {
-        "description": "Resource group to which the Public IP belongs"
-      }
-    },
-    "publicIPAddressType": {
-      "type": "string",
-      "defaultValue": "Static",
-      "allowedValues": [
-        "Dynamic",
-        "Static"
-      ],
-      "metadata": {
-        "description": "Type of public IP address"
-      }
-    },
     "vnetNewOrExisting": {
       "type": "string",
       "defaultValue": "new",
@@ -193,9 +157,6 @@
 
     "network_NIC_fg11_Name": "[concat(variables('vmName'),'-Nic1')]",
     "network_NIC_fg11_Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('network_NIC_fg11_Name'))]",
-
-    "publicIPName": "[if(equals(parameters('publicIPName'),''),concat(parameters('namePrefix'),'-FMG-PIP'),parameters('publicIPName'))]",
-    "publicIPID": "[if(equals(parameters('publicIPNewOrExisting'),'new'),resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPName')),if(equals(parameters('publicIPNewOrExisting'),'existing'),resourceId(parameters('publicIPResourceGroup'),'Microsoft.Network/publicIPAddresses',variables('publicIPName')),''))]",
 
     "NSGName": "[concat(parameters('namePrefix'),'-',uniqueString(resourceGroup().id),'-NSG')]",
 
@@ -329,23 +290,6 @@
       }
     },
     {
-      "condition": "[equals(parameters('publicIPNewOrExisting'), 'new')]",
-      "type": "Microsoft.Network/publicIPAddresses",
-      "apiVersion": "2020-04-01",
-      "tags": {
-        "provider": "[toUpper(parameters('FortinetTags').provider)]"
-      },
-      "name": "[variables('publicIPName')]",
-      "location": "[parameters('location')]",
-      "sku":
-      {
-        "name": "Basic"
-      },
-      "properties": {
-        "publicIPAllocationMethod": "[parameters('publicIPAddressType')]"
-      }
-    },
-    {
       "apiVersion": "2020-04-01",
       "tags": {
         "provider": "[toUpper(parameters('FortinetTags').provider)]"
@@ -364,9 +308,6 @@
             "properties": {
               "privateIPAddress": "[variables('sn1IPfg1')]",
               "privateIPAllocationMethod": "Static",
-              "publicIPAddress": {
-                "id": "[variables('publicIPID')]"
-              },
               "subnet": {
                 "id": "[variables('subnet1Ref')]"
               }
