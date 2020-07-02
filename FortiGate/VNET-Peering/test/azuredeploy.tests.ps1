@@ -29,8 +29,6 @@ $sourcePath = "$env:BUILD_SOURCESDIRECTORY\FortiGate\$templateName"
 $scriptPath = "$env:BUILD_SOURCESDIRECTORY\FortiGate\$templateName\test"
 $templateFileName = "azuredeploy.json"
 $templateFileLocation = "$sourcePath\$templateFileName"
-$templateMetadataFileName = "metadata.json"
-$templateMetadataFileLocation = "$sourcePath\$templateMetadataFileName"
 $templateParameterFileName = "azuredeploy.parameters.json"
 $templateParameterFileLocation = "$sourcePath\$templateParameterFileName"
 
@@ -95,10 +93,10 @@ Describe 'VNET Peering' {
             $expectedTemplateParameters = 'acceleratedNetworking',
                                           'adminPassword',
                                           'adminUsername',
-                                          'FortiGateImageSKU',
-                                          'FortiGateImageVersion',
-                                          'FortiGateNamePrefix',
-                                          'FortinetTags',
+                                          'fortigateImageSKU',
+                                          'fortigateImageVersion',
+                                          'fortigateNamePrefix',
+                                          'fortinetTags',
                                           'instanceType',
                                           'location',
                                           'publicIP2Name',
@@ -149,46 +147,51 @@ Describe 'VNET Peering' {
 
         # Set working directory & create resource group
         Set-Location $sourcePath
-        New-AzureRmResourceGroup -Name $testsResourceGroupName -Location "$testsResourceGroupLocation"
+        New-AzResourceGroup -Name $testsResourceGroupName -Location "$testsResourceGroupLocation"
 
         # Validate all ARM templates one by one
         $testsErrorFound = $false
 
         $params = @{ 'adminUsername'=$testsAdminUsername
                      'adminPassword'=$testsResourceGroupName
-                     'FortiGateNamePrefix'=$testsPrefix
+                     'fortigateNamePrefix'=$testsPrefix
                     }
         $publicIP2Name = "FGTAMgmtPublicIP"
         $publicIP3Name = "FGTBMgmtPublicIP"
 
         It "Test Deployment" {
-            (Test-AzureRmResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName" -TemplateFile "$templateFileName" -TemplateParameterObject $params).Count | Should not BeGreaterThan 0
+            (Test-AzResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName" -TemplateFile "$templateFileName" -TemplateParameterObject $params).Count | Should not BeGreaterThan 0
         }
         It "Deployment" {
-            $resultDeployment = New-AzureRmResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName" -TemplateFile "$templateFileName" -TemplateParameterObject $params
+            $resultDeployment = New-AzResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName" -TemplateFile "$templateFileName" -TemplateParameterObject $params
             Write-Host ($resultDeployment | Format-Table | Out-String)
             Write-Host ("Deployment state: " + $resultDeployment.ProvisioningState | Out-String)
             $resultDeployment.ProvisioningState | Should Be "Succeeded"
         }
         It "Search deployment" {
-            $result = Get-AzureRmVM | Where-Object { $_.Name -like "$testsPrefix*" }
+            $result = Get-AzVM | Where-Object { $_.Name -like "$testsPrefix*" }
             Write-Host ($result | Format-Table | Out-String)
             $result | Should Not Be $null
         }
 
         443, 22 | Foreach-Object {
-            it "Port [$_] is listening" {
-                $result = Get-AzureRmPublicIpAddress -Name $publicIP2Name -ResourceGroupName $testsResourceGroupName
-                $portListening = (Test-NetConnection -Port $_ -ComputerName $result.IpAddress).TcpTestSucceeded
+            it "FGT A: Port [$_] is listening" {
+                $result = Get-AzPublicIpAddress -Name $publicIPName -ResourceGroupName $testsResourceGroupName
+                $portListening = (Test-Connection -TargetName $result.IpAddress -TCPPort $_ -TimeoutSeconds 100)
                 $portListening | Should -Be $true
-                $result = Get-AzureRmPublicIpAddress -Name $publicIP3Name -ResourceGroupName $testsResourceGroupName
-                $portListening = (Test-NetConnection -Port $_ -ComputerName $result.IpAddress).TcpTestSucceeded
+            }
+        }
+
+        443, 22 | Foreach-Object {
+            it "FGT B: Port [$_] is listening" {
+                $result = Get-AzPublicIpAddress -Name $publicIP2Name -ResourceGroupName $testsResourceGroupName
+                $portListening = (Test-Connection -TargetName $result.IpAddress -TCPPort $_ -TimeoutSeconds 100)
                 $portListening | Should -Be $true
             }
         }
 
         It "Cleanup" {
-            Remove-AzureRmResourceGroup -Name $testsResourceGroupName -Force
+            Remove-AzResourceGroup -Name $testsResourceGroupName -Force
         }
     }
 }

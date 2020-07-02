@@ -29,8 +29,6 @@ $sourcePath = "$env:BUILD_SOURCESDIRECTORY\FortiGate\$templateName"
 $scriptPath = "$env:BUILD_SOURCESDIRECTORY\FortiGate\$templateName\test"
 $templateFileName = "azuredeploy.json"
 $templateFileLocation = "$sourcePath\$templateFileName"
-$templateMetadataFileName = "metadata.json"
-$templateMetadataFileLocation = "$sourcePath\$templateMetadataFileName"
 $templateParameterFileName = "azuredeploy.parameters.json"
 $templateParameterFileLocation = "$sourcePath\$templateParameterFileName"
 
