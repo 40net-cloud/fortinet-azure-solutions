@@ -8,13 +8,13 @@
         "adminPassword": {
             "value": "## TO BE DEFINED ##"
         },
-        "FortiGateNamePrefix": {
+        "fortigateNamePrefix": {
             "value": "## TO BE DEFINED ##"
         },
-        "FortiGateImageSKU": {
+        "fortigateImageSKU": {
             "value": "fortinet_fg-vm"
         },
-        "FortiGateImageVersion": {
+        "fortigateImageVersion": {
             "value": "6.2.3"
         },
         "instanceType": {
@@ -98,9 +98,10 @@
         "location": {
             "value": "[resourceGroup().location]"
         },
-        "FortinetTags": {
+        "fortinetTags": {
             "value": {
-                "provider": "6EB3B02F-50E5-4A3E-8CB8-2E129258317D"
+                "publisher": "Fortinet",
+                "provider": "6EB3B02F-50E5-4A3E-8CB8-2E12925831AP-AZ"
             }
         }
     }

@@ -25,11 +25,13 @@ Function random-password ($length = 15) {
 }
 
 # Basic Variables
-$templateName = "Active-Active-ELB-ILB"
-$sourcePath = "$env:BUILD_SOURCESDIRECTORY\FortiGate\$templateName"
-$scriptPath = "$env:BUILD_SOURCESDIRECTORY\FortiGate\$templateName\test"
+$templateName = "single-1nic"
+$sourcePath = "$env:BUILD_SOURCESDIRECTORY\FortiManager\$templateName"
+$scriptPath = "$env:BUILD_SOURCESDIRECTORY\FortiManager\$templateName\test"
 $templateFileName = "azuredeploy.json"
 $templateFileLocation = "$sourcePath\$templateFileName"
+$templateMetadataFileName = "metadata.json"
+$templateMetadataFileLocation = "$sourcePath\$templateMetadataFileName"
 $templateParameterFileName = "azuredeploy.parameters.json"
 $templateParameterFileLocation = "$sourcePath\$templateParameterFileName"
 
@@ -37,9 +39,9 @@ $testsRandom = Get-Random 10001
 $testsPrefix = "FORTIQA"
 $testsResourceGroupName = "FORTIQA-$testsRandom-$templateName"
 $testsAdminUsername = "azureuser"
-$testsResourceGroupLocation = "northeurope"
+$testsResourceGroupLocation = "westeurope"
 
-Describe 'FGT A/A' {
+Describe 'FMG' {
     Context 'Validation' {
         It 'Has a JSON template' {
             $templateFileLocation | Should Exist
@@ -61,18 +63,10 @@ Describe 'FGT A/A' {
 
         It 'Creates the expected Azure resources' {
             $expectedResources = 'Microsoft.Resources/deployments',
-                                 'Microsoft.Compute/availabilitySets',
                                  'Microsoft.Network/virtualNetworks',
-                                 'Microsoft.Network/loadBalancers',
-                                 'Microsoft.Network/routeTables',
                                  'Microsoft.Network/networkSecurityGroups',
                                  'Microsoft.Network/publicIPAddresses',
-                                 'Microsoft.Network/loadBalancers',
                                  'Microsoft.Network/networkInterfaces',
-                                 'Microsoft.Network/networkInterfaces',
-                                 'Microsoft.Network/networkInterfaces',
-                                 'Microsoft.Network/networkInterfaces',
-                                 'Microsoft.Compute/virtualMachines',
                                  'Microsoft.Compute/virtualMachines'
             $templateResources = (get-content $templateFileLocation | ConvertFrom-Json -ErrorAction SilentlyContinue).Resources.type
             $templateResources | Should Be $expectedResources
@@ -81,73 +75,67 @@ Describe 'FGT A/A' {
         It 'Contains the expected parameters' {
             $expectedTemplateParameters = 'adminPassword',
                                           'adminUsername',
-                                          'fortiGateImageSKU',
-                                          'fortiGateImageVersion',
-                                          'fortiGateNamePrefix',
-                                          'fortinetTags',
+                                          'dataDiskSize',
+                                          'FortinetTags',
+                                          'imageSKU',
+                                          'imageVersion',
                                           'instanceType',
                                           'location',
+                                          'namePrefix',
                                           'publicIPAddressType',
                                           'publicIPName',
                                           'publicIPNewOrExisting',
                                           'publicIPResourceGroup',
                                           'subnet1Name',
                                           'subnet1Prefix',
-                                          'subnet2Name',
-                                          'subnet2Prefix',
-                                          'subnet3Name',
-                                          'subnet3Prefix',
                                           'vnetAddressPrefix',
                                           'vnetName',
                                           'vnetNewOrExisting',
                                           'vnetResourceGroup'
-            $templateParameters = (get-content $templateFileLocation | ConvertFrom-Json -ErrorAction SilentlyContinue).Parameters | Get-Member -MemberType NoteProperty | % Name | sort
+            $templateParameters = (get-content $templateFileLocation | ConvertFrom-Json -ErrorAction SilentlyContinue).Parameters | Get-Member -MemberType NoteProperty | % Name | Sort-Object
             $templateParameters | Should Be $expectedTemplateParameters
         }
 
     }
 
     Context 'Deployment' {
-
         # Set working directory & create resource group
         Set-Location $sourcePath
-        New-AzResourceGroup -Name $testsResourceGroupName -Location "$testsResourceGroupLocation"
-
-        # Validate all ARM templates one by one
-        $testsErrorFound = $false
+        New-AzureRmResourceGroup -Name $testsResourceGroupName -Location "$testsResourceGroupLocation"
 
         $params = @{ 'adminUsername'=$testsAdminUsername
                      'adminPassword'=$testsResourceGroupName
-                     'FortiGateNamePrefix'=$testsPrefix
+                     'namePrefix'=$testsPrefix
                     }
-        $publicIPName = "FGTLBPublicIP"
-        $publicIP2Name = "FGTLBPublicIP2"
+        $publicIPName = "FMGPublicIP"
 
         It "Test deployment" {
-            (Test-AzResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName" -TemplateFile "$templateFileName" -TemplateParameterObject $params).Count | Should not BeGreaterThan 0
+            (Test-AzureRmResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName" -TemplateFile "$templateFileName" -TemplateParameterObject $params).Count | Should not BeGreaterThan 0
         }
+
         It "Deployment" {
-            $resultDeployment = New-AzResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName" -TemplateFile "$templateFileName" -TemplateParameterObject $params
+            $resultDeployment = New-AzureRmResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName" -TemplateFile "$templateFileName" -TemplateParameterObject $params
             Write-Host ($resultDeployment | Format-Table | Out-String)
             Write-Host ("Deployment state: " + $resultDeployment.ProvisioningState | Out-String)
             $resultDeployment.ProvisioningState | Should Be "Succeeded"
         }
+
         It "Search deployment" {
-            $result = Get-AzVM | Where-Object { $_.Name -like "$testsPrefix*" }
+            $result = Get-AzureRmVM | Where-Object { $_.Name -like "$testsPrefix*" }
             Write-Host ($result | Format-Table | Out-String)
             $result | Should Not Be $null
         }
 
-        40030, 50030, 40031, 50031 | Foreach-Object {
-            it "Port [$_] is listening" {
-                $result = Get-AzPublicIpAddress -Name $publicIPName -ResourceGroupName $testsResourceGroupName
-                $portListening = (Test-Connection -TargetName $result.IpAddress -TCPPort $_ -TimeoutSeconds 100)
+        443, 22 | Foreach-Object {
+            It "Port [$_] is listening" {
+                $result = Get-AzureRmPublicIpAddress -Name $publicIPName -ResourceGroupName $testsResourceGroupName
+                $portListening = (Test-NetConnection -Port $_ -ComputerName $result.IpAddress).TcpTestSucceeded
                 $portListening | Should -Be $true
             }
         }
 
         It "Cleanup" {
-            Remove-AzResourceGroup -Name $testsResourceGroupName -Force
+            Remove-AzureRmResourceGroup -Name $testsResourceGroupName -Force
         }
     }
 }

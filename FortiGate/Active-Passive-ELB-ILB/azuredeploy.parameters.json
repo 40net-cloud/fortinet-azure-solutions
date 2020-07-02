@@ -8,14 +8,14 @@
         "adminPassword": {
             "value": "## TO BE DEFINED ##"
         },
-        "FortiGateNamePrefix": {
+        "fortigateNamePrefix": {
             "value": "## TO BE DEFINED ##"
         },
-        "FortiGateImageSKU": {
+        "fortigateImageSKU": {
             "value": "fortinet_fg-vm"
         },
-        "FortiGateImageVersion": {
-            "value": "6.2.3"
+        "fortigateImageVersion": {
+            "value": "6.2.4"
         },
         "instanceType": {
             "value": "Standard_F4s"
