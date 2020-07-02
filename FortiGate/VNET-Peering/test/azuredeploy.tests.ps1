@@ -156,8 +156,8 @@ Describe 'VNET Peering' {
                      'adminPassword'=$testsResourceGroupName
                      'fortigateNamePrefix'=$testsPrefix
                     }
-        $publicIP2Name = "FGTAMgmtPublicIP"
-        $publicIP3Name = "FGTBMgmtPublicIP"
+        $publicIPName = "FGTAMgmtPublicIP"
+        $publicIP2Name = "FGTBMgmtPublicIP"
 
         It "Test Deployment" {
             (Test-AzResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName" -TemplateFile "$templateFileName" -TemplateParameterObject $params).Count | Should not BeGreaterThan 0
