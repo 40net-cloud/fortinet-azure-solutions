@@ -226,7 +226,7 @@
     "network_NIC_fga2_Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('network_NIC_fga2_Name'))]",
 
     "publicIPName": "[if(equals(parameters('publicIPName'),''),concat(parameters('fortigateNamePrefix'),'-FGT-PIP'),parameters('publicIPName'))]",
-    "publicIPID": "[if(equals(parameters('publicIPNewOrExisting'),'new'),resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPName')),resourceId(parameters('publicIPResourceGroup'),'Microsoft.Network/publicIPAddresses',variables('publicIPName')))]",
+    "publicIPId": "[if(equals(parameters('publicIPNewOrExisting'),'new'),resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPName')),resourceId(parameters('publicIPResourceGroup'),'Microsoft.Network/publicIPAddresses',variables('publicIPName')))]",
 
     "NSGName": "[concat(parameters('fortigateNamePrefix'),'-',uniqueString(resourceGroup().id),'-NSG')]",
     "NSGId": "[resourceID('Microsoft.Network/networkSecurityGroups/',variables('NSGName'))]",
@@ -467,7 +467,7 @@
               "privateIPAddress": "[variables('sn1IPfga')]",
               "privateIPAllocationMethod": "Static",
               "publicIPAddress": {
-                "id": "[variables('publicIPID')]"
+                "id": "[variables('publicIPId')]"
               },
               "subnet": {
                 "id": "[variables('subnet1Id')]"
