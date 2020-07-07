@@ -1,5 +1,5 @@
 {
-  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
     "adminUsername": {
@@ -264,20 +264,20 @@
       "type": "object",
       "defaultValue": {
         "publisher": "Fortinet",
+        "template": "Active-Passive-ELB-ILB",
         "provider": "6EB3B02F-50E5-4A3E-8CB8-2E12925831AP"
       }
     }
   },
   "variables": {
-    "compute_AvailabilitySet_FG_Name": "[concat(parameters('fortigateNamePrefix'),'-AvailabilitySet')]",
-    "compute_AvailabilitySet_FG_Id": "[resourceId('Microsoft.Compute/availabilitySets', variables('compute_AvailabilitySet_FG_Name'))]",
+    "fgAvailabilitySetName": "[concat(parameters('fortigateNamePrefix'),'-AvailabilitySet')]",
+    "fgAvailabilitySetId": "[resourceId('Microsoft.Compute/availabilitySets', variables('fgAvailabilitySetName'))]",
 
     "vnetName": "[if(equals(parameters('vnetName'),''),concat(parameters('fortigateNamePrefix'),'-VNET'),parameters('vnetName'))]",
-    "vnetId": "[if(equals(parameters('vnetNewOrExisting'),'new'),resourceId('Microsoft.Network/virtualNetworks', variables('vnetName')),resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks', variables('vnetName')))]",
-    "subnet1Id": "[resourceId('Microsoft.Network/virtualNetworks/subnets',variables('vnetName'),parameters('subnet1Name'))]",
-    "subnet2Id": "[resourceId('Microsoft.Network/virtualNetworks/subnets',variables('vnetName'),parameters('subnet2Name'))]",
-    "subnet3Id": "[resourceId('Microsoft.Network/virtualNetworks/subnets',variables('vnetName'),parameters('subnet3Name'))]",
-    "subnet4Id": "[resourceId('Microsoft.Network/virtualNetworks/subnets',variables('vnetName'),parameters('subnet4Name'))]",
+    "subnet1Id": "[if(equals(parameters('vnetNewOrExisting'),'new'),resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet1Name')),resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet1Name')))]",
+    "subnet2Id": "[if(equals(parameters('vnetNewOrExisting'),'new'),resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet2Name')),resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet2Name')))]",
+    "subnet3Id": "[if(equals(parameters('vnetNewOrExisting'),'new'),resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet3Name')),resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet3Name')))]",
+    "subnet4Id": "[if(equals(parameters('vnetNewOrExisting'),'new'),resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet4Name')),resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet4Name')))]",
 
     "fgaVmName": "[concat(parameters('fortigateNamePrefix'),'-FGT-A')]",
     "fgbVmName": "[concat(parameters('fortigateNamePrefix'),'-FGT-B')]",
@@ -287,29 +287,29 @@
     "routeTableName": "FGTDefaultAPRouteTable",
     "routeTableId": "[resourceId('Microsoft.Network/routeTables',variables('routeTableName'))]",
 
-    "network_NIC_fga1_Name": "[concat(variables('fgaVmName'),'-Nic1')]",
-    "network_NIC_fga1_Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('network_NIC_fga1_Name'))]",
-    "network_NIC_fga2_Name": "[concat(variables('fgaVmName'),'-Nic2')]",
-    "network_NIC_fga2_Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('network_NIC_fga2_Name'))]",
-    "network_NIC_fgb1_Name": "[concat(variables('fgbVmName'),'-Nic1')]",
-    "network_NIC_fgb1_Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('network_NIC_fgb1_Name'))]",
-    "network_NIC_fgb2_Name": "[concat(variables('fgbVmName'),'-Nic2')]",
-    "network_NIC_fgb2_Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('network_NIC_fgb2_Name'))]",
-    "network_NIC_fga3_Name": "[concat(variables('fgaVmName'),'-Nic3')]",
-    "network_NIC_fga3_Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('network_NIC_fga3_Name'))]",
-    "network_NIC_fgb3_Name": "[concat(variables('fgbVmName'),'-Nic3')]",
-    "network_NIC_fgb3_Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('network_NIC_fgb3_Name'))]",
-    "network_NIC_fga4_Name": "[concat(variables('fgaVmName'),'-Nic4')]",
-    "network_NIC_fga4_Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('network_NIC_fga4_Name'))]",
-    "network_NIC_fgb4_Name": "[concat(variables('fgbVmName'),'-Nic4')]",
-    "network_NIC_fgb4_Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('network_NIC_fgb4_Name'))]",
+    "fgaNic1Name": "[concat(variables('fgaVmName'),'-Nic1')]",
+    "fgaNic1Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('fgaNic1Name'))]",
+    "fgaNic2Name": "[concat(variables('fgaVmName'),'-Nic2')]",
+    "fgaNic2Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('fgaNic2Name'))]",
+    "fgbNic1Name": "[concat(variables('fgbVmName'),'-Nic1')]",
+    "fgbNic1Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('fgbNic1Name'))]",
+    "fgbNic2Name": "[concat(variables('fgbVmName'),'-Nic2')]",
+    "fgbNic2Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('fgbNic2Name'))]",
+    "fgaNic3Name": "[concat(variables('fgaVmName'),'-Nic3')]",
+    "fgaNic3Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('fgaNic3Name'))]",
+    "fgbNic3Name": "[concat(variables('fgbVmName'),'-Nic3')]",
+    "fgbNic3Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('fgbNic3Name'))]",
+    "fgaNic4Name": "[concat(variables('fgaVmName'),'-Nic4')]",
+    "fgaNic4Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('fgaNic4Name'))]",
+    "fgbNic4Name": "[concat(variables('fgbVmName'),'-Nic4')]",
+    "fgbNic4Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('fgbNic4Name'))]",
 
     "publicIPName": "[if(equals(parameters('publicIPName'),''),concat(parameters('fortigateNamePrefix'),'-FGT-PIP'),parameters('publicIPName'))]",
-    "publicIPID": "[if(equals(parameters('publicIPNewOrExisting'),'new'),resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPName')),resourceId(parameters('publicIPResourceGroup'),'Microsoft.Network/publicIPAddresses',variables('publicIPName')))]",
+    "publicIPId": "[if(equals(parameters('publicIPNewOrExisting'),'new'),resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPName')),resourceId(parameters('publicIPResourceGroup'),'Microsoft.Network/publicIPAddresses',variables('publicIPName')))]",
     "publicIP2Name": "[if(equals(parameters('publicIP2Name'),''),concat(parameters('fortigateNamePrefix'),'-FGT-A-MGMT-PIP'),parameters('publicIP2Name'))]",
-    "publicIP2ID": "[if(equals(parameters('publicIP2NewOrExisting'),'new'),resourceId('Microsoft.Network/publicIPAddresses',variables('publicIP2Name')),resourceId(parameters('publicIP2ResourceGroup'),'Microsoft.Network/publicIPAddresses',variables('publicIP2Name')))]",
+    "publicIP2Id": "[if(equals(parameters('publicIP2NewOrExisting'),'new'),resourceId('Microsoft.Network/publicIPAddresses',variables('publicIP2Name')),resourceId(parameters('publicIP2ResourceGroup'),'Microsoft.Network/publicIPAddresses',variables('publicIP2Name')))]",
     "publicIP3Name": "[if(equals(parameters('publicIP3Name'),''),concat(parameters('fortigateNamePrefix'),'-FGT-B-MGMT-PIP'),parameters('publicIP3Name'))]",
-    "publicIP3ID": "[if(equals(parameters('publicIP3NewOrExisting'),'new'),resourceId('Microsoft.Network/publicIPAddresses',variables('publicIP3Name')),resourceId(parameters('publicIP3ResourceGroup'),'Microsoft.Network/publicIPAddresses',variables('publicIP3Name')))]",
+    "publicIP3Id": "[if(equals(parameters('publicIP3NewOrExisting'),'new'),resourceId('Microsoft.Network/publicIPAddresses',variables('publicIP3Name')),resourceId(parameters('publicIP3ResourceGroup'),'Microsoft.Network/publicIPAddresses',variables('publicIP3Name')))]",
 
     "NSGName": "[concat(parameters('fortigateNamePrefix'),'-',uniqueString(resourceGroup().id),'-NSG')]",
     "NSGId": "[resourceID('Microsoft.Network/networkSecurityGroups/',variables('NSGName'))]",
@@ -395,7 +395,7 @@
     },
     {
       "type": "Microsoft.Compute/availabilitySets",
-      "name": "[variables('compute_AvailabilitySet_FG_Name')]",
+      "name": "[variables('fgAvailabilitySetName')]",
       "apiVersion": "2019-12-01",
       "tags": {
        "provider": "[toUpper(parameters('fortinetTags').provider)]"
@@ -437,7 +437,7 @@
       "name": "[variables('vnetName')]",
       "location": "[parameters('location')]",
       "dependsOn": [
-        "[concat('Microsoft.Network/routeTables/', variables('routeTableName'))]"
+        "[variables('routeTableId')]"
       ],
       "properties": {
         "addressSpace": {
@@ -494,7 +494,7 @@
         "name": "Standard"
       },
       "dependsOn": [
-        "[variables('vnetId')]"
+        "[variables('vnetName')]"
       ],
       "properties": {
         "frontendIPConfigurations": [
@@ -653,7 +653,7 @@
         "name": "Standard"
       },
       "dependsOn": [
-        "[variables('publicIPID')]"
+        "[variables('publicIPId')]"
       ],
       "properties": {
         "frontendIPConfigurations": [
@@ -661,7 +661,7 @@
             "name": "[variables('externalLBFEName')]",
             "properties": {
               "publicIPAddress": {
-                "id": "[variables('publicIPID')]"
+                "id": "[variables('publicIPId')]"
               }
             }
           }
@@ -730,10 +730,10 @@
         "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
       "type": "Microsoft.Network/networkInterfaces",
-      "name": "[variables('network_NIC_fga1_Name')]",
+      "name": "[variables('fgaNic1Name')]",
       "location": "[parameters('location')]",
       "dependsOn": [
-        "[variables('vnetId')]",
+        "[variables('vnetName')]",
         "[variables('externalLBId')]",
         "[variables('NSGId')]"
       ],
@@ -768,10 +768,10 @@
         "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
       "type": "Microsoft.Network/networkInterfaces",
-      "name": "[variables('network_NIC_fgb1_Name')]",
+      "name": "[variables('fgbNic1Name')]",
       "location": "[parameters('location')]",
       "dependsOn": [
-        "[variables('vnetId')]",
+        "[variables('vnetName')]",
         "[variables('externalLBId')]",
         "[variables('NSGId')]"
       ],
@@ -806,10 +806,10 @@
        "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
       "type": "Microsoft.Network/networkInterfaces",
-      "name": "[variables('network_NIC_fga2_Name')]",
+      "name": "[variables('fgaNic2Name')]",
       "location": "[parameters('location')]",
       "dependsOn": [
-        "[variables('vnetId')]",
+        "[variables('vnetName')]",
         "[variables('internalLBId')]"
       ],
       "properties": {
@@ -843,10 +843,10 @@
        "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
       "type": "Microsoft.Network/networkInterfaces",
-      "name": "[variables('network_NIC_fgb2_Name')]",
+      "name": "[variables('fgbNic2Name')]",
       "location": "[parameters('location')]",
       "dependsOn": [
-        "[variables('vnetId')]",
+        "[variables('vnetName')]",
         "[variables('internalLBId')]"
       ],
       "properties": {
@@ -880,10 +880,10 @@
        "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
       "type": "Microsoft.Network/networkInterfaces",
-      "name": "[variables('network_NIC_fga3_Name')]",
+      "name": "[variables('fgaNic3Name')]",
       "location": "[parameters('location')]",
       "dependsOn": [
-        "[variables('vnetId')]"
+        "[variables('vnetName')]"
       ],
       "properties": {
         "ipConfigurations": [
@@ -911,10 +911,10 @@
        "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
       "type": "Microsoft.Network/networkInterfaces",
-      "name": "[variables('network_NIC_fgb3_Name')]",
+      "name": "[variables('fgbNic3Name')]",
       "location": "[parameters('location')]",
       "dependsOn": [
-        "[variables('vnetId')]"
+        "[variables('vnetName')]"
       ],
       "properties": {
         "ipConfigurations": [
@@ -942,10 +942,10 @@
        "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
       "type": "Microsoft.Network/networkInterfaces",
-      "name": "[variables('network_NIC_fga4_Name')]",
+      "name": "[variables('fgaNic4Name')]",
       "location": "[parameters('location')]",
       "dependsOn": [
-        "[variables('vnetId')]"
+        "[variables('vnetName')]"
       ],
       "properties": {
         "ipConfigurations": [
@@ -955,7 +955,7 @@
               "privateIPAllocationMethod": "Static",
               "privateIPAddress": "[variables('sn4IPfga')]",
               "publicIPAddress": {
-                "id": "[variables('publicIP2ID')]"
+                "id": "[variables('publicIP2Id')]"
               },
               "subnet": {
                 "id": "[variables('subnet4Id')]"
@@ -976,10 +976,10 @@
        "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
       "type": "Microsoft.Network/networkInterfaces",
-      "name": "[variables('network_NIC_fgb4_Name')]",
+      "name": "[variables('fgbNic4Name')]",
       "location": "[parameters('location')]",
       "dependsOn": [
-        "[variables('vnetId')]"
+        "[variables('vnetName')]"
       ],
       "properties": {
         "ipConfigurations": [
@@ -989,7 +989,7 @@
               "privateIPAllocationMethod": "Static",
               "privateIPAddress": "[variables('sn4IPfgb')]",
               "publicIPAddress": {
-                "id": "[variables('publicIP3ID')]"
+                "id": "[variables('publicIP3Id')]"
               },
               "subnet": {
                 "id": "[variables('subnet4Id')]"
@@ -1021,17 +1021,17 @@
         "product": "fortinet_fortigate-vm_v5"
       },
       "dependsOn": [
-        "[variables('network_NIC_fga1_Id')]",
-        "[variables('network_NIC_fga2_Id')]",
-        "[variables('network_NIC_fga3_Id')]",
-        "[variables('network_NIC_fga4_Id')]"
+        "[variables('fgaNic1Id')]",
+        "[variables('fgaNic2Id')]",
+        "[variables('fgaNic3Id')]",
+        "[variables('fgaNic4Id')]"
       ],
       "properties": {
         "hardwareProfile": {
           "vmSize": "[parameters('instanceType')]"
         },
         "availabilitySet": {
-          "id": "[variables('compute_AvailabilitySet_FG_Id')]"
+          "id": "[variables('fgAvailabilitySetId')]"
         },
         "osProfile": {
           "computerName": "[variables('fgaVmName')]",
@@ -1063,25 +1063,25 @@
               "properties": {
                 "primary": true
               },
-              "id": "[variables('network_NIC_fga1_Id')]"
+              "id": "[variables('fgaNic1Id')]"
             },
             {
               "properties": {
                 "primary": false
               },
-              "id": "[variables('network_NIC_fga2_Id')]"
+              "id": "[variables('fgaNic2Id')]"
             },
             {
               "properties": {
                 "primary": false
               },
-              "id": "[variables('network_NIC_fga3_Id')]"
+              "id": "[variables('fgaNic3Id')]"
             },
             {
               "properties": {
                 "primary": false
               },
-              "id": "[variables('network_NIC_fga4_Id')]"
+              "id": "[variables('fgaNic4Id')]"
             }
           ]
         }
@@ -1104,17 +1104,17 @@
         "product": "fortinet_fortigate-vm_v5"
       },
       "dependsOn": [
-        "[variables('network_NIC_fgb1_Id')]",
-        "[variables('network_NIC_fgb2_Id')]",
-        "[variables('network_NIC_fgb3_Id')]",
-        "[variables('network_NIC_fgb4_Id')]"
+        "[variables('fgbNic1Id')]",
+        "[variables('fgbNic2Id')]",
+        "[variables('fgbNic3Id')]",
+        "[variables('fgbNic4Id')]"
       ],
       "properties": {
         "hardwareProfile": {
           "vmSize": "[parameters('instanceType')]"
         },
         "availabilitySet": {
-          "id": "[variables('compute_AvailabilitySet_FG_Id')]"
+          "id": "[variables('fgAvailabilitySetId')]"
         },
         "osProfile": {
           "computerName": "[variables('fgbVmName')]",
@@ -1146,25 +1146,25 @@
               "properties": {
                 "primary": true
               },
-              "id": "[variables('network_NIC_fgb1_Id')]"
+              "id": "[variables('fgbNic1Id')]"
             },
             {
               "properties": {
                 "primary": false
               },
-              "id": "[variables('network_NIC_fgb2_Id')]"
+              "id": "[variables('fgbNic2Id')]"
             },
             {
               "properties": {
                 "primary": false
               },
-              "id": "[variables('network_NIC_fgb3_Id')]"
+              "id": "[variables('fgbNic3Id')]"
             },
             {
               "properties": {
                 "primary": false
               },
-              "id": "[variables('network_NIC_fgb4_Id')]"
+              "id": "[variables('fgbNic4Id')]"
             }
           ]
         }
