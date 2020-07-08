@@ -98,7 +98,7 @@ az group create --location "$location" --name "$rg"
 
 # Validate template
 echo "--> Validation deployment in $rg resource group ..."
-az group deployment validate --resource-group "$rg" \
+az deployment group validate --resource-group "$rg" \
                            --template-file azuredeploy.json \
                            --parameters adminUsername="$username" adminPassword="$passwd" FortiGateNamePrefix="$prefix" \
                                         osDiskVhdUri="$osDiskVhdUri"
@@ -111,7 +111,7 @@ fi
 
 # Deploy resources
 echo "--> Deployment of $rg resources ..."
-az group deployment create --resource-group "$rg" \
+az deployment group create --resource-group "$rg" \
                            --template-file azuredeploy.json \
                            --parameters adminUsername="$username" adminPassword="$passwd" FortiGateNamePrefix="$prefix" \
                                         osDiskVhdUri="$osDiskVhdUri"
