@@ -146,7 +146,7 @@ az group create --location "$location" --name "$rg"
 
 # Validate template
 echo "--> Validation deployment in $rg resource group ..."
-az group deployment validate --resource-group "$rg" \
+az deployment group validate --resource-group "$rg" \
                            --template-file scenario3.json \
                            --parameters prefix=$prefix vpnsite1Prefix=$vpnsite1prefix vpnsite1PublicIPAddress=$vpnsite1publicipaddress \
                                         vpnsite2Prefix=$vpnsite2prefix vpnsite2PublicIPAddress=$vpnsite2publicipaddress hub2Location=$location2
@@ -159,7 +159,7 @@ fi
 
 # Deploy resources
 echo "--> Deployment of $rg resources ..."
-az group deployment create --resource-group "$rg" \
+az deployment group create --resource-group "$rg" \
                            --template-file scenario3.json \
                            --parameters prefix=$prefix vpnsite1Prefix=$vpnsite1prefix vpnsite1PublicIPAddress=$vpnsite1publicipaddress \
                                         vpnsite2Prefix=$vpnsite2prefix vpnsite2PublicIPAddress=$vpnsite2publicipaddress hub2Location=$location2
