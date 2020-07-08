@@ -1,16 +1,4 @@
 #!/bin/bash
-echo "
-##############################################################################################################
-#
-# FortiGate Azure deployment using ARM Template
-# Fortigate Active/Passive cluster with External + Internal Load Balancer
-#
-##############################################################################################################
-
-"
-
-# Stop on error
-set +e
 
 if [ -z "$DEPLOY_LOCATION" ]
 then
@@ -48,6 +36,26 @@ echo ""
 echo "--> Using prefix '$prefix' for all resources ..."
 echo ""
 rg="$prefix-RG"
+rgvnet="$prefix-VNET-RG"
+vnet="$prefix-VNET"
+
+if [ -z "$DEPLOY_USERNAME" ]
+then
+    # Input username
+    echo -n "Enter username: "
+    stty_orig=`stty -g` # save original terminal setting.
+    read USERNAME         # read the prefix
+    stty $stty_orig     # restore terminal setting.
+    if [ -z "$USERNAME" ]
+    then
+        USERNAME="azureuser"
+    fi
+else
+    USERNAME="$DEPLOY_USERNAME"
+fi
+echo ""
+echo "--> Using username '$USERNAME' ..."
+echo ""
 
 if [ -z "$DEPLOY_PASSWORD" ]
 then
@@ -55,43 +63,40 @@ then
     echo -n "Enter password: "
     stty_orig=`stty -g` # save original terminal setting.
     stty -echo          # turn-off echoing.
-    read passwd         # read the password
+    read PASSWORD         # read the password
     stty $stty_orig     # restore terminal setting.
 else
-    passwd="$DEPLOY_PASSWORD"
+    PASSWORD="$DEPLOY_PASSWORD"
     echo ""
     echo "--> Using password found in env variable DEPLOY_PASSWORD ..."
     echo ""
 fi
 
-if [ -z "$DEPLOY_USERNAME" ]
-then
-    # Input username
-    echo -n "Enter username: "
-    stty_orig=`stty -g` # save original terminal setting.
-    read username         # read the prefix
-    stty $stty_orig     # restore terminal setting.
-    if [ -z "$username" ]
-    then
-        username="azureuser"
-    fi
-else
-    username="$DEPLOY_USERNAME"
-fi
-echo ""
-echo "--> Using username '$username' ..."
-echo ""
-
 # Create resource group
+echo ""
+echo "--> Creating VNET $rgvnet resource group ..."
+az group create --location "$location" --name "$rgvnet"
+
 echo ""
 echo "--> Creating $rg resource group ..."
 az group create --location "$location" --name "$rg"
+
+echo ""
+echo "--> Creating separate VNET $vnet ..."
+az network vnet create --name "$vnet" --resource-group $rgvnet --address-prefixes 172.16.136.0/22
+az network vnet subnet create --resource-group $rgvnet --vnet-name "$vnet" --name "ExternalSubnet" --address-prefixes 172.16.136.0/26
+az network vnet subnet create --resource-group $rgvnet --vnet-name "$vnet" --name "InternalSubnet" --address-prefixes 172.16.136.64/26
+az network vnet subnet create --resource-group $rgvnet --vnet-name "$vnet" --name "HASyncSubnet" --address-prefixes 172.16.136.128/26
+az network vnet subnet create --resource-group $rgvnet --vnet-name "$vnet" --name "ManagementSubnet" --address-prefixes 172.16.136.192/26
 
 # Validate template
 echo "--> Validation deployment in $rg resource group ..."
 az deployment group validate --resource-group "$rg" \
                            --template-file azuredeploy.json \
-                           --parameters adminUsername="$username" adminPassword=$passwd FortiGateNamePrefix=$prefix
+                           --parameters adminUsername="$USERNAME" adminPassword="$PASSWORD" \
+                                        fortigateNamePrefix=$prefix vnetName="$vnet" vnetResourceGroup="$rgvnet" \
+                                        vnetNewOrExisting="existing"
+
 result=$?
 if [ $result != 0 ];
 then
@@ -103,7 +108,9 @@ fi
 echo "--> Deployment of $rg resources ..."
 az deployment group create --resource-group "$rg" \
                            --template-file azuredeploy.json \
-                           --parameters adminUsername="$username" adminPassword=$passwd FortiGateNamePrefix=$prefix
+                           --parameters adminUsername="$USERNAME" adminPassword=$PASSWORD \
+                                        fortigateNamePrefix=$prefix vnetName="$vnet" vnetResourceGroup="$rgvnet" \
+                                        vnetNewOrExisting="existing"
 result=$?
 if [[ $result != 0 ]];
 then
@@ -123,7 +130,7 @@ echo "
 
 Deployment information:
 
-Username: $username
+Username: $USERNAME
 
 FortiGate IP addesses
 "
