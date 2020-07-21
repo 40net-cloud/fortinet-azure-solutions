@@ -177,25 +177,26 @@
         "description": "Location for all resources."
       }
     },
-    "FortinetTags": {
+    "fortinetTags": {
       "type": "object",
       "defaultValue": {
         "publisher": "Fortinet",
+        "template": "FortiManager",
         "provider": "6EB3B02F-50E5-4A3E-8CB8-2E1292583FMG"
       }
     }
   },
   "variables": {
     "vnetName": "[if(equals(parameters('vnetName'),''),concat(parameters('namePrefix'),'-VNET'),parameters('vnetName'))]",
-    "subnet1Ref": "[if(equals(parameters('vnetNewOrExisting'),'new'),resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'), parameters('subnet1Name')),resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet1Name')))]",
+    "subnet1Id": "[if(equals(parameters('vnetNewOrExisting'),'new'),resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'), parameters('subnet1Name')),resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet1Name')))]",
 
-    "vmName": "[concat(parameters('namePrefix'),'-FMG-A')]",
+    "fmgVmName": "[concat(parameters('namePrefix'),'-FMG-A')]",
 
-    "network_NIC_fg11_Name": "[concat(variables('vmName'),'-Nic1')]",
-    "network_NIC_fg11_Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('network_NIC_fg11_Name'))]",
+    "fmgNic1Name": "[concat(variables('fmgVmName'),'-Nic1')]",
+    "fmgNic1Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('fmgNic1Name'))]",
 
     "publicIPName": "[if(equals(parameters('publicIPName'),''),concat(parameters('namePrefix'),'-FMG-PIP'),parameters('publicIPName'))]",
-    "publicIPID": "[if(equals(parameters('publicIPNewOrExisting'),'new'),resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPName')),if(equals(parameters('publicIPNewOrExisting'),'existing'),resourceId(parameters('publicIPResourceGroup'),'Microsoft.Network/publicIPAddresses',variables('publicIPName')),''))]",
+    "publicIPId": "[if(equals(parameters('publicIPNewOrExisting'),'new'),resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPName')),if(equals(parameters('publicIPNewOrExisting'),'existing'),resourceId(parameters('publicIPResourceGroup'),'Microsoft.Network/publicIPAddresses',variables('publicIPName')),''))]",
 
     "NSGName": "[concat(parameters('namePrefix'),'-',uniqueString(resourceGroup().id),'-NSG')]",
 
@@ -248,7 +249,7 @@
     {
       "apiVersion": "2020-04-01",
       "tags": {
-        "provider": "[toUpper(parameters('FortinetTags').provider)]"
+        "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
       "type": "Microsoft.Network/networkSecurityGroups",
       "name": "[variables('NSGName')]",
@@ -333,7 +334,7 @@
       "type": "Microsoft.Network/publicIPAddresses",
       "apiVersion": "2020-04-01",
       "tags": {
-        "provider": "[toUpper(parameters('FortinetTags').provider)]"
+        "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
       "name": "[variables('publicIPName')]",
       "location": "[parameters('location')]",
@@ -348,10 +349,10 @@
     {
       "apiVersion": "2020-04-01",
       "tags": {
-        "provider": "[toUpper(parameters('FortinetTags').provider)]"
+        "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
       "type": "Microsoft.Network/networkInterfaces",
-      "name": "[variables('network_NIC_fg11_Name')]",
+      "name": "[variables('fmgNic1Name')]",
       "location": "[parameters('location')]",
       "dependsOn": [
         "[variables('vnetName')]",
@@ -365,10 +366,10 @@
               "privateIPAddress": "[variables('sn1IPfg1')]",
               "privateIPAllocationMethod": "Static",
               "publicIPAddress": {
-                "id": "[variables('publicIPID')]"
+                "id": "[variables('publicIPId')]"
               },
               "subnet": {
-                "id": "[variables('subnet1Ref')]"
+                "id": "[variables('subnet1Id')]"
               }
             }
           }
@@ -380,10 +381,10 @@
     },
     {
       "type": "Microsoft.Compute/virtualMachines",
-      "name": "[variables('vmName')]",
+      "name": "[variables('fmgVmName')]",
       "apiVersion": "2019-12-01",
       "tags": {
-       "provider": "[toUpper(parameters('FortinetTags').provider)]"
+       "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
       "identity": {
         "type": "SystemAssigned"
@@ -395,14 +396,14 @@
         "product": "fortinet-fortimanager"
       },
       "dependsOn": [
-        "[variables('network_NIC_fg11_Name')]"
+        "[variables('fmgNic1Name')]"
       ],
       "properties": {
         "hardwareProfile": {
           "vmSize": "[parameters('instanceType')]"
         },
         "osProfile": {
-          "computerName": "[variables('vmName')]",
+          "computerName": "[variables('fmgVmName')]",
           "adminUsername": "[parameters('adminUsername')]",
           "adminPassword": "[parameters('adminPassword')]",
           "customData": "[variables('customData')]"
@@ -431,7 +432,7 @@
               "properties": {
                 "primary": true
               },
-              "id": "[variables('network_NIC_fg11_Id')]"
+              "id": "[variables('fmgNic1Id')]"
             }
           ]
         }
