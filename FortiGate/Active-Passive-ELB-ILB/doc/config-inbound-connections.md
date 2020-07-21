@@ -62,7 +62,8 @@ Secondly, a firewall policy rule needs to be created to allow the packets to tra
 
 ## Flow
 
-In the diagram the different steps to establish a session are layed out. This flow is based on the configuration
+In the diagram the different steps to establish a session are layed out. This flow is based on the configuration as deployed in this template.
+
 ![Inbound flow](../images/inbound-flow.png)
 
 1. Connection from client to the public IP of the Azure Standard Load Balancer - s: w.x.y.z - d: a.b.c.d
