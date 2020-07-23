@@ -12,7 +12,7 @@
             "value": "## TO BE DEFINED ##"
         },
         "imageSku": {
-            "value": "fortinet-fortimanager"
+            "value": "fortinet-fortianalyzer"
         },
         "imageVersion": {
             "value": "latest"
@@ -45,7 +45,7 @@
             "value": "172.16.136.0/22"
         },
         "subnet1Name": {
-            "value": "FortiManagerSubnet"
+            "value": "FortiAnalyzerSubnet"
         },
         "subnet1Prefix": {
             "value": "172.16.137.0/24"
@@ -59,8 +59,8 @@
         "fortinetTags": {
             "value": {
                 "publisher": "Fortinet",
-                "template": "FortiManager",
-                "provider": "6EB3B02F-50E5-4A3E-8CB8-2E1292583FMG"
+                "template": "FortiAnalyzer",
+                "provider": "6EB3B02F-50E5-4A3E-8CB8-2E1292583FAZ"
             }
         }
     }

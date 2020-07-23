@@ -20,18 +20,6 @@
         "instanceType": {
             "value": "Standard_D2s_v3"
         },
-        "publicIPNewOrExisting": {
-            "value": "new"
-        },
-        "publicIPName": {
-            "value": "FMGPublicIP"
-        },
-        "publicIPResourceGroup": {
-            "value": ""
-        },
-        "publicIPAddressType": {
-            "value": "Static"
-        },
         "vnetNewOrExisting": {
             "value": "new"
         },
@@ -59,8 +47,8 @@
         "fortinetTags": {
             "value": {
                 "publisher": "Fortinet",
-                "template": "FortiManager",
-                "provider": "6EB3B02F-50E5-4A3E-8CB8-2E1292583FMG"
+                "template": "FortiAnalyzer",
+                "provider": "6EB3B02F-50E5-4A3E-8CB8-2E1292584FAZ"
             }
         }
     }
