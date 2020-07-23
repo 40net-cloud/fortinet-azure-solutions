@@ -1,6 +1,6 @@
 ##############################################################################################################
 #
-# FortiManager VM
+# FortiAnalyzer VM
 # Terraform deployment template for Microsoft Azure
 #
 ##############################################################################################################
@@ -21,24 +21,24 @@ variable "PASSWORD" {
 }
 
 ##############################################################################################################
-# FortiGate license type
+# FortiAnalyzer license type
 ##############################################################################################################
 
-variable "FMG_IMAGE_SKU" {
-  description = "Azure Marketplace default image sku hourly (PAYG 'fortinet_fg-vm_payg_20190624') or byol (Bring your own license 'fortinet_fg-vm')"
-  default     = "fortinet-fortimanager"
+variable "FAZ_IMAGE_SKU" {
+  description = "Azure Marketplace default image byol (Bring your own license 'fortinet-fortianalyzer')"
+  default     = "fortinet-fortianalyzer"
 }
 
-variable "FMG_VERSION" {
-  description = "FortiGate version by default the 'latest' available version in the Azure Marketplace is selected"
-  default     = "6.4.1"
+variable "FAZ_VERSION" {
+  description = "FortiAnalyzer version by default the 'latest' available version in the Azure Marketplace is selected"
+  default     = "latest"
 }
 
-variable "FMG_BYOL_LICENSE_FILE" {
+variable "FAZ_BYOL_LICENSE_FILE" {
   default = ""
 }
 
-variable "FMG_SSH_PUBLIC_KEY_FILE" {
+variable "FAZ_SSH_PUBLIC_KEY_FILE" {
   default = ""
 }
 
@@ -73,7 +73,7 @@ variable "subnet" {
   description = ""
 
   default = {
-    "1" = "172.16.137.0/24"  # FMG network
+    "1" = "172.16.137.0/24"  # FAZ network
   }
 }
 
@@ -82,16 +82,16 @@ variable "subnetmask" {
   description = ""
 
   default = {
-    "1" = "24" # FMG network
+    "1" = "24" # FAZ network
   }
 }
 
-variable "fmg_ipaddress_a" {
+variable "faz_ipaddress_a" {
   type        = map(string)
   description = ""
 
   default = {
-    "1" = "172.16.137.5"  # FMG network
+    "1" = "172.16.137.5"  # FAZ network
   }
 }
 
@@ -100,11 +100,11 @@ variable "gateway_ipaddress" {
   description = ""
 
   default = {
-    "1" = "172.16.137.1"  # FMG network
+    "1" = "172.16.137.1"  # FAZ network
   }
 }
 
-variable "fmg_vmsize" {
+variable "faz_vmsize" {
   default = "Standard_D2s_v3"
 }
 

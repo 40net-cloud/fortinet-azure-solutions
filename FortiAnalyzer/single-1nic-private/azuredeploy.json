@@ -145,8 +145,8 @@
       "type": "object",
       "defaultValue": {
         "publisher": "Fortinet",
-        "template": "FortiManager",
-        "provider": "6EB3B02F-50E5-4A3E-8CB8-2E1292584FMG"
+        "template": "FortiAnalyzer",
+        "provider": "6EB3B02F-50E5-4A3E-8CB8-2E1292584FAZ"
       }
     }
   },

@@ -2,7 +2,7 @@
 echo "
 ##############################################################################################################
 #
-# FortiManager VM
+# FortiAnalyzer VM
 # Terraform deployment template for Microsoft Azure
 #
 ##############################################################################################################
@@ -12,15 +12,15 @@ echo "
 set -e
 
 ##############################################################################################################
-# FortiManager variables
+# FortiAnalyzer variables
 #
-# FortiManager version
+# FortiAnalyzer version
 # Default = latest
 #
 ##############################################################################################################
-#export TF_VAR_FMG_IMAGE_SKU=""
-#export TF_VAR_FMG_VERSION=""
-#export TF_VAR_FMG_BYOL_LICENSE_FILE=""
+#export TF_VAR_FAZ_IMAGE_SKU=""
+#export TF_VAR_FAZ_VERSION=""
+#export TF_VAR_FAZ_BYOL_LICENSE_FILE=""
 
 PLAN="terraform.tfplan"
 
