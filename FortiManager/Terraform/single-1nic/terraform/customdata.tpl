@@ -7,89 +7,70 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 Content-Disposition: attachment; filename="config"
 
-config system sdn-connector
-	edit AzureSDN
-		set type azure
-	end
+config system global
+    set hostname "${fmg_vm_name}"
+    set adom-status enable
+    set clone-name-option keep
+    set create-revision enable
+    set device-view-mode tree
+    set disable-module fortiview-noc
+    set import-ignore-addr-cmt enable
+    set partial-install enable
+    set partial-install-force enable
+    set partial-install-rev enable
+    set perform-improve-by-ha enable
+    set policy-hit-count enable
+    set policy-object-icon enable
+    set search-all-adoms enable
 end
-config sys global
-    set admintimeout 120
-    set hostname "${fgt_vm_name}"
-    set timezone 26
-    set gui-theme mariner
+config system admin setting
+    set gui-theme spring
+    set idle_timeout 480
+    set sdwan-monitor-history enable
+    set show-add-multiple enable
+    set show-checkbox-in-table enable
+    set show-device-import-export enable
+    set show-hostname enable
+    set show_automatic_script enable
+    set show_schedule_script enable
+    set show_tcl_script enable
 end
-config vpn ssl settings
-    set port 7443
-end
-config router static
-    edit 1
-        set gateway ${fgt_external_gw}
-        set device port1
-    next
-    edit 2
-        set dst ${vnet_network}
-        set gateway ${fgt_internal_gw}
-        set device port2
-    next
-    edit 3
-        set dst 168.63.129.16 255.255.255.255
-        set device port2
-        set gateway ${fgt_internal_gw}
-    next
-    edit 4
-        set dst 168.63.129.16 255.255.255.255
-        set device port1
-        set gateway ${fgt_external_gw}
-    next
-end
-config system probe-response
-    set http-probe-value OK
-    set mode http-probe
+config system admin user
+    edit devops
+    set password', parameters('adminPassword'), '
+    set profileid Super_User
+    set adom all_adoms
+    set policy-package all_policy_packages
+    set rpc-permit read-write
 end
 config system interface
-    edit port1
-        set mode static
-        set ip ${fgt_external_ipaddr}/${fgt_external_mask}
-        set description external
-        set allowaccess probe-response ping https ssh ftm
-    next
-    edit port2
-        set mode static
-        set ip ${fgt_internal_ipaddr}/${fgt_internal_mask}
-        set description internal
-        set allowaccess probe-response ping https ssh ftm
+    edit "port1"
+        set ip ${fmg_ipaddr}/${fmg_mask}
+        set allowaccess ping https ssh
     next
 end
-%{ if fgt_ssh_public_key != "" }
-config system admin
-    edit "${fgt_username}"
-        set ssh-public-key1 "${trimspace(file(fgt_ssh_public_key))}"
+config system route
+    edit 1
+        set device "port1"
+        set gateway ${fmg_gw}
+    next
+end
+%{ if fmg_ssh_public_key != "" }
+config system admin user
+    edit "${fmg_username}"
+        set ssh-public-key1 "${trimspace(file(fmg_ssh_public_key))}"
     next
 end
 %{ endif }
-# Uncomment for FGSP to allow assymetric traffic
-# Verify the README
-#config system ha
-#    set session-pickup enable
-#    set session-pickup-connectionless enable
-#    set session-pickup-expectation enable
-#    set session-pickup-nat enable
-#    set override disable
-#end
-#config system cluster-sync
-#    edit 0
-#        set peerip ${fgt_ha_peerip}
-#    next
-#end
 
-%{ if fgt_license_file != "" }
+%{ if fmg_license_file != "" }
 --===============0086047718136476635==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Content-Disposition: attachment; filename="${fgt_license_file}"
+Content-Disposition: attachment; filename="${fmg_license_file}"
 
-${file(fgt_license_file)}
+${file(fmg_license_file)}
 
 %{ endif }
 --===============0086047718136476635==--

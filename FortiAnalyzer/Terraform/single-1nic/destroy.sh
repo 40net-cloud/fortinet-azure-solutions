@@ -2,7 +2,7 @@
 echo "
 ##############################################################################################################
 #
-# FortiManager VM
+# FortiGate Active/Active Load Balanced pair of standalone FortiGate VMs for resilience and scale
 # Terraform deployment template for Microsoft Azure
 #
 # Remove the deployed environment based on the state file
