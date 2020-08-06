@@ -75,5 +75,3 @@ In the diagram the different steps to establish a session are layed out. This fl
 5. Azure Internal Load Balancer send the traffic to the active FGT - s: 172.16.137.4 - d: w.x.y.z
 6. Active FGT translates the source to the FGT private IP on the external interface - s: 172.16.136.5 - d: w.x.y.z
 7. The Azure Load Balancer translates the source IP to the public IP from the initial request - s: a.b.c.d - d: w.x.y.z
-
-## Troubleshooting
