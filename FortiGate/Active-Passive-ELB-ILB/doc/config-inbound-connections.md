@@ -33,7 +33,9 @@ To create a new rule you can follow the settings from the TCP/80 rule that was a
 - Session persistance: By default the Azure Load Balancer uses a 5 tuple distribution mode. If only the client IP and optionally the protocol need to provide persistancy you change this here. More information on this topic can be found [here](https://docs.microsoft.com/en-us/azure/load-balancer/load-balancer-distribution-mode)
 - Floating IP (direct server return): This settings needs to be enable for any service located behind the FortiGate. This will allow the packet towards the FortiGate to contain the public IP as the destination IP. That allows for easy identification and policy enforcement of the inbound connection on the FortiGate. Services running on the FortiGate like IPSEC disable this option. It allows the IPSEC engine to pick up the traffic to the local process on the private IP of the VM.
 
-![Create inbound load balancing rule](../images/inbound-lbrule-create.png)
+<p align="center">
+  <img width="500px" src="../images/inbound-lbrule-create.png">
+</p>
 
 ### FortiGate
 
@@ -73,5 +75,3 @@ In the diagram the different steps to establish a session are layed out. This fl
 5. Azure Internal Load Balancer send the traffic to the active FGT - s: 172.16.137.4 - d: w.x.y.z
 6. Active FGT translates the source to the FGT private IP on the external interface - s: 172.16.136.5 - d: w.x.y.z
 7. The Azure Load Balancer translates the source IP to the public IP from the initial request - s: a.b.c.d - d: w.x.y.z
-
-## Troubleshooting
