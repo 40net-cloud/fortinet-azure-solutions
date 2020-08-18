@@ -167,8 +167,8 @@
     </script>
     <script id="vpnSiteTemplate" type="text/template">{{#vpnSiteConnections}}
 config vpn ipsec phase1-interface
-edit "{{ ../vpnSiteConfiguration.Name }}-{{ ../vpnSiteConfiguration.LinkName }}-1"
-set interface "{{ ../vpnSiteConfiguration.LinkName }}"
+edit "{{ ../vpnSiteConfiguration.Name }}-1"
+set interface "## EXTERNAL INTERFACE ##"
 set ike-version 2
 set keylife 28800
 set peertype any
@@ -177,8 +177,8 @@ set dhgrp 2
 set remote-gw {{ gatewayConfiguration.IpAddresses.Instance0 }}
 set psksecret {{ connectionConfiguration.PSK }}
 next
-edit "{{ ../vpnSiteConfiguration.Name }}-{{ ../vpnSiteConfiguration.LinkName }}-2"
-set interface "{{ ../vpnSiteConfiguration.LinkName }}"
+edit "{{ ../vpnSiteConfiguration.Name }}-2"
+set interface "## EXTERNAL INTERFACE ##"
 set ike-version 2
 set keylife 28800
 set peertype any
@@ -189,14 +189,14 @@ set psksecret {{ connectionConfiguration.PSK }}
 next
 end
 config vpn ipsec phase2-interface
-edit "{{ ../vpnSiteConfiguration.Name }}-{{ ../vpnSiteConfiguration.LinkName }}-1"
-set phase1name "{{ ../vpnSiteConfiguration.Name }}-{{ ../vpnSiteConfiguration.LinkName }}-1"
+edit "{{ ../vpnSiteConfiguration.Name }}-1"
+set phase1name "{{ ../vpnSiteConfiguration.Name }}-1"
 set proposal aes256-sha1
 set dhgrp 2
 set keylifeseconds {{ connectionConfiguration.IPsecParameters.SALifeTimeInSeconds }}
 next
-edit "{{ ../vpnSiteConfiguration.Name }}-{{ ../vpnSiteConfiguration.LinkName }}-2"
-set phase1name "{{ ../vpnSiteConfiguration.Name }}-{{ ../vpnSiteConfiguration.LinkName }}-2"
+edit "{{ ../vpnSiteConfiguration.Name }}-2"
+set phase1name "{{ ../vpnSiteConfiguration.Name }}-2"
 set proposal aes256-sha1
 set dhgrp 2
 set keylifeseconds {{ connectionConfiguration.IPsecParameters.SALifeTimeInSeconds }}
@@ -206,14 +206,14 @@ config system settings
 set allow-subnet-overlap enable
 end
 config system interface
-edit "{{ ../vpnSiteConfiguration.Name }}-{{ ../vpnSiteConfiguration.LinkName }}-1"
+edit "{{ ../vpnSiteConfiguration.Name }}-1"
 set vdom "root"
 set ip {{ ../vpnSiteConfiguration.BgpSetting.BgpPeeringAddress }} 255.255.255.255
 set type tunnel
 set remote-ip {{ gatewayConfiguration.BgpSetting.BgpPeeringAddresses.Instance0 }} 255.255.255.255
 set interface "## EXTERNAL INTERFACE ##"
 next
-edit "{{ ../vpnSiteConfiguration.Name }}-{{ ../vpnSiteConfiguration.LinkName }}-2"
+edit "{{ ../vpnSiteConfiguration.Name }}-2"
 set vdom "root"
 set ip {{ ../vpnSiteConfiguration.BgpSetting.BgpPeeringAddress }} 255.255.255.255
 set type tunnel
@@ -237,7 +237,7 @@ config system settings
 end
 config firewall policy
 edit 0
-set srcintf "{{ ../vpnSiteConfiguration.Name }}-{{ ../vpnSiteConfiguration.LinkName }}-1" "{{ ../vpnSiteConfiguration.Name }}-{{ ../vpnSiteConfiguration.LinkName }}-2"
+set srcintf "{{ ../vpnSiteConfiguration.Name }}-1" "{{ ../vpnSiteConfiguration.Name }}-2"
 set dstintf "## INTERNAL INTERFACE ##"
  set srcaddr all
  set dstaddr all
@@ -249,7 +249,7 @@ end
 config firewall policy
 edit 0
 set srcintf "## INTERNAL INTERFACE ##"
-set dstintf "{{ ../vpnSiteConfiguration.Name }}-{{ ../vpnSiteConfiguration.LinkName }}-1" "{{ ../vpnSiteConfiguration.Name }}-{{ ../vpnSiteConfiguration.LinkName }}-2"
+set dstintf "{{ ../vpnSiteConfiguration.Name }}-1" "{{ ../vpnSiteConfiguration.Name }}-2"
  set srcaddr all
  set dstaddr all
 set action accept
