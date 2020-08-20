@@ -44,8 +44,20 @@ More information can be found [here](Active-Active-ELB-ILB/)
 
 The FortiGate Next-Generation Firewall can be deployed in Microsoft Azure in different architectures each with their specific properties that can be an advantage or disadvantage in your environment.
 
-- Single VNET
-- VNET peering
-- Autoscaling
+- Single VNET: All the building block above are ready to deploy in a new or existing VNET. Select your block above to get started.
+- Cloud Security Services Hub (VNET peering): With VNET peering it is possible to have different islands deploying different services managed by diferent internal and/or external teams but to maintain a single point of control going to on-premise, other clouds or public internet. By connecting the different VNETs in a Hub-Spoke setup the Hub can control all traffic. Get started [here](VNET-peering/)
+- Autoscaling: For application that are fluid in the amount of resources the FortiGate can also be deployed with a autoscaling architecture. This architecture is documented [here](https://docs.fortinet.com/vm/azure/fortigate/6.4/azure-cookbook/6.4.0/161167/deploying-auto-scaling-on-azure) or a quickstart script is available [here](Autoscale/)
+- Azure Virtual WAN: Azure Virtual WAN offers a central connectivity point between regions, on-premise. Fortinet offers [automation](https://www.fortinet.com/content/dam/fortinet/assets/deployment-guides/dg-fortigate-azure-wan-integration.pdf) as well as [different deployment modes](azurevirtualwan/).
+
+Coming soon...
+
 - Multi region - Azure Traffic Manager
 - Azure Application Gateway
+
+# License
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS OR FORTINET SUPPORT (TAC) BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
