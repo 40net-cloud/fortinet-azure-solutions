@@ -4,9 +4,23 @@
 
 Inbound connections are considered the connections coming from the internet towards the Azure Load Balancer to publish services like a webserver or other hosted in the VNET or peered VNETs. The published services via the Azure Load Balancer are limited to the TCP and UDP protocols.
 
-To go beyond the limitation of the Azure Load Balancer and use other protocols (e.g. ICMP,ESP,FTP,...), an instance level public IP on each of the VMs in the cluster is required. Load Balancing would then be possible using Azure Traffic Manager or FortiGSLB services. Using an instance level public IP will change the behaviour of the outbound connections.
+To go beyond the limitation of the Azure Load Balancer and use other protocols (e.g. ICMP,ESP,FTP,...), an instance level public IP on each of the VMs in the cluster is required. Load Balancing would then be possible using Azure Traffic Manager or FortiGSLB services instead of Azure Load Balancer. Using an instance level public IP will change the behaviour of the outbound connections. The use of Azure Traffic Manager or FortiGSLB services is out of the scope of this article.
 
 There are 2 public IP SKU's: Basic and Standard. This template will use the Standard SKU as we are using the Azure Standard Load Balancer. The standard public IP by default is a static allocation. More information can be found [in the Microsoft documentation](https://docs.microsoft.com/en-us/azure/virtual-network/public-ip-addresses).
+
+## Flow
+
+In the diagram the different steps to establish a session are layed out. This flow is based on the configuration as deployed in this template.
+
+![Inbound flow](../images/inbound-flow.png)
+
+1. Connection from client to the public IP of the Azure Standard Load Balancer - s: w.x.y.z - d: a.b.c.d
+2. Azure LB probes and send the packet to the active FGT using Floating IP. No NAT - s: w.x.y.z - d: a.b.c.d
+3. FGT VIP picks up, translates (DNAT) and sends the packet to the server via routing in Azure - s: w.x.y.z - d: 172.16.137.4
+4. Server responds to the request and send the packet to default gateway. Azure routes the traffic using User Defined Routing (UDR) to the Internal Load Balancer - s: 172.16.137.4 - d: w.x.y.z
+5. Azure Internal Load Balancer send the traffic to the active FGT - s: 172.16.137.4 - d: w.x.y.z
+6. Active FGT translates the source to the FGT private IP on the external interface - s: 172.16.136.5 - d: w.x.y.z
+7. The Azure Load Balancer translates the source IP to the public IP from the initial request - s: a.b.c.d - d: w.x.y.z
 
 ## Configuration
 
@@ -14,6 +28,8 @@ To configure the inbound connectivity to a service there are 2 resources that ne
 
 - Azure Standard Load Balancer rules
 - FortiGate
+
+The drawing in the [flow](#flow) section is used in the configuration screenshots with a standard public IP in Azure of 51.124.146.120 and the backend VM having the internal IP 172.16.137.4.
 
 ### Azure Standard Load Balancer
 
@@ -61,17 +77,3 @@ Secondly, a firewall policy rule needs to be created to allow the packets to tra
 - NAT: Source NAT is not needed for an Active/Passive setup. For an Active/Active setup it is recommended so the packet is returning to the firewall that maintains the state of the session
 
 ![FortiGate firewall policy](../images/inbound-fgt-policy.png)
-
-## Flow
-
-In the diagram the different steps to establish a session are layed out. This flow is based on the configuration as deployed in this template.
-
-![Inbound flow](../images/inbound-flow.png)
-
-1. Connection from client to the public IP of the Azure Standard Load Balancer - s: w.x.y.z - d: a.b.c.d
-2. Azure LB probes and send the packet to the active FGT using Floating IP. No NAT - s: w.x.y.z - d: a.b.c.d
-3. FGT VIP picks up, translates (DNAT) and sends the packet to the server via routing in Azure - s: w.x.y.z - d: 172.16.137.4
-4. Server responds to the request and send the packet to default gateway. Azure routes the traffic using User Defined Routing (UDR) to the Internal Load Balancer - s: 172.16.137.4 - d: w.x.y.z
-5. Azure Internal Load Balancer send the traffic to the active FGT - s: 172.16.137.4 - d: w.x.y.z
-6. Active FGT translates the source to the FGT private IP on the external interface - s: 172.16.136.5 - d: w.x.y.z
-7. The Azure Load Balancer translates the source IP to the public IP from the initial request - s: a.b.c.d - d: w.x.y.z
