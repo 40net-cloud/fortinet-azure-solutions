@@ -42,8 +42,8 @@ $testsAdminUsername = "azureuser"
 #$testsAdminPassword = $testsResourceGroupName | ConvertTo-SecureString -AsPlainText -Force
 $testsResourceGroupLocation = "West Europe"
 
-Describe 'ARM Templates Test : Validation & Test Deployment' {
-    Context 'Template Validation' {
+Describe 'FGT A/P SDN' {
+    Context 'Validation' {
         It 'Has a JSON template' {
             $templateFileLocation | Should Exist
         }
@@ -128,7 +128,7 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
 
     }
 
-    Context 'Template Test Deployment' {
+    Context 'Deployment' {
 
         # Set working directory & create resource group
         Set-Location $sourcePath
@@ -175,7 +175,6 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
             }
         }
 
-    Context 'Cleanup' {
         It "Cleanup of deployment" {
             Remove-AzureRmResourceGroup -Name $testsResourceGroupName -Force
         }
