@@ -144,16 +144,16 @@ Describe 'FGT A/P SDN' {
         $publicIPName = "FGTAMgmtPublicIP"
         $publicIP2Name = "FGTBMgmtPublicIP"
 
-        It "Test Deployment of ARM template $templateFileName" {
+        It "Test Deployment" {
             (Test-AzResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName" -TemplateFile "$templateFileName" -TemplateParameterObject $params).Count | Should not BeGreaterThan 0
         }
-        It "Deployment of ARM template $templateFileName" {
+        It "Deployment" {
             $resultDeployment = New-AzResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName" -TemplateFile "$templateFileName" -TemplateParameterObject $params
             Write-Host ($resultDeployment | Format-Table | Out-String)
             Write-Host ("Deployment state: " + $resultDeployment.ProvisioningState | Out-String)
             $resultDeployment.ProvisioningState | Should Be "Succeeded"
         }
-        It "Deployment in Azure validation" {
+        It "Search deployment" {
             $result = Get-AzVM | Where-Object { $_.Name -like "$testsPrefix*" }
             Write-Host ($result | Format-Table | Out-String)
             $result | Should Not Be $null
