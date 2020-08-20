@@ -135,7 +135,7 @@ Describe 'FGT A/P LB' {
 
         $params = @{ 'adminUsername'=$testsAdminUsername
                      'adminPassword'=$testsResourceGroupName
-                     'fortiGateNamePrefix'=$testsPrefix
+                     'fortigateNamePrefix'=$testsPrefix
                     }
         $publicIPName = "FGTAMgmtPublicIP"
         $publicIP2Name = "FGTBMgmtPublicIP"
