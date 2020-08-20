@@ -132,7 +132,7 @@ Describe 'FGT A/P SDN' {
 
         # Set working directory & create resource group
         Set-Location $sourcePath
-        New-AzureRmResourceGroup -Name $testsResourceGroupName -Location "$testsResourceGroupLocation"
+        New-AzResourceGroup -Name $testsResourceGroupName -Location "$testsResourceGroupLocation"
 
         # Validate all ARM templates one by one
         $testsErrorFound = $false
@@ -145,16 +145,16 @@ Describe 'FGT A/P SDN' {
         $publicIP2Name = "FGTBMgmtPublicIP"
 
         It "Test Deployment of ARM template $templateFileName" {
-            (Test-AzureRmResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName" -TemplateFile "$templateFileName" -TemplateParameterObject $params).Count | Should not BeGreaterThan 0
+            (Test-AzResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName" -TemplateFile "$templateFileName" -TemplateParameterObject $params).Count | Should not BeGreaterThan 0
         }
         It "Deployment of ARM template $templateFileName" {
-            $resultDeployment = New-AzureRmResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName" -TemplateFile "$templateFileName" -TemplateParameterObject $params
+            $resultDeployment = New-AzResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName" -TemplateFile "$templateFileName" -TemplateParameterObject $params
             Write-Host ($resultDeployment | Format-Table | Out-String)
             Write-Host ("Deployment state: " + $resultDeployment.ProvisioningState | Out-String)
             $resultDeployment.ProvisioningState | Should Be "Succeeded"
         }
         It "Deployment in Azure validation" {
-            $result = Get-AzureRmVM | Where-Object { $_.Name -like "$testsPrefix*" }
+            $result = Get-AzVM | Where-Object { $_.Name -like "$testsPrefix*" }
             Write-Host ($result | Format-Table | Out-String)
             $result | Should Not Be $null
         }
@@ -176,7 +176,7 @@ Describe 'FGT A/P SDN' {
         }
 
         It "Cleanup of deployment" {
-            Remove-AzureRmResourceGroup -Name $testsResourceGroupName -Force
+            Remove-AzResourceGroup -Name $testsResourceGroupName -Force
         }
     }
 }
