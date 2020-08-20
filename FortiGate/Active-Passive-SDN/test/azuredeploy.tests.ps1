@@ -3,7 +3,7 @@
 .SYNOPSIS
     Tests a specific ARM template
 .EXAMPLE
-    Invoke-Pester 
+    Invoke-Pester
 .NOTES
     This file has been created as an example of using Pester to evaluate ARM templates
 #>
@@ -32,7 +32,7 @@ $templateFileLocation = "$sourcePath\$templateFileName"
 $templateMetadataFileName = "metadata.json"
 $templateMetadataFileLocation = "$sourcePath\$templateMetadataFileName"
 $templateParameterFileName = "azuredeploy.parameters.json"
-$templateParameterFileLocation = "$sourcePath\$templateParameterFileName" 
+$templateParameterFileLocation = "$sourcePath\$templateParameterFileName"
 
 # Basic Variables
 $testsRandom = Get-Random 10001
@@ -44,15 +44,15 @@ $testsResourceGroupLocation = "West Europe"
 
 Describe 'ARM Templates Test : Validation & Test Deployment' {
     Context 'Template Validation' {
-        It 'Has a JSON template' {        
+        It 'Has a JSON template' {
             $templateFileLocation | Should Exist
         }
-        
-        It 'Has a parameters file' {        
+
+        It 'Has a parameters file' {
             $templateParameterFileLocation | Should Exist
         }
-		
-        It 'Has a metadata file' {        
+
+        It 'Has a metadata file' {
             $templateMetadataFileLocation | Should Exist
         }
 
@@ -60,12 +60,12 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
             $expectedProperties = '$schema',
             'contentVersion',
             'parameters',
-            'resources',                                
+            'resources',
             'variables'
             $templateProperties = (get-content $templateFileLocation | ConvertFrom-Json -ErrorAction SilentlyContinue) | Get-Member -MemberType NoteProperty | % Name
             $templateProperties | Should Be $expectedProperties
         }
-        
+
         It 'Creates the expected Azure resources' {
             $expectedResources = 'Microsoft.Resources/deployments',
                                  'Microsoft.Compute/availabilitySets',
@@ -88,15 +88,16 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
             $templateResources = (get-content $templateFileLocation | ConvertFrom-Json -ErrorAction SilentlyContinue).Resources.type
             $templateResources | Should Be $expectedResources
         }
-        
+
         It 'Contains the expected parameters' {
             $expectedTemplateParameters = 'adminPassword',
                                           'adminUsername',
-                                          'FortiGateImageSKU',
-                                          'FortiGateImageVersion',
-                                          'FortiGateNamePrefix',
-                                          'FortinetTags',
+                                          'fortigateImageSKU',
+                                          'fortigateImageVersion',
+                                          'fortigateNamePrefix',
+                                          'fortinetTags',
                                           'instanceType',
+                                          'location',
                                           'publicIP2Name',
                                           'publicIP2NewOrExisting',
                                           'publicIP2ResourceGroup',
@@ -138,11 +139,10 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
 
         $params = @{ 'adminUsername'=$testsAdminUsername
                      'adminPassword'=$testsResourceGroupName
-                     'FortiGateNamePrefix'=$testsPrefix
+                     'fortigateNamePrefix'=$testsPrefix
                     }
-        $publicIPName = "FGTAPClusterPublicIP"
-        $publicIP2Name = "FGTAMgmtPublicIP"
-        $publicIP3Name = "FGTBMgmtPublicIP"
+        $publicIPName = "FGTAMgmtPublicIP"
+        $publicIP2Name = "FGTBMgmtPublicIP"
 
         It "Test Deployment of ARM template $templateFileName" {
             (Test-AzureRmResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName" -TemplateFile "$templateFileName" -TemplateParameterObject $params).Count | Should not BeGreaterThan 0
@@ -154,25 +154,26 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
             $resultDeployment.ProvisioningState | Should Be "Succeeded"
         }
         It "Deployment in Azure validation" {
-            $result = Get-AzureRmVM | Where-Object { $_.Name -like "$testsPrefix*" } 
+            $result = Get-AzureRmVM | Where-Object { $_.Name -like "$testsPrefix*" }
             Write-Host ($result | Format-Table | Out-String)
             $result | Should Not Be $null
         }
 
-        8443, 22 | Foreach-Object {
-            it "Port [$_] is listening" {
-                $result = Get-AzureRmPublicIpAddress -Name $publicIPName -ResourceGroupName $testsResourceGroupName
-                $portListening = (Test-NetConnection -Port $_ -ComputerName $result.IpAddress).TcpTestSucceeded
-                $portListening | Should -Be $true
-                $result = Get-AzureRmPublicIpAddress -Name $publicIP2Name -ResourceGroupName $testsResourceGroupName
-                $portListening = (Test-NetConnection -Port $_ -ComputerName $result.IpAddress).TcpTestSucceeded
-                $portListening | Should -Be $true
-                $result = Get-AzureRmPublicIpAddress -Name $publicIP3Name -ResourceGroupName $testsResourceGroupName
-                $portListening = (Test-NetConnection -Port $_ -ComputerName $result.IpAddress).TcpTestSucceeded
+        443, 22 | Foreach-Object {
+            it "FGT A: Port [$_] is listening" {
+                $result = Get-AzPublicIpAddress -Name $publicIPName -ResourceGroupName $testsResourceGroupName
+                $portListening = (Test-Connection -TargetName $result.IpAddress -TCPPort $_ -TimeoutSeconds 100)
                 $portListening | Should -Be $true
             }
         }
-    }
+
+        443, 22 | Foreach-Object {
+            it "FGT B: Port [$_] is listening" {
+                $result = Get-AzPublicIpAddress -Name $publicIP2Name -ResourceGroupName $testsResourceGroupName
+                $portListening = (Test-Connection -TargetName $result.IpAddress -TCPPort $_ -TimeoutSeconds 100)
+                $portListening | Should -Be $true
+            }
+        }
 
     Context 'Cleanup' {
         It "Cleanup of deployment" {
