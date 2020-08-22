@@ -25,8 +25,8 @@ Function random-password ($length = 15) {
 }
 
 $templateName = "Active-Passive-SDN-AZ"
-$sourcePath = "$env:BUILD_SOURCESDIRECTORY\FortiGate\$templateName"
-$scriptPath = "$env:BUILD_SOURCESDIRECTORY\FortiGate\$templateName\test"
+$sourcePath = "$env:BUILD_SOURCESDIRECTORY\FortiGate\AvailabilityZones\$templateName"
+$scriptPath = "$env:BUILD_SOURCESDIRECTORY\FortiGate\AvailabilityZones\$templateName\test"
 $templateFileName = "azuredeploy.json"
 $templateFileLocation = "$sourcePath\$templateFileName"
 $templateMetadataFileName = "metadata.json"
@@ -68,7 +68,6 @@ Describe 'FGT A/P SDN AZ' {
 
         It 'Creates the expected Azure resources' {
             $expectedResources = 'Microsoft.Resources/deployments',
-                                 'Microsoft.Compute/availabilitySets',
                                  'Microsoft.Network/routeTables',
                                  'Microsoft.Network/virtualNetworks',
                                  'Microsoft.Network/networkSecurityGroups',
