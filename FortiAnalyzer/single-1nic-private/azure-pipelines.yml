@@ -32,7 +32,8 @@ steps:
 trigger:
   branches:
     include:
-    - master
+    - main
+    - dev
   paths:
     exclude:
     - FortiManager/single-1nic/*.md
