@@ -11,7 +11,7 @@ steps:
   inputs:
     azureSubscription: 'AzureSubscription'
     ScriptPath: 'FortiGate/AvailabilityZones/Active-Passive-SDN-AZ/test/invokePester.ps1'
-    ScriptArguments: '-templatename FortiGate/Active-Passive-SDN-AZ'
+    ScriptArguments: '-templatename FortiGate/AvailabilityZones/Active-Passive-SDN-AZ'
     azurePowerShellVersion: LatestVersion
     pwsh: true
 
@@ -24,7 +24,7 @@ steps:
   condition: always()
 
 - task: PublishTestResults@2
-  displayName: 'Publish Test Results **\TEST-*.xml'
+  displayName: 'Publish custom test results'
   inputs:
     testRunner: NUnit
     testResultsFiles: '**/TEST-*.xml'
@@ -37,6 +37,6 @@ trigger:
     - dev
   paths:
     exclude:
-    - FortiGate/Active-Passive-SDN/*.md
+    - FortiGate/AvailabilityZones/Active-Passive-SDN-AZ/*.md
     include:
-    - FortiGate/Active-Passive-SDN/*
+    - FortiGate/AvailabilityZones/Active-Passive-SDN-AZ/*
