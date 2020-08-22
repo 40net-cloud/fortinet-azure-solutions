@@ -256,8 +256,8 @@
       "type": "object",
       "defaultValue": {
         "publisher": "Fortinet",
-        "template": "Active-Passive-SDN",
-        "provider": "6EB3B02F-50E5-4A3E-8CB8-2E12925831APSDN"
+        "template": "Active-Passive-SDN-AZ",
+        "provider": "6EB3B02F-50E5-4A3E-8CB8-2E129APSDNAZ"
       }
     }
   },
