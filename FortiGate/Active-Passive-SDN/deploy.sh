@@ -103,8 +103,8 @@ fi
 echo "--> Deployment of $rg resources ..."
 az deployment group create --resource-group "$rg" \
                            --template-file azuredeploy.json \
-                           --parameters adminUsername="$username" adminPassword="$PASSWORD" fortigateNamePrefix=$prefix
-result=$
+                           --parameters adminUsername="$USERNAME" adminPassword="$PASSWORD" fortigateNamePrefix=$prefix
+result=$?
 if [[ $result != 0 ]];
 then
     echo "--> Deployment failed ..."
