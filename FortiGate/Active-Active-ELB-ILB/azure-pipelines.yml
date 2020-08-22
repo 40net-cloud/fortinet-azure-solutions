@@ -33,7 +33,8 @@ steps:
 trigger:
   branches:
     include:
-    - master
+    - main
+    - dev
   paths:
     exclude:
     - FortiGate/Active-Active-ELB-ILB/*.md
