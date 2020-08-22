@@ -32,7 +32,8 @@ steps:
 trigger:
   branches:
     include:
-    - master
+    - main
+    - dev
   paths:
     exclude:
     - FortiGate/AvailabilityZones/Active-Active-ELB-ILB-AZ/*.md
