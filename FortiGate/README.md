@@ -18,7 +18,7 @@ When designing a reliable architecture in Microsoft Azure it is important to tak
 Running the FortiGate Next-Generation Firewall inside of Microsoft Azure can offer different levels of reliability based these building blocks
 
 Microsoft offers different [SLAs](https://azure.microsoft.com/en-au/support/legal/sla/virtual-machines/) on Microsoft Azure based on the deployment used.
-- Availability Zone (different datacenter in the same region): 99,99%
+- [Availability Zone](AvailabilityZones/) (different datacenter in the same region): 99,99%
 - Availability Set (different rack and power): 99,95%
 - Single VM with Premium SSD: 99.9%
 
@@ -39,6 +39,8 @@ More information can be found [here](Active-Passive-ELB-ILB/)
 - [__**Active/Active with external and internal Azure Load Balancer**__](Active-Active-ELB-ILB): This design will deploy 2 FortiGate VMs in Active/Active as 2 independent systems. The failover of the traffic in this setup is handled by the Microsoft Azure Load Balancer using a health probe towards the FortiGate VMs. The public IPs are configured on the Microsoft Azure Load Balancer and provide ingress and egress flows with inspection from the FortiGate. To sync the configuration of this setup a FortiManager or local replication can be used. Microsoft provides some guidance on this architecture [here](https://docs.microsoft.com/en-us/azure/load-balancer/load-balancer-ha-ports-overview).
 
 More information can be found [here](Active-Active-ELB-ILB/)
+
+*By default these building blocks are using Availability Sets. The Availability Zone templates are also available [here](AvailabilityZones/) for a higher SLA.*
 
 ## Selecting your architecture in Microsoft Azure
 
