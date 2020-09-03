@@ -66,7 +66,10 @@ The Virtual IP (VIP) is used to translate the inbound packets destination IP and
 - Name: A name for this VIP
 - External IP address/range: The frontend IP configured on the Azure Load Balancer for this service
 - Internal IP address/range: The internal IP of the service or internal Azure Load Balancer used to load balancer multiple servers
-- Port Forwarding: The port used for the service. If this option is not enabled outbound connectivity might be impacted as the FortiGate will translate outbound connection to the External IP address which is causes Azure to drop this packet
+- Port Forwarding: The port used for the service e.g. port 80.
+
+***CAVEAT:***** If this option is not enabled outbound connectivity might be impacted as the FortiGate will translate outbound connection to the External IP address which is causes Azure to drop this packet.**
+
 
 <p align="center">
   <img width="500px" src="../images/inbound-fgt-vip.png" alt="fortigate vip">
@@ -114,10 +117,3 @@ Connectivity is one of the main use cases for the deployment of a FortiGate NGFW
 <p align="center">
   <img width="500px" src="../images/inbound-ipsec-fgt-custom.png" alt="fgt IPSEC custom">
 </p>
-
-
-
-
-
-
-
