@@ -79,8 +79,8 @@ The FortiGate VMs need a specific configuration to operate in your environment. 
 - [Default configuration using this template](doc/config-provisioning.md)
 - [Cloud-init](doc/config-cloud-init.md)
 - [Inbound connections](doc/config-inbound-connections.md)
-- [Outbound connections](doc/config-inbound-connections.md)
-- Outbound connections
+- [Outbound connections](doc/config-outbound-connections.md)
+- East west connections
 - Public IP
 
 # Troubleshooting
