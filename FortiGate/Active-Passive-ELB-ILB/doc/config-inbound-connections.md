@@ -35,7 +35,9 @@ The drawing in the [flow](#flow) section is used in the configuration screenshot
 
 After deployment of the template, the External Azure Load Balancer is available in the resource group. Once opened, the Load balancing rules will show you 2 default rules one for TCP/80 and one for UDP/10551. These rules are not required and are created as the Azure Load Balancer needs these to allow TCP/UDP traffic outbound.
 
-![Inbound load balancing rules](../images/inbound-lbrules.png)
+<p align="center">
+  <img width="500px" src="../images/inbound-lbrules.png" alt="inbound load balancing rules">
+</p>
 
 To create a new rule you can follow the settings from the TCP/80 rule that was automatically created. The following variables need verification and/or completion:
 
@@ -50,7 +52,7 @@ To create a new rule you can follow the settings from the TCP/80 rule that was a
 - Floating IP (direct server return): This settings needs to be enable for any service located behind the FortiGate. This will allow the packet towards the FortiGate to contain the public IP as the destination IP. That allows for easy identification and policy enforcement of the inbound connection on the FortiGate. Services running on the FortiGate like IPSEC disable this option. It allows the IPSEC engine to pick up the traffic to the local process on the private IP of the VM.
 
 <p align="center">
-  <img width="500px" src="../images/inbound-lbrule-create.png">
+  <img width="500px" src="../images/inbound-lbrule-create.png" alt="lb rules create">
 </p>
 
 ### FortiGate
@@ -64,9 +66,11 @@ The Virtual IP (VIP) is used to translate the inbound packets destination IP and
 - Internal IP address/range: The internal IP of the service or internal Azure Load Balancer used to load balancer multiple servers
 - Port Forwarding: The port used for the service. If this option is not enabled outbound connectivity might be impacted as the FortiGate will translate outbound connection to the External IP address which is causes Azure to drop this packet
 
-![FortiGate VIP](../images/inbound-fgt-vip.png)
+<p align="center">
+  <img width="500px" src="../images/inbound-fgt-vip.png" alt="fortigate vip">
+</p>
 
-Secondly, a firewall policy rule needs to be created to allow the packets to traverse the FortiGate and configure any security inspection for the communication.
+Secondly,3 a firewall policy rule needs to be created to allow the packets to traverse the FortiGate and configure any security inspection for the communication.
 
 - Name: A name for this VIP
 - Incoming Interface: The interface where the packet is established from. In this template it is port1
@@ -76,4 +80,42 @@ Secondly, a firewall policy rule needs to be created to allow the packets to tra
 - Service: The destination port on the internal server
 - NAT: Source NAT is not needed for an Active/Passive setup. For an Active/Active setup it is recommended so the packet is returning to the firewall that maintains the state of the session
 
-![FortiGate firewall policy](../images/inbound-fgt-policy.png)
+<p align="center">
+  <img width="500px" src="../images/inbound-fgt-policy.png" alt="fortigate policy">
+</p>
+
+## Configuration - IPSEC
+
+Connectivity is one of the main use cases for the deployment of a FortiGate NGFW in Microsoft Azure. To connect branches and datacenters to the FortiGate VM, a few items need to be taken into account.
+
+- Terminating an IPSEC tunnel via the Azure Load Balancer is limited to the TCP and UDP protocols. For IPSEC this means that both endpoints need to support NAT-T and run the data connection over UDP/4500 instead of the ESP protocol.
+- In the Azure Load Balancer 2 load balancing rules need to be created:
+<p align="center">
+  <img width="500px" src="../images/inbound-ipsec-rules.png" alt="lb rules IPSEC">
+</p>
+  - IKE on port UDP/500
+<p align="center">
+  <img width="500px" src="../images/inbound-ipsec-ike.png" alt="lb rule IKE UDP/500">
+</p>
+  - IPSEC NAT-T on port UDP/4500
+<p align="center">
+  <img width="500px" src="../images/inbound-ipsec-natt.png" alt="lb rule NATT UDP/4500">
+</p>
+- On the FortiGate configure an IPSEC tunnel either with the IPSEC wizard or a custom IPSEC tunnel. The FortiGate to FortiGate wizard enables NAT-T automatically. For a custom IPSEC tunnel make sure to enable this feature.
+
+  - IPSEC Wizard
+<p align="center">
+  <img width="500px" src="../images/inbound-ipsec-fgt-wizard.png" alt="fgt IPSEC Wizard">
+</p>
+
+  - IPSEC Custom
+<p align="center">
+  <img width="500px" src="../images/inbound-ipsec-fgt-custom.png" alt="fgt IPSEC custom">
+</p>
+
+
+
+
+
+
+
