@@ -28,17 +28,33 @@ Microsoft offers different [SLAs](https://azure.microsoft.com/en-au/support/lega
 
 More information can be found [here](A-Single-VM/)
 
+<p align="center">
+  <a href="A-Single-VM/"><img width="500px" src="A-Single-VM/images/fgt-single-vm.png" alt="FortiGate building blocks"></a>
+</p
+
 - [__**Active/Passive with Fabric Connector Failover**__](Active/Passive-SDN): This design will deploy 2 FortiGate VMs in Active/Passive connected using unicast FGCP HA protocol. This protocol will synchronize the configuration. On failover the passive FortiGate takes control and will issue api calls to Microsoft Azure to shift the Public IP and update the internal User Defined Routing (UDR) to itself. Shifting the public IP and gateway IPs of the routes will take some time to complete on the Microsoft Azure platform. Microsoft provides a general architecture [here](https://docs.microsoft.com/en-us/azure/architecture/reference-architectures/dmz/nva-ha#pip-udr-nvas-without-snat), in the FortiGate case the API calls logic is built in instead of requiring additional outside logic like Azure Functions or ZooKeeper nodes.
 
 More information can be found [here](Active-Passive-SDN/)
+
+<p align="center">
+  <a href="Active-Passive-SDN/"><img width="500px" src="Active-Passive-SDN/images/fgt-ha.png" alt="FortiGate building blocks"></a>
+</p
 
 - [__**Active/Passive with external and internal Azure Load Balancer**__](Active-Passive-ELB-ILB): This design will deploy 2 FortiGate VMs in Active/Passive connected using the unicast FGCP HA protocol. The failover of the traffic in this setup is handled by the Microsoft Azure Load Balancer using a health probe towards the FortiGate VMs. THe failover times are based on the health probe of the Microsoft Azure Load Balancer (2 failed attempts per 5 seconds with a max of 15 seconds). The public IPs are configured on the Microsoft Azure Load Balancer and provide ingress and egress flows with inspection from the FortiGate. Microsoft provides some guidance on this architecture [here](https://docs.microsoft.com/en-us/azure/load-balancer/load-balancer-ha-ports-overview).
 
 More information can be found [here](Active-Passive-ELB-ILB/)
 
+<p align="center">
+  <a href="Active-Passive-ELB-ILB/"><img width="500px" src="Active-Passive-ELB-ILB/images/fgt-ha.png" alt="FortiGate building blocks"></a>
+</p
+
 - [__**Active/Active with external and internal Azure Load Balancer**__](Active-Active-ELB-ILB): This design will deploy 2 FortiGate VMs in Active/Active as 2 independent systems. The failover of the traffic in this setup is handled by the Microsoft Azure Load Balancer using a health probe towards the FortiGate VMs. The public IPs are configured on the Microsoft Azure Load Balancer and provide ingress and egress flows with inspection from the FortiGate. To sync the configuration of this setup a FortiManager or local replication can be used. Microsoft provides some guidance on this architecture [here](https://docs.microsoft.com/en-us/azure/load-balancer/load-balancer-ha-ports-overview).
 
 More information can be found [here](Active-Active-ELB-ILB/)
+
+<p align="center">
+  <a href="Active-Active-ELB-ILB/"><img width="500px" src="Active-Active-ELB-ILB/images/fgt-aa.png" alt="FortiGate building blocks"></a>
+</p
 
 *By default these building blocks are using Availability Sets. The Availability Zone templates are also available [here](AvailabilityZones/) for a higher SLA.*
 
