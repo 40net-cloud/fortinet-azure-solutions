@@ -12,7 +12,9 @@ There are 2 public IP SKU's: Basic and Standard. This template will use the Stan
 
 In the diagram the different steps to establish a session are layed out. This flow is based on the configuration as deployed in this template.
 
-![Inbound flow](../images/inbound-flow.png)
+<p align="center">
+  <img width="800px" src="../images/inbound-flow.png" alt="inbound flow">
+</p>
 
 1. Connection from client to the public IP of the Azure Standard Load Balancer - s: w.x.y.z - d: a.b.c.d
 2. Azure LB probes and send the packet to the active FGT using Floating IP. No NAT - s: w.x.y.z - d: a.b.c.d
