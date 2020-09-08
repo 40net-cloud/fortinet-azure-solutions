@@ -80,7 +80,7 @@ The FortiGate VMs need a specific configuration to operate in your environment. 
 - [Cloud-init](doc/config-cloud-init.md)
 - [Inbound connections](doc/config-inbound-connections.md)
 - [Outbound connections](doc/config-outbound-connections.md)
-- [NAT Considerations: 1-2-1 NAT and 1-2-many](doc/config-outbound-nat-considerations.md)
+  - [NAT Considerations: 1-2-1 NAT and 1-2-many](doc/config-outbound-nat-considerations.md)
 - East west connections
 
 # Troubleshooting
