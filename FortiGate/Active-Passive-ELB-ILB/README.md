@@ -80,8 +80,8 @@ The FortiGate VMs need a specific configuration to operate in your environment. 
 - [Cloud-init](doc/config-cloud-init.md)
 - [Inbound connections](doc/config-inbound-connections.md)
 - [Outbound connections](doc/config-outbound-connections.md)
+- [Multiple public IPs](doc/config-outbound-multiple-public-ips.md)
 - East west connections
-- Public IP
 
 # Troubleshooting
 
