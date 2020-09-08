@@ -16,7 +16,7 @@ In the diagram the different steps to establish a session are layed out. This fl
 
 1. Connection from client to the public IP of server. Azure routes the traffic using UDR to the internal Load Balancer. - s: 172.16.137.4 - d: a.b.c.d
 2. Azure Internal Load Balancer probes and send the packet to the active FGT. - s: 172.16.137.4 - d: a.b.c.d
-3. FGT inspects the packet and when allowed sens the packet translated to it's external port private IP to the Azure External Load Balancer. - s: 172.16.136.5 - d: a.b.c.d
+3. FGT inspects the packet and when allowed sends the packet translated to it's external port private IP to the Azure External Load Balancer. - s: 172.16.136.5 - d: a.b.c.d
 4. The Azure External Load Balancer picks one of the available public IP address attached and translates the source IP - s: w.x.y.z - d: a.b.c.d
 5. The server responds to the request - s: a.b.c.d d: w.x.y.z
 6. The Azure External Load Balancer sends the returns packet to the active FortiGate - s: a.b.c.d - d: 172.16.136.5
@@ -24,7 +24,7 @@ In the diagram the different steps to establish a session are layed out. This fl
 
 ## Configuration
 
-Outbound connectivity in Azure has several properties that are specific to the platform. These need to be taking into account. This configuration is a basic configuration for all outbound connections. Specific cases are be explained in the [public IP section](config-public-ip.md).
+Outbound connectivity in Azure has several properties that are specific to the platform. These need to be taking into account. This configuration is a basic configuration that will NAT all outboudn connections behind 1 or more public IPs on the Azure Load Balancer. More specific cases are be explained [here](config-outbound-nat-considerations.md).
 
 This template deploys 2 Azure Load Balancers with a standard SKU which requires standard SKU public IP connected to the VM or Load Balancer. A standard SKU public IP requires a network security group, is zone aware and always has a static assignment.
 
@@ -58,3 +58,8 @@ On the FortiGate VM, a firewall policy rule needs to be created to allow traffic
 </p>
 
 The NAT behind the FortiGate outgoing interface allows for a very simple configuration. On failover the private IP of the FortiGate outgoing interface changes but there is no configuration change needed.
+
+## Limitations
+
+- Azure has certain limitations on outbound connections: https://docs.microsoft.com/en-us/azure/load-balancer/load-balancer-outbound-connections#limitations
+- Azure has a limited number of outbound ports it can allocated per public ip. More information and optimisations can be found [here](https://docs.microsoft.com/en-us/azure/load-balancer/load-balancer-outbound-connections#preallocatedports)
