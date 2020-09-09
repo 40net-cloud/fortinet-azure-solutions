@@ -24,7 +24,7 @@ In the diagram the different steps to establish a session are layed out. This fl
 
 ## Configuration
 
-Outbound connectivity in Azure has several properties that are specific to the platform. These need to be taking into account. This configuration is a basic configuration that will NAT all outboudn connections behind 1 or more public IPs on the Azure Load Balancer. More specific cases are be explained [here](config-outbound-nat-considerations.md).
+Outbound connectivity in Azure has several properties that are specific to the platform. These need to be taken into account. This configuration is a basic configuration that will NAT all outboudn connections behind 1 or more public IPs on the Azure Load Balancer. More specific cases are be explained [here](config-outbound-nat-considerations.md).
 
 This template deploys 2 Azure Load Balancers with a standard SKU which requires standard SKU public IP connected to the VM or Load Balancer. A standard SKU public IP requires a network security group, is zone aware and always has a static assignment.
 
@@ -63,3 +63,4 @@ The NAT behind the FortiGate outgoing interface allows for a very simple configu
 
 - Azure has certain limitations on outbound connections: https://docs.microsoft.com/en-us/azure/load-balancer/load-balancer-outbound-connections#limitations
 - Azure has a limited number of outbound ports it can allocated per public ip. More information and optimisations can be found [here](https://docs.microsoft.com/en-us/azure/load-balancer/load-balancer-outbound-connections#preallocatedports)
+- In case of failover the Azure Load Balancer will sends existing sessions to the failed VM as explained [here](https://docs.microsoft.com/en-us/azure/load-balancer/load-balancer-custom-probe-overview#probedown).
