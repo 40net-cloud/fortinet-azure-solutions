@@ -81,7 +81,7 @@ The FortiGate VMs need a specific configuration to operate in your environment. 
 - [Inbound connections](doc/config-inbound-connections.md)
 - [Outbound connections](doc/config-outbound-connections.md)
   - [NAT considerations: 1-to-1 and 1-to-many](doc/config-outbound-nat-considerations.md)
-- East west connections
+- [East-West connections](doc/config-east-west-connections.md)
 
 # Troubleshooting
 
