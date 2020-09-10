@@ -146,6 +146,15 @@ variable "fgt_vmsize" {
   default = "Standard_F4s"
 }
 
+variable "fortinet_tags" {
+    type = "map"
+    default = {
+        publisher: "Fortinet",
+        template: "Active-Active-ELB-ILB",
+        provider: "7EB3B02F-50E5-4A3E-8CB8-2E129258AA"
+  }
+}
+
 ##############################################################################################################
 # Resource Group
 ##############################################################################################################
