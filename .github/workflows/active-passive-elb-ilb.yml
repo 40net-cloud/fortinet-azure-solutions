@@ -1,0 +1,48 @@
+name: Terraform test Active-Passive-ELB-ILB
+
+on:
+  push:
+    paths:
+    - 'FortiGate/Terraform/Active-Passive-ELB-ILB/**'
+    - '!FortiGate/Terraform/Active-Passive-ELB-ILB/**.md'
+
+jobs:
+  terraform:
+    name: 'Terraform'
+    runs-on: ubuntu-latest
+    env:
+      TF_VAR_PREFIX: "FORTIQA-AP-ELB-ILB"
+      TF_VAR_LOCATION: "westeurope"
+      TF_VAR_USERNAME: "azureuser"
+      TF_VAR_PASSWORD: "${{ secrets.PASSWORD }}"
+      ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+      ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+      ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+      ARM_ACCESS_KEY: ${{ secrets.ARM_ACCESS_KEY }}
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - uses: azure/login@v1.1
+      with:
+        creds: '{"clientId":"${{ secrets.ARM_CLIENT_ID }}","clientSecret":"${{ secrets.ARM_CLIENT_SECRET }}","subscriptionId":"${{ secrets.ARM_SUBSCRIPTION_ID }}","tenantId":"${{ secrets.ARM_TENANT_ID }}"}'
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+
+    - name: Terraform Init
+      run: terraform init
+
+    - name: Terraform Plan
+      run: terraform plan
+
+    - name: Terraform Apply
+      run: terraform apply -auto-approve
+
+    - name: Terraform Destroy
+      run: terraform destroy -auto-approve
+
+    - name: Azure Logout
+      run: |
+        az logout
