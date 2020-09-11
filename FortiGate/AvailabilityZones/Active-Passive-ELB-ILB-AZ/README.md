@@ -1,4 +1,4 @@
-# Availability Zone - Active/Passive High Available FortiGate pair with external and internal Azure Standard Load Balancer
+# Availability Zones - Active/Passive High Available FortiGate pair with external and internal Azure Standard Load Balancer
 
 ## Introduction
 

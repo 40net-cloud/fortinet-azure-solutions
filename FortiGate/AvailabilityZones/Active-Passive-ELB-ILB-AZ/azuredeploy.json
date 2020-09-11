@@ -995,7 +995,7 @@
         "type": "SystemAssigned"
       },
       "zones": [
-        "2"
+        "1"
       ],
       "location": "[parameters('location')]",
       "plan": {
