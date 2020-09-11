@@ -1,21 +1,9 @@
-###############################################################################################################
-#
-# Cloud Security Services Hub
-# using VNET peering and FortiGate Active/Passive High Availability with Azure Standard Load Balancer - External and Internal
-# Fortinet FortiGate Terraform deployment template
-#
 ##############################################################################################################
 #
-# FortiGate Active Passive setup with Azure Standard Loab Balancer (External and Internal)
+# FortiGate Active/Passive High Availability with Azure Standard Load Balancer - External and Internal
+# Terraform deployment template for Microsoft Azure
 #
 ##############################################################################################################
-
-resource "azurerm_availability_set" "fgtavset" {
-  name                = "${var.PREFIX}-FGT-AVSET"
-  location            = var.LOCATION
-  managed             = true
-  resource_group_name = azurerm_resource_group.resourcegroup.name
-}
 
 resource "azurerm_network_security_group" "fgtnsg" {
   name                = "${var.PREFIX}-FGT-NSG"
@@ -95,7 +83,6 @@ resource "azurerm_lb_rule" "lbruletcp" {
   frontend_ip_configuration_name = "${var.PREFIX}-ELB-PIP"
   probe_id                       = azurerm_lb_probe.elbprobe.id
   backend_address_pool_id        = azurerm_lb_backend_address_pool.elbbackend.id
-  enable_floating_ip             = true
 }
 
 resource "azurerm_lb_rule" "lbruleudp" {
@@ -108,33 +95,6 @@ resource "azurerm_lb_rule" "lbruleudp" {
   frontend_ip_configuration_name = "${var.PREFIX}-ELB-PIP"
   probe_id                       = azurerm_lb_probe.elbprobe.id
   backend_address_pool_id        = azurerm_lb_backend_address_pool.elbbackend.id
-  enable_floating_ip             = true
-}
-
-resource "azurerm_lb_rule" "lbruleike" {
-  resource_group_name            = azurerm_resource_group.resourcegroup.name
-  loadbalancer_id                = azurerm_lb.elb.id
-  name                           = "PublicLBRule-FE1-ike-udp-500"
-  protocol                       = "Udp"
-  frontend_port                  = 500
-  backend_port                   = 500
-  frontend_ip_configuration_name = "${var.PREFIX}-ELB-PIP"
-  probe_id                       = azurerm_lb_probe.elbprobe.id
-  backend_address_pool_id        = azurerm_lb_backend_address_pool.elbbackend.id
-  enable_floating_ip             = false
-}
-
-resource "azurerm_lb_rule" "lbruleipsec" {
-  resource_group_name            = azurerm_resource_group.resourcegroup.name
-  loadbalancer_id                = azurerm_lb.elb.id
-  name                           = "PublicLBRule-FE1-ipsec-udp-4500"
-  protocol                       = "Udp"
-  frontend_port                  = 4500
-  backend_port                   = 4500
-  frontend_ip_configuration_name = "${var.PREFIX}-ELB-PIP"
-  probe_id                       = azurerm_lb_probe.elbprobe.id
-  backend_address_pool_id        = azurerm_lb_backend_address_pool.elbbackend.id
-  enable_floating_ip             = false
 }
 
 resource "azurerm_lb" "ilb" {
@@ -203,11 +163,10 @@ resource "azurerm_network_interface_backend_address_pool_association" "fgtaifcex
 }
 
 resource "azurerm_network_interface" "fgtaifcint" {
-  name                          = "${var.PREFIX}-A-VM-FGT-IFC-INT"
-  location                      = azurerm_resource_group.resourcegroup.location
-  resource_group_name           = azurerm_resource_group.resourcegroup.name
-  enable_ip_forwarding          = true
-  enable_accelerated_networking = var.FGT_ACCELERATED_NETWORKING
+  name                 = "${var.PREFIX}-A-VM-FGT-IFC-INT"
+  location             = azurerm_resource_group.resourcegroup.location
+  resource_group_name  = azurerm_resource_group.resourcegroup.name
+  enable_ip_forwarding = true
 
   ip_configuration {
     name                          = "interface1"
@@ -225,15 +184,14 @@ resource "azurerm_network_interface_security_group_association" "fgtaifcintnsg" 
 resource "azurerm_network_interface_backend_address_pool_association" "fgtaifcint2ilbbackendpool" {
   network_interface_id    = azurerm_network_interface.fgtaifcint.id
   ip_configuration_name   = "interface1"
-  backend_address_pool_id = azurerm_lb_backend_address_pool.elbbackend.id
+  backend_address_pool_id = azurerm_lb_backend_address_pool.ilbbackend.id
 }
 
 resource "azurerm_network_interface" "fgtaifchasync" {
-  name                          = "${var.PREFIX}-A-VM-FGT-IFC-HASYNC"
-  location                      = azurerm_resource_group.resourcegroup.location
-  resource_group_name           = azurerm_resource_group.resourcegroup.name
-  enable_ip_forwarding          = true
-  enable_accelerated_networking = var.FGT_ACCELERATED_NETWORKING
+  name                 = "${var.PREFIX}-A-VM-FGT-IFC-HASYNC"
+  location             = azurerm_resource_group.resourcegroup.location
+  resource_group_name  = azurerm_resource_group.resourcegroup.name
+  enable_ip_forwarding = true
 
   ip_configuration {
     name                          = "interface1"
@@ -285,7 +243,8 @@ resource "azurerm_virtual_machine" "fgtavm" {
   network_interface_ids        = [azurerm_network_interface.fgtaifcext.id, azurerm_network_interface.fgtaifcint.id, azurerm_network_interface.fgtaifchasync.id, azurerm_network_interface.fgtaifcmgmt.id]
   primary_network_interface_id = azurerm_network_interface.fgtaifcext.id
   vm_size                      = var.fgt_vmsize
-  availability_set_id          = azurerm_availability_set.fgtavset.id
+  zones                        = [ 1 ]
+  tags                         = var.fortinet_tags
 
   identity {
     type = "SystemAssigned"
@@ -319,6 +278,7 @@ resource "azurerm_virtual_machine" "fgtavm" {
     disk_size_gb      = "10"
   }
 
+
   os_profile {
     computer_name  = "${var.PREFIX}-A-VM-FGT"
     admin_username = var.USERNAME
@@ -329,8 +289,6 @@ resource "azurerm_virtual_machine" "fgtavm" {
   os_profile_linux_config {
     disable_password_authentication = false
   }
-
-  tags = var.fortinet_tags
 }
 
 data "template_file" "fgt_a_custom_data" {
@@ -341,6 +299,7 @@ data "template_file" "fgt_a_custom_data" {
     fgt_license_file    = var.FGT_BYOL_LICENSE_FILE_A
     fgt_username        = var.USERNAME
     fgt_ssh_public_key  = var.FGT_SSH_PUBLIC_KEY_FILE
+    fgt_config_ha       = var.FGT_CONFIG_HA
     fgt_external_ipaddr = var.fgt_ipaddress_a["1"]
     fgt_external_mask   = var.subnetmask["1"]
     fgt_external_gw     = var.gateway_ipaddress["1"]
@@ -375,7 +334,7 @@ resource "azurerm_network_interface" "fgtbifcext" {
   }
 }
 
-resource "azurerm_network_interface_security_group_association" "fgtbifcexnsg" {
+resource "azurerm_network_interface_security_group_association" "fgtbifcextnsg" {
   network_interface_id      = azurerm_network_interface.fgtbifcext.id
   network_security_group_id = azurerm_network_security_group.fgtnsg.id
 }
@@ -469,7 +428,8 @@ resource "azurerm_virtual_machine" "fgtbvm" {
   network_interface_ids        = [azurerm_network_interface.fgtbifcext.id, azurerm_network_interface.fgtbifcint.id, azurerm_network_interface.fgtbifchasync.id, azurerm_network_interface.fgtbifcmgmt.id]
   primary_network_interface_id = azurerm_network_interface.fgtbifcext.id
   vm_size                      = var.fgt_vmsize
-  availability_set_id          = azurerm_availability_set.fgtavset.id
+  zones                        = [ 2 ]
+  tags                         = var.fortinet_tags
 
   identity {
     type = "SystemAssigned"
@@ -513,8 +473,6 @@ resource "azurerm_virtual_machine" "fgtbvm" {
   os_profile_linux_config {
     disable_password_authentication = false
   }
-
-  tags = var.fortinet_tags
 }
 
 data "template_file" "fgt_b_custom_data" {
@@ -525,6 +483,7 @@ data "template_file" "fgt_b_custom_data" {
     fgt_license_file    = var.FGT_BYOL_LICENSE_FILE_B
     fgt_username        = var.USERNAME
     fgt_ssh_public_key  = var.FGT_SSH_PUBLIC_KEY_FILE
+    fgt_config_ha       = var.FGT_CONFIG_HA
     fgt_external_ipaddr = var.fgt_ipaddress_b["1"]
     fgt_external_mask   = var.subnetmask["1"]
     fgt_external_gw     = var.gateway_ipaddress["1"]
@@ -538,7 +497,7 @@ data "template_file" "fgt_b_custom_data" {
     fgt_mgmt_mask       = var.subnetmask["4"]
     fgt_mgmt_gw         = var.gateway_ipaddress["4"]
     fgt_ha_peerip       = var.fgt_ipaddress_a["3"]
-    fgt_ha_priority     = "1"
+    fgt_ha_priority     = "255"
     fgt_protected_net   = var.subnet["5"]
     vnet_network        = var.vnet
   }
