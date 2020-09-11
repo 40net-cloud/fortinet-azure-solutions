@@ -280,10 +280,7 @@ resource "azurerm_virtual_machine" "fgtavm" {
     disable_password_authentication = false
   }
 
-  tags = {
-    environment = "Quickstart-VNET-Peering"
-    vendor      = "Fortinet"
-  }
+  tags = var.fortinet_tags
 }
 
 data "template_file" "fgt_a_custom_data" {
@@ -426,10 +423,7 @@ resource "azurerm_virtual_machine" "fgtbvm" {
     disable_password_authentication = false
   }
 
-  tags = {
-    environment = "Quickstart-VNET-Peering"
-    vendor      = "Fortinet"
-  }
+  tags = var.fortinet_tags
 }
 
 data "template_file" "fgt_b_custom_data" {
@@ -455,6 +449,7 @@ data "template_file" "fgt_b_custom_data" {
 data "azurerm_public_ip" "elbpip" {
   name                = azurerm_public_ip.elbpip.name
   resource_group_name = azurerm_resource_group.resourcegroup.name
+  depends_on          = [azurerm_lb.elb]
 }
 
 output "elb_public_ip_address" {

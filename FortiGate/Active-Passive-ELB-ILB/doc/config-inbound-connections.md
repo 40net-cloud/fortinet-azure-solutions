@@ -2,9 +2,9 @@
 
 ## Introduction
 
-Inbound connections are considered the connections coming from the internet towards the Azure Load Balancer to publish services like a webserver or other hosted in the VNET or peered VNETs. The published services via the Azure Load Balancer are limited to the TCP and UDP protocols.
+Inbound connections are considered the connections coming from the internet towards the Azure Load Balancer to publish services like a webserver or other hosted in the VNET or peered VNETs. The published services via the Azure Load Balancer are limited to the TCP and UDP protocols, as the Azure Load Balancer does not support any other protocols..
 
-To go beyond the limitation of the Azure Load Balancer and use other protocols (e.g. ICMP,ESP,FTP,...), an instance level public IP on each of the VMs in the cluster is required. Load Balancing would then be possible using Azure Traffic Manager or FortiGSLB services instead of Azure Load Balancer. Using an instance level public IP will change the behaviour of the outbound connections. The use of Azure Traffic Manager or FortiGSLB services is out of the scope of this article.
+To go beyond the limitation of the Azure Load Balancer and use other protocols (e.g. ICMP,ESP,FTP,...), an instance level public IP on each of the VMs in the cluster is required. Load Balancing would then be possible using Azure Traffic Manager, Azure FrontDoor or FortiGSLB services using DNS or Anycast mechanisms. Using an instance level public IP will change the behaviour of the outbound connections. The use of Azure Traffic Manager or FortiGSLB services is out of the scope of this article.
 
 There are 2 public IP SKU's: Basic and Standard. This template will use the Standard SKU as we are using the Azure Standard Load Balancer. The standard public IP by default is a static allocation. More information can be found [in the Microsoft documentation](https://docs.microsoft.com/en-us/azure/virtual-network/public-ip-addresses).
 
@@ -48,10 +48,11 @@ To create a new rule you can follow the settings from the TCP/80 rule that was a
 - Protocol: What protocol is the inbound connection using TCP or UDP
 - Port: The port used by the client to connect to the public IP on the Azure Load Balancer
 - Backend port: If you want to configure port translation you can specific a different port. Otherwise the same port as in the port field is used
-- Backend pool: This needs to be the bankend pool created by the template which contains FortiGate instances
-- Health probe: The Azure Load Balancer sends our a probe to a TCP/UDP port to verify if the VM is up and running. In the FortiGate a specific probe config is activate on TCP/8008
+- Backend pool: This needs to be the backend pool created by the template which contains FortiGate instances
+- Health probe: The Azure Load Balancer sends out a probe to a TCP/UDP port to verify if the VM is up and running. In the FortiGate a specific probe config is activate on TCP/8008
 - Session persistance: By default the Azure Load Balancer uses a 5 tuple distribution mode. If only the client IP and optionally the protocol need to provide persistancy you change this here. More information on this topic can be found [here](https://docs.microsoft.com/en-us/azure/load-balancer/load-balancer-distribution-mode)
 - Floating IP (direct server return): This settings needs to be enable for any service located behind the FortiGate. This will allow the packet towards the FortiGate to contain the public IP as the destination IP. That allows for easy identification and policy enforcement of the inbound connection on the FortiGate. Services running on the FortiGate like IPSEC disable this option. It allows the IPSEC engine to pick up the traffic to the local process on the private IP of the VM.
+- Create implicit outbound rules: Enabling this option will create an outbound SNAT rule for this protocol (TCP, UDP) and frontend IP address. This allows the Azure Load Balancer to use this frontend IP address for outbound connections.
 
 <p align="center">
   <img width="500px" src="../images/inbound-lbrule-create.png" alt="lb rules create">
@@ -65,20 +66,18 @@ The Virtual IP (VIP) is used to translate the inbound packets destination IP and
 
 - Name: A name for this VIP
 - External IP address/range: The frontend IP configured on the Azure Load Balancer for this service
-- Internal IP address/range: The internal IP of the service or internal Azure Load Balancer used to load balancer multiple servers
+- Internal IP address/range: The internal IP of the service or internal Azure Load Balancer used to load balance multiple servers
 - Port Forwarding: The port used for the service e.g. port 80.
-
-***CAVEAT:***** If this option is not enabled outbound connectivity might be impacted as the FortiGate will translate outbound connection to the External IP address which is causes Azure to drop this packet.**
-
+***CAVEAT:***** If the Port Forwarding option is not enabled outbound connectivity might be impacted. The FortiGate will translate all outbound traffic from the internal IP address/range to the External IP address which causes Azure to drop these packet. NAT to a public IP is always managed by Microsoft Azure.**
 
 <p align="center">
   <img width="500px" src="../images/inbound-fgt-vip.png" alt="fortigate vip">
 </p>
 
-Secondly,3 a firewall policy rule needs to be created to allow the packets to traverse the FortiGate and configure any security inspection for the communication.
+Secondly, a firewall policy rule needs to be created to allow the packets to traverse the FortiGate and configure any security inspection for the communication.
 
 - Name: A name for this VIP
-- Incoming Interface: The interface where the packet is established from. In this template it is port1
+- Incoming Interface: The interface where the packet is coming from. In this template it is port1
 - Outgoing Interface: The interface where the packet is routed to, to connect to the internal server
 - Source: Restrict which IP can connect to the service here or set this to all
 - Destination:  The VIP created in step one

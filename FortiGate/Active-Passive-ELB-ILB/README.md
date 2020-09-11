@@ -10,15 +10,15 @@ This ARM template deploys a High Availability pair of FortiGate Next-Generation 
 
 # Design
 
-In Microsoft Azure, you can deploy an active/passive pair of FortiGate VMs that communicate with each other and the Azure fabric. This FortiGate setup will receive the to be inspected traffic using user defined routing (UDR) and public IPs. You can send all or specific traffic that needs inspection, going to/coming from on-prem networks or public internet by adapting the UDR routing.
+In Microsoft Azure, you can deploy an active/passive pair of FortiGate VMs that communicate with each other and the Azure fabric. This FortiGate setup will receive the traffic to be inspected traffic using user defined routing (UDR) and public IPs. You can send all or specific traffic that needs inspection, going to/coming from on-prem networks or public internet by adapting the UDR routing.
 
-This Azure ARM template will automatically deploy a full working environment containing the the following components.
+This Azure ARM template will automatically deploy a full working environment containing the following components.
 
   - 2 FortiGate firewall's in an active/passive deployment
   - 1 external Azure Standard Load Balancer for communication with internet
   - 1 internal Azure Standard Load Balancer to receive all internal traffic and forwarding towards Azure Gateways connecting ExpressRoute or Azure VPN's
   - 1 VNET with 2 protected subnets and 4 subnets required for the FortiGate deployment (external, internal, ha mgmt and ha sync). If using an existing vnet, it must already have 5 subnets
-	- 3 public IPs. The first public IP is for cluster access to/through the active FortiGate.  The other two PIPs are for Management access
+  - 3 public IPs. The first public IP is for cluster access to/through the active FortiGate.  The other two PIPs are for Management access
   - User Defined Routes (UDR) for the protected subnets
 
 ![active/passive design](images/fgt-ha.png)
@@ -70,18 +70,18 @@ The ARM template deploy different resource and it is required to have the access
 
 ## Fabric Connector
 
-The FortiGate-VM uses [Managed Identities](https://docs.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/) for the SDN Fabric Connector. A SDN Fabric Connector is created automatically during deployment. After deployment, it is required apply the 'Reader' role to Azure Subscription you want the FortiGate-VM(s) to resolve Azure Resources from. More information can be found on the [Fortinet Documentation Libary](https://docs.fortinet.com/vm/azure/fortigate/6.4/azure-cookbook/6.4.0/236610/creating-a-fabric-connector-using-a-managed-identity).
+The FortiGate-VM uses [Managed Identities](https://docs.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/) for the SDN Fabric Connector. A SDN Fabric Connector is created automatically during deployment. After deployment, it is required apply the 'Reader' role to the Azure Subscription you want to resolve Azure Resources from. More information can be found on the [Fortinet Documentation Libary](https://docs.fortinet.com/vm/azure/fortigate/6.4/azure-cookbook/6.4.0/236610/creating-a-fabric-connector-using-a-managed-identity).
 
 # FortiGate configuration
 
-The FortiGate VMs need a specific configuration to operate in your environment. This configuration can be injected during provisioning or afterwards via the different management options including GUI, CLI, FortiManager or REST API.
+The FortiGate VMs need a specific configuration to match the deployed environment. This configuration can be injected during provisioning or afterwards via the different options including GUI, CLI, FortiManager or REST API.
 
 - [Default configuration using this template](doc/config-provisioning.md)
 - [Cloud-init](doc/config-cloud-init.md)
 - [Inbound connections](doc/config-inbound-connections.md)
 - [Outbound connections](doc/config-outbound-connections.md)
   - [NAT considerations: 1-to-1 and 1-to-many](doc/config-outbound-nat-considerations.md)
-- East west connections
+- [East-West connections](doc/config-east-west-connections.md)
 
 # Troubleshooting
 
