@@ -386,7 +386,8 @@
             "caching": "ReadWrite",
             "storageAccountType": "Premium_LRS"
           }
-        }
+        },
+        "hyperVGeneration": "V1"
       }
     },
     {
