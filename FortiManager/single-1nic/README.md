@@ -58,6 +58,29 @@ The Azure ARM template deployment deploys different resources and is required to
 - License for FortiManager
   - BYOL: A demo license can be made available via your Fortinet partner or on our website. These can be injected during deployment or added after deployment.
 
+### Custom Images
+
+By default this template will deploy the default Azure Marketplace images. The currently available images for FortiManager can be retrieved using Azure CLI:
+
+```
+az vm image list --all --publisher fortinet --offer fortinet-fortimanager --output table
+Offer                  Publisher    Sku                    Urn                                                         Version
+---------------------  -----------  ---------------------  ----------------------------------------------------------  ---------
+fortinet-fortimanager  fortinet     fortinet-fortimanager  fortinet:fortinet-fortimanager:fortinet-fortimanager:6.2.0  6.2.0
+fortinet-fortimanager  fortinet     fortinet-fortimanager  fortinet:fortinet-fortimanager:fortinet-fortimanager:6.2.1  6.2.1
+fortinet-fortimanager  fortinet     fortinet-fortimanager  fortinet:fortinet-fortimanager:fortinet-fortimanager:6.2.2  6.2.2
+fortinet-fortimanager  fortinet     fortinet-fortimanager  fortinet:fortinet-fortimanager:fortinet-fortimanager:6.2.3  6.2.3
+fortinet-fortimanager  fortinet     fortinet-fortimanager  fortinet:fortinet-fortimanager:fortinet-fortimanager:6.2.5  6.2.5
+fortinet-fortimanager  fortinet     fortinet-fortimanager  fortinet:fortinet-fortimanager:fortinet-fortimanager:6.4.0  6.4.0
+fortinet-fortimanager  fortinet     fortinet-fortimanager  fortinet:fortinet-fortimanager:fortinet-fortimanager:6.4.1  6.4.1
+fortinet-fortimanager  fortinet     fortinet-fortimanager  fortinet:fortinet-fortimanager:fortinet-fortimanager:6.4.2  6.4.2
+```
+
+Additionaly this template can be used to deploy custom VHD disk images. These specific VHD's can be obtained from Fortinet. Once retrieved you need to upload this VHD to an Azure storage account. For more information on creating a storage account, visit the Microsoft documentation [here](https://docs.microsoft.com/en-us/azure/storage/common/storage-quickstart-create-account?tabs=azure-portal). To upload the custom VHD to the storage account there is a specific powershell command: 'Add-AzVhd'. The FortiGate image is very compressed and needs to extracted during the upload process. This is only working well using this powershell command. In the end you need to have a 2Gb VHD in your storage account. The format of the command is show below where the URI of the storage account can be retrieve from the Azure Portal.
+
+`Add-AzVhd -LocalFilePath ./fmg.vhd -ResourceGroupName XXX-RG -Destination 'https://xxx.blob.core.windows.net/vhds/fmg.vhd'`
+
+
 ## Support
 Fortinet-provided scripts in this and other GitHub projects do not fall under the regular Fortinet technical support scope and are not supported by FortiCare Support Services.
 For direct issues, please refer to the [Issues](https://github.com/jvhoof/fortinet-azure-solutions/issues) tab of this GitHub project.
