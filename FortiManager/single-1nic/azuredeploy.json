@@ -81,6 +81,13 @@
         "description": "Virtual Machine size selection - must be F4 or other instance that supports 4 NICs"
       }
     },
+    "osDiskVhdUri": {
+      "type": "string",
+      "defaultValue": "noOSDiskVhdUri",
+      "metadata": {
+        "description": "Uri of the existing VHD in ARM standard or premium storage"
+      }
+    },
     "publicIPNewOrExisting": {
       "type": "string",
       "defaultValue": "new",
@@ -207,6 +214,24 @@
     "sn1IPArray1": "[string(int(variables('sn1IPArray')[1]))]",
     "sn1IPArray0": "[string(int(variables('sn1IPArray')[0]))]",
     "sn1IPfg1": "[concat(variables('sn1IPArray0'),'.',variables('sn1IPArray1'),'.',variables('sn1IPArray2'),'.',add(int(variables('sn1IPArray2nd')[0]),5))]",
+
+    "imageReferenceAMP": {
+      "publisher": "fortinet",
+      "offer": "fortinet-fortimanager",
+      "sku": "[parameters('imageSku')]",
+      "version": "[parameters('imageVersion')]"
+    },
+    "imageName": "[concat(parameters('namePrefix'),'-Image')]",
+    "imageReferenceCustomUri": {
+      "id": "[resourceId('Microsoft.Compute/images/', variables('imageName'))]"
+    },
+    "imageReference": "[if(equals(parameters('osDiskVhdUri'),'noOSDiskVhdUri'), variables('imageReferenceAMP'), variables('imageReferenceCustomUri'))]",
+    "planAMP": {
+      "name": "[parameters('imageSku')]",
+      "publisher": "fortinet",
+      "product": "fortinet-fortimanager"
+    },
+    "plan": "[if(equals(parameters('osDiskVhdUri'),'noOSDiskVhdUri'), variables('planAMP'), json('null'))]",
 
     "customData": "[base64(concat('config system global\n set adom-status enable\n set clone-name-option keep\n set create-revision enable\n set device-view-mode tree\n set disable-module fortiview-noc\n set import-ignore-addr-cmt enable\n set partial-install enable\n set partial-install-force enable\n set partial-install-rev enable\n set perform-improve-by-ha enable\n set policy-hit-count enable\n set policy-object-icon enable\n set search-all-adoms enable\n end\n config system admin setting\n set gui-theme spring\n set idle_timeout 480\n set sdwan-monitor-history enable\n set show-add-multiple enable\n set show-checkbox-in-table enable\n set show-device-import-export enable\n set show-hostname enable\n set show_automatic_script enable\n set show_schedule_script enable\n set show_tcl_script enable\n end\n config system admin user\n edit devops\n set password', parameters('adminPassword'), '\n set profileid Super_User\n set adom all_adoms\n set policy-package all_policy_packages\n set rpc-permit read-write\n next\n end'))]"
   },
@@ -347,6 +372,24 @@
       }
     },
     {
+      "condition": "[not(equals(parameters('osDiskVhdUri'), 'noOSDiskVhdUri'))]",
+      "type": "Microsoft.Compute/images",
+      "apiVersion": "2020-06-01",
+      "name": "[variables('imageName')]",
+      "location": "[parameters('location')]",
+      "properties": {
+        "storageProfile": {
+          "osDisk": {
+            "osType": "Linux",
+            "osState": "Generalized",
+            "blobUri": "[parameters('osDiskVhdUri')]",
+            "caching": "ReadWrite",
+            "storageAccountType": "Premium_LRS"
+          }
+        }
+      }
+    },
+    {
       "apiVersion": "2020-04-01",
       "tags": {
         "provider": "[toUpper(parameters('fortinetTags').provider)]"
@@ -390,11 +433,7 @@
         "type": "SystemAssigned"
       },
       "location": "[parameters('location')]",
-      "plan": {
-        "name": "[parameters('imageSku')]",
-        "publisher": "fortinet",
-        "product": "fortinet-fortimanager"
-      },
+      "plan": "[if(equals(parameters('osDiskVhdUri'),'noOSDiskVhdUri'), variables('plan'), json('null'))]",
       "dependsOn": [
         "[variables('fmgNic1Name')]"
       ],
@@ -409,12 +448,7 @@
           "customData": "[variables('customData')]"
         },
         "storageProfile": {
-          "imageReference": {
-            "publisher": "fortinet",
-            "offer": "fortinet-fortimanager",
-            "sku": "[parameters('imageSku')]",
-            "version": "[parameters('imageVersion')]"
-          },
+          "imageReference": "[variables('imageReference')]",
           "osDisk": {
             "createOption": "FromImage"
           },
