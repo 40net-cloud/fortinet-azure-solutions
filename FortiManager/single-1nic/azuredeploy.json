@@ -195,6 +195,7 @@
   },
   "variables": {
     "vnetName": "[if(equals(parameters('vnetName'),''),concat(parameters('namePrefix'),'-VNET'),parameters('vnetName'))]",
+    "vnetId": "[resourceId('Microsoft.Network/virtualNetworks',variables('vnetName'))]",
     "subnet1Id": "[if(equals(parameters('vnetNewOrExisting'),'new'),resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'), parameters('subnet1Name')),resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet1Name')))]",
 
     "fmgVmName": "[concat(parameters('namePrefix'),'-FMG-A')]",
@@ -206,6 +207,7 @@
     "publicIPId": "[if(equals(parameters('publicIPNewOrExisting'),'new'),resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPName')),if(equals(parameters('publicIPNewOrExisting'),'existing'),resourceId(parameters('publicIPResourceGroup'),'Microsoft.Network/publicIPAddresses',variables('publicIPName')),''))]",
 
     "NSGName": "[concat(parameters('namePrefix'),'-',uniqueString(resourceGroup().id),'-NSG')]",
+    "NSGId": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('NSGName'))]",
 
     "sn1IPArray": "[split(parameters('subnet1Prefix'),'.')]",
     "sn1IPArray2ndString": "[string(variables('sn1IPArray')[3])]",
@@ -222,6 +224,7 @@
       "version": "[parameters('imageVersion')]"
     },
     "imageName": "[concat(parameters('namePrefix'),'-Image')]",
+    "imageNameId": "[resourceId('Microsoft.Compute/images',variables('imageName'))]",
     "imageReferenceCustomUri": {
       "id": "[resourceId('Microsoft.Compute/images/', variables('imageName'))]"
     },
@@ -399,8 +402,9 @@
       "name": "[variables('fmgNic1Name')]",
       "location": "[parameters('location')]",
       "dependsOn": [
-        "[variables('vnetName')]",
-        "[variables('NSGName')]"
+        "[variables('vnetId')]",
+        "[variables('NSGId')]",
+        "[variables('imageNameId')]"
       ],
       "properties": {
         "ipConfigurations": [
@@ -436,7 +440,7 @@
       "location": "[parameters('location')]",
       "plan": "[if(equals(parameters('osDiskVhdUri'),'noOSDiskVhdUri'), variables('plan'), json('null'))]",
       "dependsOn": [
-        "[variables('fmgNic1Name')]"
+        "[variables('fmgNic1Id')]"
       ],
       "properties": {
         "hardwareProfile": {
