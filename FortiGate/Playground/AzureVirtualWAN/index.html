@@ -223,7 +223,7 @@ next
 end
 config router bgp
 set as {{ ../vpnSiteConfiguration.BgpSetting.Asn }}
-set router-id {{ ../vpnSiteConfigurationBgpSetting.BgpPeeringAddress }}
+set router-id {{ ../vpnSiteConfiguration.BgpSetting.BgpPeeringAddress }}
 config neighbor
 edit "{{ gatewayConfiguration.BgpSetting.BgpPeeringAddresses.Instance0 }}"
 set remote-as {{ gatewayConfiguration.BgpSetting.Asn }}
