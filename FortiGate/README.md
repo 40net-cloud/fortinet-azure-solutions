@@ -70,6 +70,7 @@ The FortiGate Next-Generation Firewall can be deployed in Microsoft Azure in dif
 - [__**Cloud Security Services Hub (VNET peering)**__](VNET-peering/): With VNET peering it is possible to have different islands deploying different services managed by diferent internal and/or external teams but to maintain a single point of control going to on-premise, other clouds or public internet. By connecting the different VNETs in a Hub-Spoke setup the Hub can control all traffic. Get started [here](VNET-peering/)
 - [__**Autoscaling**__](Autoscale/): For application that are fluid in the amount of resources the FortiGate can also be deployed with a autoscaling architecture. This architecture is documented [here](https://docs.fortinet.com/vm/azure/fortigate/6.4/azure-cookbook/6.4.0/161167/deploying-auto-scaling-on-azure) or a quickstart script is available [here](Autoscale/)
 - [__**Azure Virtual WAN**__](AzureVirtualWAN/): Azure Virtual WAN offers a central connectivity point between regions, on-premise. Fortinet offers [automation](https://www.fortinet.com/content/dam/fortinet/assets/deployment-guides/dg-fortigate-azure-wan-integration.pdf) as well as [different deployment modes](AzureVirtualWAN/).
+- [SD-WAN Connectivity](Active-Passive-ELB-ILB/docs/config-sdwan.md): Connecting the on-premise environment with your Microsoft Azure environment.
 
 Coming soon...
 
