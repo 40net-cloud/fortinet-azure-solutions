@@ -14,28 +14,28 @@ In the diagram the different steps to establish a session are layed out. This fl
 
 Inbound connection
 ![Inbound Flow](../images/Flows-Inbound-SDWan-Encrypted-ExRoute.png)
-1.Connection from client via local Firewall which has VPN tunnels over Express Route Circuit - s: w.x.y.z - d: 172.16.137.4
+1. Connection from client via local Firewall which has VPN tunnels over Express Route Circuit - s: w.x.y.z - d: 172.16.137.4
 w.x.y.z is private IP address of the host in Local Area Network on-premise. No NAT happens during the whole connection.
-2.Packet is sent via encrypted Express Route circuit to Azure ExpressRoute Gateway.s: w.x.y.z - d: 172.16.137.4
-3a.Active Fortigate which terminates VPN tunnel picks up a packet
-3b.In case of HA failover, passive Fortigate which terminates secondary VPN tunnel becomes active unit and  picks up a packet
-4.FTG sends the packet to the server via routing in Azure - s: w.x.y.z - d: 172.16.137.4
-5.Based on SD-WAN configuration connection can take also second path. From on-premise client via local Firewall which has VPN tunnel to Azure over Internet- s: w.x.y.z - d: 172.16.137.4
-6.Packet is sent via VPN tunnel over Internet through External Azure Load Balancer to active Fortigate. s: w.x.y.z - d: 172.16.137.4
-7.FTG sends the packet to the server via routing in Azure - s: w.x.y.z - d: 172.16.137.4
+2. Packet is sent via encrypted Express Route circuit to Azure ExpressRoute Gateway.s: w.x.y.z - d: 172.16.137.4
+3a. Active Fortigate which terminates VPN tunnel picks up a packet
+3b. In case of HA failover, passive Fortigate which terminates secondary VPN tunnel becomes active unit and  picks up a packet
+4. FTG sends the packet to the server via routing in Azure - s: w.x.y.z - d: 172.16.137.4
+5. Based on SD-WAN configuration connection can take also second path. From on-premise client via local Firewall which has VPN tunnel to Azure over Internet- s: w.x.y.z - d: 172.16.137.4
+6. Packet is sent via VPN tunnel over Internet through External Azure Load Balancer to active Fortigate. s: w.x.y.z - d: 172.16.137.4
+7. FTG sends the packet to the server via routing in Azure - s: w.x.y.z - d: 172.16.137.4
 
 Outbound connection
 ![Inbound Flow](../images/Flows-Outbound-SDWan-Encrypted-ExRoute.jpeg)
-1.Connection from client to the private IP of the server in on-premise LAN. Azure routes the traffic using UDR to the internal Load Balancer. - s: 172.16.137.4 - d: a.b.c.d 
+1. Connection from client to the private IP of the server in on-premise LAN. Azure routes the traffic using UDR to the internal Load Balancer. - s: 172.16.137.4 - d: a.b.c.d 
 a.b.c.d is private IP address of the host in Local Area Network on-premise. No NAT happens during the whole connection.
-2.Azure Internal Load Balancer probes and send the packet to the active FGT. - s: 172.16.137.4 - d: a.b.c.d
-3.Active FGT inspects the packet and when allowed sends the packet to VPN tunnel over ExpressRoute circuit. - s: 172.16.136.5 - d: a.b.c.d
-4.Packet is sent via encrypted Express Route circuit to on-premise Fortigate - s: 172.16.137.4 - d: a.b.c.d
-5.On-premise Fortigate sends packet to the server in on-premise LAN - s: 172.16.137.4  d: a.b.c.d
-6.Connection from client to the private IP of the server in on-premise LAN. Azure routes the traffic using UDR to the internal Load Balancer. - s: 172.16.137.4 - d: a.b.c.d 
-7.Azure Internal Load Balancer probes and send the packet to the active FGT. - s: 172.16.137.4 - d: a.b.c.d
-8.Based on SD-WAN configuration connection can take also second path. Active FGT inspects the packet and when allowed sends the packet to VPN tunnel over Internet. - s: 172.16.136.5 - d: a.b.c.d
-9.On-premise Fortigate sends packet to the server in on-premise LAN - s: 172.16.137.4  d: a.b.c.d
+2. Azure Internal Load Balancer probes and send the packet to the active FGT. - s: 172.16.137.4 - d: a.b.c.d
+3. Active FGT inspects the packet and when allowed sends the packet to VPN tunnel over ExpressRoute circuit. - s: 172.16.136.5 - d: a.b.c.d
+4. Packet is sent via encrypted Express Route circuit to on-premise Fortigate - s: 172.16.137.4 - d: a.b.c.d
+5. On-premise Fortigate sends packet to the server in on-premise LAN - s: 172.16.137.4  d: a.b.c.d
+6. Connection from client to the private IP of the server in on-premise LAN. Azure routes the traffic using UDR to the internal Load Balancer. - s: 172.16.137.4 - d: a.b.c.d 
+7. A zure Internal Load Balancer probes and send the packet to the active FGT. - s: 172.16.137.4 - d: a.b.c.d
+8. Based on SD-WAN configuration connection can take also second path. Active FGT inspects the packet and when allowed sends the packet to VPN tunnel over Internet. - s: 172.16.136.5 - d: a.b.c.d
+9. On-premise Fortigate sends packet to the server in on-premise LAN - s: 172.16.137.4  d: a.b.c.d
 
 ## Configuration
 To configure encrypted Express ROute you need to build two separate VPN tunnels from on-premise Fortigate to two Fortigate's running in MS Azure. One VPN tunnel is terminated on FTG A and second VPN tunnel is terminated on FTG B. 
@@ -47,7 +47,11 @@ The drawing in [flow](#flow) section is used in the configuration screenshots wi
 You can use VPN wizard to create VPN tunnel between on-premise Fortigate and Fortigates in Azure.
 
 Configuration of VPN tunnel between on-premise Fortigate and Fortigate A 172.16.136.69 in Azure
-![VPN FTG-Azure-A](../images/VPN-FTG-Azure-A.png)
+<p align="center">
+  <img width="800px" src="../images/VPN-FTG-Azure-A.png" alt="inbound flow">
+</p>
+
+
 -via XP_Local - Local network 172.16.248.0/24 which should be reachable via VPN tunnel
 -viaXP_remote - Remote network which should be reachable via VPN tunnel
 
