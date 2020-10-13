@@ -14,10 +14,12 @@
                 "defaultValue": "",
                 "toolTip": "Admin username for the FortiGate virtual appliance. Most not be root or admin",
                 "constraints": {
-                    "required": true,
+					"required": true,
+					"regex": "^[a-z0-9A-Z]{1,30}$",
+					"validationMessage": "Only alphanumeric characters are allowed, and the value must be 1-30 characters long.",
 					"validations": [
 						{
-							"isValid": "[not(contains('root', 'admin'))]",
+							"isValid": "[not(contains('root', 'admin', 'administrator'))]",
 							"message": "Usernames must not include reserved words."
 						}
 					]
@@ -147,7 +149,7 @@
 						"name": "instancetypeselection",
 						"type": "Microsoft.Compute.SizeSelector",
 						"label": "Size",
-						"toolTip": "",
+						"toolTip": "Select the instance size of your FortiGate VM solution. Minimum 4 NICs are required.",
 						"recommendedSizes": [
 							"Standard_F4s",
 							"Standard_F8s",
@@ -177,7 +179,7 @@
                 "label": "Internal Networking",
                 "elements": [
 					{
-						"name": "instancetypesection",
+						"name": "virtualnetworksection",
 						"type": "Microsoft.Common.Section",
 						"label": "Configure Internal Networking",
 						"elements": [
@@ -197,8 +199,8 @@
 								"subnets": "Subnets"
 								},
 								"toolTip": {
-								"virtualNetwork": "",
-								"subnets": ""
+								"virtualNetwork": "Virtual Network for deployment of the FortiGate VM solution",
+								"subnets": "Requirement to have 4 subnets connected to the FortiGate VM: external, internal, hasync and management"
 								},
 								"defaultValue": {
 								"name": "FortiGate-VNET",
@@ -338,12 +340,12 @@
 							"domainNameLabel": "Domain name label"
 						},
 						"toolTip": {
-							"publicIpAddress": "",
-							"domainNameLabel": ""
+							"publicIpAddress": "Public IP attached to the public load balancer",
+							"domainNameLabel": "DNS name linked to this public IP"
 						},
 						"defaultValue": {
 							"publicIpAddressName": "FGTAPClusterPublicIP",
-							"domainNameLabel": ""
+							"domainNameLabel": "mydomain"
 						},
 						"constraints": {
 							"required": {
@@ -360,12 +362,12 @@
 							"domainNameLabel": "Domain name label"
 						},
 						"toolTip": {
-							"publicIpAddress": "",
-							"domainNameLabel": ""
+							"publicIpAddress": "Public IP attached to the FortiGate A for management",
+							"domainNameLabel": "DNS name linked to this public IP"
 						},
 						"defaultValue": {
 							"publicIpAddressName": "FGTAMgmtPublicIP",
-							"domainNameLabel": ""
+							"domainNameLabel": "mydomain"
 						},
 						"constraints": {
 							"required": {
@@ -382,12 +384,12 @@
 							"domainNameLabel": "Domain name label"
 						},
 						"toolTip": {
-							"publicIpAddress": "",
-							"domainNameLabel": ""
+							"publicIpAddress": "Public IP attached to the FortiGate A for management",
+							"domainNameLabel": "DNS name linked to this public IP"
 						},
 						"defaultValue": {
 							"publicIpAddressName": "FGTBMgmtPublicIP",
-							"domainNameLabel": ""
+							"domainNameLabel": "mydomain"
 						},
 						"constraints": {
 							"required": {
@@ -426,20 +428,20 @@
             "publicIP2ResourceGroup": "[steps('publicip').fgtamgmtpublicip.resourceGroup]",
             "publicIP3Name": "[steps('publicip').fgtbmgmtpublicip.name]",
             "publicIP3ResourceGroup": "[steps('publicip').fgtbmgmtpublicip.resourceGroup]",
-            "vnetNewOrExisting": "[steps('networking').virtualnetwork.newOrExisting]",
-            "vnetName": "[steps('networking').virtualnetwork.name]",
-            "vnetResourceGroup": "[steps('networking').virtualnetwork.resourceGroup]",
-            "vnetAddressPrefix": "[steps('networking').virtualnetwork.addressPrefix]",
-            "subnet1Name": "[steps('networking').virtualnetwork.subnets.subnet1.name]",
-            "subnet1Prefix": "[steps('networking').virtualnetwork.subnets.subnet1.addressPrefix]",
-            "subnet2Name": "[steps('networking').virtualnetwork.subnets.subnet2.name]",
-            "subnet2Prefix": "[steps('networking').virtualnetwork.subnets.subnet2.addressPrefix]",
-            "subnet3Name": "[steps('networking').virtualnetwork.subnets.subnet3.name]",
-            "subnet3Prefix": "[steps('networking').virtualnetwork.subnets.subnet3.addressPrefix]",
-            "subnet4Name": "[steps('networking').virtualnetwork.subnets.subnet4.name]",
-            "subnet4Prefix": "[steps('networking').virtualnetwork.subnets.subnet4.addressPrefix]",
-            "subnet5Name": "[steps('networking').virtualnetwork.subnets.subnet5.name]",
-            "subnet5Prefix": "[steps('networking').virtualnetwork.subnets.subnet5.addressPrefix]"
+            "vnetNewOrExisting": "[steps('networking').virtualnetworksection.virtualnetwork.newOrExisting]",
+            "vnetName": "[steps('networking').virtualnetworksection.virtualnetwork.name]",
+            "vnetResourceGroup": "[steps('networking').virtualnetworksection.virtualnetwork.resourceGroup]",
+            "vnetAddressPrefix": "[steps('networking').virtualnetworksection.virtualnetwork.addressPrefix]",
+            "subnet1Name": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet1.name]",
+            "subnet1Prefix": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet1.addressPrefix]",
+            "subnet2Name": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet2.name]",
+            "subnet2Prefix": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet2.addressPrefix]",
+            "subnet3Name": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet3.name]",
+            "subnet3Prefix": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet3.addressPrefix]",
+            "subnet4Name": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet4.name]",
+            "subnet4Prefix": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet4.addressPrefix]",
+            "subnet5Name": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet5.name]",
+            "subnet5Prefix": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet5.addressPrefix]"
         }
     }
 }
