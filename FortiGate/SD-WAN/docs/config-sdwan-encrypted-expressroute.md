@@ -48,7 +48,7 @@ You can use VPN wizard to create VPN tunnel between on-premise Fortigate and For
 
 Configuration of VPN tunnel between on-premise Fortigate and Fortigate A 172.16.136.69 in Azure
 <p align="center">
-  <img width="800px" src="../images/VPN-FTG-Azure-A.png" alt="inbound flow">
+  <img src="../images/VPN-FTG-Azure-A.png" alt="inbound flow">
 </p>
 
 
