@@ -85,13 +85,13 @@ If you use VPN wizard, firewall policies allowing traffic between on-premise FTG
 
 You can also create new SD-WAN interface which consist of the 3 VPN tunnels (2 built previously and one new over Internet) to steer the traffic according to your needs for example based on type of application like O365. More about this configuration in further section of this document.
 
-Name: Name of auto-created policy
-Incoming Interface: The interface where the packet is coming from. In our example it is port 5
-Outgoing Interface: The interface where the packet is routed to, it is one of our newly created VPN tunnel
-Source: LAN on-premise
-Destination: Remote network in Azure that should be reachable via encrypted Express Route
+- Name: Name of auto-created policy
+- Incoming Interface: The interface where the packet is coming from. In our example it is port 5
+- Outgoing Interface: The interface where the packet is routed to, it is one of our newly created VPN tunnel
+- Source: LAN on-premise
+- Destination: Remote network in Azure that should be reachable via encrypted Express Route
 Service: Service which should be allowed via VPN tunnel
-NAT: Source NAT is not needed for an encrypted Express Route architecture.
+- NAT: Source NAT is not needed for an encrypted Express Route architecture.
 
 Firewall policy allowing traffic from on-premise to Azure
 <p align="center">
