@@ -26,7 +26,7 @@ w.x.y.z is private IP address of the host in Local Area Network on-premise. No N
 7. FTG sends the packet to the server via routing in Azure - s: w.x.y.z - d: 172.16.137.4
 
 Outbound connection
-![Inbound Flow](../images/Flows-Outbound-SDWan-Encrypted-ExRoute.jpeg)
+![Inbound Flow](../images/Flows-Outbound-SDWan-Encrypted-ExRoute.png)
 1. Connection from client to the private IP of the server in on-premise LAN. Azure routes the traffic using UDR to the internal Load Balancer. - s: 172.16.137.4 - d: a.b.c.d 
 a.b.c.d is private IP address of the host in Local Area Network on-premise. No NAT happens during the whole connection.
 2. Azure Internal Load Balancer probes and send the packet to the active FGT. - s: 172.16.137.4 - d: a.b.c.d
