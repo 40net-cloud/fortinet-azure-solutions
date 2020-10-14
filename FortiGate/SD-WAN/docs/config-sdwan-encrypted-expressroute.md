@@ -6,6 +6,7 @@ ExpressRoute is an Azure service that lets you create private connections betwee
 
 ExpressRoute connections do not go over the public Internet, and offer higher security, reliability, and speeds with lower latencies than typical connections over the Internet.
 
+
 However ExpressRoute does not provide network traffic encryption for its circuits which might critical in some scenarios. For example if you are operating in highly regulated sector like finance you might want to have full control over the traffic being sent to ExpressRoute and encrypt it before it is send to ExpressRoute circuit. Furthermore encryption of traffic sent to ExpressRoute might also be required by secuirty audits in order to meet regulations requirements.
 
  In order to encrypt traffic send to ExpressRoute you need to build VPN tunnel over ExpressRoute. To achieve that you need to build two separate VPN tunnels from on-premise Fortigate to two Fortigate's NGFW running as Active-Passive cluster in Microsoft Azure. One VPN tunnel is terminated on Active Fortigate A in Azure and second tunnel is terminated on passive Fortigate B in Azure.
