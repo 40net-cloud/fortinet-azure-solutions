@@ -258,3 +258,187 @@ Firewall rule allowing traffic between Azure and on-premise Fortigate will be cr
 
 
 Floating IP (direct server return) should be disabled in this configuration. This means that Azure External load balancer will perform DNAT and UDP500 & UDP4500 packets will arrive to Fortigates cluster with private IP address set as destination IP, the same IP on which VPN service is listening to.
+
+
+## BGP Configuration
+
+In larger environments with multiple on-premise Fortigates connecting to environment in Azure static route configuration is not scalable and easy to manage any more. To overcome this obstacle you can use dynamic routing [BGP](https://docs.fortinet.com/document/fortigate/6.4.2/administration-guide/750736/bgp) to steer the traffic between on-premise and cloud networks.
+
+
+<p align="center">
+  <img src="../images/BGP.png" alt="BGP">
+</p>
+
+<p align="center">
+  <img src="../images/BGP-Architecture.png" alt="BGP Architecture">
+</p>
+
+Configuration of Fortigates in Azure
+
+You need to configure IP addresses on tunnel interfaces which will be used by BGP. This configuration will be synchronized between cluster members.
+
+Configuration of VPN tunnel interface via Express Route
+<p align="center">
+  <img src="../images/BGP-Azure-1.png" alt="BGP Express Route">
+</p>
+
+Where 192.18.1.1 is tunnel IP address of Fortigate A
+
+Configuration of VPN tunnel interface via Internet
+<p align="center">
+  <img src="../images/BGP-Azure-2.png" alt="BGP Express Route">
+</p>
+
+BGP Configuration
+<p align="center">
+  <img src="../images/BGP-Azure.png" alt="BGP Azure">
+</p>
+
+Where **198.18.1.2** and **198.18.2.2** are IP addresses configured on tunnel interfaces on on-premise Fortigate for BGP. Both Azure Fortigates and on-premise Fortigate should have the same AS (Autonomous System) configured, for example 650005
+
+Network that we want to publish via BGP needs to be defined in static route on Azure FortiGate’s already.
+Otherwise it will not be advertised by BGP. In this example we publish internal Azure network 172.16.136.0/22 via BGP.
+
+```
+ACCELERATE-FGT-A (bgp) # show 
+config router bgp
+    set as 65005
+    set router-id 169.254.0.2
+    set ibgp-multipath enable
+    set additional-path enable
+    set graceful-restart enable
+    config neighbor
+        edit "198.18.1.2"
+            set capability-graceful-restart enable
+            set soft-reconfiguration enable
+            set remote-as 65005
+            set connect-timer 1
+            set additional-path both
+        next
+        edit "198.18.2.2"
+            set capability-graceful-restart enable
+            set soft-reconfiguration enable
+            set remote-as 65005
+            set connect-timer 1
+            set additional-path both
+        next
+    end
+    config network
+        edit 1
+        set prefix 172.16.136.0 255.255.252.0
+        next
+```
+
+We configure also multipath so BGP can advertise multiple networks paths available via multiple tunnels.
+https://docs.fortinet.com/document/fortigate/6.2.0/new-features/815658/bgp-additional-path-support
+
+In order for BGP to failover in seconds instead of minutes you can set connect-timer to 1. BGP connect timeout specify how fast BGP will establish a TCP session with the BGP neighbor in Active state.
+
+If you want sessions to be routed via BGP routes after BGP is back up (instead of being sent via default WAN interface) you need to enable Snat-route-change
+
+```
+config system global
+     set snat-route-change [disable|enable]
+   end
+```
+Configuring this command would break session stickiness, when NAT is enabled. Sessions will be routed to BGP interfaces, when BGP is UP instead of being sent via default WAN interface.
+
+As a best practice you can configure blackhole route with higher metric, in order not to send traffic via default route if BGP connection is down.
+
+<p align="center">
+  <img src="../images/BGP-Blackhole.png" alt="BGP Blackhole">
+</p>
+
+Status of BGP routes
+
+<p align="center">
+  <img src="../images/BGP-Status.png" alt="BGP Status">
+</p>
+
+## BGP Configuration on on-premise Fortigate
+
+You need to configure IP addresses on tunnel interfaces for BGP. **Same** IP address needs to configured on both VPN tunnel interfaces using Express Route.
+
+Configuration of first VPN tunnel interface via Express Route
+
+<p align="center">
+  <img src="../images/BGP-local1.png" alt="BGP local1">
+</p>
+
+Configuration of second VPN tunnel interface via Express Route
+
+<p align="center">
+  <img src="../images/BGP-local2.png" alt="BGP local2">
+</p>
+
+In order to configure **same IP address 198.18.1.2** on both express-route tunnel interfaces you need enable allow-subnet-overlap.
+
+```
+ACCELERATE-FGT-A # config system settings 
+ 
+ACCELERATE-FGT-A (settings) # set allow-subnet-overlap 
+```
+
+Configuration of VPN tunnel interface via Internet
+<p align="center">
+  <img src="../images/BGP-local3.png" alt="BGP local3">
+</p>
+
+Configuration of BGP
+**198.18.1.1 and 198.18.2.1** are the IP addresses configured on VPN tunnel interfaces on Azure Fortigates.
+**172.16.248.0/24** is an example of the on-premise protected network that you can publish via BGP.
+
+<p align="center">
+  <img src="../images/BGP-local4.png" alt="BGP local4">
+</p>
+
+```
+roz (bgp) # show 
+config router bgp
+    set as 65005
+    set router-id 169.254.0.1
+    set ibgp-multipath enable
+    set additional-path enable
+    set graceful-restart enable
+    config neighbor
+        edit "198.18.1.1"
+            set capability-graceful-restart enable
+            set soft-reconfiguration enable
+            set remote-as 65005
+            set connect-timer 1
+            set additional-path both
+        next
+        edit "198.18.2.1"
+            set capability-graceful-restart enable
+            set soft-reconfiguration enable
+            set remote-as 65005
+            set connect-timer 1
+            set additional-path both
+        next
+    end
+    config network
+        edit 1
+            set prefix 172.16.248.0 255.255.255.0
+        next
+```
+We configure also multipath so BGP can advertise multiple networks paths available via multiple tunnels.
+https://docs.fortinet.com/document/fortigate/6.2.0/new-features/815658/bgp-additional-path-support
+
+
+In order for BGP to failover in seconds you can set connect-timer to 1. BGP connect timeout specify how fast BGP will establish a TCP session with the BGP neighbor in Active state.
+
+If you want sessions to be routed via BGP routes after BGP is back up (instead of being sent via default WAN interface) you need to enable Snat-route-change
+
+```
+config system global
+     set snat-route-change [disable|enable]
+   end
+```
+
+Configuring this command would break session stickiness, when NAT is enabled. Sessions will be routed to BGP interfaces, when BGP is UP instead of being sent via default WAN interface.
+
+As a best practice you can configure blackhole route with higher metric, in order not to send traffic via default route if BGP connection is down.
+
+<p align="center">
+  <img src="../images/BGP-Status-local.png" alt="BGP Status local">
+</p>
