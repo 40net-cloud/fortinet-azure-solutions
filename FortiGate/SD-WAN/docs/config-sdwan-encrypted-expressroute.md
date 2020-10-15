@@ -261,7 +261,6 @@ Floating IP (direct server return) should be disabled in this configuration. Thi
 
 
 ## BGP Configuration
-test
 In larger environments with multiple on-premise Fortigates connecting to environment in Azure static route configuration is not scalable and easy to manage any more. To overcome this obstacle you can use dynamic routing [BGP](https://docs.fortinet.com/document/fortigate/6.4.2/administration-guide/750736/bgp) to steer the traffic between on-premise and cloud networks.
 
 ![BGP](../images/BGP.png)
