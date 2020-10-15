@@ -273,7 +273,7 @@ In larger environments with multiple on-premise Fortigates connecting to environ
   <img src="../images/BGP-Architecture.png" alt="BGP Architecture">
 </p>
 
-Configuration of Fortigates in Azure
+**Configuration of Fortigates in Azure** 
 
 You need to configure IP addresses on tunnel interfaces which will be used by BGP. This configuration will be synchronized between cluster members.
 
@@ -355,7 +355,7 @@ Status of BGP routes
   <img src="../images/BGP-Status.png" alt="BGP Status">
 </p>
 
-## BGP Configuration on on-premise Fortigate
+**BGP Configuration on on-premise Fortigate**
 
 You need to configure IP addresses on tunnel interfaces for BGP. **Same** IP address needs to configured on both VPN tunnel interfaces using Express Route.
 
