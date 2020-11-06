@@ -201,7 +201,7 @@ fi
 # Create Virtual HUB
 echo ""
 echo "--> Creating Azure Virtual HUB $vhubName ..."
-az network vhub show --name "$vwanName" --resource-group "$rg"
+az network vhub show --name "$vhubName" --resource-group "$rg"
 if [ $? != 0 ];
 then
     az network vhub create \
@@ -230,7 +230,7 @@ vhubRouteTable1Id=$(az network vhub route-table show --name $vhubRouteTable1Name
 # Create Virtual HUB Route Table RT_V2B
 echo ""
 echo "--> Creating Azure Virtual HUB route table $vhubRouteTable2Name ..."
-az network vhub route-table --name "$vhubRouteTable2Name" --resource-group "$rg" --vhub-name "$vhubName"
+az network vhub route-table show --name "$vhubRouteTable2Name" --resource-group "$rg" --vhub-name "$vhubName"
 if [ $? != 0 ];
 then
     az network vhub route-table create \
@@ -243,7 +243,7 @@ vhubRouteTable2Id=$(az network vhub route-table show --name $vhubRouteTable2Name
 # Create Virtual HUB peering to spoke1
 echo ""
 echo "--> Creating Azure Virtual HUB peering to $vnetSpoke1Name ..."
-az network vhub connection --name "$vhubNameTo$vnetSpoke1Name" --resource-group "$rg" --vhub-name "$vhubName"
+az network vhub connection show --name "$vhubNameTo$vnetSpoke1Name" --resource-group "$rg" --vhub-name "$vhubName"
 if [ $? != 0 ];
 then
     az network vhub connection create \
@@ -258,7 +258,7 @@ fi
 # Create Virtual HUB peering to spoke2
 echo ""
 echo "--> Creating Azure Virtual HUB peering to $vnetSpoke2Name ..."
-az network vhub connection --name "$vhubNameTo$vnetSpoke2Name" --resource-group "$rg" --vhub-name "$vhubName"
+az network vhub connection show --name "$vhubNameTo$vnetSpoke2Name" --resource-group "$rg" --vhub-name "$vhubName"
 if [ $? != 0 ];
 then
     az network vhub connection create \
