@@ -1044,7 +1044,7 @@
       "plan": {
         "name": "[parameters('fortiGateImageSKU')]",
         "publisher": "fortinet",
-        "product": "fortinet_fortiGate-vm_v5"
+        "product": "fortinet_fortigate-vm_v5"
       },
       "dependsOn": [
         "[variables('fgaNic1Id')]",
@@ -1127,7 +1127,7 @@
       "plan": {
         "name": "[parameters('fortiGateImageSKU')]",
         "publisher": "fortinet",
-        "product": "fortinet_fortiGate-vm_v5"
+        "product": "fortinet_fortigate-vm_v5"
       },
       "dependsOn": [
         "[variables('fgbNic1Id')]",
