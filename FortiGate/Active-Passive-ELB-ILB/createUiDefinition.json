@@ -15,11 +15,17 @@
                 "toolTip": "Admin username for the FortiGate virtual appliance. Most not be root or admin",
                 "constraints": {
 					"required": true,
-					"regex": "^[a-z0-9A-Z]{1,30}$",
-					"validationMessage": "Only alphanumeric characters are allowed, and the value must be 1-30 characters long.",
 					"validations": [
 						{
-							"isValid": "[not(contains('root', 'admin', 'administrator'))]",
+							"regex": "^[a-z0-9A-Z]{1,30}$",
+							"message": "Only alphanumeric characters are allowed, and the value must be 1-30 characters long."
+						},
+						{
+							"isValid": "[not(contains(toLower(basics('adminUsername')),'root'))]",
+							"message": "Usernames must not include reserved words."
+						},
+						{
+							"isValid": "[not(contains(toLower(basics('adminUsername')),'admin'))]",
 							"message": "Usernames must not include reserved words."
 						}
 					]
@@ -132,6 +138,10 @@
             {
                 "name": "instancetype",
 				"label": "Instance Type",
+                "subLabel":{
+                    "preValidation":"Select instance type",
+                    "postValidation":"Done"
+                },
                 "elements": [
 					{
 						"name": "instancetypeinfo",
@@ -176,7 +186,11 @@
 			},
             {
                 "name": "networking",
-                "label": "Internal Networking",
+				"label": "Internal Networking",
+                "subLabel":{
+                    "preValidation":"Configure internal networking",
+                    "postValidation":"Done"
+                },
                 "elements": [
 					{
 						"name": "virtualnetworksection",
@@ -322,7 +336,11 @@
 			},
 			{
                 "name": "publicip",
-                "label": "Public Networking",
+				"label": "Public Networking",
+                "subLabel":{
+                    "preValidation":"Configure public networking",
+                    "postValidation":"Done"
+                },
                 "elements": [
 					{
 						"name": "publiciptext",
@@ -352,6 +370,10 @@
 							"domainNameLabel": false
 							}
 						},
+						"options": {
+							"hideNone": true,
+							"hideDomainNameLabel": true
+						},
 						"visible": true
 					},
 					{
@@ -373,6 +395,10 @@
 							"required": {
 							"domainNameLabel": false
 							}
+						},
+						"options": {
+							"hideNone": true,
+							"hideDomainNameLabel": true
 						},
 						"visible": true
 					},
@@ -396,6 +422,10 @@
 							"domainNameLabel": false
 							}
 						},
+						"options": {
+							"hideNone": true,
+							"hideDomainNameLabel": true
+						},
 						"visible": true
 					},
 					{
@@ -406,6 +436,128 @@
 							"icon": "Info",
 							"text": "The deployment uses the Azure Standard Load Balancer. This requires all public IPs to be of the same Standard SKU."
 						}
+					}
+				]
+			},
+			{
+				"name": "publicipreview",
+				"label": "Public IP Standard SKU Verification",
+				"subLabel": {
+				  "preValidation": "Public IP SKU Review",
+				  "postValidation": "Done"
+				},
+				"bladeTitle": "Public IP SKU Review",
+				"elements": [
+				  {
+					"name": "BasicIPWarning1",
+					"type": "Microsoft.Common.InfoBox",
+					"options": {
+					  "icon": "Error",
+					  "text": "The External Load Balancer Public IP is configured using Basic SKU. Please return to previous blade and use Standard type public IPs to support Azure Standard Load Balancers"
+					},
+					"visible": "[not(equals(steps('publicip').loadbalancerpublicip.sku, 'Standard'))]"
+				  },
+				  {
+					"name": "StandardIPConfirmation1",
+					"type": "Microsoft.Common.InfoBox",
+					"options": {
+					  "icon": "Info",
+					  "text": "The External Load Balancer Public IP is Standard SKU. Proceed."
+					},
+					"visible": "[equals(steps('publicip').loadbalancerpublicip.sku, 'Standard')]"
+				  },
+				  {
+					"name": "BasicIPWarning2",
+					"type": "Microsoft.Common.InfoBox",
+					"options": {
+					  "icon": "Error",
+					  "text": "The FortiGate A management Public IP is configured using Basic SKU. Please return to previous blade and use Standard type public IPs to support Azure Standard Load Balancers"
+					},
+					"visible": "[not(equals(steps('publicip').fgtamgmtpublicip.sku, 'Standard'))]"
+				  },
+				  {
+					"name": "StandardIPConfirmation2",
+					"type": "Microsoft.Common.InfoBox",
+					"options": {
+					  "icon": "Info",
+					  "text": "The FortiGate A management Public IP is Standard SKU. Proceed."
+					},
+					"visible": "[equals(steps('publicip').fgtamgmtpublicip.sku, 'Standard')]"
+				  },
+				  {
+					"name": "BasicIPWarning3",
+					"type": "Microsoft.Common.InfoBox",
+					"options": {
+					  "icon": "Error",
+					  "text": "The FortiGate B management Public IP is configured using Basic SKU. Please return to previous blade and use Standard type public IPs to support Azure Standard Load Balancers"
+					},
+					"visible": "[not(equals(steps('publicip').fgtbmgmtpublicip.sku, 'Standard'))]"
+				  },
+				  {
+					"name": "StandardIPConfirmation3",
+					"type": "Microsoft.Common.InfoBox",
+					"options": {
+					  "icon": "Info",
+					  "text": "The FortiGate B management Public IP is Standard SKU. Proceed."
+					},
+					"visible": "[equals(steps('publicip').fgtbmgmtpublicip.sku, 'Standard')]"
+				  }
+				]
+			  },
+			  {
+                "name": "fortimanager",
+				"label": "Central Management with FortiManager",
+                "subLabel":{
+                    "preValidation":"Configure central management",
+                    "postValidation":"Done"
+                },
+                "elements": [
+					{
+						"name": "fortimanager",
+						"type": "Microsoft.Common.OptionsGroup",
+						"label": "Connect to FortiManager",
+						"defaultValue": "no",
+						"toolTip": "FortiManager needs to be reachable from port 1 or port 2 of the FortiGate",
+						"constraints": {
+						  "allowedValues": [
+							{
+							  "label": "yes",
+							  "value": "yes"
+							},
+							{
+							  "label": "no",
+							  "value": "no"
+							}
+						  ],
+						  "required": true
+						},
+						"visible": true
+					},
+					{
+						"name": "fortimanagerip",
+						"type": "Microsoft.Common.TextBox",
+						"label": "FortiManager IP address",
+						"defaultValue": "",
+						"toolTip": "Provide the IP address or DNS name of the FortiManager reachable over port TCP/541",
+						"constraints": {
+							"required": false,
+							"regex": "^[A-Za-z0-9.]{1,64}$",
+							"validationMessage": "Only alphanumeric characters are allowed, and the value must be 1 to 15 characters."
+						},
+						"visible": true
+					},
+					{
+						"name": "fortimanagerserial",
+						"type": "Microsoft.Common.TextBox",
+						"label": "FortiManager Serial Number",
+						"defaultValue": "",
+						"toolTip": "Provide the serial number of the FortiManager",
+						"constraints": {
+							"required": false,
+							"regex": "^[A-Za-z0-9]{1,64}$",
+							"validationMessage": "Only alphanumeric characters are allowed, and the value must be 1 to 15 characters."
+						},
+						"visible": true
 					}
 				]
 			}
@@ -441,7 +593,10 @@
             "subnet4Name": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet4.name]",
             "subnet4Prefix": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet4.addressPrefix]",
             "subnet5Name": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet5.name]",
-            "subnet5Prefix": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet5.addressPrefix]"
+			"subnet5Prefix": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet5.addressPrefix]",
+			"fortiManager": "[steps('fortimanager').fortimanager]",
+			"fortiManagerIP": "[steps('fortimanager').fortimanagerip]",
+			"fortiManagerSerial": "[steps('fortimanager').fortimanagerserial]"
         }
     }
 }
