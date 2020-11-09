@@ -31,6 +31,8 @@ Scenario 1 will deploy a branch to Azure Virtual HUB setup. Azure VirtualWAN com
 - [FortiGate and Azure Virtual WAN integration](https://www.fortinet.com/content/dam/fortinet/assets/deployment-guides/dg-fortigate-azure-wan-integration.pdf)
 - [FortiGate Azure Virtual WAN config convertor](https://40net-cloud.github.io/fortinet-azure-solutions/FortiGate/Playground/AzureVirtualWAN/)
 
+To configure the first branch VPN tunnel the endpoint and private ip range of this branch are required during deployment:
+
 - VPNSITE PREFIX : This prefix will be prepended to each of the resources regarding the VPN Branch connecting into Virtual WAN.
 - VPNSITE PUBLIC IP ADDRESS : This is the public IP address of the FortiGate device connecting into Virtual WAN.
 
