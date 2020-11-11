@@ -10,8 +10,8 @@ jobs:
   terraform:
     name: 'Terraform'
     runs-on: ubuntu-latest
-    env:
-  steps:
+
+    steps:
     - name: Set the value
       id: step_one
       run: |
@@ -23,7 +23,7 @@ jobs:
         echo "ARM_CLIENT_SECRET=${{ secrets.ARM_CLIENT_SECRET }}" >> $GITHUB_ENV
         echo "ARM_SUBSCRIPTION_ID=${{ secrets.ARM_SUBSCRIPTION_ID }}" >> $GITHUB_ENV
         echo "ARM_TENANT_ID=${{ secrets.ARM_TENANT_ID }}" >> $GITHUB_ENV
-    steps:
+
     - name: Checkout
       uses: actions/checkout@v2
 
