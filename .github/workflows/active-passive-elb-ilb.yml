@@ -10,27 +10,25 @@ jobs:
   terraform:
     name: 'Terraform'
     runs-on: ubuntu-latest
+    env:
+      TF_VAR_PREFIX: "FORTIQA-AP-ELB-ILB-${{ github.run_id }}-${{ github.run_number }}"
+      TF_VAR_LOCATION: "westeurope"
+      TF_VAR_USERNAME: "azureuser"
+      TF_VAR_PASSWORD: "${{ secrets.PASSWORD }}"
+      ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+      ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+      ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+#      ARM_ACCESS_KEY: ${{ secrets.ARM_ACCESS_KEY }}
 
     steps:
-    - name: Set the value
-      id: step_one
-      run: |
-        echo "TF_VAR_PREFIX=FORTIQA-AP-ELB-ILB-${{ github.run_id }}-${{ github.run_number }}" >> $GITHUB_ENV
-        echo "TF_VAR_LOCATION=westeurope" >> $GITHUB_ENV
-        echo "TF_VAR_USERNAME=azureuser" >> $GITHUB_ENV
-        echo "TF_VAR_PASSWORD=${{ secrets.PASSWORD }}" >> $GITHUB_ENV
-        echo "ARM_CLIENT_ID=${{ secrets.ARM_CLIENT_ID }}" >> $GITHUB_ENV
-        echo "ARM_CLIENT_SECRET=${{ secrets.ARM_CLIENT_SECRET }}" >> $GITHUB_ENV
-        echo "ARM_SUBSCRIPTION_ID=${{ secrets.ARM_SUBSCRIPTION_ID }}" >> $GITHUB_ENV
-        echo "ARM_TENANT_ID=${{ secrets.ARM_TENANT_ID }}" >> $GITHUB_ENV
-
     - name: Checkout
       uses: actions/checkout@v2
 
-    - uses: azure/login@v1.1
-      with:
-        creds: '{"clientId":"${{ secrets.ARM_CLIENT_ID }}","clientSecret":"${{ secrets.ARM_CLIENT_SECRET }}","subscriptionId":"${{ secrets.ARM_SUBSCRIPTION_ID }}","tenantId":"${{ secrets.ARM_TENANT_ID }}"}'
-
+#    - uses: azure/login@v1.1
+#      with:
+#        creds: '{"clientId":"${{ secrets.ARM_CLIENT_ID }}","clientSecret":"${{ secrets.ARM_CLIENT_SECRET }}","subscriptionId":"${{ secrets.ARM_SUBSCRIPTION_ID }}","tenantId":"${{ secrets.ARM_TENANT_ID }}"}'
+#
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
 
@@ -46,6 +44,6 @@ jobs:
     - name: Terraform Destroy
       run: terraform destroy -auto-approve
 
-    - name: Azure Logout
-      run: |
-        az logout
+#    - name: Azure Logout
+##      run: |
+#        az logout
