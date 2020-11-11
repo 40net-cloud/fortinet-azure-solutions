@@ -33,10 +33,10 @@ jobs:
       uses: hashicorp/setup-terraform@v1
 
     - name: Terraform Init
-      run: terraform init
+      run: terraform init FortiGate/Terraform/Active-Passive-ELB-ILB/terraform/
 
-#    - name: Terraform Plan
-#      run: terraform plan
+    - name: Terraform Plan
+      run: terraform plan FortiGate/Terraform/Active-Passive-ELB-ILB/terraform/
 
     - name: Terraform Apply
       run: terraform apply -auto-approve FortiGate/Terraform/Active-Passive-ELB-ILB/terraform/
