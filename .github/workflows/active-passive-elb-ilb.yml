@@ -39,10 +39,10 @@ jobs:
 #      run: terraform plan
 
     - name: Terraform Apply
-      run: terraform apply -auto-approve terraform/
+      run: terraform apply -auto-approve FortiGate/Terraform/Active-Passive-ELB-ILB/terraform/
 
     - name: Terraform Destroy
-      run: terraform destroy -auto-approve terraform/
+      run: terraform destroy -auto-approve FortiGate/Terraform/Active-Passive-ELB-ILB/terraform/
 
 #    - name: Azure Logout
 ##      run: |
