@@ -15,6 +15,7 @@ end
 config sys global
     set admintimeout 120
     set hostname "${fgt_vm_name}"
+    set gui-theme mariner
 end
 config vpn ssl settings
     set port 7443
