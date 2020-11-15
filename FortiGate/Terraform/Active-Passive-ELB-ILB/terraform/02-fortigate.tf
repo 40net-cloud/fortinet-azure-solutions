@@ -544,4 +544,3 @@ data "azurerm_public_ip" "elbpip" {
 output "elb_public_ip_address" {
   value = data.azurerm_public_ip.elbpip.ip_address
 }
-
