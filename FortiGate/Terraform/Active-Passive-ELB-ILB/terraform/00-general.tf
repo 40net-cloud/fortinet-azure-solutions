@@ -162,11 +162,11 @@ variable "fgt_vmsize" {
 }
 
 variable "fortinet_tags" {
-    type = map
-    default = {
-        publisher: "Fortinet",
-        template: "Active-Passive-ELB-ILB",
-        provider: "7EB3B02F-50E5-4A3E-8CB8-2E12925831AP"
+  type = map
+  default = {
+    publisher : "Fortinet",
+    template : "Active-Passive-ELB-ILB",
+    provider : "7EB3B02F-50E5-4A3E-8CB8-2E12925831AP"
   }
 }
 
