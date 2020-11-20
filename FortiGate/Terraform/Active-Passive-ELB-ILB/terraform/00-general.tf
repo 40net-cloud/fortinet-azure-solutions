@@ -58,7 +58,7 @@ variable "FGT_ACCELERATED_NETWORKING" {
 
 variable "FGT_CONFIG_HA" {
   description = "Automatically configures the FGCP HA configuration using cloudinit"
-  default     = "false"
+  default     = "true"
 }
 
 ##############################################################################################################
