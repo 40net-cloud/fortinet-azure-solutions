@@ -1,0 +1,380 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "bootDiskVhdUri": {
+      "type": "string",
+      "metadata": {
+        "description": "URL of boot disk image in Azure Storage. Make sure the image is in the same region as your deployment."
+      }
+    },
+    "adminUsername": {
+      "type": "string",
+      "defaultValue": "azureadmin"
+    },
+    "adminPassword": {
+      "type": "securestring"
+    },
+    "prefix": {
+      "type": "string",
+      "metadata": {
+        "description": "This prefix will be prepended to all created resources"
+      }
+    },
+    "fortiwebManagerVmName": {
+      "type": "string",
+      "metadata": {
+        "description": "Name of the FortiWeb Manager virtual machine instance"
+      },
+      "defaultValue": "fwbmanager"
+    },
+    "instanceType": {
+      "type": "string",
+      "defaultValue": "Standard_F2s",
+      "allowedValues": [ "Standard_F2s", "Standard_F4s", "Standard_F8s", "Standard_F2", "Standard_F4", "Standard_F8", "Standard_F2s_v2", "Standard_F4s_v2", "Standard_F8s_v2" ],
+      "metadata": {
+        "description": "Virtual Machine size selection"
+      }
+    },
+    "dataDiskSize": {
+      "type": "int",
+      "defaultValue": 50
+    },
+    "vnetNewOrExisting": {
+      "type": "string",
+      "defaultValue": "new",
+      "allowedValues": [
+        "new",
+        "existing"
+      ],
+      "metadata": {
+        "description": "Identify whether to use a new or existing vnet"
+      }
+    },
+    "vnetName": {
+      "type": "string",
+      "defaultValue": "fwbmanager-vnet",
+      "metadata": {
+        "description": "Name of the existing or new Azure virtual network"
+      }
+    },
+    "existingVnetResourceGroup": {
+      "type": "string",
+      "defaultValue": "[resourceGroup().name]",
+      "metadata": {
+        "description": "Resource Group containing the existing virtual network (with new vnet the current resourcegroup is used)"
+      }
+    },
+    "newVnetAddressPrefix": {
+      "type": "string",
+      "defaultValue": "172.16.136.0/22",
+      "metadata": {
+        "description": "Virtual Network Address prefix"
+      }
+    },
+    "subnetName": {
+      "type": "string",
+      "defaultValue": "default",
+      "metadata": {
+        "description": "FortiWeb Manager Subnet"
+      }
+    },
+    "newSubnetAddressPrefix": {
+      "type": "string",
+      "defaultValue": "172.16.137.0/24",
+      "metadata": {
+        "description": "FortiManager Subnet Prefix"
+      }
+    },
+    "publicIPNewOrExisting": {
+      "type": "string",
+      "defaultValue": "new",
+      "allowedValues": [
+        "new",
+        "existing"
+      ],
+      "metadata": {
+        "description": "Choose between an existing, new or no public IP for the External Azure Load Balancer"
+      }
+    },
+    "publicIPName": {
+      "type": "string",
+      "defaultValue": "fwbmanager-pip",
+      "metadata": {
+        "description": "Name of Public IP address element"
+      }
+    },
+    "existingPublicIPResourceGroup": {
+      "type": "string",
+      "defaultValue": "[resourceGroup().name]",
+      "metadata": {
+        "description": "Resource group to which the Public IP belongs"
+      }
+    },
+    "publicIPAddressType": {
+      "type": "string",
+      "defaultValue": "Static",
+      "allowedValues": [
+        "Dynamic",
+        "Static"
+      ],
+      "metadata": {
+        "description": "Type of public IP address"
+      }
+    }
+  },
+  "variables": {
+    "storageApiVersion": "2018-07-01",
+    "computeApiVersion": "2018-06-01",
+    "networkApiVersion": "2018-11-01",
+
+    "fwbmgrVmName": "[concat(parameters('prefix'), '-', parameters('fortiwebManagerVmName'))]",
+    "bootImageName": "[concat(variables('fwbmgrVmName'), '-bootimage')]",
+
+    "newVnetName": "[concat(parameters('prefix'), '-', parameters('vnetName'))]",
+    "newVnetId": "[resourceId('Microsoft.Network/virtualNetworks', variables('newVnetName'))]",
+    "existingVnetId": "[resourceId(parameters('existingVnetResourceGroup'),' Microsoft.Network/virtualNetworks', parameters('vnetName'))]",
+    "vnetId": "[if(equals(parameters('vnetNewOrExisting'),'new'), variables('newVnetId'), variables('existingVnetId'))]",
+
+    "subnetId": "[if(equals(parameters('vnetNewOrExisting'),'new'), resourceId('Microsoft.Network/virtualNetworks/subnets', variables('newVnetName'), parameters('subnetName')),resourceId(parameters('existingVnetResourceGroup'),'Microsoft.Network/virtualNetworks/subnets', parameters('vnetName'),parameters('subnetName')))]",
+
+    "newPublicIPName": "[concat(parameters('prefix'), '-', parameters('publicIPName'))]",
+    "newPublicIPId": "[resourceId('Microsoft.Network/publicIPAddresses', variables('newPublicIPName'))]",
+    "existingPublicIPId": "[resourceId(parameters('existingPublicIPResourceGroup'), 'Microsoft.Network/publicIPAddresses', parameters('publicIPName'))]",
+    "publicIPId": "[if(equals(parameters('publicIPNewOrExisting'), 'new'), variables('newPublicIPId'), variables('existingPublicIPId'))]",
+
+
+    "nsgName": "[concat(variables('fwbmgrVmName'), '-nsg')]",
+    "FortinetTags":  {"provider": "6EB3B02F-50E5-4A3E-8CB8-2E129258317D"}
+
+  },
+  "resources": [
+    {
+      "apiVersion": "[variables('networkApiVersion')]",
+      "tags": {
+        "provider": "[toUpper(variables('fortinetTags').provider)]"
+      },
+      "type": "Microsoft.Network/networkSecurityGroups",
+      "name": "[variables('nsgName')]",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "securityRules": [
+          {
+              "name": "AllowSSHInbound",
+              "properties": {
+                  "description": "Allow SSH In",
+                  "protocol": "Tcp",
+                  "sourcePortRange": "*",
+                  "destinationPortRange": "22",
+                  "sourceAddressPrefix": "*",
+                  "destinationAddressPrefix": "*",
+                  "access": "Allow",
+                  "priority": 100,
+                  "direction": "Inbound"
+              }
+          },
+          {
+              "name": "AllowHTTPInbound",
+              "properties": {
+                  "description": "Allow 80 In",
+                  "protocol": "Tcp",
+                  "sourcePortRange": "*",
+                  "destinationPortRange": "80",
+                  "sourceAddressPrefix": "*",
+                  "destinationAddressPrefix": "*",
+                  "access": "Allow",
+                  "priority": 110,
+                  "direction": "Inbound"
+              }
+          },
+          {
+              "name": "AllowHTTPSInbound",
+              "properties": {
+                  "description": "Allow 443 In",
+                  "protocol": "Tcp",
+                  "sourcePortRange": "*",
+                  "destinationPortRange": "443",
+                  "sourceAddressPrefix": "*",
+                  "destinationAddressPrefix": "*",
+                  "access": "Allow",
+                  "priority": 120,
+                  "direction": "Inbound"
+              }
+          },
+          {
+              "name": "AllowFDSProxyInbound",
+              "properties": {
+                  "description": "Allow 8989 in for FDS proxy",
+                  "protocol": "Tcp",
+                  "sourcePortRange": "*",
+                  "destinationPortRange": "8989",
+                  "sourceAddressPrefix": "*",
+                  "destinationAddressPrefix": "*",
+                  "access": "Allow",
+                  "priority": 130,
+                  "direction": "Inbound"
+              }
+          },
+          {
+            "name": "AllowAllOutbound",
+            "properties": {
+              "description": "Allow all out",
+              "protocol": "*",
+              "sourcePortRange": "*",
+              "destinationPortRange": "*",
+              "sourceAddressPrefix": "*",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 105,
+              "direction": "Outbound"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "condition": "[equals(parameters('vnetNewOrExisting'), 'new')]",
+      "type": "Microsoft.Network/virtualNetworks",
+      "apiVersion": "[variables('networkApiVersion')]",
+      "name": "[variables('newVnetName')]",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "addressSpace": {
+          "addressPrefixes": [
+            "[parameters('newVnetAddressPrefix')]"
+          ]
+        },
+        "subnets": [
+          {
+            "name": "[parameters('subnetName')]",
+            "properties": {
+              "addressPrefix": "[parameters('newSubnetAddressPrefix')]"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "condition": "[equals(parameters('publicIPNewOrExisting'), 'new')]",
+      "type": "Microsoft.Network/publicIPAddresses",
+      "apiVersion": "[variables('networkApiVersion')]",
+      "tags": {
+        "provider": "[toUpper(variables('fortinetTags').provider)]"
+      },
+      "name": "[variables('newPublicIPName')]",
+      "location": "[resourceGroup().location]",
+      "sku":
+      {
+        "name": "Basic"
+      },
+      "properties": {
+        "publicIPAllocationMethod": "[parameters('publicIPAddressType')]"
+      }
+    },
+
+    {
+      "type": "Microsoft.Compute/images",
+      "apiVersion": "[variables('computeApiVersion')]",
+      "name": "[variables('bootImageName')]",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "storageProfile": {
+          "osDisk": {
+            "osType": "Linux",
+            "osState": "Generalized",
+            "blobUri": "[parameters('bootDiskVhdUri')]",
+            "caching": "ReadWrite",
+            "storageAccountType": "Premium_LRS"
+          }
+        }
+      }
+    },
+    {
+      "apiVersion": "[variables('networkApiVersion')]",
+      "tags": {
+        "provider": "[toUpper(variables('fortinetTags').provider)]"
+      },
+      "type": "Microsoft.Network/networkInterfaces",
+      "name": "[concat(variables('fwbmgrVmName'), '-nic' )]",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[variables('newVnetName')]",
+        "[resourceId('Microsoft.Network/networkSecurityGroups/',variables('nsgName'))]"
+      ],
+      "properties": {
+        "ipConfigurations": [
+          {
+            "name": "ipconfig1",
+            "properties": {
+              "publicIPAddress": {
+                "id": "[variables('publicIPId')]"
+              },
+              "subnet": {
+                "id": "[variables('subnetId')]"
+              }
+            }
+          }
+        ],
+        "networkSecurityGroup": {
+          "id": "[resourceId('Microsoft.Network/networkSecurityGroups/',variables('nsgName'))]"
+        }
+      }
+    },
+
+    {
+      "apiVersion": "[variables('computeApiVersion')]",
+      "type": "Microsoft.Compute/virtualMachines",
+      "name": "[variables('fwbmgrVmName')]",
+      "location": "[resourceGroup().location]",
+      "tags": {
+       "provider": "[toUpper(variables('fortinetTags').provider)]"
+      },
+      "identity": {
+        "type": "SystemAssigned"
+      },
+      "dependsOn": [
+        "[concat(variables('fwbmgrVmName'), '-nic' )]",
+        "[variables('bootImageName')]"
+      ],
+      "properties": {
+        "hardwareProfile": {
+          "vmSize": "[parameters('instanceType')]"
+        },
+        "osProfile": {
+          "computerName": "[variables('fwbmgrVmName')]",
+          "adminUsername": "[parameters('adminUsername')]",
+          "adminPassword": "[parameters('adminPassword')]"
+        },
+        "storageProfile": {
+          "imageReference": {
+            "id": "[resourceId('Microsoft.Compute/images', variables('bootImageName'))]"
+          },
+          "osDisk": {
+            "name": "[concat(variables('fwbmgrVmName'), '-bootdisk')]",
+            "createOption": "FromImage"
+          },
+          "dataDisks": [
+            {
+              "name": "[concat(variables('fwbmgrVmName'), '-logdisk')]",
+              "diskSizeGB": "[parameters('dataDiskSize')]",
+              "lun": 0,
+              "createOption": "Empty"
+            }
+          ]
+        },
+        "networkProfile": {
+          "networkInterfaces": [
+            {
+              "properties": {
+                "primary": true
+              },
+              "id": "[resourceId('Micosoft.Network/networkInterfaces', concat(variables('fwbmgrVmName'), '-nic' ))]"
+            }
+          ]
+        }
+      }
+    }
+
+
+  ]
+}
