@@ -12,7 +12,7 @@
                 "type": "Microsoft.Common.TextBox",
                 "label": "FortiGate administrative username",
                 "defaultValue": "",
-                "toolTip": "Admin username for the FortiGate virtual appliance. Most not be root, administrator or admin",
+                "toolTip": "Username for the FortiGate virtual appliance. Most not be root, administrator or admin",
                 "constraints": {
 					"required": true,
 					"validations": [
