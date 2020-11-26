@@ -1,7 +1,7 @@
 ##############################################################################################################
 #
-# FortiGate Terraform deployment
-# Active Passive High Availability with Azure Standard Load Balancer - External and Internal
+# FortiGate Active/Passive High Availability with Azure Standard Load Balancer - External and Internal
+# Terraform deployment template for Microsoft Azure
 #
 ##############################################################################################################
 
@@ -53,6 +53,11 @@ variable "FGT_SSH_PUBLIC_KEY_FILE" {
 ##############################################################################################################
 variable "FGT_ACCELERATED_NETWORKING" {
   description = "Enables Accelerated Networking for the network interfaces of the FortiGate"
+  default     = "true"
+}
+
+variable "FGT_CONFIG_HA" {
+  description = "Automatically configures the FGCP HA configuration using cloudinit"
   default     = "true"
 }
 
@@ -154,6 +159,15 @@ variable "lb_internal_ipaddress" {
 
 variable "fgt_vmsize" {
   default = "Standard_F4s"
+}
+
+variable "fortinet_tags" {
+  type = map
+  default = {
+    publisher : "Fortinet",
+    template : "Active-Passive-ELB-ILB",
+    provider : "7EB3B02F-50E5-4A3E-8CB8-2E12925831AP"
+  }
 }
 
 ##############################################################################################################

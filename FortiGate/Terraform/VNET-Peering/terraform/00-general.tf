@@ -1,7 +1,8 @@
 ###############################################################################################################
 #
-# FortiGate Cloud Security Services Hub deployment
-# using Terraform and Azure VNET Peering
+# Cloud Security Services Hub
+# using VNET peering and FortiGate Active/Passive High Availability with Azure Standard Load Balancer - External and Internal
+# Fortinet FortiGate Terraform deployment template
 #
 ##############################################################################################################
 #
@@ -158,6 +159,15 @@ variable "lb_internal_ipaddress" {
 
 variable "fgt_vmsize" {
   default = "Standard_F4s"
+}
+
+variable "fortinet_tags" {
+    type = map
+    default = {
+        publisher: "Fortinet",
+        template: "VNET Peering",
+        provider: "7EB3B02F-50E5-4A3E-8CB8-2E12925831AB-VNETPeering"
+  }
 }
 
 ##############################################################################################################

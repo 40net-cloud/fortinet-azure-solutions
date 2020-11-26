@@ -2,10 +2,10 @@
 echo "
 ##############################################################################################################
 #
-# FortiGate Terraform deployment
-# Active Passive High Availability with Azure Standard Load Balancer - External and Internal
+# FortiGate Active/Passive High Availability with Azure Standard Load Balancer - External and Internal
+# Terraform deployment template for Microsoft Azure
 #
-# Remove the deployed environment based on the state file
+# Remove the deployed environment based on state
 #
 ##############################################################################################################
 "
@@ -13,11 +13,12 @@ echo "
 # Stop running when command returns error
 set -e
 
+PLAN="terraform.tfplan"
 STATE="terraform.tfstate"
 
 cd terraform/
 echo ""
-echo "==> Starting Terraform deployment"
+echo "==> Starting Terraform destroy"
 echo ""
 
 echo ""
@@ -26,11 +27,14 @@ echo ""
 terraform init
 
 echo ""
-echo "==> Terraform plan -destroy"
-echo ""
-terraform plan -var "USERNAME=x" -var "PASSWORD=x" -var "LOCATION=x" -var "PREFIX=x" -destroy
-
-echo ""
-echo "==> Terraform destroy"
+echo "==> terraform destroy"
 echo ""
 terraform destroy -var "USERNAME=x" -var "PASSWORD=x" -var "LOCATION=x" -var "PREFIX=x" -auto-approve
+if [ $? != 0 ];
+then
+    echo "--> ERROR: Destroy failed ..."
+    rg=`grep -m 1 -o '"resource_group_name": "[^"]*' terraform.tfstate | grep -o '[^"]*$'`
+    echo "--> Trying to delete the resource group $rg..."
+    az group delete --resource-group "$rg"
+    exit $rc;
+fi

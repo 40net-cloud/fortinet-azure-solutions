@@ -1,7 +1,8 @@
 ###############################################################################################################
 #
-# FortiGate Cloud Security Services Hub deployment
-# using Terraform and Azure VNET Peering
+# Cloud Security Services Hub
+# using VNET peering and FortiGate Active/Passive High Availability with Azure Standard Load Balancer - External and Internal
+# Fortinet FortiGate Terraform deployment template
 #
 ##############################################################################################################
 #
@@ -310,6 +311,14 @@ resource "azurerm_virtual_machine" "fgtavm" {
     managed_disk_type = "Standard_LRS"
   }
 
+  storage_data_disk {
+    name              = "${var.PREFIX}-A-FGT-VM-DATADISK"
+    managed_disk_type = "Premium_LRS"
+    create_option     = "Empty"
+    lun               = 0
+    disk_size_gb      = "10"
+  }
+
   os_profile {
     computer_name  = "${var.PREFIX}-A-VM-FGT"
     admin_username = var.USERNAME
@@ -321,10 +330,7 @@ resource "azurerm_virtual_machine" "fgtavm" {
     disable_password_authentication = false
   }
 
-  tags = {
-    environment = "Quickstart-VNET-Peering"
-    vendor      = "Fortinet"
-  }
+  tags = var.fortinet_tags
 }
 
 data "template_file" "fgt_a_custom_data" {
@@ -489,6 +495,14 @@ resource "azurerm_virtual_machine" "fgtbvm" {
     managed_disk_type = "Standard_LRS"
   }
 
+  storage_data_disk {
+    name              = "${var.PREFIX}-B-FGT-VM-DATADISK"
+    managed_disk_type = "Premium_LRS"
+    create_option     = "Empty"
+    lun               = 0
+    disk_size_gb      = "10"
+  }
+
   os_profile {
     computer_name  = "${var.PREFIX}-B-VM-FGT"
     admin_username = var.USERNAME
@@ -500,10 +514,7 @@ resource "azurerm_virtual_machine" "fgtbvm" {
     disable_password_authentication = false
   }
 
-  tags = {
-    environment = "Quickstart-VNET-Peering"
-    vendor      = "Fortinet"
-  }
+  tags = var.fortinet_tags
 }
 
 data "template_file" "fgt_b_custom_data" {
@@ -536,11 +547,13 @@ data "template_file" "fgt_b_custom_data" {
 data "azurerm_public_ip" "fgtamgmtpip" {
   name                = azurerm_public_ip.fgtamgmtpip.name
   resource_group_name = azurerm_resource_group.resourcegroup.name
+  depends_on          = [azurerm_virtual_machine.fgtavm]
 }
 
 data "azurerm_public_ip" "fgtbmgmtpip" {
   name                = azurerm_public_ip.fgtbmgmtpip.name
   resource_group_name = azurerm_resource_group.resourcegroup.name
+  depends_on          = [azurerm_virtual_machine.fgtbvm]
 }
 
 output "fgt_a_public_ip_address" {
@@ -554,6 +567,7 @@ output "fgt_b_public_ip_address" {
 data "azurerm_public_ip" "elbpip" {
   name                = azurerm_public_ip.elbpip.name
   resource_group_name = azurerm_resource_group.resourcegroup.name
+  depends_on          = [azurerm_lb.elb]
 }
 
 output "elb_public_ip_address" {

@@ -48,21 +48,6 @@ echo "--> Using prefix '$prefix' for all resources ..."
 echo ""
 rg="$prefix-RG"
 
-if [ -z "$DEPLOY_PASSWORD" ]
-then
-    # Input password
-    echo -n "Enter password: "
-    stty_orig=`stty -g` # save original terminal setting.
-    stty -echo          # turn-off echoing.
-    read passwd         # read the password
-    stty $stty_orig     # restore terminal setting.
-else
-    passwd="$DEPLOY_PASSWORD"
-    echo ""
-    echo "--> Using password found in env variable DEPLOY_PASSWORD ..."
-    echo ""
-fi
-
 if [ -z "$DEPLOY_USERNAME" ]
 then
     # Input username
@@ -81,6 +66,22 @@ echo ""
 echo "--> Using username '$username' ..."
 echo ""
 
+if [ -z "$DEPLOY_PASSWORD" ]
+then
+    # Input password
+    echo -n "Enter password: "
+    stty_orig=`stty -g` # save original terminal setting.
+    stty -echo          # turn-off echoing.
+    read passwd         # read the password
+    stty $stty_orig     # restore terminal setting.
+    echo ""
+else
+    passwd="$DEPLOY_PASSWORD"
+    echo ""
+    echo "--> Using password found in env variable DEPLOY_PASSWORD ..."
+    echo ""
+fi
+
 # Create resource group
 echo ""
 echo "--> Creating $rg resource group ..."
@@ -88,9 +89,9 @@ az group create --location "$location" --name "$rg"
 
 # Template validation
 echo "--> Validation deployment in $rg resource group ..."
-az group deployment validate --resource-group "$rg" \
+az deployment group validate --resource-group "$rg" \
                            --template-file azuredeploy.json \
-                           --parameters adminUsername="$username" adminPassword=$passwd FortiGateNamePrefix=$prefix
+                           --parameters adminUsername="$username" adminPassword=$passwd fortigateNamePrefix=$prefix
 result=$?
 if [ $result != 0 ];
 then
@@ -100,9 +101,9 @@ fi
 
 # Template deployment
 echo "--> Deployment of $rg resources ..."
-az group deployment create --resource-group "$rg" \
+az deployment group create --resource-group "$rg" \
                            --template-file azuredeploy.json \
-                           --parameters adminUsername="$username" adminPassword=$passwd FortiGateNamePrefix=$prefix
+                           --parameters adminUsername="$username" adminPassword=$passwd fortigateNamePrefix=$prefix
 result=$?
 if [[ $result != 0 ]];
 then
@@ -121,7 +122,7 @@ echo "
 
 Deployment information:
 
-Username: $USERNAME
+Username:
 
 FortiGate IP addesses
 "

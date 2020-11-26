@@ -2,9 +2,9 @@
 echo "
 ##############################################################################################################
 #
+# Cloud Security Services Hub
+# using VNET peering and FortiGate Active/Passive High Availability with Azure Standard Load Balancer - External and Internal
 # Fortinet FortiGate Terraform deployment template
-# FortiGate Cloud Security Services Hub deployment using Azure VNET Peering
-# Active/Passive High Availability with Azure Standard Load Balancer - External and Internal
 #
 ##############################################################################################################
 
@@ -79,40 +79,39 @@ echo "--> Using prefix $prefix for all resources ..."
 echo ""
 rg_cgf="$prefix-RG"
 
+if [ -z "$DEPLOY_USERNAME" ]
+then
+    # Input username
+    echo -n "Enter username: "
+    stty_orig=`stty -g` # save original terminal setting.
+    read USERNAME         # read the prefix
+    stty $stty_orig     # restore terminal setting.
+    if [ -z "$USERNAME" ]
+    then
+        USERNAME="azureuser"
+    fi
+else
+    USERNAME="$DEPLOY_USERNAME"
+fi
+echo ""
+echo "--> Using username '$USERNAME' ..."
+echo ""
+
 if [ -z "$DEPLOY_PASSWORD" ]
 then
     # Input password
     echo -n "Enter password: "
     stty_orig=`stty -g` # save original terminal setting.
     stty -echo          # turn-off echoing.
-    read passwd         # read the password
+    read PASSWORD         # read the password
     stty $stty_orig     # restore terminal setting.
     echo ""
 else
-    passwd="$DEPLOY_PASSWORD"
+    PASSWORD="$DEPLOY_PASSWORD"
     echo ""
     echo "--> Using password found in env variable DEPLOY_PASSWORD ..."
     echo ""
 fi
-PASSWORD="$passwd"
-
-if [ -z "$DEPLOY_USERNAME" ]
-then
-    # Input username
-    echo -n "Enter username: "
-    stty_orig=`stty -g` # save original terminal setting.
-    read username         # read the prefix
-    stty $stty_orig     # restore terminal setting.
-    if [ -z "$username" ]
-    then
-        username="azureuser"
-    fi
-else
-    username="$DEPLOY_USERNAME"
-fi
-echo ""
-echo "--> Using username '$username' ..."
-echo ""
 
 SUMMARY="summary.out"
 
@@ -165,7 +164,7 @@ echo "
 
  Deployment information:
 
-Username: $USERNAME
+Username:
 "
 cat "output/$SUMMARY"
 echo "

@@ -2,30 +2,39 @@ resources:
 - repo: self
 
 pool:
-  vmImage: 'vs2017-win2016'
+  vmImage: 'ubuntu-latest'
   demands: azureps
 
 steps:
-- task: AzurePowerShell@2
-  displayName: 'Azure PowerShell script: FilePath'
+- task: AzurePowerShell@5
+  displayName: 'Running tests'
   inputs:
     azureSubscription: 'AzureSubscription'
-    ScriptPath: 'FortiGate/VNET-Peering/test/invokePester.ps1'
+    ScriptPath: 'FortiGate/A-Single-VM/test/invokePester.ps1'
     ScriptArguments: '-templatename FortiGate/A-Single-VM'
     azurePowerShellVersion: LatestVersion
+    pwsh: true
 
+- task: PublishTestResults@2
+  displayName: 'Publish ARM TTK results'
+  inputs:
+    testRunner: NUnit
+    testResultsFiles: '**/*-armttk.xml'
+    testRunTitle: 'ARM TTK verification'
+  condition: always()
 
 - task: PublishTestResults@2
   displayName: 'Publish Test Results **\TEST-*.xml'
   inputs:
     testRunner: NUnit
-    testResultsFiles: '**\TEST-*.xml'
-    testRunTitle: 'FortiGate-VM Single VM ARM Template test'
+    testResultsFiles: '**/TEST-*.xml'
+    testRunTitle: 'ARM template and deployment test'
 
 trigger:
   branches:
     include:
-    - master
+    - main
+    - dev
   paths:
     exclude:
     - FortiGate/A-Single-VM/*.md

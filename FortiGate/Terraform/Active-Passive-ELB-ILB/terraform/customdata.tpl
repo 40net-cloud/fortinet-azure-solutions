@@ -15,7 +15,6 @@ end
 config sys global
     set admintimeout 120
     set hostname "${fgt_vm_name}"
-    set timezone 26
     set gui-theme mariner
 end
 config vpn ssl settings
@@ -78,6 +77,7 @@ config system admin
     next
 end
 %{ endif }
+%{ if fgt_config_ha }
 config system ha
     set group-name AzureHA
     set mode a-p
@@ -96,6 +96,7 @@ config system ha
     set unicast-hb enable
     set unicast-hb-peerip ${fgt_ha_peerip}
 end
+%{ endif }
 
 %{ if fgt_license_file != "" }
 --===============0086047718136476635==
