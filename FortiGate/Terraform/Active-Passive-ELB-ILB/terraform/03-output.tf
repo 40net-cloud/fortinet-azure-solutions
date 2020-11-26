@@ -1,7 +1,7 @@
 ##############################################################################################################
 #
-# FortiGate Terraform deployment
-# Active Passive High Availability with Azure Standard Load Balancer - External and Internal
+# FortiGate Active/Passive High Availability with Azure Standard Load Balancer - External and Internal
+# Terraform deployment template for Microsoft Azure
 #
 ##############################################################################################################
 #
@@ -31,4 +31,3 @@ data "template_file" "summary" {
 output "deployment_summary" {
   value = data.template_file.summary.rendered
 }
-

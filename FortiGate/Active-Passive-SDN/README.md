@@ -1,15 +1,44 @@
-## Active/Passive High Available pair FortiGates
+## Active/Passive High Available FortiGate pair with Fabdric Connector Failover
 
-[![Build Status](https://dev.azure.com/jvh-2520/Fortinet-Azure/_apis/build/status/Active-Passive-SDN?branchName=master)](https://dev.azure.com/jvh-2520/Fortinet-Azure/_build/latest?definitionId=12&branchName=master)
+[![Build Status](https://dev.azure.com/jvh-2520/Fortinet-Azure/_apis/build/status/Active-Passive-SDN?branchName=main)](https://dev.azure.com/jvh-2520/Fortinet-Azure/_build/latest?definitionId=12&branchName=main)
+
+# Introduction
+
+More and more enterprises are turning to Microsoft Azure to extend internal data centers and take advantage of the elasticity of the public cloud. While Azure secures the infrastructure, you are responsible for protecting everything you put in it. Fortinet Security Fabric provides Azure the broad protection, native integration and automated management enabling customers with consistent enforcement and visibility across their multi-cloud infrastructure.
+
+This ARM template deploys a High Availability pair of FortiGate Next-Generation Firewalls accompanied by the required infrastructure. Additionally, Fortinet Fabric Connectors deliver the ability to create dynamic security policies.
+
+# Design
+
+In Microsoft Azure, you can deploy an active/passive pair of FortiGate VMs that communicate with each other and the Azure fabric. This FortiGate setup will receive the to be inspected traffic using user defined routing (UDR) and public IPs. You can send all or specific traffic that needs inspection, going to/coming from on-prem networks or public internet by adapting the UDR routing.
+
+This Azure ARM template will automatically deploy a full working environment containing the the following components.
+
+  - 2 FortiGate firewall's in an active/passive deployment
+  - 1 VNET with 2 protected subnets and 4 subnets required for the FortiGate deployment (external, internal, ha mgmt and ha sync). If using an existing vnet, it must already have 5 subnets
+	- 3 public IPs. The first public IP is for cluster access to/through the active FortiGate.  The other two PIPs are for Management access
+  - User Defined Routes (UDR) for the protected subnets
+
+![active/passive design](images/fgt-ha.png)
+
+This ARM template can also be used to extend or customized based on your requirements. Additional subnets besides the one's mentioned above are not automatically generated. By adapting the ARM templates you can add additional subnets which preferably require their own routing tables.
 
 ## How to deploy
 
-The FortiGate solution can be deployed using the Azure Portal or Azure CLI. Using the deploy button you will open the Azure portal and you are required to fill in at least 5 variables. You can customize the deployment but referencing the resources like VNET, subnet and other resources.
+The FortiGate solution can be deployed using the Azure Portal or Azure CLI. There are 4 variables needed to complete kickstart the deployment. The deploy.sh script will ask them automatically. When you deploy the ARM template the Azure Portal will request the variables as a requirement.
+
+  - PREFIX : This prefix will be added to each of the resources created by the templates for easy of use, manageability and visibility.
+  - LOCATION : This is the Azure region where the deployment will be deployed
+  - USERNAME : The username used to login to the FortiGate GUI and SSH management UI.
+  - PASSWORD : The password used for the FortiGate GUI and SSH management UI.
+
 ### Azure Portal
 
-<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fjvhoof%2Ffortinet-azure-solutions%2Fmaster%2FFortiGate%2FActive-Passive-SDN%2Fazuredeploy.json" target="_blank"><img src="http://azuredeploy.net/deploybutton.png"/></a>
-<a href="http://armviz.io/#/?load=https%3A%2F%2Fraw.githubusercontent.com%2Fjvhoof%2Ffortinet-azure-solutions$2Fmaster%2FFortiGate%2FActive-Passive-SDN%2Fazuredeploy.json" target="_blank">
-    <img src="http://armviz.io/visualizebutton.png"/>
+<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fjvhoof%2Ffortinet-azure-solutions%2Fmain%2FFortiGate%2FActive-Passive-SDN%2Fazuredeploy.json" target="_blank">
+  <img src="https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.svg?sanitize=true"/>
+</a>
+<a href="http://armviz.io/#/?load=https%3A%2F%2Fraw.githubusercontent.com%2Fjvhoof%2Ffortinet-azure-solutions$2Fmain%2FFortiGate%2FActive-Passive-SDN%2Fazuredeploy.json" target="_blank">
+  <img src="https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/visualizebutton.svg?sanitize=true"/>
 </a>
 
 ### Azure CLI
@@ -19,221 +48,38 @@ To deploy via Azure Cloud Shell you can connect via the Azure Portal or directly
 - Login into the Azure Cloud Shell
 - Run the following command in the Azure Cloud:
 
-`cd ~/clouddrive/ && wget -qO- https://github.com/jvhoof/fortinet-azure-solutions/archive/master.zip | jar x && cd ~/clouddrive/fortinet-azure-solutions-master/FortiGate/Active-Passive-SDN/ && ./deploy.sh`
+`cd ~/clouddrive/ && wget -qO- https://github.com/jvhoof/fortinet-azure-solutions/archive/main.zip | jar x && cd ~/clouddrive/fortinet-azure-solutions-main/FortiGate/Active-Passive-SDN/ && ./deploy.sh`
 
 - The script will ask you a few questions to bootstrap a full deployment.
 
-## Deployed resources
-	- vnet with five subnets or uses an existing vnet of your selection.  If using an existing vnet, it must already have 5 subnets.
-	- three public IPs. The first public IP is for cluster access to/through the active FortiGate.  The other two PIPs are for Management access
-	- Two FortiGate virtual appliances
+![Azure Cloud Shell](images/azure-cloud-shell.png)
 
-A typical use case will be for Site-to-Site VPN termination as in the following diagram:
----
+After deployment you will be shown the IP address of all deployed components. Both FortiGate VMs are accessible using the public management IPs using HTTPS on port 443 and SSH on port 22.
 
-![Example Diagram](APDiagram1.png)
+# Requirements and limitations
 
----
+The ARM template deploy different resource and it is required to have the access rights and quota in your Microsoft Azure subscription to deploy the resources.
 
-This second diagram shows what will happen in the event FortiGate A is shut down:
----
+- The template will deploy Standard F4s VMs for this architecture. Other VM instances are supported as well with a minimum of 2 NICs. A list can be found [here](https://docs.fortinet.com/document/fortigate/6.2.0/azure-cookbook/562841/instance-type-support)
+- Licenses for Fortigate
+  - BYOL: A demo license can be made available via your Fortinet partner or on our website. These can be injected during deployment or added after deployment. Purchased licenses need to be registered on the [Fortinet support site] (http://support.fortinet.com). Download the .lic file after registration. Note, these files may not work until 30 minutes after it's initial creation.
+  - PAYG or OnDemand: These licenses are automatically generated during the deployment of the FortiGate systems.
 
-![Example Diagram](APDiagram2.png)
+## Fabric Connector
 
----
+The FortiGate-VM uses [Managed Identities](https://docs.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/) for the SDN Fabric Connector. A SDN Fabric Connector is created automatically during deployment. After deployment, it is required apply the 'Reader' role to the Azure Subscription you want to resolve Azure Resources from. More information can be found on the [Fortinet Documentation Libary](https://docs.fortinet.com/vm/azure/fortigate/6.4/azure-cookbook/6.4.0/236610/creating-a-fabric-connector-using-a-managed-identity).
 
-### FortiGate configuration:
+# FortiGate configuration
 
-The FortiGates will be preconfigured similar to the following.  You should be able to connect via https on port 8443 (example: https://104.45.185.229:8443) or via SSH on port 22.  Use the management Public IP for each FortiGate to connect.
+The FortiGate VMs need a specific configuration to operate in your environment. This configuration can be injected during provisioning or afterwards via the different management options including GUI, CLI, FortiManager or REST API.
 
-    FortiGate-A:
+- [Default configuration using this template](doc/config-provisioning.md)
+- [Failover configuration](doc/config-failover.md)
 
-    config system global
-      set admin-sport 8443
-    end
-    config router static
-      edit 1
-        set gateway 10.0.1.1
-        set device port1
-      next
-      edit 2
-        set dst 10.0.0.0 255.255.0.0
-        set gateway 10.0.2.1
-        set device "port2"
-      next
-    end
-    config system interface
-      edit "port1"
-        set vdom "root"
-        set mode static
-        set ip 10.0.1.4 255.255.255.0
-        set allowaccess ping https ssh
-        set description "external"
-      next
-      edit "port2"
-        set vdom "root"
-        set mode static
-        set ip 10.0.2.4 255.255.255.0
-        set description "internal"
-      next
-      edit "port3"
-        set vdom "root"
-        set mode static
-        set ip 10.0.3.4 255.255.255.240
-        set description "hasyncport"
-      next
-      edit "port4"
-        set vdom "root"
-        set mode static
-        set ip 10.0.4.4 255.255.255.240
-        set allowaccess ping https ssh
-        set description "management"
-      next
-    end
+## Support
+Fortinet-provided scripts in this and other GitHub projects do not fall under the regular Fortinet technical support scope and are not supported by FortiCare Support Services.
+For direct issues, please refer to the [Issues](https://github.com/fortinet/azure-templates/issues) tab of this GitHub project.
+For other questions related to this project, contact [github@fortinet.com](mailto:github@fortinet.com).
 
-    config system ha
-      set group-name "AzureHA"
-      set mode a-p
-      set hbdev "port3" 100
-      set session-pickup enable
-      set session-pickup-connectionless enable
-      set ha-mgmt-status enable
-      config ha-mgmt-interfaces
-        edit 1
-          set interface "port4"
-          set gateway 10.0.4.1
-        next
-      end
-      set override disable
-      set priority 255
-      set unicast-hb enable
-      set unicast-hb-peerip 10.0.3.5
-    end
-
-    FortiGate B:
-
-    config system global
-      set admin-sport 8443
-    end
-    config router static
-      edit 1
-        set gateway 10.0.1.1
-        set device port1
-      next
-      edit 2
-        set dst 10.0.0.0 255.255.0.0
-        set gateway 10.0.2.1
-      set device "port2"
-      next
-    end
-    config system interface
-      edit "port1"
-        set vdom "root"
-        set mode static
-        set ip 10.0.1.5 255.255.255.0
-        set allowaccess ping https ssh
-        set description "external"
-      next
-      edit "port2"
-        set vdom "root"
-        set mode static
-        set ip 10.0.2.5 255.255.255.0
-        set description "internal"
-      next
-      edit "port3"
-        set mode static
-        set ip 10.0.3.5 255.255.255.240
-        set description "hasyncport"
-      next
-      edit "port4"
-        set vdom "root"
-        set mode static
-        set ip 10.0.4.5 255.255.255.240
-        set allowaccess ping https ssh
-        set description "management"
-      next
-    end
-    config system ha
-      set group-name "AzureHA"
-      set mode a-p
-      set hbdev "port3" 100
-      set session-pickup enable
-      set session-pickup-connectionless enable
-      set ha-mgmt-status enable
-      config ha-mgmt-interfaces
-        edit 1
-          set interface "port4"
-          set gateway 10.0.4.1
-        next
-      end
-      set override disable
-      set priority 1
-      set unicast-hb enable
-      set unicast-hb-peerip 10.0.3.4
-    end
-
-Next you need to apply the license unless you are using PAYG licensing.  To apply BYOL licenses, first register the licenses with http://support.fortinet.com and download the .lic files.  Note, these files may not work until 30 minutes after it's initiall created.
-
-Next, connect via HTTPS to both FortiGates via their management addresses and upload unique license files for each.
-
-Once, licensed and rebooted, you can proceed to configure the Azure settings to enable the cluster IP and route table failover:
-
-For FortiGate A (Most of this config will be specific to your environment and so must be modified):
-
-    config system sdn-connector
-      edit "AZConnector"
-      set type azure
-      set tenant-id "942e801f-1c18-237a-8fa1-4e2bde2161ba"
-      set subscription-id "2g95c73c-dg16-47a1-1536-65124d1a5e11"
-      set resource-group "fortigateapha"
-      set client-id "7d1234a4-a123-1234-abc4-d80e7af9123a"
-      set client-secret i7I21/mabcgbYW/K1l0zABC/6M86lAdTc312345Tps1=
-      config nic
-        edit "FortiGate-A-NIC1"
-          config ip
-            edit "ipconfig1"
-            set public-ip "FGTAPClusterPublicIP"
-          next
-        end
-        next
-      end
-      config route-table
-        edit "FortiGateDefaultAPRouteTable"
-        config route
-        edit "toDefault"
-          set next-hop "10.0.2.4"
-        next
-      end
-      next
-     end
-    end
-
-For FortiGate B:
-
-    config system sdn-connector
-      edit "AZConnector"
-      set type azure
-      set tenant-id "942e801f-1c18-237a-8fa1-4e2bde2161ba"
-      set subscription-id "2g95c73c-dg16-47a1-1536-65124d1a5e11"
-      set resource-group "fortigateapha"
-      set client-id "7d1234a4-a123-1234-abc4-d80e7af9123a"
-      set client-secret i7I21/mabcgbYW/K1l0zABC/6M86lAdTc312345Tps1=
-      config nic
-        edit "FortiGate-B-NIC1"
-        config ip
-          edit "ipconfig1"
-          set public-ip "FGTAPClusterPublicIP"
-        next
-      end
-      next
-      end
-      config route-table
-        edit "FortiGateDefaultAPRouteTable"
-          config route
-          edit "toDefault"
-             set next-hop "10.0.2.5"
-          next
-        end
-        next
-      end
-    end
+## License
+[License](LICENSE) © Fortinet Technologies. All rights reserved.

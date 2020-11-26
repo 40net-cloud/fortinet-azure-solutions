@@ -176,7 +176,7 @@ az group create --location "$location" --name "$rg"
 
 # Template validation
 echo "--> Validation deployment in $rg resource group ..."
-az group deployment validate --resource-group "$rg" \
+az deployment group validate --resource-group "$rg" \
                            --template-file $templatefilename \
                            --parameters ResourceNamePrefix="$prefix" RestAppID="$clientid" RestAppSecret="$clientsecret" \
 					FortiGatePSKSecret="$passwd" AdminUsername="$username" AdminPassword=$passwd \
@@ -191,7 +191,7 @@ fi
 deployment_name="$rg-$location"
 # Template deployment
 echo "--> Deployment of $rg resources with deployment name [$deployment_name]..."
-az group deployment create --resource-group "$rg" \
+az deployment group create --resource-group "$rg" \
                            --template-file $templatefilename \
                            --name "$deployment_name" \
                            --parameters ResourceNamePrefix="$prefix" RestAppID="$clientid" RestAppSecret="$clientsecret" \
@@ -210,9 +210,9 @@ else
     fi
 
     echo "--> Copy configset to Azure Storage Account ..."
-    storageAccountName=`az group deployment show --resource-group "$rg" --name "$rg-$location" \
+    storageAccountName=`az deployment group show --resource-group "$rg" --name "$rg-$location" \
                             --query 'properties.outputs.storageAccountName.value' -o tsv`
-    storageAccountAccessKey=`az group deployment show --resource-group "$rg" --name "$rg-$location" \
+    storageAccountAccessKey=`az deployment group show --resource-group "$rg" --name "$rg-$location" \
                             --query 'properties.outputs.storageAccountAccessKey.value' -o tsv`
     echo "--> Azure Storage Account found [$storageAccountName] ..."
     az storage blob upload-batch --account-name "$storageAccountName" --account-key "$storageAccountAccessKey" -s "$DOWNLOAD_DIRECTORY/$RELEASE_VERSION/assets/configset" -d "configset"
@@ -226,7 +226,7 @@ else
     fi
 
     echo "--> Starting BYOL Virtual Machine Scale Set ..."
-    deploymentName=`az group deployment show --resource-group $rg --name "$rg-$location" \
+    deploymentName=`az deployment group show --resource-group $rg --name "$rg-$location" \
                             --query 'properties.outputs.byolAutoscaleSettingsName.value' -o tsv`
     az monitor autoscale update --enabled true --resource-group $rg --name $deploymentName
 

@@ -1,7 +1,7 @@
 ##############################################################################################################
 #
-# FortiGate Terraform deployment
-# Active/Active Load Balanced pair of standalone FortiGate VMs for resilience and scale
+# FortiGate Active/Active Load Balanced pair of standalone FortiGate VMs for resilience and scale
+# Terraform deployment template for Microsoft Azure
 #
 ##############################################################################################################
 
@@ -280,10 +280,7 @@ resource "azurerm_virtual_machine" "fgtavm" {
     disable_password_authentication = false
   }
 
-  tags = {
-    environment = "Quickstart-VNET-Peering"
-    vendor      = "Fortinet"
-  }
+  tags = var.fortinet_tags
 }
 
 data "template_file" "fgt_a_custom_data" {
@@ -333,15 +330,15 @@ resource "azurerm_network_interface_backend_address_pool_association" "fgtbifcex
 }
 
 resource "azurerm_network_interface_nat_rule_association" "fgtamgmthttpsvm" {
-  network_interface_id    = azurerm_network_interface.fgtaifcext.id
-  ip_configuration_name   = "interface1"
-  nat_rule_id             = azurerm_lb_nat_rule.fgtamgmthttps.id
+  network_interface_id  = azurerm_network_interface.fgtaifcext.id
+  ip_configuration_name = "interface1"
+  nat_rule_id           = azurerm_lb_nat_rule.fgtamgmthttps.id
 }
 
 resource "azurerm_network_interface_nat_rule_association" "fgtamgmtsshvm" {
-  network_interface_id    = azurerm_network_interface.fgtaifcext.id
-  ip_configuration_name   = "interface1"
-  nat_rule_id             = azurerm_lb_nat_rule.fgtamgmtssh.id
+  network_interface_id  = azurerm_network_interface.fgtaifcext.id
+  ip_configuration_name = "interface1"
+  nat_rule_id           = azurerm_lb_nat_rule.fgtamgmtssh.id
 }
 
 resource "azurerm_network_interface" "fgtbifcint" {
@@ -364,22 +361,22 @@ resource "azurerm_network_interface_security_group_association" "fgtbifcintnsg" 
   network_security_group_id = azurerm_network_security_group.fgtnsg.id
 }
 
-resource "azurerm_network_interface_backend_address_pool_association" "fgtaifcixt2ilbbackendpool" {
-  network_interface_id    = azurerm_network_interface.fgtbifcext.id
+resource "azurerm_network_interface_backend_address_pool_association" "fgtbifcint2ilbbackendpool" {
+  network_interface_id    = azurerm_network_interface.fgtbifcint.id
   ip_configuration_name   = "interface1"
   backend_address_pool_id = azurerm_lb_backend_address_pool.ilbbackend.id
 }
 
 resource "azurerm_network_interface_nat_rule_association" "fgtbmgmthttpsvm" {
-  network_interface_id    = azurerm_network_interface.fgtbifcext.id
-  ip_configuration_name   = "interface1"
-  nat_rule_id             = azurerm_lb_nat_rule.fgtbmgmthttps.id
+  network_interface_id  = azurerm_network_interface.fgtbifcext.id
+  ip_configuration_name = "interface1"
+  nat_rule_id           = azurerm_lb_nat_rule.fgtbmgmthttps.id
 }
 
 resource "azurerm_network_interface_nat_rule_association" "fgtbmgmtsshvm" {
-  network_interface_id    = azurerm_network_interface.fgtbifcext.id
-  ip_configuration_name   = "interface1"
-  nat_rule_id             = azurerm_lb_nat_rule.fgtbmgmtssh.id
+  network_interface_id  = azurerm_network_interface.fgtbifcext.id
+  ip_configuration_name = "interface1"
+  nat_rule_id           = azurerm_lb_nat_rule.fgtbmgmtssh.id
 }
 
 resource "azurerm_virtual_machine" "fgtbvm" {
@@ -426,10 +423,7 @@ resource "azurerm_virtual_machine" "fgtbvm" {
     disable_password_authentication = false
   }
 
-  tags = {
-    environment = "Quickstart-VNET-Peering"
-    vendor      = "Fortinet"
-  }
+  tags = var.fortinet_tags
 }
 
 data "template_file" "fgt_b_custom_data" {
@@ -455,6 +449,7 @@ data "template_file" "fgt_b_custom_data" {
 data "azurerm_public_ip" "elbpip" {
   name                = azurerm_public_ip.elbpip.name
   resource_group_name = azurerm_resource_group.resourcegroup.name
+  depends_on          = [azurerm_lb.elb]
 }
 
 output "elb_public_ip_address" {

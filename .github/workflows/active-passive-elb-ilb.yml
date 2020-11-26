@@ -1,0 +1,40 @@
+name: Terraform test Active-Passive-ELB-ILB
+
+on:
+  push:
+    paths:
+    - 'FortiGate/Terraform/Active-Passive-ELB-ILB/**'
+    - '!FortiGate/Terraform/Active-Passive-ELB-ILB/**.md'
+
+jobs:
+  terraform:
+    name: 'Terraform'
+    runs-on: ubuntu-latest
+    env:
+      TF_VAR_PREFIX: "FORTIQA-AP-ELB-ILB-${{ github.run_id }}-${{ github.run_number }}"
+      TF_VAR_LOCATION: "westeurope"
+      TF_VAR_USERNAME: "azureuser"
+      TF_VAR_PASSWORD: "${{ secrets.PASSWORD }}"
+      ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+      ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+      ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+
+    - name: Terraform Init
+      run: terraform init FortiGate/Terraform/Active-Passive-ELB-ILB/terraform/
+
+    - name: Terraform Validate
+      run: terraform validate FortiGate/Terraform/Active-Passive-ELB-ILB/terraform/
+
+    - name: Terraform Format
+      run: terraform fmt -check FortiGate/Terraform/Active-Passive-ELB-ILB/terraform/
+
+    - name: Terraform Plan
+      run: terraform plan FortiGate/Terraform/Active-Passive-ELB-ILB/terraform/

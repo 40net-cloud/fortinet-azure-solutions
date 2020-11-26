@@ -14,41 +14,46 @@
         "description": "Password for the Virtual Machine."
       }
     },
-    "FortiGateNamePrefix": {
+    "fortigateNamePrefix": {
       "type": "string",
       "metadata": {
-        "description": "Prefix for the naming of all the deployed resources"
+        "description": "Naming prefix for all deployed resources"
       }
     },
-    "FortiGateImageSKU": {
+    "fortigateImageSKU": {
       "type": "string",
       "defaultValue": "fortinet_fg-vm",
       "allowedValues": [
         "fortinet_fg-vm",
-        "fortinet_fg-vm_payg"
+        "fortinet_fg-vm_payg_20190624"
       ],
       "metadata": {
         "description": "Identifies whether to to use PAYG (on demand licensing) or BYOL license model (where license is purchased separately)"
       }
     },
-    "FortiGateImageVersion": {
+    "fortigateImageVersion": {
       "type": "string",
       "defaultValue": "latest",
       "allowedValues": [
-        "6.0.2",
-        "6.0.3",
-        "6.0.4",
         "6.2.0",
+        "6.2.2",
+        "6.2.3",
+        "6.2.4",
+        "6.2.5",
+        "6.4.0",
+        "6.4.1",
+        "6.4.2",
+        "6.4.3",
         "latest"
       ],
       "metadata": {
-        "description": "Only 6.0.0 has the A/P HA feature currently"
+        "description": "Only 6.x has the A/P HA feature currently"
       }
     },
     "instanceType": {
       "type": "string",
       "defaultValue": "Standard_F4s",
-      "allowedValues": [ "Standard_F4", "Standard_F4s", "Standard_F8", "Standard_F8s", "Standard_F8s_v2", "Standard_F16", "Standard_F16s", "Standard_F16s_v2" ],
+      "allowedValues": [ "Standard_F4s", "Standard_F8s", "Standard_F16s", "Standard_F4", "Standard_F8", "Standard_F16", "Standard_F8s_v2", "Standard_F16s_v2", "Standard_F32s_v2", "Standard_DS3_v2", "Standard_DS4_v2", "Standard_DS5_v2", "Standard_D8s_v3", "Standard_D16s_v3", "Standard_D32s_v3"],
       "metadata": {
         "description": "Virtual Machine size selection - must be F4 or other instance that supports 4 NICs"
       }
@@ -241,56 +246,61 @@
         "description": "Subnet 5 Prefix"
       }
     },
-    "FortinetTags": {
-    "type": "object",
-    "defaultValue": {
-      "provider": "6EB3B02F-50E5-4A3E-8CB8-2E129258317D"
+    "location": {
+      "type": "string",
+      "defaultValue": "[resourceGroup().location]",
+      "metadata": {
+        "description": "Location for all resources."
+      }
+    },
+    "fortinetTags": {
+      "type": "object",
+      "defaultValue": {
+        "publisher": "Fortinet",
+        "template": "Active-Passive-SDN-AZ",
+        "provider": "6EB3B02F-50E5-4A3E-8CB8-2E129APSDNAZ"
       }
     }
   },
   "variables": {
-    "computeApiVersion": "2018-06-01",
-    "networkApiVersion": "2018-11-01",
-    "resourceApiVersion": "2018-05-01",
+    "vnetName": "[if(equals(parameters('vnetName'),''),concat(parameters('fortigateNamePrefix'),'-VNET'),parameters('vnetName'))]",
+    "subnet1Id": "[if(equals(parameters('vnetNewOrExisting'),'new'),resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet1Name')),resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet1Name')))]",
+    "subnet2Id": "[if(equals(parameters('vnetNewOrExisting'),'new'),resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet2Name')),resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet2Name')))]",
+    "subnet3Id": "[if(equals(parameters('vnetNewOrExisting'),'new'),resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet3Name')),resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet3Name')))]",
+    "subnet4Id": "[if(equals(parameters('vnetNewOrExisting'),'new'),resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet4Name')),resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet4Name')))]",
 
-    "vnetName": "[if(equals(parameters('vnetName'),''),concat(parameters('FortiGateNamePrefix'),'-VNET'),parameters('vnetName'))]",
-    "vnetID": "[if(equals(parameters('vnetNewOrExisting'),'new'),resourceId('Microsoft.Network/virtualNetworks', variables('vnetName')),resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks', variables('vnetName')))]",
-    "subnet1Ref": "[concat(variables('vnetID'),'/subnets/', parameters('subnet1Name'))]",
-    "subnet2Ref": "[concat(variables('vnetID'),'/subnets/', parameters('subnet2Name'))]",
-    "subnet3Ref": "[concat(variables('vnetID'),'/subnets/', parameters('subnet3Name'))]",
-    "subnet4Ref": "[concat(variables('vnetID'),'/subnets/', parameters('subnet4Name'))]",
-
-    "vmName": "[concat(parameters('FortiGateNamePrefix'),'-FGT-A')]",
-    "vm2Name": "[concat(parameters('FortiGateNamePrefix'),'-FGT-B')]",
+    "vmName": "[concat(parameters('fortigateNamePrefix'),'-FGT-A')]",
+    "vm2Name": "[concat(parameters('fortigateNamePrefix'),'-FGT-B')]",
 
     "routeTableName": "FGTDefaultAPRouteTable",
     "routeTableId": "[resourceId('Microsoft.Network/routeTables',variables('routeTableName'))]",
 
-    "compute_VM_fg1_Name": "[variables('vmName')]",
-    "compute_VM_fg2_Name": "[variables('vm2Name')]",
+    "fgaVmName": "[variables('vmName')]",
+    "fgbVmName": "[variables('vm2Name')]",
 
-    "network_NIC_fg11_Name": "[concat(variables('vmName'),'-Nic1')]",
-    "network_NIC_fg11_Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('network_NIC_fg11_Name'))]",
-    "network_NIC_fg12_Name": "[concat(variables('vmName'),'-Nic2')]",
-    "network_NIC_fg12_Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('network_NIC_fg12_Name'))]",
-    "network_NIC_fg21_Name": "[concat(variables('vm2Name'),'-Nic1')]",
-    "network_NIC_fg21_Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('network_NIC_fg21_Name'))]",
-    "network_NIC_fg22_Name": "[concat(variables('vm2Name'),'-Nic2')]",
-    "network_NIC_fg22_Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('network_NIC_fg22_Name'))]",
-    "network_NIC_fg13_Name": "[concat(variables('vmName'),'-Nic3')]",
-    "network_NIC_fg13_Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('network_NIC_fg13_Name'))]",
-    "network_NIC_fg23_Name": "[concat(variables('vm2Name'),'-Nic3')]",
-    "network_NIC_fg23_Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('network_NIC_fg23_Name'))]",
-    "network_NIC_fg14_Name": "[concat(variables('vmName'),'-Nic4')]",
-    "network_NIC_fg14_Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('network_NIC_fg14_Name'))]",
-    "network_NIC_fg24_Name": "[concat(variables('vm2Name'),'-Nic4')]",
-    "network_NIC_fg24_Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('network_NIC_fg24_Name'))]",
+    "fgaNic1Name": "[concat(variables('vmName'),'-Nic1')]",
+    "fgaNic1Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('fgaNic1Name'))]",
+    "fgaNic2Name": "[concat(variables('vmName'),'-Nic2')]",
+    "fgaNic2Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('fgaNic2Name'))]",
+    "fgbNic1Name": "[concat(variables('vm2Name'),'-Nic1')]",
+    "fgbNic1Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('fgbNic1Name'))]",
+    "fgbNic2Name": "[concat(variables('vm2Name'),'-Nic2')]",
+    "fgbNic2Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('fgbNic2Name'))]",
+    "fgaNic3Name": "[concat(variables('vmName'),'-Nic3')]",
+    "fgaNic3Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('fgaNic3Name'))]",
+    "fgbNic3Name": "[concat(variables('vm2Name'),'-Nic3')]",
+    "fgbNic3Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('fgbNic3Name'))]",
+    "fgaNic4Name": "[concat(variables('vmName'),'-Nic4')]",
+    "fgaNic4Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('fgaNic4Name'))]",
+    "fgbNic4Name": "[concat(variables('vm2Name'),'-Nic4')]",
+    "fgbNic4Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('fgbNic4Name'))]",
 
-    "publicIPID": "[if(equals(parameters('publicIPNewOrExisting'),'new'),resourceId('Microsoft.Network/publicIPAddresses',parameters('publicIPName')),resourceId(parameters('publicIPResourceGroup'),'Microsoft.Network/publicIPAddresses',parameters('publicIPName')))]",
-    "publicIP2ID": "[if(equals(parameters('publicIP2NewOrExisting'),'new'),resourceId('Microsoft.Network/publicIPAddresses',parameters('publicIP2Name')),resourceId(parameters('publicIP2ResourceGroup'),'Microsoft.Network/publicIPAddresses',parameters('publicIP2Name')))]",
-    "publicIP3ID": "[if(equals(parameters('publicIP3NewOrExisting'),'new'),resourceId('Microsoft.Network/publicIPAddresses',parameters('publicIP3Name')),resourceId(parameters('publicIP3ResourceGroup'),'Microsoft.Network/publicIPAddresses',parameters('publicIP3Name')))]",
+    "publicIPId": "[if(equals(parameters('publicIPNewOrExisting'),'new'),resourceId('Microsoft.Network/publicIPAddresses',parameters('publicIPName')),resourceId(parameters('publicIPResourceGroup'),'Microsoft.Network/publicIPAddresses',parameters('publicIPName')))]",
+    "publicIP2Id": "[if(equals(parameters('publicIP2NewOrExisting'),'new'),resourceId('Microsoft.Network/publicIPAddresses',parameters('publicIP2Name')),resourceId(parameters('publicIP2ResourceGroup'),'Microsoft.Network/publicIPAddresses',parameters('publicIP2Name')))]",
+    "publicIP3Id": "[if(equals(parameters('publicIP3NewOrExisting'),'new'),resourceId('Microsoft.Network/publicIPAddresses',parameters('publicIP3Name')),resourceId(parameters('publicIP3ResourceGroup'),'Microsoft.Network/publicIPAddresses',parameters('publicIP3Name')))]",
 
-    "NSGName": "[concat(parameters('FortiGateNamePrefix'),'-',uniqueString(resourceGroup().id),'-NSG')]",
+    "NSGName": "[concat(parameters('fortigateNamePrefix'),'-',uniqueString(resourceGroup().id),'-NSG')]",
+    "NSGId": "[resourceID('Microsoft.Network/networkSecurityGroups/',variables('NSGName'))]",
 
     "sn1IPArray": "[split(parameters('subnet1Prefix'),'.')]",
     "sn1IPArray2ndString": "[string(variables('sn1IPArray')[3])]",
@@ -301,8 +311,8 @@
     "sn1IPArray1": "[string(int(variables('sn1IPArray')[1]))]",
     "sn1IPArray0": "[string(int(variables('sn1IPArray')[0]))]",
     "sn1GatewayIP": "[concat(variables('sn1IPArray0'),'.',variables('sn1IPArray1'),'.',variables('sn1IPArray2'),'.',variables('sn1IPArray3'))]",
-    "sn1IPfg1": "[concat(variables('sn1IPArray0'),'.',variables('sn1IPArray1'),'.',variables('sn1IPArray2'),'.',add(int(variables('sn1IPArray2nd')[0]),5))]",
-    "sn1IPfg2": "[concat(variables('sn1IPArray0'),'.',variables('sn1IPArray1'),'.',variables('sn1IPArray2'),'.',add(int(variables('sn1IPArray2nd')[0]),6))]",
+    "sn1IPfga": "[concat(variables('sn1IPArray0'),'.',variables('sn1IPArray1'),'.',variables('sn1IPArray2'),'.',add(int(variables('sn1IPArray2nd')[0]),5))]",
+    "sn1IPfgb": "[concat(variables('sn1IPArray0'),'.',variables('sn1IPArray1'),'.',variables('sn1IPArray2'),'.',add(int(variables('sn1IPArray2nd')[0]),6))]",
 
     "sn2IPArray": "[split(parameters('subnet2Prefix'),'.')]",
     "sn2IPArray2ndString": "[string(variables('sn2IPArray')[3])]",
@@ -313,20 +323,18 @@
     "sn2IPArray1": "[string(int(variables('sn2IPArray')[1]))]",
     "sn2IPArray0": "[string(int(variables('sn2IPArray')[0]))]",
     "sn2GatewayIP": "[concat(variables('sn2IPArray0'),'.',variables('sn2IPArray1'),'.',variables('sn2IPArray2'),'.',variables('sn2IPArray3'))]",
-    "sn2IPfg1": "[concat(variables('sn2IPArray0'),'.',variables('sn2IPArray1'),'.',variables('sn2IPArray2'),'.',add(int(variables('sn2IPArray2nd')[0]),5))]",
-    "sn2IPfg2": "[concat(variables('sn2IPArray0'),'.',variables('sn2IPArray1'),'.',variables('sn2IPArray2'),'.',add(int(variables('sn2IPArray2nd')[0]),6))]",
+    "sn2IPfga": "[concat(variables('sn2IPArray0'),'.',variables('sn2IPArray1'),'.',variables('sn2IPArray2'),'.',add(int(variables('sn2IPArray2nd')[0]),5))]",
+    "sn2IPfgb": "[concat(variables('sn2IPArray0'),'.',variables('sn2IPArray1'),'.',variables('sn2IPArray2'),'.',add(int(variables('sn2IPArray2nd')[0]),6))]",
 
     "sn3IPArray": "[split(parameters('subnet3Prefix'),'.')]",
     "sn3IPArray2ndString": "[string(variables('sn3IPArray')[3])]",
     "sn3IPArray2nd": "[split(variables('sn3IPArray2ndString'),'/')]",
     "sn3CIDRmask": "[string(int(variables('sn3IPArray2nd')[1]))]",
-    "sn3IPArray3": "[string(add(int(variables('sn3IPArray2nd')[0]),1))]",
     "sn3IPArray2": "[string(int(variables('sn3IPArray')[2]))]",
     "sn3IPArray1": "[string(int(variables('sn3IPArray')[1]))]",
     "sn3IPArray0": "[string(int(variables('sn3IPArray')[0]))]",
-    "sn3GatewayIP": "[concat(variables('sn3IPArray0'),'.',variables('sn3IPArray1'),'.',variables('sn3IPArray2'),'.',variables('sn3IPArray3'))]",
-    "sn3IPfg1": "[concat(variables('sn3IPArray0'),'.',variables('sn3IPArray1'),'.',variables('sn3IPArray2'),'.',add(int(variables('sn3IPArray2nd')[0]),5))]",
-    "sn3IPfg2": "[concat(variables('sn3IPArray0'),'.',variables('sn3IPArray1'),'.',variables('sn3IPArray2'),'.',add(int(variables('sn3IPArray2nd')[0]),6))]",
+    "sn3IPfga": "[concat(variables('sn3IPArray0'),'.',variables('sn3IPArray1'),'.',variables('sn3IPArray2'),'.',add(int(variables('sn3IPArray2nd')[0]),5))]",
+    "sn3IPfgb": "[concat(variables('sn3IPArray0'),'.',variables('sn3IPArray1'),'.',variables('sn3IPArray2'),'.',add(int(variables('sn3IPArray2nd')[0]),6))]",
 
     "sn4IPArray": "[split(parameters('subnet4Prefix'),'.')]",
     "sn4IPArray2ndString": "[string(variables('sn4IPArray')[3])]",
@@ -337,12 +345,12 @@
     "sn4IPArray1": "[string(int(variables('sn4IPArray')[1]))]",
     "sn4IPArray0": "[string(int(variables('sn4IPArray')[0]))]",
     "sn4GatewayIP": "[concat(variables('sn4IPArray0'),'.',variables('sn4IPArray1'),'.',variables('sn4IPArray2'),'.',variables('sn4IPArray3'))]",
-    "sn4IPfg1": "[concat(variables('sn4IPArray0'),'.',variables('sn4IPArray1'),'.',variables('sn4IPArray2'),'.',add(int(variables('sn4IPArray2nd')[0]),5))]",
-    "sn4IPfg2": "[concat(variables('sn4IPArray0'),'.',variables('sn4IPArray1'),'.',variables('sn4IPArray2'),'.',add(int(variables('sn4IPArray2nd')[0]),6))]"
+    "sn4IPfga": "[concat(variables('sn4IPArray0'),'.',variables('sn4IPArray1'),'.',variables('sn4IPArray2'),'.',add(int(variables('sn4IPArray2nd')[0]),5))]",
+    "sn4IPfgb": "[concat(variables('sn4IPArray0'),'.',variables('sn4IPArray1'),'.',variables('sn4IPArray2'),'.',add(int(variables('sn4IPArray2nd')[0]),6))]"
   },
   "resources": [
     {
-      "apiVersion": "[variables('resourceApiVersion')]",
+      "apiVersion": "2019-10-01",
       "name": "pid-2dc4b447-552f-557f-b1cc-2faec6f9f133",
       "type": "Microsoft.Resources/deployments",
       "properties":{
@@ -357,11 +365,11 @@
     {
       "type": "Microsoft.Network/routeTables",
       "name": "[variables('routeTableName')]",
-      "apiVersion": "[variables('networkApiVersion')]",
+      "apiVersion": "2020-04-01",
       "tags": {
-       "provider": "[toUpper(parameters('FortinetTags').provider)]"
+       "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
-      "location": "[resourceGroup().location]",
+      "location": "[parameters('location')]",
       "properties": {
         "routes": [
           {
@@ -369,7 +377,7 @@
             "properties": {
               "addressPrefix": "0.0.0.0/0",
               "nextHopType": "VirtualAppliance",
-              "nextHopIPAddress": "[variables('sn2IPfg1')]"
+              "nextHopIPAddress": "[variables('sn2IPfga')]"
             }
           }
         ]
@@ -378,11 +386,11 @@
     {
       "condition": "[equals(parameters('vnetNewOrExisting'), 'new')]",
       "type": "Microsoft.Network/virtualNetworks",
-      "apiVersion": "[variables('networkApiVersion')]",
+      "apiVersion": "2020-04-01",
       "name": "[variables('vnetName')]",
-      "location": "[resourceGroup().location]",
+      "location": "[parameters('location')]",
       "dependsOn": [
-        "[concat('Microsoft.Network/routeTables/', variables('routeTableName'))]"
+        "[variables('routeTableId')]"
       ],
       "properties": {
         "addressSpace": {
@@ -428,13 +436,13 @@
       }
     },
     {
-      "apiVersion": "[variables('networkApiVersion')]",
+      "apiVersion": "2020-04-01",
       "tags": {
-        "provider": "[toUpper(parameters('FortinetTags').provider)]"
+        "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
       "type": "Microsoft.Network/networkSecurityGroups",
       "name": "[variables('NSGName')]",
-      "location": "[resourceGroup().location]",
+      "location": "[parameters('location')]",
       "properties": {
         "securityRules": [
           {
@@ -471,12 +479,12 @@
     {
       "condition": "[equals(parameters('publicIPNewOrExisting'), 'new')]",
       "type": "Microsoft.Network/publicIPAddresses",
-      "apiVersion": "[variables('networkApiVersion')]",
+      "apiVersion": "2020-04-01",
       "tags": {
-        "provider": "[toUpper(parameters('FortinetTags').provider)]"
+        "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
       "name": "[parameters('publicIPName')]",
-      "location": "[resourceGroup().location]",
+      "location": "[parameters('location')]",
       "sku":
       {
         "name": "Standard"
@@ -488,14 +496,13 @@
     {
       "condition": "[equals(parameters('publicIP2NewOrExisting'), 'new')]",
       "type": "Microsoft.Network/publicIPAddresses",
-      "apiVersion": "[variables('networkApiVersion')]",
+      "apiVersion": "2020-04-01",
       "tags": {
-        "provider": "[toUpper(parameters('FortinetTags').provider)]"
+        "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
       "name": "[parameters('publicIP2Name')]",
-      "location": "[resourceGroup().location]",
-      "sku":
-      {
+      "location": "[parameters('location')]",
+      "sku": {
         "name": "Standard"
       },
       "properties": {
@@ -505,14 +512,13 @@
     {
       "condition": "[equals(parameters('publicIP3NewOrExisting'), 'new')]",
       "type": "Microsoft.Network/publicIPAddresses",
-      "apiVersion": "[variables('networkApiVersion')]",
+      "apiVersion": "2020-04-01",
       "tags": {
-        "provider": "[toUpper(parameters('FortinetTags').provider)]"
+        "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
       "name": "[parameters('publicIP3Name')]",
-      "location": "[resourceGroup().location]",
-      "sku":
-      {
+      "location": "[parameters('location')]",
+      "sku": {
         "name": "Standard"
       },
       "properties": {
@@ -520,79 +526,79 @@
       }
     },
     {
-      "apiVersion": "[variables('networkApiVersion')]",
+      "apiVersion": "2020-04-01",
       "tags": {
-        "provider": "[toUpper(parameters('FortinetTags').provider)]"
+        "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
       "type": "Microsoft.Network/networkInterfaces",
-      "name": "[variables('network_NIC_fg11_Name')]",
-      "location": "[resourceGroup().location]",
+      "name": "[variables('fgaNic1Name')]",
+      "location": "[parameters('location')]",
       "dependsOn": [
         "[variables('vnetName')]",
-        "[variables('NSGName')]"
+        "[variables('NSGId')]"
       ],
       "properties": {
         "ipConfigurations": [
           {
             "name": "ipconfig1",
             "properties": {
-              "privateIPAddress": "[variables('sn1IPfg1')]",
+              "privateIPAddress": "[variables('sn1IPfga')]",
               "privateIPAllocationMethod": "Static",
               "publicIPAddress": {
-                "id": "[variables('publicIPID')]"
+                "id": "[variables('publicIPId')]"
               },
               "subnet": {
-                "id": "[variables('subnet1Ref')]"
+                "id": "[variables('subnet1Id')]"
               }
             }
           }
         ],
         "enableIPForwarding": true,
         "networkSecurityGroup": {
-          "id": "[resourceID('Microsoft.Network/networkSecurityGroups/',variables('NSGName'))]"
+          "id": "[variables('NSGId')]"
         }
       }
     },
     {
-      "apiVersion": "[variables('networkApiVersion')]",
+      "apiVersion": "2020-04-01",
       "tags": {
-        "provider": "[toUpper(parameters('FortinetTags').provider)]"
+        "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
       "type": "Microsoft.Network/networkInterfaces",
-      "name": "[variables('network_NIC_fg21_Name')]",
-      "location": "[resourceGroup().location]",
+      "name": "[variables('fgbNic1Name')]",
+      "location": "[parameters('location')]",
       "dependsOn": [
-        "[variables('network_NIC_fg11_Name')]",
+        "[variables('fgaNic1Name')]",
         "[variables('vnetName')]",
-        "[variables('NSGName')]"
+        "[variables('NSGId')]"
       ],
       "properties": {
         "ipConfigurations": [
           {
             "name": "ipconfig1",
             "properties": {
-              "privateIPAddress": "[variables('sn1IPfg2')]",
+              "privateIPAddress": "[variables('sn1IPfgb')]",
               "privateIPAllocationMethod": "Static",
               "subnet": {
-                "id": "[variables('subnet1Ref')]"
+                "id": "[variables('subnet1Id')]"
               }
             }
           }
         ],
         "enableIPForwarding": true,
         "networkSecurityGroup": {
-          "id": "[resourceID('Microsoft.Network/networkSecurityGroups/',variables('NSGName'))]"
+          "id": "[variables('NSGId')]"
         }
       }
     },
     {
-      "apiVersion": "[variables('networkApiVersion')]",
+      "apiVersion": "2020-04-01",
       "tags": {
-       "provider": "[toUpper(parameters('FortinetTags').provider)]"
+       "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
       "type": "Microsoft.Network/networkInterfaces",
-      "name": "[variables('network_NIC_fg12_Name')]",
-      "location": "[resourceGroup().location]",
+      "name": "[variables('fgaNic2Name')]",
+      "location": "[parameters('location')]",
       "dependsOn": [
         "[variables('vnetName')]"
       ],
@@ -602,30 +608,30 @@
             "name": "ipconfig1",
             "properties": {
               "privateIPAllocationMethod": "Static",
-              "privateIPAddress": "[variables('sn2IPfg1')]",
+              "privateIPAddress": "[variables('sn2IPfga')]",
               "subnet": {
-                "id": "[variables('subnet2Ref')]"
+                "id": "[variables('subnet2Id')]"
               }
             }
           }
         ],
         "enableIPForwarding": true,
         "networkSecurityGroup": {
-          "id": "[resourceID('Microsoft.Network/networkSecurityGroups/',variables('NSGName'))]"
+          "id": "[variables('NSGId')]"
         }
       }
     },
     {
-      "apiVersion": "[variables('networkApiVersion')]",
+      "apiVersion": "2020-04-01",
       "tags": {
-       "provider": "[toUpper(parameters('FortinetTags').provider)]"
+       "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
       "type": "Microsoft.Network/networkInterfaces",
-      "name": "[variables('network_NIC_fg22_Name')]",
-      "location": "[resourceGroup().location]",
+      "name": "[variables('fgbNic2Name')]",
+      "location": "[parameters('location')]",
       "dependsOn": [
         "[variables('vnetName')]",
-        "[variables('network_NIC_fg12_Name')]"
+        "[variables('fgaNic2Name')]"
       ],
       "properties": {
         "ipConfigurations": [
@@ -633,27 +639,27 @@
             "name": "ipconfig1",
             "properties": {
               "privateIPAllocationMethod": "Static",
-              "privateIPAddress": "[variables('sn2IPfg2')]",
+              "privateIPAddress": "[variables('sn2IPfgb')]",
               "subnet": {
-                "id": "[variables('subnet2Ref')]"
+                "id": "[variables('subnet2Id')]"
               }
             }
           }
         ],
         "enableIPForwarding": true,
         "networkSecurityGroup": {
-          "id": "[resourceID('Microsoft.Network/networkSecurityGroups/',variables('NSGName'))]"
+          "id": "[variables('NSGId')]"
         }
       }
     },
     {
-      "apiVersion": "[variables('networkApiVersion')]",
+      "apiVersion": "2020-04-01",
       "tags": {
-       "provider": "[toUpper(parameters('FortinetTags').provider)]"
+       "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
       "type": "Microsoft.Network/networkInterfaces",
-      "name": "[variables('network_NIC_fg13_Name')]",
-      "location": "[resourceGroup().location]",
+      "name": "[variables('fgaNic3Name')]",
+      "location": "[parameters('location')]",
       "dependsOn": [
         "[variables('vnetName')]"
       ],
@@ -663,30 +669,30 @@
             "name": "ipconfig1",
             "properties": {
               "privateIPAllocationMethod": "Static",
-              "privateIPAddress": "[variables('sn3IPfg1')]",
+              "privateIPAddress": "[variables('sn3IPfga')]",
               "subnet": {
-                "id": "[variables('subnet3Ref')]"
+                "id": "[variables('subnet3Id')]"
               }
             }
           }
         ],
         "enableIPForwarding": true,
         "networkSecurityGroup": {
-          "id": "[resourceID('Microsoft.Network/networkSecurityGroups/',variables('NSGName'))]"
+          "id": "[variables('NSGId')]"
         }
       }
     },
     {
-      "apiVersion": "[variables('networkApiVersion')]",
+      "apiVersion": "2020-04-01",
       "tags": {
-       "provider": "[toUpper(parameters('FortinetTags').provider)]"
+       "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
       "type": "Microsoft.Network/networkInterfaces",
-      "name": "[variables('network_NIC_fg23_Name')]",
-      "location": "[resourceGroup().location]",
+      "name": "[variables('fgbNic3Name')]",
+      "location": "[parameters('location')]",
       "dependsOn": [
         "[variables('vnetName')]",
-        "[variables('network_NIC_fg13_Name')]"
+        "[variables('fgaNic3Name')]"
       ],
       "properties": {
         "ipConfigurations": [
@@ -694,27 +700,27 @@
             "name": "ipconfig1",
             "properties": {
               "privateIPAllocationMethod": "Static",
-              "privateIPAddress": "[variables('sn3IPfg2')]",
+              "privateIPAddress": "[variables('sn3IPfgb')]",
               "subnet": {
-                "id": "[variables('subnet3Ref')]"
+                "id": "[variables('subnet3Id')]"
               }
             }
           }
         ],
         "enableIPForwarding": true,
         "networkSecurityGroup": {
-          "id": "[resourceID('Microsoft.Network/networkSecurityGroups/',variables('NSGName'))]"
+          "id": "[variables('NSGId')]"
         }
       }
     },
     {
-      "apiVersion": "[variables('networkApiVersion')]",
+      "apiVersion": "2020-04-01",
       "tags": {
-       "provider": "[toUpper(parameters('FortinetTags').provider)]"
+       "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
       "type": "Microsoft.Network/networkInterfaces",
-      "name": "[variables('network_NIC_fg14_Name')]",
-      "location": "[resourceGroup().location]",
+      "name": "[variables('fgaNic4Name')]",
+      "location": "[parameters('location')]",
       "dependsOn": [
         "[variables('vnetName')]"
       ],
@@ -724,33 +730,33 @@
             "name": "ipconfig1",
             "properties": {
               "privateIPAllocationMethod": "Static",
-              "privateIPAddress": "[variables('sn4IPfg1')]",
+              "privateIPAddress": "[variables('sn4IPfga')]",
               "publicIPAddress": {
-                "id": "[variables('publicIP2ID')]"
+                "id": "[variables('publicIP2Id')]"
               },
               "subnet": {
-                "id": "[variables('subnet4Ref')]"
+                "id": "[variables('subnet4Id')]"
               }
             }
           }
         ],
         "enableIPForwarding": true,
         "networkSecurityGroup": {
-          "id": "[resourceID('Microsoft.Network/networkSecurityGroups/',variables('NSGName'))]"
+          "id": "[variables('NSGId')]"
         }
       }
     },
     {
-      "apiVersion": "[variables('networkApiVersion')]",
+      "apiVersion": "2020-04-01",
       "tags": {
-       "provider": "[toUpper(parameters('FortinetTags').provider)]"
+       "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
       "type": "Microsoft.Network/networkInterfaces",
-      "name": "[variables('network_NIC_fg24_Name')]",
-      "location": "[resourceGroup().location]",
+      "name": "[variables('fgbNic4Name')]",
+      "location": "[parameters('location')]",
       "dependsOn": [
         "[variables('vnetName')]",
-        "[variables('network_NIC_fg14_Name')]"
+        "[variables('fgaNic4Name')]"
       ],
       "properties": {
         "ipConfigurations": [
@@ -758,28 +764,28 @@
             "name": "ipconfig1",
             "properties": {
               "privateIPAllocationMethod": "Static",
-              "privateIPAddress": "[variables('sn4IPfg2')]",
+              "privateIPAddress": "[variables('sn4IPfgb')]",
               "publicIPAddress": {
-                "id": "[variables('publicIP3ID')]"
+                "id": "[variables('publicIP3Id')]"
               },
               "subnet": {
-                "id": "[variables('subnet4Ref')]"
+                "id": "[variables('subnet4Id')]"
               }
             }
           }
         ],
         "enableIPForwarding": true,
         "networkSecurityGroup": {
-          "id": "[resourceID('Microsoft.Network/networkSecurityGroups/',variables('NSGName'))]"
+          "id": "[variables('NSGId')]"
         }
       }
     },
     {
       "type": "Microsoft.Compute/virtualMachines",
-      "name": "[variables('compute_VM_fg1_Name')]",
-      "apiVersion": "[variables('computeApiVersion')]",
+      "name": "[variables('fgaVmName')]",
+      "apiVersion": "2019-12-01",
       "tags": {
-       "provider": "[toUpper(parameters('FortinetTags').provider)]"
+       "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
       "identity": {
         "type": "SystemAssigned"
@@ -787,33 +793,33 @@
       "zones": [
         "1"
       ],
-      "location": "[resourceGroup().location]",
+      "location": "[parameters('location')]",
       "plan": {
-        "name": "[parameters('FortiGateImageSKU')]",
+        "name": "[parameters('fortigateImageSKU')]",
         "publisher": "fortinet",
         "product": "fortinet_fortigate-vm_v5"
       },
       "dependsOn": [
-        "[variables('network_NIC_fg11_Name')]",
-        "[variables('network_NIC_fg12_Name')]",
-        "[variables('network_NIC_fg13_Name')]",
-        "[variables('network_NIC_fg14_Name')]"
+        "[variables('fgaNic1Name')]",
+        "[variables('fgaNic2Name')]",
+        "[variables('fgaNic3Name')]",
+        "[variables('fgaNic4Name')]"
       ],
       "properties": {
         "hardwareProfile": {
           "vmSize": "[parameters('instanceType')]"
         },
         "osProfile": {
-          "computerName": "[variables('compute_VM_fg1_Name')]",
+          "computerName": "[variables('fgaVmName')]",
           "adminUsername": "[parameters('adminUsername')]",
           "adminPassword": "[parameters('adminPassword')]",
-          "customData": "[base64(concat('config system sdn-connector\nedit AzureSDN\nset type azure\nend\nend\nconfig router static\n edit 1\n set gateway ', variables('sn1GatewayIP'), '\n set device port1\n next\n edit 2\n set dst ', parameters('vnetAddressPrefix'), '\n set gateway ', variables('sn2GatewayIP'), '\n set device port2\n next\n edit 3\nset dst 168.63.129.16 255.255.255.255\nset device port2\n set gateway ', variables ('sn2GatewayIP'), '\n next\nedit 4\nset dst 168.63.129.16 255.255.255.255\nset device port1\n set gateway ', variables ('sn1GatewayIP'), '\n next\n end\n config system interface\n edit port1\n set mode static\n set ip ',  variables('sn1IPfg1'), '/', variables('sn1CIDRmask'), '\n set description external\n next\n edit port2\n set mode static\n set ip ', variables('sn2IPfg1'), '/', variables('sn2CIDRmask'), '\n set description internal\n next\n edit port3\n set mode static\n set ip ', variables('sn3IPfg1'), '/', variables('sn3CIDRmask'), '\n set description hasyncport\n next\n edit port4\n set mode static\n set ip ', variables('sn4IPfg1'), '/', variables('sn4CIDRmask'), '\n set description management\n set allowaccess ping https ssh ftm\n next\n end\n config system ha\n set group-name AzureHA\n set mode a-p\n set hbdev port3 100\n set session-pickup enable\n set session-pickup-connectionless enable\n set ha-mgmt-status enable\n config ha-mgmt-interfaces\n edit 1\n set interface port4\n set gateway ', variables('sn4GatewayIP'),'\n next\n end\n set override disable\n set priority 255\n set unicast-hb enable\n set unicast-hb-peerip ', variables('sn3IPfg2'), '\n end'))]"
+          "customData": "[base64(concat('config system sdn-connector\nedit AzureSDN\nset type azure\nend\nconfig router static\n edit 1\n set gateway ', variables('sn1GatewayIP'), '\n set device port1\n next\n edit 2\n set dst ', parameters('vnetAddressPrefix'), '\n set gateway ', variables('sn2GatewayIP'), '\n set device port2\n next\n edit 3\nset dst 168.63.129.16 255.255.255.255\nset device port2\n set gateway ', variables ('sn2GatewayIP'), '\n next\nedit 4\nset dst 168.63.129.16 255.255.255.255\nset device port1\n set gateway ', variables ('sn1GatewayIP'), '\n next\n end\n config system interface\n edit port1\n set mode static\n set ip ',  variables('sn1IPfga'), '/', variables('sn1CIDRmask'), '\n set description external\n next\n edit port2\n set mode static\n set ip ', variables('sn2IPfga'), '/', variables('sn2CIDRmask'), '\n set description internal\n next\n edit port3\n set mode static\n set ip ', variables('sn3IPfga'), '/', variables('sn3CIDRmask'), '\n set description hasyncport\n next\n edit port4\n set mode static\n set ip ', variables('sn4IPfga'), '/', variables('sn4CIDRmask'), '\n set description management\n set allowaccess ping https ssh ftm\n next\n end\n config system ha\n set group-name AzureHA\n set mode a-p\n set hbdev port3 100\n set session-pickup enable\n set session-pickup-connectionless enable\n set ha-mgmt-status enable\n config ha-mgmt-interfaces\n edit 1\n set interface port4\n set gateway ', variables('sn4GatewayIP'),'\n next\n end\n set override disable\n set priority 255\n set unicast-hb enable\n set unicast-hb-peerip ', variables('sn3IPfgb'), '\n end'))]"
         },
         "storageProfile": {
           "imageReference": {
             "publisher": "fortinet",
             "offer": "fortinet_fortigate-vm_v5",
-            "sku": "[parameters('FortiGateImageSKU')]",
+            "sku": "[parameters('fortigateImageSKU')]",
             "version": "[parameters('FortigateImageVersion')]"
           },
           "osDisk": {
@@ -833,25 +839,25 @@
               "properties": {
                 "primary": true
               },
-              "id": "[variables('network_NIC_fg11_Id')]"
+              "id": "[variables('fgaNic1Id')]"
             },
             {
               "properties": {
                 "primary": false
               },
-              "id": "[variables('network_NIC_fg12_Id')]"
+              "id": "[variables('fgaNic2Id')]"
             },
             {
               "properties": {
                 "primary": false
               },
-              "id": "[variables('network_NIC_fg13_Id')]"
+              "id": "[variables('fgaNic3Id')]"
             },
             {
               "properties": {
                 "primary": false
               },
-              "id": "[variables('network_NIC_fg14_Id')]"
+              "id": "[variables('fgaNic4Id')]"
             }
           ]
         }
@@ -859,10 +865,10 @@
     },
     {
       "type": "Microsoft.Compute/virtualMachines",
-      "name": "[variables('compute_VM_fg2_Name')]",
-      "apiVersion": "[variables('computeApiVersion')]",
+      "name": "[variables('fgbVmName')]",
+      "apiVersion": "2019-12-01",
       "tags": {
-       "provider": "[toUpper(parameters('FortinetTags').provider)]"
+       "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
       "identity": {
         "type": "SystemAssigned"
@@ -870,33 +876,33 @@
       "zones": [
         "2"
       ],
-      "location": "[resourceGroup().location]",
+      "location": "[parameters('location')]",
       "plan": {
-        "name": "[parameters('FortiGateImageSKU')]",
+        "name": "[parameters('fortigateImageSKU')]",
         "publisher": "fortinet",
         "product": "fortinet_fortigate-vm_v5"
       },
       "dependsOn": [
-        "[variables('network_NIC_fg21_Name')]",
-        "[variables('network_NIC_fg22_Name')]",
-        "[variables('network_NIC_fg23_Name')]",
-        "[variables('network_NIC_fg24_Name')]"
+        "[variables('fgbNic1Name')]",
+        "[variables('fgbNic2Name')]",
+        "[variables('fgbNic3Name')]",
+        "[variables('fgbNic4Name')]"
       ],
       "properties": {
         "hardwareProfile": {
           "vmSize": "[parameters('instanceType')]"
         },
         "osProfile": {
-          "computerName": "[variables('compute_VM_fg2_Name')]",
+          "computerName": "[variables('fgbVmName')]",
           "adminUsername": "[parameters('adminUsername')]",
           "adminPassword": "[parameters('adminPassword')]",
-          "customData": "[base64(concat('config system sdn-connector\nedit “AzureSDN”\nset type azure\nend\nconfig router static\n edit 1\n set gateway ', variables('sn1GatewayIP'), '\n set device port1\n next\n edit 2\n set dst ', parameters('vnetAddressPrefix'), '\n set gateway ', variables('sn2GatewayIP'), '\n set device port2\n next\n edit 3\nset dst 168.63.129.16 255.255.255.255\nset device port2\n set gateway ', variables ('sn2GatewayIP'), '\n next\nedit 4\nset dst 168.63.129.16 255.255.255.255\nset device port1\n set gateway ', variables ('sn1GatewayIP'), '\n next\n end\n config system interface\n edit port1\n set mode static\n set ip ', variables('sn1IPfg2'), '/', variables('sn1CIDRmask'), '\n set description external\n next\n edit port2\n set mode static\n set ip ', variables('sn2IPfg2'), '/', variables('sn2CIDRmask'), '\n set description internal\n next\n edit port3\n set mode static\n set ip ', variables('sn3IPfg2'), '/', variables('sn3CIDRmask'), '\n set description hasyncport\n next\n edit port4\n set mode static\n set ip ', variables('sn4IPfg2'), '/', variables('sn4CIDRmask'), '\n set description management\n set allowaccess ping https ssh ftm\n next\n end\n config system ha\n set group-name AzureHA\n set mode a-p\n set hbdev port3 100\n set session-pickup enable\n set session-pickup-connectionless enable\n set ha-mgmt-status enable\n config ha-mgmt-interfaces\n edit 1\n set interface port4\n set gateway ', variables('sn4GatewayIP'),'\n next\n end\n set override disable\n set priority 1\n set unicast-hb enable\n set unicast-hb-peerip ', variables('sn3IPfg1'), '\n end'))]"
+          "customData": "[base64(concat('config system sdn-connector\nedit AzureSDN\nset type azure\nend\nend\nconfig router static\n edit 1\n set gateway ', variables('sn1GatewayIP'), '\n set device port1\n next\n edit 2\n set dst ', parameters('vnetAddressPrefix'), '\n set gateway ', variables('sn2GatewayIP'), '\n set device port2\n next\n edit 3\nset dst 168.63.129.16 255.255.255.255\nset device port2\n set gateway ', variables ('sn2GatewayIP'), '\n next\nedit 4\nset dst 168.63.129.16 255.255.255.255\nset device port1\n set gateway ', variables ('sn1GatewayIP'), '\n next\n end\n config system interface\n edit port1\n set mode static\n set ip ', variables('sn1IPfgb'), '/', variables('sn1CIDRmask'), '\n set description external\n next\n edit port2\n set mode static\n set ip ', variables('sn2IPfgb'), '/', variables('sn2CIDRmask'), '\n set description internal\n next\n edit port3\n set mode static\n set ip ', variables('sn3IPfgb'), '/', variables('sn3CIDRmask'), '\n set description hasyncport\n next\n edit port4\n set mode static\n set ip ', variables('sn4IPfgb'), '/', variables('sn4CIDRmask'), '\n set description management\n set allowaccess ping https ssh ftm\n next\n end\n config system ha\n set group-name AzureHA\n set mode a-p\n set hbdev port3 100\n set session-pickup enable\n set session-pickup-connectionless enable\n set ha-mgmt-status enable\n config ha-mgmt-interfaces\n edit 1\n set interface port4\n set gateway ', variables('sn4GatewayIP'),'\n next\n end\n set override disable\n set priority 1\n set unicast-hb enable\n set unicast-hb-peerip ', variables('sn3IPfga'), '\n end'))]"
         },
         "storageProfile": {
           "imageReference": {
             "publisher": "fortinet",
             "offer": "fortinet_fortigate-vm_v5",
-            "sku": "[parameters('FortiGateImageSKU')]",
+            "sku": "[parameters('fortigateImageSKU')]",
             "version": "[parameters('FortigateImageVersion')]"
           },
           "osDisk": {
@@ -916,25 +922,25 @@
               "properties": {
                 "primary": true
               },
-              "id": "[variables('network_NIC_fg21_Id')]"
+              "id": "[variables('fgbNic1Id')]"
             },
             {
               "properties": {
                 "primary": false
               },
-              "id": "[variables('network_NIC_fg22_Id')]"
+              "id": "[variables('fgbNic2Id')]"
             },
             {
               "properties": {
                 "primary": false
               },
-              "id": "[variables('network_NIC_fg23_Id')]"
+              "id": "[variables('fgbNic3Id')]"
             },
             {
               "properties": {
                 "primary": false
               },
-              "id": "[variables('network_NIC_fg24_Id')]"
+              "id": "[variables('fgbNic4Id')]"
             }
           ]
         }
