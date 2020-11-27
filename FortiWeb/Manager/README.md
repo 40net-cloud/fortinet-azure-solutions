@@ -33,11 +33,11 @@ In the Azure Portal you can deploy the template either by clicking the buttons b
 - Search for 'Deploy a customer template' in the top search bar of the Azure portal
 ![Azure Portal 1](https://raw.githubusercontent.com/40net-cloud/fortinet-azure-solutions/main/FortiGate/Playground/CustomVHD/images/azure-portal-1.png)
 - Select the option 'Build your own template in the editor
-![Azure Portal 2](https://raw.githubusercontent.com/40net-cloud/fortinet-azure-solutions/main/FortiGate/Playground/CustomVHD/images/azure-portal-1.png)
+![Azure Portal 2](https://raw.githubusercontent.com/40net-cloud/fortinet-azure-solutions/main/FortiGate/Playground/CustomVHD/images/azure-portal-2.png)
 - Copy in the contents of the 'azuredeploy.json' file into the editor
-![Azure Portal 3](https://raw.githubusercontent.com/40net-cloud/fortinet-azure-solutions/main/FortiGate/Playground/CustomVHD/images/azure-portal-1.png)
+![Azure Portal 3](https://raw.githubusercontent.com/40net-cloud/fortinet-azure-solutions/main/FortiGate/Playground/CustomVHD/images/azure-portal-3.png)
 - Complete the required variables. THe VHD uri is created using the 'Add-AzVhd' command
-![Azure Portal 4](https://raw.githubusercontent.com/40net-cloud/fortinet-azure-solutions/main/FortiGate/Playground/CustomVHD/images/azure-portal-1.png)
+![Azure Portal 4](https://raw.githubusercontent.com/40net-cloud/fortinet-azure-solutions/main/FortiGate/Playground/CustomVHD/images/azure-portal-4.png)
 
 
 ### Powershell and Azure Cloud Shell
