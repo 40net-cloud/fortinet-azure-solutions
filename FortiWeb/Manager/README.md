@@ -31,31 +31,14 @@ In the Azure Portal you can deploy the template either by clicking the buttons b
 #### Manual deployment
 
 - Search for 'Deploy a customer template' in the top search bar of the Azure portal
-![Azure Portal 1](images/azure-portal-1.png)
+![Azure Portal 1](https://raw.githubusercontent.com/40net-cloud/fortinet-azure-solutions/main/FortiGate/Playground/CustomVHD/images/azure-portal-1.png)
 - Select the option 'Build your own template in the editor
-![Azure Portal 2](images/azure-portal-1.png)
+![Azure Portal 2](https://raw.githubusercontent.com/40net-cloud/fortinet-azure-solutions/main/FortiGate/Playground/CustomVHD/images/azure-portal-1.png)
 - Copy in the contents of the 'azuredeploy.json' file into the editor
-![Azure Portal 3](images/azure-portal-1.png)
-- Complete the required variables. THe VHD uri is created using the 'Add-AzVhd' command as explained in the [Requirements and limitations](#requirements-and-limiations)
-![Azure Portal 4](images/azure-portal-1.png)
+![Azure Portal 3](https://raw.githubusercontent.com/40net-cloud/fortinet-azure-solutions/main/FortiGate/Playground/CustomVHD/images/azure-portal-1.png)
+- Complete the required variables. THe VHD uri is created using the 'Add-AzVhd' command
+![Azure Portal 4](https://raw.githubusercontent.com/40net-cloud/fortinet-azure-solutions/main/FortiGate/Playground/CustomVHD/images/azure-portal-1.png)
 
-### Azure CLI and Azure Cloud Shell
-
-A `deploy.sh` script is provided to facilitate the deployment. You'll be prompted to provide the 4 required variables:
-
-- PREFIX : This prefix will be added to each of the resources created by the template for ease of use and visibility.
-- LOCATION : This is the Azure region where the deployment will be deployed.
-- USERNAME : The username used to login to the FortiGate GUI and SSH management UI.
-- PASSWORD : The password used for the FortiGate GUI and SSH management UI.
-- OSDISKVHDURI: The link to the custom VHD uploaded using the 'Add-AzVhd' command.
-
-To fast track the deployment, use the Azure Cloud Shell. The Azure Cloud Shell is an in-browser CLI that contains Terraform and other tools for deployment into Microsoft Azure. It is accessible via the Azure Portal or directly at [https://shell.azure.com/](https://shell.azure.com). You can copy and paste the below one-liner to get started with your deployment.
-
-`cd ~/clouddrive/ && wget -qO- https://github.com/jvhoof/fortinet-azure-solutions/archive/main.zip | jar x && cd ~/clouddrive/fortinet-azure-solutions-main/FortiGate/Playground/CustomVHD/ && ./deploy.sh`
-
-![Azure Cloud Shell](images/azure-cloud-shell.png)
-
-After deployment, you will be shown the IP addresses of the deployed FortiGate. You can access the FortiGate using the public ip linked to VM using HTTPS on port 443.
 
 ### Powershell and Azure Cloud Shell
 
@@ -113,18 +96,14 @@ $result = New-AzVM -ResourceGroupName $rg -Location $location -VM $vm
 
 ## Requirements and limitations
 
-This template will not deploy the default Azure Marketplace images. You can deploy using this template a custom VHD. These specific VHD's can be downloaded from support.fortinet.com. Once downloaded you need to upload this VHD to an Azure storage account. You can find more information on how to create the storage account on [this link](https://docs.microsoft.com/en-us/azure/storage/common/storage-quickstart-create-account?tabs=azure-portal). Once you have the URI for the storage account you need to use the below 'Add-AzVhd' powershell command to upload the image. The FortiGate image is very compressed and needs to extracted during the upload process. This is only working well using this powershell command. In the end you need to have a 2Gb VHD in your storage account.
+This template will not deploy the default Azure Marketplace images. You can deploy using this template a custom VHD. These specific VHD's can be downloaded from support.fortinet.com. Once downloaded you need to upload this VHD to an Azure storage account. You can find more information on how to create the storage account on [this link](https://docs.microsoft.com/en-us/azure/storage/common/storage-quickstart-create-account?tabs=azure-portal). Once you have the URI for the storage account you need to use the below 'Add-AzVhd' powershell command to upload the image (if you use the legacy Azure RM Powershell package the command is `Add-AzureRMVhd`). The FortiWeb Manager image is very compressed and needs to extracted during the upload process. This is only working well using this powershell command. In the end you need to have a 2Gb VHD in your storage account.
 
-`Add-AzVhd -LocalFilePath ./fortios-v6-build5163.vhd -ResourceGroupName XXX-RG -Destination 'https://xxx.blob.core.windows.net/vhds/fortiosv6build5163.vhd'`
+`Add-AzVhd -LocalFilePath ./boot.vhd -ResourceGroupName XXX-RG -Destination 'https://xxx.blob.core.windows.net/vhds/boot.vhd'`
 
-![Storage Account](images/storageaccount.png)
+![Storage Account](https://raw.githubusercontent.com/40net-cloud/fortinet-azure-solutions/main/FortiGate/Playground/CustomVHD/images/storageaccount.png)
 
 The Azure ARM template deployment deploys different resources and is required to have the access rights and quota in your Microsoft Azure subscription to deploy the resources.
 
-- The template will deploy Standard F2s VMs to deploy the required active/passive setup
-- Licenses for Fortigate
-  - BYOL: A demo license can be made available via your Fortinet partner or on our website. These can be injected during deployment or added after deployment.
-  - PAYG or OnDemand: These licenses are automatically generated during the deployment of the FortiGate systems.
 
 ## License
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
