@@ -62,28 +62,25 @@ $image = Set-AzImageOsDisk -Image $image -OsState Generalized -OsType Linux -Blo
 $imagedisk = New-AzImage -ImageName "FORTI-IMAGE" -ResourceGroupName $rg -Image $image
 
 # Virtual network and subnets
-$virtualNetwork = New-AzVirtualNetwork -ResourceGroupName “FORTI-RG” -Location “westeurope” -Name “FORTI-VNET” -AddressPrefix “172.16.136.0/22”
-$subnet1 = Add-AzVirtualNetworkSubnetConfig -Name “FORTI-SUBNET-EXTERNAL” -AddressPrefix 172.16.136.0/26 -VirtualNetwork $virtualNetwork
-$subnet2 = Add-AzVirtualNetworkSubnetConfig -Name “FORTI-SUBNET-INTERNAL” -AddressPrefix 172.16.136.64/26 -VirtualNetwork $virtualNetwork
-$subnet3 = Add-AzVirtualNetworkSubnetConfig -Name “FORTI-SUBNET-PROTECTED” -AddressPrefix 172.16.137.0/24 -VirtualNetwork $virtualNetwork
+$virtualNetwork = New-AzVirtualNetwork -ResourceGroupName “FORTI-RG” -Location “westeurope” -Name “fwbmanager-vnet” -AddressPrefix “172.16.136.0/22”
+$subnet1 = Add-AzVirtualNetworkSubnetConfig -Name “default” -AddressPrefix 172.16.136.0/26 -VirtualNetwork $virtualNetwork
 $virtualNetwork | Set-AzVirtualNetwork
 
 # Network security groups (required when using standard SKU IPs)
-$rule2 = New-AzNetworkSecurityRuleConfig -Name "Allow_All_Outbound" -Protocol * -SourcePortRange * -DestinationPortRange * -SourceAddressPrefix * -DestinationAddressPrefix * -Access Allow -Priority 100 -Direction Outbound
-$rule1 = New-AzNetworkSecurityRuleConfig -Name "Allow_All_Inbound" -Protocol * -SourcePortRange * -DestinationPortRange * -SourceAddressPrefix * -DestinationAddressPrefix * -Access Allow -Priority 100 -Direction Inbound
+$rule1 = New-AzNetworkSecurityRuleConfig -Name "Allow_All_Outbound" -Protocol * -SourcePortRange * -DestinationPortRange * -SourceAddressPrefix * -DestinationAddressPrefix * -Access Allow -Priority 100 -Direction Outbound
+$rule2 = New-AzNetworkSecurityRuleConfig -Name "Allow_SSH_In" -Protocol TCP -SourcePortRange * -DestinationPortRange 22 -SourceAddressPrefix * -DestinationAddressPrefix * -Access Allow -Priority 100 -Direction Inbound
+$rule3 = New-AzNetworkSecurityRuleConfig -Name "Allow_80_In" -Protocol TCP -SourcePortRange * -DestinationPortRange 80 -SourceAddressPrefix * -DestinationAddressPrefix * -Access Allow -Priority 100 -Direction Inbound
+$rule4 = New-AzNetworkSecurityRuleConfig -Name "Allow_443_In" -Protocol TCP -SourcePortRange * -DestinationPortRange 443 -SourceAddressPrefix * -DestinationAddressPrefix * -Access Allow -Priority 100 -Direction Inbound
+$rule5 = New-AzNetworkSecurityRuleConfig -Name "Allow_8989_In" -Protocol TCP -SourcePortRange * -DestinationPortRange 8989 -SourceAddressPrefix * -DestinationAddressPrefix * -Access Allow -Priority 100 -Direction Inbound
 $nsg = New-AzNetworkSecurityGroup -Name "FORTI-NSG" -ResourceGroupName $rg -Location $location -SecurityRules $rule1,$rule2
 
 # Network interfaces for external and internal of the FGT
 $virtualNetwork = Get-AzVirtualNetwork -Name "FORTI-VNET" -ResourceGroupName $rg
 
-$nic1 = New-AzNetworkInterface -ResourceGroupName $rg -Location $location -Name "FORTI-FGT-A-NIC1" -PublicIpAddressId $pip.Id -SubnetId $virtualNetwork.Subnets[0].Id -EnableIPForwarding -NetworkSecurityGroupId $nsg.Id -EnableAcceleratedNetworking
-$nic2 = New-AzNetworkInterface -ResourceGroupName $rg -Location $location -Name "FORTI-FGT-A-NIC2" -SubnetId $virtualNetwork.Subnets[1].Id -EnableIPForwarding -NetworkSecurityGroupId $nsg.Id -EnableAcceleratedNetworking
-
-$nic1 = New-AzNetworkInterface -ResourceGroupName $rg -Location $location -Name "FORTI-FGT-A-NIC1" -PublicIpAddressId $pip.Id -SubnetId $virtualNetwork.Subnets[0].Id -EnableIPForwarding -NetworkSecurityGroupId $nsg.Id -EnableAcceleratedNetworking
-$nic2 = New-AzNetworkInterface -ResourceGroupName $rg -Location $location -Name "FORTI-FGT-A-NIC2" -SubnetId $virtualNetwork.Subnets[1].Id -EnableIPForwarding -NetworkSecurityGroupId $nsg.Id -EnableAcceleratedNetworking
+$nic1 = New-AzNetworkInterface -ResourceGroupName $rg -Location $location -Name "FORTI-FGT-A-NIC1" -PublicIpAddressId $pip.Id -SubnetId $virtualNetwork.Subnets[0].Id -NetworkSecurityGroupId $nsg.Id
 
 # Virtual Machine
-$vm = New-AzVMConfig -VMName "FORTI-FGT-A" -VMSize "Standard_F4s"
+$vm = New-AzVMConfig -VMName "fwbmanager" -VMSize "Standard_F2s_v2"
 $credentials = New-Object PSCredential $username, ($password | ConvertTo-SecureString -AsPlainText -Force)
 $vm = Set-AzVMOperatingSystem -VM $vm -Linux -ComputerName "FORTI-FGT-A" -Credential $credentials
 $vm = Add-AzVMNetworkInterface -VM $vm -Id $nic1.Id -Primary
