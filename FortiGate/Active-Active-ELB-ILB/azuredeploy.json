@@ -128,7 +128,7 @@
     },
     "subnet1Name": {
       "type": "string",
-      "defaultValue": "ExteralSubnet",
+      "defaultValue": "ExternalSubnet",
       "metadata": {
         "description": "Subnet 1 Name"
       }
