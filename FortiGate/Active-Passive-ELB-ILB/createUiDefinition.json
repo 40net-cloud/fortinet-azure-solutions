@@ -12,21 +12,21 @@
                 "type": "Microsoft.Common.TextBox",
                 "label": "FortiGate administrative username",
                 "defaultValue": "",
-                "toolTip": "Admin username for the FortiGate virtual appliance. Most not be root, administrator or admin",
+                "toolTip": "Username for the FortiGate virtual appliance. Most not be root, administrator or admin",
                 "constraints": {
 					"required": true,
 					"validations": [
 						{
 							"regex": "^[a-z0-9A-Z]{1,30}$",
-							"message": "Only alphanumeric characters are allowed, and the value must be 1-30 characters long."
+							"message": "Only alphanumeric characters are allowed, and the value must be 1-30 characters long"
 						},
 						{
 							"isValid": "[not(contains(toLower(basics('adminUsername')),'root'))]",
-							"message": "Usernames must not include reserved words."
+							"message": "Usernames must not include reserved words"
 						},
 						{
 							"isValid": "[not(contains(toLower(basics('adminUsername')),'admin'))]",
-							"message": "Usernames must not include reserved words."
+							"message": "Usernames must not include reserved words"
 						}
 					]
                 },

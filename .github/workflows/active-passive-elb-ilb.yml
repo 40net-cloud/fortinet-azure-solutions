@@ -30,11 +30,11 @@ jobs:
     - name: Terraform Init
       run: terraform init FortiGate/Terraform/Active-Passive-ELB-ILB/terraform/
 
+    - name: Terraform Validate
+      run: terraform validate FortiGate/Terraform/Active-Passive-ELB-ILB/terraform/
+
+    - name: Terraform Format
+      run: terraform fmt -check FortiGate/Terraform/Active-Passive-ELB-ILB/terraform/
+
     - name: Terraform Plan
       run: terraform plan FortiGate/Terraform/Active-Passive-ELB-ILB/terraform/
-
-    - name: Terraform Apply
-      run: terraform apply -auto-approve FortiGate/Terraform/Active-Passive-ELB-ILB/terraform/
-
-    - name: Terraform Destroy
-      run: terraform destroy -auto-approve FortiGate/Terraform/Active-Passive-ELB-ILB/terraform/
