@@ -91,6 +91,9 @@ Describe 'FGT A/P LB' {
                                           'fortiGateImageSKU',
                                           'fortiGateImageVersion',
                                           'fortiGateNamePrefix',
+                                          'fortiManager',
+                                          'fortiManagerIP',
+                                          'fortiManagerSerial',
                                           'fortinetTags',
                                           'instanceType',
                                           'location',
@@ -135,7 +138,7 @@ Describe 'FGT A/P LB' {
 
         $params = @{ 'adminUsername'=$testsAdminUsername
                      'adminPassword'=$testsResourceGroupName
-                     'fortigateNamePrefix'=$testsPrefix
+                     'fortiGateNamePrefix'=$testsPrefix
                     }
         $publicIPName = "FGTAMgmtPublicIP"
         $publicIP2Name = "FGTBMgmtPublicIP"
