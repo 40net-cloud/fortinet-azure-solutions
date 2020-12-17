@@ -45,7 +45,7 @@
             "value": "172.16.136.0/22"
         },
         "subnet1Name": {
-            "value": "ExteralSubnet"
+            "value": "ExternalSubnet"
         },
         "subnet1Prefix": {
             "value": "172.16.136.0/26"
