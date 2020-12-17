@@ -19,30 +19,22 @@ jobs:
       ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
       ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
       ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
-#      ARM_ACCESS_KEY: ${{ secrets.ARM_ACCESS_KEY }}
+
     steps:
     - name: Checkout
       uses: actions/checkout@v2
-
-    - uses: azure/login@v1.1
-      with:
-        creds: '{"clientId":"${{ secrets.ARM_CLIENT_ID }}","clientSecret":"${{ secrets.ARM_CLIENT_SECRET }}","subscriptionId":"${{ secrets.ARM_SUBSCRIPTION_ID }}","tenantId":"${{ secrets.ARM_TENANT_ID }}"}'
 
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
 
     - name: Terraform Init
-      run: terraform init
+      run: terraform init FortiGate/Terraform/Active-Passive-ELB-ILB/terraform/
 
     - name: Terraform Plan
-      run: terraform plan
+      run: terraform plan FortiGate/Terraform/Active-Passive-ELB-ILB/terraform/
 
     - name: Terraform Apply
-      run: terraform apply -auto-approve
+      run: terraform apply -auto-approve FortiGate/Terraform/Active-Passive-ELB-ILB/terraform/
 
     - name: Terraform Destroy
-      run: terraform destroy -auto-approve
-
-    - name: Azure Logout
-      run: |
-        az logout
+      run: terraform destroy -auto-approve FortiGate/Terraform/Active-Passive-ELB-ILB/terraform/

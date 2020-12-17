@@ -1,7 +1,5 @@
 # Active/Passive High Available FortiGate pair with external and internal Azure Standard Load Balancer
 
-[![Build Status](https://dev.azure.com/jvh-2520/Fortinet-Azure/_apis/build/status/Azure-Passive-ELB-ILB?branchName=main)](https://dev.azure.com/jvh-2520/Fortinet-Azure/_build/latest?definitionId=13&branchName=main)
-
 # Introduction
 
 More and more enterprises are turning to Microsoft Azure to extend internal data centers and take advantage of the elasticity of the public cloud. While Azure secures the infrastructure, you are responsible for protecting everything you put in it. Fortinet Security Fabric provides Azure the broad protection, native integration and automated management enabling customers with consistent enforcement and visibility across their multi-cloud infrastructure.

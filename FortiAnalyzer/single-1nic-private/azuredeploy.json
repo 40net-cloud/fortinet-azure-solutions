@@ -22,9 +22,9 @@
     },
     "imageSku": {
       "type": "string",
-      "defaultValue": "fortinet-fortimanager",
+      "defaultValue": "fortinet-analyzer",
       "allowedValues": [
-        "fortinet-fortimanager"
+        "fortinet-fortianalyzer"
       ],
       "metadata": {
         "description": "Identifies whether to to use PAYG (on demand licensing) or BYOL license model (where license is purchased separately)"
@@ -334,7 +334,7 @@
       "plan": {
         "name": "[parameters('imageSku')]",
         "publisher": "fortinet",
-        "product": "fortinet-fortimanager"
+        "product": "fortinet-fortianalyzer"
       },
       "dependsOn": [
         "[variables('network_NIC_fg11_Name')]"
@@ -352,7 +352,7 @@
         "storageProfile": {
           "imageReference": {
             "publisher": "fortinet",
-            "offer": "fortinet-fortimanager",
+            "offer": "fortinet-fortianalyzer",
             "sku": "[parameters('imageSku')]",
             "version": "[parameters('imageVersion')]"
           },
