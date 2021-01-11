@@ -54,7 +54,7 @@ After deployment, you will be shown the IP addresses of all deployed components.
 
 ## Requirements and limitations
 
-More documentation can be found on [building block Active/Passive with ELB and ILB](../../Active-Passive-ELB-ILB/README.md).
+This architecture uses the Active/Passive building block. More information about configuration can be found [here](../Active-Passive-ELB-ILB/README.md).
 
 ## Support
 Fortinet-provided scripts in this and other GitHub projects do not fall under the regular Fortinet technical support scope and are not supported by FortiCare Support Services.
