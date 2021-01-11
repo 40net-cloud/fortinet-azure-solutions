@@ -47,7 +47,7 @@ To deploy via Azure Cloud Shell you can connect via the Azure Portal or directly
 - Login into the Azure Cloud Shell
 - Run the following command in the Azure Cloud:
 
-`cd ~/clouddrive/ && wget -qO- https://github.com/jvhoof/fortinet-azure-solutions/archive/main.zip | jar x && cd ~/clouddrive/fortinet-azure-solutions-main/FortiGate/Active-Active-ELB-ILB/ && ./deploy.sh`
+`cd ~/clouddrive/ && wget -qO- https://github.com/jvhoof/fortinet-azure-solutions/archive/main.tar.gz | tar zxf - && cd ~/clouddrive/fortinet-azure-solutions-main/FortiGate/Active-Active-ELB-ILB/ && ./deploy.sh`
 
 - The script will ask you a few questions to bootstrap a full deployment.
 

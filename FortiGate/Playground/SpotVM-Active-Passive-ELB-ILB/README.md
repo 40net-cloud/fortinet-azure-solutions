@@ -19,7 +19,7 @@ For more information about the deployment review the documentation [here](../Act
 
 ### Azure CLI
 
-`cd ~/clouddrive/ && wget -qO- https://github.com/jvhoof/fortinet-azure-solutions/archive/main.zip | jar x && cd ~/clouddrive/fortinet-azure-solutions-main/FortiGate/Playground/SpotVM-Active-Passive-ELB-ILB/ && ./deploy.sh`
+`cd ~/clouddrive/ && wget -qO- https://github.com/jvhoof/fortinet-azure-solutions/archive/main.tar.gz | tar zxf - && cd ~/clouddrive/fortinet-azure-solutions-main/FortiGate/Playground/SpotVM-Active-Passive-ELB-ILB/ && ./deploy.sh`
 
 ![Azure Cloud Shell](images/azure-cloud-shell.png)
 
