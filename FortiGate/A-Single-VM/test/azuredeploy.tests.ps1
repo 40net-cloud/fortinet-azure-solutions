@@ -141,7 +141,11 @@ Describe 'FGT Single VM' {
                 $portListening = (Test-Connection -TargetName $result.IpAddress -TCPPort $_ -TimeoutSeconds 100)
                 $portListening | Should -Be $true
 
-                sshpass -p "$testsResourceGroupName" ssh -t -o StrictHostKeyChecking=no $testsAdminUsername@$result.IpAddress 'show system interface'
+                $fgt = $result.IpAddress
+                Write-Host ("Host: " + $fgt)
+
+                sshpass -p "$testsResourceGroupName" ssh -t -o StrictHostKeyChecking=no $testsAdminUsername@$fgt 'show system interface'
+                sshpass -p "$testsResourceGroupName" ssh -t -o StrictHostKeyChecking=no $testsAdminUsername@$fgt 'show system interface'
             }
         }
 
