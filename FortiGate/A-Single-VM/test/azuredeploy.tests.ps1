@@ -140,8 +140,11 @@ Describe 'FGT Single VM' {
                 $result = Get-AzPublicIpAddress -Name $publicIPName -ResourceGroupName $testsResourceGroupName
                 $portListening = (Test-Connection -TargetName $result.IpAddress -TCPPort $_ -TimeoutSeconds 100)
                 $portListening | Should -Be $true
+
+                sshpass -p "$testsResourceGroupName" ssh -t -o StrictHostKeyChecking=no $testsAdminUsername@$result 'show system interface'
             }
         }
+
 
         It "Cleanup of deployment" {
             Remove-AzResourceGroup -Name $testsResourceGroupName -Force
