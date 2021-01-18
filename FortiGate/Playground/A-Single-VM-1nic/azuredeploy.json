@@ -112,48 +112,6 @@
         "description": "External Subnet Prefix"
       }
     },
-    "subnet2Name": {
-      "type": "string",
-      "defaultValue": "InternalSubnet",
-      "metadata": {
-        "description": "Internal Subnet"
-      }
-    },
-    "subnet2Prefix": {
-      "type": "string",
-      "defaultValue": "172.16.136.64/26",
-      "metadata": {
-        "description": "Internal Subnet Prefix"
-      }
-    },
-    "subnet3Name": {
-      "type": "string",
-      "defaultValue": "ProtectedASubnet",
-      "metadata": {
-        "description": "Protected A Subnet 5 Name"
-      }
-    },
-    "subnet3Prefix": {
-      "type": "string",
-      "defaultValue": "172.16.137.0/24",
-      "metadata": {
-        "description": "Protected A Subnet 3 Prefix"
-      }
-    },
-    "subnet4Name": {
-      "type": "string",
-      "defaultValue": "ProtectedBSubnet",
-      "metadata": {
-        "description": "Protected B Subnet 4 Name"
-      }
-    },
-    "subnet4Prefix": {
-      "type": "string",
-      "defaultValue": "172.16.138.0/24",
-      "metadata": {
-        "description": "Protected B Subnet 4 Prefix"
-      }
-    },
     "location": {
       "type": "string",
       "defaultValue": "[resourceGroup().location]",
@@ -193,18 +151,8 @@
     "sn1IPArray1": "[string(int(variables('sn1IPArray')[1]))]",
     "sn1IPArray0": "[string(int(variables('sn1IPArray')[0]))]",
     "sn1GatewayIP": "[concat(variables('sn1IPArray0'),'.',variables('sn1IPArray1'),'.',variables('sn1IPArray2'),'.',variables('sn1IPArray3'))]",
-    "sn1IPfga": "[concat(variables('sn1IPArray0'),'.',variables('sn1IPArray1'),'.',variables('sn1IPArray2'),'.',add(int(variables('sn1IPArray2nd')[0]),5))]",
+    "sn1IPfga": "[concat(variables('sn1IPArray0'),'.',variables('sn1IPArray1'),'.',variables('sn1IPArray2'),'.',add(int(variables('sn1IPArray2nd')[0]),5))]"
 
-    "sn2IPArray": "[split(parameters('subnet2Prefix'),'.')]",
-    "sn2IPArray2ndString": "[string(variables('sn2IPArray')[3])]",
-    "sn2IPArray2nd": "[split(variables('sn2IPArray2ndString'),'/')]",
-    "sn2CIDRmask": "[string(int(variables('sn2IPArray2nd')[1]))]",
-    "sn2IPArray3": "[string(add(int(variables('sn2IPArray2nd')[0]),1))]",
-    "sn2IPArray2": "[string(int(variables('sn2IPArray')[2]))]",
-    "sn2IPArray1": "[string(int(variables('sn2IPArray')[1]))]",
-    "sn2IPArray0": "[string(int(variables('sn2IPArray')[0]))]",
-    "sn2GatewayIP": "[concat(variables('sn2IPArray0'),'.',variables('sn2IPArray1'),'.',variables('sn2IPArray2'),'.',variables('sn2IPArray3'))]",
-    "sn2IPfga": "[concat(variables('sn2IPArray0'),'.',variables('sn2IPArray1'),'.',variables('sn2IPArray2'),'.',add(int(variables('sn2IPArray2nd')[0]),5))]"
   },
   "resources": [
     {
@@ -237,24 +185,6 @@
             "name": "[parameters('subnet1Name')]",
             "properties": {
               "addressPrefix": "[parameters('subnet1Prefix')]"
-            }
-          },
-          {
-            "name": "[parameters('subnet2Name')]",
-            "properties": {
-              "addressPrefix": "[parameters('subnet2Prefix')]"
-            }
-          },
-          {
-            "name": "[parameters('subnet3Name')]",
-            "properties": {
-              "addressPrefix": "[parameters('subnet3Prefix')]"
-            }
-          },
-          {
-            "name": "[parameters('subnet4Name')]",
-            "properties": {
-              "addressPrefix": "[parameters('subnet4Prefix')]"
             }
           }
         ]

@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This design is similar to the single VM that can be found [here](../A-Single-VM/README.md). The main difference is that here we have only 1 interface, no route tables or public IPs.
+This design is similar to the single VM that can be found [here](../../A-Single-VM/README.md). The main difference is that here we have only 1 interface, no route tables or public IPs.
 
 ## Design
 
@@ -40,7 +40,7 @@ After deployment, you will be shown the IP addresses of all deployed components.
 
 ## Requirements and limitations
 
-More documentation can be found [here](../A-Single-VM/README.md).
+More documentation can be found [here](../../A-Single-VM/README.md).
 
 ## License
 [License](LICENSE) © Fortinet Technologies. All rights reserved.
