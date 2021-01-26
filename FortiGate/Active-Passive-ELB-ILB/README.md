@@ -65,9 +65,9 @@ To deploy via Azure Cloud Shell you can connect via the Azure Portal or directly
 
 After deployment you will be shown the IP address of all deployed components. Both FortiGate VMs are accessible using the public management IPs using HTTPS on port 443 and SSH on port 22.
 
-# Requirements and limitations
+## Requirements and limitations
 
-The ARM template deploy different resource and it is required to have the access rights and quota in your Microsoft Azure subscription to deploy the resources.
+The ARM template deploys different resources and it is required to have the access rights and quota in your Microsoft Azure subscription to deploy the resources.
 
 - The template will deploy Standard F4s VMs for this architecture. Other VM instances are supported as well with a minimum of 4 NICs. A list can be found [here](https://docs.fortinet.com/document/fortigate/6.4.0/azure-cookbook/562841/instance-type-support)
 - Licenses for Fortigate
@@ -91,6 +91,7 @@ The FortiGate-VM uses [Managed Identities](https://docs.microsoft.com/en-us/azur
 The FortiGate VMs need a specific configuration to match the deployed environment. This configuration can be injected during provisioning or afterwards via the different options including GUI, CLI, FortiManager or REST API.
 
 - [Default configuration using this template](doc/config-provisioning.md)
+- [High Availability probe](doc/config-ha.md)
 - [Cloud-init](doc/config-cloud-init.md)
 - [Inbound connections](doc/config-inbound-connections.md)
 - [Outbound connections](doc/config-outbound-connections.md)
