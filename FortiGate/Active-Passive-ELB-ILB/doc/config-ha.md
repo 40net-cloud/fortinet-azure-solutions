@@ -4,7 +4,6 @@
 
 For this Active/Passive setup external and internal load balancers are used. These need to detect which the FortiGate VMs is online. This is done using a health probe on both Azure Load Balancers.
 
-
 ## Configuration
 
 ### Azure Load Balancer
