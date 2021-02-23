@@ -30,11 +30,11 @@ echo ""
 echo "==> terraform destroy"
 echo ""
 terraform destroy -var "USERNAME=x" -var "PASSWORD=x" -var "LOCATION=x" -var "PREFIX=x" -auto-approve
-if [ $? != 0 ];
+if [[ $? != 0 ]];
 then
     echo "--> ERROR: Destroy failed ..."
     rg=`grep -m 1 -o '"resource_group_name": "[^"]*' terraform.tfstate | grep -o '[^"]*$'`
     echo "--> Trying to delete the resource group $rg..."
-    az group delete --resource-group "$rg"
+    az group delete --name "$rg"
     exit $rc;
 fi
