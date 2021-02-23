@@ -13,9 +13,7 @@ config system sdn-connector
 	end
 end
 config sys global
-    set admintimeout 120
     set hostname "${fgt_vm_name}"
-    set timezone 26
     set admin-sport 443
     set gui-theme mariner
 end
