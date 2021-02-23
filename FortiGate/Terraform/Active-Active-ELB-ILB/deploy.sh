@@ -162,7 +162,7 @@ echo "
 
 Deployment information:
 
-Username:
+Username: $USERNAME
 "
 cat "output/$SUMMARY"
 echo "

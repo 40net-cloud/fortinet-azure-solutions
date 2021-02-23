@@ -330,15 +330,15 @@ resource "azurerm_network_interface_backend_address_pool_association" "fgtbifcex
 }
 
 resource "azurerm_network_interface_nat_rule_association" "fgtamgmthttpsvm" {
-  network_interface_id  = azurerm_network_interface.fgtaifcext.id
-  ip_configuration_name = "interface1"
-  nat_rule_id           = azurerm_lb_nat_rule.fgtamgmthttps.id
+  network_interface_id    = azurerm_network_interface.fgtaifcext.id
+  ip_configuration_name   = "interface1"
+  nat_rule_id             = azurerm_lb_nat_rule.fgtamgmthttps.id
 }
 
 resource "azurerm_network_interface_nat_rule_association" "fgtamgmtsshvm" {
-  network_interface_id  = azurerm_network_interface.fgtaifcext.id
-  ip_configuration_name = "interface1"
-  nat_rule_id           = azurerm_lb_nat_rule.fgtamgmtssh.id
+  network_interface_id    = azurerm_network_interface.fgtaifcext.id
+  ip_configuration_name   = "interface1"
+  nat_rule_id             = azurerm_lb_nat_rule.fgtamgmtssh.id
 }
 
 resource "azurerm_network_interface" "fgtbifcint" {
@@ -368,15 +368,15 @@ resource "azurerm_network_interface_backend_address_pool_association" "fgtbifcin
 }
 
 resource "azurerm_network_interface_nat_rule_association" "fgtbmgmthttpsvm" {
-  network_interface_id  = azurerm_network_interface.fgtbifcext.id
-  ip_configuration_name = "interface1"
-  nat_rule_id           = azurerm_lb_nat_rule.fgtbmgmthttps.id
+  network_interface_id    = azurerm_network_interface.fgtbifcext.id
+  ip_configuration_name   = "interface1"
+  nat_rule_id             = azurerm_lb_nat_rule.fgtbmgmthttps.id
 }
 
 resource "azurerm_network_interface_nat_rule_association" "fgtbmgmtsshvm" {
-  network_interface_id  = azurerm_network_interface.fgtbifcext.id
-  ip_configuration_name = "interface1"
-  nat_rule_id           = azurerm_lb_nat_rule.fgtbmgmtssh.id
+  network_interface_id    = azurerm_network_interface.fgtbifcext.id
+  ip_configuration_name   = "interface1"
+  nat_rule_id             = azurerm_lb_nat_rule.fgtbmgmtssh.id
 }
 
 resource "azurerm_virtual_machine" "fgtbvm" {
@@ -455,4 +455,3 @@ data "azurerm_public_ip" "elbpip" {
 output "elb_public_ip_address" {
   value = data.azurerm_public_ip.elbpip.ip_address
 }
-
