@@ -47,10 +47,6 @@ After deployment you will be shown the IP address of all deployed components, th
 The Terraform template deployment deploys different resources and is required to have the access rights and quota in your Microsoft Azure subscription to deploy the resources.
 
 For more specific information verify the documentation included in the [ARM template](../Active-Passive-ELB-ILB/)
-## Support
-Fortinet-provided scripts in this and other GitHub projects do not fall under the regular Fortinet technical support scope and are not supported by FortiCare Support Services.
-For direct issues, please refer to the [Issues](https://github.com/fortinet/azure-templates/issues) tab of this GitHub project.
-For other questions related to this project, contact [github@fortinet.com](mailto:github@fortinet.com).
 
 ## License
 [License](LICENSE) © Fortinet Technologies. All rights reserved.

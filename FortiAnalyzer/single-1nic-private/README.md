@@ -15,6 +15,8 @@ This Azure ARM template will automatically deploy a full working environment con
 
 ![FortiAnalyzer-VM azure design](images/faz-single-1nic-private.png)
 
+The VM will have the sixth IP in the network range as his static IP. You can adapt the 'sn1IPfg1' variable in the ARM template to change this.
+
 This Azure ARM template can also be extended or customized based on your requirements. Additional subnets besides the ones mentioned above are not automatically generated.
 
 ## Deployment
@@ -28,7 +30,7 @@ For the deployment, you can use the Azure Portal, Azure CLI, Powershell or Azure
 
 ### Azure Portal
 
-<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fjvhoof%2Ffortinet-azure-solutions%2Fmain%2FFortiAnalyzer%2Fsingle-1nic-private%2Fazuredeploy.json" target="_blank">
+<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2F40net-cloud%2Ffortinet-azure-solutions%2Fmain%2FFortiAnalyzer%2Fsingle-1nic-private%2Fazuredeploy.json" target="_blank">
   <img src="https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.svg?sanitize=true"/>
 </a>
 <a href="http://armviz.io/#/?load=https%3A%2F%2Fraw.githubusercontent.com%2F40net-cloud%2Ffortinet-azure-solutions$2Fmain%2FFortiAnalyzer%2Fsingle-1nic-private%2Fazuredeploy.json" target="_blank">
