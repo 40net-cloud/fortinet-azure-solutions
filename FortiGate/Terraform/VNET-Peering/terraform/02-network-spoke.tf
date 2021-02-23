@@ -207,4 +207,3 @@ resource "azurerm_route_table" "spoke2route" {
     next_hop_in_ip_address = var.lb_internal_ipaddress
   }
 }
-
