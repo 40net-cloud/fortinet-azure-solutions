@@ -57,19 +57,20 @@ variable "FGT_ACCELERATED_NETWORKING" {
 }
 
 ##############################################################################################################
-# Microsoft Azure Storage Account for storage of Terraform state file
+# Deployment in Microsoft Azure
 ##############################################################################################################
 
 terraform {
   required_version = ">= 0.12"
+  required_providers {
+    azurerm = {
+      source  = "hashicorp/azurerm"
+      version = ">=2.0.0"
+    }
+  }
 }
 
-##############################################################################################################
-# Deployment in Microsoft Azure
-##############################################################################################################
-
 provider "azurerm" {
-  version = ">= 2.0.0"
   features {}
 }
 

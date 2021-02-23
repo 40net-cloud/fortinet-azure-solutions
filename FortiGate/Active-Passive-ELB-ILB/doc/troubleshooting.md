@@ -62,9 +62,56 @@ Below you can see an output in JSON of a log rule as they can be found on the st
 ```
 ## Standard Public IP
 
-The standard public ip has some extra features like zone redundancy. The most important item property of this Standard SKU resource is that inbound communication failes until an network security group is associated with the network interface or subnet that allows the inbound traffic.
+The standard public ip has some extra features like zone redundancy. The most important item property of this Standard SKU resource is that inbound communication fails until an network security group is associated with the network interface or subnet that allows the inbound traffic.
 
 More information can be found [here](https://docs.microsoft.com/en-us/azure/virtual-network/public-ip-addresses#standard)
 
 ## FortiGate
 
+On the FortiGate there is a plethora of troubleshooting tools available. More can be found [here](https://docs2.fortinet.com/document/fortigate/6.4.3/administration-guide/244292/troubleshooting).
+
+For your deployment in Azure there are some specific
+
+- Accelerated Networking: This enables direct connection from the VM to the backend ethernet hardware on the hypervisor and enables much better throughput.
+  - On the FortiGate you can retrieve the network interface configuration. The SR-IOV pseudo interace should only be available when accelerated networking is activated. On the driver side the driver called 'hv_netvsc' needs to be active. If the speed lists 40000full or 50000full the accelerated networking driver is active. The FortiOS GUI does not display the virtual interface.
+  - On the Azure Portal it can be verified on the network interface properties pane. Alternatively this information can be requested via the Azure CLI.
+
+```
+<VM name> # fnsysctl ifconfig
+port1 Link encap:Ethernet HWaddr 00:0D:3A:B4:87:70
+inet addr:172.29.0.4 Bcast:172.29.0.255 Mask:255.255.255.0
+UP BROADCAST RUNNING MULTICAST MTU:1500 Metric:1
+RX packets:5689 errors:0 dropped:0 overruns:0 frame:0
+TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+collisions:0 txqueuelen:1000
+RX bytes:1548978 (1.5 MB) TX bytes:0 (0 Bytes)
+sriovslv0 Link encap:Ethernet HWaddr 00:0D:3A:B4:87:70
+UP BROADCAST RUNNING SLAVE MULTICAST MTU:1500 Metric:1
+RX packets:35007 errors:0 dropped:0 overruns:0 frame:0
+TX packets:33674 errors:0 dropped:0 overruns:0 carrier:0
+collisions:0 txqueuelen:1000
+RX bytes:34705194 (33.1 MB) TX bytes:10303956 (9.8 MB)
+```
+
+```
+<VM name> # diagnose hardware deviceinfo nic port1
+Name: port1
+Driver: hv_netvsc
+...
+Speed:           40000full
+```
+or
+```
+<VM name> # diagnose hardware deviceinfo nic port1
+Name: port1
+Driver: hv_netvsc
+...
+Speed:           50000full
+```
+
+Azure CLI NIC information
+```
+# az network nic show -g <Resource group name> -n <NIC name>
+```
+
+- Fabric connector: This connector enables integration with the Azure platform. More troubleshooting can be found [here](https://docs.fortinet.com/vm/azure/fortigate/6.4/azure-cookbook/6.4.0/985498/troubleshooting-azure-fabric-connector)

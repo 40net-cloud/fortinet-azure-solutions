@@ -1,6 +1,7 @@
 # Deployment configuration
 
 After deployment, the below configuration has been automatically injected during the deployment. The bold sections are the default values. If parameters have been changed during deployment these values will be different.
+
 ## FortiGate A
 
 <pre>
