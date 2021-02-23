@@ -190,6 +190,31 @@
         "description": "Protected B Subnet 4 Prefix"
       }
     },
+    "fortiManager": {
+      "type": "string",
+      "defaultValue": "no",
+      "allowedValues": [
+        "yes",
+        "no"
+      ],
+      "metadata": {
+        "description": "Connect to FortiManager"
+      }
+    },
+    "fortiManagerIP": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "FortiManager IP or DNS name to connect to on port TCP/541"
+      }
+    },
+    "fortiManagerSerial": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "FortiManager serial number to add the deployed FortiGate into the FortiManager"
+      }
+    },
     "location": {
       "type": "string",
       "defaultValue": "[resourceGroup().location]",
@@ -213,7 +238,8 @@
     "subnet2Id": "[if(equals(parameters('vnetNewOrExisting'),'new'),resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet2Name')),resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet2Name')))]",
 
     "fgaVmName": "[concat(parameters('fortigateNamePrefix'),'-FGT-A')]",
-    "fgaCustomData": "[base64(concat('config system sdn-connector\nedit AzureSDN\nset type azure\nend\nend\nconfig router static\nedit 1\nset gateway ', variables('sn1GatewayIP'), '\nset device port1\nnext\nedit 2\nset dst ', parameters('vnetAddressPrefix'), '\nset gateway ', variables('sn2GatewayIP'), '\nset device port2\nnext\nconfig system interface\nedit port1\nset mode static\nset ip ',  variables('sn1IPfga'), '/', variables('sn1CIDRmask'), '\nset description external\nset allowaccess ping https ssh ftm\nnext\nedit port2\nset mode static\nset ip ', variables('sn2IPfga'), '/', variables('sn2CIDRmask'), '\nset description internal\nset allowaccess probe-response\nnext\nend\nconfig firewall address\nnext\nedit ProtectedASubnet\nset associated-interface port2\nset subnet ', parameters('subnet3Prefix'), '\nnext\nedit ProtectedBSubnet\nset associated-interface port2\nset subnet ', parameters('subnet4Prefix'), '\nnext\nend\nconfig firewall policy\nedit 1\nset name ProtectedSubnets-to-Internet\nset srcintf port2\nset dstintf port1\nset srcaddr ProtectedASubnet ProtectedBSubnet\nset dstaddr all\nset action accept\nset schedule always\nset service ALL\nset utm-status enable\nset fsso disable\nset av-profile default\nset webfilter-profile default\nset dnsfilter-profile default\nset ips-sensor default\nset application-list default\nset ssl-ssh-profile certificate-inspection\nset nat enable\nnext\nend\n'))]",
+    "fmgCustomData": "[if(equals(parameters('fortiManager'),'yes'),concat('\nconfig system central-management\nset type fortimanager\n set fmg ',parameters('fortiManagerIP'),'\nset serial-number ', parameters('fortiManagerSerial'), '\nend\n'),'')]",
+    "fgaCustomData": "[base64(concat('config system sdn-connector\nedit AzureSDN\nset type azure\nend\nend\nconfig router static\nedit 1\nset gateway ', variables('sn1GatewayIP'), '\nset device port1\nnext\nedit 2\nset dst ', parameters('vnetAddressPrefix'), '\nset gateway ', variables('sn2GatewayIP'), '\nset device port2\nnext\nconfig system interface\nedit port1\nset mode static\nset ip ',  variables('sn1IPfga'), '/', variables('sn1CIDRmask'), '\nset description external\nset allowaccess ping https ssh ftm\nnext\nedit port2\nset mode static\nset ip ', variables('sn2IPfga'), '/', variables('sn2CIDRmask'), '\nset description internal\nset allowaccess probe-response\nnext\nend\nconfig firewall address\nnext\nedit ProtectedASubnet\nset associated-interface port2\nset subnet ', parameters('subnet3Prefix'), '\nnext\nedit ProtectedBSubnet\nset associated-interface port2\nset subnet ', parameters('subnet4Prefix'), '\nnext\nend\nconfig firewall policy\nedit 1\nset name ProtectedSubnets-to-Internet\nset srcintf port2\nset dstintf port1\nset srcaddr ProtectedASubnet ProtectedBSubnet\nset dstaddr all\nset action accept\nset schedule always\nset service ALL\nset utm-status enable\nset fsso disable\nset av-profile default\nset webfilter-profile default\nset dnsfilter-profile default\nset ips-sensor default\nset application-list default\nset ssl-ssh-profile certificate-inspection\nset nat enable\nnext\nend\n', variables('fmgCustomData')))]",
 
     "routeTableProtectedAName": "[concat(parameters('fortigateNamePrefix'),'-RT-PROTECTED-A')]",
     "routeTableProtectedAId": "[resourceId('Microsoft.Network/routeTables',variables('routeTableProtectedAName'))]",
