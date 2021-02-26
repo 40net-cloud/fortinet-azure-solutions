@@ -225,7 +225,7 @@
 								"type": "Microsoft.Common.TextBlock",
 								"visible": true,
 								"options": {
-									"text": "Create a new or select an existing virtual network with the required subnets. The internal subnet is a transit subnet containing only the FortiGate interfaces. Servers can be installed in a protected subnet with user defined routing configuration."
+									"text": "Create a new or select an existing virtual network with the required subnets. The external interface will have a public IP attached to the FortiGate network interface. The internal subnet is a transit subnet containing only the FortiGate interfaces. Servers can be installed in a protected subnet with user defined routing configuration."
 								}
 							},
 							{
@@ -237,7 +237,7 @@
 								},
 								"toolTip": {
 									"virtualNetwork": "Virtual Network for deployment of the FortiGate VM solution",
-									"subnets": "Requirement to have 4 subnets connected to the FortiGate VM: external, internal, hasync and management"
+									"subnets": "Standard deployment is to have an "
 								},
 								"defaultValue": {
 									"name": "FortiGate-VNET",
@@ -275,21 +275,9 @@
 										}
 									},
 									"subnet3": {
-										"label": "Protected subnet A",
+										"label": "Protected subnet",
 										"defaultValue": {
 											"name": "ProtectedSubnet",
-											"addressPrefixSize": "/24"
-										},
-										"constraints": {
-											"minAddressPrefixSize": "/27",
-											"minAddressCount": 8,
-											"requireContiguousAddresses": true
-										}
-									},
-									"subnet4": {
-										"label": "Protected subnet B",
-										"defaultValue": {
-											"name": "ProtectedBSubnet",
 											"addressPrefixSize": "/24"
 										},
 										"constraints": {
@@ -300,6 +288,16 @@
 									}
 								},
 								"visible": true
+							},
+							{
+								"name": "virtualnetworkinfo",
+								"type": "Microsoft.Common.InfoBox",
+								"visible": true,
+								"options": {
+									"icon": "Info",
+									"text": "The external subnet will have a public IP attached to the FortiGate network interface. The internal subnet is a transit subnet containing only the FortiGate interfaces for traffic to and from the internal networks. Internal systems should be installed in a protected subnet with user defined route configuration.",
+									"uri": "https://github.com/fortinet/azure-templates/tree/main/FortiGate/A-Single-VM"
+								}
 							}
 						]
 					},
@@ -313,7 +311,7 @@
 								"type": "Microsoft.Common.TextBlock",
 								"visible": true,
 								"options": {
-									"text": "Enabled SR-IOV support allowing the FortiOS to bypass the hypervisor and talk directly with the PCIe card underneath. Only available on 2 CPU D/DSv2 and F/Fs and 4 CPU D/Dsv3, E/Esv3, Fsv2, Lsv2, Ms/Mms and Ms/Mmsv2 supported. Deployment of with the feature enabled on an host that doesn't support it will result in a failure to connect to it. The accelerated networking can be disabled after deployment from the Azure Portal.",
+									"text": "Enableis SR-IOV support allowing direct acces from the NIC in the Azure infrastructure to the FortiGate VM.",
 									"link": {
 										"label": "Learn more",
 										"uri": "https://docs.fortinet.com/document/fortigate/6.4.0/azure-cookbook/651644/enabling-accelerated-networking-on-the-fortigate-vm"
@@ -340,6 +338,16 @@
 									]
 								},
 								"visible": true
+							},
+							{
+								"name": "acceleratednetworkinginfo",
+								"type": "Microsoft.Common.InfoBox",
+								"visible": true,
+								"options": {
+									"icon": "Info",
+									"text": "Accelerated Networking is supported on most general purpose and compute-optimized instance sizes with 2 or more vCPUs. On instances that support hyperthreading, Accelerated Networking is supported on VM instances with 4 or more vCPUs. Deployment with the accelerated networking feature enabled on a host that doesn't support it will result in a failure to connect to it. The accelerated networking can be disabled after deployment from the Azure Portal or Azure CLI.",
+									"uri": "https://docs.microsoft.com/en-us/azure/virtual-machines/sizes"
+								}
 							}
 						]
 					}
