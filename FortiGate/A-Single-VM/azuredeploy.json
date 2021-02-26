@@ -60,8 +60,8 @@
     },
     "acceleratedNetworking": {
       "type": "string",
-      "defaultValue": "true",
-      "allowedValues": [ "true", "false" ],
+      "defaultValue": "no",
+      "allowedValues": [ "no", "yes" ],
       "metadata": {
         "description": "Accelerated Networking enables direct connection between the VM and network card. Only available on 2 CPU D/DSv2 and F/Fs and 4 CPU D/Dsv3, E/Esv3, Fsv2, Lsv2, Ms/Mms and Ms/Mmsv2"
       }
@@ -69,10 +69,7 @@
     "publicIPNewOrExisting": {
       "type": "string",
       "defaultValue": "new",
-      "allowedValues": [
-        "new",
-        "existing"
-      ],
+      "allowedValues": [ "new", "existing" ],
       "metadata": {
         "description": "Choose between an existing or new public IP for the External Azure Load Balancer"
       }
@@ -176,20 +173,6 @@
         "description": "Protected A Subnet 3 Prefix"
       }
     },
-    "subnet4Name": {
-      "type": "string",
-      "defaultValue": "ProtectedBSubnet",
-      "metadata": {
-        "description": "Protected B Subnet 4 Name"
-      }
-    },
-    "subnet4Prefix": {
-      "type": "string",
-      "defaultValue": "172.16.138.0/24",
-      "metadata": {
-        "description": "Protected B Subnet 4 Prefix"
-      }
-    },
     "fortiManager": {
       "type": "string",
       "defaultValue": "no",
@@ -239,12 +222,10 @@
 
     "fgaVmName": "[concat(parameters('fortigateNamePrefix'),'-FGT-A')]",
     "fmgCustomData": "[if(equals(parameters('fortiManager'),'yes'),concat('\nconfig system central-management\nset type fortimanager\n set fmg ',parameters('fortiManagerIP'),'\nset serial-number ', parameters('fortiManagerSerial'), '\nend\n'),'')]",
-    "fgaCustomData": "[base64(concat('config system sdn-connector\nedit AzureSDN\nset type azure\nend\nend\nconfig router static\nedit 1\nset gateway ', variables('sn1GatewayIP'), '\nset device port1\nnext\nedit 2\nset dst ', parameters('vnetAddressPrefix'), '\nset gateway ', variables('sn2GatewayIP'), '\nset device port2\nnext\nconfig system interface\nedit port1\nset mode static\nset ip ',  variables('sn1IPfga'), '/', variables('sn1CIDRmask'), '\nset description external\nset allowaccess ping https ssh ftm\nnext\nedit port2\nset mode static\nset ip ', variables('sn2IPfga'), '/', variables('sn2CIDRmask'), '\nset description internal\nset allowaccess probe-response\nnext\nend\nconfig firewall address\nnext\nedit ProtectedASubnet\nset associated-interface port2\nset subnet ', parameters('subnet3Prefix'), '\nnext\nedit ProtectedBSubnet\nset associated-interface port2\nset subnet ', parameters('subnet4Prefix'), '\nnext\nend\nconfig firewall policy\nedit 1\nset name ProtectedSubnets-to-Internet\nset srcintf port2\nset dstintf port1\nset srcaddr ProtectedASubnet ProtectedBSubnet\nset dstaddr all\nset action accept\nset schedule always\nset service ALL\nset utm-status enable\nset fsso disable\nset av-profile default\nset webfilter-profile default\nset dnsfilter-profile default\nset ips-sensor default\nset application-list default\nset ssl-ssh-profile certificate-inspection\nset nat enable\nnext\nend\n', variables('fmgCustomData')))]",
+    "fgaCustomData": "[base64(concat('config system sdn-connector\nedit AzureSDN\nset type azure\nend\nend\nconfig router static\nedit 1\nset gateway ', variables('sn1GatewayIP'), '\nset device port1\nnext\nedit 2\nset dst ', parameters('vnetAddressPrefix'), '\nset gateway ', variables('sn2GatewayIP'), '\nset device port2\nnext\nconfig system interface\nedit port1\nset mode static\nset ip ',  variables('sn1IPfga'), '/', variables('sn1CIDRmask'), '\nset description external\nset allowaccess ping https ssh ftm\nnext\nedit port2\nset mode static\nset ip ', variables('sn2IPfga'), '/', variables('sn2CIDRmask'), '\nset description internal\nset allowaccess probe-response\nnext\nend\n', variables('fmgCustomData')))]",
 
-    "routeTableProtectedAName": "[concat(parameters('fortigateNamePrefix'),'-RT-PROTECTED-A')]",
-    "routeTableProtectedAId": "[resourceId('Microsoft.Network/routeTables',variables('routeTableProtectedAName'))]",
-    "routeTableProtectedBName": "[concat(parameters('fortigateNamePrefix'),'-RT-PROTECTED-B')]",
-    "routeTableProtectedBId": "[resourceId('Microsoft.Network/routeTables',variables('routeTableProtectedBName'))]",
+    "routeTableProtectedName": "[concat(parameters('fortigateNamePrefix'),'-RT-PROTECTED')]",
+    "routeTableProtectedId": "[resourceId('Microsoft.Network/routeTables',variables('routeTableProtectedName'))]",
 
     "fgaNic1Name": "[concat(variables('fgaVmName'),'-Nic1')]",
     "fgaNic1Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('fgaNic1Name'))]",
@@ -295,7 +276,7 @@
     },
     {
       "type": "Microsoft.Network/routeTables",
-      "name": "[variables('routeTableProtectedAName')]",
+      "name": "[variables('routeTableProtectedName')]",
       "apiVersion": "2020-04-01",
       "tags": {
        "provider": "[toUpper(parameters('FortinetTags').provider)]"
@@ -330,50 +311,13 @@
       }
     },
     {
-      "type": "Microsoft.Network/routeTables",
-      "name": "[variables('routeTableProtectedBName')]",
-      "apiVersion": "2020-04-01",
-      "tags": {
-       "provider": "[toUpper(parameters('FortinetTags').provider)]"
-      },
-      "location": "[parameters('location')]",
-      "properties": {
-        "routes": [
-          {
-            "name": "VirtualNetwork",
-            "properties": {
-              "addressPrefix": "[parameters('vnetAddressPrefix')]",
-              "nextHopType": "VirtualAppliance",
-              "nextHopIPAddress": "[variables('sn2IPfga')]"
-            }
-          },
-          {
-            "name": "Subnet",
-            "properties": {
-              "addressPrefix": "[parameters('subnet4Prefix')]",
-              "nextHopType": "VnetLocal"
-            }
-          },
-          {
-            "name": "Default",
-            "properties": {
-              "addressPrefix": "0.0.0.0/0",
-              "nextHopType": "VirtualAppliance",
-              "nextHopIPAddress": "[variables('sn2IPfga')]"
-            }
-          }
-        ]
-      }
-    },
-    {
       "condition": "[equals(parameters('vnetNewOrExisting'), 'new')]",
       "type": "Microsoft.Network/virtualNetworks",
       "apiVersion": "2020-04-01",
       "name": "[variables('vnetName')]",
       "location": "[parameters('location')]",
       "dependsOn": [
-        "[variables('routeTableProtectedAId')]",
-        "[variables('routeTableProtectedBId')]"
+        "[variables('routeTableProtectedId')]"
       ],
       "properties": {
         "addressSpace": {
@@ -399,16 +343,7 @@
             "properties": {
               "addressPrefix": "[parameters('subnet3Prefix')]",
               "routeTable": {
-                "id": "[variables('routeTableProtectedAId')]"
-              }
-            }
-          },
-          {
-            "name": "[parameters('subnet4Name')]",
-            "properties": {
-              "addressPrefix": "[parameters('subnet4Prefix')]",
-              "routeTable": {
-                "id": "[variables('routeTableProtectedBId')]"
+                "id": "[variables('routeTableProtectedId')]"
               }
             }
           }
@@ -502,7 +437,7 @@
           }
         ],
         "enableIPForwarding": true,
-        "enableAcceleratedNetworking": "[parameters('acceleratedNetworking')]",
+        "enableAcceleratedNetworking": "[variables('acceleratedNetworking')]",
         "networkSecurityGroup": {
           "id": "[variables('NSGId')]"
         }
@@ -533,7 +468,7 @@
           }
         ],
         "enableIPForwarding": true,
-        "enableAcceleratedNetworking": "[parameters('acceleratedNetworking')]",
+        "enableAcceleratedNetworking": "[variables('acceleratedNetworking')]",
         "networkSecurityGroup": {
           "id": "[variables('NSGId')]"
         }
