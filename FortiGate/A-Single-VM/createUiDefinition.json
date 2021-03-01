@@ -380,10 +380,6 @@
 							"publicIpAddress": "Public IP attached to FortiGate VM",
 							"domainNameLabel": "DNS name linked to this public IP"
 						},
-						"defaultValue": {
-							"publicIpAddressName": "FGTPublicIP",
-							"domainNameLabel": "mydomain"
-						},
 						"constraints": {
 							"required": {
 								"domainNameLabel": false
