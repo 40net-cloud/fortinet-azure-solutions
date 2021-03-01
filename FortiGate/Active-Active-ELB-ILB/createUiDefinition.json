@@ -43,7 +43,7 @@
 				"constraints": {
 					"required": true,
 					"regex": "^(?:(?=.*[a-z])(?:(?=.*[A-Z])(?=.*[\\d\\W])|(?=.*\\W)(?=.*\\d))|(?=.*\\W)(?=.*[A-Z])(?=.*\\d)).{12,}$",
-					"validationMessage": "The password must be between 12 characters or longer, and contain characters from at least 3 of the following groups: uppercase characters, lowercase characters, numbers, and special characters excluding '\\' or '-'."
+					"validationMessage": "The password must be between 12 characters and 72 characters, and contain characters from at least 3 of the following 4 complexity requirements: uppercase characters, lowercase characters, numbers, and special characters (regex match [\\W_])."
 				},
 				"options": {
 					"hideConfirmation": false
@@ -102,10 +102,6 @@
 							"value": "6.2.2"
 						},
 						{
-							"label": "6.2.3",
-							"value": "6.2.3"
-						},
-						{
 							"label": "6.2.4",
 							"value": "6.2.4"
 						},
@@ -118,16 +114,16 @@
 							"value": "6.4.0"
 						},
 						{
-							"label": "6.4.1",
-							"value": "6.4.1"
-						},
-						{
 							"label": "6.4.2",
 							"value": "6.4.2"
 						},
 						{
 							"label": "6.4.3",
 							"value": "6.4.3"
+						},
+						{
+							"label": "6.4.5",
+							"value": "6.4.5"
 						},
 						{
 							"label": "latest",
@@ -202,7 +198,7 @@
 							"offer": "fortinet_fortigate-vm_v5",
 							"sku": "[basics('fortigateImageSKU')]"
 						},
-						"count": 1,
+						"count": 2,
 						"visible": true
 					}
 				]
@@ -295,8 +291,8 @@
 								"visible": true,
 								"options": {
 									"icon": "Info",
-									"text": "The external subnet will have a public IP attached to the FortiGate network interface. The internal subnet is a transit subnet containing only the FortiGate interfaces for traffic to and from the internal networks. Internal systems should be installed in a protected subnet with user defined route configuration.",
-									"uri": "https://github.com/fortinet/azure-templates/tree/main/FortiGate/A-Single-VM"
+									"text": "The internal subnet is a transit subnet containing only the FortiGate interfaces for traffic to and from the internal networks. Internal systems should be installed in a protected subnet with user defined route configuration.",
+									"uri": "https://github.com/fortinet/azure-templates/tree/main/FortiGate/Active-Active-ELB-ILB"
 								}
 							}
 						]
@@ -366,18 +362,18 @@
 						"type": "Microsoft.Common.TextBlock",
 						"visible": true,
 						"options": {
-							"text": "The public IP will be used for public services hosted on the FortiGate such as IPSEC termination, managment of the FortiGate from external or services behind the Fortigate such as a webserver."
+							"text": "The Load Balancer public IP will be used for public services hosted on the FortiGate such as IPSEC termination or services behind the Fortigate such as a webserver. The FortiGate Management public IPs are used for management of the virtual machines. They are also used for the Fabric connector to retrieve information from the Azure platform."
 						}
 					},
 					{
-						"name": "publicip",
+						"name": "loadbalancerpublicip",
 						"type": "Microsoft.Network.PublicIpAddressCombo",
 						"label": {
 							"publicIpAddress": "Public IP address",
 							"domainNameLabel": "Domain name label"
 						},
 						"toolTip": {
-							"publicIpAddress": "Public IP attached to FortiGate VM",
+							"publicIpAddress": "Public IP attached to the public load balancer",
 							"domainNameLabel": "DNS name linked to this public IP"
 						},
 						"defaultValue": {
@@ -401,9 +397,74 @@
 						"visible": true,
 						"options": {
 							"icon": "Info",
-							"text": "This deployment can use standard or basic SKU public IP's. Moving to a Active/Passive or Active/Active setup requires the use of a standard SKU public IP. Microsoft Azure offers a migration path from a basic to standard SKU public IP.",
+							"text": "This deployment uses a Standard SKU Azure Load Balancer and requires a Standard SKU public IP. Microsoft Azure offers a migration path from a basic to standard SKU public IP.",
 							"uri": "https://docs.microsoft.com/en-us/azure/virtual-network/virtual-network-public-ip-address-upgrade?tabs=option-upgrade-cli%2Coption-migrate-powershell"
 						}
+					}
+				]
+			},
+			{
+				"name": "publicipreview",
+				"label": "Public IP Standard SKU Verification",
+				"subLabel": {
+					"preValidation": "Public IP SKU Review",
+					"postValidation": "Done"
+				},
+				"bladeTitle": "Public IP SKU Review",
+				"elements": [
+					{
+						"name": "BasicIPWarning1",
+						"type": "Microsoft.Common.InfoBox",
+						"options": {
+							"icon": "Error",
+							"text": "The External Load Balancer Public IP is configured using Basic SKU. Please return to previous blade and use Standard type public IPs to support Azure Standard Load Balancers"
+						},
+						"visible": "[not(equals(steps('publicip').loadbalancerpublicip.sku, 'Standard'))]"
+					},
+					{
+						"name": "StandardIPConfirmation1",
+						"type": "Microsoft.Common.InfoBox",
+						"options": {
+							"icon": "Info",
+							"text": "The External Load Balancer Public IP is Standard SKU. Proceed."
+						},
+						"visible": "[equals(steps('publicip').loadbalancerpublicip.sku, 'Standard')]"
+					},
+					{
+						"name": "BasicIPWarning2",
+						"type": "Microsoft.Common.InfoBox",
+						"options": {
+							"icon": "Error",
+							"text": "The FortiGate A management Public IP is configured using Basic SKU. Please return to previous blade and use Standard type public IPs to support Azure Standard Load Balancers"
+						},
+						"visible": "[not(equals(steps('publicip').fgtamgmtpublicip.sku, 'Standard'))]"
+					},
+					{
+						"name": "StandardIPConfirmation2",
+						"type": "Microsoft.Common.InfoBox",
+						"options": {
+							"icon": "Info",
+							"text": "The FortiGate A management Public IP is Standard SKU. Proceed."
+						},
+						"visible": "[equals(steps('publicip').fgtamgmtpublicip.sku, 'Standard')]"
+					},
+					{
+						"name": "BasicIPWarning3",
+						"type": "Microsoft.Common.InfoBox",
+						"options": {
+							"icon": "Error",
+							"text": "The FortiGate B management Public IP is configured using Basic SKU. Please return to previous blade and use Standard type public IPs to support Azure Standard Load Balancers"
+						},
+						"visible": "[not(equals(steps('publicip').fgtbmgmtpublicip.sku, 'Standard'))]"
+					},
+					{
+						"name": "StandardIPConfirmation3",
+						"type": "Microsoft.Common.InfoBox",
+						"options": {
+							"icon": "Info",
+							"text": "The FortiGate B management Public IP is Standard SKU. Proceed."
+						},
+						"visible": "[equals(steps('publicip').fgtbmgmtpublicip.sku, 'Standard')]"
 					}
 				]
 			},
@@ -474,10 +535,9 @@
 			"location": "[location()]",
 			"instanceType": "[steps('instancetype').instancetypeselection]",
 			"acceleratedNetworking": "[steps('networking').acceleratednetworksection.acceleratednetworking]",
-			"publicIPNewOrExisting": "[steps('publicip').publicip.newOrExistingOrNone]",
-			"publicIPName": "[steps('publicip').publicip.name]",
-			"publicIPResourceGroup": "[steps('publicip').publicip.resourceGroup]",
-			"publicIPAddressType": "[steps('publicip').publicip.publicIPAllocationMethod]",
+			"publicIPNewOrExisting": "[steps('publicip').loadbalancerpublicip.newOrExistingOrNone]",
+			"publicIPName": "[steps('publicip').loadbalancerpublicip.name]",
+			"publicIPResourceGroup": "[steps('publicip').loadbalancerpublicip.resourceGroup]",
 			"vnetNewOrExisting": "[steps('networking').virtualnetworksection.virtualnetwork.newOrExisting]",
 			"vnetName": "[steps('networking').virtualnetworksection.virtualnetwork.name]",
 			"vnetResourceGroup": "[steps('networking').virtualnetworksection.virtualnetwork.resourceGroup]",
@@ -488,8 +548,6 @@
 			"subnet2Prefix": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet2.addressPrefix]",
 			"subnet3Name": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet3.name]",
 			"subnet3Prefix": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet3.addressPrefix]",
-			"subnet4Name": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet4.name]",
-			"subnet4Prefix": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet4.addressPrefix]",
 			"fortiManager": "[steps('fortimanager').fortimanager]",
 			"fortiManagerIP": "[steps('fortimanager').fortimanagerip]",
 			"fortiManagerSerial": "[steps('fortimanager').fortimanagerserial]"
