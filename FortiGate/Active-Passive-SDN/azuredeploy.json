@@ -389,7 +389,7 @@
     {
       "type": "Microsoft.Compute/availabilitySets",
       "name": "[variables('fgAvailabilitySetName')]",
-      "apiVersion": "2019-12-01",
+      "apiVersion": "2019-07-01",
       "tags": {
        "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
@@ -823,7 +823,7 @@
     {
       "type": "Microsoft.Compute/virtualMachines",
       "name": "[variables('fgaVmName')]",
-      "apiVersion": "2019-12-01",
+      "apiVersion": "2019-07-01",
       "tags": {
        "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
@@ -906,7 +906,7 @@
     {
       "type": "Microsoft.Compute/virtualMachines",
       "name": "[variables('fgbVmName')]",
-      "apiVersion": "2019-12-01",
+      "apiVersion": "2019-07-01",
       "tags": {
        "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
