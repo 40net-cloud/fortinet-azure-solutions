@@ -37,13 +37,12 @@
       "allowedValues": [
         "6.2.0",
         "6.2.2",
-        "6.2.3",
         "6.2.4",
         "6.2.5",
         "6.4.0",
-        "6.4.1",
         "6.4.2",
         "6.4.3",
+        "6.4.5",
         "latest"
       ],
       "metadata": {
@@ -134,6 +133,28 @@
       }
     },
     "publicIPAddressType": {
+      "type": "string",
+      "defaultValue": "Static",
+      "allowedValues": [
+        "Dynamic",
+        "Static"
+      ],
+      "metadata": {
+        "description": "Type of public IP address"
+      }
+    },
+    "publicIP2AddressType": {
+      "type": "string",
+      "defaultValue": "Static",
+      "allowedValues": [
+        "Dynamic",
+        "Static"
+      ],
+      "metadata": {
+        "description": "Type of public IP address"
+      }
+    },
+    "publicIP3AddressType": {
       "type": "string",
       "defaultValue": "Static",
       "allowedValues": [
@@ -525,7 +546,7 @@
         "name": "Standard"
       },
       "properties": {
-        "publicIPAllocationMethod": "[parameters('publicIPAddressType')]"
+        "publicIPAllocationMethod": "[parameters('publicIP2AddressType')]"
       }
     },
     {
@@ -541,7 +562,7 @@
         "name": "Standard"
       },
       "properties": {
-        "publicIPAllocationMethod": "[parameters('publicIPAddressType')]"
+        "publicIPAllocationMethod": "[parameters('publicIP3AddressType')]"
       }
     },
     {

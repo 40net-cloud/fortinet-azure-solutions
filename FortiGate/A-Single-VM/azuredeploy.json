@@ -37,13 +37,12 @@
       "allowedValues": [
         "6.2.0",
         "6.2.2",
-        "6.2.3",
         "6.2.4",
         "6.2.5",
         "6.4.0",
-        "6.4.1",
         "6.4.2",
         "6.4.3",
+        "6.4.5",
         "latest"
       ],
       "metadata": {
@@ -215,6 +214,9 @@
   },
   "variables": {
     "acceleratedNetworking": "[if(equals(parameters('acceleratedNetworking'),'no'),'false','true')]",
+
+    "imagePublisher": "fortinet",
+    "imageOffer": "fortinet_fortigate-vm_v5",
 
     "vnetName": "[if(equals(parameters('vnetName'),''),concat(parameters('fortigateNamePrefix'),'-VNET'),parameters('vnetName'))]",
     "subnet1Id": "[if(equals(parameters('vnetNewOrExisting'),'new'),resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet1Name')),resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet1Name')))]",
@@ -477,7 +479,7 @@
     {
       "type": "Microsoft.Compute/virtualMachines",
       "name": "[variables('fgaVmName')]",
-      "apiVersion": "2019-12-01",
+      "apiVersion": "2019-07-01",
       "tags": {
        "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
@@ -487,8 +489,8 @@
       "location": "[parameters('location')]",
       "plan": {
         "name": "[parameters('fortigateImageSKU')]",
-        "publisher": "fortinet",
-        "product": "fortinet_fortigate-vm_v5"
+        "publisher": "[variables('imagePublisher')]",
+        "product": "[variables('imageOffer')]"
       },
       "dependsOn": [
         "[variables('fgaNic1Id')]",
@@ -506,8 +508,8 @@
         },
         "storageProfile": {
           "imageReference": {
-            "publisher": "fortinet",
-            "offer": "fortinet_fortigate-vm_v5",
+            "publisher": "[variables('imagePublisher')]",
+            "offer": "[variables('imageOffer')]",
             "sku": "[parameters('fortigateImageSKU')]",
             "version": "[parameters('FortigateImageVersion')]"
           },

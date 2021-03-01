@@ -1,19 +1,19 @@
 {
-    "$schema": "https://schema.management.azure.com/schemas/0.1.2-preview/CreateUIDefinition.MultiVm.json#",
-    "handler": "Microsoft.Azure.CreateUIDef",
-    "version": "0.1.2-preview",
-    "parameters": {
-        "resourceTypes": [
-            "microsoft.resources/resourcegroups"
-        ],
-        "basics": [
-            {
-                "name": "adminUsername",
-                "type": "Microsoft.Common.TextBox",
-                "label": "FortiGate administrative username",
-                "defaultValue": "",
-                "toolTip": "Username for the FortiGate virtual appliance. Most not be root, administrator or admin",
-                "constraints": {
+	"$schema": "https://schema.management.azure.com/schemas/0.1.2-preview/CreateUIDefinition.MultiVm.json#",
+	"handler": "Microsoft.Azure.CreateUIDef",
+	"version": "0.1.2-preview",
+	"parameters": {
+		"resourceTypes": [
+			"microsoft.resources/resourcegroups"
+		],
+		"basics": [
+			{
+				"name": "adminUsername",
+				"type": "Microsoft.Common.TextBox",
+				"label": "FortiGate administrative username",
+				"defaultValue": "",
+				"toolTip": "Username for the FortiGate virtual appliance. Most not be root, administrator or admin",
+				"constraints": {
 					"required": true,
 					"validations": [
 						{
@@ -29,130 +29,126 @@
 							"message": "Usernames must not include reserved words"
 						}
 					]
-                },
-                "visible": true
-            },
-            {
-                "name": "adminPassword",
-                "type": "Microsoft.Common.PasswordBox",
-                "label": {
-                    "password": "FortiGate password",
-                    "confirmPassword": "Confirm password"
-                },
-                "toolTip": "Password for the Virtual Machine",
-                "constraints": {
-                    "required": true,
+				},
+				"visible": true
+			},
+			{
+				"name": "adminPassword",
+				"type": "Microsoft.Common.PasswordBox",
+				"label": {
+					"password": "FortiGate password",
+					"confirmPassword": "Confirm password"
+				},
+				"toolTip": "Password for the Virtual Machine",
+				"constraints": {
+					"required": true,
 					"regex": "^(?:(?=.*[a-z])(?:(?=.*[A-Z])(?=.*[\\d\\W])|(?=.*\\W)(?=.*\\d))|(?=.*\\W)(?=.*[A-Z])(?=.*\\d)).{12,}$",
 					"validationMessage": "The password must be between 12 characters or longer, and contain characters from at least 3 of the following groups: uppercase characters, lowercase characters, numbers, and special characters excluding '\\' or '-'."
-                },
-                "options": {
-                    "hideConfirmation": false
-                },
-                "visible": true
-            },
-            {
-                "name": "fortigateNamePrefix",
-                "type": "Microsoft.Common.TextBox",
-                "label": "Fortigate Name Prefix",
-                "defaultValue": "",
-                "toolTip": "Naming prefix for all deployed resources",
-                "constraints": {
-                    "required": true,
+				},
+				"options": {
+					"hideConfirmation": false
+				},
+				"visible": true
+			},
+			{
+				"name": "fortigateNamePrefix",
+				"type": "Microsoft.Common.TextBox",
+				"label": "Fortigate Name Prefix",
+				"defaultValue": "",
+				"toolTip": "Naming prefix for all deployed resources",
+				"constraints": {
+					"required": true,
 					"regex": "^[A-Za-z0-9]{1,15}$",
 					"validationMessage": "Only alphanumeric characters are allowed, and the value must be 1 to 15 characters."
-                },
-                "visible": true
-            },
-            {
-                "name": "fortigateImageSKU",
-                "type": "Microsoft.Common.DropDown",
-                "label": "Fortigate Image SKU",
-                "defaultValue": "Bring Your Own License",
-                "toolTip": "Identifies whether to to use PAYG (on demand licensing) or BYOL license model (where license is purchased separately)",
-                "constraints": {
-                    "required": false,
-                    "allowedValues": [
-                        {
-                            "label": "Bring Your Own License",
-                            "value": "fortinet_fg-vm"
-                        },
-                        {
-                            "label": "Pay As You Go",
-                            "value": "fortinet_fg-vm_payg_20190624"
-                        }
-                    ]
-                },
-                "visible": true
-            },
-            {
-                "name": "fortigateImageVersion",
-                "type": "Microsoft.Common.DropDown",
-                "label": "Fortigate Image Version",
-                "defaultValue": "latest",
-                "toolTip": "Only 6.x has the A/P HA feature currently",
-                "constraints": {
-                    "required": false,
-                    "allowedValues": [
-                        {
-                            "label": "6.2.0",
-                            "value": "6.2.0"
-                        },
-                        {
-                            "label": "6.2.2",
-                            "value": "6.2.2"
-                        },
-                        {
-                            "label": "6.2.3",
-                            "value": "6.2.3"
-                        },
-                        {
-                            "label": "6.2.4",
-                            "value": "6.2.4"
-                        },
-                        {
-                            "label": "6.2.5",
-                            "value": "6.2.5"
-                        },
-                        {
-                            "label": "6.4.0",
-                            "value": "6.4.0"
-                        },
-                        {
-                            "label": "6.4.1",
-                            "value": "6.4.1"
-                        },
-                        {
-                            "label": "6.4.2",
-                            "value": "6.4.2"
-                        },
-                        {
-                            "label": "6.4.3",
-                            "value": "6.4.3"
-                        },
-                        {
-                            "label": "latest",
-                            "value": "latest"
-                        }
-                    ]
-                },
-                "visible": true
-            }
+				},
+				"visible": true
+			},
+			{
+				"name": "fortigateImageSKU",
+				"type": "Microsoft.Common.DropDown",
+				"label": "Fortigate Image SKU",
+				"defaultValue": "Bring Your Own License",
+				"toolTip": "Identifies whether to to use PAYG (on demand licensing) or BYOL license model (where license is purchased separately)",
+				"constraints": {
+					"required": false,
+					"allowedValues": [
+						{
+							"label": "Bring Your Own License",
+							"value": "fortinet_fg-vm"
+						},
+						{
+							"label": "Pay As You Go",
+							"value": "fortinet_fg-vm_payg_20190624"
+						}
+					]
+				},
+				"visible": true
+			},
+			{
+				"name": "fortigateImageVersion",
+				"type": "Microsoft.Common.DropDown",
+				"label": "Fortigate Image Version",
+				"defaultValue": "latest",
+				"toolTip": "Only 6.x has the A/P HA feature currently",
+				"constraints": {
+					"required": false,
+					"allowedValues": [
+						{
+							"label": "6.2.0",
+							"value": "6.2.0"
+						},
+						{
+							"label": "6.2.2",
+							"value": "6.2.2"
+						},
+						{
+							"label": "6.2.4",
+							"value": "6.2.4"
+						},
+						{
+							"label": "6.2.5",
+							"value": "6.2.5"
+						},
+						{
+							"label": "6.4.0",
+							"value": "6.4.0"
+						},
+						{
+							"label": "6.4.2",
+							"value": "6.4.2"
+						},
+						{
+							"label": "6.4.3",
+							"value": "6.4.3"
+						},
+						{
+							"label": "6.4.5",
+							"value": "6.4.5"
+						},
+						{
+							"label": "latest",
+							"value": "latest"
+						}
+					]
+				},
+				"visible": true
+			}
 		],
-        "steps": [
-            {
-                "name": "instancetype",
+		"steps": [
+			{
+				"name": "instancetype",
 				"label": "Instance Type",
-                "subLabel":{
-                    "preValidation":"Select instance type",
-                    "postValidation":"Done"
-                },
-                "elements": [
+				"subLabel": {
+					"preValidation": "Select instance type",
+					"postValidation": "Done"
+				},
+				"elements": [
 					{
 						"name": "instancetypeinfo",
 						"type": "Microsoft.Common.TextBlock",
 						"visible": true,
 						"options": {
-							"text": "FortiGate Active/Passive HA uses the FGCP protocol for configuration sync and HA failover. This requires dedicated sync and management ports. A minimum of 4 NICs is required for the instance type.",
+							"text": "For this FortiGate deployment, it is recomended to use the general purpose or compute optimized virtual machines. A selection of supported instances sizes is listed in our documentations. FortiGate Active/Passive HA uses the FGCP protocol for configuration sync and HA failover. This requires dedicated sync and management ports. A minimum of 4 NICs is required for the instance type.",
 							"link": {
 								"label": "Learn more",
 								"uri": "https://docs.fortinet.com/vm/azure/fortigate/6.4/azure-cookbook/6.4.0/562841/instance-type-support"
@@ -164,7 +160,23 @@
 						"type": "Microsoft.Compute.SizeSelector",
 						"label": "Size",
 						"toolTip": "Select the instance size of your FortiGate VM solution. Minimum 4 NICs are required.",
-						"recommendedSizes": [ "Standard_F4s", "Standard_F8s", "Standard_F16s", "Standard_F4", "Standard_F8", "Standard_F16", "Standard_F8s_v2", "Standard_F16s_v2", "Standard_F32s_v2", "Standard_DS3_v2", "Standard_DS4_v2", "Standard_DS5_v2", "Standard_D8s_v3", "Standard_D16s_v3", "Standard_D32s_v3" ],
+						"recommendedSizes": [
+							"Standard_F4s",
+							"Standard_F8s",
+							"Standard_F16s",
+							"Standard_F4",
+							"Standard_F8",
+							"Standard_F16",
+							"Standard_F8s_v2",
+							"Standard_F16s_v2",
+							"Standard_F32s_v2",
+							"Standard_DS3_v2",
+							"Standard_DS4_v2",
+							"Standard_DS5_v2",
+							"Standard_D8s_v3",
+							"Standard_D16s_v3",
+							"Standard_D32s_v3"
+						],
 						"options": {
 							"hideDiskTypeFilter": false
 						},
@@ -179,14 +191,14 @@
 					}
 				]
 			},
-            {
-                "name": "networking",
+			{
+				"name": "networking",
 				"label": "Internal Networking",
-                "subLabel":{
-                    "preValidation":"Configure internal networking",
-                    "postValidation":"Done"
-                },
-                "elements": [
+				"subLabel": {
+					"preValidation": "Configure internal networking",
+					"postValidation": "Done"
+				},
+				"elements": [
 					{
 						"name": "virtualnetworksection",
 						"type": "Microsoft.Common.Section",
@@ -204,86 +216,96 @@
 								"name": "virtualnetwork",
 								"type": "Microsoft.Network.VirtualNetworkCombo",
 								"label": {
-								"virtualNetwork": "Virtual network",
-								"subnets": "Subnets"
+									"virtualNetwork": "Virtual network",
+									"subnets": "Subnets"
 								},
 								"toolTip": {
-								"virtualNetwork": "Virtual Network for deployment of the FortiGate VM solution",
-								"subnets": "Requirement to have 4 subnets connected to the FortiGate VM: external, internal, hasync and management"
+									"virtualNetwork": "Virtual Network for deployment of the FortiGate VM solution",
+									"subnets": "Requirement to have 4 subnets connected to the FortiGate VM: external, internal, hasync and management"
 								},
 								"defaultValue": {
-								"name": "FortiGate-VNET",
-								"addressPrefixSize": "/22"
+									"name": "FortiGate-VNET",
+									"addressPrefixSize": "/22"
 								},
 								"constraints": {
-								"minAddressPrefixSize": "/24"
+									"minAddressPrefixSize": "/24"
 								},
 								"options": {
-								"hideExisting": false
+									"hideExisting": false
 								},
 								"subnets": {
 									"subnet1": {
 										"label": "External Subnet",
 										"defaultValue": {
-										"name": "ExternalSubnet",
-										"addressPrefixSize": "/26"
+											"name": "ExternalSubnet",
+											"addressPrefixSize": "/26"
 										},
 										"constraints": {
-										"minAddressPrefixSize": "/27",
-										"minAddressCount": 12,
-										"requireContiguousAddresses": true
+											"minAddressPrefixSize": "/27",
+											"minAddressCount": 12,
+											"requireContiguousAddresses": true
 										}
 									},
 									"subnet2": {
 										"label": "Internal subnet",
 										"defaultValue": {
-										"name": "InternalSubnet",
-										"addressPrefixSize": "/26"
+											"name": "InternalSubnet",
+											"addressPrefixSize": "/26"
 										},
 										"constraints": {
-										"minAddressPrefixSize": "/27",
-										"minAddressCount": 8,
-										"requireContiguousAddresses": true
+											"minAddressPrefixSize": "/27",
+											"minAddressCount": 8,
+											"requireContiguousAddresses": true
 										}
 									},
 									"subnet3": {
 										"label": "HA Sync subnet",
 										"defaultValue": {
-										"name": "HASyncSubnet",
-										"addressPrefixSize": "/26"
+											"name": "HASyncSubnet",
+											"addressPrefixSize": "/26"
 										},
 										"constraints": {
-										"minAddressPrefixSize": "/27",
-										"minAddressCount": 8,
-										"requireContiguousAddresses": true
+											"minAddressPrefixSize": "/27",
+											"minAddressCount": 8,
+											"requireContiguousAddresses": true
 										}
 									},
 									"subnet4": {
 										"label": "Management subnet",
 										"defaultValue": {
-										"name": "MGMTSubnet",
-										"addressPrefixSize": "/26"
+											"name": "MGMTSubnet",
+											"addressPrefixSize": "/26"
 										},
 										"constraints": {
-										"minAddressPrefixSize": "/27",
-										"minAddressCount": 8,
-										"requireContiguousAddresses": true
+											"minAddressPrefixSize": "/27",
+											"minAddressCount": 8,
+											"requireContiguousAddresses": true
 										}
 									},
 									"subnet5": {
 										"label": "Protected subnet",
 										"defaultValue": {
-										"name": "ProtectedSubnet",
-										"addressPrefixSize": "/24"
+											"name": "ProtectedSubnet",
+											"addressPrefixSize": "/24"
 										},
 										"constraints": {
-										"minAddressPrefixSize": "/27",
-										"minAddressCount": 8,
-										"requireContiguousAddresses": true
+											"minAddressPrefixSize": "/27",
+											"minAddressCount": 8,
+											"requireContiguousAddresses": true
 										}
 									}
 								},
-									"visible": true
+								"visible": true
+							},
+							{
+								"name": "virtualnetworkinfo",
+								"type": "Microsoft.Common.InfoBox",
+								"visible": true,
+								"options": {
+									"icon": "Info",
+									"text": "The internal subnet is a transit subnet containing only the FortiGate interfaces for traffic to and from the internal networks. Internal systems should be installed in a protected subnet with user defined route configuration.",
+									"uri": "https://github.com/fortinet/azure-templates/tree/main/FortiGate/Active-Passive-ELB-ILB"
+								}
 							}
 						]
 					},
@@ -297,7 +319,7 @@
 								"type": "Microsoft.Common.TextBlock",
 								"visible": true,
 								"options": {
-									"text": "Enabled SR-IOV support allowing the FortiOS to bypass the hypervisor and talk directly with the PCIe card underneath.",
+									"text": "Enables SR-IOV support allowing the FortiOS to bypass the hypervisor and talk directly with the PCIe card underneath.",
 									"link": {
 										"label": "Learn more",
 										"uri": "https://docs.fortinet.com/document/fortigate/6.4.0/azure-cookbook/651644/enabling-accelerated-networking-on-the-fortigate-vm"
@@ -330,13 +352,13 @@
 				]
 			},
 			{
-                "name": "publicip",
+				"name": "publicip",
 				"label": "Public Networking",
-                "subLabel":{
-                    "preValidation":"Configure public networking",
-                    "postValidation":"Done"
-                },
-                "elements": [
+				"subLabel": {
+					"preValidation": "Configure public networking",
+					"postValidation": "Done"
+				},
+				"elements": [
 					{
 						"name": "publiciptext",
 						"type": "Microsoft.Common.TextBlock",
@@ -362,7 +384,7 @@
 						},
 						"constraints": {
 							"required": {
-							"domainNameLabel": false
+								"domainNameLabel": false
 							}
 						},
 						"options": {
@@ -388,7 +410,7 @@
 						},
 						"constraints": {
 							"required": {
-							"domainNameLabel": false
+								"domainNameLabel": false
 							}
 						},
 						"options": {
@@ -414,7 +436,7 @@
 						},
 						"constraints": {
 							"required": {
-							"domainNameLabel": false
+								"domainNameLabel": false
 							}
 						},
 						"options": {
@@ -429,7 +451,8 @@
 						"visible": true,
 						"options": {
 							"icon": "Info",
-							"text": "The deployment uses the Azure Standard Load Balancer. This requires all public IPs to be of the same Standard SKU."
+							"text": "This deployment uses a Standard SKU Azure Load Balancer and requires a Standard SKU public IP. Microsoft Azure offers a migration path from a basic to standard SKU public IP.",
+							"uri": "https://docs.microsoft.com/en-us/azure/virtual-network/virtual-network-public-ip-address-upgrade?tabs=option-upgrade-cli%2Coption-migrate-powershell"
 						}
 					}
 				]
@@ -438,75 +461,75 @@
 				"name": "publicipreview",
 				"label": "Public IP Standard SKU Verification",
 				"subLabel": {
-				  "preValidation": "Public IP SKU Review",
-				  "postValidation": "Done"
+					"preValidation": "Public IP SKU Review",
+					"postValidation": "Done"
 				},
 				"bladeTitle": "Public IP SKU Review",
 				"elements": [
-				  {
-					"name": "BasicIPWarning1",
-					"type": "Microsoft.Common.InfoBox",
-					"options": {
-					  "icon": "Error",
-					  "text": "The External Load Balancer Public IP is configured using Basic SKU. Please return to previous blade and use Standard type public IPs to support Azure Standard Load Balancers"
+					{
+						"name": "BasicIPWarning1",
+						"type": "Microsoft.Common.InfoBox",
+						"options": {
+							"icon": "Error",
+							"text": "The External Load Balancer Public IP is configured using Basic SKU. Please return to previous blade and use Standard type public IPs to support Azure Standard Load Balancers"
+						},
+						"visible": "[not(equals(steps('publicip').loadbalancerpublicip.sku, 'Standard'))]"
 					},
-					"visible": "[not(equals(steps('publicip').loadbalancerpublicip.sku, 'Standard'))]"
-				  },
-				  {
-					"name": "StandardIPConfirmation1",
-					"type": "Microsoft.Common.InfoBox",
-					"options": {
-					  "icon": "Info",
-					  "text": "The External Load Balancer Public IP is Standard SKU. Proceed."
+					{
+						"name": "StandardIPConfirmation1",
+						"type": "Microsoft.Common.InfoBox",
+						"options": {
+							"icon": "Info",
+							"text": "The External Load Balancer Public IP is Standard SKU. Proceed."
+						},
+						"visible": "[equals(steps('publicip').loadbalancerpublicip.sku, 'Standard')]"
 					},
-					"visible": "[equals(steps('publicip').loadbalancerpublicip.sku, 'Standard')]"
-				  },
-				  {
-					"name": "BasicIPWarning2",
-					"type": "Microsoft.Common.InfoBox",
-					"options": {
-					  "icon": "Error",
-					  "text": "The FortiGate A management Public IP is configured using Basic SKU. Please return to previous blade and use Standard type public IPs to support Azure Standard Load Balancers"
+					{
+						"name": "BasicIPWarning2",
+						"type": "Microsoft.Common.InfoBox",
+						"options": {
+							"icon": "Error",
+							"text": "The FortiGate A management Public IP is configured using Basic SKU. Please return to previous blade and use Standard type public IPs to support Azure Standard Load Balancers"
+						},
+						"visible": "[not(equals(steps('publicip').fgtamgmtpublicip.sku, 'Standard'))]"
 					},
-					"visible": "[not(equals(steps('publicip').fgtamgmtpublicip.sku, 'Standard'))]"
-				  },
-				  {
-					"name": "StandardIPConfirmation2",
-					"type": "Microsoft.Common.InfoBox",
-					"options": {
-					  "icon": "Info",
-					  "text": "The FortiGate A management Public IP is Standard SKU. Proceed."
+					{
+						"name": "StandardIPConfirmation2",
+						"type": "Microsoft.Common.InfoBox",
+						"options": {
+							"icon": "Info",
+							"text": "The FortiGate A management Public IP is Standard SKU. Proceed."
+						},
+						"visible": "[equals(steps('publicip').fgtamgmtpublicip.sku, 'Standard')]"
 					},
-					"visible": "[equals(steps('publicip').fgtamgmtpublicip.sku, 'Standard')]"
-				  },
-				  {
-					"name": "BasicIPWarning3",
-					"type": "Microsoft.Common.InfoBox",
-					"options": {
-					  "icon": "Error",
-					  "text": "The FortiGate B management Public IP is configured using Basic SKU. Please return to previous blade and use Standard type public IPs to support Azure Standard Load Balancers"
+					{
+						"name": "BasicIPWarning3",
+						"type": "Microsoft.Common.InfoBox",
+						"options": {
+							"icon": "Error",
+							"text": "The FortiGate B management Public IP is configured using Basic SKU. Please return to previous blade and use Standard type public IPs to support Azure Standard Load Balancers"
+						},
+						"visible": "[not(equals(steps('publicip').fgtbmgmtpublicip.sku, 'Standard'))]"
 					},
-					"visible": "[not(equals(steps('publicip').fgtbmgmtpublicip.sku, 'Standard'))]"
-				  },
-				  {
-					"name": "StandardIPConfirmation3",
-					"type": "Microsoft.Common.InfoBox",
-					"options": {
-					  "icon": "Info",
-					  "text": "The FortiGate B management Public IP is Standard SKU. Proceed."
-					},
-					"visible": "[equals(steps('publicip').fgtbmgmtpublicip.sku, 'Standard')]"
-				  }
+					{
+						"name": "StandardIPConfirmation3",
+						"type": "Microsoft.Common.InfoBox",
+						"options": {
+							"icon": "Info",
+							"text": "The FortiGate B management Public IP is Standard SKU. Proceed."
+						},
+						"visible": "[equals(steps('publicip').fgtbmgmtpublicip.sku, 'Standard')]"
+					}
 				]
-			  },
-			  {
-                "name": "fortimanager",
+			},
+			{
+				"name": "fortimanager",
 				"label": "Central Management with FortiManager",
-                "subLabel":{
-                    "preValidation":"Configure central management",
-                    "postValidation":"Done"
-                },
-                "elements": [
+				"subLabel": {
+					"preValidation": "Configure central management",
+					"postValidation": "Done"
+				},
+				"elements": [
 					{
 						"name": "fortimanager",
 						"type": "Microsoft.Common.OptionsGroup",
@@ -514,17 +537,17 @@
 						"defaultValue": "no",
 						"toolTip": "FortiManager needs to be reachable from port 1 or port 2 of the FortiGate",
 						"constraints": {
-						  "allowedValues": [
-							{
-							  "label": "yes",
-							  "value": "yes"
-							},
-							{
-							  "label": "no",
-							  "value": "no"
-							}
-						  ],
-						  "required": true
+							"allowedValues": [
+								{
+									"label": "yes",
+									"value": "yes"
+								},
+								{
+									"label": "no",
+									"value": "no"
+								}
+							],
+							"required": true
 						},
 						"visible": true
 					},
@@ -556,42 +579,42 @@
 					}
 				]
 			}
-        ],
-        "outputs": {
-            "fortigateNamePrefix": "[basics('fortigateNamePrefix')]",
-            "fortigateImageSKU": "[basics('fortigateImageSKU')]",
-            "fortigateImageVersion": "[basics('fortigateImageVersion')]",
-            "adminUsername": "[basics('adminUsername')]",
-            "adminPassword": "[basics('adminPassword')]",
-            "location": "[location()]",
-            "instanceType": "[steps('instancetype').instancetypeselection]",
-            "acceleratedNetworking": "[steps('networking').acceleratednetworksection.acceleratednetworking]",
-            "publicIPNewOrExisting": "[steps('publicip').loadbalancerpublicip.newOrExistingOrNone]",
-            "publicIP2NewOrExisting": "[steps('publicip').fgtamgmtpublicip.newOrExistingOrNone]",
-            "publicIP3NewOrExisting": "[steps('publicip').fgtbmgmtpublicip.newOrExistingOrNone]",
-            "publicIPName": "[steps('publicip').loadbalancerpublicip.name]",
-            "publicIPResourceGroup": "[steps('publicip').loadbalancerpublicip.resourceGroup]",
-            "publicIP2Name": "[steps('publicip').fgtamgmtpublicip.name]",
-            "publicIP2ResourceGroup": "[steps('publicip').fgtamgmtpublicip.resourceGroup]",
-            "publicIP3Name": "[steps('publicip').fgtbmgmtpublicip.name]",
-            "publicIP3ResourceGroup": "[steps('publicip').fgtbmgmtpublicip.resourceGroup]",
-            "vnetNewOrExisting": "[steps('networking').virtualnetworksection.virtualnetwork.newOrExisting]",
-            "vnetName": "[steps('networking').virtualnetworksection.virtualnetwork.name]",
-            "vnetResourceGroup": "[steps('networking').virtualnetworksection.virtualnetwork.resourceGroup]",
-            "vnetAddressPrefix": "[steps('networking').virtualnetworksection.virtualnetwork.addressPrefix]",
-            "subnet1Name": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet1.name]",
-            "subnet1Prefix": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet1.addressPrefix]",
-            "subnet2Name": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet2.name]",
-            "subnet2Prefix": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet2.addressPrefix]",
-            "subnet3Name": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet3.name]",
-            "subnet3Prefix": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet3.addressPrefix]",
-            "subnet4Name": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet4.name]",
-            "subnet4Prefix": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet4.addressPrefix]",
-            "subnet5Name": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet5.name]",
+		],
+		"outputs": {
+			"fortigateNamePrefix": "[basics('fortigateNamePrefix')]",
+			"fortigateImageSKU": "[basics('fortigateImageSKU')]",
+			"fortigateImageVersion": "[basics('fortigateImageVersion')]",
+			"adminUsername": "[basics('adminUsername')]",
+			"adminPassword": "[basics('adminPassword')]",
+			"location": "[location()]",
+			"instanceType": "[steps('instancetype').instancetypeselection]",
+			"acceleratedNetworking": "[steps('networking').acceleratednetworksection.acceleratednetworking]",
+			"publicIPNewOrExisting": "[steps('publicip').loadbalancerpublicip.newOrExistingOrNone]",
+			"publicIP2NewOrExisting": "[steps('publicip').fgtamgmtpublicip.newOrExistingOrNone]",
+			"publicIP3NewOrExisting": "[steps('publicip').fgtbmgmtpublicip.newOrExistingOrNone]",
+			"publicIPName": "[steps('publicip').loadbalancerpublicip.name]",
+			"publicIPResourceGroup": "[steps('publicip').loadbalancerpublicip.resourceGroup]",
+			"publicIP2Name": "[steps('publicip').fgtamgmtpublicip.name]",
+			"publicIP2ResourceGroup": "[steps('publicip').fgtamgmtpublicip.resourceGroup]",
+			"publicIP3Name": "[steps('publicip').fgtbmgmtpublicip.name]",
+			"publicIP3ResourceGroup": "[steps('publicip').fgtbmgmtpublicip.resourceGroup]",
+			"vnetNewOrExisting": "[steps('networking').virtualnetworksection.virtualnetwork.newOrExisting]",
+			"vnetName": "[steps('networking').virtualnetworksection.virtualnetwork.name]",
+			"vnetResourceGroup": "[steps('networking').virtualnetworksection.virtualnetwork.resourceGroup]",
+			"vnetAddressPrefix": "[steps('networking').virtualnetworksection.virtualnetwork.addressPrefix]",
+			"subnet1Name": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet1.name]",
+			"subnet1Prefix": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet1.addressPrefix]",
+			"subnet2Name": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet2.name]",
+			"subnet2Prefix": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet2.addressPrefix]",
+			"subnet3Name": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet3.name]",
+			"subnet3Prefix": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet3.addressPrefix]",
+			"subnet4Name": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet4.name]",
+			"subnet4Prefix": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet4.addressPrefix]",
+			"subnet5Name": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet5.name]",
 			"subnet5Prefix": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet5.addressPrefix]",
 			"fortiManager": "[steps('fortimanager').fortimanager]",
 			"fortiManagerIP": "[steps('fortimanager').fortimanagerip]",
 			"fortiManagerSerial": "[steps('fortimanager').fortimanagerserial]"
-        }
-    }
+		}
+	}
 }
