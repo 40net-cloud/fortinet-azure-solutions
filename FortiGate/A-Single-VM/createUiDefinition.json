@@ -386,7 +386,7 @@
 							}
 						},
 						"options": {
-							"hideNone": true,
+							"hideNone": false,
 							"hideDomainNameLabel": true
 						},
 						"visible": true
