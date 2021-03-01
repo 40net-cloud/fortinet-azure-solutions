@@ -37,13 +37,12 @@
       "allowedValues": [
         "6.2.0",
         "6.2.2",
-        "6.2.3",
         "6.2.4",
         "6.2.5",
         "6.4.0",
-        "6.4.1",
         "6.4.2",
         "6.4.3",
+        "6.4.5",
         "latest"
       ],
       "metadata": {
@@ -56,6 +55,14 @@
       "allowedValues": [ "Standard_F1s", "Standard_F2s", "Standard_F4s", "Standard_F8s", "Standard_F16s", "Standard_F1", "Standard_F2", "Standard_F4", "Standard_F8", "Standard_F16", "Standard_F2s_v2", "Standard_F4s_v2", "Standard_F8s_v2", "Standard_F16s_v2", "Standard_F32s_v2", "Standard_DS1_v2", "Standard_DS2_v2", "Standard_DS3_v2", "Standard_DS4_v2", "Standard_DS5_v2", "Standard_D2s_v3", "Standard_D4s_v3", "Standard_D8s_v3", "Standard_D16s_v3", "Standard_D32s_v3"],
       "metadata": {
         "description": "Virtual Machine size selection"
+      }
+    },
+    "acceleratedNetworking": {
+      "type": "string",
+      "defaultValue": "no",
+      "allowedValues": [ "no", "yes" ],
+      "metadata": {
+        "description": "Accelerated Networking enables direct connection between the VM and network card. Only available on 2 CPU D/DSv2 and F/Fs and 4 CPU D/Dsv3, E/Esv3, Fsv2, Lsv2, Ms/Mms and Ms/Mmsv2"
       }
     },
     "publicIPNewOrExisting": {
@@ -81,17 +88,6 @@
       "defaultValue": "",
       "metadata": {
         "description": "Resource group to which the Public IP belongs."
-      }
-    },
-    "publicIPAddressType": {
-      "type": "string",
-      "defaultValue": "Static",
-      "allowedValues": [
-        "Dynamic",
-        "Static"
-      ],
-      "metadata": {
-        "description": "Type of public IP address"
       }
     },
     "vnetNewOrExisting": {
@@ -168,6 +164,31 @@
         "description": "Subnet 3 Prefix"
       }
     },
+    "fortiManager": {
+      "type": "string",
+      "defaultValue": "no",
+      "allowedValues": [
+        "yes",
+        "no"
+      ],
+      "metadata": {
+        "description": "Connect to FortiManager"
+      }
+    },
+    "fortiManagerIP": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "FortiManager IP or DNS name to connect to on port TCP/541"
+      }
+    },
+    "fortiManagerSerial": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "FortiManager serial number to add the deployed FortiGate into the FortiManager"
+      }
+    },
     "location": {
       "type": "string",
       "defaultValue": "[resourceGroup().location]",
@@ -185,6 +206,8 @@
     }
   },
   "variables": {
+    "acceleratedNetworking": "[if(equals(parameters('acceleratedNetworking'),'no'),'false','true')]",
+
     "imagePublisher": "fortinet",
     "imageOffer": "fortinet_fortigate-vm_v5",
 
@@ -197,8 +220,9 @@
 
     "fgaVmName": "[concat(parameters('fortigateNamePrefix'),'-FGT-A')]",
     "fgbVmName": "[concat(parameters('fortigateNamePrefix'),'-FGT-B')]",
-    "fgaCustomData": "[base64(concat('config system sdn-connector\nedit AzureSDN\nset type azure\nend\nend\nconfig system probe-response\n set mode http-probe\n end\n config router static\n edit 1\n set gateway ', variables('sn1GatewayIP'), '\n set device port1\n next\n edit 2\n set dst ', parameters('vnetAddressPrefix'), '\n set gateway ', variables('sn2GatewayIP'), '\n set device port2\n next\n edit 3\nset dst 168.63.129.16 255.255.255.255\nset device port2\n set gateway ', variables ('sn2GatewayIP'), '\n next\nedit 4\nset dst 168.63.129.16 255.255.255.255\nset device port1\n set gateway ', variables ('sn1GatewayIP'), '\n next\n end\n config system interface\n edit port1\n set mode static\n set ip ', variables('sn1IPfga'), '/', variables('sn1CIDRmask'), '\n set description external\n set allowaccess ping ssh https probe-response\n next\n edit port2\n set mode static\n set ip ', variables('sn2IPfga'), '/', variables('sn2CIDRmask'), '\n set description internal\n set allowaccess ping ssh https probe-response\n next\n end'))]",
-    "fgbCustomData": "[base64(concat('config system sdn-connector\nedit AzureSDN\nset type azure\nend\nend\nconfig system probe-response\n set mode http-probe\n end\n config router static\n edit 1\n set gateway ', variables('sn1GatewayIP'), '\n set device port1\n next\n edit 2\n set dst ', parameters('vnetAddressPrefix'), '\n set gateway ', variables('sn2GatewayIP'), '\n set device port2\n next\n edit 3\nset dst 168.63.129.16 255.255.255.255\nset device port2\n set gateway ', variables ('sn2GatewayIP'), '\n next\nedit 4\nset dst 168.63.129.16 255.255.255.255\nset device port1\n set gateway ', variables ('sn1GatewayIP'), '\n next\n end\n config system interface\n edit port1\n set mode static\n set ip ', variables('sn1IPfgb'), '/', variables('sn1CIDRmask'), '\n set description external\n set allowaccess ping ssh https probe-response\n next\n edit port2\n set mode static\n set ip ', variables('sn2IPfgb'), '/', variables('sn2CIDRmask'), '\n set description internal\n set allowaccess ping ssh https probe-response\n next\n end'))]",
+    "fmgCustomData": "[if(equals(parameters('fortiManager'),'yes'),concat('\nconfig system central-management\nset type fortimanager\n set fmg ',parameters('fortiManagerIP'),'\nset serial-number ', parameters('fortiManagerSerial'), '\nend\n'),'')]",
+    "fgaCustomData": "[base64(concat('config system sdn-connector\nedit AzureSDN\nset type azure\nend\nend\nconfig system probe-response\n set mode http-probe\n end\n config router static\n edit 1\n set gateway ', variables('sn1GatewayIP'), '\n set device port1\n next\n edit 2\n set dst ', parameters('vnetAddressPrefix'), '\n set gateway ', variables('sn2GatewayIP'), '\n set device port2\n next\n edit 3\nset dst 168.63.129.16 255.255.255.255\nset device port2\n set gateway ', variables ('sn2GatewayIP'), '\n next\nedit 4\nset dst 168.63.129.16 255.255.255.255\nset device port1\n set gateway ', variables ('sn1GatewayIP'), '\n next\n end\n config system interface\n edit port1\n set mode static\n set ip ', variables('sn1IPfga'), '/', variables('sn1CIDRmask'), '\n set description external\n set allowaccess ping ssh https probe-response\n next\n edit port2\n set mode static\n set ip ', variables('sn2IPfga'), '/', variables('sn2CIDRmask'), '\n set description internal\n set allowaccess ping ssh https probe-response\n next\n end', variables('fmgCustomData')))]",
+    "fgbCustomData": "[base64(concat('config system sdn-connector\nedit AzureSDN\nset type azure\nend\nend\nconfig system probe-response\n set mode http-probe\n end\n config router static\n edit 1\n set gateway ', variables('sn1GatewayIP'), '\n set device port1\n next\n edit 2\n set dst ', parameters('vnetAddressPrefix'), '\n set gateway ', variables('sn2GatewayIP'), '\n set device port2\n next\n edit 3\nset dst 168.63.129.16 255.255.255.255\nset device port2\n set gateway ', variables ('sn2GatewayIP'), '\n next\nedit 4\nset dst 168.63.129.16 255.255.255.255\nset device port1\n set gateway ', variables ('sn1GatewayIP'), '\n next\n end\n config system interface\n edit port1\n set mode static\n set ip ', variables('sn1IPfgb'), '/', variables('sn1CIDRmask'), '\n set description external\n set allowaccess ping ssh https probe-response\n next\n edit port2\n set mode static\n set ip ', variables('sn2IPfgb'), '/', variables('sn2CIDRmask'), '\n set description internal\n set allowaccess ping ssh https probe-response\n next\n end', variables('fmgCustomData')))]",
 
     "routeTable3Name": "[concat(parameters('fortigateNamePrefix'),'-',parameters('subnet3Name'),'-','RouteTable')]",
     "routeTable3Id": "[resourceId('Microsoft.Network/routeTables',variables('routeTable3Name'))]",
@@ -284,7 +308,7 @@
       }
     },
     {
-      "apiVersion": "2019-12-01",
+      "apiVersion": "2019-07-01",
       "type": "Microsoft.Compute/availabilitySets",
       "name": "[variables('availabilitySetName')]",
       "location": "[parameters('location')]",
@@ -480,7 +504,7 @@
         "name": "Standard"
       },
       "properties": {
-        "publicIPAllocationMethod": "[parameters('publicIPAddressType')]"
+        "publicIPAllocationMethod": "static"
       }
     },
     {
@@ -657,6 +681,7 @@
           }
         ],
         "enableIPForwarding": true,
+        "enableAcceleratedNetworking": "[variables('acceleratedNetworking')]",
         "networkSecurityGroup": {
           "id": "[variables('nsgId')]"
         }
@@ -703,6 +728,7 @@
           }
         ],
         "enableIPForwarding": true,
+        "enableAcceleratedNetworking": "[variables('acceleratedNetworking')]",
         "networkSecurityGroup": {
           "id": "[variables('nsgId')]"
         }
@@ -738,7 +764,11 @@
             }
           }
         ],
-        "enableIPForwarding": true
+        "enableIPForwarding": true,
+        "enableAcceleratedNetworking": "[variables('acceleratedNetworking')]",
+        "networkSecurityGroup": {
+          "id": "[variables('nsgId')]"
+        }
       }
     },
     {
@@ -772,11 +802,15 @@
             }
           }
         ],
-        "enableIPForwarding": true
+        "enableIPForwarding": true,
+        "enableAcceleratedNetworking": "[variables('acceleratedNetworking')]",
+        "networkSecurityGroup": {
+          "id": "[variables('nsgId')]"
+        }
       }
     },
     {
-      "apiVersion": "2019-12-01",
+      "apiVersion": "2019-07-01",
       "type": "Microsoft.Compute/virtualMachines",
       "name": "[variables('fgaVmName')]",
       "location": "[parameters('location')]",
@@ -845,7 +879,7 @@
       }
     },
     {
-      "apiVersion": "2019-12-01",
+      "apiVersion": "2019-07-01",
       "type": "Microsoft.Compute/virtualMachines",
       "name": "[variables('fgbVmName')]",
       "location": "[parameters('location')]",
