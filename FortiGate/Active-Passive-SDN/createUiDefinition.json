@@ -43,7 +43,7 @@
 				"constraints": {
 					"required": true,
 					"regex": "^(?:(?=.*[a-z])(?:(?=.*[A-Z])(?=.*[\\d\\W])|(?=.*\\W)(?=.*\\d))|(?=.*\\W)(?=.*[A-Z])(?=.*\\d)).{12,}$",
-					"validationMessage": "The password must be between 12 characters or longer, and contain characters from at least 3 of the following groups: uppercase characters, lowercase characters, numbers, and special characters excluding '\\' or '-'."
+					"validationMessage": "The password must be between 12 characters and 72 characters, and contain characters from at least 3 of the following 4 complexity requirements: uppercase characters, lowercase characters, numbers, and special characters (regex match [\\W_])."
 				},
 				"options": {
 					"hideConfirmation": false
@@ -303,7 +303,7 @@
 								"visible": true,
 								"options": {
 									"icon": "Info",
-									"text": "The internal subnet is a transit subnet containing only the FortiGate interfaces for traffic to and from the internal networks. Internal systems should be installed in a protected subnet with user defined route configuration.",
+									"text": "The external subnet will have a public IP attached to the FortiGate network interface of the primary FortiGate. The SDN connector after configuration will, on failover, move the public IP to the secondary FortiGate. The internal subnet is a transit subnet containing only the FortiGate interfaces for traffic to and from the internal networks. Internal systems should be installed in a protected subnet with user defined route configuration.",
 									"uri": "https://github.com/fortinet/azure-templates/tree/main/FortiGate/Active-Passive-ELB-ILB"
 								}
 							}
@@ -598,6 +598,9 @@
 			"publicIP2ResourceGroup": "[steps('publicip').fgtamgmtpublicip.resourceGroup]",
 			"publicIP3Name": "[steps('publicip').fgtbmgmtpublicip.name]",
 			"publicIP3ResourceGroup": "[steps('publicip').fgtbmgmtpublicip.resourceGroup]",
+			"publicIPAddressType": "[steps('publicip').loadbalancerpublicip.publicIPAllocationMethod]",
+			"publicIP2AddressType": "[steps('publicip').fgtamgmtpublicip.publicIPAllocationMethod]",
+			"publicIP3AddressType": "[steps('publicip').fgtbmgmtpublicip.publicIPAllocationMethod]",
 			"vnetNewOrExisting": "[steps('networking').virtualnetworksection.virtualnetwork.newOrExisting]",
 			"vnetName": "[steps('networking').virtualnetworksection.virtualnetwork.name]",
 			"vnetResourceGroup": "[steps('networking').virtualnetworksection.virtualnetwork.resourceGroup]",
