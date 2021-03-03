@@ -37,13 +37,12 @@
       "allowedValues": [
         "6.2.0",
         "6.2.2",
-        "6.2.3",
         "6.2.4",
         "6.2.5",
         "6.4.0",
-        "6.4.1",
         "6.4.2",
         "6.4.3",
+        "6.4.5",
         "latest"
       ],
       "metadata": {
@@ -74,7 +73,7 @@
         "existing"
       ],
       "metadata": {
-        "description": "Identify if to use a public IP, and if so whether it's new"
+        "description": "Public IP for the Load Balancer for inbound and outbound data of the FortiGate VMs"
       }
     },
     "publicIP2NewOrExisting": {
@@ -82,10 +81,11 @@
       "defaultValue": "new",
       "allowedValues": [
         "new",
-        "existing"
+        "existing",
+        "none"
       ],
       "metadata": {
-        "description": "Whether to use a public IP and if so whether it is new"
+        "description": "Public IP for management of the FortiGate A. This deployment uses a Standard SKU Azure Load Balancer and requires a Standard SKU public IP. Microsoft Azure offers a migration path from a basic to standard SKU public IP. The management IP's for both FortiGate can be set to none. If no alternative internet access is provided, the SDN Connector functionality for dynamic objects will not work.",
       }
     },
     "publicIP3NewOrExisting": {
@@ -93,10 +93,11 @@
       "defaultValue": "new",
       "allowedValues": [
         "new",
-        "existing"
+        "existing",
+        "none"
       ],
       "metadata": {
-        "description": "Whether to use a public IP and if so whether it is new"
+        "description": "Public IP for management of the FortiGate B. This deployment uses a Standard SKU Azure Load Balancer and requires a Standard SKU public IP. Microsoft Azure offers a migration path from a basic to standard SKU public IP. The management IP's for both FortiGate can be set to none. If no alternative internet access is provided, the SDN Connector functionality for both HA failover and dynamic objects will not work.",
       }
     },
     "publicIPName": {
@@ -981,9 +982,7 @@
             "properties": {
               "privateIPAllocationMethod": "Static",
               "privateIPAddress": "[variables('sn4IPfga')]",
-              "publicIPAddress": {
-                "id": "[variables('publicIP2Id')]"
-              },
+              "publicIPAddress": "[if(not(equals(parameters('publicIpNewOrExisting'), 'none')), variables('publicIP2Id') , json('null'))]",
               "subnet": {
                 "id": "[variables('subnet4Id')]"
               }
@@ -1015,9 +1014,7 @@
             "properties": {
               "privateIPAllocationMethod": "Static",
               "privateIPAddress": "[variables('sn4IPfgb')]",
-              "publicIPAddress": {
-                "id": "[variables('publicIP3Id')]"
-              },
+              "publicIPAddress": "[if(not(equals(parameters('publicIpNewOrExisting'), 'none')), variables('publicIP3Id') , json('null'))]",
               "subnet": {
                 "id": "[variables('subnet4Id')]"
               }
