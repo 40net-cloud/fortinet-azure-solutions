@@ -102,10 +102,6 @@
 							"value": "6.2.2"
 						},
 						{
-							"label": "6.2.3",
-							"value": "6.2.3"
-						},
-						{
 							"label": "6.2.4",
 							"value": "6.2.4"
 						},
@@ -118,16 +114,16 @@
 							"value": "6.4.0"
 						},
 						{
-							"label": "6.4.1",
-							"value": "6.4.1"
-						},
-						{
 							"label": "6.4.2",
 							"value": "6.4.2"
 						},
 						{
 							"label": "6.4.3",
 							"value": "6.4.3"
+						},
+						{
+							"label": "6.4.5",
+							"value": "6.4.5"
 						},
 						{
 							"label": "latest",
@@ -379,6 +375,10 @@
 						"toolTip": {
 							"publicIpAddress": "Public IP attached to FortiGate VM",
 							"domainNameLabel": "DNS name linked to this public IP"
+						},
+						"defaultValue": {
+							"publicIpAddressName": "FGTPublicIP",
+							"domainNameLabel": "mydomain"
 						},
 						"constraints": {
 							"required": {
