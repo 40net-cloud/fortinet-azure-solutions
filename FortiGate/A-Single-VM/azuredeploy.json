@@ -429,7 +429,9 @@
             "properties": {
               "privateIPAddress": "[variables('sn1IPfga')]",
               "privateIPAllocationMethod": "Static",
-              "publicIPAddress": "[if(not(equals(parameters('publicIpNewOrExisting'), 'none')), variables('publicIPId') , json('null'))]",
+              "publicIPAddress": {
+                "id": "[variables('publicIPId')]",
+              },
               "subnet": {
                 "id": "[variables('subnet1Id')]"
               }
