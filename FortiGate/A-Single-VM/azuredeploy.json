@@ -430,7 +430,7 @@
               "privateIPAddress": "[variables('sn1IPfga')]",
               "privateIPAllocationMethod": "Static",
               "publicIPAddress": {
-                "id": "[variables('publicIPId')]",
+                "id": "[variables('publicIPId')]"
               },
               "subnet": {
                 "id": "[variables('subnet1Id')]"
