@@ -68,14 +68,18 @@
     "publicIPNewOrExisting": {
       "type": "string",
       "defaultValue": "new",
-      "allowedValues": [ "new", "existing", "none" ],
+      "allowedValues": [
+        "new",
+        "existing",
+        "none"
+      ],
       "metadata": {
         "description": "Choose between an existing or new public IP for the External Azure Load Balancer"
       }
     },
     "publicIPName": {
       "type": "string",
-      "defaultValue": "FGTPublicIP",
+      "defaultValue": "",
       "metadata": {
         "description": "Name of Public IP address element"
       }
@@ -146,7 +150,7 @@
     },
     "subnet2Name": {
       "type": "string",
-      "defaultValue": "InternalSubnet",
+      "defaultValue": "TransitSubnet",
       "metadata": {
         "description": "Internal Subnet"
       }

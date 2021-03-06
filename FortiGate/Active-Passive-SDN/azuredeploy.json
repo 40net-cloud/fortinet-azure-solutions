@@ -62,7 +62,8 @@
       "defaultValue": "new",
       "allowedValues": [
         "new",
-        "existing"
+        "existing",
+        "none"
       ],
       "metadata": {
         "description": "Identify if to use a public IP, and if so whether it's new"
@@ -73,7 +74,8 @@
       "defaultValue": "new",
       "allowedValues": [
         "new",
-        "existing"
+        "existing",
+        "none"
       ],
       "metadata": {
         "description": "Whether to use a public IP and if so whether it is new"
@@ -84,7 +86,8 @@
       "defaultValue": "new",
       "allowedValues": [
         "new",
-        "existing"
+        "existing",
+        "none"
       ],
       "metadata": {
         "description": "Whether to use a public IP and if so whether it is new"
@@ -191,7 +194,7 @@
     },
     "subnet2Name": {
       "type": "string",
-      "defaultValue": "InternalSubnet",
+      "defaultValue": "TransitSubnet",
       "metadata": {
         "description": "Subnet 2 Name"
       }
@@ -226,7 +229,7 @@
     },
     "subnet4Prefix": {
       "type": "string",
-      "defaultValue": "172.16.136.192/27",
+      "defaultValue": "172.16.136.192/26",
       "metadata": {
         "description": "Subnet 4 Prefix"
       }
@@ -299,13 +302,13 @@
 
     "publicIPName": "[if(equals(parameters('publicIPName'),''),concat(parameters('fortiGateNamePrefix'),'-FGT-PIP'),parameters('publicIPName'))]",
     "publicIPId": "[if(equals(parameters('publicIPNewOrExisting'),'new'),resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPName')),resourceId(parameters('publicIPResourceGroup'),'Microsoft.Network/publicIPAddresses',variables('publicIPName')))]",
-    "publicIpAddressId": { "id": "[variables('publicIPId')]" },
+    "publicIPAddressId": { "id": "[variables('publicIPId')]" },
     "publicIP2Name": "[if(equals(parameters('publicIP2Name'),''),concat(parameters('fortiGateNamePrefix'),'-FGT-A-MGMT-PIP'),parameters('publicIP2Name'))]",
     "publicIP2Id": "[if(equals(parameters('publicIP2NewOrExisting'),'new'),resourceId('Microsoft.Network/publicIPAddresses',variables('publicIP2Name')),resourceId(parameters('publicIP2ResourceGroup'),'Microsoft.Network/publicIPAddresses',variables('publicIP2Name')))]",
-    "publicIpAddress2Id": { "id": "[variables('publicIP2Id')]" },
+    "publicIPAddress2Id": { "id": "[variables('publicIP2Id')]" },
     "publicIP3Name": "[if(equals(parameters('publicIP3Name'),''),concat(parameters('fortiGateNamePrefix'),'-FGT-B-MGMT-PIP'),parameters('publicIP3Name'))]",
     "publicIP3Id": "[if(equals(parameters('publicIP3NewOrExisting'),'new'),resourceId('Microsoft.Network/publicIPAddresses',variables ('publicIP3Name')),resourceId(parameters('publicIP3ResourceGroup'),'Microsoft.Network/publicIPAddresses',variables('publicIP3Name')))]",
-    "publicIpAddress3Id": { "id": "[variables('publicIP3Id')]" },
+    "publicIPAddress3Id": { "id": "[variables('publicIP3Id')]" },
 
     "NSGName": "[concat(parameters('fortigateNamePrefix'),'-',uniqueString(resourceGroup().id),'-NSG')]",
     "NSGId": "[resourceID('Microsoft.Network/networkSecurityGroups/',variables('NSGName'))]",
