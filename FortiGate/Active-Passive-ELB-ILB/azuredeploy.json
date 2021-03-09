@@ -297,6 +297,9 @@
     }
   },
   "variables": {
+    "imagePublisher": "fortinet",
+    "imageOffer": "fortinet_fortigate-vm_v5",
+
     "fgAvailabilitySetName": "[concat(parameters('fortiGateNamePrefix'),'-AvailabilitySet')]",
     "fgAvailabilitySetId": "[resourceId('Microsoft.Compute/availabilitySets', variables('fgAvailabilitySetName'))]",
 
@@ -1043,8 +1046,8 @@
       "location": "[parameters('location')]",
       "plan": {
         "name": "[parameters('fortiGateImageSKU')]",
-        "publisher": "fortinet",
-        "product": "fortinet_fortigate-vm_v5"
+        "publisher": "[variables('imagePublisher')]",
+        "product": "[variables('imageOffer')]"
       },
       "dependsOn": [
         "[variables('fgaNic1Id')]",
@@ -1067,8 +1070,8 @@
         },
         "storageProfile": {
           "imageReference": {
-            "publisher": "fortinet",
-            "offer": "fortinet_fortigate-vm_v5",
+            "publisher": "[variables('imagePublisher')]",
+            "offer": "[variables('imageOffer')]",
             "sku": "[parameters('fortiGateImageSKU')]",
             "version": "[parameters('FortigateImageVersion')]"
           },
@@ -1126,8 +1129,8 @@
       "location": "[parameters('location')]",
       "plan": {
         "name": "[parameters('fortiGateImageSKU')]",
-        "publisher": "fortinet",
-        "product": "fortinet_fortigate-vm_v5"
+        "publisher": "[variables('imagePublisher')]",
+        "product": "[variables('imageOffer')]"
       },
       "dependsOn": [
         "[variables('fgbNic1Id')]",
@@ -1150,8 +1153,8 @@
         },
         "storageProfile": {
           "imageReference": {
-            "publisher": "fortinet",
-            "offer": "fortinet_fortigate-vm_v5",
+            "publisher": "[variables('imagePublisher')]",
+            "offer": "[variables('imageOffer')]",
             "sku": "[parameters('fortiGateImageSKU')]",
             "version": "[parameters('FortigateImageVersion')]"
           },

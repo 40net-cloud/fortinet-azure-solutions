@@ -209,7 +209,7 @@
 								"type": "Microsoft.Common.TextBlock",
 								"visible": true,
 								"options": {
-									"text": "Create a new or select an existing virtual network with the required subnets. The internal subnet is a transit subnet containing only the FortiGate interfaces. Servers can be installed in a protected subnet with user defined routing configuration."
+									"text": "Create a new or select an existing virtual network with the required subnets."
 								}
 							},
 							{
@@ -271,9 +271,9 @@
 										}
 									},
 									"subnet4": {
-										"label": "Management subnet",
+										"label": "HA Management subnet",
 										"defaultValue": {
-											"name": "MGMTSubnet",
+											"name": "HAMGMTSubnet",
 											"addressPrefixSize": "/26"
 										},
 										"constraints": {
@@ -303,7 +303,7 @@
 								"visible": true,
 								"options": {
 									"icon": "Info",
-									"text": "The internal subnet is a transit subnet containing only the FortiGate interfaces for traffic to and from the internal networks. Internal systems should be installed in a protected subnet with user defined route configuration.",
+									"text": "The selected subnets should be empty and will only be used by the FortiGate VMs network interfaces. The internal subnet is a transit subnet containing only the FortiGate interfaces for traffic to and from the internal networks. Internal systems should be installed in a protected subnet with user defined route configuration.",
 									"uri": "https://github.com/fortinet/azure-templates/tree/main/FortiGate/Active-Passive-ELB-ILB"
 								}
 							}
@@ -579,9 +579,9 @@
 			}
 		],
 		"outputs": {
-			"fortigateNamePrefix": "[basics('fortigateNamePrefix')]",
-			"fortigateImageSKU": "[basics('fortigateImageSKU')]",
-			"fortigateImageVersion": "[basics('fortigateImageVersion')]",
+			"fortiGateNamePrefix": "[basics('fortigateNamePrefix')]",
+			"fortiGateImageSKU": "[basics('fortigateImageSKU')]",
+			"fortiGateImageVersion": "[basics('fortigateImageVersion')]",
 			"adminUsername": "[basics('adminUsername')]",
 			"adminPassword": "[basics('adminPassword')]",
 			"location": "[location()]",
