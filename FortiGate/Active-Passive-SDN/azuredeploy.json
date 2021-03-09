@@ -5,7 +5,7 @@
     "adminUsername": {
       "type": "string",
       "metadata": {
-        "description": "Username for the Virtual Machine."
+        "description": "Usernae for the Virtual Machine."
       }
     },
     "adminPassword": {
@@ -248,6 +248,31 @@
         "description": "Subnet 5 Prefix"
       }
     },
+    "fortiManager": {
+      "type": "string",
+      "defaultValue": "no",
+      "allowedValues": [
+        "yes",
+        "no"
+      ],
+      "metadata": {
+        "description": "Connect to FortiManager"
+      }
+    },
+    "fortiManagerIP": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "FortiManager IP or DNS name to connect to on port TCP/541"
+      }
+    },
+    "fortiManagerSerial": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "FortiManager serial number to add the deployed FortiGate into the FortiManager"
+      }
+    },
     "location": {
       "type": "string",
       "defaultValue": "[resourceGroup().location]",
@@ -265,6 +290,9 @@
     }
   },
   "variables": {
+    "imagePublisher": "fortinet",
+    "imageOffer": "fortinet_fortigate-vm_v5",
+
     "fgAvailabilitySetName": "[concat(parameters('fortigateNamePrefix'),'-AvailabilitySet')]",
     "fgAvailabilitySetId": "[resourceId('Microsoft.Compute/availabilitySets', variables('fgAvailabilitySetName'))]",
 
@@ -276,6 +304,9 @@
 
     "vmName": "[concat(parameters('fortigateNamePrefix'),'-FGT-A')]",
     "vm2Name": "[concat(parameters('fortigateNamePrefix'),'-FGT-B')]",
+    "fmgCustomData": "[if(equals(parameters('fortiManager'),'yes'),concat('\nconfig system central-management\nset type fortimanager\n set fmg ',parameters('fortiManagerIP'),'\nset serial-number ', parameters('fortiManagerSerial'), '\nend\n'),'')]",
+    "fgaCustomData": "[base64(concat('config system sdn-connector\nedit AzureSDN\nset type azure\nnext\nend\nconfig router static\n edit 1\n set gateway ', variables('sn1GatewayIP'), '\n set device port1\n next\n edit 2\n set dst ', parameters('vnetAddressPrefix'), '\n set gateway ', variables('sn2GatewayIP'), '\n set device port2\n next\n edit 3\nset dst 168.63.129.16 255.255.255.255\nset device port2\n set gateway ', variables ('sn2GatewayIP'), '\n next\nedit 4\nset dst 168.63.129.16 255.255.255.255\nset device port1\n set gateway ', variables ('sn1GatewayIP'), '\n next\n end\n config system interface\n edit port1\n set mode static\n set ip ', variables('sn1IPfga'), '/', variables('sn1CIDRmask'), '\n set description external\n next\n edit port2\n set mode static\n set ip ', variables('sn2IPfga'), '/', variables('sn2CIDRmask'), '\n set description internal\n next\n edit port3\n set mode static\n set ip ', variables('sn3IPfga'), '/', variables('sn3CIDRmask'), '\n set description hasyncport\n next\n edit port4\n set mode static\n set ip ', variables('sn4IPfga'), '/', variables('sn4CIDRmask'), '\n set description management\n set allowaccess ping https ssh ftm\n next\n end\n config system ha\n set group-name AzureHA\n set mode a-p\n set hbdev port3 100\n set session-pickup enable\n set session-pickup-connectionless enable\n set ha-mgmt-status enable\n config ha-mgmt-interfaces\n edit 1\n set interface port4\n set gateway ', variables('sn4GatewayIP'),'\n next\n end\n set override disable\n set priority 1\n set unicast-hb enable\n set unicast-hb-peerip ', variables('sn3IPfga'), '\n end', variables('fmgCustomData')))]",
+    "fgbCustomData": "[base64(concat('config system sdn-connector\nedit AzureSDN\nset type azure\nnext\nend\nconfig router static\n edit 1\n set gateway ', variables('sn1GatewayIP'), '\n set device port1\n next\n edit 2\n set dst ', parameters('vnetAddressPrefix'), '\n set gateway ', variables('sn2GatewayIP'), '\n set device port2\n next\n edit 3\nset dst 168.63.129.16 255.255.255.255\nset device port2\n set gateway ', variables ('sn2GatewayIP'), '\n next\nedit 4\nset dst 168.63.129.16 255.255.255.255\nset device port1\n set gateway ', variables ('sn1GatewayIP'), '\n next\n end\n config system interface\n edit port1\n set mode static\n set ip ', variables('sn1IPfgb'), '/', variables('sn1CIDRmask'), '\n set description external\n next\n edit port2\n set mode static\n set ip ', variables('sn2IPfgb'), '/', variables('sn2CIDRmask'), '\n set description internal\n next\n edit port3\n set mode static\n set ip ', variables('sn3IPfgb'), '/', variables('sn3CIDRmask'), '\n set description hasyncport\n next\n edit port4\n set mode static\n set ip ', variables('sn4IPfgb'), '/', variables('sn4CIDRmask'), '\n set description management\n set allowaccess ping https ssh ftm\n next\n end\n config system ha\n set group-name AzureHA\n set mode a-p\n set hbdev port3 100\n set session-pickup enable\n set session-pickup-connectionless enable\n set ha-mgmt-status enable\n config ha-mgmt-interfaces\n edit 1\n set interface port4\n set gateway ', variables('sn4GatewayIP'),'\n next\n end\n set override disable\n set priority 1\n set unicast-hb enable\n set unicast-hb-peerip ', variables('sn3IPfga'), '\n end', variables('fmgCustomData')))]",
 
     "routeTableName": "FGTDefaultAPRouteTable",
     "routeTableId": "[resourceId('Microsoft.Network/routeTables',variables('routeTableName'))]",
@@ -814,14 +845,14 @@
       "location": "[parameters('location')]",
       "plan": {
         "name": "[parameters('fortigateImageSKU')]",
-        "publisher": "fortinet",
-        "product": "fortinet_fortigate-vm_v5"
+        "publisher": "[variables('imagePublisher')]",
+        "product": "[variables('imageOffer')]"
       },
       "dependsOn": [
-        "[variables('fgaNic1Name')]",
-        "[variables('fgaNic2Name')]",
-        "[variables('fgaNic3Name')]",
-        "[variables('fgaNic4Name')]"
+        "[variables('fgaNic1Id')]",
+        "[variables('fgaNic2Id')]",
+        "[variables('fgaNic3Id')]",
+        "[variables('fgaNic4Id')]"
       ],
       "properties": {
         "hardwareProfile": {
@@ -834,12 +865,12 @@
           "computerName": "[variables('fgaVmName')]",
           "adminUsername": "[parameters('adminUsername')]",
           "adminPassword": "[parameters('adminPassword')]",
-          "customData": "[base64(concat('config system sdn-connector\nedit AzureSDN\nset type azure\nend\nconfig router static\n edit 1\n set gateway ', variables('sn1GatewayIP'), '\n set device port1\n next\n edit 2\n set dst ', parameters('vnetAddressPrefix'), '\n set gateway ', variables('sn2GatewayIP'), '\n set device port2\n next\n edit 3\nset dst 168.63.129.16 255.255.255.255\nset device port2\n set gateway ', variables ('sn2GatewayIP'), '\n next\nedit 4\nset dst 168.63.129.16 255.255.255.255\nset device port1\n set gateway ', variables ('sn1GatewayIP'), '\n next\n end\n config system interface\n edit port1\n set mode static\n set ip ',  variables('sn1IPfga'), '/', variables('sn1CIDRmask'), '\n set description external\n next\n edit port2\n set mode static\n set ip ', variables('sn2IPfga'), '/', variables('sn2CIDRmask'), '\n set description internal\n next\n edit port3\n set mode static\n set ip ', variables('sn3IPfga'), '/', variables('sn3CIDRmask'), '\n set description hasyncport\n next\n edit port4\n set mode static\n set ip ', variables('sn4IPfga'), '/', variables('sn4CIDRmask'), '\n set description management\n set allowaccess ping https ssh ftm\n next\n end\n config system ha\n set group-name AzureHA\n set mode a-p\n set hbdev port3 100\n set session-pickup enable\n set session-pickup-connectionless enable\n set ha-mgmt-status enable\n config ha-mgmt-interfaces\n edit 1\n set interface port4\n set gateway ', variables('sn4GatewayIP'),'\n next\n end\n set override disable\n set priority 255\n set unicast-hb enable\n set unicast-hb-peerip ', variables('sn3IPfgb'), '\n end'))]"
+          "customData": "[variables('fgaCustomData')]"
         },
         "storageProfile": {
           "imageReference": {
-            "publisher": "fortinet",
-            "offer": "fortinet_fortigate-vm_v5",
+            "publisher": "[variables('imagePublisher')]",
+            "offer": "[variables('imageOffer')]",
             "sku": "[parameters('fortigateImageSKU')]",
             "version": "[parameters('FortigateImageVersion')]"
           },
@@ -897,14 +928,14 @@
       "location": "[parameters('location')]",
       "plan": {
         "name": "[parameters('fortigateImageSKU')]",
-        "publisher": "fortinet",
-        "product": "fortinet_fortigate-vm_v5"
+        "publisher": "[variables('imagePublisher')]",
+        "product": "[variables('imageOffer')]"
       },
       "dependsOn": [
-        "[variables('fgbNic1Name')]",
-        "[variables('fgbNic2Name')]",
-        "[variables('fgbNic3Name')]",
-        "[variables('fgbNic4Name')]"
+        "[variables('fgbNic1Id')]",
+        "[variables('fgbNic2Id')]",
+        "[variables('fgbNic3Id')]",
+        "[variables('fgbNic4Id')]"
       ],
       "properties": {
         "hardwareProfile": {
@@ -917,12 +948,12 @@
           "computerName": "[variables('fgbVmName')]",
           "adminUsername": "[parameters('adminUsername')]",
           "adminPassword": "[parameters('adminPassword')]",
-          "customData": "[base64(concat('config system sdn-connector\nedit AzureSDN\nset type azure\nend\nend\nconfig router static\n edit 1\n set gateway ', variables('sn1GatewayIP'), '\n set device port1\n next\n edit 2\n set dst ', parameters('vnetAddressPrefix'), '\n set gateway ', variables('sn2GatewayIP'), '\n set device port2\n next\n edit 3\nset dst 168.63.129.16 255.255.255.255\nset device port2\n set gateway ', variables ('sn2GatewayIP'), '\n next\nedit 4\nset dst 168.63.129.16 255.255.255.255\nset device port1\n set gateway ', variables ('sn1GatewayIP'), '\n next\n end\n config system interface\n edit port1\n set mode static\n set ip ', variables('sn1IPfgb'), '/', variables('sn1CIDRmask'), '\n set description external\n next\n edit port2\n set mode static\n set ip ', variables('sn2IPfgb'), '/', variables('sn2CIDRmask'), '\n set description internal\n next\n edit port3\n set mode static\n set ip ', variables('sn3IPfgb'), '/', variables('sn3CIDRmask'), '\n set description hasyncport\n next\n edit port4\n set mode static\n set ip ', variables('sn4IPfgb'), '/', variables('sn4CIDRmask'), '\n set description management\n set allowaccess ping https ssh ftm\n next\n end\n config system ha\n set group-name AzureHA\n set mode a-p\n set hbdev port3 100\n set session-pickup enable\n set session-pickup-connectionless enable\n set ha-mgmt-status enable\n config ha-mgmt-interfaces\n edit 1\n set interface port4\n set gateway ', variables('sn4GatewayIP'),'\n next\n end\n set override disable\n set priority 1\n set unicast-hb enable\n set unicast-hb-peerip ', variables('sn3IPfga'), '\n end'))]"
+          "customData": "[variables('fgbCustomData')]"
         },
         "storageProfile": {
           "imageReference": {
-            "publisher": "fortinet",
-            "offer": "fortinet_fortigate-vm_v5",
+            "publisher": "[variables('imagePublisher')]",
+            "offer": "[variables('imageOffer')]",
             "sku": "[parameters('fortigateImageSKU')]",
             "version": "[parameters('FortigateImageVersion')]"
           },
