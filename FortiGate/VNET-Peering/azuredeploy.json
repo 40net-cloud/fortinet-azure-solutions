@@ -37,17 +37,16 @@
       "allowedValues": [
         "6.2.0",
         "6.2.2",
-        "6.2.3",
         "6.2.4",
         "6.2.5",
         "6.4.0",
-        "6.4.1",
         "6.4.2",
         "6.4.3",
+        "6.4.5",
         "latest"
       ],
       "metadata": {
-        "description": "Only 6.0.0 has the A/P HA feature currently"
+        "description": "Only 6.x has the A/P HA feature currently"
       }
     },
     "instanceType": {
@@ -139,17 +138,6 @@
       "defaultValue": "",
       "metadata": {
         "description": "Resource group to which the Public IP belongs"
-      }
-    },
-    "publicIPAddressType": {
-      "type": "string",
-      "defaultValue": "Static",
-      "allowedValues": [
-        "Dynamic",
-        "Static"
-      ],
-      "metadata": {
-        "description": "Type of public IP address"
       }
     },
     "vnetNewOrExisting": {
@@ -504,7 +492,7 @@
   },
   "resources": [
     {
-      "apiVersion": "2019-10-01",
+      "apiVersion": "2019-05-01",
       "name": "pid-2dc4b447-552f-557f-b1cc-2faec6f9f133",
       "type": "Microsoft.Resources/deployments",
       "properties":{
@@ -517,7 +505,7 @@
       }
     },
     {
-      "apiVersion": "2019-12-01",
+      "apiVersion": "2019-07-01",
       "type": "Microsoft.Compute/availabilitySets",
       "name": "[variables('compute_AvailabilitySet_FG_Name')]",
       "tags": {
@@ -750,10 +738,10 @@
           ],
           "comments": "Hub to Spoke 1",
           "properties": {
-              "allowVirtualNetworkAccess": "true",
-              "allowForwardedTraffic": "true",
-              "allowGatewayTransit": "false",
-              "useRemoteGateways": "false",
+              "allowVirtualNetworkAccess": true,
+              "allowForwardedTraffic": true,
+              "allowGatewayTransit": false,
+              "useRemoteGateways": false,
               "remoteVirtualNetwork": {
                   "id": "[variables('vnetIdSpoke1')]"
               }
@@ -771,10 +759,10 @@
           ],
           "comments": "HUB to Spoke 2",
           "properties": {
-              "allowVirtualNetworkAccess": "true",
-              "allowForwardedTraffic": "true",
-              "allowGatewayTransit": "false",
-              "useRemoteGateways": "false",
+              "allowVirtualNetworkAccess": true,
+              "allowForwardedTraffic": true,
+              "allowGatewayTransit": false,
+              "useRemoteGateways": false,
               "remoteVirtualNetwork": {
                   "id": "[variables('vnetIdSpoke2')]"
               }
@@ -821,10 +809,10 @@
           ],
           "comments": "Spoke 1 to Hub",
           "properties": {
-              "allowVirtualNetworkAccess": "true",
-              "allowForwardedTraffic": "true",
-              "allowGatewayTransit": "false",
-              "useRemoteGateways": "false",
+              "allowVirtualNetworkAccess": true,
+              "allowForwardedTraffic": true,
+              "allowGatewayTransit": false,
+              "useRemoteGateways": false,
               "remoteVirtualNetwork": {
                   "id": "[variables('vnetId')]"
               }
@@ -871,10 +859,10 @@
           ],
           "comments": "Spoke 2 to Hub",
           "properties": {
-              "allowVirtualNetworkAccess": "true",
-              "allowForwardedTraffic": "true",
-              "allowGatewayTransit": "false",
-              "useRemoteGateways": "false",
+              "allowVirtualNetworkAccess": true,
+              "allowForwardedTraffic": true,
+              "allowGatewayTransit": false,
+              "useRemoteGateways": false,
               "remoteVirtualNetwork": {
                   "id": "[variables('vnetId')]"
               }
@@ -1003,7 +991,7 @@
         "name": "Standard"
       },
       "properties": {
-        "publicIPAllocationMethod": "[parameters('publicIPAddressType')]"
+        "publicIPAllocationMethod": "Static"
       }
     },
     {
@@ -1020,7 +1008,7 @@
         "name": "Standard"
       },
       "properties": {
-        "publicIPAllocationMethod": "[parameters('publicIPAddressType')]"
+        "publicIPAllocationMethod": "Static"
       }
     },
     {
@@ -1037,7 +1025,7 @@
         "name": "Standard"
       },
       "properties": {
-        "publicIPAllocationMethod": "[parameters('publicIPAddressType')]"
+        "publicIPAllocationMethod": "Static"
       }
     },
     {
@@ -1407,7 +1395,7 @@
     {
       "type": "Microsoft.Compute/virtualMachines",
       "name": "[variables('fgaVmName')]",
-      "apiVersion": "2019-12-01",
+      "apiVersion": "2019-07-01",
       "tags": {
        "provider": "[toUpper(parameters('FortinetTags').provider)]"
       },
@@ -1490,7 +1478,7 @@
     {
       "type": "Microsoft.Compute/virtualMachines",
       "name": "[variables('fgbVmName')]",
-      "apiVersion": "2019-12-01",
+      "apiVersion": "2019-07-01",
       "tags": {
        "provider": "[toUpper(parameters('FortinetTags').provider)]"
       },
