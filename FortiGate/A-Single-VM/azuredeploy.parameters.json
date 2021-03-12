@@ -21,7 +21,7 @@
             "value": "Standard_F2s"
         },
         "acceleratedNetworking": {
-            "value": "no"
+            "value": "false"
         },
         "publicIPNewOrExisting": {
             "value": "new"
