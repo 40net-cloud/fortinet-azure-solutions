@@ -90,7 +90,8 @@ Describe 'FGT A/P SDN' {
         }
 
         It 'Contains the expected parameters' {
-            $expectedTemplateParameters = 'adminPassword',
+            $expectedTemplateParameters = 'acceleratedNetworking',
+                                          'adminPassword',
                                           'adminUsername',
                                           'fortigateImageSKU',
                                           'fortigateImageVersion',
