@@ -225,7 +225,7 @@
 								},
 								"defaultValue": {
 									"name": "FortiGate-VNET",
-									"addressPrefixSize": "/22"
+									"addressPrefixSize": "/21"
 								},
 								"constraints": {
 									"minAddressPrefixSize": "/24"
