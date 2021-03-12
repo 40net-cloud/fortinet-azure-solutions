@@ -79,7 +79,8 @@ Describe 'FGT A/A' {
         }
 
         It 'Contains the expected parameters' {
-            $expectedTemplateParameters = 'adminPassword',
+            $expectedTemplateParameters = 'acceleratedNetworking',
+                                          'adminPassword',
                                           'adminUsername',
                                           'fortiGateImageSKU',
                                           'fortiGateImageVersion',
