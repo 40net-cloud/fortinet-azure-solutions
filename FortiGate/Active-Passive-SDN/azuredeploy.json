@@ -115,6 +115,17 @@
         "description": "Resource group to which the Public IP belongs."
       }
     },
+    "publicIP2AddressSKU": {
+      "type": "string",
+      "defaultValue": "Standard",
+      "allowedValues": [
+        "Standard",
+        "Basic"
+      ],
+      "metadata": {
+        "description": "SKU of public IP address"
+      }
+    },
     "publicIP2AddressType": {
       "type": "string",
       "defaultValue": "Static",
@@ -126,7 +137,6 @@
         "description": "Type of public IP address"
       }
     },
-
     "publicIP2Name": {
       "type": "string",
       "defaultValue": "",
@@ -141,6 +151,17 @@
         "description": "Resource group to which the Public IP belongs."
       }
     },
+    "publicIP3AddressSKU": {
+      "type": "string",
+      "defaultValue": "Standard",
+      "allowedValues": [
+        "Standard",
+        "Basic"
+      ],
+      "metadata": {
+        "description": "SKU of public IP address"
+      }
+    },
     "publicIP3AddressType": {
       "type": "string",
       "defaultValue": "Static",
@@ -152,7 +173,6 @@
         "description": "Type of public IP address"
       }
     },
-
     "publicIP3Name": {
       "type": "string",
       "defaultValue": "",
@@ -165,6 +185,17 @@
       "defaultValue": "",
       "metadata": {
         "description": "Resource group to which the Public IP belongs."
+      }
+    },
+    "publicIPAddressSKU": {
+      "type": "string",
+      "defaultValue": "Standard",
+      "allowedValues": [
+        "Standard",
+        "Basic"
+      ],
+      "metadata": {
+        "description": "SKU of public IP address"
       }
     },
     "publicIPAddressType": {
@@ -575,9 +606,8 @@
       },
       "name": "[variables('publicIPName')]",
       "location": "[parameters('location')]",
-      "sku":
-      {
-        "name": "Standard"
+      "sku": {
+        "name": "[parameters('publicIPAddressSKU')]"
       },
       "properties": {
         "publicIPAllocationMethod": "[parameters('publicIPAddressType')]"
@@ -593,7 +623,7 @@
       "name": "[variables('publicIP2Name')]",
       "location": "[parameters('location')]",
       "sku": {
-        "name": "Standard"
+        "name": "[parameters('publicIP2AddressSKU')]"
       },
       "properties": {
         "publicIPAllocationMethod": "[parameters('publicIP2AddressType')]"
@@ -609,7 +639,7 @@
       "name": "[variables('publicIP3Name')]",
       "location": "[parameters('location')]",
       "sku": {
-        "name": "Standard"
+        "name": "[parameters('publicIP3AddressSKU')]"
       },
       "properties": {
         "publicIPAllocationMethod": "[parameters('publicIP3AddressType')]"
