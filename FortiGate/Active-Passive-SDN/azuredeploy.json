@@ -115,6 +115,18 @@
         "description": "Resource group to which the Public IP belongs."
       }
     },
+    "publicIP2AddressType": {
+      "type": "string",
+      "defaultValue": "Static",
+      "allowedValues": [
+        "Dynamic",
+        "Static"
+      ],
+      "metadata": {
+        "description": "Type of public IP address"
+      }
+    },
+
     "publicIP2Name": {
       "type": "string",
       "defaultValue": "",
@@ -129,6 +141,18 @@
         "description": "Resource group to which the Public IP belongs."
       }
     },
+    "publicIP3AddressType": {
+      "type": "string",
+      "defaultValue": "Static",
+      "allowedValues": [
+        "Dynamic",
+        "Static"
+      ],
+      "metadata": {
+        "description": "Type of public IP address"
+      }
+    },
+
     "publicIP3Name": {
       "type": "string",
       "defaultValue": "",
@@ -572,7 +596,7 @@
         "name": "Standard"
       },
       "properties": {
-        "publicIPAllocationMethod": "[parameters('publicIPAddressType')]"
+        "publicIPAllocationMethod": "[parameters('publicIP2AddressType')]"
       }
     },
     {
@@ -588,7 +612,7 @@
         "name": "Standard"
       },
       "properties": {
-        "publicIPAllocationMethod": "[parameters('publicIPAddressType')]"
+        "publicIPAllocationMethod": "[parameters('publicIP3AddressType')]"
       }
     },
     {

@@ -38,11 +38,17 @@
         "publicIPResourceGroup": {
             "value": ""
         },
+        "publicIP2AddressType": {
+            "value": "Static"
+        },
         "publicIP2Name": {
             "value": ""
         },
         "publicIP2ResourceGroup": {
             "value": ""
+        },
+        "publicIP3AddressType": {
+            "value": "Static"
         },
         "publicIP3Name": {
             "value": ""
