@@ -59,10 +59,10 @@
     },
     "acceleratedNetworking": {
       "type": "string",
-      "defaultValue": "no",
-      "allowedValues": [ "no", "yes" ],
+      "defaultValue": "true",
+      "allowedValues": [ "false", "true" ],
       "metadata": {
-        "description": "Accelerated Networking enables direct connection between the VM and network card. Only available on 2 CPU D/DSv2 and F/Fs and 4 CPU D/Dsv3, E/Esv3, Fsv2, Lsv2, Ms/Mms and Ms/Mmsv2"
+        "description": "Accelerated Networking enables direct connection between the VM and network card. Only available on 2 CPU F/Fs and 4 CPU D/Dsv2, D/Dsv3, E/Esv3, Fsv2, Lsv2, Ms/Mms and Ms/Mmsv2"
       }
     },
     "publicIPNewOrExisting": {
@@ -206,8 +206,6 @@
     }
   },
   "variables": {
-    "acceleratedNetworking": "[if(equals(parameters('acceleratedNetworking'),'no'),'false','true')]",
-
     "imagePublisher": "fortinet",
     "imageOffer": "fortinet_fortigate-vm_v5",
 
@@ -681,7 +679,7 @@
           }
         ],
         "enableIPForwarding": true,
-        "enableAcceleratedNetworking": "[variables('acceleratedNetworking')]",
+        "enableAcceleratedNetworking": "[parameters('acceleratedNetworking')]",
         "networkSecurityGroup": {
           "id": "[variables('nsgId')]"
         }
@@ -728,7 +726,7 @@
           }
         ],
         "enableIPForwarding": true,
-        "enableAcceleratedNetworking": "[variables('acceleratedNetworking')]",
+        "enableAcceleratedNetworking": "[parameters('acceleratedNetworking')]",
         "networkSecurityGroup": {
           "id": "[variables('nsgId')]"
         }
@@ -765,7 +763,7 @@
           }
         ],
         "enableIPForwarding": true,
-        "enableAcceleratedNetworking": "[variables('acceleratedNetworking')]",
+        "enableAcceleratedNetworking": "[parameters('acceleratedNetworking')]",
         "networkSecurityGroup": {
           "id": "[variables('nsgId')]"
         }
@@ -803,7 +801,7 @@
           }
         ],
         "enableIPForwarding": true,
-        "enableAcceleratedNetworking": "[variables('acceleratedNetworking')]",
+        "enableAcceleratedNetworking": "[parameters('acceleratedNetworking')]",
         "networkSecurityGroup": {
           "id": "[variables('nsgId')]"
         }
