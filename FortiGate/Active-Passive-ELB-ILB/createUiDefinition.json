@@ -51,7 +51,7 @@
 				"visible": true
 			},
 			{
-				"name": "fortigateNamePrefix",
+				"name": "fortiGateNamePrefix",
 				"type": "Microsoft.Common.TextBox",
 				"label": "Fortigate Name Prefix",
 				"defaultValue": "",
@@ -64,7 +64,7 @@
 				"visible": true
 			},
 			{
-				"name": "fortigateImageSKU",
+				"name": "fortiGateImageSKU",
 				"type": "Microsoft.Common.DropDown",
 				"label": "Fortigate Image SKU",
 				"defaultValue": "Bring Your Own License",
@@ -85,7 +85,7 @@
 				"visible": true
 			},
 			{
-				"name": "fortigateImageVersion",
+				"name": "fortiGateImageVersion",
 				"type": "Microsoft.Common.DropDown",
 				"label": "Fortigate Image Version",
 				"defaultValue": "latest",
@@ -184,7 +184,7 @@
 						"imageReference": {
 							"publisher": "Fortinet",
 							"offer": "fortinet_fortigate-vm_v5",
-							"sku": "[basics('fortigateImageSKU')]"
+							"sku": "[basics('fortiGateImageSKU')]"
 						},
 						"count": 2,
 						"visible": true
@@ -579,9 +579,9 @@
 			}
 		],
 		"outputs": {
-			"fortiGateNamePrefix": "[basics('fortigateNamePrefix')]",
-			"fortiGateImageSKU": "[basics('fortigateImageSKU')]",
-			"fortiGateImageVersion": "[basics('fortigateImageVersion')]",
+			"fortiGateNamePrefix": "[basics('fortiGateNamePrefix')]",
+			"fortiGateImageSKU": "[basics('fortiGateImageSKU')]",
+			"fortiGateImageVersion": "[basics('fortiGateImageVersion')]",
 			"adminUsername": "[basics('adminUsername')]",
 			"adminPassword": "[basics('adminPassword')]",
 			"location": "[location()]",
