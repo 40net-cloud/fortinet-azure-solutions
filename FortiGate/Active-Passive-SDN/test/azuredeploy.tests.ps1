@@ -93,9 +93,9 @@ Describe 'FGT A/P SDN' {
             $expectedTemplateParameters = 'acceleratedNetworking',
                                           'adminPassword',
                                           'adminUsername',
-                                          'fortigateImageSKU',
-                                          'fortigateImageVersion',
-                                          'fortigateNamePrefix',
+                                          'fortiGateImageSKU',
+                                          'fortiGateImageVersion',
+                                          'fortiGateNamePrefix',
                                           'fortiManager',
                                           'fortiManagerIP',
                                           'fortiManagerSerial',
@@ -150,8 +150,8 @@ Describe 'FGT A/P SDN' {
                      'adminPassword'=$testsResourceGroupName
                      'fortigateNamePrefix'=$testsPrefix
                     }
-        $publicIPName = "FGTAMgmtPublicIP"
-        $publicIP2Name = "FGTBMgmtPublicIP"
+        $publicIPName = "$testsPrefix-FGT-A-MGMT-PIP"
+        $publicIP2Name = "$testsPrefix-FGT-B-MGMT-PIP"
 
         It "Test Deployment" {
             (Test-AzResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName" -TemplateFile "$templateFileName" -TemplateParameterObject $params).Count | Should not BeGreaterThan 0
