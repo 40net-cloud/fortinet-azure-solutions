@@ -8,13 +8,13 @@
         "adminPassword": {
             "value": "## TO BE DEFINED ##"
         },
-        "fortigateNamePrefix": {
+        "fortiGateNamePrefix": {
             "value": "## TO BE DEFINED ##"
         },
-        "fortigateImageSKU": {
+        "fortiGateImageSKU": {
             "value": "fortinet_fg-vm"
         },
-        "fortigateImageVersion": {
+        "fortiGateImageVersion": {
             "value": "latest"
         },
         "instanceType": {
@@ -38,6 +38,9 @@
         "publicIPResourceGroup": {
             "value": ""
         },
+        "publicIP2AddressSKU": {
+            "value": "Standard"
+        },
         "publicIP2AddressType": {
             "value": "Static"
         },
@@ -47,6 +50,9 @@
         "publicIP2ResourceGroup": {
             "value": ""
         },
+        "publicIP3AddressSKU": {
+            "value": "Standard"
+        },
         "publicIP3AddressType": {
             "value": "Static"
         },
@@ -55,6 +61,9 @@
         },
         "publicIP3ResourceGroup": {
             "value": ""
+        },
+        "publicIPAddressSKU": {
+            "value": "Standard"
         },
         "publicIPAddressType": {
             "value": "Static"
