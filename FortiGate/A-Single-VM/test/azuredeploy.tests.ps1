@@ -146,7 +146,7 @@ Describe 'FGT Single VM' {
                 Write-Host ("Host: " + $fgt)
 
                 $output = sshpass -p "$testsResourceGroupName" ssh -t -o StrictHostKeyChecking=no $testsAdminUsername@$fgt 'show system interface'
-                Write-Host ("Output: " + $output)
+                "Output: " + $output
             }
         }
 
