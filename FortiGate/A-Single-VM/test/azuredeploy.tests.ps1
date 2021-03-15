@@ -76,6 +76,7 @@ Describe 'FGT Single VM' {
             $expectedTemplateParameters = 'acceleratedNetworking',
                                           'adminPassword',
                                           'adminUsername',
+                                          'fortiGateAditionalCustomData',
                                           'fortiGateImageSKU',
                                           'fortiGateImageVersion',
                                           'fortiGateNamePrefix',

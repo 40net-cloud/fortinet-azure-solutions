@@ -49,6 +49,12 @@
         "description": "Only 6.0.0 has the A/P HA feature currently"
       }
     },
+    "fortiGateAditionalCustomData": {
+      "type": "string",
+      "metadata": {
+        "description": "The ARM template provides a basic configuration. Additional configuration can be added here."
+      }
+    },
     "instanceType": {
       "type": "string",
       "defaultValue": "Standard_F2s",
@@ -226,7 +232,7 @@
 
     "fgaVmName": "[concat(parameters('fortiGateNamePrefix'),'-FGT-A')]",
     "fmgCustomData": "[if(equals(parameters('fortiManager'),'yes'),concat('\nconfig system central-management\nset type fortimanager\n set fmg ',parameters('fortiManagerIP'),'\nset serial-number ', parameters('fortiManagerSerial'), '\nend\n'),'')]",
-    "fgaCustomData": "[base64(concat('config system sdn-connector\nedit AzureSDN\nset type azure\nend\nend\nconfig router static\nedit 1\nset gateway ', variables('sn1GatewayIP'), '\nset device port1\nnext\nedit 2\nset dst ', parameters('vnetAddressPrefix'), '\nset gateway ', variables('sn2GatewayIP'), '\nset device port2\nnext\nconfig system interface\nedit port1\nset mode static\nset ip ',  variables('sn1IPfga'), '/', variables('sn1CIDRmask'), '\nset description external\nset allowaccess ping https ssh ftm\nnext\nedit port2\nset mode static\nset ip ', variables('sn2IPfga'), '/', variables('sn2CIDRmask'), '\nset description internal\nset allowaccess probe-response\nnext\nend\n', variables('fmgCustomData')))]",
+    "fgaCustomData": "[base64(concat('config system sdn-connector\nedit AzureSDN\nset type azure\nend\nend\nconfig router static\nedit 1\nset gateway ', variables('sn1GatewayIP'), '\nset device port1\nnext\nedit 2\nset dst ', parameters('vnetAddressPrefix'), '\nset gateway ', variables('sn2GatewayIP'), '\nset device port2\nnext\nconfig system interface\nedit port1\nset mode static\nset ip ',  variables('sn1IPfga'), '/', variables('sn1CIDRmask'), '\nset description external\nset allowaccess ping https ssh ftm\nnext\nedit port2\nset mode static\nset ip ', variables('sn2IPfga'), '/', variables('sn2CIDRmask'), '\nset description internal\nset allowaccess probe-response\nnext\nend\n', variables('fmgCustomData'), parameters('fortiGateAditionalCustomData')))]",
 
     "routeTableProtectedName": "[concat(parameters('fortiGateNamePrefix'),'-RT-PROTECTED')]",
     "routeTableProtectedId": "[resourceId('Microsoft.Network/routeTables',variables('routeTableProtectedName'))]",

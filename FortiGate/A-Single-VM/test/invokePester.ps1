@@ -1,7 +1,7 @@
 param (
     [string]$templatename
 )
-
+sshpass
 $SourceDir = Join-Path $env:BUILD_SOURCESDIRECTORY "$templatename"
 $TempDir = [IO.Path]::GetTempPath()
 $modulePath = Join-Path $TempDir arm-ttk-master\arm-ttk\arm-ttk.psd1
