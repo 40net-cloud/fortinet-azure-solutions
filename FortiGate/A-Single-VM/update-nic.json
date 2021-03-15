@@ -45,7 +45,7 @@
       },
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[parameters('nicName')]",
-      "location": "[resourceGroup().location]",
+      "location": "[parameters('location')]",
       "properties": {
         "ipConfigurations": [
             {
