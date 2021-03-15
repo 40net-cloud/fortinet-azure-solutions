@@ -484,8 +484,6 @@
 			"subnet2Prefix": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet2.addressPrefix]",
 			"subnet3Name": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet3.name]",
 			"subnet3Prefix": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet3.addressPrefix]",
-			"subnet4Name": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet4.name]",
-			"subnet4Prefix": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet4.addressPrefix]",
 			"fortiManager": "[steps('fortimanager').fortimanager]",
 			"fortiManagerIP": "[steps('fortimanager').fortimanagerip]",
 			"fortiManagerSerial": "[steps('fortimanager').fortimanagerserial]"
