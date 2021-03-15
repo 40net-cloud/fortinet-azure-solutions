@@ -1,0 +1,75 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "nicName": {
+      "type": "string"
+    },
+    "subnetId": {
+      "type": "string"
+    },
+    "privateIP": {
+      "type": "string"
+    },
+    "publicIPId": {
+      "type": "string"
+    },
+    "BEPool": {
+      "type": "string"
+    },
+    "NATRules": {
+        "type": "array"
+    },
+    "nsgId": {
+      "type": "string"
+    },
+    "acceleratedNetworking": {
+      "type": "string"
+    },
+    "fortinetTags": {
+      "type": "object"
+    }
+  },
+  "variables": {
+  },
+  "resources": [
+    {
+      "apiVersion": "2020-04-01",
+      "dependsOn": [
+      ],
+      "tags": {
+        "provider": "[toUpper(parameters('FortinetTags').provider)]"
+      },
+      "type": "Microsoft.Network/networkInterfaces",
+      "name": "[parameters('nicName')]",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "ipConfigurations": [
+            {
+              "name": "ipconfig1",
+              "properties": {
+                "privateIPAllocationMethod": "Static",
+                "privateIPAddress": "[parameters('privateIP')]",
+                "publicIPAddress": "[parameters('publicIPId')]",
+                "subnet": {
+                  "id": "[parameters('subnetId')]"
+                },
+                "loadBalancerBackendAddressPools": [
+                  {
+                    "id": "[parameters('BEPool')]"
+                  }
+                ],
+                "loadBalancerInboundNatRules": "[parameters('NATRules')]"
+              }
+            }
+          ],
+          "enableIPForwarding": true,
+          "enableAcceleratedNetworking": "[parameters('acceleratedNetworking')]",
+          "networkSecurityGroup": {
+            "id": "[parameters('nsgId')]"
+          }
+      }
+    }
+  ],
+  "outputs": {}
+}
