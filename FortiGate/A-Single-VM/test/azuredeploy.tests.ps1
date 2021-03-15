@@ -62,7 +62,6 @@ Describe 'FGT Single VM' {
         It 'Creates the expected Azure resources' {
             $expectedResources = 'Microsoft.Resources/deployments',
                                  'Microsoft.Network/routeTables',
-                                 'Microsoft.Network/routeTables',
                                  'Microsoft.Network/virtualNetworks',
                                  'Microsoft.Network/networkSecurityGroups',
                                  'Microsoft.Network/publicIPAddresses',
