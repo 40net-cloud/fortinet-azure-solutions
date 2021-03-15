@@ -96,8 +96,6 @@ Describe 'FGT Single VM' {
                                           'subnet2Prefix',
                                           'subnet3Name',
                                           'subnet3Prefix',
-                                          'subnet4Name',
-                                          'subnet4Prefix',
                                           'vnetAddressPrefix',
                                           'vnetName',
                                           'vnetNewOrExisting',
@@ -121,7 +119,7 @@ Describe 'FGT Single VM' {
                      'adminPassword'=$testsResourceGroupName
                      'fortigateNamePrefix'=$testsPrefix
                     }
-        $publicIPName = "FGTPublicIP"
+        $publicIPName = "$testsPrefix-FGT-PIP"
 
         It "Test Deployment" {
             (Test-AzResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName" -TemplateFile "$templateFileName" -TemplateParameterObject $params).Count | Should not BeGreaterThan 0
