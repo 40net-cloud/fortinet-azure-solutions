@@ -144,9 +144,6 @@ Describe 'FGT Single VM' {
                 $fgt = $result.IpAddress
                 Write-Host ("Host: " + $fgt)
 
-                $output = sshpass -p "$testsResourceGroupName" ssh -t -o StrictHostKeyChecking=no $testsAdminUsername@$fgt 'show system interface'
-                "Output: " + $output
-
                 apt-get install sshpass
 
                 $output = sshpass -p "$testsResourceGroupName" ssh -t -o StrictHostKeyChecking=no $testsAdminUsername@$fgt 'show system interface'
