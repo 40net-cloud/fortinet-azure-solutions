@@ -548,7 +548,15 @@
 						"label": "FortiManager",
 						"elements": [
 							{
-								"name": "fortimanagerenable",
+								"name": "fortimanagertext",
+								"type": "Microsoft.Common.TextBlock",
+								"visible": true,
+								"options": {
+									"text": "Connect to FortiManager"
+								}
+							},
+							{
+								"name": "enabled",
 								"type": "Microsoft.Common.OptionsGroup",
 								"label": "Connect to FortiManager",
 								"defaultValue": "no",
@@ -596,6 +604,39 @@
 							}
 						],
 						"visible": true
+					},
+					{
+						"name": "customdata",
+						"type": "Microsoft.Common.Section",
+						"label": "Custom Data",
+						"elements": [
+							{
+								"name": "customdatatext",
+								"type": "Microsoft.Common.TextBlock",
+								"visible": true,
+								"options": {
+									"text": "Pass a configuration file into the virtual machine while it is being provisioned. This is additional to the configuration for this archticture."
+								}
+							},
+							{
+								"name": "config",
+								"type": "Microsoft.Common.TextBox",
+								"label": "Custom Data",
+								"toolTip": "Custom Data",
+								"placeholder": "Add you required additional configuration here.",
+								"multiLine": true,
+								"constraints": {
+									"required": true,
+									"validations": [
+										{
+											"regex": "^[a-z0-9A-Z -.:\n]{1,60}$",
+											"message": "Only 1-60 alphanumeric characters, hyphens, spaces, periods, and colons are allowed."
+										}
+									]
+								},
+								"visible": true
+							}
+						]
 					}
 				]
 			}
@@ -642,9 +683,10 @@
 			"subnet5StartAddress": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet5.startAddress]",
 			"subnet6Name": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet6.name]",
 			"subnet6Prefix": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet6.addressPrefix]",
-			"fortiManager": "[steps('advanced').fortimanager.fortimanagerenable]",
+			"fortiManager": "[steps('advanced').fortimanager.enabled]",
 			"fortiManagerIP": "[steps('advanced').fortimanager.fortimanagerip]",
-			"fortiManagerSerial": "[steps('advanced').fortimanager.fortimanagerserial]"
+			"fortiManagerSerial": "[steps('advanced').fortimanager.fortimanagerserial]",
+			"fortiGateAditionalCustomData": "[steps('advanced').customdata.config"
 		}
 	}
 }
