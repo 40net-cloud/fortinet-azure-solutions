@@ -535,8 +535,8 @@
 				]
 			},
 			{
-				"name": "fortimanager",
-				"label": "Central Management with FortiManager",
+				"name": "advanced",
+				"label": "Advanced",
 				"subLabel": {
 					"preValidation": "Configure central management",
 					"postValidation": "Done"
@@ -544,49 +544,57 @@
 				"elements": [
 					{
 						"name": "fortimanager",
-						"type": "Microsoft.Common.OptionsGroup",
-						"label": "Connect to FortiManager",
-						"defaultValue": "no",
-						"toolTip": "FortiManager needs to be reachable from port 1 or port 2 of the FortiGate",
-						"constraints": {
-							"allowedValues": [
-								{
-									"label": "yes",
-									"value": "yes"
+						"type": "Microsoft.Common.Section",
+						"label": "FortiManager",
+						"elements": [
+							{
+								"name": "fortimanagerenable",
+								"type": "Microsoft.Common.OptionsGroup",
+								"label": "Connect to FortiManager",
+								"defaultValue": "no",
+								"toolTip": "FortiManager needs to be reachable from port 1 or port 2 of the FortiGate",
+								"constraints": {
+									"allowedValues": [
+										{
+											"label": "yes",
+											"value": "yes"
+										},
+										{
+											"label": "no",
+											"value": "no"
+										}
+									],
+									"required": true
 								},
-								{
-									"label": "no",
-									"value": "no"
-								}
-							],
-							"required": true
-						},
-						"visible": true
-					},
-					{
-						"name": "fortimanagerip",
-						"type": "Microsoft.Common.TextBox",
-						"label": "FortiManager IP address",
-						"defaultValue": "",
-						"toolTip": "Provide the IP address or DNS name of the FortiManager reachable over port TCP/541",
-						"constraints": {
-							"required": false,
-							"regex": "^[A-Za-z0-9.]{1,64}$",
-							"validationMessage": "Only alphanumeric characters are allowed, and the value must be 1 to 15 characters."
-						},
-						"visible": true
-					},
-					{
-						"name": "fortimanagerserial",
-						"type": "Microsoft.Common.TextBox",
-						"label": "FortiManager Serial Number",
-						"defaultValue": "",
-						"toolTip": "Provide the serial number of the FortiManager",
-						"constraints": {
-							"required": false,
-							"regex": "^[A-Za-z0-9]{1,64}$",
-							"validationMessage": "Only alphanumeric characters are allowed, and the value must be 1 to 15 characters."
-						},
+								"visible": true
+							},
+							{
+								"name": "fortimanagerip",
+								"type": "Microsoft.Common.TextBox",
+								"label": "FortiManager IP address",
+								"defaultValue": "",
+								"toolTip": "Provide the IP address or DNS name of the FortiManager reachable over port TCP/541",
+								"constraints": {
+									"required": false,
+									"regex": "^[A-Za-z0-9.]{1,64}$",
+									"validationMessage": "Only alphanumeric characters are allowed, and the value must be 1 to 15 characters."
+								},
+								"visible": true
+							},
+							{
+								"name": "fortimanagerserial",
+								"type": "Microsoft.Common.TextBox",
+								"label": "FortiManager Serial Number",
+								"defaultValue": "",
+								"toolTip": "Provide the serial number of the FortiManager",
+								"constraints": {
+									"required": false,
+									"regex": "^[A-Za-z0-9]{1,64}$",
+									"validationMessage": "Only alphanumeric characters are allowed, and the value must be 1 to 15 characters."
+								},
+								"visible": true
+							}
+						],
 						"visible": true
 					}
 				]
@@ -634,9 +642,9 @@
 			"subnet5StartAddress": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet5.startAddress]",
 			"subnet6Name": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet6.name]",
 			"subnet6Prefix": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet6.addressPrefix]",
-			"fortiManager": "[steps('fortimanager').fortimanager]",
-			"fortiManagerIP": "[steps('fortimanager').fortimanagerip]",
-			"fortiManagerSerial": "[steps('fortimanager').fortimanagerserial]"
+			"fortiManager": "[steps('advanced').fortimanager.fortimanagerenable]",
+			"fortiManagerIP": "[steps('advanced').fortimanager.fortimanagerip]",
+			"fortiManagerSerial": "[steps('advanced').fortimanager.fortimanagerserial]"
 		}
 	}
 }
