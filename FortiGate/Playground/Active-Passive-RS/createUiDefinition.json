@@ -274,7 +274,7 @@
 										"label": "HA Management subnet",
 										"defaultValue": {
 											"name": "MGMTSubnet",
-											"addressPrefixSize": "/26"
+											"addressPrefixSize": "/27"
 										},
 										"constraints": {
 											"minAddressPrefixSize": "/27",
