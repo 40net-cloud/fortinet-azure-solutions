@@ -629,6 +629,9 @@
       "apiVersion": "2020-06-01",
       "name": "[variables('fgRouteServerName')]",
       "location": "[parameters('location')]",
+      "dependsOn": [
+        "[variables('vnetName')]"
+      ],
       "properties": {
         "sku": "Standard"
       }
@@ -637,6 +640,7 @@
       "type": "Microsoft.Network/virtualHubs/ipConfigurations",
       "apiVersion": "2020-06-01",
       "name": "[variables('fgRouteServerIPConfig')]",
+      "location": "[parameters('location')]",
       "dependsOn": [
         "[resourceId('Microsoft.Network/virtualHubs', variables('fgRouteServerName'))]"
       ],
@@ -650,6 +654,7 @@
       "type": "Microsoft.Network/virtualHubs/bgpConnections",
       "apiVersion": "2020-06-01",
       "name": "[variables('fgaRouteServerBGP')]",
+      "location": "[parameters('location')]",
       "dependsOn": [
         "[resourceId('Microsoft.Network/virtualHubs/ipConfigurations', variables('fgRouteServerName'), 'ipconfig1')]"
       ],
