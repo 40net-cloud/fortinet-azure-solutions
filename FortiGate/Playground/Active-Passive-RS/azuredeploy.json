@@ -58,6 +58,7 @@
     },
     "fortiGateBGPASN": {
       "type": "string",
+      "defaultValue": "65005",
       "metadata": {
         "description": "FortiGate BGP ASN to setup the communication with the Azure Route Server"
       }
