@@ -626,7 +626,7 @@
 								"placeholder": "Add you required additional configuration here.",
 								"multiLine": true,
 								"constraints": {
-									"required": true,
+									"required": false,
 									"validations": [
 										{
 											"regex": "^[a-z0-9A-Z -.:\n]{1,60}$",
