@@ -646,7 +646,7 @@
       ],
       "properties": {
         "subnet": {
-          "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('subnet5Name'), parameters('subnet5Name'))]"
+          "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'), parameters('subnet5Name'))]"
         }
       }
     },
