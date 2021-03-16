@@ -361,6 +361,9 @@
     "imageOffer": "fortinet_fortigate-vm_v5",
 
     "fgRouteServerName": "[concat(parameters('fortiGateNamePrefix'),'-RouteServer')]",
+    "fgRouteServerIPConfig": "[concat(variables('fgRouteServerName'), '/ipconfig1')]",
+    "fgaRouteServerBGP": "[concat(variables('fgRouteServerName'), '/BGP1')]",
+    "fgbRouteServerBGP": "[concat(variables('fgRouteServerName'), '/BGP2')]",
     "fgAvailabilitySetName": "[concat(parameters('fortiGateNamePrefix'),'-AvailabilitySet')]",
     "fgAvailabilitySetId": "[resourceId('Microsoft.Compute/availabilitySets', variables('fgAvailabilitySetName'))]",
 
@@ -633,7 +636,7 @@
     {
       "type": "Microsoft.Network/virtualHubs/ipConfigurations",
       "apiVersion": "2020-06-01",
-      "name": "[concat(variables('fgRouteServerName'), '/ipconfig1')]",
+      "name": "[variables('fgRouteServerIPConfig')]",
       "dependsOn": [
         "[resourceId('Microsoft.Network/virtualHubs', variables('fgRouteServerName'))]"
       ],
@@ -646,9 +649,9 @@
     {
       "type": "Microsoft.Network/virtualHubs/bgpConnections",
       "apiVersion": "2020-06-01",
-      "name": "[concat(variables('fgRouteServerName'), '/BGP1')]",
+      "name": "[variables('fgaRouteServerBGP')]",
       "dependsOn": [
-        "[resourceId('Microsoft.Network/virtualHubs/ipConfigurations', variables('fgRouteServerName'), '/ipconfig1')]"
+        "[resourceId('Microsoft.Network/virtualHubs/ipConfigurations', variables('fgRouteServerName'), 'ipconfig1')]"
       ],
       "properties": {
         "peerAsn": "[parameters('fortiGateBGPASN')]",
@@ -658,9 +661,9 @@
     {
       "type": "Microsoft.Network/virtualHubs/bgpConnections",
       "apiVersion": "2020-06-01",
-      "name": "[concat(variables('fgRouteServerName'), '/BGP2')]",
+      "name": "[variables('fgbRouteServerBGP')]",
       "dependsOn": [
-        "[resourceId('Microsoft.Network/virtualHubs/ipConfigurations', variables('fgRouteServerName'), '/ipconfig1')]"
+        "[resourceId('Microsoft.Network/virtualHubs/ipConfigurations', variables('fgRouteServerName'), 'ipconfig1')]"
       ],
       "properties": {
         "peerAsn": "[parameters('fortiGateBGPASN')]",
