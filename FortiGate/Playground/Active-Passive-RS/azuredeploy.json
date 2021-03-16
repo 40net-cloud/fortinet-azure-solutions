@@ -51,6 +51,7 @@
     },
     "fortiGateAditionalCustomData": {
       "type": "string",
+      "defaultValue": "",
       "metadata": {
         "description": "The ARM template provides a basic configuration. Additional configuration can be added here."
       }
