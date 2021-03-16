@@ -360,6 +360,10 @@
     "imagePublisher": "fortinet",
     "imageOffer": "fortinet_fortigate-vm_v5",
 
+    "fgRouteServerName": "[concat(parameters('fortiGateNamePrefix'),'-RouteServer')]",
+    "fgRouteServerIPConfigName": "[concat(parameters('fortiGateNamePrefix'),'-RouteServer-ipconfig')]",
+    "fgaRouteServerBGPConfigName": "[concat(parameters('fortiGateNamePrefix'),'-RouteServer-fga-bgpconfig')]",
+    "fgbRouteServerBGPConfigName": "[concat(parameters('fortiGateNamePrefix'),'-RouteServer-fgb-bgpconfig')]",
     "fgAvailabilitySetName": "[concat(parameters('fortiGateNamePrefix'),'-AvailabilitySet')]",
     "fgAvailabilitySetId": "[resourceId('Microsoft.Compute/availabilitySets', variables('fgAvailabilitySetName'))]",
 
@@ -586,6 +590,52 @@
             }
           }
         ]
+      }
+    },
+    {
+      "type": "Microsoft.Network/virtualHubs",
+      "apiVersion": "2020-06-01",
+      "name": "[variables('fgRouteServerName')]",
+      "location": "[parameters('location')]",
+      "properties": {
+        "sku": "Standard"
+      }
+    },
+    {
+      "type": "Microsoft.Network/virtualHubs/ipConfigurations",
+      "apiVersion": "2020-06-01",
+      "name": "[variables('fgRouteServerIPConfigName')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/virtualHubs', variables('fgRouteServerName'))]"
+      ],
+      "properties": {
+        "subnet": {
+          "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('subnet5Name'), parameters('subnet5Name'))]"
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Network/virtualHubs/bgpConnections",
+      "apiVersion": "2020-06-01",
+      "name": "[variables('fgaRouteServerBGPConfigName')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/virtualHubs/ipConfigurations', variables('fgRouteServerName'), variables('fgRouteServerIPConfigName'))]"
+      ],
+      "properties": {
+        "peerAsn": "[parameters('fortiGateBGPASN')]",
+        "peerIp": "[variables('sn2IPfga')]"
+      }
+    },
+    {
+      "type": "Microsoft.Network/virtualHubs/bgpConnections",
+      "apiVersion": "2020-06-01",
+      "name": "[variables('fgbRouteServerBGPConfigName')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/virtualHubs/ipConfigurations', variables('fgRouteServerName'), variables('fgRouteServerIPConfigName'))]"
+      ],
+      "properties": {
+        "peerAsn": "[parameters('fortiGateBGPASN')]",
+        "peerIp": "[variables('sn2IPfgb')]"
       }
     },
     {
