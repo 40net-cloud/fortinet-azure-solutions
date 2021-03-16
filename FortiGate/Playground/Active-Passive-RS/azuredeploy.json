@@ -453,8 +453,8 @@
     "sn4IPArray0": "[string(int(variables('sn4IPArray')[0]))]",
     "sn4GatewayIP": "[concat(variables('sn4IPArray0'),'.',variables('sn4IPArray1'),'.',variables('sn4IPArray2'),'.',variables('sn4IPArray3'))]",
     "sn4IPStartAddress": "[split(parameters('subnet4StartAddress'),'.')]",
-    "sn4IPfga": "[concat(variables('sn4IPArray0'),'.',variables('sn4IPArray1'),'.',variables('sn4IPArray2'),'.',int(variables('sn4IPStartAddress')[0]))]",
-    "sn4IPfgb": "[concat(variables('sn4IPArray0'),'.',variables('sn4IPArray1'),'.',variables('sn4IPArray2'),'.',add(int(variables('sn4IPStartAddress')[0]),1))]",
+    "sn4IPfga": "[concat(variables('sn4IPArray0'),'.',variables('sn4IPArray1'),'.',variables('sn4IPArray2'),'.',int(variables('sn4IPStartAddress')[3]))]",
+    "sn4IPfgb": "[concat(variables('sn4IPArray0'),'.',variables('sn4IPArray1'),'.',variables('sn4IPArray2'),'.',add(int(variables('sn4IPStartAddress')[3]),1))]",
 
     "sn5IPStartAddress": "[split(parameters('subnet5StartAddress'),'.')]",
     "sn5IPArray3": "[string(int(variables('sn5IPStartAddress')[3]))]",
