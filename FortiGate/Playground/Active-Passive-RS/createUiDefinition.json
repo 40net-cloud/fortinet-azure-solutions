@@ -629,8 +629,8 @@
 									"required": false,
 									"validations": [
 										{
-											"regex": "^[a-z0-9A-Z -.:\n]{1,60}$",
-											"message": "Only 1-60 alphanumeric characters, hyphens, spaces, periods, and colons are allowed."
+											"regex": "^[a-z0-9A-Z -.:\n]$",
+											"message": "Only alphanumeric characters, hyphens, spaces, periods, and colons are allowed."
 										}
 									]
 								},
