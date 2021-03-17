@@ -193,7 +193,7 @@
 			},
 			{
 				"name": "networking",
-				"label": "Internal Networking",
+				"label": "Networking",
 				"subLabel": {
 					"preValidation": "Configure internal networking",
 					"postValidation": "Done"
@@ -365,7 +365,7 @@
 			},
 			{
 				"name": "publicip",
-				"label": "Public Networking",
+				"label": "Public IP",
 				"subLabel": {
 					"preValidation": "Configure public networking",
 					"postValidation": "Done"
@@ -471,7 +471,7 @@
 			},
 			{
 				"name": "publicipreview",
-				"label": "Public IP Standard SKU Verification",
+				"label": "Public IP Verification",
 				"subLabel": {
 					"preValidation": "Public IP SKU Review",
 					"postValidation": "Done"
@@ -680,7 +680,7 @@
 			"fortiManager": "[steps('advanced').fortimanager.enabled]",
 			"fortiManagerIP": "[steps('advanced').fortimanager.fortimanagerip]",
 			"fortiManagerSerial": "[steps('advanced').fortimanager.fortimanagerserial]",
-			"fortiGateAditionalCustomData": "[steps('advanced').customdata.config"
+			"fortiGateAditionalCustomData": "[steps('advanced').customdata.config]"
 		}
 	}
 }
