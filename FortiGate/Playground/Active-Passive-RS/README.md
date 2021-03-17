@@ -13,11 +13,12 @@ In Microsoft Azure, you can deploy an active/passive pair of FortiGate VMs that 
 This Azure ARM template will automatically deploy a full working environment containing the the following components.
 
   - 2 FortiGate firewall's in an active/passive deployment
-  - 1 VNET with 2 protected subnets and 4 subnets required for the FortiGate deployment (external, internal, ha mgmt and ha sync). If using an existing vnet, it must already have 5 subnets
-	- 3 public IPs. The first public IP is for cluster access to/through the active FortiGate.  The other two PIPs are for Management access
-  - User Defined Routes (UDR) for the protected subnets
+  - 1 VNET with 1 protected subnets, 1 routeserver subnet and 4 subnets required for the FortiGate deployment (external, internal, ha mgmt and ha sync). If using an existing vnet, it must already have these 6 subnets
+	- 3 public IPs. The first public IP is for cluster access to/through the active FortiGate.  The other two PIPs are for Management access. To deploy with public IPs on the FortiGate VMs you can use the 'Azure Portal Wizard - Deploy to Azure' button and select none for the the second and third public IP
+  - User Defined Routes (UDR) for the FortiGate VMs
+  - Azure Route Server and all configuration on the FortiGate to get started
 
-![active/passive design](images/fgt-ha.png)
+![active/passive design](images/fgt-ap-rs.png)
 
 This ARM template can also be used to extend or customized based on your requirements. Additional subnets besides the one's mentioned above are not automatically generated. By adapting the ARM templates you can add additional subnets which preferably require their own routing tables.
 
@@ -45,21 +46,6 @@ Azure Portal Wizard:
   <img src="https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.svg?sanitize=true"/>
 </a>
 
-### Azure CLI
-
-To deploy via Azure Cloud Shell you can connect via the Azure Portal or directly to [https://shell.azure.com/](https://shell.azure.com/).
-
-- Login into the Azure Cloud Shell
-- Run the following command in the Azure Cloud:
-
-`cd ~/clouddrive/ && wget -qO- https://github.com/40net-cloud/fortinet-azure-solutions/archive/main.tar.gz | tar zxf - && cd ~/clouddrive/fortinet-azure-solutions-main/FortiGate/Playground/Active-Passive-RS/ && ./deploy.sh`
-
-- The script will ask you a few questions to bootstrap a full deployment.
-
-![Azure Cloud Shell](images/azure-cloud-shell.png)
-
-After deployment you will be shown the IP address of all deployed components. Both FortiGate VMs are accessible using the public management IPs using HTTPS on port 443 and SSH on port 22.
-
 # Requirements and limitations
 
 The ARM template deploy different resource and it is required to have the access rights and quota in your Microsoft Azure subscription to deploy the resources.
@@ -86,7 +72,11 @@ The FortiGate-VM uses [Managed Identities](https://docs.microsoft.com/en-us/azur
 The FortiGate VMs need a specific configuration to operate in your environment. This configuration can be injected during provisioning or afterwards via the different management options including GUI, CLI, FortiManager or REST API.
 
 - [Default configuration using this template](doc/config-provisioning.md)
-- [Failover configuration](doc/config-failover.md)
+- [High Availability probe](../Active-Passive-ELB-ILB/doc/config-ha.md)
+- [Cloud-init](../Active-Passive-ELB-ILB/doc/config-cloud-init.md)
+- Inbound connections
+- Outbound connections
+- East-West connections
 
 ## Support
 Fortinet-provided scripts in this and other GitHub projects do not fall under the regular Fortinet technical support scope and are not supported by FortiCare Support Services.
