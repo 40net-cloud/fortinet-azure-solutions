@@ -559,13 +559,19 @@
           {
             "name": "[parameters('subnet3Name')]",
             "properties": {
-              "addressPrefix": "[parameters('subnet3Prefix')]"
+              "addressPrefix": "[parameters('subnet3Prefix')]",
+              "routeTable": {
+                "id": "[variables('routeTableId')]"
+              }
             }
           },
           {
             "name": "[parameters('subnet4Name')]",
             "properties": {
-              "addressPrefix": "[parameters('subnet4Prefix')]"
+              "addressPrefix": "[parameters('subnet4Prefix')]",
+              "routeTable": {
+                "id": "[variables('routeTableId')]"
+              }
             }
           },
           {
