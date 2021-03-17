@@ -626,13 +626,7 @@
 								"placeholder": "Add you required additional configuration here.",
 								"multiLine": true,
 								"constraints": {
-									"required": false,
-									"validations": [
-										{
-											"regex": "^[a-z0-9A-Z -.:\n]$",
-											"message": "Only alphanumeric characters, hyphens, spaces, periods, and colons are allowed."
-										}
-									]
+									"required": false
 								},
 								"visible": true
 							}
