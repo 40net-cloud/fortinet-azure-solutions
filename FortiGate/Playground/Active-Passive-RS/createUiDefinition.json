@@ -615,7 +615,7 @@
 								"type": "Microsoft.Common.TextBlock",
 								"visible": true,
 								"options": {
-									"text": "Pass a configuration file into the virtual machine while it is being provisioned. This is additional to the configuration for this archticture."
+									"text": "Pass a configuration file into the virtual machine while it is being provisioned. This is additional to the configuration for this architecture."
 								}
 							},
 							{
