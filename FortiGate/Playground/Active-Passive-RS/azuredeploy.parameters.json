@@ -18,10 +18,10 @@
             "value": "latest"
         },
         "fortiGateAditionalCustomData": {
-            "value": "## TO BE DEFINED ##"
+            "value": ""
         },
         "fortiGateBGPASN": {
-            "value": "## TO BE DEFINED ##"
+            "value": "65005"
         },
         "instanceType": {
             "value": "Standard_F4s"
@@ -119,9 +119,6 @@
         "subnet6Prefix": {
             "value": "172.16.137.0/24"
         },
-        "location": {
-            "value": "[resourceGroup().location]"
-        },
         "fortiManager": {
             "value": "no"
         },
@@ -130,6 +127,9 @@
         },
         "fortiManagerSerial": {
             "value": ""
+        },
+        "location": {
+            "value": "[resourceGroup().location]"
         },
         "fortinetTags": {
             "value": {
