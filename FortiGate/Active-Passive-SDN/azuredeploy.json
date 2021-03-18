@@ -49,6 +49,13 @@
         "description": "Only 6.x has the A/P HA feature currently"
       }
     },
+    "fortiGateAditionalCustomData": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "The ARM template provides a basic configuration. Additional configuration can be added here."
+      }
+    },
     "instanceType": {
       "type": "string",
       "defaultValue": "Standard_F4s",
@@ -255,6 +262,13 @@
         "description": "Subnet 1 Prefix"
       }
     },
+    "subnet1StartAddress": {
+      "type": "string",
+      "defaultValue": "172.16.136.4",
+      "metadata": {
+        "description": "Subnet 1 start address, 2 consecutive private IPs are required"
+      }
+    },
     "subnet2Name": {
       "type": "string",
       "defaultValue": "TransitSubnet",
@@ -267,6 +281,13 @@
       "defaultValue": "172.16.136.64/26",
       "metadata": {
         "description": "Subnet 2 Prefix"
+      }
+    },
+    "subnet2StartAddress": {
+      "type": "string",
+      "defaultValue": "172.16.136.68",
+      "metadata": {
+        "description": "Subnet 2 start address, 2 consecutive private IPs are required"
       }
     },
     "subnet3Name": {
@@ -283,6 +304,13 @@
         "description": "Subnet 3 Prefix"
       }
     },
+    "subnet3StartAddress": {
+      "type": "string",
+      "defaultValue": "172.16.136.132",
+      "metadata": {
+        "description": "Subnet 3 start address, 2 consecutive private IPs are required"
+      }
+    },
     "subnet4Name": {
       "type": "string",
       "defaultValue": "ManagementSubnet",
@@ -295,6 +323,13 @@
       "defaultValue": "172.16.136.192/26",
       "metadata": {
         "description": "Subnet 4 Prefix"
+      }
+    },
+    "subnet4StartAddress": {
+      "type": "string",
+      "defaultValue": "172.16.136.196",
+      "metadata": {
+        "description": "Subnet 4 start address, 2 consecutive private IPs are required"
       }
     },
     "subnet5Name": {
@@ -416,8 +451,9 @@
     "sn1IPArray1": "[string(int(variables('sn1IPArray')[1]))]",
     "sn1IPArray0": "[string(int(variables('sn1IPArray')[0]))]",
     "sn1GatewayIP": "[concat(variables('sn1IPArray0'),'.',variables('sn1IPArray1'),'.',variables('sn1IPArray2'),'.',variables('sn1IPArray3'))]",
-    "sn1IPfga": "[concat(variables('sn1IPArray0'),'.',variables('sn1IPArray1'),'.',variables('sn1IPArray2'),'.',add(int(variables('sn1IPArray2nd')[0]),5))]",
-    "sn1IPfgb": "[concat(variables('sn1IPArray0'),'.',variables('sn1IPArray1'),'.',variables('sn1IPArray2'),'.',add(int(variables('sn1IPArray2nd')[0]),6))]",
+    "sn1IPStartAddress": "[split(parameters('subnet1StartAddress'),'.')]",
+    "sn1IPfga": "[concat(variables('sn1IPArray0'),'.',variables('sn1IPArray1'),'.',variables('sn1IPArray2'),'.',int(variables('sn1IPStartAddress')[3]))]",
+    "sn1IPfgb": "[concat(variables('sn1IPArray0'),'.',variables('sn1IPArray1'),'.',variables('sn1IPArray2'),'.',add(int(variables('sn1IPStartAddress')[3]),1))]",
 
     "sn2IPArray": "[split(parameters('subnet2Prefix'),'.')]",
     "sn2IPArray2ndString": "[string(variables('sn2IPArray')[3])]",
@@ -428,8 +464,9 @@
     "sn2IPArray1": "[string(int(variables('sn2IPArray')[1]))]",
     "sn2IPArray0": "[string(int(variables('sn2IPArray')[0]))]",
     "sn2GatewayIP": "[concat(variables('sn2IPArray0'),'.',variables('sn2IPArray1'),'.',variables('sn2IPArray2'),'.',variables('sn2IPArray3'))]",
-    "sn2IPfga": "[concat(variables('sn2IPArray0'),'.',variables('sn2IPArray1'),'.',variables('sn2IPArray2'),'.',add(int(variables('sn2IPArray2nd')[0]),5))]",
-    "sn2IPfgb": "[concat(variables('sn2IPArray0'),'.',variables('sn2IPArray1'),'.',variables('sn2IPArray2'),'.',add(int(variables('sn2IPArray2nd')[0]),6))]",
+    "sn2IPStartAddress": "[split(parameters('subnet2StartAddress'),'.')]",
+    "sn2IPfga": "[concat(variables('sn2IPArray0'),'.',variables('sn2IPArray1'),'.',variables('sn2IPArray2'),'.',int(variables('sn2IPStartAddress')[3]))]",
+    "sn2IPfgb": "[concat(variables('sn2IPArray0'),'.',variables('sn2IPArray1'),'.',variables('sn2IPArray2'),'.',add(int(variables('sn2IPStartAddress')[3]),1))]",
 
     "sn3IPArray": "[split(parameters('subnet3Prefix'),'.')]",
     "sn3IPArray2ndString": "[string(variables('sn3IPArray')[3])]",
@@ -438,8 +475,9 @@
     "sn3IPArray2": "[string(int(variables('sn3IPArray')[2]))]",
     "sn3IPArray1": "[string(int(variables('sn3IPArray')[1]))]",
     "sn3IPArray0": "[string(int(variables('sn3IPArray')[0]))]",
-    "sn3IPfga": "[concat(variables('sn3IPArray0'),'.',variables('sn3IPArray1'),'.',variables('sn3IPArray2'),'.',add(int(variables('sn3IPArray2nd')[0]),5))]",
-    "sn3IPfgb": "[concat(variables('sn3IPArray0'),'.',variables('sn3IPArray1'),'.',variables('sn3IPArray2'),'.',add(int(variables('sn3IPArray2nd')[0]),6))]",
+    "sn3IPStartAddress": "[split(parameters('subnet3StartAddress'),'.')]",
+    "sn3IPfga": "[concat(variables('sn3IPArray0'),'.',variables('sn3IPArray1'),'.',variables('sn3IPArray2'),'.',int(variables('sn3IPStartAddress')[3]))]",
+    "sn3IPfgb": "[concat(variables('sn3IPArray0'),'.',variables('sn3IPArray1'),'.',variables('sn3IPArray2'),'.',add(int(variables('sn3IPStartAddress')[3]),1))]",
 
     "sn4IPArray": "[split(parameters('subnet4Prefix'),'.')]",
     "sn4IPArray2ndString": "[string(variables('sn4IPArray')[3])]",
@@ -450,8 +488,9 @@
     "sn4IPArray1": "[string(int(variables('sn4IPArray')[1]))]",
     "sn4IPArray0": "[string(int(variables('sn4IPArray')[0]))]",
     "sn4GatewayIP": "[concat(variables('sn4IPArray0'),'.',variables('sn4IPArray1'),'.',variables('sn4IPArray2'),'.',variables('sn4IPArray3'))]",
-    "sn4IPfga": "[concat(variables('sn4IPArray0'),'.',variables('sn4IPArray1'),'.',variables('sn4IPArray2'),'.',add(int(variables('sn4IPArray2nd')[0]),5))]",
-    "sn4IPfgb": "[concat(variables('sn4IPArray0'),'.',variables('sn4IPArray1'),'.',variables('sn4IPArray2'),'.',add(int(variables('sn4IPArray2nd')[0]),6))]"
+    "sn4IPStartAddress": "[split(parameters('subnet4StartAddress'),'.')]",
+    "sn4IPfga": "[concat(variables('sn4IPArray0'),'.',variables('sn4IPArray1'),'.',variables('sn4IPArray2'),'.',int(variables('sn4IPStartAddress')[3]))]",
+    "sn4IPfgb": "[concat(variables('sn4IPArray0'),'.',variables('sn4IPArray1'),'.',variables('sn4IPArray2'),'.',add(int(variables('sn4IPStartAddress')[3]),1))]",
   },
   "resources": [
     {
