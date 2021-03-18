@@ -193,7 +193,7 @@
 			},
 			{
 				"name": "networking",
-				"label": "Internal Networking",
+				"label": "Networking",
 				"subLabel": {
 					"preValidation": "Configure internal networking",
 					"postValidation": "Done"
@@ -353,7 +353,7 @@
 			},
 			{
 				"name": "publicip",
-				"label": "Public Networking",
+				"label": "Public IP",
 				"subLabel": {
 					"preValidation": "Configure public networking",
 					"postValidation": "Done"
@@ -458,8 +458,8 @@
 				]
 			},
 			{
-				"name": "fortimanager",
-				"label": "Central Management with FortiManager",
+				"name": "advanced",
+				"label": "Advanced",
 				"subLabel": {
 					"preValidation": "Configure central management",
 					"postValidation": "Done"
@@ -467,50 +467,93 @@
 				"elements": [
 					{
 						"name": "fortimanager",
-						"type": "Microsoft.Common.OptionsGroup",
-						"label": "Connect to FortiManager",
-						"defaultValue": "no",
-						"toolTip": "FortiManager needs to be reachable from port 1 or port 2 of the FortiGate",
-						"constraints": {
-							"allowedValues": [
-								{
-									"label": "yes",
-									"value": "yes"
-								},
-								{
-									"label": "no",
-									"value": "no"
+						"type": "Microsoft.Common.Section",
+						"label": "FortiManager",
+						"elements": [
+							{
+								"name": "fortimanagertext",
+								"type": "Microsoft.Common.TextBlock",
+								"visible": true,
+								"options": {
+									"text": "Connect to FortiManager"
 								}
-							],
-							"required": true
-						},
+							},
+							{
+								"name": "enabled",
+								"type": "Microsoft.Common.OptionsGroup",
+								"label": "Connect to FortiManager",
+								"defaultValue": "no",
+								"toolTip": "FortiManager needs to be reachable from port 1 or port 2 of the FortiGate",
+								"constraints": {
+									"allowedValues": [
+										{
+											"label": "yes",
+											"value": "yes"
+										},
+										{
+											"label": "no",
+											"value": "no"
+										}
+									],
+									"required": true
+								},
+								"visible": true
+							},
+							{
+								"name": "fortimanagerip",
+								"type": "Microsoft.Common.TextBox",
+								"label": "FortiManager IP address",
+								"defaultValue": "",
+								"toolTip": "Provide the IP address or DNS name of the FortiManager reachable over port TCP/541",
+								"constraints": {
+									"required": false,
+									"regex": "^[A-Za-z0-9.]{1,64}$",
+									"validationMessage": "Only alphanumeric characters are allowed, and the value must be 1 to 15 characters."
+								},
+								"visible": true
+							},
+							{
+								"name": "fortimanagerserial",
+								"type": "Microsoft.Common.TextBox",
+								"label": "FortiManager Serial Number",
+								"defaultValue": "",
+								"toolTip": "Provide the serial number of the FortiManager",
+								"constraints": {
+									"required": false,
+									"regex": "^[A-Za-z0-9]{1,64}$",
+									"validationMessage": "Only alphanumeric characters are allowed, and the value must be 1 to 15 characters."
+								},
+								"visible": true
+							}
+						],
 						"visible": true
 					},
 					{
-						"name": "fortimanagerip",
-						"type": "Microsoft.Common.TextBox",
-						"label": "FortiManager IP address",
-						"defaultValue": "",
-						"toolTip": "Provide the IP address or DNS name of the FortiManager reachable over port TCP/541",
-						"constraints": {
-							"required": false,
-							"regex": "^[A-Za-z0-9.]{1,64}$",
-							"validationMessage": "Only alphanumeric characters are allowed, and the value must be 1 to 15 characters."
-						},
-						"visible": true
-					},
-					{
-						"name": "fortimanagerserial",
-						"type": "Microsoft.Common.TextBox",
-						"label": "FortiManager Serial Number",
-						"defaultValue": "",
-						"toolTip": "Provide the serial number of the FortiManager",
-						"constraints": {
-							"required": false,
-							"regex": "^[A-Za-z0-9]{1,64}$",
-							"validationMessage": "Only alphanumeric characters are allowed, and the value must be 1 to 15 characters."
-						},
-						"visible": true
+						"name": "customdata",
+						"type": "Microsoft.Common.Section",
+						"label": "Custom Data",
+						"elements": [
+							{
+								"name": "customdatatext",
+								"type": "Microsoft.Common.TextBlock",
+								"visible": true,
+								"options": {
+									"text": "Pass a configuration file into the virtual machine while it is being provisioned. This is additional to the configuration for this architecture."
+								}
+							},
+							{
+								"name": "config",
+								"type": "Microsoft.Common.TextBox",
+								"label": "Custom Data",
+								"toolTip": "Custom Data",
+								"placeholder": "Add you required additional configuration here.",
+								"multiLine": true,
+								"constraints": {
+									"required": false
+								},
+								"visible": true
+							}
+						]
 					}
 				]
 			}
@@ -545,17 +588,22 @@
 			"vnetAddressPrefix": "[steps('networking').virtualnetworksection.virtualnetwork.addressPrefix]",
 			"subnet1Name": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet1.name]",
 			"subnet1Prefix": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet1.addressPrefix]",
+			"subnet1StartAddress": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet1.startAddress]",
 			"subnet2Name": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet2.name]",
 			"subnet2Prefix": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet2.addressPrefix]",
+			"subnet2StartAddress": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet2.startAddress]",
 			"subnet3Name": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet3.name]",
 			"subnet3Prefix": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet3.addressPrefix]",
+			"subnet3StartAddress": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet3.startAddress]",
 			"subnet4Name": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet4.name]",
 			"subnet4Prefix": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet4.addressPrefix]",
+			"subnet4StartAddress": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet4.startAddress]",
 			"subnet5Name": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet5.name]",
 			"subnet5Prefix": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet5.addressPrefix]",
-			"fortiManager": "[steps('fortimanager').fortimanager]",
-			"fortiManagerIP": "[steps('fortimanager').fortimanagerip]",
-			"fortiManagerSerial": "[steps('fortimanager').fortimanagerserial]"
+			"fortiManager": "[steps('advanced').fortimanager.enabled]",
+			"fortiManagerIP": "[steps('advanced').fortimanager.fortimanagerip]",
+			"fortiManagerSerial": "[steps('advanced').fortimanager.fortimanagerserial]",
+			"fortiGateAditionalCustomData": "[steps('advanced').customdata.config]"
 		}
 	}
 }
