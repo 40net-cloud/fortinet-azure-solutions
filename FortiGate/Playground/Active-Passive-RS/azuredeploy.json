@@ -402,7 +402,6 @@
 
     "publicIPName": "[if(equals(parameters('publicIPName'),''),concat(parameters('fortiGateNamePrefix'),'-FGT-PIP'),parameters('publicIPName'))]",
     "publicIPId": "[if(equals(parameters('publicIPNewOrExisting'),'new'),resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPName')),resourceId(parameters('publicIPResourceGroup'),'Microsoft.Network/publicIPAddresses',variables('publicIPName')))]",
-    "publicIpAddressId": { "id": "[variables('publicIPId')]" },
     "publicIP2Name": "[if(equals(parameters('publicIP2Name'),''),concat(parameters('fortiGateNamePrefix'),'-FGT-A-MGMT-PIP'),parameters('publicIP2Name'))]",
     "publicIP2Id": "[if(equals(parameters('publicIP2NewOrExisting'),'new'),resourceId('Microsoft.Network/publicIPAddresses',variables('publicIP2Name')),resourceId(parameters('publicIP2ResourceGroup'),'Microsoft.Network/publicIPAddresses',variables('publicIP2Name')))]",
     "publicIpAddress2Id": { "id": "[variables('publicIP2Id')]" },
@@ -470,7 +469,17 @@
     "sn5IPArray0": "[string(int(variables('sn5IPStartAddress')[0]))]",
     "sn5IPbgppeer": "[concat(variables('sn5IPArray0'),'.',variables('sn5IPArray1'),'.',variables('sn5IPArray2'),'.',int(variables('sn5IPArray3')))]",
     "sn5IPbgppeer2": "[concat(variables('sn5IPArray0'),'.',variables('sn5IPArray1'),'.',variables('sn5IPArray2'),'.',add(int(variables('sn5IPArray3')),1))]",
-    "routeServerBGPasn": "65515"
+    "routeServerBGPasn": "65515",
+
+    "externalLBName": "[concat(parameters('fortiGateNamePrefix'),'-ExternalLoadBalancer')]",
+    "externalLBId": "[resourceId('Microsoft.Network/loadBalancers',variables('externalLBName'))]",
+    "externalLBFEName": "[concat(parameters('fortiGateNamePrefix'),'-ELB-',parameters('subnet1Name'),'-FrontEnd')]",
+    "externalLBFEId": "[resourceID('Microsoft.Network/loadBalancers/frontendIPConfigurations/',variables('externalLBName'),variables('externalLBFEName'))]",
+    "externalLBBEName": "[concat(parameters('fortiGateNamePrefix'),'-ILB-',parameters('subnet1Name'),'-BackEnd')]",
+    "externalLBBEId": "[resourceID('Microsoft.Network/loadBalancers/backendAddressPools/',variables('externalLBName'),variables('externalLBBEName'))]",
+    "externalLBProbeName": "lbprobe",
+    "externalLBProbeId": "[resourceId('Microsoft.Network/loadBalancers/probes/',variables('externalLBName'),variables('externalLBProbeName'))]"
+
   },
   "resources": [
     {
@@ -733,6 +742,90 @@
     },
     {
       "apiVersion": "2020-04-01",
+      "type": "Microsoft.Network/loadBalancers",
+      "name": "[variables('externalLBName')]",
+      "location": "[parameters('location')]",
+      "tags": {
+        "provider": "[toUpper(parameters('fortinetTags').provider)]"
+      },
+      "sku":
+      {
+        "name": "Standard"
+      },
+      "dependsOn": [
+        "[variables('publicIPId')]"
+      ],
+      "properties": {
+        "frontendIPConfigurations": [
+          {
+            "name": "[variables('externalLBFEName')]",
+            "properties": {
+              "publicIPAddress": {
+                "id": "[variables('publicIPId')]"
+              }
+            }
+          }
+        ],
+        "backendAddressPools": [
+          {
+            "name": "[variables('externalLBBEName')]"
+          }
+        ],
+        "loadBalancingRules": [
+          {
+            "properties": {
+              "frontendIPConfiguration": {
+                "id": "[variables('externalLBFEId')]"
+              },
+              "backendAddressPool": {
+                "id": "[variables('externalLBBEId')]"
+              },
+              "probe": {
+                "id": "[variables('externalLBProbeId')]"
+              },
+              "protocol": "Tcp",
+              "frontendPort": 80,
+              "backendPort": 80,
+              "enableFloatingIP": true,
+              "idleTimeoutInMinutes": 5
+            },
+            "name": "PublicLBRule-FE1-http"
+          },
+          {
+            "properties": {
+              "frontendIPConfiguration": {
+                "id": "[variables('externalLBFEId')]"
+              },
+              "backendAddressPool": {
+                "id": "[variables('externalLBBEId')]"
+              },
+              "probe": {
+                "id": "[variables('externalLBProbeId')]"
+              },
+              "protocol": "Udp",
+              "frontendPort": 10551,
+              "backendPort": 10551,
+              "enableFloatingIP": true,
+              "idleTimeoutInMinutes": 5
+            },
+            "name": "PublicLBRule-FE1-udp10551"
+          }
+        ],
+        "probes": [
+          {
+            "properties": {
+              "protocol": "Tcp",
+              "port": 8008,
+              "intervalInSeconds": 5,
+              "numberOfProbes": 2
+            },
+            "name": "[variables('externalLBProbeName')]"
+          }
+        ]
+      }
+    },
+    {
+      "apiVersion": "2020-04-01",
       "tags": {
         "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
@@ -741,6 +834,7 @@
       "location": "[parameters('location')]",
       "dependsOn": [
         "[variables('vnetName')]",
+        "[variables('externalLBId')]",
         "[variables('NSGId')]"
       ],
       "properties": {
@@ -750,10 +844,14 @@
             "properties": {
               "privateIPAddress": "[variables('sn1IPfga')]",
               "privateIPAllocationMethod": "Static",
-              "publicIPAddress": "[if(not(equals(parameters('publicIPNewOrExisting'), 'none')), variables('publicIPAddressId') , json('null'))]",
               "subnet": {
                 "id": "[variables('subnet1Id')]"
-              }
+              },
+              "loadBalancerBackendAddressPools": [
+                {
+                  "id": "[variables('externalLBBEId')]"
+                }
+              ]
             }
           }
         ],
@@ -772,8 +870,8 @@
       "name": "[variables('fgbNic1Name')]",
       "location": "[parameters('location')]",
       "dependsOn": [
-        "[variables('fgaNic1Name')]",
         "[variables('vnetName')]",
+        "[variables('externalLBId')]",
         "[variables('NSGId')]"
       ],
       "properties": {
@@ -785,7 +883,12 @@
               "privateIPAllocationMethod": "Static",
               "subnet": {
                 "id": "[variables('subnet1Id')]"
-              }
+              },
+              "loadBalancerBackendAddressPools": [
+                {
+                  "id": "[variables('externalLBBEId')]"
+                }
+              ]
             }
           }
         ],
