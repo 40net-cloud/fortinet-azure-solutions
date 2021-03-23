@@ -563,7 +563,7 @@
 									"required": false,
 									"validations": [
 										{
-											"regex": "^.{0,10240}$",
+											"regex": "^[.\n]{0,10240}$",
 											"message": "All characters allowed, max 10240 characters."
 										},
 										{
