@@ -498,7 +498,7 @@
 									"required": false,
 									"validations": [
 										{
-											"regex": "^[.\n]{0,10240}$",
+											"regex": "^[\\w\\W\n\t]{0,10240}$",
 											"message": "All characters allowed, max 10240 characters."
 										},
 										{
@@ -570,8 +570,8 @@
 			"subnet3Name": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet3.name]",
 			"subnet3Prefix": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet3.addressPrefix]",
 			"fortiManager": "[steps('advanced').fortimanager.enabled]",
-			"fortiManagerIP": "[steps('advanced').fortimanagerip]",
-			"fortiManagerSerial": "[steps('advanced').fortimanagerserial]",
+			"fortiManagerIP": "[steps('advanced').fortimanager.fortimanagerip]",
+			"fortiManagerSerial": "[steps('advanced').fortimanager.fortimanagerserial]",
 			"fortiGateAditionalCustomData": "[steps('advanced').customdata.config]",
 			"fortiGateLicenseBYOL": "[steps('advanced').fgtlicense.licensecontent]"
 		}
