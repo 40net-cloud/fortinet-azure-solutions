@@ -528,7 +528,7 @@
 								"name": "licensecontent",
 								"type": "Microsoft.Common.FileUpload",
 								"label": "FortiGate License",
-								"toolTip": "",
+								"toolTip": "Upload the license file for the FortiGate BYOL here.",
 								"constraints": {
 									"required": false,
 									"accept": ".lic,.txt"
