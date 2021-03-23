@@ -617,10 +617,6 @@
 										{
 											"regex": "^[\\w\\W\n\t]{0,10240}$",
 											"message": "All characters allowed, max 10240 characters."
-										},
-										{
-											"isValid": "[startsWith(steps('advanced').customdata.config, 'config')]",
-											"message": "Must start with 'config'."
 										}
 									]
 								},
