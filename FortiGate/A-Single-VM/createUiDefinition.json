@@ -500,6 +500,38 @@
 								"visible": true
 							}
 						]
+					},
+					{
+						"name": "fgtlicense",
+						"type": "Microsoft.Common.Section",
+						"label": "FortiGate License",
+						"elements": [
+							{
+								"name": "customdatatext",
+								"type": "Microsoft.Common.TextBlock",
+								"visible": true,
+								"options": {
+									"text": "When using BYOL, you can upload the license file retrieved from support.fortinet.com here."
+								}
+							},
+							{
+								"name": "licensecontent",
+								"type": "Microsoft.Common.FileUpload",
+								"label": "FortiGate License",
+								"toolTip": "",
+								"constraints": {
+									"required": true,
+									"accept": ".lic,.txt"
+								},
+								"options": {
+									"multiple": false,
+									"uploadMode": "file",
+									"openMode": "text",
+									"encoding": "UTF-8"
+								},
+								"visible": true
+							}
+						]
 					}
 				]
 			}
@@ -530,7 +562,8 @@
 			"fortiManager": "[steps('advanced').fortimanager.enabled]",
 			"fortiManagerIP": "[steps('advanced').fortimanagerip]",
 			"fortiManagerSerial": "[steps('advanced').fortimanagerserial]",
-			"fortiGateAditionalCustomData": "[steps('advanced').customdata.config]"
+			"fortiGateAditionalCustomData": "[steps('advanced').customdata.config]",
+			"fortiGateLicenseBYOL": "[steps('advanced').fgtlicense.licensecontent]"
 		}
 	}
 }
