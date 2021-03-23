@@ -244,7 +244,9 @@
     "customDataLicenseHeader": "\n--===============0086047718136476635== \nContent-Type: text/plain; charset=\"us-ascii\" \nMIME-Version: 1.0 \nContent-Transfer-Encoding: 7bit \nContent-Disposition: attachment; filename=\"fgtlicense.lic\"\n",
     "customDataFooter": "\n--===============0086047718136476635==--\n",
     "customDataBody": "[concat('\nconfig system sdn-connector\nedit AzureSDN\nset type azure\nend\nend\nconfig router static\nedit 1\nset gateway ', variables('sn1GatewayIP'), '\nset device port1\nnext\nedit 2\nset dst ', parameters('vnetAddressPrefix'), '\nset gateway ', variables('sn2GatewayIP'), '\nset device port2\nnext\nend\nconfig system interface\nedit port1\nset mode static\nset ip ',  variables('sn1IPfga'), '/', variables('sn1CIDRmask'), '\nset description external\nset allowaccess ping https ssh ftm\nnext\nedit port2\nset mode static\nset ip ', variables('sn2IPfga'), '/', variables('sn2CIDRmask'), '\nset description internal\nset allowaccess probe-response\nnext\nend\n', variables('fmgCustomData'), parameters('fortiGateAditionalCustomData'), '\n')]",
-    "fgaCustomData": "[base64(if(equals(parameters('fortiGateLicenseBYOL'),''),variables('customDataBody'),concat(variables('customDataHeader'),variables('customDataBody'),variables('customDataLicenseHeader'), parameters('fortiGateLicenseBYOL'), variables('customDataFooter'))))]",
+    "customDataCombined": "[concat(variables('customDataHeader'),variables('customDataBody'),variables('customDataFooter'))]",
+    "customDataCombinedLicense": "[concat(variables('customDataHeader'),variables('customDataBody'),variables('customDataLicenseHeader'), parameters('fortiGateLicenseBYOL'), variables('customDataFooter'))]",
+    "fgaCustomData": "[base64(if(equals(parameters('fortiGateLicenseBYOL'),''),variables('customDataCombined'),variables('customDataCombinedLicense')))]",
 
     "routeTableProtectedName": "[concat(parameters('fortiGateNamePrefix'),'-RT-PROTECTED')]",
     "routeTableProtectedId": "[resourceId('Microsoft.Network/routeTables',variables('routeTableProtectedName'))]",
