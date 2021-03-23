@@ -82,6 +82,7 @@ Describe 'FGT A/A' {
             $expectedTemplateParameters = 'acceleratedNetworking',
                                           'adminPassword',
                                           'adminUsername',
+                                          'fortiGateAditionalCustomData',
                                           'fortiGateImageSKU',
                                           'fortiGateImageVersion',
                                           'fortiGateNamePrefix',
