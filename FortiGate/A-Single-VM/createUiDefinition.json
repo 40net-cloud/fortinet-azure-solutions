@@ -500,10 +500,6 @@
 										{
 											"regex": "^[\\w\\W\n\t]{0,10240}$",
 											"message": "All characters allowed, max 10240 characters."
-										},
-										{
-											"isValid": "[startsWith(steps('advanced').customdata.config, 'config')]",
-											"message": "Must start with 'config'."
 										}
 									]
 								},
@@ -528,7 +524,7 @@
 								"name": "licensecontent",
 								"type": "Microsoft.Common.FileUpload",
 								"label": "FortiGate License",
-								"toolTip": "",
+								"toolTip": "Upload the license file for the FortiGate BYOL here.",
 								"constraints": {
 									"required": false,
 									"accept": ".lic,.txt"
