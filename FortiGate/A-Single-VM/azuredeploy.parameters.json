@@ -8,14 +8,17 @@
         "adminPassword": {
             "value": "## TO BE DEFINED ##"
         },
-        "fortigateNamePrefix": {
+        "fortiGateNamePrefix": {
             "value": "## TO BE DEFINED ##"
         },
-        "fortigateImageSKU": {
+        "fortiGateImageSKU": {
             "value": "fortinet_fg-vm"
         },
-        "fortigateImageVersion": {
+        "fortiGateImageVersion": {
             "value": "latest"
+        },
+        "fortiGateAditionalCustomData": {
+            "value": ""
         },
         "instanceType": {
             "value": "Standard_F2s"
@@ -27,7 +30,7 @@
             "value": "new"
         },
         "publicIPName": {
-            "value": "FGTPublicIP"
+            "value": ""
         },
         "publicIPResourceGroup": {
             "value": ""
@@ -65,8 +68,17 @@
         "subnet3Prefix": {
             "value": "172.16.137.0/24"
         },
+        "fortiManager": {
+            "value": "no"
+        },
+        "fortiManagerIP": {
+            "value": ""
+        },
+        "fortiManagerSerial": {
+            "value": ""
+        },
         "location": {
-            "value": "[parameters('location')]"
+            "value": "[resourceGroup().location]"
         },
         "fortinetTags": {
             "value": {
