@@ -549,7 +549,13 @@
 								"placeholder": "Add you required additional configuration here.",
 								"multiLine": true,
 								"constraints": {
-									"required": false
+									"required": false,
+									"validations": [
+										{
+											"isValid": "[startsWith(steps('advanced').customdata.config, 'config')]",
+											"message": "Must start with 'config'."
+										}
+									]
 								},
 								"visible": true
 							}
