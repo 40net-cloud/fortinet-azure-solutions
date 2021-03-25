@@ -119,6 +119,12 @@
         "fortiManagerSerial": {
             "value": ""
         },
+        "fortiGateLicenseBYOLA": {
+            "value": ""
+        },
+        "fortiGateLicenseBYOLB": {
+            "value": ""
+        },
         "location": {
             "value": "[resourceGroup().location]"
         },
