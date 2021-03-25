@@ -4,6 +4,7 @@ After deployment, the below configuration has been automatically injected during
 
 ## FortiGate A
 
+```
 config system sdn-connector
   edit AzureSDN
     set type azure
@@ -35,3 +36,4 @@ config system interface
   next
 end
 </pre>
+```
