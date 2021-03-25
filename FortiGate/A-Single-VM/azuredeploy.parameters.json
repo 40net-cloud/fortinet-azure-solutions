@@ -57,7 +57,7 @@
             "value": "172.16.136.0/26"
         },
         "subnet2Name": {
-            "value": "InternalSubnet"
+            "value": "TransitSubnet"
         },
         "subnet2Prefix": {
             "value": "172.16.136.64/26"
@@ -75,6 +75,9 @@
             "value": ""
         },
         "fortiManagerSerial": {
+            "value": ""
+        },
+        "fortiGateLicenseBYOL": {
             "value": ""
         },
         "location": {
