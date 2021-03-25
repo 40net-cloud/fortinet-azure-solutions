@@ -155,6 +155,13 @@
         "description": "External Subnet Prefix"
       }
     },
+    "subnet1StartAddress": {
+      "type": "string",
+      "defaultValue": "172.16.136.4",
+      "metadata": {
+        "description": "Subnet 1 start address, 1 consecutive private IPs are required"
+      }
+    },
     "subnet2Name": {
       "type": "string",
       "defaultValue": "TransitSubnet",
@@ -167,6 +174,13 @@
       "defaultValue": "172.16.136.64/26",
       "metadata": {
         "description": "Internal Subnet Prefix"
+      }
+    },
+    "subnet2StartAddress": {
+      "type": "string",
+      "defaultValue": "172.16.136.68",
+      "metadata": {
+        "description": "Subnet 2 start address, 2 consecutive private IPs are required"
       }
     },
     "subnet3Name": {
@@ -241,12 +255,11 @@
     "fgaVmName": "[concat(parameters('fortiGateNamePrefix'),'-FGT-A')]",
     "fmgCustomData": "[if(equals(parameters('fortiManager'),'yes'),concat('\nconfig system central-management\nset type fortimanager\n set fmg ',parameters('fortiManagerIP'),'\nset serial-number ', parameters('fortiManagerSerial'), '\nend\n'),'')]",
     "customDataHeader": "Content-Type: multipart/mixed; boundary=\"12345\"\nMIME-Version: 1.0\n--12345\nContent-Type: text/plain; charset=\"us-ascii\"\nMIME-Version: 1.0\nContent-Transfer-Encoding: 7bit\nContent-Disposition: attachment; filename=\"config\"\n\n",
-    "customDataBody": "[concat('config system sdn-connector\nedit AzureSDN\nset type azure\nend\nend\nconfig router static\nedit 1\nset gateway ', variables('sn1GatewayIP'), '\nset device port1\nnext\nedit 2\nset dst ', parameters('vnetAddressPrefix'), '\nset gateway ', variables('sn2GatewayIP'), '\nset device port2\nnext\nend\nconfig system interface\nedit port1\nset mode static\nset ip ',  variables('sn1IPfga'), '/', variables('sn1CIDRmask'), '\nset description external\nset allowaccess ping https ssh ftm\nnext\nedit port2\nset mode static\nset ip ', variables('sn2IPfga'), '/', variables('sn2CIDRmask'), '\nset description internal\nset allowaccess probe-response\nnext\nend\n', variables('fmgCustomData'), parameters('fortiGateAditionalCustomData'), '\n')]",
+    "customDataBody": "[concat('config system sdn-connector\nedit AzureSDN\nset type azure\nnext\nend\nconfig router static\nedit 1\nset gateway ', variables('sn1GatewayIP'), '\nset device port1\nnext\nedit 2\nset dst ', parameters('vnetAddressPrefix'), '\nset gateway ', variables('sn2GatewayIP'), '\nset device port2\nnext\nend\nconfig system interface\nedit port1\nset mode static\nset ip ',  variables('sn1IPfga'), '/', variables('sn1CIDRmask'), '\nset description external\nset allowaccess ping ssh https\nnext\nedit port2\nset mode static\nset ip ', variables('sn2IPfga'), '/', variables('sn2CIDRmask'), '\nset description internal\nset allowaccess ping ssh https\nnext\nend\n', variables('fmgCustomData'), parameters('fortiGateAditionalCustomData'), '\n')]",
     "customDataLicenseHeader": "--12345\nContent-Type: text/plain; charset=\"us-ascii\"\nMIME-Version: 1.0\nContent-Transfer-Encoding: 7bit\nContent-Disposition: attachment; filename=\"fgtlicense\"\n\n",
     "customDataFooter": "--12345--\n",
-    "customDataCombined": "[concat(variables('customDataHeader'),variables('customDataBody'),variables('customDataFooter'))]",
-    "customDataCombinedLicense": "[concat(variables('customDataHeader'),variables('customDataBody'),variables('customDataLicenseHeader'), parameters('fortiGateLicenseBYOL'), variables('customDataFooter'))]",
-    "fgaCustomData": "[base64(if(equals(parameters('fortiGateLicenseBYOL'),''),variables('customDataCombined'),variables('customDataCombinedLicense')))]",
+    "customDataCombined": "[concat(variables('customDataHeader'),variables('customDataBody'),variables('customDataLicenseHeader'), parameters('fortiGateLicenseBYOL'), variables('customDataFooter'))]",
+    "fgaCustomData": "[base64(if(equals(parameters('fortiGateLicenseBYOL'),''),variables('customDataBody'),variables('customDataCombined')))]",
 
     "routeTableProtectedName": "[concat(parameters('fortiGateNamePrefix'),'-RT-PROTECTED')]",
     "routeTableProtectedId": "[resourceId('Microsoft.Network/routeTables',variables('routeTableProtectedName'))]",
@@ -272,7 +285,8 @@
     "sn1IPArray1": "[string(int(variables('sn1IPArray')[1]))]",
     "sn1IPArray0": "[string(int(variables('sn1IPArray')[0]))]",
     "sn1GatewayIP": "[concat(variables('sn1IPArray0'),'.',variables('sn1IPArray1'),'.',variables('sn1IPArray2'),'.',variables('sn1IPArray3'))]",
-    "sn1IPfga": "[concat(variables('sn1IPArray0'),'.',variables('sn1IPArray1'),'.',variables('sn1IPArray2'),'.',add(int(variables('sn1IPArray2nd')[0]),5))]",
+    "sn1IPStartAddress": "[split(parameters('subnet1StartAddress'),'.')]",
+    "sn1IPfga": "[concat(variables('sn1IPArray0'),'.',variables('sn1IPArray1'),'.',variables('sn1IPArray2'),'.',int(variables('sn1IPStartAddress')[3]))]",
 
     "sn2IPArray": "[split(parameters('subnet2Prefix'),'.')]",
     "sn2IPArray2ndString": "[string(variables('sn2IPArray')[3])]",
@@ -283,12 +297,13 @@
     "sn2IPArray1": "[string(int(variables('sn2IPArray')[1]))]",
     "sn2IPArray0": "[string(int(variables('sn2IPArray')[0]))]",
     "sn2GatewayIP": "[concat(variables('sn2IPArray0'),'.',variables('sn2IPArray1'),'.',variables('sn2IPArray2'),'.',variables('sn2IPArray3'))]",
-    "sn2IPfga": "[concat(variables('sn2IPArray0'),'.',variables('sn2IPArray1'),'.',variables('sn2IPArray2'),'.',add(int(variables('sn2IPArray2nd')[0]),5))]"
+    "sn2IPStartAddress": "[split(parameters('subnet2StartAddress'),'.')]",
+    "sn2IPfga": "[concat(variables('sn2IPArray0'),'.',variables('sn2IPArray1'),'.',variables('sn2IPArray2'),'.',int(variables('sn2IPStartAddress')[3]))]"
   },
   "resources": [
     {
       "apiVersion": "2019-10-01",
-      "name": "pid-2dc4b447-552f-557f-b1cc-2faec6f9f133",
+      "name": "[concat(parameters('fortiGateNamePrefix'), '-fortinetdeployment-', uniquestring(resourceGroup().id))]",
       "type": "Microsoft.Resources/deployments",
       "properties":{
        "mode": "Incremental",

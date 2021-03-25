@@ -318,7 +318,7 @@
 								"name": "acceleratednetworking",
 								"type": "Microsoft.Common.OptionsGroup",
 								"label": "Accelerated Networking",
-								"defaultValue": "Disabled",
+								"defaultValue": "Enabled",
 								"toolTip": "Accelerated Networking enables direct connection between the VM and network card. Only available on 2 CPU F/Fs and 4 CPU D/Dsv2, D/Dsv3, E/Esv3, Fsv2, Lsv2, Ms/Mms and Ms/Mmsv2",
 								"constraints": {
 									"required": false,
@@ -536,6 +536,15 @@
 									"encoding": "UTF-8"
 								},
 								"visible": true
+							},
+							{
+								"name": "skuPaygWarning",
+								"type": "Microsoft.Common.InfoBox",
+								"options": {
+									"icon": "Warning",
+									"text": "Pay as you go licenses was selected in the basics blade. The licenses uploaded here will not be used."
+								},
+								"visible": "[not(equals(basics('fortigateImageSKU'), 'fortinet_fg-vm'))]"
 							}
 						]
 					}
@@ -561,8 +570,10 @@
 			"vnetAddressPrefix": "[steps('networking').virtualnetworksection.virtualnetwork.addressPrefix]",
 			"subnet1Name": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet1.name]",
 			"subnet1Prefix": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet1.addressPrefix]",
+			"subnet1StartAddress": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet1.startAddress]",
 			"subnet2Name": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet2.name]",
 			"subnet2Prefix": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet2.addressPrefix]",
+			"subnet2StartAddress": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet2.startAddress]",
 			"subnet3Name": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet3.name]",
 			"subnet3Prefix": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet3.addressPrefix]",
 			"fortiManager": "[steps('advanced').fortimanager.enabled]",
