@@ -3,13 +3,13 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "adminUsername": {
-            "value": "" // TODO: Fill in parameter value
+            "value": "## TO BE DEFINED ##"
         },
         "adminPassword": {
-            "value": "" // TODO: Fill in parameter value
+            "value": "## TO BE DEFINED ##"
         },
         "fortiGateNamePrefix": {
-            "value": "" // TODO: Fill in parameter value
+            "value": "## TO BE DEFINED ##"
         },
         "fortiGateImageSKU": {
             "value": "fortinet_fg-vm"
@@ -134,14 +134,20 @@
         "fortiManagerSerial": {
             "value": ""
         },
+        "fortiGateLicenseBYOLA": {
+            "value": ""
+        },
+        "fortiGateLicenseBYOLB": {
+            "value": ""
+        },
         "location": {
             "value": "[resourceGroup().location]"
         },
         "fortinetTags": {
             "value": {
-              "publisher": "Fortinet",
-              "template": "Active-Passive-SDN",
-              "provider": "6EB3B02F-50E5-4A3E-8CB8-2E12925APSDN"
+                "publisher": "Fortinet",
+                "template": "Active-Passive-SDN",
+                "provider": "6EB3B02F-50E5-4A3E-8CB8-2E12925APSDN"
             }
         }
     }

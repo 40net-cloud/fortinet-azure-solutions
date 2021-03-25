@@ -79,6 +79,7 @@ Describe 'FGT Single VM' {
                                           'fortiGateAditionalCustomData',
                                           'fortiGateImageSKU',
                                           'fortiGateImageVersion',
+                                          'fortiGateLicenseBYOL',
                                           'fortiGateNamePrefix',
                                           'fortiManager',
                                           'fortiManagerIP',
