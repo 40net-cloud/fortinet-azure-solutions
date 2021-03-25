@@ -119,10 +119,10 @@
         "fortiManagerSerial": {
             "value": ""
         },
-        "fortiGateLicenseBYOLA": {
+        "fortiGateALicenseBYOL": {
             "value": ""
         },
-        "fortiGateLicenseBYOLB": {
+        "fortiGateBLicenseBYOL": {
             "value": ""
         },
         "location": {
