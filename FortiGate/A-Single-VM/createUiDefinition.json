@@ -504,6 +504,16 @@
 									]
 								},
 								"visible": true
+							},
+							{
+								"name": "standardsku",
+								"type": "Microsoft.Common.InfoBox",
+								"visible": true,
+								"options": {
+									"icon": "Info",
+									"text": "The default configuration already included in this deployment can be found on our github page. ",
+									"uri": "https://github.com/fortinet/azure-templates/blob/main/FortiGate/A-Single-VM/doc/config-provisioning.md"
+								}
 							}
 						]
 					},

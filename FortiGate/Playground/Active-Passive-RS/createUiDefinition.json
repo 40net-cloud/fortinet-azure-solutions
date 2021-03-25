@@ -745,8 +745,8 @@
 			"fortiManagerIP": "[steps('advanced').fortimanager.fortimanagerip]",
 			"fortiManagerSerial": "[steps('advanced').fortimanager.fortimanagerserial]",
 			"fortiGateAditionalCustomData": "[steps('advanced').customdata.config]",
-			"fortiGateALicenseBYOL": "[steps('advanced').fgtlicense.licenseacontent]",
-			"fortiGateBLicenseBYOL": "[steps('advanced').fgtlicense.licensebcontent]"
+			"fortiGateLicenseBYOLA": "[steps('advanced').fgtlicense.licenseacontent]",
+			"fortiGateLicenseBYOLB": "[steps('advanced').fgtlicense.licensebcontent]"
 		}
 	}
 }
