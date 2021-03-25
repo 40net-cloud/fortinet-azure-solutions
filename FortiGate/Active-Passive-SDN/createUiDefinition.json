@@ -560,6 +560,64 @@
 								"visible": true
 							}
 						]
+					},
+					{
+						"name": "fgtlicense",
+						"type": "Microsoft.Common.Section",
+						"label": "FortiGate License",
+						"elements": [
+							{
+								"name": "customdatatext",
+								"type": "Microsoft.Common.TextBlock",
+								"visible": true,
+								"options": {
+									"text": "When using BYOL, you can upload the license file retrieved from support.fortinet.com here."
+								}
+							},
+							{
+								"name": "licenseacontent",
+								"type": "Microsoft.Common.FileUpload",
+								"label": "FortiGate A License",
+								"toolTip": "Upload the license file for the primary FortiGate BYOL here.",
+								"constraints": {
+									"required": false,
+									"accept": ".lic,.txt"
+								},
+								"options": {
+									"multiple": false,
+									"uploadMode": "file",
+									"openMode": "text",
+									"encoding": "UTF-8"
+								},
+								"visible": true
+							},
+							{
+								"name": "licensebcontent",
+								"type": "Microsoft.Common.FileUpload",
+								"label": "FortiGate B License",
+								"toolTip": "Upload the license file for the secondary FortiGate BYOL here.",
+								"constraints": {
+									"required": false,
+									"accept": ".lic,.txt"
+								},
+								"options": {
+									"multiple": false,
+									"uploadMode": "file",
+									"openMode": "text",
+									"encoding": "UTF-8"
+								},
+								"visible": true
+							},
+							{
+								"name": "skuPaygWarning",
+								"type": "Microsoft.Common.InfoBox",
+								"options": {
+									"icon": "Warning",
+									"text": "Pay as you go licenses was selected in the basics blade. The licenses uploaded here will not be used."
+								},
+								"visible": "[not(equals(basics('fortigateImageSKU'), 'fortinet_fg-vm'))]"
+							}
+						]
 					}
 				]
 			}
@@ -609,7 +667,9 @@
 			"fortiManager": "[steps('advanced').fortimanager.enabled]",
 			"fortiManagerIP": "[steps('advanced').fortimanager.fortimanagerip]",
 			"fortiManagerSerial": "[steps('advanced').fortimanager.fortimanagerserial]",
-			"fortiGateAditionalCustomData": "[steps('advanced').customdata.config]"
+			"fortiGateAditionalCustomData": "[steps('advanced').customdata.config]",
+			"fortiGateALicenseBYOL": "[steps('advanced').fgtlicense.licenseacontent]",
+			"fortiGateBLicenseBYOL": "[steps('advanced').fgtlicense.licensebcontent]"
 		}
 	}
 }
