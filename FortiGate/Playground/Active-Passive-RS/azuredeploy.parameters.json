@@ -128,10 +128,10 @@
         "fortiManagerSerial": {
             "value": ""
         },
-        "fortiGateALicenseBYOL": {
+        "fortiGateLicenseBYOLA": {
             "value": ""
         },
-        "fortiGateBLicenseBYOL": {
+        "fortiGateLicenseBYOLB": {
             "value": ""
         },
         "location": {
