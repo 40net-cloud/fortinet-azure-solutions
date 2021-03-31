@@ -153,7 +153,7 @@
 						"type": "Microsoft.Common.TextBlock",
 						"visible": true,
 						"options": {
-							"text": "For this FortiGate deployment, it is recomended to use the general purpose or compute optimized virtual machines. A selection of supported instances sizes is listed in our documentations. FortiGate Active/Passive HA uses the FGCP protocol for configuration sync and HA failover. This requires dedicated sync and management ports. A minimum of 4 NICs is required for the instance type.",
+							"text": "For this FortiGate deployment, it is recommended to use the general purpose or compute optimized virtual machines. A selection of supported instances sizes is listed in our documentation. FortiGate Active/Passive HA uses the FGCP protocol for configuration sync and HA failover. This requires dedicated sync and management ports. A minimum of 4 NICs is required for the instance type.",
 							"link": {
 								"label": "Learn more",
 								"uri": "https://docs.fortinet.com/vm/azure/fortigate/7.0/azure-administration-guide/7.0.0/562841/instance-type-support"
@@ -369,14 +369,14 @@
 						"type": "Microsoft.Common.TextBlock",
 						"visible": true,
 						"options": {
-							"text": "The Load Balancer public IP will be used for public services hosted on the FortiGate such as IPSEC termination or services behind the Fortigate such as a webserver. The FortiGate Management public IPs are used for management of the virtual machines. They are also used for the Fabric connector to retrieve information from the Azure platform."
+							"text": "The External public IP will be used for public services hosted on the FortiGate such as IPSEC termination or services behind the Fortigate such as a webserver. This IP will be attached to the external NIC of the primary FortiGate. When configured this public IP will deattached form the external NIC on the primary unit and attached to the external NIC of the secondary unit. The FortiGate Management public IPs are used for management of the virtual machines. They are also used for the Fabric connector to retrieve information from the Azure platform."
 						}
 					},
 					{
 						"name": "loadbalancerpublicip",
 						"type": "Microsoft.Network.PublicIpAddressCombo",
 						"label": {
-							"publicIpAddress": "External Load Balancer",
+							"publicIpAddress": "External Public IP",
 							"domainNameLabel": "Domain name label"
 						},
 						"toolTip": {
@@ -419,7 +419,7 @@
 							}
 						},
 						"options": {
-							"hideNone": true,
+							"hideNone": false,
 							"hideDomainNameLabel": true
 						},
 						"visible": true
@@ -456,7 +456,7 @@
 						"visible": true,
 						"options": {
 							"icon": "Info",
-							"text": "This deployment can use Basic or Standard SKU public IP. Microsoft Azure offers a migration path from a basic to standard SKU public IP. The management IP's for both FortiGate can be set to none. If no alternative internet access is provided, the SDN Connector functionality for both HA failover and dynamic objects will not work.",
+							"text": "This deployment can use Basic or Standard SKU public IP. Microsoft Azure offers a migration path from a basic to standard SKU public IP. All public IPs can be set to none. If no alternative internet access is provided, the SDN Connector functionality for both HA failover (via the HA MGMT NIC) and dynamic objects will not work.",
 							"uri": "https://docs.microsoft.com/en-us/azure/virtual-network/virtual-network-public-ip-address-upgrade?tabs=option-upgrade-cli%2Coption-migrate-powershell"
 						}
 					}
