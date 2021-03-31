@@ -156,7 +156,7 @@
 							"text": "For this FortiGate deployment, it is recomended to use the general purpose or compute optimized virtual machines. A selection of supported instances sizes is listed in our documentations.",
 							"link": {
 								"label": "Learn more",
-								"uri": "https://docs.fortinet.com/vm/azure/fortigate/6.4/azure-cookbook/6.4.0/562841/instance-type-support"
+								"uri": "https://docs.fortinet.com/vm/azure/fortigate/7.0/azure-administration-guide/7.0.0/562841/instance-type-support"
 							}
 						}
 					},
