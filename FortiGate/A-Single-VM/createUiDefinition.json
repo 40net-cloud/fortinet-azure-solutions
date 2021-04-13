@@ -471,7 +471,7 @@
 								"toolTip": "Provide the serial number of the FortiManager",
 								"constraints": {
 									"required": false,
-									"regex": "^[A-Za-z0-9]{1,64}$",
+									"regex": "^[A-Za-z0-9-]{1,64}$",
 									"validationMessage": "Only alphanumeric characters are allowed, and the value must be 1 to 15 characters."
 								},
 								"visible": true
