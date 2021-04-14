@@ -1,13 +1,19 @@
 #!/bin/bash
 echo "
-##############################################################################################################
+################################################################################
 #
-# Cloud Security Services Hub
-# using VNET peering and FortiGate Active/Passive High Availability with Azure Standard Load Balancer - External and Internal
-# Fortinet FortiGate Terraform deployment template
+# Fortinet VPN IPSEC testing
 #
-##############################################################################################################
-
+# Deploy a VPN IPSEC testing setup using 2x FortiGate and 2x LNX systems in 2
+# separate VNET's
+#
+# To get started you need provide the Azure Service Principal Access if you are
+# not usig Azure Cloud Shell. If you want the provision the FortiGate systems
+# automatically with a license file you need to add the licenses into the
+# licenses directory and add the filename in the environment variable
+# TF_VAR_FGT_LICENSE_FILE_A and TF_VAR_FGT_LICENSE_FILE_B.
+#
+################################################################################
 "
 
 # Stop running when command returns error
@@ -20,36 +26,32 @@ set -e
 # AZURE_CLIENT_SECRET=''
 # AZURE_SUBSCRIPTION_ID=''
 # AZURE_TENANT_ID=''
+##############################################################################################################
 
 ##############################################################################################################
-# FortiGate variables
+# LICENSE FILE Location
 #
-# FortiGate License type PAYG or BYOL
-# Default = PAYG
-# FGT_IMAGE_SKU PAYG/ONDEMAND = fortinet_fg-vm_payg_20190624
-# FGT_IMAGE_SKU BYOL = fortinet_fg-vm
-#
-# FortiGate version
-# Default = latest
+# Examples
+# export TF_VAR_FGT_LICENSE_FILE_A="../licenses/FGVM04xxx.lic"
+# export TF_VAR_FGT_LICENSE_FILE_A="../licenses/FGVM04yyy.lic"
 #
 ##############################################################################################################
-#export TF_VAR_FGT_IMAGE_SKU=""
-#export TF_VAR_FGT_VERSION=""
-#export TF_VAR_FGT_BYOL_LICENSE_FILE_A=""
-#export TF_VAR_FGT_BYOL_LICENSE_FILE_B=""
+#export TF_VAR_FGT_LICENSE_FILE_A=""
+#export TF_VAR_FGT_LICENSE_FILE_B=""
+##############################################################################################################
 
 PLAN="terraform.tfplan"
 
 if [ -z "$DEPLOY_LOCATION" ]
 then
     # Input location
-    echo -n "Enter location (e.g. westeurope): "
+    echo -n "Enter location (e.g. eastus2): "
     stty_orig=`stty -g` # save original terminal setting.
     read location         # read the location
     stty $stty_orig     # restore terminal setting.
     if [ -z "$location" ]
     then
-        location="westeurope"
+        location="eastus2"
     fi
 else
     location="$DEPLOY_LOCATION"
@@ -82,11 +84,11 @@ rg_cgf="$prefix-RG"
 if [ -z "$DEPLOY_USERNAME" ]
 then
     # Input username
-    echo -n "Enter username: "
+    echo -n "Enter username (default: azureuser): "
     stty_orig=`stty -g` # save original terminal setting.
     read USERNAME         # read the prefix
     stty $stty_orig     # restore terminal setting.
-    if [ -z "$USERNAME" ]
+    if [ -z "$username" ]
     then
         USERNAME="azureuser"
     fi
@@ -113,6 +115,20 @@ else
     echo ""
 fi
 
+# Generate SSH key
+#echo ""
+#echo "==> Generate and verify SSH key location and permissions"
+#echo ""
+#SSH_PRIVATE_KEY_FILE="output/ssh_key"
+#if [ ! -f output/ssh_key ]; then
+#    ssh-keygen -q -t rsa -b 2048 -f "$SSH_PRIVATE_KEY_FILE" -C "" -N ""
+#fi
+#SSH_PUBLIC_KEY_FILE="output/ssh_key.pub"
+#chmod 700 `dirname $SSH_PUBLIC_KEY_FILE`
+#chmod 600 $SSH_PUBLIC_KEY_FILE
+#FGT_SSH_PUBLIC_KEY_FILE="../$SSH_PUBLIC_KEY_FILE"
+#FGT_SSH_PRIVATE_KEY_FILE="../$SSH_PRIVATE_KEY_FILE"
+
 SUMMARY="summary.out"
 
 echo ""
@@ -131,6 +147,7 @@ echo ""
 terraform plan --out "$PLAN" \
                 -var "USERNAME=$USERNAME" \
                 -var "PASSWORD=$PASSWORD"
+#                -var "FGT_SSH_PUBLIC_KEY_FILE=$FGT_SSH_PUBLIC_KEY_FILE"
 
 echo ""
 echo "==> Terraform apply"
@@ -149,18 +166,18 @@ terraform output deployment_summary > "../output/$SUMMARY"
 
 cd ../
 echo "
-##############################################################################################################
+################################################################################
 #
-# Fortinet FortiGate Terraform deployment template
-# FortiGate Cloud Security Services Hub deployment using Azure VNET Peering
-# Active/Passive High Availability with Azure Standard Load Balancer - External and Internal
+# Fortinet VPN IPSEC testing
 #
-# The FortiGate VMs are reachable on their management public IP on port HTTPS/443 and SSH/22.
+# The FortiGate systems are reachable on their public IP on port HTTPS/443 and
+# SSH/22. The backend linux systems are reachable on their public IP on SSH/22
+# to start the tests.
 #
-# BEWARE: The state files contain sensitive data like passwords and others. After the demo clean up your
-#         clouddrive directory.
+# BEWARE: The state files contain sensitive data like passwords and others.
+#         After the demo clean up your clouddrive directory.
 #
-##############################################################################################################
+################################################################################
 
  Deployment information:
 
@@ -169,4 +186,5 @@ Username:
 cat "output/$SUMMARY"
 echo "
 
-##############################################################################################################"
+################################################################################
+"
