@@ -136,7 +136,7 @@ echo "
 # Fortinet FortiGate Terraform deployment template
 # Cloud security services hub deployment - VNET peering
 #
-# The FortiGate systems are reachable on their management public IP on port HTTPS/8443 and SSH/22.
+# The FortiGate systems are reachable on their managment public IP on port HTTPS/8443 and SSH/22.
 #
 # BEWARE: The state files contain sensitive data like passwords and others. After the demo clean up your
 #         clouddrive directory.
@@ -145,7 +145,7 @@ echo "
 
  Deployment information:
 
-Username:
+Username: 
 "
 cat "output/$SUMMARY"
 echo "
