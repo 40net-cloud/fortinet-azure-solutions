@@ -246,7 +246,7 @@
 											"addressPrefixSize": "/26"
 										},
 										"constraints": {
-											"minAddressPrefixSize": "/28",
+											"minAddressPrefixSize": "/27",
 											"minAddressCount": 12,
 											"requireContiguousAddresses": true
 										}
@@ -258,7 +258,7 @@
 											"addressPrefixSize": "/26"
 										},
 										"constraints": {
-											"minAddressPrefixSize": "/28",
+											"minAddressPrefixSize": "/27",
 											"minAddressCount": 8,
 											"requireContiguousAddresses": true
 										}
@@ -270,7 +270,7 @@
 											"addressPrefixSize": "/26"
 										},
 										"constraints": {
-											"minAddressPrefixSize": "/28",
+											"minAddressPrefixSize": "/27",
 											"minAddressCount": 8,
 											"requireContiguousAddresses": true
 										}
@@ -282,7 +282,7 @@
 											"addressPrefixSize": "/26"
 										},
 										"constraints": {
-											"minAddressPrefixSize": "/28",
+											"minAddressPrefixSize": "/27",
 											"minAddressCount": 8,
 											"requireContiguousAddresses": true
 										}
@@ -294,7 +294,7 @@
 											"addressPrefixSize": "/24"
 										},
 										"constraints": {
-											"minAddressPrefixSize": "/28",
+											"minAddressPrefixSize": "/27",
 											"minAddressCount": 8,
 											"requireContiguousAddresses": true
 										}
