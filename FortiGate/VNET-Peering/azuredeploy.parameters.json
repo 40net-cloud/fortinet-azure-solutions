@@ -8,13 +8,13 @@
         "adminPassword": {
             "value": "## TO BE DEFINED ##"
         },
-        "FortiGateNamePrefix": {
+        "fortiGateNamePrefix": {
             "value": "## TO BE DEFINED ##"
         },
-        "FortiGateImageSKU": {
+        "fortiGateImageSKU": {
             "value": "fortinet_fg-vm"
         },
-        "FortiGateImageVersion": {
+        "fortiGateImageVersion": {
             "value": "latest"
         },
         "instanceType": {
@@ -137,7 +137,7 @@
         "location": {
             "value": "[resourceGroup().location]"
         },
-        "FortinetTags": {
+        "fortinetTags": {
             "value": {
                 "publisher": "Fortinet",
                 "template": "VNET Peering",
