@@ -14,7 +14,7 @@ steps:
     secureFile: 'azure-devops-ssh'
 
 - task: DownloadSecureFile@1
-  name: sshkey-pub
+  name: sshkeypub
   displayName: 'Download SSH public key'
   inputs:
     secureFile: 'azure-devops-ssh-pub'
