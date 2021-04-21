@@ -55,9 +55,9 @@ More information about SD-WAN can be found here :
 
 ### Configuration of on-premise FortiGate
 
-The drawing in [flow](#flow)section is used in the configuration screenshots with LAN on-premise 172.16.248.0/24 and IP address of Express Route Router 172.16.251.254 which provides Express Route access.
+The drawing in [flow](#flow) section is used in the configuration screenshots with LAN on-premise 172.16.248.0/24 and IP address of Express Route Router 172.16.251.254 which provides Express Route access.
 
 You can use the VPN wizard to create a VPN tunnel between on-premise Fortigate and AP HA Cluster of Fortigates in Azure where 40.114.187.146 is Public IP address of Azure external Load Balancer.
 
 
-![Inbound Flow](../images/SDWAN-EX-IPSEC/on-prem-VPN.png)
+![Inbound Flow](../images/SDWAN-EX-IPSEC/on-prem-vpn.png)
