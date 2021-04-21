@@ -12,6 +12,8 @@ The advantage of combining Fortinet Secure SD-WAN and Expressroute is:
 - Dynamic path selection to select the best/preferred path to the cloud.
 - Automatically route traffic to next best available link in the event of an outage.
 
+Test message
+
 ## Flow
 
 ## Configuration
