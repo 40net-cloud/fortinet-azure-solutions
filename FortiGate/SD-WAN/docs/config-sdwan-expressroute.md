@@ -15,5 +15,6 @@ The advantage of combining Fortinet Secure SD-WAN and Expressroute is:
 
 
 ## Flow
+![Inbound Flow](../images/SDWAN-EX-IPSEC/SDWAN-FLOW.png)
 
 ## Configuration
