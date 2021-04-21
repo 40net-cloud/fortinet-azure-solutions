@@ -55,4 +55,4 @@ More information about SD-WAN can be found here :
 
 ### Configuration of on-premise FortiGate
 
-To configure SD-WAN integrating both Express route connection and VPN tunnel over Internet you need to configure two separate connections and build SD-WAN interface out of them.
+
