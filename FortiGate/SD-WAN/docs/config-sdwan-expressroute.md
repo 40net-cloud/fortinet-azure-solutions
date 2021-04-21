@@ -47,3 +47,10 @@ a.b.c.d is private IP address of the host in Local Area Network on-premise. No N
 8. On-premise FortiGate sends packet to the server in on-premise LAN - s: 172.16.137.4  d: a.b.c.d
 
 ## Configuration
+
+To configure SD-WAN integrating both Express route connection and VPN tunnel over Internet you need to configure two separate connections and build SD-WAN interface out of them.
+
+More information about SD-WAN can be found here :
+[SD-WAN Instruction](https://docs.fortinet.com/document/fortigate/7.0.0/administration-guide/19246/sd-wan)
+
+### Configuration of on-premise FortiGate
