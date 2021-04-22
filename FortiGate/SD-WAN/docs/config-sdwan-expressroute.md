@@ -63,3 +63,11 @@ You can use the VPN wizard to create a VPN tunnel between on-premise Fortigate a
   <img src="../images/SDWAN-EX-IPSEC/on-prem-vpn.png" alt="inbound flow">
 </p>
 
+You need to remember to remove firewall policies using VPN tunnel and static routes which have been created after using VPN wizard, otherwise you will not be able to use VPN tunnel in SD-WAN configuration later on.
+
+You need to configure SD-WAN members, one using VPN tunnel interface configured in the previous step and another member using your Express Route connection.
+
+<p align="center">
+  <img src="../images/SDWAN-EX-IPSEC/on-prem-sd-wan-mem1.png" alt="inbound flow">
+</p>
+
