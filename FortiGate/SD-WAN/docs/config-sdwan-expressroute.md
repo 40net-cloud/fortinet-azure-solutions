@@ -130,8 +130,10 @@ Where 198.18.1.1 is the IP address configured on VPN tunnel interface in Azure a
   <img src="../images/SDWAN-EX-IPSEC/on-prem-sd-wan-interface.png" alt="inbound flow">
 </p>
 
-If you are using different address space for performance SLA monitoring via VPN tunnel you need to remember to include this address space in Phase 2 configuration of VPn tunnel. Otherwise traffic will not be allowed and link monitoring will fail.
+If you are using different address space for performance SLA monitoring via VPN tunnel you need to remember to include this address space in Phase 2 configuration of VPN tunnel. Otherwise traffic will not be allowed and link monitoring will fail.
 
 <p align="center">
   <img src="../images/SDWAN-EX-IPSEC/on-prem-sd-wan-sla2.png" alt="inbound flow">
 </p>
+
+### Configuration of Azure FortiGate
