@@ -90,3 +90,7 @@ You must configure a default route for the SD-WAN. The default gateways for each
 </p>
 
 Where 172.16.137.0/24 is private address space in Azure which should be reachable via SD-WAN interface.
+
+SD-WAN rules define specific routing options to route traffic to an SD-WAN member.
+
+If no routing rules are defined, the default Implicit rule is used. It can be configured to use one of five different load balancing algorithms. See [Implicit rule](https://docs.fortinet.com/document/fortigate/7.0.0/administration-guide/216765/implicit-rule) for more details and examples.
