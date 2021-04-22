@@ -104,6 +104,7 @@ SD-WAN zones can be used in policies as source and destination interfaces. Indiv
 You must configure a policy that allows traffic from your organization's internal network to the SD-WAN zone. Policies configured with the SD-WAN zone apply to all SD-WAN interface members in that zone.
 
 In our example local on-premise network is 172.16.148.0/24 and local network in Azure is 172.16.137.0/24
+You don't need to enable NAT as both connections via Express Route and via VPN tunnel work without source NAT.
 
 <p align="center">
   <img src="../images/SDWAN-EX-IPSEC/on-prem-sd-wan-policy1.png" alt="inbound flow">
@@ -113,4 +114,18 @@ You also need to configure policy in opposite directly allowing incoming traffic
 
 <p align="center">
   <img src="../images/SDWAN-EX-IPSEC/on-prem-sd-wan-policy2.png" alt="inbound flow">
+</p>
+
+
+You can configure link health monitoring according to your needs. 
+Performance SLA link monitoring measures the health of links that are connected to SD-WAN member interfaces by sending probing signals through each link to a server, and then measuring the link quality based on latency, jitter, and packet loss. If a link is broken, the routes on that link are removed and traffic is routed through other links. When the link is working again, the routes are re-enabled. This prevents traffic being sent to a broken link and lost.
+
+<p align="center">
+  <img src="../images/SDWAN-EX-IPSEC/on-prem-sd-wan-sla.png" alt="inbound flow">
+</p>
+
+Where 198.18.1.1 is the IP address configured on VPN tunnel interface in Azure and 198.18.1.2 is the IP address configured on VPN tunnel interface on-premise.
+
+<p align="center">
+  <img src="../images/SDWAN-EX-IPSEC/on-prem-sd-wan-interface.png" alt="inbound flow">
 </p>
