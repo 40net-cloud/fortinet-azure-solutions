@@ -67,7 +67,18 @@ You need to remember to remove firewall policies using VPN tunnel and static rou
 
 You need to configure SD-WAN members, one using VPN tunnel interface configured in the previous step and another member using your Express Route connection.
 
+Leave SD-WAN Zone as virtual-wan-link.
+As VPN tunnel is already configured with remote gateway settings, leave Gateway set to 0.0.0.0.
+
 <p align="center">
   <img src="../images/SDWAN-EX-IPSEC/on-prem-sd-wan-mem1.png" alt="inbound flow">
 </p>
 
+Repeat the above step for WAN, setting Gateway to the ISP's gateway: 172.16.251.254 in our setup
+<p align="center">
+  <img src="../images/SDWAN-EX-IPSEC/on-prem-sd-wan-mem2.png" alt="inbound flow">
+</p>
+
+<p align="center">
+  <img src="../images/SDWAN-EX-IPSEC/on-prem-sd-wan-zone.png" alt="inbound flow">
+</p>
