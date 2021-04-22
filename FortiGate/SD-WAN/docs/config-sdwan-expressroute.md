@@ -59,5 +59,7 @@ The drawing in [flow](#flow) section is used in the configuration screenshots wi
 
 You can use the VPN wizard to create a VPN tunnel between on-premise Fortigate and AP HA Cluster of Fortigates in Azure where 40.114.187.146 is Public IP address of Azure external Load Balancer.
 
+<p align="center">
+  <img src="../images/SDWAN-EX-IPSEC/on-prem-vpn.png" alt="inbound flow">
+</p>
 
-![Inbound Flow](../images/SDWAN-EX-IPSEC/on-prem-vpn.png)
