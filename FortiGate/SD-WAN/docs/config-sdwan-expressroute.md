@@ -242,3 +242,5 @@ If you are using different address space for performance SLA monitoring via VPN 
 <p align="center">
   <img src="../images/SDWAN-EX-IPSEC/azure-sd-wan-perf-sla.png" alt="inbound flow">
 </p>
+
+More information about Performance SLA measurements and SD-WAN usage like VOlume, Bandwith, Sessions can be fund [here](https://docs.fortinet.com/document/fortigate/7.0.0/administration-guide/823480/results)
