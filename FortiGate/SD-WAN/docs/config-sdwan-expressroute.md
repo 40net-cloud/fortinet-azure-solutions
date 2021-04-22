@@ -94,3 +94,23 @@ Where 172.16.137.0/24 is private address space in Azure which should be reachabl
 SD-WAN rules define specific routing options to route traffic to an SD-WAN member.
 
 If no routing rules are defined, the default Implicit rule is used. It can be configured to use one of five different load balancing algorithms. See [Implicit rule](https://docs.fortinet.com/document/fortigate/7.0.0/administration-guide/216765/implicit-rule) for more details and examples.
+
+<p align="center">
+  <img src="../images/SDWAN-EX-IPSEC/on-prem-sd-wan-rule.png" alt="inbound flow">
+</p>
+
+SD-WAN zones can be used in policies as source and destination interfaces. Individual SD-WAN members cannot be used in policies.
+
+You must configure a policy that allows traffic from your organization's internal network to the SD-WAN zone. Policies configured with the SD-WAN zone apply to all SD-WAN interface members in that zone.
+
+In our example local on-premise network is 172.16.148.0/24 and local network in Azure is 172.16.137.0/24
+
+<p align="center">
+  <img src="../images/SDWAN-EX-IPSEC/on-prem-sd-wan-policy1.png" alt="inbound flow">
+</p>
+
+You also need to configure policy in opposite directly allowing incoming traffic from Azure to local on-premise network via SD-WAN zone.
+
+<p align="center">
+  <img src="../images/SDWAN-EX-IPSEC/on-prem-sd-wan-policy2.png" alt="inbound flow">
+</p>
