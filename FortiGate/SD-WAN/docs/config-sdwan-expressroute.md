@@ -82,3 +82,11 @@ Repeat the above step for WAN, setting Gateway to the ISP's gateway: 172.16.251.
 <p align="center">
   <img src="../images/SDWAN-EX-IPSEC/on-prem-sd-wan-zone.png" alt="inbound flow">
 </p>
+
+You must configure a default route for the SD-WAN. The default gateways for each SD-WAN member interface do not need to be defined in the static routes table. FortiGate will decide what route or routes are preferred using Equal Cost Multi-Path (ECMP) based on distance and priority.
+
+<p align="center">
+  <img src="../images/SDWAN-EX-IPSEC/on-prem-sd-wan-route.png" alt="inbound flow">
+</p>
+
+Where 172.16.137.0/24 is private address space in Azure which should be reachable via SD-WAN interface.
