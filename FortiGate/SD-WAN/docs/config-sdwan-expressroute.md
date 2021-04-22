@@ -103,7 +103,7 @@ SD-WAN zones can be used in policies as source and destination interfaces. Indiv
 
 You must configure a policy that allows traffic from your organization's internal network to the SD-WAN zone. Policies configured with the SD-WAN zone apply to all SD-WAN interface members in that zone.
 
-In our example local on-premise network is 172.16.148.0/24 and local network in Azure is 172.16.137.0/24
+In our example local on-premise network is 172.16.248.0/24 and local network in Azure is 172.16.137.0/24
 You don't need to enable NAT as both connections via Express Route and via VPN tunnel work without source NAT.
 
 <p align="center">
@@ -190,3 +190,31 @@ Repeat the above step for another SD-WAN member using VPN tunnel over Internet. 
   <img src="../images/SDWAN-EX-IPSEC/azure-sd-wan-member2.png" alt="inbound flow">
 </p>
 
+<p align="center">
+  <img src="../images/SDWAN-EX-IPSEC/azure-sd-wan-zone.png" alt="inbound flow">
+</p>
+
+You must configure a default route for the SD-WAN. The default gateways for each SD-WAN member interface do not need to be defined in the static routes table. FortiGate will decide what route or routes are preferred using Equal Cost Multi-Path (ECMP) based on distance and priority.
+
+<p align="center">
+  <img src="../images/SDWAN-EX-IPSEC/azure-sd-wan-static-route.png" alt="inbound flow">
+</p>
+Where 172.16.248.0/24 is private LAN address space on-premise which should be reachable via SD-WAN interface.
+
+SD-WAN rules define specific routing options to route traffic to an SD-WAN member.
+
+If no routing rules are defined, the default Implicit rule is used. It can be configured to use one of five different load balancing algorithms. See [Implicit rule](https://docs.fortinet.com/document/fortigate/7.0.0/administration-guide/216765/implicit-rule) for more details and examples.
+
+<p align="center">
+  <img src="../images/SDWAN-EX-IPSEC/azure-sd-wan-rule.png" alt="inbound flow">
+</p>
+
+SD-WAN zones can be used in policies as source and destination interfaces. Individual SD-WAN members cannot be used in policies.
+
+You must configure a policy that allows traffic from your organization's internal network to the SD-WAN zone. Policies configured with the SD-WAN zone apply to all SD-WAN interface members in that zone.
+
+In our example local on-premise network is 172.16.248.0/24 and local network in Azure is 172.16.137.0/24 You don't need to enable NAT as both connections via Express Route and via VPN tunnel work without source NAT.
+
+<p align="center">
+  <img src="../images/SDWAN-EX-IPSEC/azure-sd-wan-fw-rule1.png" alt="inbound flow">
+</p>
