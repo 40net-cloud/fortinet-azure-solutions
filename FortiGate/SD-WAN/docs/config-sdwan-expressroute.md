@@ -171,3 +171,22 @@ You also need to create Route Table which will be associated with Express Route 
 <p align="center">
   <img src="../images/SDWAN-EX-IPSEC/azure-sd-wan-route.png" alt="inbound flow">
 </p>
+
+<p align="center">
+  <img src="../images/SDWAN-EX-IPSEC/azure-sd-wan-route-associate.png" alt="inbound flow">
+</p>
+
+You need also to create static route on Azure Fortigate pointing that local on-premise LAN network is available via Azure default Gateway 172.16.136.1 located in external subnet. Thanks to this entry Azure will automatically route correctly the traffic to Express Route VPN Gateway and via Express Route circuit to on-premise.
+
+You can configure this while adding SD-WAN Member interface and providing 172.16.136.1 as Gateway.
+
+<p align="center">
+  <img src="../images/SDWAN-EX-IPSEC/azure-sd-wan-member1.png" alt="inbound flow">
+</p>
+
+Repeat the above step for another SD-WAN member using VPN tunnel over Internet. As VPN tunnel is already configured with remote gateway settings, leave Gateway set to 0.0.0.0
+
+<p align="center">
+  <img src="../images/SDWAN-EX-IPSEC/azure-sd-wan-member2.png" alt="inbound flow">
+</p>
+
