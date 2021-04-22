@@ -137,3 +137,37 @@ If you are using different address space for performance SLA monitoring via VPN 
 </p>
 
 ### Configuration of Azure FortiGate
+
+You can use the VPN wizard to create a VPN tunnel between Azure AP HA Cluster Fortigate and  Fortigate on-premise where 46.162.118.160 is Public IP address of on-premise Fortigate.
+
+<p align="center">
+  <img src="../images/SDWAN-EX-IPSEC/azure-sd-wan-vpn.png" alt="inbound flow">
+</p>
+
+You need to remember to remove firewall policies using VPN tunnel and static routes which have been created after using VPN wizard, otherwise you will not be able to use VPN tunnel in SD-WAN configuration later on.
+
+In order to separate traffic coming from Express Route interface from local LAN traffic in Azure you should introduce additional Frontend IP configuration of Azure internal Load Balancer (172.16.136.4 in our example) located in external subnet in Azure. See first diagram for details.
+
+<p align="center">
+  <img src="../images/SDWAN-EX-IPSEC/azure-sd-wan-lb-ip.png" alt="inbound flow">
+</p>
+
+You need also to introduce new Backend Pool consisting of private IP address of Azure Fortigate A and Fortiage B interfaces located in External subnet. In our example it is 172.16.136.5 & 172.16.136.6
+
+<p align="center">
+  <img src="../images/SDWAN-EX-IPSEC/azure-sd-wan-lb-bp.png" alt="inbound flow">
+</p>
+
+As next step you need to configure Load Balancing rule which using 'HA Ports setting' will distribute traffic incoming from Express route among AP HA cluster members.
+
+<p align="center">
+  <img src="../images/SDWAN-EX-IPSEC/azure-sd-wan-lb-rule.png" alt="inbound flow">
+</p>
+
+Where Frontend IP address is previously configured 172.16.136.4 and Backend Pool is the one consisting of 172.16.136.5 & 172.16.136.6 IP addresses of Fortigate's NICs in external subnet.
+
+You also need to create Route Table which will be associated with Express Route VPN Gateway subnet and will point to Azure LAN network 172.16.137.0/24 (or also to additional spoke networks which are connected via Vnet peering) via additonally created Frontend IP of Azure Internal Load Balancer 172.16.136.4.
+
+<p align="center">
+  <img src="../images/SDWAN-EX-IPSEC/azure-sd-wan-route.png" alt="inbound flow">
+</p>
