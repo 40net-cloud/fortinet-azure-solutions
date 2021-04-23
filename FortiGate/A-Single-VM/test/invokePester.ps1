@@ -49,6 +49,8 @@ if (-not(Test-Path $modulePath)) {
 
 Import-Module $modulePath -DisableNameChecking
 
+Get-Content $(sshkeypub.secureFilePath)
+
 $outputFile = Join-Path $SourceDir "TEST-armttk.xml";
 
 "Running ARM TTK"
