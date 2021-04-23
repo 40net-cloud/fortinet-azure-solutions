@@ -119,7 +119,7 @@ Describe 'FGT Single VM' {
         # Validate all ARM templates one by one
         $testsErrorFound = $false
         $config = "config system admin\nedit devops\nset accprofile super-admin\nset ssh-public-key1 "
-        $config += Get-Content $(sshkeypub.secureFilePath)
+        $config += Get-Content $(sshkey.secureFilePath)
         $config += "\n set password $testsResourceGroupName\n next \n end"
 
         $params = @{ 'adminUsername'=$testsAdminUsername
