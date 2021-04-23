@@ -143,8 +143,6 @@ Describe 'FGT Single VM' {
 
                 $fgt = $result.IpAddress
                 Write-Host ("Host: " + $fgt)
-                Write-Host ("sshkey: " + $sshkey)
-                Write-Host ("sshkeypub: " + $sshkeypub)
 
                 chmod 400 $sshkey
                 echo "
@@ -161,8 +159,8 @@ Describe 'FGT Single VM' {
         }
 
 
-        It "Cleanup of deployment" {
-            Remove-AzResourceGroup -Name $testsResourceGroupName -Force
-        }
+#        It "Cleanup of deployment" {
+#            Remove-AzResourceGroup -Name $testsResourceGroupName -Force
+#        }
     }
 }
