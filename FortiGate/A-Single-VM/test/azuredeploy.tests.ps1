@@ -28,6 +28,8 @@ $testsResourceGroupName = "FORTIQA-$testsRandom-$templateName"
 $testsAdminUsername = "azureuser"
 $testsResourceGroupLocation = "westeurope"
 
+"Deployment name: $testsResourceGroupName"
+
 Describe 'FGT Single VM' {
     Context 'Validation' {
         It 'Has a JSON template' {
@@ -109,9 +111,9 @@ Describe 'FGT Single VM' {
 
         # Validate all ARM templates one by one
         $testsErrorFound = $false
-        $config = "config system admin\nedit devops\nset accprofile super-admin\nset ssh-public-key1 "
+        $config = "config system admin\nedit devops\nset accprofile super-admin\nset ssh-public-key1 \'"
         $config += Get-Content $sshkeypub
-        $config += "\n set password $testsResourceGroupName\n next \n end"
+        $config += "\'\n set password $testsResourceGroupName\n next \n end"
 
         $params = @{ 'adminUsername'=$testsAdminUsername
                      'adminPassword'=$testsResourceGroupName
