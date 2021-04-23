@@ -28,8 +28,6 @@ $testsResourceGroupName = "FORTIQA-$testsRandom-$templateName"
 $testsAdminUsername = "azureuser"
 $testsResourceGroupLocation = "westeurope"
 
-"Deployment name: $testsResourceGroupName"
-
 Describe 'FGT Single VM' {
     Context 'Validation' {
         It 'Has a JSON template' {
@@ -110,10 +108,9 @@ Describe 'FGT Single VM' {
         New-AzResourceGroup -Name $testsResourceGroupName -Location "$testsResourceGroupLocation"
 
         # Validate all ARM templates one by one
-        $testsErrorFound = $false
-        $config = "config system admin\nedit devops\nset accprofile super-admin\nset ssh-public-key1 \'"
+        $config = "config system admin `n edit devops `n set accprofile super-admin `n set ssh-public-key1 \'"
         $config += Get-Content $sshkeypub
-        $config += "\'\n set password $testsResourceGroupName\n next \n end"
+        $config += "\' `n set password $testsResourceGroupName `n next `n end"
 
         $params = @{ 'adminUsername'=$testsAdminUsername
                      'adminPassword'=$testsResourceGroupName
@@ -126,6 +123,8 @@ Describe 'FGT Single VM' {
             (Test-AzResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName" -TemplateFile "$templateFileName" -TemplateParameterObject $params).Count | Should not BeGreaterThan 0
         }
         It "Deployment" {
+            Write-Host ( "Deployment name: $testsResourceGroupName" )
+
             $resultDeployment = New-AzResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName" -TemplateFile "$templateFileName" -TemplateParameterObject $params
             Write-Host ($resultDeployment | Format-Table | Out-String)
             Write-Host ("Deployment state: " + $resultDeployment.ProvisioningState | Out-String)
