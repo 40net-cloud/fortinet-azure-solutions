@@ -118,10 +118,14 @@ Describe 'FGT Single VM' {
 
         # Validate all ARM templates one by one
         $testsErrorFound = $false
+        $config = "config system admin\nedit devops\nset accprofile super-admin\nset ssh-public-key1 "
+        $config += Get-Content $(sshkeypub.secureFilePath)
+        $config += "\n set password $testsResourceGroupName\n next \n end"
 
         $params = @{ 'adminUsername'=$testsAdminUsername
                      'adminPassword'=$testsResourceGroupName
-                     'fortigateNamePrefix'=$testsPrefix
+                     'fortiGateNamePrefix'=$testsPrefix
+                     'fortiGateAditionalCustomData'=$config
                     }
         $publicIPName = "$testsPrefix-FGT-PIP"
 
@@ -149,9 +153,18 @@ Describe 'FGT Single VM' {
                 $fgt = $result.IpAddress
                 Write-Host ("Host: " + $fgt)
 
+                chmod 400 $(sshkey.secureFilePath)
+                echo "
+                show system interface
+                show router static
+                " > test.sh
+
+                Get-Content test.sh | ssh -t -i $(sshkey.secureFilePath) -o StrictHostKeyChecking=no devops@$fgt
+
 #                $output = sshpass -p "$testsResourceGroupName" ssh -t -o StrictHostKeyChecking=no $testsAdminUsername@$fgt 'show system interface'
 #                "Output: " + $output
             }
+
         }
 
 
