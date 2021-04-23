@@ -63,6 +63,8 @@ $outputFile = Join-Path $SourceDir "TEST-custom.xml";
 
 "Running custom tests"
 
+$sshkeypub
+
 $a = @()
 $params = @{sshkey = $sskey; sshkeypub = $sshkeypub}
 $a += @{Path =  $SourceDir; Parameters = $params}

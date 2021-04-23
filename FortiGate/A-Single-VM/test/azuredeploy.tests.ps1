@@ -61,6 +61,9 @@ Describe 'FGT Single VM' {
             $templateResources | Should Be $expectedResources
         }
 
+        ('acceleratedNetworking', 'adminPassword', 'adminUsername', 'fortiGateAditionalCustomData', 'fortiGateImageSKU', 'fortiGateImageVersion', 'fortiGateLicenseBYOL', 'fortiGateNamePrefix', 'fortiManager', 'fortiManagerIP')
+        ('acceleratedNetworking', 'adminPassword', 'adminUsername', 'fortiGateAditionalCustomData', 'fortiGateImageSKU', 'fortiGateImageVersion', 'fortiGateLicenseBYOL', 'fortiGateNamePrefix', 'fortiManager', 'fortiManagerIP')
+
         It 'Contains the expected parameters' {
             $expectedTemplateParameters = 'acceleratedNetworking',
                                           'adminPassword',
@@ -88,7 +91,6 @@ Describe 'FGT Single VM' {
                                           'subnet2StartAddress',
                                           'subnet3Name',
                                           'subnet3Prefix',
-                                          'subnet3StartAddress',
                                           'vnetAddressPrefix',
                                           'vnetName',
                                           'vnetNewOrExisting',
@@ -141,6 +143,8 @@ Describe 'FGT Single VM' {
 
                 $fgt = $result.IpAddress
                 Write-Host ("Host: " + $fgt)
+                Write-Host ("sshkey: " + $sshkey)
+                Write-Host ("sshkeypub: " + $sshkeypub)
 
                 chmod 400 $sshkey
                 echo "
