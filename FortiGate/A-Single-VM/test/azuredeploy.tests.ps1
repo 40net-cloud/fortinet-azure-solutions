@@ -153,7 +153,8 @@ Describe 'FGT Single VM' {
                 show router static
                 " > test.sh
 
-                Get-Content test.sh | ssh -t -i $sshkey -o StrictHostKeyChecking=no devops@$fgt
+                $result = Get-Content test.sh | ssh -tt -i $sshkey -o StrictHostKeyChecking=no devops@$fgt
+                Write-Host ("Output: " + $result)
 
 #                $output = sshpass -p "$testsResourceGroupName" ssh -t -o StrictHostKeyChecking=no $testsAdminUsername@$fgt 'show system interface'
 #                "Output: " + $output
