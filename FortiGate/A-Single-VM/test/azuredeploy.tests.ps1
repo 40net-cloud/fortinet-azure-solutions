@@ -108,9 +108,9 @@ Describe 'FGT Single VM' {
         New-AzResourceGroup -Name $testsResourceGroupName -Location "$testsResourceGroupLocation"
 
         # Validate all ARM templates one by one
-        $config = "config system admin `n edit devops `n set accprofile super-admin `n set ssh-public-key1 \'"
+        $config = "config system global `n set gui-theme mariner `n end `n config system admin `n edit devops `n set accprofile super_admin `n set ssh-public-key1 `""
         $config += Get-Content $sshkeypub
-        $config += "\' `n set password $testsResourceGroupName `n next `n end"
+        $config += "`" `n set password $testsResourceGroupName `n next `n end"
 
         $params = @{ 'adminUsername'=$testsAdminUsername
                      'adminPassword'=$testsResourceGroupName
@@ -145,6 +145,8 @@ Describe 'FGT Single VM' {
                 $fgt = $result.IpAddress
                 Write-Host ("Host: " + $fgt)
 
+                Start-Sleep -Seconds 120
+
                 chmod 400 $sshkey
                 echo "
                 show system interface
@@ -160,8 +162,8 @@ Describe 'FGT Single VM' {
         }
 
 
-#        It "Cleanup of deployment" {
-#            Remove-AzResourceGroup -Name $testsResourceGroupName -Force
-#        }
+        It "Cleanup of deployment" {
+            Remove-AzResourceGroup -Name $testsResourceGroupName -Force
+        }
     }
 }
