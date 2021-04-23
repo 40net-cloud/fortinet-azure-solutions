@@ -1,6 +1,6 @@
 param (
-    [string]$templatename
-    [string]$sshkey
+    [string]$templatename,
+    [string]$sshkey,
     [string]$sshkeypub
 )
 
