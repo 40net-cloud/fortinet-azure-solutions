@@ -148,20 +148,22 @@ Describe 'FGT Single VM' {
                 Start-Sleep -Seconds 120
 
                 chmod 400 $sshkey
-                echo "
+                $verify_commands = @'
+                set output standard
+                end
                 show system interface
                 show router static
-                " > test.sh
+                exit
+'@
 
-                $result = Get-Content test.sh | ssh -tt -i $sshkey -o StrictHostKeyChecking=no devops@$fgt
-                Write-Host ("Output: " + $result)
+                $result = $verify_commands | ssh -tt -i $sshkey -o StrictHostKeyChecking=no devops@$fgt
+                Write-Output ("Output: " + $result)
 
 #                $output = sshpass -p "$testsResourceGroupName" ssh -t -o StrictHostKeyChecking=no $testsAdminUsername@$fgt 'show system interface'
 #                "Output: " + $output
             }
 
         }
-
 
         It "Cleanup of deployment" {
             Remove-AzResourceGroup -Name $testsResourceGroupName -Force
