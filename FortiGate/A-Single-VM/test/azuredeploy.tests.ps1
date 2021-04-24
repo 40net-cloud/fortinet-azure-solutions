@@ -158,6 +158,8 @@ Describe 'FGT Single VM' {
 
                 $result = $verify_commands | ssh -tt -i $sshkey -o StrictHostKeyChecking=no devops@$fgt
                 Write-Output ("Output: " + $result)
+                "Output 2: " + $result
+                Write-Host ("Output 3: " + $result)
 
 #                $output = sshpass -p "$testsResourceGroupName" ssh -t -o StrictHostKeyChecking=no $testsAdminUsername@$fgt 'show system interface'
 #                "Output: " + $output
