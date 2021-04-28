@@ -20,7 +20,6 @@ end
 ```
 
 ```
-
 config system sdwan
     set status enable
     config zone
@@ -45,6 +44,7 @@ config system sdwan
     end
 end
 ```
+
 ```
 config router static
     edit 5
@@ -56,6 +56,56 @@ config router static
         set distance 254
         set blackhole enable
         set dstaddr "VPN2Azure_remote_subnet_1"
+    next
+end
+```
+
+```
+config firewall policy
+    edit 3
+        set name "to-Azure"
+        set uuid 23247f3a-9d15-51eb-58ab-b1e2419cdd17
+        set srcintf "port5"
+        set dstintf "virtual-wan-link"
+        set srcaddr "via_Internet_local_subnet_1"
+        set dstaddr "via_Internet_remote_subnet_1"
+        set action accept
+        set schedule "always"
+        set service "ALL"
+        set logtraffic all
+        set logtraffic-start enable
+    next
+    edit 5
+        set name "From-Azure"
+        set uuid 2919636a-9d15-51eb-1396-396aa90f53e0
+        set srcintf "virtual-wan-link"
+        set dstintf "port5"
+        set srcaddr "via_Internet_remote_subnet_1"
+        set dstaddr "via_Internet_local_subnet_1"
+        set action accept
+        set schedule "always"
+        set service "ALL"
+        set logtraffic all
+        set logtraffic-start enable
+        set comments "From-Azure"
+    next
+end
+```
+
+```
+config system interface
+    edit "VPN2Azure"
+        set vdom "root"
+        set ip 198.18.1.2 255.255.255.255
+        set allowaccess ping
+        set type tunnel
+        set remote-ip 192.18.1.1 255.255.255.0
+        set role dmz
+        set snmp-index 12
+        config ipv6
+            set ip6-allowaccess ping
+        end
+        set interface "port2"
     next
 end
 ```
