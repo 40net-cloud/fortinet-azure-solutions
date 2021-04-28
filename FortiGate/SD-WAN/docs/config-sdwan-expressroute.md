@@ -40,11 +40,11 @@ w.x.y.z is private IP address of the host in Local Area Network on-premise. No N
 1. Connection from client to the private IP of the server in on-premise LAN. Azure routes the traffic using UDR to the internal Load Balancer. - s: 172.16.137.4 - d: a.b.c.d
 a.b.c.d is private IP address of the host in Local Area Network on-premise. No NAT happens during the whole connection.
 2. Azure Internal Load Balancer probes and send the packet to the active FGT. - s: 172.16.137.4 - d: a.b.c.d
-3. Primary FGT inspects the packet and when allowed sends the packet to ExpressRoute circuit. - s: 172.16.136.5 - d: a.b.c.d
+3. Primary FGT inspects the packet and when allowed sends the packet to ExpressRoute circuit. - s: 172.16.137.4 - d: a.b.c.d
 4. On-premise FortiGate sends packet to the server in on-premise LAN - s: 172.16.137.4  d: a.b.c.d
 5. Connection from client to the private IP of the server in on-premise LAN. Azure routes the traffic using UDR to the internal Load Balancer. - s: 172.16.137.4 - d: a.b.c.d
 6. Azure Internal Load Balancer probes and send the packet to the active FGT. - s: 172.16.137.4 - d: a.b.c.d
-7. Based on SD-WAN configuration connection can take also second path. Primary FGT inspects the packet and when allowed sends the packet to VPN tunnel over Internet. - s: 172.16.136.5 - d: a.b.c.d
+7. Based on SD-WAN configuration connection can take also second path. Primary FGT inspects the packet and when allowed sends the packet to VPN tunnel over Internet. - s: 172.16.137.4 - d: a.b.c.d
 8. On-premise FortiGate sends packet to the server in on-premise LAN - s: 172.16.137.4  d: a.b.c.d
 
 ## Configuration
@@ -84,7 +84,7 @@ Repeat the above step for WAN, setting Gateway to the ISP's gateway: 172.16.251.
   <img src="../images/SDWAN-EX-IPSEC/on-prem-sd-wan-zone.png" alt="inbound flow">
 </p>
 
-You must configure a default route for the SD-WAN. The default gateways for each SD-WAN member interface do not need to be defined in the static routes table. FortiGate will decide what route or routes are preferred using Equal Cost Multi-Path (ECMP) based on distance and priority.
+You must configure a route for the SD-WAN. The default gateways for each SD-WAN member interface do not need to be defined in the static routes table. FortiGate will decide what route or routes are preferred using Equal Cost Multi-Path (ECMP) based on distance and priority.
 
 <p align="center">
   <img src="../images/SDWAN-EX-IPSEC/on-prem-sd-wan-route.png" alt="inbound flow">
@@ -185,7 +185,7 @@ You can configure this while adding SD-WAN Member interface and providing 172.16
   <img src="../images/SDWAN-EX-IPSEC/azure-sd-wan-member1.png" alt="inbound flow">
 </p>
 
-Repeat the above step for another SD-WAN member using VPN tunnel over Internet. As VPN tunnel is already configured with remote gateway settings, leave Gateway set to 0.0.0.0
+Repeat the above step for another SD-WAN member using VPN tunnel over Internet. 
 
 <p align="center">
   <img src="../images/SDWAN-EX-IPSEC/azure-sd-wan-member2.png" alt="inbound flow">
@@ -195,7 +195,7 @@ Repeat the above step for another SD-WAN member using VPN tunnel over Internet. 
   <img src="../images/SDWAN-EX-IPSEC/azure-sd-wan-zone.png" alt="inbound flow">
 </p>
 
-You must configure a default route for the SD-WAN. The default gateways for each SD-WAN member interface do not need to be defined in the static routes table. FortiGate will decide what route or routes are preferred using Equal Cost Multi-Path (ECMP) based on distance and priority.
+You must configure a route for the SD-WAN. The default gateways for each SD-WAN member interface do not need to be defined in the static routes table. FortiGate will decide what route or routes are preferred using Equal Cost Multi-Path (ECMP) based on distance and priority.
 
 <p align="center">
   <img src="../images/SDWAN-EX-IPSEC/azure-sd-wan-static-route.png" alt="inbound flow">
