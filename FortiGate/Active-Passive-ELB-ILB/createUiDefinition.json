@@ -131,6 +131,10 @@
 							"value": "6.4.5"
 						},
 						{
+							"label": "7.0.0",
+							"value": "7.0.0"
+						},
+						{
 							"label": "latest",
 							"value": "latest"
 						}
@@ -327,7 +331,7 @@
 									"text": "Enables SR-IOV support allowing the FortiOS to bypass the hypervisor and talk directly with the PCIe card underneath.",
 									"link": {
 										"label": "Learn more",
-										"uri": "https://docs.fortinet.com/document/fortigate/6.4.0/azure-cookbook/651644/enabling-accelerated-networking-on-the-fortigate-vm"
+										"uri": "https://docs.fortinet.com/vm/azure/fortigate/7.0/azure-administration-guide/7.0.0/651644/enabling-accelerated-networking-on-the-fortigate-vm"
 									}
 								}
 							},
@@ -576,7 +580,7 @@
 								"constraints": {
 									"required": false,
 									"regex": "^[A-Za-z0-9.]{1,64}$",
-									"validationMessage": "Only alphanumeric characters are allowed, and the value must be 1 to 15 characters."
+									"validationMessage": "Only alphanumeric characters and dots are allowed, and the value must be 1 to 64 characters."
 								},
 								"visible": true
 							},
@@ -589,7 +593,7 @@
 								"constraints": {
 									"required": false,
 									"regex": "^[A-Za-z0-9-]{1,64}$",
-									"validationMessage": "Only alphanumeric characters are allowed, and the value must be 1 to 15 characters."
+									"validationMessage": "Only alphanumeric characters and a dash are allowed, and the value must be 1 to 64 characters."
 								},
 								"visible": true
 							}
