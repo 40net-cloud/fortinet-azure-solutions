@@ -1,0 +1,3 @@
+Q: Some templates use a basic sku public IP address and some templates use a standard public IP address. Is it possible to convert from a basic to a standard SKU public IP address?
+
+A: Yes, this is now possible according to Microsoft. The IP can't be associated with any resource. More information can be found [here](https://docs.microsoft.com/en-us/azure/virtual-network/virtual-network-public-ip-address-upgrade)
