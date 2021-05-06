@@ -23,10 +23,9 @@ For the deployment, you can use the Azure Portal, Azure CLI, Powershell or Azure
 
 In the Azure Portal you can deploy the template either by clicking the buttons below or by pasting the contents of the 'azuredeploy.json' file in the 'Deploy a custom template' location.
 
-<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2F40net-cloud%2Ffortinet-azure-solutions%2Fmain%2FFortiWeb%2FManager%2Fazuredeploy.json" target="_blank"><img src="http://azuredeploy.net/deploybutton.png"/></a>
-<a href="http://armviz.io/#/?load=https%3A%2F%2Fraw.githubusercontent.com%2F40net-cloud%2Ffortinet-azure-solutions%2Fmain%2FFortiWeb%2FManager%2Fazuredeploy.json" target="_blank">
-    <img src="http://armviz.io/visualizebutton.png"/>
-</a>
+[![Deploy to Azure](https://azuredeploy.net/deploybutton.png)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2F40net-cloud%2Ffortinet-azure-solutions%2Fmain%2FFortiWeb%2FManager%2Fazuredeploy.json)
+
+[![Visualize](http://armviz.io/visualizebutton.png)](http://armviz.io/#/?load=https%3A%2F%2Fraw.githubusercontent.com%2F40net-cloud%2Ffortinet-azure-solutions%2Fmain%2FFortiWeb%2FManager%2Fazuredeploy.json)
 
 #### Manual deployment
 
@@ -38,7 +37,6 @@ In the Azure Portal you can deploy the template either by clicking the buttons b
 ![Azure Portal 3](https://raw.githubusercontent.com/40net-cloud/fortinet-azure-solutions/main/FortiGate/Playground/CustomVHD/images/azure-portal-3.png)
 - Complete the required variables. THe VHD uri is created using the 'Add-AzVhd' command
 ![Azure Portal 4](https://raw.githubusercontent.com/40net-cloud/fortinet-azure-solutions/main/FortiGate/Playground/CustomVHD/images/azure-portal-4.png)
-
 
 ### Powershell and Azure Cloud Shell
 
@@ -101,8 +99,8 @@ This template will not deploy the default Azure Marketplace images. You can depl
 
 The Azure ARM template deployment deploys different resources and is required to have the access rights and quota in your Microsoft Azure subscription to deploy the resources.
 
-
 ## License
+
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
