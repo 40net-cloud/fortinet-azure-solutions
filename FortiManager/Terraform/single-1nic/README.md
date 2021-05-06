@@ -1,5 +1,6 @@
 # FortiGate Active/Active Load Balanced pair of standalone FortiGate VMs for resilience and scale
-*Terraform deployment template for Microsoft Azure*
+
+Terraform deployment template for Microsoft Azure
 
 ## Introduction
 
@@ -13,11 +14,11 @@ In Microsoft Azure, this central security service hub is commonly implemented us
 
 This Terraform template will automatically deploy a full working environment containing the the following components.
 
-  - 2 FortiGate firewalls in an active/active deployment
-  - 1 external Azure Standard Load Balancer for communication with internet
-  - 1 internal Azure Standard Load Balancer to receive all internal traffic and forwarding towards Azure Gateways connecting ExpressRoute or Azure VPNs.
-  - 1 VNET with 2 protected subnets
-  - User Defined Routes (UDR) for the protected subnets
+- 2 FortiGate firewalls in an active/active deployment
+- 1 external Azure Standard Load Balancer for communication with internet
+- 1 internal Azure Standard Load Balancer to receive all internal traffic and forwarding towards Azure Gateways connecting ExpressRoute or Azure VPNs.
+- 1 VNET with 2 protected subnets
+- User Defined Routes (UDR) for the protected subnets
 
 ![VNET peering design](images/fgt-aa.png)
 
@@ -54,14 +55,16 @@ The Terraform template deployment deploys different resources and is required to
   - PAYG or OnDemand: These licenses are automatically generated during the deployment of the FortiGate systems.
 
 ### Fabric Connector
+
 The FortiGate-VM uses [Managed Identities](https://docs.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/) for the SDN Fabric Connector. A SDN Fabric Connector is created automatically during deployment. After deployment, it is required apply the 'Reader' role to the Azure Subscription you want to resolve Azure Resources from. More information can be found on the [Fortinet Documentation Libary](https://docs.fortinet.com/vm/azure/fortigate/6.4/azure-cookbook/6.4.0/236610/creating-a-fabric-connector-using-a-managed-identity).
 
 ### North South traffic
+
 When configuring the policies on the FortiGates to allow and forward traffic to internal hosts, it is recommended that you enable the NAT checkbox (this will S-NAT the packets to the IP of port2). Doing so will enforce symmetric return.
 
 It is possible to use FGSP to synchronize sessions and thereby allow assymetric return traffic. However this is not best practice from a security perspective, because it limits the ability of IPS by potentially only seeing one side of the conversation on each FGT. The FortiGate IPS takes both sides of the conversation into account for increased security and visibility. Reducing this visibility on the FortiGate may decrease the IPS efficacy.
 
-Often S-NAT is not desired because it's necessary to retain the original source IP. For HTTP or HTTPS traffic in particular, you can enable the Load Balancing feature on the FortiGate which gives you the option to copy the source IP into the X-Forwarded-For header (See https://docs.fortinet.com/uploaded/files/3637/fortigate-load-balancing-56.pdf)
+Often S-NAT is not desired because it's necessary to retain the original source IP. For HTTP or HTTPS traffic in particular, you can enable the Load Balancing feature on the FortiGate which gives you the option to copy the source IP into the X-Forwarded-For header.
 
 If you do prefer to use FGSP for session synchronization. It can be enable during deployment by uncommenting the section in the customdata.tpl file or adding this recommended configuration to both FortiGate VMs.
 
@@ -81,9 +84,9 @@ config system cluster-sync
     next
 end
 ```
-* Where x in 172.16.136.x is the IP of port 1 of the opposite FortiGate. With the default values this would be either 5 or 6.
 
-### Configuration synchronization
+- Where x in 172.16.136.x is the IP of port 1 of the opposite FortiGate. With the default values this would be either 5 or 6.
+
 The FortiGate VMs are in this Active/Active setup independent units. They don't use FGCP as a protocol to sync the configuration like in the Active/Passive setup. To enable configuration sync between both unit the sync from the autoscaling setup can be used. This will sync all configuration except for the specific configuration item proper to the specific VM like hostname, routing and others. To enable the configuration sync the config below can be used on both
 
 FortiGate A
@@ -107,9 +110,11 @@ end
 ```
 
 ## Support
+
 Fortinet-provided scripts in this and other GitHub projects do not fall under the regular Fortinet technical support scope and are not supported by FortiCare Support Services.
 For direct issues, please refer to the [Issues](https://github.com/fortinet/azure-templates/issues) tab of this GitHub project.
 For other questions related to this project, contact [github@fortinet.com](mailto:github@fortinet.com).
 
 ## License
+
 [License](LICENSE) © Fortinet Technologies. All rights reserved.
