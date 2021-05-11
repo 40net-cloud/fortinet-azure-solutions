@@ -422,8 +422,8 @@
       "type": "object",
       "defaultValue": {
         "publisher": "Fortinet",
-        "template": "Active-Passive-SDN-AS-AZ",
-        "provider": "6EB3B02F-50E5-4A3E-8CB8-2E129APSDNASAZ"
+        "template": "Active-Passive-SDN-AS-AZORAS",
+        "provider": "6EB3B02F-50E5-4A3E-8CB8-2E129APSDNASAZORAS"
       }
     }
   },
@@ -484,7 +484,7 @@
     "publicIP2Id": "[if(equals(parameters('publicIP2NewOrExisting'),'new'),resourceId('Microsoft.Network/publicIPAddresses',variables('publicIP2Name')),resourceId(parameters('publicIP2ResourceGroup'),'Microsoft.Network/publicIPAddresses',variables('publicIP2Name')))]",
     "publicIPAddress2Id": { "id": "[variables('publicIP2Id')]" },
     "publicIP3Name": "[if(equals(parameters('publicIP3Name'),''),concat(parameters('fortiGateNamePrefix'),'-FGT-B-MGMT-PIP'),parameters('publicIP3Name'))]",
-    "publicIP3Id": "[if(equals(parameters('publicIP3NewOrExisting'),'new'),resourceId('Microsoft.Network/publicIPAddresses',variables ('publicIP3Name')),resourceId(parameters('publicIP3ResourceGroup'),'Microsoft.Network/publicIPAddresses',variables('publicIP3Name')))]",
+    "publicIP3Id": "[if(equals(parameters('publicIP3NewOrExisting'),'new'),resourceId('Microsoft.Network/publicIPAddresses',variables('publicIP3Name')),resourceId(parameters('publicIP3ResourceGroup'),'Microsoft.Network/publicIPAddresses',variables('publicIP3Name')))]",
     "publicIPAddress3Id": { "id": "[variables('publicIP3Id')]" },
 
     "nsgName": "[concat(parameters('fortiGateNamePrefix'),'-',uniqueString(resourceGroup().id),'-NSG')]",

@@ -126,10 +126,10 @@
             "value": "ProtectedASubnet"
         },
         "subnet5Prefix": {
-            "value": "10.0.6.0/24"
+            "value": "10.0.5.0/24"
         },
         "subnet6Name": {
-            "value": "ProtectedASubnet"
+            "value": "ProtectedBSubnet"
         },
         "subnet6Prefix": {
             "value": "10.0.6.0/24"
@@ -155,8 +155,8 @@
         "fortinetTags": {
             "value": {
                 "publisher": "Fortinet",
-                "template": "Active-Passive-SDN-AS-AZ",
-                "provider": "6EB3B02F-50E5-4A3E-8CB8-2E129APSDNASAZ"
+                "template": "Active-Passive-SDN-AS-AZORAS",
+                "provider": "6EB3B02F-50E5-4A3E-8CB8-2E129APSDNASAZORAS"
             }
         }
     }
