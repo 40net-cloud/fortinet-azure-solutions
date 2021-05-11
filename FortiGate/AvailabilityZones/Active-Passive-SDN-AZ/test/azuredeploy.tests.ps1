@@ -68,59 +68,78 @@ Describe 'FGT A/P SDN AZ' {
 
         It 'Creates the expected Azure resources' {
             $expectedResources = 'Microsoft.Resources/deployments',
-                                 'Microsoft.Network/routeTables',
-                                 'Microsoft.Network/virtualNetworks',
-                                 'Microsoft.Network/networkSecurityGroups',
-                                 'Microsoft.Network/publicIPAddresses',
-                                 'Microsoft.Network/publicIPAddresses',
-                                 'Microsoft.Network/publicIPAddresses',
-                                 'Microsoft.Network/networkInterfaces',
-                                 'Microsoft.Network/networkInterfaces',
-                                 'Microsoft.Network/networkInterfaces',
-                                 'Microsoft.Network/networkInterfaces',
-                                 'Microsoft.Network/networkInterfaces',
-                                 'Microsoft.Network/networkInterfaces',
-                                 'Microsoft.Network/networkInterfaces',
-                                 'Microsoft.Network/networkInterfaces',
-                                 'Microsoft.Compute/virtualMachines',
-                                 'Microsoft.Compute/virtualMachines'
+                                'Microsoft.Compute/availabilitySets',
+                                'Microsoft.Network/routeTables',
+                                'Microsoft.Network/virtualNetworks',
+                                'Microsoft.Network/networkSecurityGroups',
+                                'Microsoft.Network/publicIPAddresses',
+                                'Microsoft.Network/publicIPAddresses',
+                                'Microsoft.Network/publicIPAddresses',
+                                'Microsoft.Network/networkInterfaces',
+                                'Microsoft.Network/networkInterfaces',
+                                'Microsoft.Network/networkInterfaces',
+                                'Microsoft.Network/networkInterfaces',
+                                'Microsoft.Network/networkInterfaces',
+                                'Microsoft.Network/networkInterfaces',
+                                'Microsoft.Network/networkInterfaces',
+                                'Microsoft.Network/networkInterfaces',
+                                'Microsoft.Compute/virtualMachines',
+                                'Microsoft.Compute/virtualMachines'
             $templateResources = (get-content $templateFileLocation | ConvertFrom-Json -ErrorAction SilentlyContinue).Resources.type
             $templateResources | Should Be $expectedResources
         }
 
         It 'Contains the expected parameters' {
-            $expectedTemplateParameters = 'adminPassword',
-                                          'adminUsername',
-                                          'fortigateImageSKU',
-                                          'fortigateImageVersion',
-                                          'fortigateNamePrefix',
-                                          'fortinetTags',
-                                          'instanceType',
-                                          'location',
-                                          'publicIP2Name',
-                                          'publicIP2NewOrExisting',
-                                          'publicIP2ResourceGroup',
-                                          'publicIP3Name',
-                                          'publicIP3NewOrExisting',
-                                          'publicIP3ResourceGroup',
-                                          'publicIPAddressType',
-                                          'publicIPName',
-                                          'publicIPNewOrExisting',
-                                          'publicIPResourceGroup',
-                                          'subnet1Name',
-                                          'subnet1Prefix',
-                                          'subnet2Name',
-                                          'subnet2Prefix',
-                                          'subnet3Name',
-                                          'subnet3Prefix',
-                                          'subnet4Name',
-                                          'subnet4Prefix',
-                                          'subnet5Name',
-                                          'subnet5Prefix',
-                                          'vnetAddressPrefix',
-                                          'vnetName',
-                                          'vnetNewOrExisting',
-                                          'vnetResourceGroup'
+            $expectedTemplateParameters = 'acceleratedNetworking',
+                                        'adminPassword',
+                                        'adminUsername',
+                                        'fortiGateAditionalCustomData',
+                                        'fortiGateImageSKU',
+                                        'fortiGateImageVersion',
+                                        'fortiGateLicenseBYOLA',
+                                        'fortiGateLicenseBYOLB',
+                                        'fortiGateNamePrefix',
+                                        'fortiManager',
+                                        'fortiManagerIP',
+                                        'fortiManagerSerial',
+                                        'fortinetTags',
+                                        'instanceType',
+                                        'location',
+                                        'publicIP2AddressSKU',
+                                        'publicIP2AddressType',
+                                        'publicIP2Name',
+                                        'publicIP2NewOrExisting',
+                                        'publicIP2ResourceGroup',
+                                        'publicIP3AddressSKU',
+                                        'publicIP3AddressType',
+                                        'publicIP3Name',
+                                        'publicIP3NewOrExisting',
+                                        'publicIP3ResourceGroup',
+                                        'publicIP1AddressSKU',
+                                        'publicIP1AddressType',
+                                        'publicIP1Name',
+                                        'publicIP1NewOrExisting',
+                                        'publicIP1ResourceGroup',
+                                        'subnet1Name',
+                                        'subnet1Prefix',
+                                        'subnet1StartAddress',
+                                        'subnet2Name',
+                                        'subnet2Prefix',
+                                        'subnet2StartAddress',
+                                        'subnet3Name',
+                                        'subnet3Prefix',
+                                        'subnet3StartAddress',
+                                        'subnet4Name',
+                                        'subnet4Prefix',
+                                        'subnet4StartAddress',
+                                        'subnet5Name',
+                                        'subnet5Prefix',
+                                        'subnet6Name',
+                                        'subnet6Prefix',                                        
+                                        'vnetAddressPrefix',
+                                        'vnetName',
+                                        'vnetNewOrExisting',
+                                        'vnetResourceGroup'
             $templateParameters = (get-content $templateFileLocation | ConvertFrom-Json -ErrorAction SilentlyContinue).Parameters | Get-Member -MemberType NoteProperty | % Name | sort
             $templateParameters | Should Be $expectedTemplateParameters
         }
@@ -136,12 +155,13 @@ Describe 'FGT A/P SDN AZ' {
         # Validate all ARM templates one by one
         $testsErrorFound = $false
 
-        $params = @{ 'adminUsername'=$testsAdminUsername
-                     'adminPassword'=$testsResourceGroupName
-                     'fortigateNamePrefix'=$testsPrefix
-                    }
-        $publicIPName = "FGTAMgmtPublicIP"
-        $publicIP2Name = "FGTBMgmtPublicIP"
+        $params = @{
+            'adminUsername'=$testsAdminUsername
+            'adminPassword'=$testsResourceGroupName
+            'fortigateNamePrefix'=$testsPrefix
+        }
+        $publicIP2Name = "FGTAMgmtPublicIP"
+        $publicIP3Name = "FGTBMgmtPublicIP"
 
         It "Test Deployment" {
             (Test-AzResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName" -TemplateFile "$templateFileName" -TemplateParameterObject $params).Count | Should not BeGreaterThan 0
@@ -160,7 +180,7 @@ Describe 'FGT A/P SDN AZ' {
 
         443, 22 | Foreach-Object {
             it "FGT A: Port [$_] is listening" {
-                $result = Get-AzPublicIpAddress -Name $publicIPName -ResourceGroupName $testsResourceGroupName
+                $result = Get-AzPublicIpAddress -Name $publicIP2Name -ResourceGroupName $testsResourceGroupName
                 $portListening = (Test-Connection -TargetName $result.IpAddress -TCPPort $_ -TimeoutSeconds 100)
                 $portListening | Should -Be $true
             }
@@ -168,7 +188,7 @@ Describe 'FGT A/P SDN AZ' {
 
         443, 22 | Foreach-Object {
             it "FGT B: Port [$_] is listening" {
-                $result = Get-AzPublicIpAddress -Name $publicIP2Name -ResourceGroupName $testsResourceGroupName
+                $result = Get-AzPublicIpAddress -Name $publicIP3Name -ResourceGroupName $testsResourceGroupName
                 $portListening = (Test-Connection -TargetName $result.IpAddress -TCPPort $_ -TimeoutSeconds 100)
                 $portListening | Should -Be $true
             }

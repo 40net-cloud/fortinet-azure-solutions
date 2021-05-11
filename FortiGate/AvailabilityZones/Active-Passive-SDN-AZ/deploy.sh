@@ -90,8 +90,8 @@ az group create --location "$location" --name "$rg"
 # Validate template
 echo "--> Validation deployment in $rg resource group ..."
 az deployment group validate --resource-group "$rg" \
-                           --template-file azuredeploy.json \
-                           --parameters adminUsername="$USERNAME" adminPassword="$PASSWORD" fortigateNamePrefix=$prefix
+                        --template-file azuredeploy.json \
+                        --parameters adminUsername="$USERNAME" adminPassword="$PASSWORD" fortigateNamePrefix=$prefix
 result=$?
 if [ $result != 0 ];
 then
@@ -102,8 +102,8 @@ fi
 # Deploy resources
 echo "--> Deployment of $rg resources ..."
 az deployment group create --resource-group "$rg" \
-                           --template-file azuredeploy.json \
-                           --parameters adminUsername="$USERNAME" adminPassword="$PASSWORD" fortigateNamePrefix=$prefix
+                        --template-file azuredeploy.json \
+                        --parameters adminUsername="$USERNAME" adminPassword="$PASSWORD" fortigateNamePrefix=$prefix
 result=$?
 if [[ $result != 0 ]];
 then
