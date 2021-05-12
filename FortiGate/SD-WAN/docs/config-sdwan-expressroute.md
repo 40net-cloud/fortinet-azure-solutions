@@ -250,5 +250,5 @@ If you are using different address space for performance SLA monitoring via VPN 
 
 More information about Performance SLA measurements and SD-WAN usage like Volume, Bandwith, Sessions can be fund [here](https://docs.fortinet.com/document/fortigate/7.0.0/administration-guide/823480/results)
 
-You can find CLI configuration used in this tutorial [here](https://github.com/piotr-nwt/fortinet-azure-solutions/blob/main/FortiGate/SD-WAN/docs/config-sdwan-expressroute-cli.md)
+You can find CLI configuration used in this tutorial [here](config-sdwan-expressroute-cli.md)
 
