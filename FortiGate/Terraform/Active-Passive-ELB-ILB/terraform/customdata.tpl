@@ -13,7 +13,6 @@ config system sdn-connector
 	end
 end
 config sys global
-    set admintimeout 120
     set hostname "${fgt_vm_name}"
     set gui-theme mariner
 end

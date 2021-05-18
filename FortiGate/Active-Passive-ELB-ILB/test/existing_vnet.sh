@@ -36,7 +36,7 @@ echo ""
 echo "--> Using prefix '$prefix' for all resources ..."
 echo ""
 rg="$prefix-RG"
-rgvnet="$prefix-RG"
+rgvnet="$prefix-VNET-RG"
 vnet="$prefix-VNET"
 
 if [ -z "$DEPLOY_USERNAME" ]
@@ -83,12 +83,11 @@ az group create --location "$location" --name "$rg"
 
 echo ""
 echo "--> Creating separate VNET $vnet ..."
-az network vnet create --name "$vnet" --resource-group $rgvnet --address-prefixes 172.16.140.0/22
-az network vnet subnet create --resource-group $rgvnet --vnet-name "$vnet" --name "ExternalSubnet" --address-prefixes 172.16.140.0/26
-az network vnet subnet create --resource-group $rgvnet --vnet-name "$vnet" --name "InternalSubnet" --address-prefixes 172.16.140.64/26
-az network vnet subnet create --resource-group $rgvnet --vnet-name "$vnet" --name "HASyncSubnet" --address-prefixes 172.16.140.128/26
-az network vnet subnet create --resource-group $rgvnet --vnet-name "$vnet" --name "ManagementSubnet" --address-prefixes 172.16.140.192/26
-az network vnet subnet create --resource-group $rgvnet --vnet-name "$vnet" --name "ProtectedSubnet" --address-prefixes 172.16.141.0/24
+az network vnet create --name "$vnet" --resource-group $rgvnet --address-prefixes 172.16.136.0/22
+az network vnet subnet create --resource-group $rgvnet --vnet-name "$vnet" --name "ExternalSubnet" --address-prefixes 172.16.136.0/26
+az network vnet subnet create --resource-group $rgvnet --vnet-name "$vnet" --name "InternalSubnet" --address-prefixes 172.16.136.64/26
+az network vnet subnet create --resource-group $rgvnet --vnet-name "$vnet" --name "HASyncSubnet" --address-prefixes 172.16.136.128/26
+az network vnet subnet create --resource-group $rgvnet --vnet-name "$vnet" --name "ManagementSubnet" --address-prefixes 172.16.136.192/26
 
 # Validate template
 echo "--> Validation deployment in $rg resource group ..."
