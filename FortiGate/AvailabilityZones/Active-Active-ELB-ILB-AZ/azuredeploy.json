@@ -33,7 +33,7 @@
     },
     "fortigateImageVersion": {
       "type": "string",
-      "defaultValue": "lates",
+      "defaultValue": "latest",
       "allowedValues": [
         "6.2.0",
         "6.2.2",

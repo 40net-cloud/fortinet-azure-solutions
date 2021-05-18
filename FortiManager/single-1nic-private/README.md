@@ -2,11 +2,7 @@
 
 ## Introduction
 
-FortiManager - Automation-Driven Centralized Management
-
-Manage all your Fortinet devices in a single-console central management system. FortiManager provides full visibility of your network, offering streamlined provisioning and innovative automation tools.
-
-This ARM template deploys a single FortiManager accompanied by the required infrastructure. Additionally, Fortinet Fabric Connectors deliver the ability to create dynamic security policies.
+This deployment is similar to the [FortiManager Single 1 NIC](../single-1nic/README.md) without a public IP address.
 
 ## Design
 
@@ -16,9 +12,10 @@ This Azure ARM template will automatically deploy a full working environment con
 
 - 1 FortiManager VM with a 1Tb data disk for log storage
 - 1 VNETs containing a subnet for the FortiManager
-- 1 Basic public IP
 
 ![FortiGate-VM azure design](images/fmg-single-1nic-private.png)
+
+The VM will have the sixth IP in the network range as his static IP. You can adapt the 'sn1IPfg1' variable in the ARM template to change this.
 
 This Azure ARM template can also be extended or customized based on your requirements. Additional subnets besides the ones mentioned above are not automatically generated.
 
@@ -51,12 +48,7 @@ After deployment, you will be shown the IP addresses of all deployed components.
 
 ## Requirements and limitations
 
-The Azure ARM template deployment deploys different resources and is required to have the access rights and quota in your Microsoft Azure subscription to deploy the resources.
-
-- The template will deploy Standard D3s VMs for this architecture. Other VM instances are supported as well with a recommended minimum of 2 vCPU and 4Gb of RAM. A list can be found [here](https://docs.fortinet.com/vm/azure/fortimanager/6.2/azure-cookbook/6.2.0/351055/instance-type-support)
-- A Network Security Group is installed that only opens TCP port 22, 443 and 514 for access to the FortiManager. Additional ports might be needed to support your use case and are documented [here](https://docs.fortinet.com/document/fortimanager/6.2.0/ports-and-protocols/189421/incoming-ports)
-- License for FortiManager
-  - BYOL: A demo license can be made available via your Fortinet partner or on our website. These can be injected during deployment or added after deployment.
+More documentation can be found [here](../single-1nic/README.md).
 
 ## Support
 Fortinet-provided scripts in this and other GitHub projects do not fall under the regular Fortinet technical support scope and are not supported by FortiCare Support Services.

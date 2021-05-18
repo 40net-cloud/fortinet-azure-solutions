@@ -55,17 +55,17 @@ then
     # Input username
     echo -n "Enter username (default: azureuser): "
     stty_orig=`stty -g` # save original terminal setting.
-    read username         # read the prefix
+    read USERNAME         # read the prefix
     stty $stty_orig     # restore terminal setting.
-    if [ -z "$username" ]
+    if [ -z "$USERNAME" ]
     then
-        username="azureuser"
+        USERNAME="azureuser"
     fi
 else
-    username="$DEPLOY_USERNAME"
+    USERNAME="$DEPLOY_USERNAME"
 fi
 echo ""
-echo "--> Using username '$username' ..."
+echo "--> Using username '$USERNAME' ..."
 echo ""
 
 if [ -z "$DEPLOY_PASSWORD" ]
@@ -74,10 +74,10 @@ then
     echo -n "Enter password: "
     stty_orig=`stty -g` # save original terminal setting.
     stty -echo          # turn-off echoing.
-    read passwd         # read the password
+    read PASSWORD         # read the password
     stty $stty_orig     # restore terminal setting.
 else
-    passwd="$DEPLOY_PASSWORD"
+    PASSWORD="$DEPLOY_PASSWORD"
     echo ""
     echo "--> Using password found in env variable DEPLOY_PASSWORD ..."
     echo ""
@@ -92,7 +92,7 @@ az group create --location "$location" --name "$rg"
 echo "--> Validation deployment in $rg resource group ..."
 az deployment group validate --resource-group "$rg" \
                            --template-file azuredeploy.json \
-                           --parameters adminUsername="$username" adminPassword="$passwd" namePrefix="$prefix"
+                           --parameters adminUsername="$USERNAME" adminPassword="$PASSWORD" namePrefix="$prefix"
 result=$?
 if [ $result != 0 ];
 then
@@ -104,7 +104,7 @@ fi
 echo "--> Deployment of $rg resources ..."
 az deployment group create --confirm-with-what-if --resource-group "$rg" \
                            --template-file azuredeploy.json \
-                           --parameters adminUsername="$username" adminPassword="$passwd" namePrefix="$prefix"
+                           --parameters adminUsername="$USERNAME" adminPassword="$PASSWORD" namePrefix="$prefix"
 result=$?
 if [[ $result != 0 ]];
 then
@@ -120,7 +120,7 @@ echo "
 
 Deployment information:
 
-Username: $username
+Username: $USERNAME
 
 FortiGate IP addesses
 "
