@@ -1,7 +1,7 @@
 name: Terraform test Active-Active-ELB-ILB
 
 env:
-  TFPath: FortiGate/Terraform/Active-Active-ELB-ILB/terraform/ 
+  TFPath: FortiGate/Terraform/Active-Active-ELB-ILB/terraform/
 
 on:
   push:
