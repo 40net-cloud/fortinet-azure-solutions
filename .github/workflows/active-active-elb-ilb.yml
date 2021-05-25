@@ -1,5 +1,8 @@
 name: Terraform test Active-Active-ELB-ILB
 
+env:
+  TFPath: FortiGate/Terraform/Active-Active-ELB-ILB/terraform/
+
 on:
   push:
     paths:
@@ -7,8 +10,8 @@ on:
     - '!FortiGate/Terraform/Active-Active-ELB-ILB/**.md'
 
 jobs:
-  terraform:
-    name: 'Terraform'
+  terraform_AA:
+    name: 'Terraform AA-ELB-ILB'
     runs-on: ubuntu-latest
     env:
       TF_VAR_PREFIX: "FORTIQA-AA-ELB-ILB-${{ github.run_id }}-${{ github.run_number }}"
@@ -28,13 +31,13 @@ jobs:
       uses: hashicorp/setup-terraform@v1
 
     - name: Terraform Init
-      run: terraform init FortiGate/Terraform/Active-Active-ELB-ILB/terraform/
+      run: terraform -chdir=${{ env.TFPath }} init
 
     - name: Terraform Validate
-      run: terraform validate FortiGate/Terraform/Active-Active-ELB-ILB/terraform/
+      run: terraform -chdir=${{ env.TFPath }} validate
 
     - name: Terraform Format
-      run: terraform fmt -check -diff FortiGate/Terraform/Active-Active-ELB-ILB/terraform/
+      run: terraform -chdir=${{ env.TFPath }} fmt -check -diff
 
     - name: Terraform Plan
-      run: terraform plan FortiGate/Terraform/Active-Active-ELB-ILB/terraform/
+      run: terraform -chdir=${{ env.TFPath }} plan
