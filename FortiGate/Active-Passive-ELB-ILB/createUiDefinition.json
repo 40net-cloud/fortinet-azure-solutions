@@ -698,6 +698,40 @@
 									"text": "Pay as you go licenses was selected in the basics blade. The licenses uploaded here will not be used."
 								},
 								"visible": "[not(equals(basics('fortigateImageSKU'), 'fortinet_fg-vm'))]"
+							},
+							{
+								"name": "licenseflexvmtext",
+								"type": "Microsoft.Common.TextBlock",
+								"visible": true,
+								"options": {
+									"text": "When your organisation is subscribed to Flex-VM you can provide the licenses token here."
+								}
+							},
+							{
+								"name": "licenseaflexvmtoken",
+								"type": "Microsoft.Common.TextBox",
+								"label": "FortiGate A Flex-VM",
+								"defaultValue": "",
+								"toolTip": "FortiGate A Flex-VM license token",
+								"constraints": {
+									"required": false,
+									"regex": "^[A-Za-z0-9-]{1,64}$",
+									"validationMessage": "Only alphanumeric characters and a dash are allowed, and the value must be 1 to 64 characters."
+								},
+								"visible": true
+							},
+							{
+								"name": "licensebflexvmtoken",
+								"type": "Microsoft.Common.TextBox",
+								"label": "FortiGate B Flex-VM",
+								"defaultValue": "",
+								"toolTip": "FortiGate B Flex-VM license token",
+								"constraints": {
+									"required": false,
+									"regex": "^[A-Za-z0-9-]{1,64}$",
+									"validationMessage": "Only alphanumeric characters and a dash are allowed, and the value must be 1 to 64 characters."
+								},
+								"visible": true
 							}
 						]
 					}
@@ -745,7 +779,9 @@
 			"fortiManagerSerial": "[steps('advanced').fortimanager.fortimanagerserial]",
 			"fortiGateAditionalCustomData": "[steps('advanced').customdata.config]",
 			"fortiGateLicenseBYOLA": "[steps('advanced').fgtlicense.licenseacontent]",
-			"fortiGateLicenseBYOLB": "[steps('advanced').fgtlicense.licensebcontent]"
+			"fortiGateLicenseBYOLB": "[steps('advanced').fgtlicense.licensebcontent]",
+			"fortiGateLicenseFlexVMA": "[steps('advanced').fgtlicense.licenseaflexvmtoken]",
+			"fortiGateLicenseFlexVMB": "[steps('advanced').fgtlicense.licensebflexvmtoken]"
 		}
 	}
 }

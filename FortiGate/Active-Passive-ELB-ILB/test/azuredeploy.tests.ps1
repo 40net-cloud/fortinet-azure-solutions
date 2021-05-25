@@ -93,6 +93,8 @@ Describe 'FGT A/P LB' {
                                           'fortiGateImageVersion',
                                           'fortiGateLicenseBYOLA',
                                           'fortiGateLicenseBYOLB',
+                                          'fortiGateLicenseFlexVMA',
+                                          'fortiGateLicenseFlexVMB',
                                           'fortiGateNamePrefix',
                                           'fortiManager',
                                           'fortiManagerIP',
