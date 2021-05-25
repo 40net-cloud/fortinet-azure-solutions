@@ -87,6 +87,8 @@ Describe 'FGT A/A' {
                                           'fortiGateImageVersion',
                                           'fortiGateLicenseBYOLA',
                                           'fortiGateLicenseBYOLB',
+                                          'fortiGateLicenseFlexVMA',
+                                          'fortiGateLicenseFlexVMB',
                                           'fortiGateNamePrefix',
                                           'fortiManager',
                                           'fortiManagerIP',
