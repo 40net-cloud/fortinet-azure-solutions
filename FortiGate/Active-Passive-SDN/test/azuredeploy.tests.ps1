@@ -98,6 +98,8 @@ Describe 'FGT A/P SDN' {
                                           'fortiGateImageVersion',
                                           'fortiGateLicenseBYOLA',
                                           'fortiGateLicenseBYOLB',
+                                          'fortiGateLicenseFlexVMA',
+                                          'fortiGateLicenseFlexVMB',
                                           'fortiGateNamePrefix',
                                           'fortiManager',
                                           'fortiManagerIP',
