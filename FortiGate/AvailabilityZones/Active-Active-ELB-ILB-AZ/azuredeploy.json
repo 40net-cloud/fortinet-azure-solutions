@@ -254,7 +254,7 @@
   },
   "resources": [
     {
-      "apiVersion": "2019-10-01",
+      "apiVersion": "2020-10-01",
       "name": "pid-09ed3dc3-4cf7-5410-b01c-c9bdfc039530",
       "type": "Microsoft.Resources/deployments",
       "properties":{
