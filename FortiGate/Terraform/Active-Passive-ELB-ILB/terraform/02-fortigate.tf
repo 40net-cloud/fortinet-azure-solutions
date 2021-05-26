@@ -68,8 +68,8 @@ resource "azurerm_lb" "elb" {
 }
 
 resource "azurerm_lb_backend_address_pool" "elbbackend" {
-  loadbalancer_id     = azurerm_lb.elb.id
-  name                = "BackEndPool"
+  loadbalancer_id = azurerm_lb.elb.id
+  name            = "BackEndPool"
 }
 
 resource "azurerm_lb_probe" "elbprobe" {
@@ -118,8 +118,8 @@ resource "azurerm_lb" "ilb" {
 }
 
 resource "azurerm_lb_backend_address_pool" "ilbbackend" {
-  loadbalancer_id     = azurerm_lb.ilb.id
-  name                = "BackEndPool"
+  loadbalancer_id = azurerm_lb.ilb.id
+  name            = "BackEndPool"
 }
 
 resource "azurerm_lb_probe" "ilbprobe" {
