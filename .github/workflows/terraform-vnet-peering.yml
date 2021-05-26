@@ -1,0 +1,43 @@
+name: Terraform test VNET Peering
+
+env:
+  TFPath: FortiGate/Terraform/VNET-Peering/terraform/
+
+on:
+  push:
+    paths:
+    - 'FortiGate/Terraform/VNET-Peering/**'
+    - '!FortiGate/Terraform/VNET-Peering/**.md'
+
+jobs:
+  terraform_AA:
+    name: 'Terraform VNET-Peering-ELB-ILB'
+    runs-on: ubuntu-latest
+    env:
+      TF_VAR_PREFIX: "FORTIQA-VNET-Peering-${{ github.run_id }}-${{ github.run_number }}"
+      TF_VAR_LOCATION: "westeurope"
+      TF_VAR_USERNAME: "azureuser"
+      TF_VAR_PASSWORD: "${{ secrets.PASSWORD }}"
+      ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+      ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+      ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+
+    - name: Terraform Init
+      run: terraform -chdir=${{ env.TFPath }} init
+
+    - name: Terraform Validate
+      run: terraform -chdir=${{ env.TFPath }} validate
+
+    - name: Terraform Format
+      run: terraform -chdir=${{ env.TFPath }} fmt -check -diff
+
+    - name: Terraform Plan
+      run: terraform -chdir=${{ env.TFPath }} plan
