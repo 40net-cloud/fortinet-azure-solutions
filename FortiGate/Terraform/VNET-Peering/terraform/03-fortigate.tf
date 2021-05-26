@@ -73,7 +73,6 @@ resource "azurerm_lb" "elb" {
 }
 
 resource "azurerm_lb_backend_address_pool" "elbbackend" {
-  resource_group_name = azurerm_resource_group.resourcegroup.name
   loadbalancer_id     = azurerm_lb.elb.id
   name                = "BackEndPool"
 }
@@ -339,6 +338,7 @@ data "template_file" "fgt_a_custom_data" {
   vars = {
     fgt_vm_name         = "${var.PREFIX}-A-VM-FGT"
     fgt_license_file    = var.FGT_BYOL_LICENSE_FILE_A
+    fgt_license_flexvm  = var.FGT_BYOL_FLEXVM_LICENSE_FILE_A
     fgt_username        = var.USERNAME
     fgt_ssh_public_key  = var.FGT_SSH_PUBLIC_KEY_FILE
     fgt_external_ipaddr = var.fgt_ipaddress_a["1"]
@@ -523,6 +523,7 @@ data "template_file" "fgt_b_custom_data" {
   vars = {
     fgt_vm_name         = "${var.PREFIX}-B-VM-FGT"
     fgt_license_file    = var.FGT_BYOL_LICENSE_FILE_B
+    fgt_license_flexvm  = var.FGT_BYOL_FLEXVM_LICENSE_FILE_B
     fgt_username        = var.USERNAME
     fgt_ssh_public_key  = var.FGT_SSH_PUBLIC_KEY_FILE
     fgt_external_ipaddr = var.fgt_ipaddress_b["1"]
