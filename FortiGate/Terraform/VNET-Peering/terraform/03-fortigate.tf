@@ -151,7 +151,6 @@ resource "azurerm_lb" "ilb" {
 }
 
 resource "azurerm_lb_backend_address_pool" "ilbbackend" {
-  resource_group_name = azurerm_resource_group.resourcegroup.name
   loadbalancer_id     = azurerm_lb.ilb.id
   name                = "BackEndPool"
 }
