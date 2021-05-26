@@ -47,6 +47,14 @@ variable "FGT_BYOL_LICENSE_FILE_B" {
   default = ""
 }
 
+variable "FGT_BYOL_FLEXVM_LICENSE_FILE_A" {
+  default = ""
+}
+
+variable "FGT_BYOL_FLEXVM_LICENSE_FILE_B" {
+  default = ""
+}
+
 variable "FGT_SSH_PUBLIC_KEY_FILE" {
   default = ""
 }
