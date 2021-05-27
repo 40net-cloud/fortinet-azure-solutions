@@ -145,7 +145,7 @@ fi
 echo ""
 echo "==> Terraform output deployment summary"
 echo ""
-terraform output deployment_summary > "../output/$SUMMARY"
+terraform output -raw deployment_summary > "../output/$SUMMARY"
 
 cd ../
 cat "output/$SUMMARY"
