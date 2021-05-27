@@ -4,8 +4,10 @@
 	"version": "0.1.2-preview",
 	"parameters": {
 		"config": {
-			"resourceGroup": {
-				"allowExisting": true
+			"basics": {
+				"resourceGroup": {
+					"allowExisting": true
+				}
 			}
 		},
 		"resourceTypes": [
