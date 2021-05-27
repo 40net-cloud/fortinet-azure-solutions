@@ -4,8 +4,10 @@
 	"version": "0.1.2-preview",
 	"parameters": {
 		"config": {
-			"resourceGroup": {
-				"allowExisting": true
+			"basics": {
+				"resourceGroup": {
+					"allowExisting": true
+				}
 			}
 		},
 		"resourceTypes": [
@@ -141,6 +143,16 @@
 					]
 				},
 				"visible": true
+			},
+			{
+				"name": "resourcegroupinfo",
+				"type": "Microsoft.Common.InfoBox",
+				"visible": true,
+				"options": {
+					"icon": "Info",
+					"text": "The external subnet will have a public IP attached to the FortiGate network interface. The internal subnet is a transit subnet containing only the FortiGate interfaces for traffic to and from the internal networks. Internal systems should be installed in a protected subnet with user defined route configuration.",
+					"uri": "https://github.com/fortinet/azure-templates/tree/main/FortiGate/A-Single-VM"
+				}
 			}
 		],
 		"steps": [
