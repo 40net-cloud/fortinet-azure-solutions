@@ -10,7 +10,7 @@ on:
     - '!FortiGate/Terraform/VNET-Peering/**.md'
 
 jobs:
-  terraform_AA:
+  terraform_VNETP:
     name: 'Terraform VNET-Peering-ELB-ILB'
     runs-on: ubuntu-latest
     env:
