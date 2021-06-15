@@ -15,9 +15,9 @@ data "template_file" "summary" {
   vars = {
     location                    = var.LOCATION
     username                    = var.USERNAME
-    fts_public_ip_address       = data.azurerm_public_ip.ftspip.ip_address
-    fts_public_fqdn             = data.azurerm_public_ip.ftspip.fqdn
-    fts_private_ip_address      = azurerm_network_interface.ftsifc1.private_ip_address
+    lnx_public_ip_address       = data.azurerm_public_ip.lnxpip.ip_address
+    lnx_public_fqdn             = data.azurerm_public_ip.lnxpip.fqdn
+    lnx_private_ip_address      = azurerm_network_interface.lnxifc1.private_ip_address
     fgt_public_ip_address       = data.azurerm_public_ip.fgtpip.ip_address
     fgt_public_fqdn             = data.azurerm_public_ip.fgtpip.fqdn
     fgt_private_ip_address_mgmt = azurerm_network_interface.fgtifcmgmt.private_ip_address
