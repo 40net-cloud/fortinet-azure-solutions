@@ -126,10 +126,6 @@ resource "azurerm_virtual_machine" "lnxvm" {
   }
 
   storage_image_reference {
-    id = "${azurerm_image.osdiskvhd.id}"
-  }
-
-  storage_image_reference {
     publisher = "Canonical"
     offer     = "UbuntuServer"
     sku       = "20.04-LTS"
