@@ -11,7 +11,7 @@ if (-not(Test-Path $modulePath)) {
     # Note: PSGet and chocolatey are not supported in hosted vsts build agent
     $tempFile = Join-Path $TempDir arm-ttk.zip
     [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-    Invoke-WebRequest https://github.com/Azure/arm-ttk/archive/master.zip -OutFile $tempFile
+    Invoke-WebRequest https://aka.ms/arm-ttk-latest -OutFile $tempFile
 
     [System.Reflection.Assembly]::LoadWithPartialName('System.IO.Compression.FileSystem') | Out-Null
     [System.IO.Compression.ZipFile]::ExtractToDirectory($tempFile, $tempDir)
