@@ -6,7 +6,7 @@ param (
 
 $SourceDir = Join-Path $env:BUILD_SOURCESDIRECTORY "$templatename"
 $TempDir = [IO.Path]::GetTempPath()
-$modulePath = Join-Path $TempDir arm-template-toolkit\arm-ttk\arm-ttk.psd1
+$modulePath = Join-Path $TempDir arm-ttk\arm-ttk.psd1
 
 if (-not(Test-Path $modulePath)) {
     # Note: PSGet and chocolatey are not supported in hosted vsts build agent
