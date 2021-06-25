@@ -28,6 +28,19 @@ BeforeAll {
     $testsResourceGroupName = "FORTIQA-$testsRandom-$templateName"
     $testsAdminUsername = "azureuser"
     $testsResourceGroupLocation = "westeurope"
+
+    # Validate all ARM templates one by one
+    $config = "config system global `n set gui-theme mariner `n end `n config system admin `n edit devops `n set accprofile super_admin `n set ssh-public-key1 `""
+    $config += Get-Content $sshkeypub
+    $config += "`" `n set password $testsResourceGroupName `n next `n end"
+
+    $params = @{ 'adminUsername'=$testsAdminUsername
+                 'adminPassword'=$testsResourceGroupName
+                 'fortiGateNamePrefix'=$testsPrefix
+                 'fortiGateAditionalCustomData'=$config
+               }
+    $publicIPName = "$testsPrefix-FGT-PIP"
+
 }
 
 Describe 'FGT Single VM' {
@@ -102,29 +115,17 @@ Describe 'FGT Single VM' {
 
     Context 'Deployment' {
 
-        # Set working directory & create resource group
-        Set-Location $sourcePath
-        New-AzResourceGroup -Name $testsResourceGroupName -Location "$testsResourceGroupLocation"
-
-        # Validate all ARM templates one by one
-        $config = "config system global `n set gui-theme mariner `n end `n config system admin `n edit devops `n set accprofile super_admin `n set ssh-public-key1 `""
-        $config += Get-Content $sshkeypub
-        $config += "`" `n set password $testsResourceGroupName `n next `n end"
-
-        $params = @{ 'adminUsername'=$testsAdminUsername
-                     'adminPassword'=$testsResourceGroupName
-                     'fortiGateNamePrefix'=$testsPrefix
-                     'fortiGateAditionalCustomData'=$config
-                    }
-        $publicIPName = "$testsPrefix-FGT-PIP"
+#        # Set working directory & create resource group
+#        Set-Location $sourcePath
 
         It "Test Deployment" {
-            (Test-AzResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName" -TemplateFile "$templateFileName" -TemplateParameterObject $params).Count | Should -Not -BeGreaterThan 0
+            New-AzResourceGroup -Name $testsResourceGroupName -Location "$testsResourceGroupLocation"
+            (Test-AzResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName" -TemplateFile "$templateFileNameLocation" -TemplateParameterObject $params).Count | Should -Not -BeGreaterThan 0
         }
         It "Deployment" {
             Write-Host ( "Deployment name: $testsResourceGroupName" )
 
-            $resultDeployment = New-AzResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName" -TemplateFile "$templateFileName" -TemplateParameterObject $params
+            $resultDeployment = New-AzResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName" -TemplateFile "$templateFileNameLocation" -TemplateParameterObject $params
             Write-Host ($resultDeployment | Format-Table | Out-String)
             Write-Host ("Deployment state: " + $resultDeployment.ProvisioningState | Out-String)
             $resultDeployment.ProvisioningState | Should -Be "Succeeded"
