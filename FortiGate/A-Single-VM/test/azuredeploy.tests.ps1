@@ -12,6 +12,7 @@ param (
     [string]$sshkey,
     [string]$sshkeypub
 )
+$VerbosePreference = "Continue"
 
 BeforeAll {
     $templateName = "A-Single-VM"
@@ -40,7 +41,7 @@ BeforeAll {
                  'fortiGateAditionalCustomData'=$config
                }
     $publicIPName = "$testsPrefix-FGT-PIP"
-
+    $ports = 443, 22
 }
 
 Describe 'FGT Single VM' {
@@ -84,6 +85,7 @@ Describe 'FGT Single VM' {
                                           'fortiGateImageSKU',
                                           'fortiGateImageVersion',
                                           'fortiGateLicenseBYOL',
+                                          'fortiGateLicenseFlexVM',
                                           'fortiGateNamePrefix',
                                           'fortiManager',
                                           'fortiManagerIP',
@@ -119,13 +121,15 @@ Describe 'FGT Single VM' {
 #        Set-Location $sourcePath
 
         It "Test Deployment" {
+            Write-Host ( "Test deployment: $testsResourceGroupName" )
+
             New-AzResourceGroup -Name $testsResourceGroupName -Location "$testsResourceGroupLocation"
-            (Test-AzResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName" -TemplateFile "$templateFileNameLocation" -TemplateParameterObject $params).Count | Should -Not -BeGreaterThan 0
+            (Test-AzResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName" -TemplateFile "$templateFileLocation" -TemplateParameterObject $params).Count | Should -Not -BeGreaterThan 0
         }
         It "Deployment" {
             Write-Host ( "Deployment name: $testsResourceGroupName" )
 
-            $resultDeployment = New-AzResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName" -TemplateFile "$templateFileNameLocation" -TemplateParameterObject $params
+            $resultDeployment = New-AzResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName" -TemplateFile "$templateFileLocation" -TemplateParameterObject $params
             Write-Host ($resultDeployment | Format-Table | Out-String)
             Write-Host ("Deployment state: " + $resultDeployment.ProvisioningState | Out-String)
             $resultDeployment.ProvisioningState | Should -Be "Succeeded"
@@ -136,16 +140,17 @@ Describe 'FGT Single VM' {
             $result | Should -Not -Be $null
         }
 
-        443, 22 | Foreach-Object {
-            it "FGT: Port [$_] is listening" {
+        ForEach( $port in $ports ) {
+            it "FGT: Port [$port] is listening" {
                 $result = Get-AzPublicIpAddress -Name $publicIPName -ResourceGroupName $testsResourceGroupName
-                $portListening = (Test-Connection -TargetName $result.IpAddress -TCPPort $_ -TimeoutSeconds 100)
+                Write-Host ("IPaddress: " + $port)
+                $portListening = (Test-Connection -TargetName $result.IpAddress -TCPPort $port -TimeoutSeconds 100)
                 $portListening | Should -Be $true
 
                 $fgt = $result.IpAddress
                 Write-Host ("Host: " + $fgt)
-
-                Start-Sleep -Seconds 120
+#
+#                Start-Sleep -Seconds 120
 
                 chmod 400 $sshkey
                 $verify_commands = @'
@@ -160,9 +165,6 @@ Describe 'FGT Single VM' {
                 Write-Output ("Output: " + $result)
                 "Output 2: " + $result
                 Write-Host ("Output 3: " + $result)
-
-#                $output = sshpass -p "$testsResourceGroupName" ssh -t -o StrictHostKeyChecking=no $testsAdminUsername@$fgt 'show system interface'
-#                "Output: " + $output
             }
 
         }
