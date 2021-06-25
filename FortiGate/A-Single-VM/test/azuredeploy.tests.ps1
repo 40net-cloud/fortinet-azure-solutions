@@ -61,9 +61,6 @@ Describe 'FGT Single VM' {
             $templateResources | Should Be $expectedResources
         }
 
-        ('acceleratedNetworking', 'adminPassword', 'adminUsername', 'fortiGateAditionalCustomData', 'fortiGateImageSKU', 'fortiGateImageVersion', 'fortiGateLicenseBYOL', 'fortiGateNamePrefix', 'fortiManager', 'fortiManagerIP')
-        ('acceleratedNetworking', 'adminPassword', 'adminUsername', 'fortiGateAditionalCustomData', 'fortiGateImageSKU', 'fortiGateImageVersion', 'fortiGateLicenseBYOL', 'fortiGateNamePrefix', 'fortiManager', 'fortiManagerIP')
-
         It 'Contains the expected parameters' {
             $expectedTemplateParameters = 'acceleratedNetworking',
                                           'adminPassword',
