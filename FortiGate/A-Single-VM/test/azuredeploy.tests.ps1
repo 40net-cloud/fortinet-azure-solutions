@@ -13,20 +13,22 @@ param (
     [string]$sshkeypub
 )
 
-$templateName = "A-Single-VM"
-$sourcePath = "$env:BUILD_SOURCESDIRECTORY\FortiGate\$templateName"
-$scriptPath = "$env:BUILD_SOURCESDIRECTORY\FortiGate\$templateName\test"
-$templateFileName = "azuredeploy.json"
-$templateFileLocation = "$sourcePath\$templateFileName"
-$templateParameterFileName = "azuredeploy.parameters.json"
-$templateParameterFileLocation = "$sourcePath\$templateParameterFileName"
+BeforeAll {
+    $templateName = "A-Single-VM"
+    $sourcePath = "$env:BUILD_SOURCESDIRECTORY\FortiGate\$templateName"
+    $scriptPath = "$env:BUILD_SOURCESDIRECTORY\FortiGate\$templateName\test"
+    $templateFileName = "azuredeploy.json"
+    $templateFileLocation = "$sourcePath\$templateFileName"
+    $templateParameterFileName = "azuredeploy.parameters.json"
+    $templateParameterFileLocation = "$sourcePath\$templateParameterFileName"
 
-# Basic Variables
-$testsRandom = Get-Random 10001
-$testsPrefix = "FORTIQA"
-$testsResourceGroupName = "FORTIQA-$testsRandom-$templateName"
-$testsAdminUsername = "azureuser"
-$testsResourceGroupLocation = "westeurope"
+    # Basic Variables
+    $testsRandom = Get-Random 10001
+    $testsPrefix = "FORTIQA"
+    $testsResourceGroupName = "FORTIQA-$testsRandom-$templateName"
+    $testsAdminUsername = "azureuser"
+    $testsResourceGroupLocation = "westeurope"
+}
 
 Describe 'FGT Single VM' {
     Context 'Validation' {
