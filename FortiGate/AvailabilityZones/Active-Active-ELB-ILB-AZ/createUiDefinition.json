@@ -191,8 +191,9 @@
 						"name": "instancetypeselection",
 						"type": "Microsoft.Compute.SizeSelector",
 						"label": "Size",
-						"toolTip": "Select the instance size of your FortiGate VM solution. Minimum 4 NICs are required.",
+						"toolTip": "Select the instance size of your FortiGate VM solution. Minimum 2 NICs are required.",
 						"recommendedSizes": [
+							"Standard_F2s",
 							"Standard_F1",
 							"Standard_F2",
 							"Standard_F4",
