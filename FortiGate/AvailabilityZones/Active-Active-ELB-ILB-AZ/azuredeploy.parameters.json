@@ -3,30 +3,39 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "adminUsername": {
-            "value": "## TO BE DEFINED ##"
+            "value": ""
         },
         "adminPassword": {
-            "value": "## TO BE DEFINED ##"
+            "value": ""
         },
-        "FortiGateNamePrefix": {
-            "value": "## TO BE DEFINED ##"
+        "fortiGateNamePrefix": {
+            "value": ""
         },
-        "FortiGateImageSKU": {
+        "fortiGateImageSKU": {
             "value": "fortinet_fg-vm"
         },
-        "FortiGateImageVersion": {
+        "fortiGateImageVersion": {
             "value": "latest"
+        },
+        "fortiGateAditionalCustomData": {
+            "value": ""
         },
         "instanceType": {
             "value": "Standard_F2s"
         },
-        "publicIPNewOrExisting": {
+        "availabilityOptions": {
+            "value": "Availability Set"
+        },
+        "acceleratedNetworking": {
+            "value": "true"
+        },
+        "publicIP1NewOrExisting": {
             "value": "new"
         },
-        "publicIPName": {
+        "publicIP1Name": {
             "value": "FGTLBPublicIP"
         },
-        "publicIPResourceGroup": {
+        "publicIP1ResourceGroup": {
             "value": ""
         },
         "vnetNewOrExisting": {
@@ -42,10 +51,13 @@
             "value": "172.16.136.0/22"
         },
         "subnet1Name": {
-            "value": "ExteralSubnet"
+            "value": "ExternalSubnet"
         },
         "subnet1Prefix": {
             "value": "172.16.136.0/26"
+        },
+        "subnet1StartAddress": {
+            "value": "172.16.136.4"
         },
         "subnet2Name": {
             "value": "InternalSubnet"
@@ -53,19 +65,50 @@
         "subnet2Prefix": {
             "value": "172.16.136.64/26"
         },
+        "subnet2StartAddress": {
+            "value": "172.16.136.68"
+        },
         "subnet3Name": {
-            "value": "ProtectedSubnet"
+            "value": "ProtectedASubnet"
         },
         "subnet3Prefix": {
             "value": "172.16.137.0/24"
         },
+        "subnet4Name": {
+            "value": "ProtectedBSubnet"
+        },
+        "subnet4Prefix": {
+            "value": "172.16.138.0/24"
+        },
+        "fortiManager": {
+            "value": "no"
+        },
+        "fortiManagerIP": {
+            "value": ""
+        },
+        "fortiManagerSerial": {
+            "value": ""
+        },
+        "fortiGateLicenseBYOLA": {
+            "value": ""
+        },
+        "fortiGateLicenseBYOLB": {
+            "value": ""
+        },
+        "fortiGateLicenseFlexVMA": {
+            "value": ""
+        },
+        "fortiGateLicenseFlexVMB": {
+            "value": ""
+        },
         "location": {
             "value": "[resourceGroup().location]"
         },
-        "FortinetTags": {
+        "fortinetTags": {
             "value": {
                 "publisher": "Fortinet",
-                "provider": "6EB3B02F-50E5-4A3E-8CB8-2E12925831AA-AZ"
+                "template": "Active-Active-ELB-ILB-AZORAS",
+                "provider": "6EB3B02F-50E5-4A3E-8CB8-2E129258AAAZORAS"
             }
         }
     }
