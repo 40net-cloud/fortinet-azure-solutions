@@ -65,5 +65,5 @@ $outputFile = Join-Path $SourceDir "TEST-custom.xml";
 "Running custom tests"
 
 $container = New-PesterContainer -Path $SourceDir -Data @{sshkey = $sshkey; sshkeypub = $sshkeypub}
-$result = Invoke-Pester -Container $container -PassThru -Path $SourceDir
+$result = Invoke-Pester -Container $container -Output Detailed -PassThru -Path $SourceDir
 Export-NUnitReport -Result $result -Path $outputFile
