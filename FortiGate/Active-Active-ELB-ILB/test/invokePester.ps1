@@ -4,14 +4,13 @@ param (
 
 $SourceDir = Join-Path $env:BUILD_SOURCESDIRECTORY "$templatename"
 $TempDir = [IO.Path]::GetTempPath()
-$modulePath = Join-Path $TempDir arm-ttk-master\arm-ttk\arm-ttk.psd1
+$modulePath = Join-Path $TempDir arm-ttk\arm-ttk.psd1
 
 if (-not(Test-Path $modulePath)) {
-
     # Note: PSGet and chocolatey are not supported in hosted vsts build agent
-    $tempFile = Join-Path $TempDir arm-ttk.zip
+    $tempFile = Join-Path $TempDir arm-template-toolkit.zip
     [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-    Invoke-WebRequest https://github.com/Azure/arm-ttk/archive/master.zip -OutFile $tempFile
+    Invoke-WebRequest https://aka.ms/arm-ttk-latest -OutFile $tempFile
 
     [System.Reflection.Assembly]::LoadWithPartialName('System.IO.Compression.FileSystem') | Out-Null
     [System.IO.Compression.ZipFile]::ExtractToDirectory($tempFile, $tempDir)
@@ -21,23 +20,25 @@ if (-not(Test-Path $modulePath)) {
 
 Import-Module $modulePath -DisableNameChecking
 
-$modulePath = Join-Path $TempDir Pester-main/Pester.psm1
+Install-Module -Name Pester -Force
 
-if (-not(Test-Path $modulePath)) {
+#$modulePath = Join-Path $TempDir Pester-main/Pester.psm1
 
-    # Note: PSGet and chocolatey are not supported in hosted vsts build agent
-    $tempFile = Join-Path $TempDir pester.zip
-    [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-    Invoke-WebRequest https://github.com/pester/Pester/archive/main.zip -OutFile $tempFile
-
-    [System.Reflection.Assembly]::LoadWithPartialName('System.IO.Compression.FileSystem') | Out-Null
-    [System.IO.Compression.ZipFile]::ExtractToDirectory($tempFile, $tempDir)
-
-    Remove-Item $tempFile
-}
-
-Import-Module $modulePath -DisableNameChecking
-
+#if (-not(Test-Path $modulePath)) {
+#
+#    # Note: PSGet and chocolatey are not supported in hosted vsts build agent
+#    $tempFile = Join-Path $TempDir pester.zip
+#    [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+#    Invoke-WebRequest https://github.com/pester/Pester/archive/main.zip -OutFile $tempFile
+#
+#    [System.Reflection.Assembly]::LoadWithPartialName('System.IO.Compression.FileSystem') | Out-Null
+#    [System.IO.Compression.ZipFile]::ExtractToDirectory($tempFile, $tempDir)
+#
+#    Remove-Item $tempFile
+#}
+#
+#Import-Module $modulePath -DisableNameChecking
+#
 $modulePath = Join-Path $TempDir Export-NUnitXml.psm1
 
 if (-not(Test-Path $modulePath)) {
@@ -52,7 +53,7 @@ Import-Module $modulePath -DisableNameChecking
 $outputFile = Join-Path $SourceDir "TEST-armttk.xml";
 
 "Running ARM TTK"
-$results = @(Test-AzTemplate -TemplatePath $SourceDir)
+$results = @(Test-AzTemplate -TemplatePath $SourceDir -File azuredeploy.json)
 $results
 Export-NUnitXml -TestResults $results -Path $SourceDir
 
