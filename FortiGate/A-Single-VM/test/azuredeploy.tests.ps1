@@ -41,7 +41,7 @@ BeforeAll {
                  'fortiGateAditionalCustomData'=$config
                }
     $publicIPName = "$testsPrefix-FGT-PIP"
-    $ports = 443, 22
+    $ports = @(443, 22)
 }
 
 Describe 'FGT Single VM' {
@@ -117,12 +117,7 @@ Describe 'FGT Single VM' {
 
     Context 'Deployment' {
 
-#        # Set working directory & create resource group
-#        Set-Location $sourcePath
-
         It "Test Deployment" {
-            Write-Host ( "Test deployment: $testsResourceGroupName" )
-
             New-AzResourceGroup -Name $testsResourceGroupName -Location "$testsResourceGroupLocation"
             (Test-AzResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName" -TemplateFile "$templateFileLocation" -TemplateParameterObject $params).Count | Should -Not -BeGreaterThan 0
         }
@@ -139,36 +134,41 @@ Describe 'FGT Single VM' {
             Write-Host ($result | Format-Table | Out-String)
             $result | Should -Not -Be $null
         }
+    }
 
-        ForEach( $port in $ports ) {
-            it "FGT: Port [$port] is listening" {
-                $result = Get-AzPublicIpAddress -Name $publicIPName -ResourceGroupName $testsResourceGroupName
-                Write-Host ("IPaddress: " + $port)
-                $portListening = (Test-Connection -TargetName $result.IpAddress -TCPPort $port -TimeoutSeconds 100)
-                $portListening | Should -Be $true
+    Context 'Deployment test' {
 
-                $fgt = $result.IpAddress
-                Write-Host ("Host: " + $fgt)
-#
-#                Start-Sleep -Seconds 120
-
-                chmod 400 $sshkey
-                $verify_commands = @'
-                set output standard
-                end
-                show system interface
-                show router static
-                exit
-'@
-
-                $result = $verify_commands | ssh -tt -i $sshkey -o StrictHostKeyChecking=no devops@$fgt
-                Write-Output ("Output: " + $result)
-                "Output 2: " + $result
-                Write-Host ("Output 3: " + $result)
-            }
-
+        BeforeAll {
+            $result = Get-AzPublicIpAddress -Name $publicIPName -ResourceGroupName $testsResourceGroupName
+            $fgt = $result.IpAddress
+            Write-Host ("FortiGate public IP: " + $fgt)
         }
+        It "FGT: Ports listening" {
+            ForEach( $port in $ports ) {
+                Write-Host ("Check port: $port" )
+                $portListening = (Test-Connection -TargetName $fgt -TCPPort $port -TimeoutSeconds 100)
+                $portListening | Should -Be $true
+            }
+        }
+        It "FGT: Verify FortiGate A configuration" {
 
+            chmod 400 $sshkey
+            $verify_commands = @'
+            config system console
+            set output standard
+            end
+            show system interface
+            show router static
+            diag debug cloudinit show
+            exit
+'@
+            $OFS = "`n"
+            $result = $verify_commands | ssh -tt -i $sshkey -o StrictHostKeyChecking=no devops@$fgt
+            Write-Host (": " + $result) -Separator `n
+        }
+    }
+
+    Context 'Cleanup' {
         It "Cleanup of deployment" {
             Remove-AzResourceGroup -Name $testsResourceGroupName -Force
         }
