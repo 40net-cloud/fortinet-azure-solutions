@@ -63,6 +63,7 @@ Describe 'FGT A/A' {
 
         It 'Creates the expected Azure resources' {
             $expectedResources = 'Microsoft.Resources/deployments',
+                                 'Microsoft.Compute/availabilitySets',
                                  'Microsoft.Network/virtualNetworks',
                                  'Microsoft.Network/loadBalancers',
                                  'Microsoft.Network/routeTables',
@@ -80,28 +81,41 @@ Describe 'FGT A/A' {
         }
 
         It 'Contains the expected parameters' {
-            $expectedTemplateParameters = 'adminPassword',
-                                          'adminUsername',
-                                          'fortigateImageSKU',
-                                          'fortigateImageVersion',
-                                          'fortigateNamePrefix',
-                                          'fortinetTags',
-                                          'instanceType',
-                                          'location',
-                                          'publicIPAddressType',
-                                          'publicIPName',
-                                          'publicIPNewOrExisting',
-                                          'publicIPResourceGroup',
-                                          'subnet1Name',
-                                          'subnet1Prefix',
-                                          'subnet2Name',
-                                          'subnet2Prefix',
-                                          'subnet3Name',
-                                          'subnet3Prefix',
-                                          'vnetAddressPrefix',
-                                          'vnetName',
-                                          'vnetNewOrExisting',
-                                          'vnetResourceGroup'
+            $expectedTemplateParameters =   'adminUsername',
+                                            'adminPassword',
+                                            'fortiGateNamePrefix',
+                                            'fortiGateImageSKU',
+                                            'fortiGateImageVersion',
+                                            'fortiGateAditionalCustomData',
+                                            'instanceType',
+                                            'availabilityOptions',
+                                            'acceleratedNetworking',
+                                            'publicIP1NewOrExisting',
+                                            'publicIP1Name',
+                                            'publicIP1ResourceGroup',
+                                            'vnetNewOrExisting',
+                                            'vnetName',
+                                            'vnetResourceGroup',
+                                            'vnetAddressPrefix',
+                                            'subnet1Name',
+                                            'subnet1Prefix',
+                                            'subnet1StartAddress',
+                                            'subnet2Name',
+                                            'subnet2Prefix',
+                                            'subnet2StartAddress',
+                                            'subnet3Name',
+                                            'subnet3Prefix',
+                                            'subnet4Name',
+                                            'subnet4Prefix',
+                                            'fortiManager',
+                                            'fortiManagerIP',
+                                            'fortiManagerSerial',
+                                            'fortiGateLicenseBYOLA',
+                                            'fortiGateLicenseBYOLB',
+                                            'fortiGateLicenseFlexVMA',
+                                            'fortiGateLicenseFlexVMB',
+                                            'location',
+                                            'fortinetTags'
             $templateParameters = (get-content $templateFileLocation | ConvertFrom-Json -ErrorAction SilentlyContinue).Parameters | Get-Member -MemberType NoteProperty | % Name | sort
             $templateParameters | Should -Be $expectedTemplateParameters
         }
@@ -119,7 +133,7 @@ Describe 'FGT A/A' {
 
         $params = @{ 'adminUsername'=$testsAdminUsername
                      'adminPassword'=$testsResourceGroupName
-                     'fortigateNamePrefix'=$testsPrefix
+                     'FortiGateNamePrefix'=$testsPrefix
                     }
         $publicIPName = "FGTLBPublicIP"
         $publicIP2Name = "FGTLBPublicIP2"
@@ -142,7 +156,7 @@ Describe 'FGT A/A' {
         40030, 50030, 40031, 50031 | Foreach-Object {
             it "Port [$_] is listening" {
                 $result = Get-AzPublicIpAddress -Name $publicIPName -ResourceGroupName $testsResourceGroupName
-                $portListening = (Test-NetConnection -Port $_ -ComputerName $result.IpAddress).TcpTestSucceeded
+                $portListening = (Test-Connection -TargetName $result.IpAddress -TCPPort $_ -TimeoutSeconds 100)
                 $portListening | Should -Be $true
             }
         }
