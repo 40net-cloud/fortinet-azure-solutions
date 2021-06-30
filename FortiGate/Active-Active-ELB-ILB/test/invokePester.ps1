@@ -1,5 +1,7 @@
 param (
-    [string]$templatename
+    [string]$templatename,
+    [string]$sshkey,
+    [string]$sshkeypub
 )
 
 $SourceDir = Join-Path $env:BUILD_SOURCESDIRECTORY "$templatename"
@@ -8,7 +10,7 @@ $modulePath = Join-Path $TempDir arm-ttk\arm-ttk.psd1
 
 if (-not(Test-Path $modulePath)) {
     # Note: PSGet and chocolatey are not supported in hosted vsts build agent
-    $tempFile = Join-Path $TempDir arm-template-toolkit.zip
+    $tempFile = Join-Path $TempDir arm-ttk.zip
     [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
     Invoke-WebRequest https://aka.ms/arm-ttk-latest -OutFile $tempFile
 
@@ -22,23 +24,6 @@ Import-Module $modulePath -DisableNameChecking
 
 Install-Module -Name Pester -Force
 
-#$modulePath = Join-Path $TempDir Pester-main/Pester.psm1
-
-#if (-not(Test-Path $modulePath)) {
-#
-#    # Note: PSGet and chocolatey are not supported in hosted vsts build agent
-#    $tempFile = Join-Path $TempDir pester.zip
-#    [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-#    Invoke-WebRequest https://github.com/pester/Pester/archive/main.zip -OutFile $tempFile
-#
-#    [System.Reflection.Assembly]::LoadWithPartialName('System.IO.Compression.FileSystem') | Out-Null
-#    [System.IO.Compression.ZipFile]::ExtractToDirectory($tempFile, $tempDir)
-#
-#    Remove-Item $tempFile
-#}
-#
-#Import-Module $modulePath -DisableNameChecking
-#
 $modulePath = Join-Path $TempDir Export-NUnitXml.psm1
 
 if (-not(Test-Path $modulePath)) {
@@ -53,6 +38,7 @@ Import-Module $modulePath -DisableNameChecking
 $outputFile = Join-Path $SourceDir "TEST-armttk.xml";
 
 "Running ARM TTK"
+
 $results = @(Test-AzTemplate -TemplatePath $SourceDir -File azuredeploy.json)
 $results
 Export-NUnitXml -TestResults $results -Path $SourceDir
@@ -60,4 +46,7 @@ Export-NUnitXml -TestResults $results -Path $SourceDir
 $outputFile = Join-Path $SourceDir "TEST-custom.xml";
 
 "Running custom tests"
-Invoke-Pester -Path $SourceDir -PassThru -OutputFile $outputFile -OutputFormat NUnitXml -EnableExit
+
+$container = New-PesterContainer -Path $SourceDir -Data @{sshkey = $sshkey; sshkeypub = $sshkeypub}
+$result = Invoke-Pester -Container $container -PassThru -Path $SourceDir
+Export-NUnitReport -Result $result -Path $outputFile
