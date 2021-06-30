@@ -40,9 +40,8 @@ $outputFile = Join-Path $SourceDir "TEST-armttk.xml";
 "Running ARM TTK"
 
 $result = @(Test-AzTemplate -TemplatePath $SourceDir -File azuredeploy.json)
-#Export-NUnitXml -TestResults $results -Path $SourceDir
 $result
-Export-NUnitReport -Result $result -Path $outputFile
+Export-NUnitXml -TestResults $result -Path $SourceDir
 
 $outputFile = Join-Path $SourceDir "TEST-custom.xml";
 
