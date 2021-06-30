@@ -143,8 +143,7 @@ Describe 'FGT A/A' {
     Context 'Deployment test' {
 
         BeforeAll {
-            $result = Get-AzPublicIpAddress -Name $publicIPName -ResourceGroupName $testsResourceGroupName
-            $fgt = $result.IpAddress
+            $fgt = (Get-AzPublicIpAddress -Name $publicIPName -ResourceGroupName $testsResourceGroupName).IpAddress
             Write-Host ("FortiGate public IP: " + $fgt)
             chmod 400 $sshkey
             $verify_commands = @'
@@ -165,11 +164,11 @@ Describe 'FGT A/A' {
                 $portListening | Should -Be $true
             }
         }
-        It "FGT: Verify FortiGate A configuration" {
+        It "FGT A: Verify configuration" {
             $result = $verify_commands | ssh -p 50030 -tt -i $sshkey -o StrictHostKeyChecking=no devops@$fgt
             Write-Host ("Config: " + $result) -Separator `n
         }
-        It "FGT: Verify FortiGate B configuration" {
+        It "FGT B: Verify configuration" {
             $result = $verify_commands | ssh -p 50031 -tt -i $sshkey -o StrictHostKeyChecking=no devops@$fgt
             Write-Host ("Config: " + $result) -Separator `n
         }
