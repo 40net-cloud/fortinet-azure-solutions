@@ -30,17 +30,17 @@ BeforeAll {
     $testsAdminUsername = "azureuser"
     $testsResourceGroupLocation = "westeurope"
 
-    # Validate all ARM templates one by one
+    # ARM Template Variables
     $config = "config system global `n set gui-theme mariner `n end `n config system admin `n edit devops `n set accprofile super_admin `n set ssh-public-key1 `""
     $config += Get-Content $sshkeypub
     $config += "`" `n set password $testsResourceGroupName `n next `n end"
-
+    $publicIPName = "$testsPrefix-FGT-PIP"
     $params = @{ 'adminUsername'=$testsAdminUsername
                  'adminPassword'=$testsResourceGroupName
                  'fortiGateNamePrefix'=$testsPrefix
                  'fortiGateAditionalCustomData'=$config
+                 'publicIPName'=$publicIPName
                }
-    $publicIPName = "$testsPrefix-FGT-PIP"
     $ports = @(443, 22)
 }
 
@@ -142,16 +142,6 @@ Describe 'FGT Single VM' {
             $result = Get-AzPublicIpAddress -Name $publicIPName -ResourceGroupName $testsResourceGroupName
             $fgt = $result.IpAddress
             Write-Host ("FortiGate public IP: " + $fgt)
-        }
-        It "FGT: Ports listening" {
-            ForEach( $port in $ports ) {
-                Write-Host ("Check port: $port" )
-                $portListening = (Test-Connection -TargetName $fgt -TCPPort $port -TimeoutSeconds 100)
-                $portListening | Should -Be $true
-            }
-        }
-        It "FGT: Verify FortiGate A configuration" {
-
             chmod 400 $sshkey
             $verify_commands = @'
             config system console
@@ -163,6 +153,15 @@ Describe 'FGT Single VM' {
             exit
 '@
             $OFS = "`n"
+        }
+        It "FGT: Ports listening" {
+            ForEach( $port in $ports ) {
+                Write-Host ("Check port: $port" )
+                $portListening = (Test-Connection -TargetName $fgt -TCPPort $port -TimeoutSeconds 100)
+                $portListening | Should -Be $true
+            }
+        }
+        It "FGT: Verify FortiGate A configuration" {
             $result = $verify_commands | ssh -tt -i $sshkey -o StrictHostKeyChecking=no devops@$fgt
             Write-Host (": " + $result) -Separator `n
         }
