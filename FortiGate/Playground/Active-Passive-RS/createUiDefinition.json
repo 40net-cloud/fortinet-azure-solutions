@@ -131,6 +131,10 @@
 							"value": "6.4.5"
 						},
 						{
+							"label": "6.4.6",
+							"value": "6.4.6"
+						},
+						{
 							"label": "latest",
 							"value": "latest"
 						}
@@ -233,7 +237,7 @@
 									"addressPrefixSize": "/20"
 								},
 								"constraints": {
-									"minAddressPrefixSize": "/24"
+									"minAddressPrefixSize": "/25"
 								},
 								"options": {
 									"hideExisting": false

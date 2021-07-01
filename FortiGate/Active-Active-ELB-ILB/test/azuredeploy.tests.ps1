@@ -46,11 +46,11 @@ BeforeAll {
 Describe 'FGT A/A' {
     Context 'Validation' {
         It 'Has a JSON template' {
-            $templateFileLocation | Should Exist
+            $templateFileLocation | Should -Exist
         }
 
         It 'Has a parameters file' {
-            $templateParameterFileLocation | Should Exist
+            $templateParameterFileLocation | Should -Exist
         }
 
         It 'Converts from JSON and has the expected properties' {
@@ -60,7 +60,7 @@ Describe 'FGT A/A' {
             'resources',
             'variables'
             $templateProperties = (get-content $templateFileLocation | ConvertFrom-Json -ErrorAction SilentlyContinue) | Get-Member -MemberType NoteProperty | % Name
-            $templateProperties | Should Be $expectedProperties
+            $templateProperties | Should -Be $expectedProperties
         }
 
         It 'Creates the expected Azure resources' {
@@ -79,7 +79,7 @@ Describe 'FGT A/A' {
                                  'Microsoft.Compute/virtualMachines',
                                  'Microsoft.Compute/virtualMachines'
             $templateResources = (get-content $templateFileLocation | ConvertFrom-Json -ErrorAction SilentlyContinue).Resources.type
-            $templateResources | Should Be $expectedResources
+            $templateResources | Should -Be $expectedResources
         }
 
         It 'Contains the expected parameters' {
@@ -101,7 +101,7 @@ Describe 'FGT A/A' {
                                           'instanceType',
                                           'location',
                                           'publicIPName',
-                                          'publicIPNewOrExisting',
+                                          'publicIPNewOr-Existing',
                                           'publicIPResourceGroup',
                                           'subnet1Name',
                                           'subnet1Prefix',
@@ -113,10 +113,10 @@ Describe 'FGT A/A' {
                                           'subnet3Prefix',
                                           'vnetAddressPrefix',
                                           'vnetName',
-                                          'vnetNewOrExisting',
+                                          'vnetNewOr-Existing',
                                           'vnetResourceGroup'
             $templateParameters = (get-content $templateFileLocation | ConvertFrom-Json -ErrorAction SilentlyContinue).Parameters | Get-Member -MemberType NoteProperty | % Name | sort
-            $templateParameters | Should Be $expectedTemplateParameters
+            $templateParameters | Should -Be $expectedTemplateParameters
         }
 
     }
@@ -125,18 +125,18 @@ Describe 'FGT A/A' {
 
         It "Test deployment" {
             New-AzResourceGroup -Name $testsResourceGroupName -Location "$testsResourceGroupLocation"
-            (Test-AzResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName" -TemplateFile "$templateFileName" -TemplateParameterObject $params).Count | Should not BeGreaterThan 0
+            (Test-AzResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName" -TemplateFile "$templateFileName" -TemplateParameterObject $params).Count | Should -Not -BeGreaterThan 0
         }
         It "Deployment" {
             $resultDeployment = New-AzResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName" -TemplateFile "$templateFileName" -TemplateParameterObject $params
             Write-Host ($resultDeployment | Format-Table | Out-String)
             Write-Host ("Deployment state: " + $resultDeployment.ProvisioningState | Out-String)
-            $resultDeployment.ProvisioningState | Should Be "Succeeded"
+            $resultDeployment.ProvisioningState | Should -Be "Succeeded"
         }
         It "Search deployment" {
             $result = Get-AzVM | Where-Object { $_.Name -like "$testsPrefix*" }
             Write-Host ($result | Format-Table | Out-String)
-            $result | Should Not Be $null
+            $result | Should -Not -Be $null
         }
     }
 
