@@ -791,9 +791,9 @@
 			}
 		],
 		"outputs": {
-			"fortigateNamePrefix": "[basics('fortiGateNamePrefix')]",
-			"fortigateImageSKU": "[basics('fortiGateImageSKU')]",
-			"fortigateImageVersion": "[basics('fortiGateImageVersion')]",
+			"fortiGateNamePrefix": "[basics('fortiGateNamePrefix')]",
+			"fortiGateImageSKU": "[basics('fortiGateImageSKU')]",
+			"fortiGateImageVersion": "[basics('fortiGateImageVersion')]",
 			"adminUsername": "[basics('adminUsername')]",
 			"adminPassword": "[basics('adminPassword')]",
 			"availabilityOptions": "[basics('availabilityOptions')]",
