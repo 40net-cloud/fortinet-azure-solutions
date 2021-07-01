@@ -3,27 +3,33 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "adminUsername": {
-            "value": "## TO BE DEFINED ##"
+            "value": ""
         },
         "adminPassword": {
-            "value": "## TO BE DEFINED ##"
+            "value": ""
         },
-        "fortigateNamePrefix": {
-            "value": "## TO BE DEFINED ##"
+        "fortiGateNamePrefix": {
+            "value": ""
         },
-        "fortigateImageSKU": {
+        "fortiGateImageSKU": {
             "value": "fortinet_fg-vm"
         },
-        "fortigateImageVersion": {
+        "fortiGateImageVersion": {
             "value": "latest"
+        },
+        "fortiGateAditionalCustomData": {
+            "value": ""
         },
         "instanceType": {
             "value": "Standard_F4s"
         },
+        "availabilityOptions": {
+            "value": "Availability Set"
+        },
         "acceleratedNetworking": {
             "value": "true"
         },
-        "publicIPNewOrExisting": {
+        "publicIP1NewOrExisting": {
             "value": "new"
         },
         "publicIP2NewOrExisting": {
@@ -32,23 +38,26 @@
         "publicIP3NewOrExisting": {
             "value": "new"
         },
-        "publicIPName": {
-            "value": "FGTAPClusterPublicIP"
+        "publicIP1Name": {
+            "value": ""
         },
-        "publicIPResourceGroup": {
+        "publicIP1ResourceGroup": {
             "value": ""
         },
         "publicIP2Name": {
-            "value": "FGTAMgmtPublicIP"
+            "value": ""
         },
         "publicIP2ResourceGroup": {
             "value": ""
         },
         "publicIP3Name": {
-            "value": "FGTBMgmtPublicIP"
+            "value": ""
         },
         "publicIP3ResourceGroup": {
             "value": ""
+        },
+        "publicIP1AddressType": {
+            "value": "Static"
         },
         "vnetNewOrExisting": {
             "value": "new"
@@ -68,11 +77,17 @@
         "subnet1Prefix": {
             "value": "172.16.136.0/26"
         },
+        "subnet1StartAddress": {
+            "value": "172.16.136.4"
+        },
         "subnet2Name": {
             "value": "InternalSubnet"
         },
         "subnet2Prefix": {
             "value": "172.16.136.64/26"
+        },
+        "subnet2StartAddress": {
+            "value": "172.16.136.68"
         },
         "subnet3Name": {
             "value": "HASyncSubnet"
@@ -80,17 +95,44 @@
         "subnet3Prefix": {
             "value": "172.16.136.128/26"
         },
+        "subnet3StartAddress": {
+            "value": "172.16.136.132"
+        },
         "subnet4Name": {
             "value": "ManagementSubnet"
         },
         "subnet4Prefix": {
             "value": "172.16.136.192/26"
         },
+        "subnet4StartAddress": {
+            "value": "172.16.136.196"
+        },
         "subnet5Name": {
-            "value": "ProtectedSubnet"
+            "value": "ProtectedASubnet"
         },
         "subnet5Prefix": {
             "value": "172.16.137.0/24"
+        },
+        "subnet6Name": {
+            "value": "ProtectedBSubnet"
+        },
+        "subnet6Prefix": {
+            "value": "172.16.138.0/24"
+        },
+        "fortiManager": {
+            "value": "no"
+        },
+        "fortiManagerIP": {
+            "value": ""
+        },
+        "fortiManagerSerial": {
+            "value": ""
+        },
+        "fortiGateLicenseBYOLA": {
+            "value": ""
+        },
+        "fortiGateLicenseBYOLB": {
+            "value": ""
         },
         "location": {
             "value": "[resourceGroup().location]"
@@ -98,7 +140,8 @@
         "fortinetTags": {
             "value": {
                 "publisher": "Fortinet",
-                "provider": "6EB3B02F-50E5-4A3E-8CB8-2E12925831AP-AZ"
+                "template": "Active-Passive-ELB-ILB-AZORAS",
+                "provider": "6EB3B02F-50E5-4A3E-8CB8-2E129258AP-AZORAS"
             }
         }
     }
