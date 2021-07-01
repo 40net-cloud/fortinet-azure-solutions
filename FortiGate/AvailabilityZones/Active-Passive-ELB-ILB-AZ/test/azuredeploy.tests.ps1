@@ -51,79 +51,91 @@ Describe 'FGT A/P LB' {
             $templateParameterFileLocation | Should Exist
         }
 
-        It 'Has a metadata file' {
-            $templateMetadataFileLocation | Should Exist
-        }
-
         It 'Converts from JSON and has the expected properties' {
             $expectedProperties = '$schema',
             'contentVersion',
             'parameters',
             'resources',
             'variables'
-            $templateProperties = (get-content $templateFileLocation | ConvertFrom-Json -ErrorAction SilentlyContinue) | Get-Member -MemberType NoteProperty | % Name
+            $templateProperties = (get-content $templateFileLocation | ConvertFrom-Json -ErrorAction SilentlyContinue) | Get-Member -MemberType NoteProperty | ForEach-Object Name
             $templateProperties | Should Be $expectedProperties
         }
 
         It 'Creates the expected Azure resources' {
             $expectedResources = 'Microsoft.Resources/deployments',
-                                 'Microsoft.Network/routeTables',
-                                 'Microsoft.Network/virtualNetworks',
-                                 'Microsoft.Network/loadBalancers',
-                                 'Microsoft.Network/networkSecurityGroups',
-                                 'Microsoft.Network/publicIPAddresses',
-                                 'Microsoft.Network/publicIPAddresses',
-                                 'Microsoft.Network/publicIPAddresses',
-                                 'Microsoft.Network/loadBalancers',
-                                 'Microsoft.Network/networkInterfaces',
-                                 'Microsoft.Network/networkInterfaces',
-                                 'Microsoft.Network/networkInterfaces',
-                                 'Microsoft.Network/networkInterfaces',
-                                 'Microsoft.Network/networkInterfaces',
-                                 'Microsoft.Network/networkInterfaces',
-                                 'Microsoft.Network/networkInterfaces',
-                                 'Microsoft.Network/networkInterfaces',
-                                 'Microsoft.Compute/virtualMachines',
-                                 'Microsoft.Compute/virtualMachines'
+                                'Microsoft.Compute/availabilitySets',
+                                'Microsoft.Network/routeTables',
+                                'Microsoft.Network/virtualNetworks',
+                                'Microsoft.Network/loadBalancers',
+                                'Microsoft.Network/networkSecurityGroups',
+                                'Microsoft.Network/publicIPAddresses',
+                                'Microsoft.Network/publicIPAddresses',
+                                'Microsoft.Network/publicIPAddresses',
+                                'Microsoft.Network/loadBalancers',
+                                'Microsoft.Network/networkInterfaces',
+                                'Microsoft.Network/networkInterfaces',
+                                'Microsoft.Network/networkInterfaces',
+                                'Microsoft.Network/networkInterfaces',
+                                'Microsoft.Network/networkInterfaces',
+                                'Microsoft.Network/networkInterfaces',
+                                'Microsoft.Network/networkInterfaces',
+                                'Microsoft.Network/networkInterfaces',
+                                'Microsoft.Compute/virtualMachines',
+                                'Microsoft.Compute/virtualMachines'
             $templateResources = (get-content $templateFileLocation | ConvertFrom-Json -ErrorAction SilentlyContinue).Resources.type
             $templateResources | Should Be $expectedResources
         }
 
         It 'Contains the expected parameters' {
-            $expectedTemplateParameters = 'acceleratedNetworking',
-                                          'adminPassword',
-                                          'adminUsername',
-                                          'fortigateImageSKU',
-                                          'fortigateImageVersion',
-                                          'fortigateNamePrefix',
-                                          'fortinetTags',
-                                          'instanceType',
-                                          'location',
-                                          'publicIP2Name',
-                                          'publicIP2NewOrExisting',
-                                          'publicIP2ResourceGroup',
-                                          'publicIP3Name',
-                                          'publicIP3NewOrExisting',
-                                          'publicIP3ResourceGroup',
-                                          'publicIPAddressType',
-                                          'publicIPName',
-                                          'publicIPNewOrExisting',
-                                          'publicIPResourceGroup',
-                                          'subnet1Name',
-                                          'subnet1Prefix',
-                                          'subnet2Name',
-                                          'subnet2Prefix',
-                                          'subnet3Name',
-                                          'subnet3Prefix',
-                                          'subnet4Name',
-                                          'subnet4Prefix',
-                                          'subnet5Name',
-                                          'subnet5Prefix',
-                                          'vnetAddressPrefix',
-                                          'vnetName',
-                                          'vnetNewOrExisting',
-                                          'vnetResourceGroup'
-            $templateParameters = (get-content $templateFileLocation | ConvertFrom-Json -ErrorAction SilentlyContinue).Parameters | Get-Member -MemberType NoteProperty | % Name | sort
+            $expectedTemplateParameters = 'adminUsername',
+            'adminPassword',
+            'fortiGateNamePrefix',
+            'fortiGateImageSKU',
+            'fortiGateImageVersion',
+            'fortiGateAditionalCustomData',
+            'instanceType',
+            'availabilityOptions',
+            'acceleratedNetworking',
+            'publicIP1NewOrExisting',
+            'publicIP1AddressType',
+            'publicIP1Name',
+            'publicIP1ResourceGroup',
+            'publicIP2NewOrExisting',
+            'publicIP2Name',
+            'publicIP2ResourceGroup',
+            'publicIP3NewOrExisting',
+            'publicIP3Name',
+            'publicIP3ResourceGroup',
+            'vnetNewOrExisting',
+            'vnetName',
+            'vnetResourceGroup',
+            'vnetAddressPrefix',
+            'subnet1Name',
+            'subnet1Prefix',
+            'subnet1StartAddress',
+            'subnet2Name',
+            'subnet2Prefix',
+            'subnet2StartAddress',
+            'subnet3Name',
+            'subnet3Prefix',
+            'subnet3StartAddress',
+            'subnet4Name',
+            'subnet4Prefix',
+            'subnet4StartAddress',
+            'subnet5Name',
+            'subnet5Prefix',
+            'subnet6Name',
+            'subnet6Prefix',
+            'fortiManager',
+            'fortiManagerIP',
+            'fortiManagerSerial',
+            'fortiGateLicenseBYOLA',
+            'fortiGateLicenseBYOLB',
+            'fortiGateLicenseFlexVMA',
+            'fortiGateLicenseFlexVMB',
+            'location',
+            'fortinetTags'
+$templateParameters = (get-content $templateFileLocation | ConvertFrom-Json -ErrorAction SilentlyContinue).Parameters | Get-Member -MemberType NoteProperty | ForEach-Object Name | sort
             $templateParameters | Should Be $expectedTemplateParameters
         }
 
@@ -138,13 +150,14 @@ Describe 'FGT A/P LB' {
         # Validate all ARM templates one by one
         $testsErrorFound = $false
 
-        $params = @{ 'adminUsername'=$testsAdminUsername
-                     'adminPassword'=$testsResourceGroupName
-                     'fortigateNamePrefix'=$testsPrefix
-                    }
-        $publicIPName = "FGTAMgmtPublicIP"
-        $publicIP2Name = "FGTBMgmtPublicIP"
-
+        $params = @{
+            'adminUsername'=$testsAdminUsername
+            'adminPassword'=$testsResourceGroupName
+            'fortigateNamePrefix'=$testsPrefix
+        }
+        $publicIP2Name = "$testsPrefix-FGT-A-MGMT-PIP"
+        $publicIP3Name = "$testsPrefix-FGT-B-MGMT-PIP"
+            
         It "Test Deployment" {
             (Test-AzResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName" -TemplateFile "$templateFileName" -TemplateParameterObject $params).Count | Should not BeGreaterThan 0
         }
@@ -162,18 +175,16 @@ Describe 'FGT A/P LB' {
 
         443, 22 | Foreach-Object {
             it "FGT A: Port [$_] is listening" {
-                $result = Get-AzPublicIpAddress -Name $publicIPName -ResourceGroupName $testsResourceGroupName
+                $result = Get-AzPublicIpAddress -Name $publicIP2Name -ResourceGroupName $testsResourceGroupName
                 $portListening = (Test-Connection -TargetName $result.IpAddress -TCPPort $_ -TimeoutSeconds 100)
-                Write-Host $portListening
                 $portListening | Should -Be $true
             }
         }
 
         443, 22 | Foreach-Object {
             it "FGT B: Port [$_] is listening" {
-                $result = Get-AzPublicIpAddress -Name $publicIP2Name -ResourceGroupName $testsResourceGroupName
+                $result = Get-AzPublicIpAddress -Name $publicIP3Name -ResourceGroupName $testsResourceGroupName
                 $portListening = (Test-Connection -TargetName $result.IpAddress -TCPPort $_ -TimeoutSeconds 100)
-                Write-Host $portListening
                 $portListening | Should -Be $true
             }
         }
