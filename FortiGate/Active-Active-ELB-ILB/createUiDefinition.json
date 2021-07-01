@@ -133,6 +133,10 @@
 							"value": "6.4.5"
 						},
 						{
+							"label": "6.4.6",
+							"value": "6.4.6"
+						},
+						{
 							"label": "7.0.0",
 							"value": "7.0.0"
 						},
@@ -251,7 +255,7 @@
 									"addressPrefixSize": "/22"
 								},
 								"constraints": {
-									"minAddressPrefixSize": "/24"
+									"minAddressPrefixSize": "/27"
 								},
 								"options": {
 									"hideExisting": false
