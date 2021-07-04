@@ -23,4 +23,10 @@ data "template_file" "summary" {
 output "deployment_summary" {
   value = data.template_file.summary.rendered
 }
+output "VNET ID" {
+  value = azurerm_virtual_network.vnet.id
+}
 
+output "subnet1 id" {
+  value = azurerm_subnet.subnet1.id
+}
