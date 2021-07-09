@@ -589,5 +589,12 @@
         }
       }
     }
-  ]
+  ],
+  "outputs": {
+    "customdata": {
+      "type": "string",
+      "value": "[variables('fgaCustomData')]"
+    }
   }
+
+}
