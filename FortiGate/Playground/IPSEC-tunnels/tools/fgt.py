@@ -6,7 +6,7 @@ import ipaddress
 ip_network = "10.1.0.0/16"
 vpn_psk = "fortinet"
 index_start = 4   # First IP in the IP network range to start counting
-index_end = 2010  # Count needs to be less than the IP addresses available in the IP network
+index_end = 5010  # Count needs to be less than the IP addresses available in the IP network
 vpn_b_ip = "172.16.137.10"
 vpn_b_subnet = "172.16.138.0/24"
 
