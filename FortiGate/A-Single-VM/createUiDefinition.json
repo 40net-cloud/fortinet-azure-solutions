@@ -58,7 +58,7 @@
 				"visible": true
 			},
 			{
-				"name": "fortigateNamePrefix",
+				"name": "fortiGateNamePrefix",
 				"type": "Microsoft.Common.TextBox",
 				"label": "Fortigate Name Prefix",
 				"defaultValue": "",
@@ -71,7 +71,7 @@
 				"visible": true
 			},
 			{
-				"name": "fortigateImageSKU",
+				"name": "fortiGateImageSKU",
 				"type": "Microsoft.Common.DropDown",
 				"label": "Fortigate Image SKU",
 				"defaultValue": "Bring Your Own License",
@@ -92,7 +92,7 @@
 				"visible": true
 			},
 			{
-				"name": "fortigateImageVersion",
+				"name": "fortiGateImageVersion",
 				"type": "Microsoft.Common.DropDown",
 				"label": "Fortigate Image Version",
 				"defaultValue": "latest",
@@ -131,6 +131,10 @@
 						{
 							"label": "6.4.5",
 							"value": "6.4.5"
+						},
+						{
+							"label": "6.4.6",
+							"value": "6.4.6"
 						},
 						{
 							"label": "7.0.0",
@@ -182,7 +186,6 @@
 							"Standard_F4",
 							"Standard_F8",
 							"Standard_F16",
-							"Standard_F1s_v2",
 							"Standard_F2s_v2",
 							"Standard_F4s_v2",
 							"Standard_F8s_v2",
@@ -193,13 +196,41 @@
 							"Standard_DS3_v2",
 							"Standard_DS4_v2",
 							"Standard_DS5_v2",
-							"Standard_D1s_v3",
 							"Standard_D2s_v3",
 							"Standard_D4s_v3",
 							"Standard_D8s_v3",
 							"Standard_D16s_v3",
 							"Standard_D32s_v3"
 						],
+            "constraints": {
+              "allowedValues": [
+                "Standard_F2s",
+                "Standard_F1s",
+                "Standard_F4s",
+                "Standard_F8s",
+                "Standard_F16s",
+                "Standard_F1",
+                "Standard_F2",
+                "Standard_F4",
+                "Standard_F8",
+                "Standard_F16",
+                "Standard_F2s_v2",
+                "Standard_F4s_v2",
+                "Standard_F8s_v2",
+                "Standard_F16s_v2",
+                "Standard_F32s_v2",
+                "Standard_DS1_v2",
+                "Standard_DS2_v2",
+                "Standard_DS3_v2",
+                "Standard_DS4_v2",
+                "Standard_DS5_v2",
+                "Standard_D2s_v3",
+                "Standard_D4s_v3",
+                "Standard_D8s_v3",
+                "Standard_D16s_v3",
+                "Standard_D32s_v3"
+              ]
+            },
 						"options": {
 							"hideDiskTypeFilter": false
 						},
@@ -207,7 +238,7 @@
 						"imageReference": {
 							"publisher": "Fortinet",
 							"offer": "fortinet_fortigate-vm_v5",
-							"sku": "[basics('fortigateImageSKU')]"
+							"sku": "[basics('fortiGateImageSKU')]"
 						},
 						"count": 1,
 						"visible": true
@@ -251,7 +282,7 @@
 									"addressPrefixSize": "/22"
 								},
 								"constraints": {
-									"minAddressPrefixSize": "/24"
+									"minAddressPrefixSize": "/27"
 								},
 								"options": {
 									"hideExisting": false
@@ -264,8 +295,8 @@
 											"addressPrefixSize": "/26"
 										},
 										"constraints": {
-											"minAddressPrefixSize": "/27",
-											"minAddressCount": 12,
+											"minAddressPrefixSize": "/29",
+											"minAddressCount": 1,
 											"requireContiguousAddresses": true
 										}
 									},
@@ -276,8 +307,8 @@
 											"addressPrefixSize": "/26"
 										},
 										"constraints": {
-											"minAddressPrefixSize": "/27",
-											"minAddressCount": 8,
+											"minAddressPrefixSize": "/29",
+											"minAddressCount": 1,
 											"requireContiguousAddresses": true
 										}
 									},
@@ -288,8 +319,8 @@
 											"addressPrefixSize": "/24"
 										},
 										"constraints": {
-											"minAddressPrefixSize": "/27",
-											"minAddressCount": 8,
+											"minAddressPrefixSize": "/29",
+											"minAddressCount": 0,
 											"requireContiguousAddresses": true
 										}
 									}
@@ -565,7 +596,7 @@
 									"icon": "Warning",
 									"text": "Pay as you go licenses was selected in the basics blade. The licenses uploaded here will not be used."
 								},
-								"visible": "[not(equals(basics('fortigateImageSKU'), 'fortinet_fg-vm'))]"
+								"visible": "[not(equals(basics('fortiGateImageSKU'), 'fortinet_fg-vm'))]"
 							},
 							{
 								"name": "licenseflexvmtext",
@@ -594,9 +625,9 @@
 			}
 		],
 		"outputs": {
-			"fortiGateNamePrefix": "[basics('fortigateNamePrefix')]",
-			"fortiGateImageSKU": "[basics('fortigateImageSKU')]",
-			"fortiGateImageVersion": "[basics('fortigateImageVersion')]",
+			"fortiGateNamePrefix": "[basics('fortiGateNamePrefix')]",
+			"fortiGateImageSKU": "[basics('fortiGateImageSKU')]",
+			"fortiGateImageVersion": "[basics('fortiGateImageVersion')]",
 			"adminUsername": "[basics('adminUsername')]",
 			"adminPassword": "[basics('adminPassword')]",
 			"location": "[location()]",

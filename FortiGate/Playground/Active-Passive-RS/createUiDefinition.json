@@ -131,6 +131,10 @@
 							"value": "6.4.5"
 						},
 						{
+							"label": "6.4.6",
+							"value": "6.4.6"
+						},
+						{
 							"label": "latest",
 							"value": "latest"
 						}
@@ -233,7 +237,7 @@
 									"addressPrefixSize": "/20"
 								},
 								"constraints": {
-									"minAddressPrefixSize": "/24"
+									"minAddressPrefixSize": "/25"
 								},
 								"options": {
 									"hideExisting": false
@@ -246,8 +250,8 @@
 											"addressPrefixSize": "/26"
 										},
 										"constraints": {
-											"minAddressPrefixSize": "/27",
-											"minAddressCount": 12,
+											"minAddressPrefixSize": "/29",
+											"minAddressCount": 2,
 											"requireContiguousAddresses": true
 										}
 									},
@@ -258,8 +262,8 @@
 											"addressPrefixSize": "/26"
 										},
 										"constraints": {
-											"minAddressPrefixSize": "/27",
-											"minAddressCount": 8,
+											"minAddressPrefixSize": "/29",
+											"minAddressCount": 2,
 											"requireContiguousAddresses": true
 										}
 									},
@@ -270,8 +274,8 @@
 											"addressPrefixSize": "/26"
 										},
 										"constraints": {
-											"minAddressPrefixSize": "/27",
-											"minAddressCount": 8,
+											"minAddressPrefixSize": "/29",
+											"minAddressCount": 2,
 											"requireContiguousAddresses": true
 										}
 									},
@@ -282,8 +286,8 @@
 											"addressPrefixSize": "/27"
 										},
 										"constraints": {
-											"minAddressPrefixSize": "/27",
-											"minAddressCount": 8,
+											"minAddressPrefixSize": "/29",
+											"minAddressCount": 2,
 											"requireContiguousAddresses": true
 										}
 									},
@@ -295,7 +299,7 @@
 										},
 										"constraints": {
 											"minAddressPrefixSize": "/27",
-											"minAddressCount": 8,
+											"minAddressCount": 25,
 											"requireContiguousAddresses": true
 										}
 									},
@@ -306,8 +310,8 @@
 											"addressPrefixSize": "/24"
 										},
 										"constraints": {
-											"minAddressPrefixSize": "/27",
-											"minAddressCount": 8,
+											"minAddressPrefixSize": "/29",
+											"minAddressCount": 0,
 											"requireContiguousAddresses": true
 										}
 									}

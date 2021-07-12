@@ -133,6 +133,10 @@
 							"value": "6.4.5"
 						},
 						{
+							"label": "6.4.6",
+							"value": "6.4.6"
+						},
+						{
 							"label": "7.0.0",
 							"value": "7.0.0"
 						},
@@ -251,7 +255,7 @@
 									"addressPrefixSize": "/22"
 								},
 								"constraints": {
-									"minAddressPrefixSize": "/24"
+									"minAddressPrefixSize": "/27"
 								},
 								"options": {
 									"hideExisting": false
@@ -264,8 +268,8 @@
 											"addressPrefixSize": "/26"
 										},
 										"constraints": {
-											"minAddressPrefixSize": "/27",
-											"minAddressCount": 12,
+											"minAddressPrefixSize": "/29",
+											"minAddressCount": 2,
 											"requireContiguousAddresses": true
 										}
 									},
@@ -277,7 +281,7 @@
 										},
 										"constraints": {
 											"minAddressPrefixSize": "/27",
-											"minAddressCount": 8,
+											"minAddressCount": 3,
 											"requireContiguousAddresses": true
 										}
 									},
