@@ -59,6 +59,7 @@ jobs:
       run: echo '${{ steps.show.outputs.stdout }}' > plan.json # Do not change
 
     - name: Run infracost diff
+      id: cost
       uses: infracost/infracost-gh-action@master
       env:
         INFRACOST_API_KEY: ${{ secrets.INFRACOST_API_KEY }}
@@ -66,3 +67,7 @@ jobs:
       with:
         entrypoint: /scripts/ci/diff.sh # Do not change
         path: plan.json # Do not change
+      
+    - name: "Infracost output"
+      run: echo '${{ steps.cost.outputs.stdout }}'
+
