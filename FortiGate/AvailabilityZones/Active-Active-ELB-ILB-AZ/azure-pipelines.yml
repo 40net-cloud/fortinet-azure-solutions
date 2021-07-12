@@ -19,7 +19,7 @@ steps:
   displayName: 'Publish ARM TTK results'
   inputs:
     testRunner: NUnit
-    testResultsFiles: '**\*-armttk.xml'
+    testResultsFiles: '**/*-armttk.xml'
     testRunTitle: 'ARM TTK verification'
   condition: always()
 
@@ -27,7 +27,7 @@ steps:
   displayName: 'Publish Test Results **\TEST-*.xml'
   inputs:
     testRunner: NUnit
-    testResultsFiles: '**\TEST-*.xml'
+    testResultsFiles: '**/TEST-*.xml'
     testRunTitle: 'ARM template and deployment test'
 
 trigger:
