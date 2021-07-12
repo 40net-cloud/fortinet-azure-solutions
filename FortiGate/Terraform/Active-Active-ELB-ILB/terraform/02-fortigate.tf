@@ -184,7 +184,7 @@ resource "azurerm_lb_rule" "lb_haports_rule" {
 }
 
 resource "azurerm_network_interface" "fgtaifcext" {
-  name                          = "${var.PREFIX}-VM-FGT-A-IFC-EXT"
+  name                          = "${var.PREFIX}-FGT-A-IFC-EXT"
   location                      = azurerm_resource_group.resourcegroup.location
   resource_group_name           = azurerm_resource_group.resourcegroup.name
   enable_ip_forwarding          = true
@@ -303,7 +303,7 @@ data "template_file" "fgt_a_custom_data" {
 }
 
 resource "azurerm_network_interface" "fgtbifcext" {
-  name                          = "${var.PREFIX}-VM-FGT-B-IFC-EXT"
+  name                          = "${var.PREFIX}-FGT-B-IFC-EXT"
   location                      = azurerm_resource_group.resourcegroup.location
   resource_group_name           = azurerm_resource_group.resourcegroup.name
   enable_ip_forwarding          = true
