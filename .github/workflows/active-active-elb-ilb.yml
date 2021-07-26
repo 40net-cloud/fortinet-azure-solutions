@@ -24,10 +24,10 @@ jobs:
       ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
 
     steps:
-    - name: Checkout
+    - name: "Checkout"
       uses: actions/checkout@v2
 
-    - name: Setup Terraform
+    - name: "Setup Terraform"
       uses: hashicorp/setup-terraform@v1
 
     - name: "Terraform Init"
@@ -45,16 +45,16 @@ jobs:
       run: terraform fmt -check -diff
       working-directory: ${{ env.TFPath }}
 
-    - name: "Terraform plan"
+    - name: "Terraform Plan"
       id: plan
       run: terraform plan -out plan.tfplan
       working-directory: ${{ env.TFPath }}
 
-    - name: "Terraform show"
+    - name: "Terraform Show"
       id: show
       run: terraform show -json plan.tfplan
       working-directory: ${{ env.TFPath }}
-      
+
     - name: "Save Plan JSON"
       run: echo '${{ steps.show.outputs.stdout }}' > plan.json # Do not change
 
@@ -66,3 +66,4 @@ jobs:
       with:
         entrypoint: /scripts/ci/diff.sh # Do not change
         path: plan.json # Do not change
+        show_skipped: true

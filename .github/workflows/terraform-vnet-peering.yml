@@ -24,20 +24,46 @@ jobs:
       ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
 
     steps:
-    - name: Checkout
+    - name: "Checkout"
       uses: actions/checkout@v2
 
-    - name: Setup Terraform
+    - name: "Setup Terraform"
       uses: hashicorp/setup-terraform@v1
 
-    - name: Terraform Init
-      run: terraform -chdir=${{ env.TFPath }} init
+    - name: "Terraform Init"
+      id: init
+      run: terraform init
+      working-directory: ${{ env.TFPath }}
 
-    - name: Terraform Validate
-      run: terraform -chdir=${{ env.TFPath }} validate
+    - name: "Terraform Validate"
+      id: validate
+      run: terraform validate
+      working-directory: ${{ env.TFPath }}
 
-    - name: Terraform Format
-      run: terraform -chdir=${{ env.TFPath }} fmt -check -diff
+    - name: "Terraform Format"
+      id: format
+      run: terraform fmt -check -diff
+      working-directory: ${{ env.TFPath }}
 
-    - name: Terraform Plan
-      run: terraform -chdir=${{ env.TFPath }} plan
+    - name: "Terraform Plan"
+      id: plan
+      run: terraform plan -out plan.tfplan
+      working-directory: ${{ env.TFPath }}
+
+    - name: "Terraform Show"
+      id: show
+      run: terraform show -json plan.tfplan
+      working-directory: ${{ env.TFPath }}
+
+    - name: "Save Plan JSON"
+      run: echo '${{ steps.show.outputs.stdout }}' > plan.json # Do not change
+
+    - name: Run infracost diff
+      uses: infracost/infracost-gh-action@master
+      env:
+        INFRACOST_API_KEY: ${{ secrets.INFRACOST_API_KEY }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        entrypoint: /scripts/ci/diff.sh # Do not change
+        path: plan.json # Do not change
+        show_skipped: true
