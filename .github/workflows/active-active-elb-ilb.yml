@@ -70,5 +70,5 @@ jobs:
         show_skipped: true
 
     - name: "Infracost output"
-      run: echo '${{ steps.cost.outputs }}'
+      run: echo '${{ steps.cost.outputs.total_monthly_cost }}'
 
