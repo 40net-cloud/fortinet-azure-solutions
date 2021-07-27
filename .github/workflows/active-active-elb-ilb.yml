@@ -70,5 +70,5 @@ jobs:
         show_skipped: true
 
     - name: "Infracost output"
-      run: echo '${{ steps.cost.outputs.stdout }}'
+      run: echo '${{ steps.cost.outputs }}'
 
