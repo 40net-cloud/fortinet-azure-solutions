@@ -90,7 +90,7 @@ echo "--> Validation deployment in $rg resource group ..."
 #if [ $result != 0 ];
 #then
 #    echo "--> Validation failed ..."
-#    exit $rc;
+#    exit $result;
 #fi
 
 # Deploy resources
@@ -102,7 +102,7 @@ result=$?
 if [[ $result != 0 ]];
 then
     echo "--> Deployment failed ..."
-    exit $rc;
+    exit $result;
 else
 echo "
 ##############################################################################################################
@@ -117,7 +117,7 @@ echo "
 
 Deployment information:
 
-Username: 
+Username:
 
 FortiGate IP addesses
 "

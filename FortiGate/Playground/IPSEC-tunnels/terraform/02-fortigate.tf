@@ -81,15 +81,8 @@ resource "azurerm_network_interface" "fgtifcext" {
     name                          = "interface1"
     subnet_id                     = azurerm_subnet.subnet2.id
     private_ip_address_allocation = "static"
-    private_ip_address            = var.fgt_ipaddress["2a"]
+    private_ip_address            = var.fgt_ipaddress["2"]
     primary = true
-  }
-
-  ip_configuration {
-    name                          = "ifconfig2"
-    subnet_id                     = azurerm_subnet.subnet2.id
-    private_ip_address_allocation = "static"
-    private_ip_address            = var.fgt_ipaddress["2b"]
   }
 }
 
@@ -177,8 +170,7 @@ data "template_file" "fgt_custom_data" {
     fgt_mgmt_ipaddr       = var.fgt_ipaddress["1"]
     fgt_mgmt_mask         = var.subnetmask["1"]
     fgt_mgmt_gw           = var.gateway_ipaddress["1"]
-    fgt_external_ipaddr   = var.fgt_ipaddress["2a"]
-    fgt_external_ipaddr_2 = var.fgt_ipaddress["2b"]
+    fgt_external_ipaddr   = var.fgt_ipaddress["2"]
     fgt_external_mask     = var.subnetmask["2"]
     fgt_external_gw       = var.gateway_ipaddress["2"]
     fgt_internal_ipaddr   = var.fgt_ipaddress["3"]
