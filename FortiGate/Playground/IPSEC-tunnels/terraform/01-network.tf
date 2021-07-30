@@ -44,7 +44,7 @@ resource "azurerm_route_table" "ipsecroute" {
 
   route {
     name                   = "IPSEC"
-    address_prefix         = "10.1.0.0/0"
+    address_prefix         = "10.1.0.0/16"
     next_hop_type          = "VirtualAppliance"
     next_hop_in_ip_address = var.lnx_ipaddress["2"]
   }

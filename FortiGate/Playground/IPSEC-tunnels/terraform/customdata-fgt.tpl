@@ -47,13 +47,6 @@ config system interface
         set mode static
         set ip ${fgt_external_ipaddr}/${fgt_external_mask}
         set description external
-        set secondary-IP enable
-        config secondaryip
-            edit 1
-                set ip ${fgt_external_ipaddr_2}/${fgt_external_mask}
-                set allowaccess ping
-            next
-        end
     next
     edit port3
         set mode static

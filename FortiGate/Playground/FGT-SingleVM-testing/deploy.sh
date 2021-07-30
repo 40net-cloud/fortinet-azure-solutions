@@ -134,7 +134,7 @@ terraform apply "$PLAN"
 if [[ $? != 0 ]];
 then
     echo "--> ERROR: Deployment failed ..."
-    exit $rc;
+    exit $result;
 fi
 
 echo ""
@@ -159,7 +159,7 @@ echo "
 
  Deployment information:
 
-Username: 
+Username:
 "
 cat "output/$SUMMARY"
 echo "
