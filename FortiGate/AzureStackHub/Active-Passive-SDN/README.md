@@ -30,7 +30,6 @@ The FortiGate solution can be deployed using the Azure Portal or Azure CLI. Ther
 
 ### Azure Portal
 
-https://portal.local.azurestack.external/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FAzure%2Fazurestack-quickstart-templates%2Fmaster%2F101-simple-linux-vm-custom-managed-disk%2Fazuredeploy.json
 <a href="https://portal.local.azurestack.external/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2F40net-cloud%2Ffortinet-azure-solutions%2Fmain%2FFortiGate%2FAzureStackHub%2FActive-Passive-SDN%2Fazuredeploy.json" target="_blank">
   <img src="../images/deploytoasdk.png"/>
 </a>
