@@ -537,7 +537,7 @@
       }
     },
     {
-      "apiVersion": "2019-07-01",
+      "apiVersion": "2021-07-01",
       "type": "Microsoft.Compute/availabilitySets",
       "condition": "[not(variables('useAZ'))]",
       "name": "[variables('availabilitySetName')]",
@@ -1154,7 +1154,7 @@
       }
     },
     {
-      "apiVersion": "2019-07-01",
+      "apiVersion": "2021-07-01",
       "type": "Microsoft.Compute/virtualMachines",
       "name": "[variables('fgaVmName')]",
       "location": "[parameters('location')]",
@@ -1236,7 +1236,7 @@
       }
     },
     {
-      "apiVersion": "2019-07-01",
+      "apiVersion": "2021-07-01",
       "type": "Microsoft.Compute/virtualMachines",
       "name": "[variables('fgbVmName')]",
       "location": "[parameters('location')]",
