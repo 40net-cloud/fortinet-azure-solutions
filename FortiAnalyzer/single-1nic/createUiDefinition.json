@@ -595,5 +595,6 @@
       "subnet1StartAddress": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet1.startAddress]",
       "fortiAnalyzerAditionalCustomData": "[steps('advanced').customdata.config]",
       "fortiAnalyzerLicenseBYOL": "[steps('advanced').fazlicense.licensecontent]"
-      }
     }
+  }
+}
