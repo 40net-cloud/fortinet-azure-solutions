@@ -472,7 +472,7 @@
           "osDisk": {
             "createOption": "FromImage",
             "managedDisk": {
-              "storageAccountType": "[if(not(equals(parameters('diskType'), 'default')), parameters('diskType') , json('null'))]"
+              "storageAccountType": "[if(not(equals(parameters('diskType'), 'Default')), parameters('diskType') , json('null'))]"
             }
           },
           "copy": [
@@ -480,12 +480,12 @@
               "name": "dataDisks",
               "count": "[parameters('dataDiskCount')]",
               "input": {
-                "name": "[concat(variables('fazVmName'),'DataDisk',copyIndex('dataDisks'))]",
+                "name": "[concat(variables('fazVmName'),'-DataDisk-',copyIndex('dataDisks'))]",
                 "diskSizeGB": "[parameters('dataDiskSize')]",
                 "lun": "[copyIndex('dataDisks')]",
                 "createOption": "Empty",
                 "managedDisk": {
-                  "storageAccountType": "[if(not(equals(parameters('diskType'), 'default')), parameters('diskType') , json('null'))]"
+                  "storageAccountType": "[if(not(equals(parameters('diskType'), 'Default')), parameters('diskType') , json('null'))]"
                 }
               }
             }
