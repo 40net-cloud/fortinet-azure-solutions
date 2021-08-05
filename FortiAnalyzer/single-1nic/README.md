@@ -18,7 +18,9 @@ This Azure ARM template will automatically deploy a full working environment con
 - 1 VNETs containing a subnet for the FortiAnalyzer
 - Optional: 1 Basic public IP
 
-![FortiAnalyzer-VM azure design](images/faz-single-1nic.png)
+<p align="center">
+  <img src="images/faz-single-1nic-small.png" alt="FortiAnalyzer-VM azure design"/>
+</p>
 
 The VM will have the sixth IP in the network range as his static IP. You can adapt the 'sn1IPfg1' variable in the ARM template to change this.
 
@@ -26,7 +28,9 @@ This Azure ARM template can also be extended or customized based on your require
 
 The FortiAnalyzer can also be deployed with a public IP on the network interface. Select 'None' as the public IP.
 
-![FortiAnalyzer-VM azure design](images/faz-single-1nic-private.png)
+<p align="center">
+  <img src="images/faz-single-1nic-private-small.png" alt="FortiAnalyzer-VM azure design"/>
+</p>
 
 ## Deployment
 
