@@ -265,47 +265,47 @@
                   "allowedValues": [
                     {
                       "label": "32GiB",
-                      "value": "32GiB"
+                      "value": "32"
                     },
                     {
                       "label": "64GiB",
-                      "value": "64GiB"
+                      "value": "64"
                     },
                     {
                       "label": "128GiB",
-                      "value": "128GiB"
+                      "value": "128"
                     },
                     {
                       "label": "256GiB",
-                      "value": "256GiB"
+                      "value": "256"
                     },
                     {
                       "label": "512GiB",
-                      "value": "512GiB"
+                      "value": "512"
                     },
                     {
                       "label": "1TiB",
-                      "value": "1TiB"
+                      "value": "1024"
                     },
                     {
                       "label": "2TiB",
-                      "value": "2TiB"
+                      "value": "2048"
                     },
                     {
                       "label": "4TiB",
-                      "value": "4TiB"
+                      "value": "4096"
                     },
                     {
                       "label": "8TiB",
-                      "value": "8TiB"
+                      "value": "8192"
                     },
                     {
                       "label": "16TiB",
-                      "value": "16TiB"
+                      "value": "16384"
                     },
                     {
                       "label": "32TiB",
-                      "value": "32TiB"
+                      "value": "32768"
                     }
                   ]
                 }
