@@ -60,7 +60,7 @@
       {
         "name": "namePrefix",
         "type": "Microsoft.Common.TextBox",
-        "label": "Fortigate Name Prefix",
+        "label": "FortiAnalyser Name Prefix",
         "defaultValue": "",
         "toolTip": "Naming prefix for all deployed resources",
         "constraints": {
@@ -73,7 +73,7 @@
       {
         "name": "fortiAnalyzerImageVersion",
         "type": "Microsoft.Common.DropDown",
-        "label": "Fortigate Image Version",
+        "label": "FortiAnalyzer Image Version",
         "defaultValue": "latest",
         "toolTip": "Only 6.x has the A/P HA feature currently",
         "constraints": {
@@ -450,7 +450,7 @@
               "domainNameLabel": "DNS name linked to this public IP"
             },
             "defaultValue": {
-              "publicIpAddressName": "FGTPublicIP",
+              "publicIpAddressName": "FAZPublicIP",
               "domainNameLabel": "mydomain"
             },
             "constraints": {
