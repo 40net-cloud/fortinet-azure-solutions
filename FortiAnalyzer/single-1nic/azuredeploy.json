@@ -17,7 +17,7 @@
     "namePrefix": {
       "type": "string",
       "metadata": {
-        "description": "Name for FortiGate virtual appliances (A & B will be appended to the end of each respectively)"
+        "description": "Name for FortiAnalyzer virtual appliances (A & B will be appended to the end of each respectively)"
       }
     },
     "imageSku": {
@@ -213,7 +213,7 @@
       "type": "string",
       "defaultValue": "",
       "metadata": {
-        "description": "FortiGate BYOL license content"
+        "description": "FortiAnalyzer BYOL license content"
       }
     },
     "location": {
