@@ -845,6 +845,7 @@
           "fortiGateBAditionalCustomData": { "value": "[variables('hubAFGTBCustomData')]" },
           "fortiGateBGPASN": { "value": "65005" },
           "instanceType": { "value": "[parameters('instanceType')]" },
+          "acceleratedNetworking": { "value": "false" },
           "publicIPNewOrExisting": { "value": "new" },
           "publicIP2NewOrExisting": { "value": "new" },
           "publicIP3NewOrExisting": { "value": "new" },
@@ -898,6 +899,7 @@
           "fortiGateBAditionalCustomData": { "value": "[variables('hubBFGTBCustomData')]" },
           "fortiGateBGPASN": { "value": "65005" },
           "instanceType": { "value": "[parameters('instanceType')]" },
+          "acceleratedNetworking": { "value": "false" },
           "publicIPNewOrExisting": { "value": "new" },
           "publicIP2NewOrExisting": { "value": "new" },
           "publicIP3NewOrExisting": { "value": "new" },
@@ -935,9 +937,6 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2020-06-01",
       "name": "[variables('hubARTDeployementName')]",
-      "dependsOn": [
-        "[variables('hubADeployementName')]"
-      ],
       "properties": {
         "mode": "Incremental",
         "template": {
@@ -948,9 +947,6 @@
               "type": "Microsoft.Network/virtualNetworks/subnets",
               "apiVersion": "2019-09-01",
               "name": "[concat(variables('hubAVnetName'),'/',parameters('hubASubnet1Name'))]",
-              "dependsOn": [
-                "[variables('hubAVnetId')]"
-              ],
               "properties": {
                 "addressPrefix": "[reference(resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworks/subnets', variables('hubAVnetName'), parameters('hubASubnet1Name')), '2020-04-01').addressPrefix]",
                 "routeTable": {
@@ -962,6 +958,9 @@
               "type": "Microsoft.Network/virtualNetworks/subnets",
               "apiVersion": "2019-09-01",
               "name": "[concat(variables('hubAVnetName'),'/',parameters('hubASubnet2Name'))]",
+              "dependsOn": [
+                "[parameters('hubASubnet1Name')]"
+              ],
               "properties": {
                 "addressPrefix": "[reference(resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworks/subnets', variables('hubAVnetName'), parameters('hubASubnet2Name')), '2020-04-01').addressPrefix]",
                 "routeTable": {
@@ -973,6 +972,9 @@
               "type": "Microsoft.Network/virtualNetworks/subnets",
               "apiVersion": "2019-09-01",
               "name": "[concat(variables('hubAVnetName'),'/',parameters('hubASubnet3Name'))]",
+              "dependsOn": [
+                "[parameters('hubASubnet2Name')]"
+              ],
               "properties": {
                 "addressPrefix": "[reference(resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworks/subnets', variables('hubAVnetName'), parameters('hubASubnet3Name')), '2020-04-01').addressPrefix]",
                 "routeTable": {
@@ -984,6 +986,9 @@
               "type": "Microsoft.Network/virtualNetworks/subnets",
               "apiVersion": "2019-09-01",
               "name": "[concat(variables('hubAVnetName'),'/',parameters('hubASubnet4Name'))]",
+              "dependsOn": [
+                "[parameters('hubASubnet3Name')]"
+              ],
               "properties": {
                 "addressPrefix": "[reference(resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworks/subnets', variables('hubAVnetName'), parameters('hubASubnet4Name')), '2020-04-01').addressPrefix]",
                 "routeTable": {
@@ -999,9 +1004,6 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2020-06-01",
       "name": "[variables('hubBRTDeployementName')]",
-      "dependsOn": [
-        "[variables('hubBDeployementName')]"
-      ],
       "properties": {
         "mode": "Incremental",
         "template": {
@@ -1023,6 +1025,9 @@
               "type": "Microsoft.Network/virtualNetworks/subnets",
               "apiVersion": "2019-09-01",
               "name": "[concat(variables('hubBVnetName'),'/',parameters('hubBSubnet2Name'))]",
+              "dependsOn": [
+                "[parameters('hubBSubnet1Name')]"
+              ],
               "properties": {
                 "addressPrefix": "[reference(resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworks/subnets', variables('hubBVnetName'), parameters('hubBSubnet2Name')), '2020-04-01').addressPrefix]",
                 "routeTable": {
@@ -1034,6 +1039,9 @@
               "type": "Microsoft.Network/virtualNetworks/subnets",
               "apiVersion": "2019-09-01",
               "name": "[concat(variables('hubBVnetName'),'/',parameters('hubBSubnet3Name'))]",
+              "dependsOn": [
+                "[parameters('hubBSubnet2Name')]"
+              ],
               "properties": {
                 "addressPrefix": "[reference(resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworks/subnets', variables('hubBVnetName'), parameters('hubBSubnet3Name')), '2020-04-01').addressPrefix]",
                 "routeTable": {
@@ -1045,6 +1053,9 @@
               "type": "Microsoft.Network/virtualNetworks/subnets",
               "apiVersion": "2019-09-01",
               "name": "[concat(variables('hubBVnetName'),'/',parameters('hubBSubnet4Name'))]",
+              "dependsOn": [
+                "[parameters('hubBSubnet3Name')]"
+              ],
               "properties": {
                 "addressPrefix": "[reference(resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworks/subnets', variables('hubBVnetName'), parameters('hubBSubnet4Name')), '2020-04-01').addressPrefix]",
                 "routeTable": {
