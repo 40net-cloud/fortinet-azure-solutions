@@ -2,13 +2,12 @@
 echo "
 ##############################################################################################################
 #
-# Deployment of a FortiAnalyzer VM
+# FortiGate Azure deployment using ARM Template
+# Fortigate Active/Passive cluster with Fabric Connector
 #
 ##############################################################################################################
 
 "
-#echo "--> Auto accepting terms for Azure Marketplace deployments ..."
-#az vm image terms accept --publisher fortinet --offer fortinet-fortianalyzer --plan fortinet-fortianalyzer
 
 # Stop on error
 set +e
@@ -29,10 +28,10 @@ else
 fi
 echo ""
 echo "--> Deployment in '$location' location ..."
+echo ""
 
 if [ -z "$DEPLOY_PREFIX" ]
 then
-    echo ""
     # Input prefix
     echo -n "Enter prefix: "
     stty_orig=`stty -g` # save original terminal setting.
@@ -53,19 +52,19 @@ rg="$prefix-RG"
 if [ -z "$DEPLOY_USERNAME" ]
 then
     # Input username
-    echo -n "Enter username (default: azureuser): "
+    echo -n "Enter username: "
     stty_orig=`stty -g` # save original terminal setting.
-    read username         # read the prefix
+    read USERNAME         # read the prefix
     stty $stty_orig     # restore terminal setting.
-    if [ -z "$username" ]
+    if [ -z "$USERNAME" ]
     then
-        username="azureuser"
+        USERNAME="azureuser"
     fi
 else
-    username="$DEPLOY_USERNAME"
+    USERNAME="$DEPLOY_USERNAME"
 fi
 echo ""
-echo "--> Using username '$username' ..."
+echo "--> Using username '$USERNAME' ..."
 echo ""
 
 if [ -z "$DEPLOY_PASSWORD" ]
@@ -74,10 +73,10 @@ then
     echo -n "Enter password: "
     stty_orig=`stty -g` # save original terminal setting.
     stty -echo          # turn-off echoing.
-    read passwd         # read the password
+    read PASSWORD         # read the password
     stty $stty_orig     # restore terminal setting.
 else
-    passwd="$DEPLOY_PASSWORD"
+    PASSWORD="$DEPLOY_PASSWORD"
     echo ""
     echo "--> Using password found in env variable DEPLOY_PASSWORD ..."
     echo ""
@@ -88,45 +87,50 @@ echo ""
 echo "--> Creating $rg resource group ..."
 az group create --location "$location" --name "$rg"
 
-# Template validation
+# Validate template
 echo "--> Validation deployment in $rg resource group ..."
 az deployment group validate --resource-group "$rg" \
                            --template-file azuredeploy.json \
-                           --parameters adminUsername="$username" adminPassword="$passwd" namePrefix="$prefix"
+                           --parameters adminUsername="$USERNAME" adminPassword="$PASSWORD" fortigateNamePrefix=$prefix
 result=$?
 if [ $result != 0 ];
 then
     echo "--> Validation failed ..."
-    exit $rc;
+    exit $result;
 fi
 
-# Template deployment
+# Deploy resources
 echo "--> Deployment of $rg resources ..."
-az deployment group create --confirm-with-what-if --resource-group "$rg" \
+az deployment group create --resource-group "$rg" \
                            --template-file azuredeploy.json \
-                           --parameters adminUsername="$username" adminPassword="$passwd" namePrefix="$prefix"
+                           --parameters adminUsername="$USERNAME" adminPassword="$PASSWORD" fortigateNamePrefix=$prefix
 result=$?
 if [[ $result != 0 ]];
 then
     echo "--> Deployment failed ..."
-    exit $rc;
+    exit $result;
 else
 echo "
 ##############################################################################################################
 #
-# FortiAnalyzer Azure deployment using ARM Template
+# FortiGate Azure deployment using ARM Template
+# Fortigate Active/Passive cluster with Fabric Connector
+#
+# The FortiGate systems is reachable via the management public IP addresses of the firewall
+# on HTTPS/443 and SSH/22.
 #
 ##############################################################################################################
 
 Deployment information:
 
-Username: $username
+Username: $USERNAME
 
 FortiGate IP addesses
 "
 query="[?virtualMachine.name.starts_with(@, '$prefix')].{virtualMachine:virtualMachine.name, publicIP:virtualMachine.network.publicIpAddresses[0].ipAddress,privateIP:virtualMachine.network.privateIpAddresses[0]}"
 az vm list-ip-addresses --query "$query" --output tsv
 echo "
+
 ##############################################################################################################
 "
 fi

@@ -123,7 +123,7 @@ result=$?
 if [ $result != 0 ];
 then
     echo "--> Validation failed ..."
-    exit $rc;
+    exit $result;
 fi
 
 # Deploy resources
