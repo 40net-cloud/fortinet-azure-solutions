@@ -185,7 +185,7 @@ result=$?
 if [ $result != 0 ];
 then
     echo "--> Validation failed ..."
-    exit $rc;
+    exit $result;
 fi
 
 deployment_name="$rg-$location"
@@ -201,7 +201,7 @@ result=$?
 if [ $result != 0 ]
 then
     echo "--> Deployment failed ..."
-    exit $rc;
+    exit $result;
 else
     echo "--> Add local baseconfig to github baseconfig ..."
     if [ -f "configset/baseconfig" ]
