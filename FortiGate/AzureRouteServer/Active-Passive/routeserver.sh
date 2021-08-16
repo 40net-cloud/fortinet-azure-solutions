@@ -84,37 +84,36 @@ az group create --location "$location" --name "$rg"
 
 echo ""
 echo "--> Creating VNET $vnet ..."
-#az network vnet create --name "$vnet" --resource-group $rg --address-prefixes 172.16.136.0/22
-#az network vnet subnet create --resource-group $rg --vnet-name "$vnet" --name "ExternalSubnet" --address-prefixes 172.16.136.0/26
-#az network vnet subnet create --resource-group $rg --vnet-name "$vnet" --name "TransitSubnet" --address-prefixes 172.16.136.64/26
+az network vnet create --name "$vnet" --resource-group $rg --address-prefixes 172.16.136.0/22
+az network vnet subnet create --resource-group $rg --vnet-name "$vnet" --name "ExternalSubnet" --address-prefixes 172.16.136.0/26
+az network vnet subnet create --resource-group $rg --vnet-name "$vnet" --name "TransitSubnet" --address-prefixes 172.16.136.64/26
 az network vnet subnet create --resource-group $rg --vnet-name "$vnet" --name "RouteServerSubnet" --address-prefixes 172.16.136.128/26
-#az network vnet subnet create --resource-group $rg --vnet-name "$vnet" --name "ProtectedSubnet" --address-prefixes 172.16.137.0/24
+az network vnet subnet create --resource-group $rg --vnet-name "$vnet" --name "ProtectedSubnet" --address-prefixes 172.16.137.0/24
 
 # Validate template
-#echo ""
-#echo "--> Validation deployment in $rg resource group ..."
-#az deployment group validate --resource-group "$rg" \
-#                           --template-file azuredeploy.json \
-#                           --parameters adminUsername="$USERNAME" adminPassword="$PASSWORD" \
-#                                        fortigateNamePrefix=$prefix vnetName="$vnet" vnetResourceGroup="$rg" \
-#                                        vnetNewOrExisting="existing"
-
-#result=$?
-#if [ $result != 0 ];
-#then
-#    echo "--> Validation failed ..."
-#    exit $rc;
-#fi
+echo ""
+echo "--> Validation deployment in $rg resource group ..."
+az deployment group validate --resource-group "$rg" \
+                           --template-file azuredeploy.json \
+                           --parameters adminUsername="$USERNAME" adminPassword="$PASSWORD" \
+                                        fortigateNamePrefix=$prefix vnetName="$vnet" vnetResourceGroup="$rg" \
+                                        vnetNewOrExisting="existing"
+result=$?
+if [ $result != 0 ];
+then
+    echo "--> Validation failed ..."
+    exit $rc;
+fi
 
 # Deploy resources
-#echo ""
-#echo "--> Deployment of $rg resources ..."
-#az deployment group create --resource-group "$rg" \
-#                           --template-file azuredeploy.json \
-#                           --parameters adminUsername="$USERNAME" adminPassword=$PASSWORD \
-#                                        fortigateNamePrefix=$prefix vnetName="$vnet" vnetResourceGroup="$rg" \
-#                                        vnetNewOrExisting="existing"
-#result=$?
+echo ""
+echo "--> Deployment of $rg resources ..."
+az deployment group create --resource-group "$rg" \
+                           --template-file azuredeploy.json \
+                           --parameters adminUsername="$USERNAME" adminPassword=$PASSWORD \
+                                        fortigateNamePrefix=$prefix vnetName="$vnet" vnetResourceGroup="$rg" \
+                                        vnetNewOrExisting="existing"
+result=$?
 
 echo ""
 echo "--> Deployment of Azure Route Service ..."
@@ -158,6 +157,12 @@ FortiGate IP addesses
 "
 query="[?virtualMachine.name.starts_with(@, '$prefix')].{virtualMachine:virtualMachine.name, publicIP:virtualMachine.network.publicIpAddresses[0].ipAddress,privateIP:virtualMachine.network.privateIpAddresses[0]}"
 az vm list-ip-addresses --query "$query" --output tsv
+echo "
+ IP Public Azure Load Balancer:"
+publicIpIds=$(az network lb show -g "$rg" -n "$prefix-ExternalLoadBalancer" --query "frontendIpConfigurations[].publicIpAddress.id" --out tsv)
+while read publicIpId; do
+    az network public-ip show --ids "$publicIpId" --query "{ ipAddress: ipAddress, fqdn: dnsSettings.fqdn }" --out tsv
+done <<< "$publicIpIds"
 echo "
 ##############################################################################################################
 "
