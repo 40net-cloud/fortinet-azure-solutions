@@ -106,7 +106,7 @@ result=$?
 if [ $result != 0 ];
 then
     echo "--> Validation failed ..."
-    exit $rc;
+    exit $result;
 fi
 
 # Deploy resources
@@ -119,7 +119,7 @@ result=$?
 if [[ $result != 0 ]];
 then
     echo "--> Deployment failed ..."
-    exit $rc;
+    exit $result;
 else
 echo "
 ##############################################################################################################

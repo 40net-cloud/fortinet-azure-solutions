@@ -90,25 +90,25 @@ az group create --location "$location" --name "$rg"
 # Validate template
 echo "--> Validation deployment in $rg resource group ..."
 az deployment group validate --resource-group "$rg" \
-                           --template-file azuredeploy.json \
-                           --parameters adminUsername="$USERNAME" adminPassword=$PASSWORD fortigateNamePrefix=$prefix
+            --template-file azuredeploy.json \
+            --parameters adminUsername="$USERNAME" adminPassword=$PASSWORD fortiGateNamePrefix=$prefix
 result=$?
 if [ $result != 0 ];
 then
     echo "--> Validation failed ..."
-    exit $rc;
+    exit $result;
 fi
 
 # Deploy resources
 echo "--> Deployment of $rg resources ..."
 az deployment group create --resource-group "$rg" \
-                           --template-file azuredeploy.json \
-                           --parameters adminUsername="$USERNAME" adminPassword=$PASSWORD fortigateNamePrefix=$prefix
+            --template-file azuredeploy.json \
+            --parameters adminUsername="$USERNAME" adminPassword=$PASSWORD fortiGateNamePrefix=$prefix
 result=$?
 if [[ $result != 0 ]];
 then
     echo "--> Deployment failed ..."
-    exit $rc;
+    exit $result;
 else
 echo "
 ##############################################################################################################
@@ -129,6 +129,12 @@ FortiGate IP addesses
 "
 query="[?virtualMachine.name.starts_with(@, '$prefix')].{virtualMachine:virtualMachine.name, publicIP:virtualMachine.network.publicIpAddresses[0].ipAddress,privateIP:virtualMachine.network.privateIpAddresses[0]}"
 az vm list-ip-addresses --query "$query" --output tsv
+echo "
+IP Public Azure Load Balancer:"
+publicIpIds=$(az network lb show -g "$rg" -n "$prefix-ExternalLoadBalancer" --query "frontendIpConfigurations[].publicIpAddress.id" --out tsv)
+while read publicIpId; do
+    az network public-ip show --ids "$publicIpId" --query "{ ipAddress: ipAddress, fqdn: dnsSettings.fqdn }" --out tsv
+done <<< "$publicIpIds"
 echo "
 
 ##############################################################################################################

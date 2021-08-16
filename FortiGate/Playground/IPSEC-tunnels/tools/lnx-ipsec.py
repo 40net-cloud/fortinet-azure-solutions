@@ -22,21 +22,17 @@ conn {{ tunnel }}
         rightsubnet={{ vpn_b_subnet }}
         rightid=@{{ tunnel }}
         ikelifetime=28800s
-        salifetime=3600s
+        lifetime=3600s
         authby=secret
         type=tunnel
         auto=start
-        ike=aes_gcm256-sha2
-        esp=aes_gcm256-null
-        ikev2=insist
+        ike=aes256gcm16-prfsha256-ecp521
+        esp=aes256gcm16-ecp521
         fragmentation=yes
-        #perfect forward secrecy (default yes)
-        #pfs=no
-        #optionally enable compression
-        compress=yes
-        dpdtimeout=20
         dpddelay=3
+        dpdtimeout=20
         dpdaction=restart
+
 """
 
 while index < end:
