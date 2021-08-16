@@ -34,20 +34,7 @@
       "type": "string",
       "defaultValue": "latest",
       "allowedValues": [
-        "6.2.0",
-        "6.2.1",
-        "6.2.2",
-        "6.2.3",
-        "6.2.5",
-        "6.4.0",
-        "6.4.1",
-        "6.4.2",
-        "6.4.2",
-        "6.4.2",
-        "6.4.2",
-        "6.4.5",
         "6.4.6",
-        "7.0.0",
         "7.0.1",
         "latest"
       ],
@@ -249,6 +236,7 @@
 
     "publicIPName": "[if(equals(parameters('publicIPName'),''),concat(parameters('namePrefix'),'-FAZ-PIP'),parameters('publicIPName'))]",
     "publicIPId": "[if(equals(parameters('publicIPNewOrExisting'),'new'),resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPName')),if(equals(parameters('publicIPNewOrExisting'),'existing'),resourceId(parameters('publicIPResourceGroup'),'Microsoft.Network/publicIPAddresses',variables('publicIPName')),''))]",
+    "publicIPAddressId": { "id": "[variables('publicIPId')]" },
 
     "NSGName": "[concat(parameters('namePrefix'),'-',uniqueString(resourceGroup().id),'-NSG')]",
 
@@ -267,7 +255,7 @@
   "resources": [
     {
       "apiVersion": "2020-10-01",
-      "name": "pid-2dc4b447-552f-557f-b1cc-2faec6f9f133",
+      "name": "pid-21c3b606-4b14-4eca-ad0d-1d8537ebd14e-partnercenter",
       "type": "Microsoft.Resources/deployments",
       "properties":{
        "mode": "Incremental",
@@ -419,9 +407,7 @@
             "properties": {
               "privateIPAddress": "[variables('sn1IPfaz')]",
               "privateIPAllocationMethod": "Static",
-              "publicIPAddress": {
-                "id": "[variables('publicIPId')]"
-              },
+              "publicIPAddress": "[if(not(equals(parameters('publicIPNewOrExisting'), 'none')), variables('publicIPAddressId') , json('null'))]",
               "subnet": {
                 "id": "[variables('subnet1Id')]"
               }
