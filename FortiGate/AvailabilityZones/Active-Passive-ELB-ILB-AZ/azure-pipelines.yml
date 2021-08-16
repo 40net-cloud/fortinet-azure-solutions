@@ -24,7 +24,7 @@ steps:
   condition: always()
 
 - task: PublishTestResults@2
-  displayName: 'Publish custom test results'
+  displayName: 'Publish Test Results **\TEST-*.xml'
   inputs:
     testRunner: NUnit
     testResultsFiles: '**/TEST-*.xml'

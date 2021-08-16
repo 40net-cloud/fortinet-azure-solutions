@@ -502,14 +502,14 @@
       "properties":{
        "mode": "Incremental",
        "template": {
-         "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deplymentTemplate.json#",
+         "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
          "contentVersion": "1.0.0.0",
          "resources": []
        }
       }
     },
     {
-      "apiVersion": "2019-07-01",
+      "apiVersion": "2021-07-01",
       "type": "Microsoft.Compute/availabilitySets",
       "name": "[variables('compute_AvailabilitySet_FG_Name')]",
       "tags": {
@@ -1399,7 +1399,7 @@
     {
       "type": "Microsoft.Compute/virtualMachines",
       "name": "[variables('fgaVmName')]",
-      "apiVersion": "2019-07-01",
+      "apiVersion": "2021-07-01",
       "tags": {
        "provider": "[toUpper(parameters('FortinetTags').provider)]"
       },
@@ -1482,7 +1482,7 @@
     {
       "type": "Microsoft.Compute/virtualMachines",
       "name": "[variables('fgbVmName')]",
-      "apiVersion": "2019-07-01",
+      "apiVersion": "2021-07-01",
       "tags": {
        "provider": "[toUpper(parameters('FortinetTags').provider)]"
       },

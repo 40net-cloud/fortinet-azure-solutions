@@ -127,8 +127,8 @@ resource "azurerm_virtual_machine" "lnxvm" {
 
   storage_image_reference {
     publisher = "Canonical"
-    offer     = "UbuntuServer"
-    sku       = "20.04-LTS"
+    offer     = "0001-com-ubuntu-server-focal"
+    sku       = "20_04-lts"
     version   = "latest"
   }
 
@@ -169,5 +169,5 @@ output "lnx_public_ip_address" {
 }
 
 output "lnx_a_private_ip_address" {
-  value = "${azurerm_network_interface.lnxaifc.private_ip_address}"
+  value = "${azurerm_network_interface.lnxifc1.private_ip_address}"
 }
