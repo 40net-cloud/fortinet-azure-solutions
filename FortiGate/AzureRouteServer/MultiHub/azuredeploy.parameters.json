@@ -207,7 +207,7 @@
             "value": "[resourceGroup().location]"
         },
         "hubBLocation": {
-            "value": "[resourceGroup().location]"
+            "value": ""
         },
         "fortinetTags": {
             "value": {
