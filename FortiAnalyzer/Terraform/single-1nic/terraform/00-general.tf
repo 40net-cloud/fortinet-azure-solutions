@@ -85,7 +85,7 @@ variable "subnet" {
   description = ""
 
   default = {
-    "1" = "172.16.137.0/24"  # FAZ network
+    "1" = "172.16.137.0/24" # FAZ network
   }
 }
 
@@ -103,7 +103,7 @@ variable "faz_ipaddress_a" {
   description = ""
 
   default = {
-    "1" = "172.16.137.6"  # FAZ network
+    "1" = "172.16.137.6" # FAZ network
   }
 }
 
@@ -112,7 +112,7 @@ variable "gateway_ipaddress" {
   description = ""
 
   default = {
-    "1" = "172.16.137.1"  # FAZ network
+    "1" = "172.16.137.1" # FAZ network
   }
 }
 

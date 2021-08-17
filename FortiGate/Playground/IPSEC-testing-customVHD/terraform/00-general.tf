@@ -27,7 +27,7 @@ variable "OSDISKVHDURI" {
 
 variable "IMAGESKU" {
   description = "Azure Marketplace Image SKU hourly (PAYG) or byol (Bring your own license)"
-  default = "fortinet_fg-vm"
+  default     = "fortinet_fg-vm"
 }
 
 variable "FGT_LICENSE_FILE_A" {
@@ -62,7 +62,7 @@ provider "azurerm" {
 ##############################################################################################################
 
 variable "vnet" {
-  type        = "map"
+  type        = map(string)
   description = ""
 
   default = {
@@ -72,7 +72,7 @@ variable "vnet" {
 }
 
 variable "subnet_fgt_external" {
-  type        = "map"
+  type        = map(string)
   description = ""
 
   default = {
@@ -82,91 +82,91 @@ variable "subnet_fgt_external" {
 }
 
 variable "subnet_fgt_internal" {
-  type        = "map"
+  type        = map(string)
   description = ""
 
   default = {
-    "a"  = "172.16.137.0/24"
+    "a" = "172.16.137.0/24"
     "b" = "172.16.141.0/24"
   }
 }
 
 variable "subnet_protected" {
-  type        = "map"
+  type        = map(string)
   description = ""
 
   default = {
-    "a"  = "172.16.138.0/24"
+    "a" = "172.16.138.0/24"
     "b" = "172.16.142.0/24"
   }
 }
 
 variable "fgt_external_ipaddress" {
-  type        = "map"
+  type        = map(string)
   description = ""
 
   default = {
-    "a"  = "172.16.136.5"
+    "a" = "172.16.136.5"
     "b" = "172.16.140.5"
   }
 }
 
 variable "fgt_external_subnetmask" {
-  type        = "map"
+  type        = map(string)
   description = ""
 
   default = {
-    "a"  = "24"
+    "a" = "24"
     "b" = "24"
   }
 }
 
 variable "fgt_external_gateway" {
-  type        = "map"
+  type        = map(string)
   description = ""
 
   default = {
-    "a"  = "172.16.136.1"
+    "a" = "172.16.136.1"
     "b" = "172.16.140.1"
   }
 }
 
 variable "fgt_internal_ipaddress" {
-  type        = "map"
+  type        = map(string)
   description = ""
 
   default = {
-    "a"  = "172.16.137.5"
+    "a" = "172.16.137.5"
     "b" = "172.16.141.5"
   }
 }
 
 variable "fgt_internal_subnetmask" {
-  type        = "map"
+  type        = map(string)
   description = ""
 
   default = {
-    "a"  = "24"
+    "a" = "24"
     "b" = "24"
   }
 }
 
 variable "fgt_internal_gateway" {
-  type        = "map"
+  type        = map(string)
   description = ""
 
   default = {
-    "a"  = "172.16.137.1"
+    "a" = "172.16.137.1"
     "b" = "172.16.141.1"
   }
 }
 
 variable "backend_srv_ipaddress" {
-  type        = "map"
+  type        = map(string)
   description = ""
 
   default = {
-    "a"  = "172.16.138.5"
+    "a" = "172.16.138.5"
     "b" = "172.16.142.5"
   }
 }
@@ -181,12 +181,12 @@ variable "fgt_vmsize" {
 
 resource "azurerm_resource_group" "resourcegroupa" {
   name     = "${var.PREFIX}-A-RG"
-  location = "${var.LOCATION}"
+  location = var.LOCATION
 }
 
 resource "azurerm_resource_group" "resourcegroupb" {
   name     = "${var.PREFIX}-B-RG"
-  location = "${var.LOCATION}"
+  location = var.LOCATION
 }
 ##############################################################################################################
 
@@ -196,13 +196,13 @@ resource "azurerm_resource_group" "resourcegroupb" {
 
 resource "azurerm_image" "osdiskvhd" {
   name                = "${var.PREFIX}-FGT-IMAGE"
-  location            = "${var.LOCATION}"
-  resource_group_name = "${azurerm_resource_group.resourcegroupa.name}"
+  location            = var.LOCATION
+  resource_group_name = azurerm_resource_group.resourcegroupa.name
 
   os_disk {
     os_type  = "Linux"
     os_state = "Generalized"
-    blob_uri = "${var.OSDISKVHDURI}"
+    blob_uri = var.OSDISKVHDURI
     caching  = "ReadWrite"
   }
 }
@@ -214,7 +214,7 @@ resource "azurerm_image" "osdiskvhd" {
 ##############################################################################################################
 
 resource "random_string" "ipsec_psk" {
-  length = 16
+  length  = 16
   special = true
 }
 ##############################################################################################################
