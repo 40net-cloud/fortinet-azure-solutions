@@ -237,7 +237,7 @@ resource "azurerm_virtual_machine" "fgtavm" {
   primary_network_interface_id = azurerm_network_interface.fgtaifcext.id
   vm_size                      = var.fgt_vmsize
   tags                         = var.fortinet_tags
-  zones                        = [ 1 ]
+  zones                        = [1]
 
   identity {
     type = "SystemAssigned"
@@ -379,7 +379,7 @@ resource "azurerm_virtual_machine" "fgtbvm" {
   primary_network_interface_id = azurerm_network_interface.fgtbifcext.id
   vm_size                      = var.fgt_vmsize
   tags                         = var.fortinet_tags
-  zones                        = [ 2 ]
+  zones                        = [2]
 
   identity {
     type = "SystemAssigned"

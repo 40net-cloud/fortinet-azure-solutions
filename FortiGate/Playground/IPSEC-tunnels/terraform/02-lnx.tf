@@ -169,5 +169,5 @@ output "lnx_public_ip_address" {
 }
 
 output "lnx_a_private_ip_address" {
-  value = "${azurerm_network_interface.lnxifc1.private_ip_address}"
+  value = azurerm_network_interface.lnxifc1.private_ip_address
 }

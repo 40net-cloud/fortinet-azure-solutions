@@ -110,7 +110,7 @@ variable "lnx_ipaddress" {
   description = ""
 
   default = {
-    "1" = "172.16.136.4" # MGMT
+    "1" = "172.16.136.4"  # MGMT
     "2" = "172.16.137.20" # PORT1
   }
 }
@@ -120,9 +120,9 @@ variable "fgt_ipaddress" {
   description = ""
 
   default = {
-    "1"  = "172.16.136.10" # MGMT
-    "2"  = "172.16.137.10" # PORT 1
-    "3"  = "172.16.138.10" # PORT 2
+    "1" = "172.16.136.10" # MGMT
+    "2" = "172.16.137.10" # PORT 1
+    "3" = "172.16.138.10" # PORT 2
   }
 }
 
