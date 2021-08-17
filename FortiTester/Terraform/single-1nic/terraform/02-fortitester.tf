@@ -11,13 +11,13 @@
 
 resource "azurerm_image" "osdiskvhd" {
   name                = "${var.PREFIX}-FTS-IMAGE"
-  location            = "${var.LOCATION}"
-  resource_group_name = "${azurerm_resource_group.resourcegroup.name}"
+  location            = var.LOCATION
+  resource_group_name = azurerm_resource_group.resourcegroup.name
 
   os_disk {
     os_type  = "Linux"
     os_state = "Generalized"
-    blob_uri = "${var.FTSOSDISKVHDURI}"
+    blob_uri = var.FTSOSDISKVHDURI
     caching  = "ReadWrite"
   }
 }
@@ -160,21 +160,21 @@ resource "azurerm_virtual_machine" "ftsvm" {
   }
 
   storage_image_reference {
-    id = "${azurerm_image.osdiskvhd.id}"
+    id = azurerm_image.osdiskvhd.id
   }
 
-#  storage_image_reference {
-#    publisher = "fortinet"
-#    offer     = "fortinet-fortitester"
-#    sku       = var.FTS_IMAGE_SKU
-#    version   = var.FTS_VERSION
-#  }
+  #  storage_image_reference {
+  #    publisher = "fortinet"
+  #    offer     = "fortinet-fortitester"
+  #    sku       = var.FTS_IMAGE_SKU
+  #    version   = var.FTS_VERSION
+  #  }
 
-#  plan {
-#    publisher = "fortinet"
-#    product   = "fortinet-fortitester"
-#    name      = var.FTS_IMAGE_SKU
-#  }
+  #  plan {
+  #    publisher = "fortinet"
+  #    product   = "fortinet-fortitester"
+  #    name      = var.FTS_IMAGE_SKU
+  #  }
 
   storage_os_disk {
     name              = "${var.PREFIX}-FTS-OSDISK"
