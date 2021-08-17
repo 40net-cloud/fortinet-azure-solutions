@@ -23,7 +23,7 @@ variable "PASSWORD" {}
 
 variable "IMAGESKU" {
   description = "Azure Marketplace Image SKU hourly (PAYG) or byol (Bring your own license)"
-  default = "fortinet_fg-vm"
+  default     = "fortinet_fg-vm"
 }
 
 variable "FGT_LICENSE_FILE" {
@@ -44,18 +44,18 @@ variable "BOOT_DIAGNOSTICS" {
 }
 
 variable "ENABLE_ACCELERATED_NETWORKING" {
-  type        = "string"
+  type        = string
   description = "(Optional) Enable/Disable accelerated networking (default: true)"
   default     = "true"
 }
 
 variable "TAGS" {
-  type        = "map"
+  type        = map(string)
   description = "A map of tags added to the deployed resources"
 
   default = {
     environment = "FGT - test"
-    vendor = "Fortinet"
+    vendor      = "Fortinet"
   }
 }
 
@@ -79,7 +79,7 @@ provider "azurerm" {
 ##############################################################################################################
 
 variable "vnet" {
-  type        = "map"
+  type        = map(string)
   description = ""
 
   default = {
@@ -88,7 +88,7 @@ variable "vnet" {
 }
 
 variable "subnet_fgt_external" {
-  type        = "map"
+  type        = map(string)
   description = ""
 
   default = {
@@ -97,95 +97,95 @@ variable "subnet_fgt_external" {
 }
 
 variable "subnet_fgt_internal" {
-  type        = "map"
+  type        = map(string)
   description = ""
 
   default = {
-    "a"  = "172.16.137.0/24"
+    "a" = "172.16.137.0/24"
   }
 }
 
 variable "subnet_protected" {
-  type        = "map"
+  type        = map(string)
   description = ""
 
   default = {
-    "a"  = "172.16.138.0/25"
-    "b"  = "172.16.138.128/25"
+    "a" = "172.16.138.0/25"
+    "b" = "172.16.138.128/25"
   }
 }
 
 variable "subnet_protected_b" {
-  type        = "map"
+  type        = map(string)
   description = ""
 
   default = {
-    "a"  = "172.16.138.128/25"
+    "a" = "172.16.138.128/25"
   }
 }
 
 variable "fgt_external_ipaddress" {
-  type        = "map"
+  type        = map(string)
   description = ""
 
   default = {
-    "a"  = "172.16.136.5"
+    "a" = "172.16.136.5"
   }
 }
 
 variable "fgt_external_subnetmask" {
-  type        = "map"
+  type        = map(string)
   description = ""
 
   default = {
-    "a"  = "24"
+    "a" = "24"
   }
 }
 
 variable "fgt_external_gateway" {
-  type        = "map"
+  type        = map(string)
   description = ""
 
   default = {
-    "a"  = "172.16.136.1"
+    "a" = "172.16.136.1"
   }
 }
 
 variable "fgt_internal_ipaddress" {
-  type        = "map"
+  type        = map(string)
   description = ""
 
   default = {
-    "a"  = "172.16.137.5"
+    "a" = "172.16.137.5"
   }
 }
 
 variable "fgt_internal_subnetmask" {
-  type        = "map"
+  type        = map(string)
   description = ""
 
   default = {
-    "a"  = "24"
+    "a" = "24"
     "b" = "24"
   }
 }
 
 variable "fgt_internal_gateway" {
-  type        = "map"
+  type        = map(string)
   description = ""
 
   default = {
-    "a"  = "172.16.137.1"
+    "a" = "172.16.137.1"
     "b" = "172.16.141.1"
   }
 }
 
 variable "protected_srv_ipaddress" {
-  type        = "map"
+  type        = map(string)
   description = ""
 
   default = {
-    "a"  = "172.16.138.5"
+    "a" = "172.16.138.5"
     "b" = "172.16.138.132"
   }
 }
@@ -208,9 +208,9 @@ variable "lnx_vmsize" {
 
 resource "azurerm_resource_group" "resourcegroupa" {
   name     = "${var.PREFIX}-RG"
-  location = "${var.LOCATION}"
+  location = var.LOCATION
 
-  tags = "${var.TAGS}"
+  tags = var.TAGS
 }
 
 ##############################################################################################################

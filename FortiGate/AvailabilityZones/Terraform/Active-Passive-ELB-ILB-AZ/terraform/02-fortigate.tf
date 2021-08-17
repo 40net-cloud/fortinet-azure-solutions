@@ -243,7 +243,7 @@ resource "azurerm_virtual_machine" "fgtavm" {
   network_interface_ids        = [azurerm_network_interface.fgtaifcext.id, azurerm_network_interface.fgtaifcint.id, azurerm_network_interface.fgtaifchasync.id, azurerm_network_interface.fgtaifcmgmt.id]
   primary_network_interface_id = azurerm_network_interface.fgtaifcext.id
   vm_size                      = var.fgt_vmsize
-  zones                        = [ 1 ]
+  zones                        = [1]
   tags                         = var.fortinet_tags
 
   identity {
@@ -428,7 +428,7 @@ resource "azurerm_virtual_machine" "fgtbvm" {
   network_interface_ids        = [azurerm_network_interface.fgtbifcext.id, azurerm_network_interface.fgtbifcint.id, azurerm_network_interface.fgtbifchasync.id, azurerm_network_interface.fgtbifcmgmt.id]
   primary_network_interface_id = azurerm_network_interface.fgtbifcext.id
   vm_size                      = var.fgt_vmsize
-  zones                        = [ 2 ]
+  zones                        = [2]
   tags                         = var.fortinet_tags
 
   identity {

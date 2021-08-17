@@ -136,7 +136,7 @@ variable "fts_ipaddress" {
   description = ""
 
   default = {
-    "1" = "172.16.136.4" # FTS network
+    "1" = "172.16.136.4"  # FTS network
     "2" = "172.16.137.20" # FTS network
     "3" = "172.16.138.20" # FTS network
   }

@@ -14,13 +14,13 @@
         "description": "Password for the Virtual Machine"
       }
     },
-    "FortiGateNamePrefix": {
+    "fortiGateNamePrefix": {
       "type": "string",
       "metadata": {
         "description": "Name for FortiGate virtual appliances (A & B will be appended to the end of each respectively)"
       }
     },
-    "FortiGateImageSKU": {
+    "fortiGateImageSKU": {
       "type": "string",
       "defaultValue": "fortinet_fg-vm",
       "allowedValues": [
@@ -31,7 +31,7 @@
         "description": "Identifies whether to to use PAYG (on demand licensing) or BYOL license model (where license is purchased separately)"
       }
     },
-    "FortiGateImageVersion": {
+    "fortiGateImageVersion": {
       "type": "string",
       "defaultValue": "latest",
       "allowedValues": [
@@ -43,6 +43,9 @@
         "6.4.2",
         "6.4.3",
         "6.4.5",
+        "6.4.6",
+        "7.0.0",
+        "7.0.1",
         "latest"
       ],
       "metadata": {
@@ -285,26 +288,26 @@
     "networkApiVersion": "2018-11-01",
     "resourceApiVersion": "2018-05-01",
 
-    "acceleratedNetworking": "[if(or(equals(parameters('FortiGateImageVersion'),'6.0.6'),equals(parameters('FortiGateImageVersion'),'6.2.1'),equals(parameters('FortiGateImageVersion'),'6.2.2'),equals(parameters('FortiGateImageVersion'),'latest')),'true','false')]",
+    "acceleratedNetworking": "[if(or(equals(parameters('fortiGateImageVersion'),'6.0.6'),equals(parameters('fortiGateImageVersion'),'6.2.1'),equals(parameters('fortiGateImageVersion'),'6.2.2'),equals(parameters('fortiGateImageVersion'),'latest')),'true','false')]",
 
-    "vnetName": "[if(equals(parameters('vnetName'),''),concat(parameters('FortiGateNamePrefix'),'-VNET'),parameters('vnetName'))]",
+    "vnetName": "[if(equals(parameters('vnetName'),''),concat(parameters('fortiGateNamePrefix'),'-VNET'),parameters('vnetName'))]",
     "vnetID": "[if(equals(parameters('vnetNewOrExisting'),'new'),resourceId('Microsoft.Network/virtualNetworks', variables('vnetName')),resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks', variables('vnetName')))]",
     "subnet1Ref": "[concat(variables('vnetID'),'/subnets/', parameters('subnet1Name'))]",
     "subnet2Ref": "[concat(variables('vnetID'),'/subnets/', parameters('subnet2Name'))]",
-    "vnetNameSpoke1": "[if(equals(parameters('vnetNameSpoke1'),''),concat(parameters('FortiGateNamePrefix'),'-VNET-SPOKE1'),parameters('vnetName'))]",
+    "vnetNameSpoke1": "[if(equals(parameters('vnetNameSpoke1'),''),concat(parameters('fortiGateNamePrefix'),'-VNET-SPOKE1'),parameters('vnetName'))]",
     "vnetIDSpoke1": "[if(equals(parameters('vnetNewOrExistingSpoke1'),'new'),resourceId('Microsoft.Network/virtualNetworks', variables('vnetNameSpoke1')),resourceId(parameters('vnetResourceGroupSpoke1'),'Microsoft.Network/virtualNetworks', variables('vnetNameSpoke1')))]",
-    "vnetNameSpoke2": "[if(equals(parameters('vnetNameSpoke2'),''),concat(parameters('FortiGateNamePrefix'),'-VNET-SPOKE2'),parameters('vnetName'))]",
+    "vnetNameSpoke2": "[if(equals(parameters('vnetNameSpoke2'),''),concat(parameters('fortiGateNamePrefix'),'-VNET-SPOKE2'),parameters('vnetName'))]",
     "vnetIDSpoke2": "[if(equals(parameters('vnetNewOrExistingSpoke2'),'new'),resourceId('Microsoft.Network/virtualNetworks', variables('vnetNameSpoke2')),resourceId(parameters('vnetResourceGroupSpoke2'),'Microsoft.Network/virtualNetworks', variables('vnetNameSpoke2')))]",
 
-    "fg1VmName": "[concat(parameters('FortiGateNamePrefix'),'-FGT-A')]",
+    "fg1VmName": "[concat(parameters('fortiGateNamePrefix'),'-FGT-A')]",
 
-    "routeTableProtectedAName": "[concat(parameters('FortiGateNamePrefix'),'-RT-PROTECTED-A')]",
+    "routeTableProtectedAName": "[concat(parameters('fortiGateNamePrefix'),'-RT-PROTECTED-A')]",
     "routeTableProtectedAId": "[resourceId('Microsoft.Network/routeTables',variables('routeTableProtectedAName'))]",
-    "routeTableProtectedBName": "[concat(parameters('FortiGateNamePrefix'),'-RT-PROTECTED-B')]",
+    "routeTableProtectedBName": "[concat(parameters('fortiGateNamePrefix'),'-RT-PROTECTED-B')]",
     "routeTableProtectedBId": "[resourceId('Microsoft.Network/routeTables',variables('routeTableProtectedBName'))]",
-    "routeTableSpoke1Name": "[concat(parameters('FortiGateNamePrefix'),'-RT-SPOKE-1')]",
+    "routeTableSpoke1Name": "[concat(parameters('fortiGateNamePrefix'),'-RT-SPOKE-1')]",
     "routeTableSpoke1Id": "[resourceId('Microsoft.Network/routeTables',variables('routeTableSpoke1Name'))]",
-    "routeTableSpoke2Name": "[concat(parameters('FortiGateNamePrefix'),'-RT-SPOKE-2')]",
+    "routeTableSpoke2Name": "[concat(parameters('fortiGateNamePrefix'),'-RT-SPOKE-2')]",
     "routeTableSpoke2Id": "[resourceId('Microsoft.Network/routeTables',variables('routeTableSpoke2Name'))]",
 
     "hubtoSpoke1PeeringName": "[concat(variables('vnetName'), 'To', variables('vnetNameSpoke1'))]",
@@ -317,10 +320,10 @@
     "network_NIC_fg12_Name": "[concat(variables('fg1VmName'),'-Nic2')]",
     "network_NIC_fg12_Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('network_NIC_fg12_Name'))]",
 
-    "publicIPName": "[if(equals(parameters('publicIPName'),''),concat(parameters('FortiGateNamePrefix'),'-FGT-PIP'),parameters('publicIPName'))]",
+    "publicIPName": "[if(equals(parameters('publicIPName'),''),concat(parameters('fortiGateNamePrefix'),'-FGT-PIP'),parameters('publicIPName'))]",
     "publicIPID": "[if(equals(parameters('publicIPNewOrExisting'),'new'),resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPName')),resourceId(parameters('publicIPResourceGroup'),'Microsoft.Network/publicIPAddresses',variables('publicIPName')))]",
 
-    "NSGName": "[concat(parameters('FortiGateNamePrefix'),'-',uniqueString(resourceGroup().id),'-NSG')]",
+    "NSGName": "[concat(parameters('fortiGateNamePrefix'),'-',uniqueString(resourceGroup().id),'-NSG')]",
 
     "sn1IPArray": "[split(parameters('subnet1Prefix'),'.')]",
     "sn1IPArray2ndString": "[string(variables('sn1IPArray')[3])]",
@@ -832,7 +835,7 @@
       },
       "location": "[resourceGroup().location]",
       "plan": {
-        "name": "[parameters('FortiGateImageSKU')]",
+        "name": "[parameters('fortiGateImageSKU')]",
         "publisher": "fortinet",
         "product": "fortinet_fortigate-vm_v5"
       },
@@ -854,8 +857,8 @@
           "imageReference": {
             "publisher": "fortinet",
             "offer": "fortinet_fortigate-vm_v5",
-            "sku": "[parameters('FortiGateImageSKU')]",
-            "version": "[parameters('FortigateImageVersion')]"
+            "sku": "[parameters('fortiGateImageSKU')]",
+            "version": "[parameters('fortiGateImageVersion')]"
           },
           "osDisk": {
             "createOption": "FromImage"
