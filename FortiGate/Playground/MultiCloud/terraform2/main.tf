@@ -9,8 +9,8 @@ terraform {
 }
 
 provider "fortios" {
-    hostname = "boo.jvh.be:8443"
-    token    = "kfy93swxnQ83wqjQk1mgwfs59wgybd"
+    hostname = "x.y.z.w:8443"
+    token    = "test12345"
     insecure = "true"
 }
 
