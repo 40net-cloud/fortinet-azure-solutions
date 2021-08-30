@@ -835,6 +835,9 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2020-10-01",
       "name": "[variables('hubADeployementName')]",
+      "dependsOn": [
+          "[variables('hubAVnetName')]"
+      ],
       "properties": {
         "mode": "Incremental",
         "templateLink": {
@@ -890,6 +893,9 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2020-10-01",
       "name": "[variables('hubBDeployementName')]",
+      "dependsOn": [
+          "[variables('hubBVnetName')]"
+      ],
       "properties": {
         "mode": "Incremental",
         "templateLink": {
@@ -907,9 +913,10 @@
           "fortiGateBGPASN": { "value": "65005" },
           "instanceType": { "value": "[parameters('instanceType')]" },
           "acceleratedNetworking": { "value": "false" },
-          "publicIPNewOrExisting": { "value": "new" },
-          "publicIP2NewOrExisting": { "value": "new" },
-          "publicIP3NewOrExisting": { "value": "new" },
+          "publicIpNewOrExisting": { "value": "new" },
+          "publicIp2NewOrExisting": { "value": "new" },
+          "publicIp3NewOrExisting": { "value": "new" },
+          "publicIp4NewOrExisting": { "value": "new" },
           "vnetNewOrExisting": { "value": "existing" },
           "vnetName": { "value": "[variables('hubBVnetName')]" },
           "vnetResourceGroup": { "value": "[variables('hubBVnetResourceGroup')]" },
@@ -944,6 +951,9 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2020-06-01",
       "name": "[variables('hubARTDeployementName')]",
+      "dependsOn": [
+          "[resourceId('Microsoft.Resources/deployments', variables('hubADeployementName'))]"
+      ],
       "properties": {
         "mode": "Incremental",
         "template": {
@@ -1011,6 +1021,9 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2020-06-01",
       "name": "[variables('hubBRTDeployementName')]",
+      "dependsOn": [
+          "[resourceId('Microsoft.Resources/deployments', variables('hubADeployementName'))]"
+      ],
       "properties": {
         "mode": "Incremental",
         "template": {
