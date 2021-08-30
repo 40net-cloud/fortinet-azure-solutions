@@ -126,46 +126,72 @@
         "description": "Whether to use a public IP and if so whether it is new"
       }
     },
+    "publicIP4NewOrExisting": {
+      "type": "string",
+      "defaultValue": "new",
+      "allowedValues": [
+        "new",
+        "existing",
+        "none"
+      ],
+      "metadata": {
+        "description": "Whether to use a public IP and if so whether it is new"
+      }
+    },
     "publicIPName": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
-        "description": "Name of Public IP address element."
+        "description": "Name of Public IP address element"
       }
     },
     "publicIPResourceGroup": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
-        "description": "Resource group to which the Public IP belongs."
+        "description": "Resource group to which the Public IP belongs"
       }
     },
     "publicIP2Name": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
-        "description": "Name of Public IP address element."
+        "description": "Name of Public IP address element"
       }
     },
     "publicIP2ResourceGroup": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
-        "description": "Resource group to which the Public IP belongs."
+        "description": "Resource group to which the Public IP belongs"
       }
     },
     "publicIP3Name": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
-        "description": "Name of Public IP address element."
+        "description": "Name of Public IP address element"
       }
     },
     "publicIP3ResourceGroup": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
-        "description": "Resource group to which the Public IP belongs."
+        "description": "Resource group to which the Public IP belongs"
+      }
+    },
+    "publicIP4Name": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Name of Public IP address for Azure Route Server"
+      }
+    },
+    "publicIP4ResourceGroup": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Resource group to which the Public IP belongs"
       }
     },
     "publicIPAddressType": {
@@ -450,10 +476,13 @@
     "publicIPId": "[if(equals(parameters('publicIPNewOrExisting'),'new'),resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPName')),resourceId(parameters('publicIPResourceGroup'),'Microsoft.Network/publicIPAddresses',variables('publicIPName')))]",
     "publicIP2Name": "[if(equals(parameters('publicIP2Name'),''),concat(parameters('fortiGateNamePrefix'),'-FGT-A-MGMT-PIP'),parameters('publicIP2Name'))]",
     "publicIP2Id": "[if(equals(parameters('publicIP2NewOrExisting'),'new'),resourceId('Microsoft.Network/publicIPAddresses',variables('publicIP2Name')),resourceId(parameters('publicIP2ResourceGroup'),'Microsoft.Network/publicIPAddresses',variables('publicIP2Name')))]",
-    "publicIpAddress2Id": { "id": "[variables('publicIP2Id')]" },
+    "publicIp2AddressId": { "id": "[variables('publicIP2Id')]" },
     "publicIP3Name": "[if(equals(parameters('publicIP3Name'),''),concat(parameters('fortiGateNamePrefix'),'-FGT-B-MGMT-PIP'),parameters('publicIP3Name'))]",
     "publicIP3Id": "[if(equals(parameters('publicIP3NewOrExisting'),'new'),resourceId('Microsoft.Network/publicIPAddresses',variables ('publicIP3Name')),resourceId(parameters('publicIP3ResourceGroup'),'Microsoft.Network/publicIPAddresses',variables('publicIP3Name')))]",
-    "publicIpAddress3Id": { "id": "[variables('publicIP3Id')]" },
+    "publicIp3AddressId": { "id": "[variables('publicIP3Id')]" },
+    "publicIP4Name": "[if(equals(parameters('publicIP4Name'),''),concat(parameters('fortiGateNamePrefix'),'-RouteServer-PIP'),parameters('publicIP4Name'))]",
+    "publicIP4Id": "[if(equals(parameters('publicIP4NewOrExisting'),'new'),resourceId('Microsoft.Network/publicIPAddresses',variables ('publicIP4Name')),resourceId(parameters('publicIP4ResourceGroup'),'Microsoft.Network/publicIPAddresses',variables('publicIP4Name')))]",
+    "publicIp4AddressId": { "id": "[variables('publicIP4Id')]" },
 
     "NSGName": "[concat(parameters('fortiGateNamePrefix'),'-',uniqueString(resourceGroup().id),'-NSG')]",
     "NSGId": "[resourceID('Microsoft.Network/networkSecurityGroups/',variables('NSGName'))]",
@@ -702,12 +731,15 @@
       "name": "[concat(variables('fgRouteServerName'), '/', variables('fgRouteServerIPConfig'))]",
       "location": "[parameters('location')]",
       "dependsOn": [
-        "[resourceId('Microsoft.Network/virtualHubs', variables('fgRouteServerName'))]"
+        "[resourceId('Microsoft.Network/virtualHubs', variables('fgRouteServerName'))]",
+        "[variables('vnetName')]",
+        "[variables('publicIP4Id')]"
       ],
       "properties": {
         "subnet": {
           "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'), parameters('subnet5Name'))]"
-        }
+        },
+        "PublicIPAddress": "[variables('publicIp4AddressId')]"
       }
     },
     {
@@ -783,6 +815,22 @@
       },
       "properties": {
         "publicIPAllocationMethod": "[parameters('publicIPAddressType')]"
+      }
+    },
+    {
+      "condition": "[equals(parameters('publicIP4NewOrExisting'), 'new')]",
+      "type": "Microsoft.Network/publicIPAddresses",
+      "apiVersion": "2020-04-01",
+      "tags": {
+        "provider": "[toUpper(parameters('fortinetTags').provider)]"
+      },
+      "name": "[variables('publicIP4Name')]",
+      "location": "[parameters('location')]",
+      "sku": {
+        "name": "Standard"
+      },
+      "properties": {
+        "publicIPAllocationMethod": "Static"
       }
     },
     {
@@ -1089,7 +1137,7 @@
             "properties": {
               "privateIPAllocationMethod": "Static",
               "privateIPAddress": "[variables('sn4IPfga')]",
-              "publicIPAddress": "[if(not(equals(parameters('publicIPNewOrExisting'), 'none')), variables('publicIPAddress2Id') , json('null'))]",
+              "publicIPAddress": "[if(not(equals(parameters('publicIPNewOrExisting'), 'none')), variables('publicIp2AddressId') , json('null'))]",
               "subnet": {
                 "id": "[variables('subnet4Id')]"
               }
@@ -1122,7 +1170,7 @@
             "properties": {
               "privateIPAllocationMethod": "Static",
               "privateIPAddress": "[variables('sn4IPfgb')]",
-              "publicIPAddress": "[if(not(equals(parameters('publicIPNewOrExisting'), 'none')), variables('publicIPAddress3Id') , json('null'))]",
+              "publicIPAddress": "[if(not(equals(parameters('publicIPNewOrExisting'), 'none')), variables('publicIp3AddressId') , json('null'))]",
               "subnet": {
                 "id": "[variables('subnet4Id')]"
               }

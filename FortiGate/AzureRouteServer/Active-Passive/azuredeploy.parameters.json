@@ -17,7 +17,10 @@
         "fortiGateImageVersion": {
             "value": "latest"
         },
-        "fortiGateAditionalCustomData": {
+        "fortiGateAAditionalCustomData": {
+            "value": ""
+        },
+        "fortiGateBAditionalCustomData": {
             "value": ""
         },
         "fortiGateBGPASN": {
@@ -26,6 +29,9 @@
         "instanceType": {
             "value": "Standard_F4s"
         },
+        "acceleratedNetworking": {
+            "value": "true"
+        },
         "publicIPNewOrExisting": {
             "value": "new"
         },
@@ -33,6 +39,9 @@
             "value": "new"
         },
         "publicIP3NewOrExisting": {
+            "value": "new"
+        },
+        "publicIP4NewOrExisting": {
             "value": "new"
         },
         "publicIPName": {
@@ -51,6 +60,12 @@
             "value": ""
         },
         "publicIP3ResourceGroup": {
+            "value": ""
+        },
+        "publicIP4Name": {
+            "value": ""
+        },
+        "publicIP4ResourceGroup": {
             "value": ""
         },
         "publicIPAddressType": {
@@ -115,6 +130,9 @@
         },
         "subnet6Name": {
             "value": "ProtectedSubnet"
+        },
+        "routeTableFGTName": {
+            "value": ""
         },
         "subnet6Prefix": {
             "value": "172.16.137.0/24"
