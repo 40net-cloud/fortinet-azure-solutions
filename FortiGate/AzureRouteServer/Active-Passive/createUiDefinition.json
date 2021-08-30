@@ -670,11 +670,29 @@
 								}
 							},
 							{
-								"name": "config",
+								"name": "fgtaconfig",
 								"type": "Microsoft.Common.TextBox",
-								"label": "Custom Data",
+								"label": "FortiGate A",
 								"toolTip": "Custom Data",
-								"placeholder": "Add you required additional configuration here.",
+								"placeholder": "Add you required additional configuration specific for the FortiGate A here",
+								"multiLine": true,
+								"constraints": {
+									"required": false,
+									"validations": [
+										{
+											"regex": "^[\\w\\W\n\t]{0,10240}$",
+											"message": "All characters allowed, max 10240 characters."
+										}
+									]
+								},
+								"visible": true
+							},
+							{
+								"name": "fgtbconfig",
+								"type": "Microsoft.Common.TextBox",
+								"label": "FortiGate B",
+								"toolTip": "Custom Data",
+								"placeholder": "Add you required additional configuration specific for the FortiGate B here.",
 								"multiLine": true,
 								"constraints": {
 									"required": false,
@@ -795,7 +813,8 @@
 			"fortiManager": "[steps('advanced').fortimanager.enabled]",
 			"fortiManagerIP": "[steps('advanced').fortimanager.fortimanagerip]",
 			"fortiManagerSerial": "[steps('advanced').fortimanager.fortimanagerserial]",
-			"fortiGateAditionalCustomData": "[steps('advanced').customdata.config]",
+			"fortiGateAAditionalCustomData": "[steps('advanced').customdata.fgtaconfig]",
+			"fortiGateBAditionalCustomData": "[steps('advanced').customdata.fgtbconfig]",
 			"fortiGateLicenseBYOLA": "[steps('advanced').fgtlicense.licenseacontent]",
 			"fortiGateLicenseBYOLB": "[steps('advanced').fgtlicense.licensebcontent]"
 		}
