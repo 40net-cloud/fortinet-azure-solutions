@@ -453,7 +453,31 @@
 						},
 						"defaultValue": {
 							"publicIpAddressName": "FGTBMgmtPublicIP",
-							"domainNameLabel": "mydomain"
+							"domainNameLabel": "mydomain-fgtb"
+						},
+						"constraints": {
+							"required": {
+								"domainNameLabel": false
+							}
+						},
+						"options": {
+							"hideNone": false,
+							"hideDomainNameLabel": false
+						},
+						"visible": true
+					},
+					{
+						"name": "arspublicip",
+						"type": "Microsoft.Network.PublicIpAddressCombo",
+						"label": {
+							"publicIpAddress": "Azure Route Server",
+              "domainNameLabel": "Domain name label"
+						},
+						"toolTip": {
+							"publicIpAddress": "Public IP attached to Azure Route Server"
+						},
+						"defaultValue": {
+							"publicIpAddressName": "AzureRouteServerPublicIP"
 						},
 						"constraints": {
 							"required": {
@@ -540,6 +564,24 @@
 							"text": "The FortiGate B management Public IP is Standard SKU. Proceed."
 						},
 						"visible": "[equals(steps('publicip').fgtbmgmtpublicip.sku, 'Standard')]"
+					},
+					{
+						"name": "BasicIPWarning4",
+						"type": "Microsoft.Common.InfoBox",
+						"options": {
+							"icon": "Error",
+							"text": "The Azure Route Server Public IP is configured using Basic SKU. Please return to previous blade and use Standard type public IPs"
+						},
+						"visible": "[not(equals(steps('publicip').arspublicip.sku, 'Standard'))]"
+					},
+					{
+						"name": "StandardIPConfirmation4",
+						"type": "Microsoft.Common.InfoBox",
+						"options": {
+							"icon": "Info",
+							"text": "The Azure Route Server Public IP is Standard SKU. Proceed."
+						},
+						"visible": "[equals(steps('publicip').arspublicip.sku, 'Standard')]"
 					}
 				]
 			},
