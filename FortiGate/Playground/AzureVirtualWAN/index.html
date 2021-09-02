@@ -232,6 +232,7 @@ edit "{{ gatewayConfiguration.BgpSetting.BgpPeeringAddresses.Instance1 }}"
 set remote-as {{ gatewayConfiguration.BgpSetting.Asn }}
 next
 end
+end
 config system settings
     set gui-multiple-interface-policy enable
 end
@@ -257,6 +258,7 @@ set schedule always
  set service ALL
 next
 end
+
 {{/vpnSiteConnections}}
     </script>
     <script id="generalTemplate" type="text/template">
