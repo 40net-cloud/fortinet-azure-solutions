@@ -130,7 +130,12 @@ FortiGate IP addesses
 query="[?virtualMachine.name.starts_with(@, '$prefix')].{virtualMachine:virtualMachine.name, publicIP:virtualMachine.network.publicIpAddresses[0].ipAddress,privateIP:virtualMachine.network.privateIpAddresses[0]}"
 az vm list-ip-addresses --query "$query" --output tsv
 echo "
-
+ IP Public Azure Load Balancer:"
+publicIpIds=$(az network lb show -g "$rg" -n "$prefix-ExternalLoadBalancer" --query "frontendIpConfigurations[].publicIpAddress.id" --out tsv)
+while read publicIpId; do
+    az network public-ip show --ids "$publicIpId" --query "{ ipAddress: ipAddress, fqdn: dnsSettings.fqdn }" --out tsv
+done <<< "$publicIpIds"
+echo "
 ##############################################################################################################
 "
 fi

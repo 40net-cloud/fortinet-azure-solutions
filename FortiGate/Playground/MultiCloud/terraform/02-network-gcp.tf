@@ -14,9 +14,9 @@ resource "google_compute_network" "vpc_network" {
 }
 
 resource "google_compute_network" "vpc_network2" {
-  name                              = "${var.PREFIX}-vpc2-${random_string.random_name_post.result}"
-  auto_create_subnetworks           = false
-  delete_default_routes_on_create   = true
+  name                            = "${var.PREFIX}-vpc2-${random_string.random_name_post.result}"
+  auto_create_subnetworks         = false
+  delete_default_routes_on_create = true
 }
 
 resource "google_compute_network" "vpc_network3" {
@@ -75,7 +75,7 @@ resource "google_compute_firewall" "allow-fgt" {
 
   allow {
     protocol = "tcp"
-    ports    = ["22", "80", "443","8022"]
+    ports    = ["22", "80", "443", "8022"]
   }
 
   allow {
@@ -83,7 +83,7 @@ resource "google_compute_firewall" "allow-fgt" {
   }
 
   source_ranges = ["0.0.0.0/0"]
-#  target_tags   = ["allow-fgt"]
+  #  target_tags   = ["allow-fgt"]
 }
 
 # Firewall Rule Internal
@@ -96,7 +96,7 @@ resource "google_compute_firewall" "allow-internal" {
   }
 
   source_ranges = ["0.0.0.0/0"]
-#  target_tags   = ["allow-internal"]
+  #  target_tags   = ["allow-internal"]
 }
 
 # Firewall Rule HA SYNC
@@ -109,7 +109,7 @@ resource "google_compute_firewall" "allow-sync" {
   }
 
   source_ranges = ["0.0.0.0/0"]
-#  target_tags   = ["allow-sync"]
+  #  target_tags   = ["allow-sync"]
 }
 
 # Firewall Rule HA MGMT
@@ -121,5 +121,5 @@ resource "google_compute_firewall" "allow-mgmt" {
     protocol = "all"
   }
   source_ranges = ["0.0.0.0/0"]
-#  target_tags   = ["allow-mgmt"]
+  #  target_tags   = ["allow-mgmt"]
 }
