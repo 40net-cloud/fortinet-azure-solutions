@@ -82,7 +82,7 @@ resource "azurerm_network_interface" "fgtifcext" {
     subnet_id                     = azurerm_subnet.subnet2.id
     private_ip_address_allocation = "static"
     private_ip_address            = var.fgt_ipaddress["2"]
-    primary = true
+    primary                       = true
   }
 }
 
@@ -161,22 +161,22 @@ data "template_file" "fgt_custom_data" {
   template = file("${path.module}/customdata-fgt.tpl")
 
   vars = {
-    fgt_vm_name           = "${var.PREFIX}-FGT-VM"
-    fgt_license_file      = var.FGT_BYOL_LICENSE_FILE
-    fgt_license_flexvm    = var.FGT_BYOL_FLEXVM_LICENSE_FILE
-    fgt_username          = var.USERNAME
-    fgt_password          = var.PASSWORD
-    fgt_ssh_public_key    = var.FGT_SSH_PUBLIC_KEY_FILE
-    fgt_mgmt_ipaddr       = var.fgt_ipaddress["1"]
-    fgt_mgmt_mask         = var.subnetmask["1"]
-    fgt_mgmt_gw           = var.gateway_ipaddress["1"]
-    fgt_external_ipaddr   = var.fgt_ipaddress["2"]
-    fgt_external_mask     = var.subnetmask["2"]
-    fgt_external_gw       = var.gateway_ipaddress["2"]
-    fgt_internal_ipaddr   = var.fgt_ipaddress["3"]
-    fgt_internal_mask     = var.subnetmask["3"]
-    fgt_internal_gw       = var.gateway_ipaddress["3"]
-    vnet_network          = var.vnet
+    fgt_vm_name         = "${var.PREFIX}-FGT-VM"
+    fgt_license_file    = var.FGT_BYOL_LICENSE_FILE
+    fgt_license_flexvm  = var.FGT_BYOL_FLEXVM_LICENSE_FILE
+    fgt_username        = var.USERNAME
+    fgt_password        = var.PASSWORD
+    fgt_ssh_public_key  = var.FGT_SSH_PUBLIC_KEY_FILE
+    fgt_mgmt_ipaddr     = var.fgt_ipaddress["1"]
+    fgt_mgmt_mask       = var.subnetmask["1"]
+    fgt_mgmt_gw         = var.gateway_ipaddress["1"]
+    fgt_external_ipaddr = var.fgt_ipaddress["2"]
+    fgt_external_mask   = var.subnetmask["2"]
+    fgt_external_gw     = var.gateway_ipaddress["2"]
+    fgt_internal_ipaddr = var.fgt_ipaddress["3"]
+    fgt_internal_mask   = var.subnetmask["3"]
+    fgt_internal_gw     = var.gateway_ipaddress["3"]
+    vnet_network        = var.vnet
   }
 }
 
