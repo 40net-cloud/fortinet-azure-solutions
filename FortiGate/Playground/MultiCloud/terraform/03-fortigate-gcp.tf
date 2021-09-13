@@ -76,7 +76,7 @@ resource "google_compute_region_backend_service" "ilb-backend" {
   region        = var.GCP_REGION
   health_checks = [google_compute_health_check.tcp-health-check.self_link]
   protocol      = "TCP"
-  network               = google_compute_network.vpc_network2.name
+  network       = google_compute_network.vpc_network2.name
   backend {
     group = google_compute_instance_group.hagroup0.self_link
   }
@@ -165,7 +165,7 @@ resource "google_compute_instance" "fgt-a" {
   }
 
   metadata = {
-    user-data = templatefile( "${path.module}/gcp_userdata.tpl", {
+    user-data = templatefile("${path.module}/gcp_userdata.tpl", {
       fgt_vm_name         = "${var.PREFIX}-fgt-a-${random_string.random_name_post.result}",
       fgt_external_ipaddr = var.gcp_fgt_ipaddress_a["1"],
       fgt_external_mask   = var.gcp_subnetmask["1"],
@@ -185,7 +185,7 @@ resource "google_compute_instance" "fgt-a" {
       fgt_password        = var.PASSWORD,
       client_ip           = chomp(data.http.client_ip.body)
     })
-    license   = fileexists("${path.module}/${var.GCP_FGT_BYOL_LICENSE_FILE_A}") ? file(var.GCP_FGT_BYOL_LICENSE_FILE_A) : null
+    license = fileexists("${path.module}/${var.GCP_FGT_BYOL_LICENSE_FILE_A}") ? file(var.GCP_FGT_BYOL_LICENSE_FILE_A) : null
   }
   service_account {
     scopes = ["userinfo-email", "compute-rw", "storage-ro", "cloud-platform"]
@@ -233,7 +233,7 @@ resource "google_compute_instance" "fgt-b" {
     }
   }
   metadata = {
-    user-data = templatefile( "${path.module}/gcp_userdata.tpl", {
+    user-data = templatefile("${path.module}/gcp_userdata.tpl", {
       fgt_vm_name         = "${var.PREFIX}-fgt-b-${random_string.random_name_post.result}",
       fgt_external_ipaddr = var.gcp_fgt_ipaddress_b["1"],
       fgt_external_mask   = var.gcp_subnetmask["1"],
@@ -253,7 +253,7 @@ resource "google_compute_instance" "fgt-b" {
       fgt_password        = var.PASSWORD,
       client_ip           = chomp(data.http.client_ip.body)
     })
-    license   = fileexists("${path.module}/${var.GCP_FGT_BYOL_LICENSE_FILE_B}") ? file(var.GCP_FGT_BYOL_LICENSE_FILE_B) : null
+    license = fileexists("${path.module}/${var.GCP_FGT_BYOL_LICENSE_FILE_B}") ? file(var.GCP_FGT_BYOL_LICENSE_FILE_B) : null
   }
   service_account {
     scopes = ["userinfo-email", "compute-rw", "storage-ro", "cloud-platform"]

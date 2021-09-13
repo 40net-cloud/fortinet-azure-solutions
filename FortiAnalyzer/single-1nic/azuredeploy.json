@@ -34,20 +34,7 @@
       "type": "string",
       "defaultValue": "latest",
       "allowedValues": [
-        "6.2.0",
-        "6.2.1",
-        "6.2.2",
-        "6.2.3",
-        "6.2.5",
-        "6.4.0",
-        "6.4.1",
-        "6.4.2",
-        "6.4.2",
-        "6.4.2",
-        "6.4.2",
-        "6.4.5",
         "6.4.6",
-        "7.0.0",
         "7.0.1",
         "latest"
       ],
@@ -55,7 +42,7 @@
         "description": "FortiAnalyzer version"
       }
     },
-    "fortiAnalyzerAditionalCustomData": {
+    "aditionalCustomData": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
@@ -104,7 +91,7 @@
         "none"
       ],
       "metadata": {
-        "description": "Choose between an existing, new or non public IP for FortiAnalyzer VM"
+        "description": "Choose between an existing, new or non public IP for the FortiAnalyzer VM"
       }
     },
     "publicIPName": {
@@ -238,7 +225,7 @@
 
     "fazVmName": "[concat(parameters('namePrefix'),'-FAZ-A')]",
     "customDataHeader": "Content-Type: multipart/mixed; boundary=\"12345\"\nMIME-Version: 1.0\n\n--12345\nContent-Type: text/plain; charset=\"us-ascii\"\nMIME-Version: 1.0\nContent-Transfer-Encoding: 7bit\nContent-Disposition: attachment; filename=\"config\"\n\n",
-    "customDataBody": "[concat('config system global\n set hostname ',  variables('fazVmName'), '\n end', parameters('fortiAnalyzerAditionalCustomData'), '\n')]",
+    "customDataBody": "[concat('config system global\n set hostname ',  variables('fazVmName'), '\n end', parameters('aditionalCustomData'), '\n')]",
     "customDataLicenseHeader": "--12345\nContent-Type: text/plain; charset=\"us-ascii\"\nMIME-Version: 1.0\nContent-Transfer-Encoding: 7bit\nContent-Disposition: attachment; filename=\"fgtlicense\"\n\n",
     "customDataFooter": "\n--12345--\n",
     "customDataCombined": "[concat(variables('customDataHeader'),variables('customDataBody'),variables('customDataLicenseHeader'), parameters('fortiAnalyzerLicenseBYOL'), variables('customDataFooter'))]",
@@ -249,6 +236,7 @@
 
     "publicIPName": "[if(equals(parameters('publicIPName'),''),concat(parameters('namePrefix'),'-FAZ-PIP'),parameters('publicIPName'))]",
     "publicIPId": "[if(equals(parameters('publicIPNewOrExisting'),'new'),resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPName')),if(equals(parameters('publicIPNewOrExisting'),'existing'),resourceId(parameters('publicIPResourceGroup'),'Microsoft.Network/publicIPAddresses',variables('publicIPName')),''))]",
+    "publicIPAddressId": { "id": "[variables('publicIPId')]" },
 
     "NSGName": "[concat(parameters('namePrefix'),'-',uniqueString(resourceGroup().id),'-NSG')]",
 
@@ -267,12 +255,12 @@
   "resources": [
     {
       "apiVersion": "2020-10-01",
-      "name": "pid-2dc4b447-552f-557f-b1cc-2faec6f9f133",
+      "name": "pid-21c3b606-4b14-4eca-ad0d-1d8537ebd14e-partnercenter",
       "type": "Microsoft.Resources/deployments",
       "properties":{
        "mode": "Incremental",
        "template": {
-         "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+         "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
          "contentVersion": "1.0.0.0",
          "resources": []
        }
@@ -419,9 +407,7 @@
             "properties": {
               "privateIPAddress": "[variables('sn1IPfaz')]",
               "privateIPAllocationMethod": "Static",
-              "publicIPAddress": {
-                "id": "[variables('publicIPId')]"
-              },
+              "publicIPAddress": "[if(not(equals(parameters('publicIPNewOrExisting'), 'none')), variables('publicIPAddressId') , json('null'))]",
               "subnet": {
                 "id": "[variables('subnet1Id')]"
               }

@@ -14,13 +14,13 @@
         "description": "Password for the Virtual Machine"
       }
     },
-    "fortigateNamePrefix": {
+    "fortiGateNamePrefix": {
       "type": "string",
       "metadata": {
         "description": "Name for FortiGate virtual appliances (A & B will be appended to the end of each respectively)"
       }
     },
-    "fortigateImageSKU": {
+    "fortiGateImageSKU": {
       "type": "string",
       "defaultValue": "fortinet_fg-vm",
       "allowedValues": [
@@ -31,7 +31,7 @@
         "description": "Identifies whether to to use PAYG (on demand licensing) or BYOL license model (where license is purchased separately)"
       }
     },
-    "fortigateImageVersion": {
+    "fortiGateImageVersion": {
       "type": "string",
       "defaultValue": "latest",
       "allowedValues": [
@@ -43,6 +43,9 @@
         "6.4.2",
         "6.4.3",
         "6.4.5",
+        "6.4.6",
+        "7.0.0",
+        "7.0.1",
         "latest"
       ],
       "metadata": {
@@ -129,16 +132,16 @@
   "variables": {
     "acceleratedNetworking": "[if(equals(parameters('acceleratedNetworking'),'no'),'false','true')]",
 
-    "vnetName": "[if(equals(parameters('vnetName'),''),concat(parameters('fortigateNamePrefix'),'-VNET'),parameters('vnetName'))]",
+    "vnetName": "[if(equals(parameters('vnetName'),''),concat(parameters('fortiGateNamePrefix'),'-VNET'),parameters('vnetName'))]",
     "subnet1Id": "[if(equals(parameters('vnetNewOrExisting'),'new'),resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet1Name')),resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet1Name')))]",
 
-    "fgaVmName": "[concat(parameters('fortigateNamePrefix'),'-FGT-A')]",
+    "fgaVmName": "[concat(parameters('fortiGateNamePrefix'),'-FGT-A')]",
     "fgaCustomData": "[base64(concat('config system sdn-connector\nedit AzureSDN\nset type azure\nend\nend\nconfig router static\nedit 1\nset gateway ', variables('sn1GatewayIP'), '\nset device port1\nnext\nconfig system interface\nedit port1\nset mode static\nset ip ',  variables('sn1IPfga'), '/', variables('sn1CIDRmask'), '\nset description external\nset allowaccess ping https ssh ftm\nnext\n \nend'))]",
 
     "fgaNic1Name": "[concat(variables('fgaVmName'),'-Nic1')]",
     "fgaNic1Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('fgaNic1Name'))]",
 
-    "NSGName": "[concat(parameters('fortigateNamePrefix'),'-',uniqueString(resourceGroup().id),'-NSG')]",
+    "NSGName": "[concat(parameters('fortiGateNamePrefix'),'-',uniqueString(resourceGroup().id),'-NSG')]",
     "NSGId": "[resourceID('Microsoft.Network/networkSecurityGroups/',variables('NSGName'))]",
 
     "sn1IPArray": "[split(parameters('subnet1Prefix'),'.')]",
@@ -274,7 +277,7 @@
       },
       "location": "[parameters('location')]",
       "plan": {
-        "name": "[parameters('fortigateImageSKU')]",
+        "name": "[parameters('fortiGateImageSKU')]",
         "publisher": "fortinet",
         "product": "fortinet_fortigate-vm_v5"
       },
@@ -295,7 +298,7 @@
           "imageReference": {
             "publisher": "fortinet",
             "offer": "fortinet_fortigate-vm_v5",
-            "sku": "[parameters('fortigateImageSKU')]",
+            "sku": "[parameters('fortiGateImageSKU')]",
             "version": "[parameters('FortigateImageVersion')]"
           },
           "osDisk": {

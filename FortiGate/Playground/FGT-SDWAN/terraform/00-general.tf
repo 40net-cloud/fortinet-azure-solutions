@@ -23,7 +23,7 @@ variable "PASSWORD" {}
 
 variable "IMAGESKU" {
   description = "Azure Marketplace Image SKU hourly (PAYG) or byol (Bring your own license)"
-  default = "fortinet_fg-vm"
+  default     = "fortinet_fg-vm"
 }
 
 variable "FGT_LICENSE_LOCATION" {
@@ -71,70 +71,70 @@ provider "azurerm" {
 
 variable "vnet" {
   description = ""
-  default = "172.16.136.0/22"
+  default     = "172.16.136.0/22"
 }
 
 variable "subnet" {
-  type        = "map"
+  type        = map(string)
   description = ""
 
   default = {
-    "1" = "172.16.136.0/26"        # External
-    "2" = "172.16.136.64/26"       # Internal
-    "3" = "172.16.136.128/26"      # HASYNC
-    "4" = "172.16.136.192/26"      # MGMT
-    "5" = "172.16.137.0/24"        # Protected a
-    "6" = "172.16.138.0/24"        # Protected b
+    "1" = "172.16.136.0/26"   # External
+    "2" = "172.16.136.64/26"  # Internal
+    "3" = "172.16.136.128/26" # HASYNC
+    "4" = "172.16.136.192/26" # MGMT
+    "5" = "172.16.137.0/24"   # Protected a
+    "6" = "172.16.138.0/24"   # Protected b
   }
 }
 
 variable "subnetmask" {
-  type        = "map"
+  type        = map(string)
   description = ""
 
   default = {
-    "1" = "26"        # External
-    "2" = "26"        # Internal
-    "3" = "26"        # HASYNC
-    "4" = "26"        # MGMT
-    "5" = "24"        # Protected a
-    "6" = "24"        # Protected b
+    "1" = "26" # External
+    "2" = "26" # Internal
+    "3" = "26" # HASYNC
+    "4" = "26" # MGMT
+    "5" = "24" # Protected a
+    "6" = "24" # Protected b
   }
 }
 
 variable "fgt_ipaddress_a" {
-  type        = "map"
+  type        = map(string)
   description = ""
 
   default = {
-    "1" = "172.16.136.5"        # External
-    "2" = "172.16.136.69"       # Internal
-    "3" = "172.16.136.133"      # HASYNC
-    "4" = "172.16.136.197"      # MGMT
+    "1" = "172.16.136.5"   # External
+    "2" = "172.16.136.69"  # Internal
+    "3" = "172.16.136.133" # HASYNC
+    "4" = "172.16.136.197" # MGMT
   }
 }
 
 variable "fgt_ipaddress_b" {
-  type        = "map"
+  type        = map(string)
   description = ""
 
   default = {
-    "1" = "172.16.136.6"        # External
-    "2" = "172.16.136.70"       # Internal
-    "3" = "172.16.136.134"      # HASYNC
-    "4" = "172.16.136.198"      # MGMT
+    "1" = "172.16.136.6"   # External
+    "2" = "172.16.136.70"  # Internal
+    "3" = "172.16.136.134" # HASYNC
+    "4" = "172.16.136.198" # MGMT
   }
 }
 
 variable "gateway_ipaddress" {
-  type        = "map"
+  type        = map(string)
   description = ""
 
   default = {
-    "1" = "172.16.136.1"        # External
-    "2" = "172.16.136.65"       # Internal
-    "3" = "172.16.136.133"      # HASYNC
-    "4" = "172.16.136.193"      # MGMT
+    "1" = "172.16.136.1"   # External
+    "2" = "172.16.136.65"  # Internal
+    "3" = "172.16.136.133" # HASYNC
+    "4" = "172.16.136.193" # MGMT
   }
 }
 
@@ -154,41 +154,41 @@ variable "fgt_vmsize" {
 
 variable "vnetbranch1" {
   description = ""
-  default = "172.16.140.0/23"
+  default     = "172.16.140.0/23"
 }
 
 variable "subnetbranch1" {
-  type        = "map"
+  type        = map(string)
   description = ""
 
   default = {
-    "1" = "172.16.140.0/26"           # SUBNET 1 in BRANCH 1
-    "2" = "172.16.140.64/26"          # SUBNET 2 in BRANCH 1
-    "3" = "172.16.140.128/26"         # SUBNET 3 in BRANCH 1
-    "4" = "172.16.141.0/26"           # SUBNET 4 in BRANCH 1
-    "5" = "172.16.141.64/26"          # SUBNET 5 in BRANCH 1
+    "1" = "172.16.140.0/26"   # SUBNET 1 in BRANCH 1
+    "2" = "172.16.140.64/26"  # SUBNET 2 in BRANCH 1
+    "3" = "172.16.140.128/26" # SUBNET 3 in BRANCH 1
+    "4" = "172.16.141.0/26"   # SUBNET 4 in BRANCH 1
+    "5" = "172.16.141.64/26"  # SUBNET 5 in BRANCH 1
   }
 }
 
 variable "fgt_ipaddress_branch1" {
-  type        = "map"
+  type        = map(string)
   description = ""
 
   default = {
-    "1" = "172.16.140.5"        # External
-    "2" = "172.16.140.69"       # External2
-    "3" = "172.16.140.132"       # Internal
+    "1" = "172.16.140.5"   # External
+    "2" = "172.16.140.69"  # External2
+    "3" = "172.16.140.132" # Internal
   }
 }
 
 variable "gateway_ipaddress_branch1" {
-  type        = "map"
+  type        = map(string)
   description = ""
 
   default = {
-    "1" = "172.16.140.1"        # External
-    "2" = "172.16.140.65"       # External2
-    "3" = "172.16.140.129"       # Internal
+    "1" = "172.16.140.1"   # External
+    "2" = "172.16.140.65"  # External2
+    "3" = "172.16.140.129" # Internal
   }
 }
 
@@ -198,41 +198,41 @@ variable "gateway_ipaddress_branch1" {
 
 variable "vnetbranch2" {
   description = ""
-  default = "172.16.142.0/23"
+  default     = "172.16.142.0/23"
 }
 
 variable "subnetbranch2" {
-  type        = "map"
+  type        = map(string)
   description = ""
 
   default = {
-    "1" = "172.16.142.0/26"           # SUBNET 1 in BRANCH 2
-    "2" = "172.16.142.64/26"          # SUBNET 2 in BRANCH 2
-    "3" = "172.16.142.128/26"         # SUBNET 3 in BRANCH 2
-    "4" = "172.16.143.0/26"         # SUBNET 4 in BRANCH 2
-    "5" = "172.16.143.64/26"         # SUBNET 4 in BRANCH 2
+    "1" = "172.16.142.0/26"   # SUBNET 1 in BRANCH 2
+    "2" = "172.16.142.64/26"  # SUBNET 2 in BRANCH 2
+    "3" = "172.16.142.128/26" # SUBNET 3 in BRANCH 2
+    "4" = "172.16.143.0/26"   # SUBNET 4 in BRANCH 2
+    "5" = "172.16.143.64/26"  # SUBNET 4 in BRANCH 2
   }
 }
 
 variable "fgt_ipaddress_branch2" {
-  type        = "map"
+  type        = map(string)
   description = ""
 
   default = {
-    "1" = "172.16.142.5"        # External
-    "2" = "172.16.142.69"       # External2
-    "3" = "172.16.142.132"       # Internal
+    "1" = "172.16.142.5"   # External
+    "2" = "172.16.142.69"  # External2
+    "3" = "172.16.142.132" # Internal
   }
 }
 
 variable "gateway_ipaddress_branch2" {
-  type        = "map"
+  type        = map(string)
   description = ""
 
   default = {
-    "1" = "172.16.142.1"        # External
-    "2" = "172.16.142.65"       # External2
-    "2" = "172.16.142.129"       # Internal
+    "1" = "172.16.142.1"   # External
+    "2" = "172.16.142.65"  # External2
+    "2" = "172.16.142.129" # Internal
   }
 }
 
@@ -242,25 +242,25 @@ variable "gateway_ipaddress_branch2" {
 
 variable "vnetfmg" {
   description = ""
-  default = "172.16.144.0/23"
+  default     = "172.16.144.0/23"
 }
 
 variable "subnetfmg" {
-  type        = "map"
+  type        = map(string)
   description = ""
 
   default = {
-    "1" = "172.16.144.0/26"           # SUBNET 1 in BRANCH 2
-    "2" = "172.16.144.64/26"          # SUBNET 2 in BRANCH 2
+    "1" = "172.16.144.0/26"  # SUBNET 1 in BRANCH 2
+    "2" = "172.16.144.64/26" # SUBNET 2 in BRANCH 2
   }
 }
 
 variable "fmg_ipaddress" {
-  type        = "map"
+  type        = map(string)
   description = ""
 
   default = {
-    "1" = "172.16.145.5"        # External
+    "1" = "172.16.145.5" # External
   }
 }
 
@@ -270,7 +270,7 @@ variable "fmg_ipaddress" {
 
 resource "azurerm_resource_group" "resourcegroup" {
   name     = "${var.PREFIX}-RG"
-  location = "${var.LOCATION}"
+  location = var.LOCATION
 }
 
 ##############################################################################################################
@@ -284,7 +284,7 @@ data "external" "client_public_ip" {
 }
 
 output "ip" {
-    value = "${data.external.client_public_ip.result["ip"]}"
+  value = data.external.client_public_ip.result["ip"]
 }
 ##############################################################################################################
 
@@ -293,7 +293,7 @@ output "ip" {
 ##############################################################################################################
 
 resource "random_string" "fgt_api_key" {
-  length = 16
+  length  = 16
   special = true
 }
 ##############################################################################################################

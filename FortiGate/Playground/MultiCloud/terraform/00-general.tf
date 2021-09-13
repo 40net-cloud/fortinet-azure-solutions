@@ -28,17 +28,17 @@ variable "PASSWORD" {
 
 # GCP region
 variable "GCP_REGION" {
-  type    = string
+  type = string
 }
 
 # GCP zone 1
 variable "GCP_ZONE1" {
-  type    = string
+  type = string
 }
 
 # GCP zone 2
 variable "GCP_ZONE2" {
-  type    = string
+  type = string
 }
 
 # GCP project name
@@ -251,11 +251,11 @@ variable "fgt_vmsize" {
 }
 
 variable "fortinet_tags" {
-    type = map
-    default = {
-        publisher: "Fortinet",
-        template: "VNET Peering",
-        provider: "7EB3B02F-50E5-4A3E-8CB8-2E12925831AB-VNETPeering"
+  type = map(any)
+  default = {
+    publisher : "Fortinet",
+    template : "VNET Peering",
+    provider : "7EB3B02F-50E5-4A3E-8CB8-2E12925831AB-VNETPeering"
   }
 }
 
@@ -327,8 +327,8 @@ variable "gcp_subnetmask" {
     "2" = "255.255.255.192" # Internal
     "3" = "255.255.255.192" # HASYNC
     "4" = "255.255.255.192" # MGMT
-    "5" = "255.255.255.0" # Protected a
-    "6" = "255.255.255.0" # Protected b
+    "5" = "255.255.255.0"   # Protected a
+    "6" = "255.255.255.0"   # Protected b
   }
 }
 
