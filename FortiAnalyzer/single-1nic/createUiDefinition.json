@@ -80,48 +80,8 @@
           "required": false,
           "allowedValues": [
             {
-              "label": "6.2.0",
-              "value": "6.2.0"
-            },
-            {
-              "label": "6.2.1",
-              "value": "6.2.1"
-            },
-            {
-              "label": "6.2.2",
-              "value": "6.2.2"
-            },
-            {
-              "label": "6.2.3",
-              "value": "6.2.3"
-            },
-            {
-              "label": "6.2.5",
-              "value": "6.2.5"
-            },
-            {
-              "label": "6.4.0",
-              "value": "6.4.0"
-            },
-            {
-              "label": "6.4.1",
-              "value": "6.4.1"
-            },
-            {
-              "label": "6.4.2",
-              "value": "6.4.2"
-            },
-            {
-              "label": "6.4.5",
-              "value": "6.4.5"
-            },
-            {
               "label": "6.4.6",
               "value": "6.4.6"
-            },
-            {
-              "label": "7.0.0",
-              "value": "7.0.0"
             },
             {
               "label": "7.0.1",
@@ -229,7 +189,7 @@
                 "osPlatform": "Linux",
                   "imageReference": {
                     "publisher": "fortinet",
-                    "offer": "fortinet-fortinalyzer",
+                    "offer": "fortinet-fortianalyzer",
                     "sku": "fortinet-fortianalyzer"
                 },
                 "count": 1,
@@ -584,7 +544,7 @@
       "subnet1Name": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet1.name]",
       "subnet1Prefix": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet1.addressPrefix]",
       "subnet1StartAddress": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet1.startAddress]",
-      "fortiAnalyzerAditionalCustomData": "[steps('advanced').customdata.config]",
+      "aditionalCustomData": "[steps('advanced').customdata.config]",
       "fortiAnalyzerLicenseBYOL": "[steps('advanced').fazlicense.licensecontent]"
     }
   }

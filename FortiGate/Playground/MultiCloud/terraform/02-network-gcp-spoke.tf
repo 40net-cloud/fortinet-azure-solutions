@@ -17,15 +17,15 @@
 ##############################################################################################################
 
 resource "google_compute_network" "vpc_network_spoke1" {
-  name                              = "${var.PREFIX}-vpc-spoke1-${random_string.random_name_post.result}"
-  auto_create_subnetworks           = false
-  delete_default_routes_on_create   = true
+  name                            = "${var.PREFIX}-vpc-spoke1-${random_string.random_name_post.result}"
+  auto_create_subnetworks         = false
+  delete_default_routes_on_create = true
 }
 
 resource "google_compute_network" "vpc_network_spoke2" {
-  name                              = "${var.PREFIX}-vpc-spoke2-${random_string.random_name_post.result}"
-  auto_create_subnetworks           = false
-  delete_default_routes_on_create   = true
+  name                            = "${var.PREFIX}-vpc-spoke2-${random_string.random_name_post.result}"
+  auto_create_subnetworks         = false
+  delete_default_routes_on_create = true
 }
 
 resource "google_compute_subnetwork" "spoke1_subnet" {
@@ -52,40 +52,40 @@ resource "google_compute_subnetwork" "spoke2_subnet" {
 
 ### VPC Peering connecting HUB and Spoke 1 ###
 resource "google_compute_network_peering" "hub2spoke1" {
-  name                  = "${var.PREFIX}-hub2spoke1-${random_string.random_name_post.result}"
-  provider              = google-beta
-  network               = google_compute_network.vpc_network2.self_link
-  peer_network          = google_compute_network.vpc_network_spoke1.self_link
-  export_custom_routes  = true
-  depends_on            = [ google_compute_route.internal ]
+  name                 = "${var.PREFIX}-hub2spoke1-${random_string.random_name_post.result}"
+  provider             = google-beta
+  network              = google_compute_network.vpc_network2.self_link
+  peer_network         = google_compute_network.vpc_network_spoke1.self_link
+  export_custom_routes = true
+  depends_on           = [google_compute_route.internal]
 }
 
 resource "google_compute_network_peering" "spoke12hub" {
-  name                  = "${var.PREFIX}-spoke12hub-${random_string.random_name_post.result}"
-  provider              = google-beta
-  network               = google_compute_network.vpc_network_spoke1.self_link
-  peer_network          = google_compute_network.vpc_network2.self_link
-  import_custom_routes  = true
-  depends_on            = [ google_compute_route.internal, google_compute_network_peering.hub2spoke1 ]
+  name                 = "${var.PREFIX}-spoke12hub-${random_string.random_name_post.result}"
+  provider             = google-beta
+  network              = google_compute_network.vpc_network_spoke1.self_link
+  peer_network         = google_compute_network.vpc_network2.self_link
+  import_custom_routes = true
+  depends_on           = [google_compute_route.internal, google_compute_network_peering.hub2spoke1]
 }
 
 ### VPC Peering connecting HUB and Spoke 2 ###
 resource "google_compute_network_peering" "hub2spoke2" {
-  name                  = "${var.PREFIX}-hub2spoke2-${random_string.random_name_post.result}"
-  provider              = google-beta
-  network               = google_compute_network.vpc_network2.self_link
-  peer_network          = google_compute_network.vpc_network_spoke2.self_link
-  export_custom_routes  = true
-  depends_on            = [ google_compute_route.internal, google_compute_network_peering.spoke12hub ]
+  name                 = "${var.PREFIX}-hub2spoke2-${random_string.random_name_post.result}"
+  provider             = google-beta
+  network              = google_compute_network.vpc_network2.self_link
+  peer_network         = google_compute_network.vpc_network_spoke2.self_link
+  export_custom_routes = true
+  depends_on           = [google_compute_route.internal, google_compute_network_peering.spoke12hub]
 }
 
 resource "google_compute_network_peering" "spoke22hub" {
-  name                  = "${var.PREFIX}-spoke22hub-${random_string.random_name_post.result}"
-  provider              = google-beta
-  network               = google_compute_network.vpc_network_spoke2.self_link
-  peer_network          = google_compute_network.vpc_network2.self_link
-  import_custom_routes  = true
-  depends_on            = [ google_compute_route.internal, google_compute_network_peering.hub2spoke2 ]
+  name                 = "${var.PREFIX}-spoke22hub-${random_string.random_name_post.result}"
+  provider             = google-beta
+  network              = google_compute_network.vpc_network_spoke2.self_link
+  peer_network         = google_compute_network.vpc_network2.self_link
+  import_custom_routes = true
+  depends_on           = [google_compute_route.internal, google_compute_network_peering.hub2spoke2]
 }
 
 ##############################################################################################################

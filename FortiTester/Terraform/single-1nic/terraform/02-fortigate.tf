@@ -82,7 +82,7 @@ resource "azurerm_network_interface" "fgtifcext" {
     subnet_id                     = azurerm_subnet.subnet2.id
     private_ip_address_allocation = "static"
     private_ip_address            = var.fgt_ipaddress["2a"]
-    primary = true
+    primary                       = true
   }
 
   ip_configuration {

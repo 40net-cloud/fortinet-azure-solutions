@@ -53,16 +53,10 @@ To configure the first branch VPN tunnel the endpoint and private ip range of th
 
 ![Azure Virtual WAN design](images/scenario2.png)
 
-Scenario 2 uses the Azure Virtual WAN routing capabilities. More information can be found in our blog post and on the Microsoft documentation. Deployment is only possible using Azure CLI.
+Scenario 2 uses the Azure Virtual WAN routing capabilities. Either using static routing or BGP dynamic routing. Both scenario's have separate page with more information.
 
-- [Fortinet Secure SD-WAN Enhances Azure Virtual WAN Integrations](https://www.fortinet.com/blog/business-and-technology/fortinet-secure-sd-wan-enhances-azure-virtual-wan-integrations)
-- Microsoft documentation:
-  - [Routing traffic through NVAs](https://docs.microsoft.com/en-us/azure/virtual-wan/scenario-route-through-nvas-custom)
-  - [How to configure virtual hub routing](https://docs.microsoft.com/en-us/azure/virtual-wan/how-to-virtual-hub-routing)
-
-#### Azure CLI
-
-`cd ~/clouddrive/ && wget -qO- https://github.com/40net-cloud/fortinet-azure-solutions/archive/main.tar.gz | tar zxf - && cd ~/clouddrive/fortinet-azure-solutions-main/FortiGate/AzureVirtualWAN/routing/ && ./deploy.sh`
+- [Static Routing](routing/)
+- [Dynamic routing using BGP Peering](bgppeering/)
 
 ### Scenario 3
 
