@@ -3,7 +3,7 @@ echo "
 ##############################################################################################################
 #
 # FortiGate Azure deployment using ARM Template
-# Fortigate Active/Passive cluster with Fabric Connector using Availability Zones
+# Fortigate Active/Passive cluster with Fabric Connector using Availability Zones or Availability Sets
 #
 ##############################################################################################################
 

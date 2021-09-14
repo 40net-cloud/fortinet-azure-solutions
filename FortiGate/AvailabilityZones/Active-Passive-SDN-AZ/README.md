@@ -30,18 +30,26 @@ This ARM template can also be used to extend or customized based on your require
 
 The FortiGate solution can be deployed using the Azure Portal or Azure CLI. There are 4 variables needed to complete kickstart the deployment. The deploy.sh script will ask them automatically. When you deploy the ARM template the Azure Portal will request the variables as a requirement.
 
-  - PREFIX : This prefix will be added to each of the resources created by the templates for easy of use, manageability and visibility.
-  - LOCATION : This is the Azure region where the deployment will be deployed
-  - USERNAME : The username used to login to the FortiGate GUI and SSH mangement UI.
-  - PASSWORD : The password used for the FortiGate GUI and SSH management UI.
+- PREFIX : This prefix will be added to each of the resources created by the templates for easy of use, manageability and visibility.
+- LOCATION : This is the Azure region where the deployment will be deployed
+- USERNAME : The username used to login to the FortiGate GUI and SSH management UI.
+- PASSWORD : The password used for the FortiGate GUI and SSH management UI.
 
 ### Azure Portal
 
-<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2F40net-cloud%2Ffortinet-azure-solutions%2Fmain%2FFortiGate%2FAvailabilityZones%2FActive-Passive-SDN-AZ%2Fazuredeploy.json" target="_blank">
+
+<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fmovinalot%2Ffortinet-azure-solutions%2Factive-passive-sdn-az%2FFortiGate%2FActive-Passive-SDN-AZ%2Fazuredeploy.json" target="_blank">
   <img src="https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.svg?sanitize=true"/>
 </a>
-<a href="http://armviz.io/#/?load=https%3A%2F%2Fraw.githubusercontent.com%2F40net-cloud%2Ffortinet-azure-solutions$2Fmain%2FFortiGate%2FAvailabilityZones%2FActive-Passive-SDN-AZ%2Fazuredeploy.json" target="_blank">
+<a href="http://armviz.io/#/?load=https%3A%2F%2Fraw.githubusercontent.com%2Fmovinalot%2Ffortinet-azure-solutions$2Factive-passive-sdn-az%2FFortiGate%2FActive-Passive-SDN-AZ%2Fazuredeploy.json" target="_blank">
   <img src="https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/visualizebutton.svg?sanitize=true"/>
+</a>
+
+<br/>
+Azure Portal Wizard:
+<br/>
+<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fmovinalot%2Ffortinet-azure-solutions%2Factive-passive-sdn-az%2FFortiGate%2FActive-Passive-SDN-AZ%2Fazuredeploy.json/createUIDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2Fmovinalot%2Ffortinet-azure-solutions%2Factive-passive-sdn-az%2FFortiGate%2FActive-Passive-SDN-AZ%2FcreateUiDefinition.json" target="_blank">
+  <img src="https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.svg?sanitize=true"/>
 </a>
 
 ### Azure CLI
@@ -57,11 +65,12 @@ To deploy via Azure Cloud Shell you can connect via the Azure Portal or directly
 
 ![Azure Cloud Shell](images/azure-cloud-shell.png)
 
-After deployment you will be shown the IP address of all deployed components. You can access both management GUIs and SSH using the public IP address of the load balancer using HTTPS on port 40030, 40031 and for SSH on port 50030 and 50031. THe FortiGate VMs are also acessible using their private IPs on the internal subnet using HTTPS on port 443 and SSH on port 22.
+After deployment you will be shown the IP address of all deployed components. You can access both management GUIs and SSH using the public IP address of the load balancer using HTTPS on port 40030, 40031 and for SSH on port 50030 and 50031. THe FortiGate VMs are also accessible using their private IPs on the internal subnet using HTTPS on port 443 and SSH on port 22.
 
 ## Requirements and limitations
 
 More documentation can be found on [the Availability Set version of this template](../../Active-Passive-SDN/README.md).
 
 ## License
+
 [License](LICENSE) © Fortinet Technologies. All rights reserved.

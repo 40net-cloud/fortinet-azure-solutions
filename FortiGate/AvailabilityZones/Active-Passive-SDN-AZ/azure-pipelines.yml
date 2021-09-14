@@ -1,17 +1,29 @@
 resources:
-- repo: self
+  - repo: self
 
 pool:
   vmImage: 'ubuntu-latest'
   demands: azureps
 
 steps:
+- task: DownloadSecureFile@1
+  name: sshkey
+  displayName: 'Download SSH private key'
+  inputs:
+    secureFile: 'azure-devops-ssh'
+
+- task: DownloadSecureFile@1
+  name: sshkeypub
+  displayName: 'Download SSH public key'
+  inputs:
+    secureFile: 'azure-devops-ssh-pub'
+
 - task: AzurePowerShell@5
   displayName: 'Running tests'
   inputs:
     azureSubscription: 'AzureSubscription'
     ScriptPath: 'FortiGate/AvailabilityZones/Active-Passive-SDN-AZ/test/invokePester.ps1'
-    ScriptArguments: '-templatename FortiGate/AvailabilityZones/Active-Passive-SDN-AZ'
+    ScriptArguments: '-templatename FortiGate/AvailabilityZones/Active-Passive-SDN -sshkey $(sshkey.secureFilePath) -sshkeypub $(sshkeypub.secureFilePath)'
     azurePowerShellVersion: LatestVersion
     pwsh: true
 
@@ -24,7 +36,7 @@ steps:
   condition: always()
 
 - task: PublishTestResults@2
-  displayName: 'Publish custom test results'
+  displayName: 'Publish Test Results **\TEST-*.xml'
   inputs:
     testRunner: NUnit
     testResultsFiles: '**/TEST-*.xml'
