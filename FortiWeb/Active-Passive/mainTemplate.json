@@ -37,9 +37,9 @@
       "allowedValues": [
         "6.1.0",
         "6.2.1",
-        "6.3.2",
-        "6.3.4",
+        "6.2.5",
         "6.3.11",
+        "6.3.15",
         "latest"
       ],
       "metadata": {
@@ -79,7 +79,7 @@
         "description": "Resource group to which the Public IP belongs."
       }
     },
-    "publicIPAddressType": {
+    "publicIPType": {
       "type": "string",
       "defaultValue": "Static",
       "allowedValues": [
@@ -88,6 +88,17 @@
       ],
       "metadata": {
         "description": "Type of public IP address"
+      }
+    },
+    "publicIPSKU": {
+      "type": "string",
+      "defaultValue": "Basic",
+      "allowedValues": [
+        "Basic",
+        "Standard"
+      ],
+      "metadata": {
+        "description": "SKU of public IP address"
       }
     },
     "vnetNewOrExisting": {
@@ -266,12 +277,12 @@
   "resources": [
     {
       "apiVersion": "2020-10-01",
-      "name": "[concat(parameters('fortiWebNamePrefix'), '-fortinetdeployment-', uniquestring(resourceGroup().id))]",
+      "name": "pid-2e181e90-36f0-4061-9842-64c219116819-partnercenter",
       "type": "Microsoft.Resources/deployments",
       "properties":{
        "mode": "Incremental",
        "template": {
-         "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+         "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
          "contentVersion": "1.0.0.0",
          "resources": []
        }
@@ -443,10 +454,10 @@
       "location": "[parameters('location')]",
       "sku":
       {
-        "name": "Standard"
+        "name": "[parameters('publicIPSKU')]"
       },
       "properties": {
-        "publicIPAllocationMethod": "[parameters('publicIPAddressType')]"
+        "publicIPAllocationMethod": "[parameters('publicIPType')]"
       }
     },
     {
@@ -459,7 +470,7 @@
       },
       "sku":
       {
-        "name": "Standard"
+        "name": "[parameters('publicIPSKU')]"
       },
       "dependsOn": [
         "[variables('publicIPName')]"
@@ -766,7 +777,7 @@
         "osProfile": {
           "computerName": "[variables('fwbAVmName')]",
           "adminUsername": "[parameters('adminUsername')]",
-          "adminPassword": "[parameters('adminPassword')]",
+          "adminPassword": "[parameters('adminPassword')]"
         },
         "storageProfile": {
           "imageReference": {
