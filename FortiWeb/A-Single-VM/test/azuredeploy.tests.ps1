@@ -82,7 +82,7 @@ Describe 'FWB Single VM' {
                                           'instanceType',
                                           'location',
                                           'publicIPName',
-                                          'publicIPNewOrExistingNone',
+                                          'publicIPNewOrExistingOrNone',
                                           'publicIPResourceGroup',
                                           'publicIPSKU',
                                           'publicIPType',
