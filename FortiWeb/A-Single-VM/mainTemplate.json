@@ -37,9 +37,9 @@
       "allowedValues": [
         "6.1.0",
         "6.2.1",
-        "6.3.2",
-        "6.3.4",
+        "6.2.5",
         "6.3.11",
+        "6.3.15",
         "latest"
       ],
       "metadata": {
@@ -80,7 +80,7 @@
         "description": "Resource group to which the Public IP belongs"
       }
     },
-    "publicIPAddressType": {
+    "publicIPType": {
       "type": "string",
       "defaultValue": "Static",
       "allowedValues": [
@@ -91,7 +91,7 @@
         "description": "Type of public IP address"
       }
     },
-    "publicIPAddressSKU": {
+    "publicIPSKU": {
       "type": "string",
       "defaultValue": "Basic",
       "allowedValues": [
@@ -240,7 +240,7 @@
   "resources": [
     {
       "apiVersion": "2020-10-01",
-      "name": "[concat(parameters('fortiWebNamePrefix'), '-fortinetdeployment-', uniquestring(resourceGroup().id))]",
+      "name": "pid-2e181e90-36f0-4061-9842-64c219116819-partnercenter",
       "type": "Microsoft.Resources/deployments",
       "properties":{
        "mode": "Incremental",
@@ -401,10 +401,10 @@
       "location": "[parameters('location')]",
       "sku":
       {
-        "name": "[parameters('publicIPAddressSKU')]"
+        "name": "[parameters('publicIPSKU')]"
       },
       "properties": {
-        "publicIPAllocationMethod": "[parameters('publicIPAddressType')]"
+        "publicIPAllocationMethod": "[parameters('publicIPType')]"
       }
     },
     {
