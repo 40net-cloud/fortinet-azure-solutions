@@ -431,8 +431,9 @@
     "subnet3Id": "[if(equals(parameters('vnetNewOrExisting'),'new'),resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet3Name')),resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet3Name')))]",
     "subnet4Id": "[if(equals(parameters('vnetNewOrExisting'),'new'),resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet4Name')),resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet4Name')))]",
 
-    "vmName": "[concat(parameters('fortiGateNamePrefix'),'-FGT-A')]",
-    "vm2Name": "[concat(parameters('fortiGateNamePrefix'),'-FGT-B')]",
+    "fgAVmName": "[concat(parameters('fortiGateNamePrefix'),'-FGT-A')]",
+    "fgBVmName": "[concat(parameters('fortiGateNamePrefix'),'-FGT-B')]",
+
     "fmgCustomData": "[if(equals(parameters('fortiManager'),'yes'),concat('\nconfig system central-management\nset type fortimanager\n set fmg ',parameters('fortiManagerIP'),'\nset serial-number ', parameters('fortiManagerSerial'), '\nend\n config system interface\n edit port1\n append allowaccess fgfm\n end\n config system interface\n edit port2\n append allowaccess fgfm\n end\n'),'')]",
     "fgaCustomDataFlexVM": "[if(equals(parameters('fortiGateLicenseFlexVMA'),''),'',concat('exec vm-license ',parameters('fortiGateLicenseFlexVMA'), '\n'))]",
     "fgBCustomDataFlexVM": "[if(equals(parameters('fortiGateLicenseFlexVMB'),''),'',concat('exec vm-license ',parameters('fortiGateLicenseFlexVMB'), '\n'))]",
@@ -449,24 +450,21 @@
     "routeTableName": "FGTDefaultAPRouteTable",
     "routeTableId": "[resourceId('Microsoft.Network/routeTables',variables('routeTableName'))]",
 
-    "fgaVmName": "[variables('vmName')]",
-    "fgbVmName": "[variables('vm2Name')]",
-
-    "fgaNic1Name": "[concat(variables('vmName'),'-Nic1')]",
+    "fgaNic1Name": "[concat(variables('fgAVmName'),'-Nic1')]",
     "fgaNic1Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('fgaNic1Name'))]",
-    "fgaNic2Name": "[concat(variables('vmName'),'-Nic2')]",
+    "fgaNic2Name": "[concat(variables('fgAVmName'),'-Nic2')]",
     "fgaNic2Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('fgaNic2Name'))]",
-    "fgbNic1Name": "[concat(variables('vm2Name'),'-Nic1')]",
+    "fgbNic1Name": "[concat(variables('fgBVmName'),'-Nic1')]",
     "fgbNic1Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('fgbNic1Name'))]",
-    "fgbNic2Name": "[concat(variables('vm2Name'),'-Nic2')]",
+    "fgbNic2Name": "[concat(variables('fgBVmName'),'-Nic2')]",
     "fgbNic2Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('fgbNic2Name'))]",
-    "fgaNic3Name": "[concat(variables('vmName'),'-Nic3')]",
+    "fgaNic3Name": "[concat(variables('fgAVmName'),'-Nic3')]",
     "fgaNic3Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('fgaNic3Name'))]",
-    "fgbNic3Name": "[concat(variables('vm2Name'),'-Nic3')]",
+    "fgbNic3Name": "[concat(variables('fgBVmName'),'-Nic3')]",
     "fgbNic3Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('fgbNic3Name'))]",
-    "fgaNic4Name": "[concat(variables('vmName'),'-Nic4')]",
+    "fgaNic4Name": "[concat(variables('fgAVmName'),'-Nic4')]",
     "fgaNic4Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('fgaNic4Name'))]",
-    "fgbNic4Name": "[concat(variables('vm2Name'),'-Nic4')]",
+    "fgbNic4Name": "[concat(variables('fgBVmName'),'-Nic4')]",
     "fgbNic4Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('fgbNic4Name'))]",
 
     "publicIPName": "[if(equals(parameters('publicIPName'),''),concat(parameters('fortiGateNamePrefix'),'-FGT-PIP'),parameters('publicIPName'))]",
@@ -983,7 +981,7 @@
     },
     {
       "type": "Microsoft.Compute/virtualMachines",
-      "name": "[variables('fgaVmName')]",
+      "name": "[variables('fgAVmName')]",
       "apiVersion": "2021-07-01",
       "tags": {
        "provider": "[toUpper(parameters('fortinetTags').provider)]"
@@ -1011,7 +1009,7 @@
           "id": "[variables('fgAvailabilitySetId')]"
         },
         "osProfile": {
-          "computerName": "[variables('fgaVmName')]",
+          "computerName": "[variables('fgAVmName')]",
           "adminUsername": "[parameters('adminUsername')]",
           "adminPassword": "[parameters('adminPassword')]",
           "customData": "[variables('fgaCustomData')]"
