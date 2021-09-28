@@ -19,7 +19,7 @@
 				"type": "Microsoft.Common.TextBox",
 				"label": "FortiWeb administrative username",
 				"defaultValue": "",
-				"toolTip": "Username for the FortiWeb virtual appliance. Most not be root, administrator or admin",
+				"toolTip": "Username for the FortiWeb virtual appliance. Must not be root, administrator or admin",
 				"constraints": {
 					"required": true,
 					"validations": [
@@ -247,7 +247,7 @@
 								},
 								"defaultValue": {
 									"name": "FortiWeb-VNET",
-									"addressPrefixSize": "/22"
+									"addressPrefixSize": "/24"
 								},
 								"constraints": {
 									"minAddressPrefixSize": "/27"
@@ -310,7 +310,7 @@
 						"type": "Microsoft.Common.TextBlock",
 						"visible": true,
 						"options": {
-							"text": "The public IP will be used for public services hosted on the FortiWeb such as IPSEC termination, management of the FortiWeb from external or services behind the FortiWeb such as a webserver."
+							"text": "The public IP will be used for web and api services hosted behind the FortiWeb, management of the FortiWeb from external."
 						}
 					},
 					{
@@ -345,7 +345,7 @@
 						"visible": true,
 						"options": {
 							"icon": "Info",
-							"text": "This deployment can use standard or basic SKU public IP's. Moving to a Active/Passive or Active/Active setup requires the use of a standard SKU public IP. Microsoft Azure offers a migration path from a basic to standard SKU public IP.",
+							"text": "This deployment can use standard or basic SKU public IP's. For production, Microsoft recommends standard SKU public IPs. Select the standard SKU in the create new option or choose a standard SKU public IP you already created before. Microsoft Azure offers a migration path from a basic to standard SKU public IP.",
 							"uri": "https://docs.microsoft.com/en-us/azure/virtual-network/virtual-network-public-ip-address-upgrade?tabs=option-upgrade-cli%2Coption-migrate-powershell"
 						}
 					}

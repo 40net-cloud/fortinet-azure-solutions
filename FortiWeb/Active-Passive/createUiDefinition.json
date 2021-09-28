@@ -19,7 +19,7 @@
 				"type": "Microsoft.Common.TextBox",
 				"label": "FortiWeb administrative username",
 				"defaultValue": "",
-				"toolTip": "Username for the FortiWeb virtual appliance. Most not be root, administrator or admin",
+				"toolTip": "Username for the FortiWeb virtual appliance. Must not be root, administrator or admin",
 				"constraints": {
 					"required": true,
 					"validations": [
@@ -131,10 +131,10 @@
 						"type": "Microsoft.Common.TextBlock",
 						"visible": true,
 						"options": {
-							"text": "For this FortiWeb deployment, it is recommended to use the general purpose or compute optimized virtual machines. A selection of supported instances sizes is listed in our documentation. FortiWeb Active/Passive HA uses the FGCP protocol for configuration sync and HA failover. This requires dedicated sync and management ports. A minimum of 4 NICs is required for the instance type.",
+							"text": "For this FortiWeb deployment, it is recommended to use the general purpose or compute optimized virtual machines. A selection of supported instances sizes is listed in our documentation.",
 							"link": {
 								"label": "Learn more",
-								"uri": "https://docs.fortinet.com/vm/azure/fortigate/7.0/azure-administration-guide/7.0.0/562841/instance-type-support"
+								"uri": "https://docs.fortinet.com/document/fortiweb-public-cloud/latest/about-fortiweb-for-azure/527834/instance-type-support"
 							}
 						}
 					},
@@ -313,74 +313,9 @@
 						"visible": true,
 						"options": {
 							"icon": "Info",
-							"text": "This deployment uses a Standard SKU Azure Load Balancer and requires a Standard SKU public IP. Microsoft Azure offers a migration path from a basic to standard SKU public IP. The management IP's for both FortiWeb can be set to none. If no alternative internet access is provided the SDN Connector functionality will not work.",
+							"text": "This deployment can use standard or basic SKU public IP's and load balancers. For production, Microsoft recommends standard SKU public IPs. Select the standard SKU in the create new option or choose a standard SKU public IP you already created before. Microsoft Azure offers a migration path from a basic to standard SKU public IP.",
 							"uri": "https://docs.microsoft.com/en-us/azure/virtual-network/virtual-network-public-ip-address-upgrade?tabs=option-upgrade-cli%2Coption-migrate-powershell"
 						}
-					}
-				]
-			},
-			{
-				"name": "publicipreview",
-				"label": "Public IP Verification",
-				"subLabel": {
-					"preValidation": "Public IP SKU Review",
-					"postValidation": "Done"
-				},
-				"bladeTitle": "Public IP SKU Review",
-				"elements": [
-					{
-						"name": "BasicIPWarning1",
-						"type": "Microsoft.Common.InfoBox",
-						"options": {
-							"icon": "Error",
-							"text": "The External Load Balancer Public IP is configured using Basic SKU. Please return to previous blade and use Standard type public IPs to support Azure Standard Load Balancers"
-						},
-						"visible": "[not(equals(steps('publicip').loadbalancerpublicip.sku, 'Standard'))]"
-					},
-					{
-						"name": "StandardIPConfirmation1",
-						"type": "Microsoft.Common.InfoBox",
-						"options": {
-							"icon": "Info",
-							"text": "The External Load Balancer Public IP is Standard SKU. Proceed."
-						},
-						"visible": "[equals(steps('publicip').loadbalancerpublicip.sku, 'Standard')]"
-					},
-					{
-						"name": "BasicIPWarning2",
-						"type": "Microsoft.Common.InfoBox",
-						"options": {
-							"icon": "Error",
-							"text": "The FortiWeb A management Public IP is configured using Basic SKU. Please return to previous blade and use Standard type public IPs to support Azure Standard Load Balancers"
-						},
-						"visible": "[not(equals(steps('publicip').fgtamgmtpublicip.sku, 'Standard'))]"
-					},
-					{
-						"name": "StandardIPConfirmation2",
-						"type": "Microsoft.Common.InfoBox",
-						"options": {
-							"icon": "Info",
-							"text": "The FortiWeb A management Public IP is Standard SKU. Proceed."
-						},
-						"visible": "[equals(steps('publicip').fgtamgmtpublicip.sku, 'Standard')]"
-					},
-					{
-						"name": "BasicIPWarning3",
-						"type": "Microsoft.Common.InfoBox",
-						"options": {
-							"icon": "Error",
-							"text": "The FortiWeb B management Public IP is configured using Basic SKU. Please return to previous blade and use Standard type public IPs to support Azure Standard Load Balancers"
-						},
-						"visible": "[not(equals(steps('publicip').fgtbmgmtpublicip.sku, 'Standard'))]"
-					},
-					{
-						"name": "StandardIPConfirmation3",
-						"type": "Microsoft.Common.InfoBox",
-						"options": {
-							"icon": "Info",
-							"text": "The FortiWeb B management Public IP is Standard SKU. Proceed."
-						},
-						"visible": "[equals(steps('publicip').fgtbmgmtpublicip.sku, 'Standard')]"
 					}
 				]
 			}
