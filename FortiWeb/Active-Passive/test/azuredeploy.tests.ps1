@@ -37,7 +37,7 @@ BeforeAll {
                  'fortiWebNamePrefix'=$testsPrefix
                  'publicIPName'=$publicIPName
                }
-    $ports = @(8443, 22)
+    $ports = @(40030, 50030, 40031, 50031)
 }
 
 Describe 'FWB Single VM' {
