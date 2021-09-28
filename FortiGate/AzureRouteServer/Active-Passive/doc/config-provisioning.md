@@ -98,6 +98,8 @@ config router bgp
 end
 </pre>
 
+## FortiGate B
+
 <pre>
 config system sdn-connector
   edit AzureSDN
