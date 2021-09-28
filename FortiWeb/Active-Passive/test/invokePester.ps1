@@ -39,7 +39,7 @@ $outputFile = Join-Path $SourceDir "TEST-armttk.xml";
 
 "Running ARM TTK"
 
-$result = @(Test-AzTemplate -TemplatePath $SourceDir -File mainTemplate.json)
+$result = @(Test-AzTemplate -TemplatePath $SourceDir)
 $result
 Export-NUnitXml -TestResults $result -Path $SourceDir
 
@@ -49,4 +49,5 @@ $outputFile = Join-Path $SourceDir "TEST-custom.xml";
 
 $container = New-PesterContainer -Path $SourceDir -Data @{sshkey = $sshkey; sshkeypub = $sshkeypub}
 $result = Invoke-Pester -Container $container -Output Detailed -PassThru -Path $SourceDir
+$result.Results
 Export-NUnitReport -Result $result -Path $outputFile

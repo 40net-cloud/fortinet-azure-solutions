@@ -533,7 +533,7 @@
               },
               "protocol": "Tcp",
               "frontendPort": 40030,
-              "backendPort": 443,
+              "backendPort": 8443,
               "enableFloatingIP": false
             }
           },
@@ -557,7 +557,7 @@
               },
               "protocol": "Tcp",
               "frontendPort": 40031,
-              "backendPort": 443,
+              "backendPort": 8443,
               "enableFloatingIP": false
             }
           }
