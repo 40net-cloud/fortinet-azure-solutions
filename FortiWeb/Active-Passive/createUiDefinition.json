@@ -81,11 +81,11 @@
 					"allowedValues": [
 						{
 							"label": "Bring Your Own License",
-							"value": "fortinet_fg-vm"
+							"value": "fortinet_fw-vm"
 						},
 						{
 							"label": "Pay As You Go",
-							"value": "fortinet_fg-vm_payg_20190624"
+							"value": "fortinet_fw-vm_payg"
 						}
 					]
 				},
@@ -109,16 +109,16 @@
 							"value": "6.2.1"
 						},
 						{
-							"label": "6.3.1",
-							"value": "6.3.1"
-						},
-						{
-							"label": "6.3.4",
-							"value": "6.3.4"
+							"label": "6.2.5",
+							"value": "6.2.5"
 						},
 						{
 							"label": "6.3.11",
 							"value": "6.3.11"
+						},
+						{
+							"label": "6.3.15",
+							"value": "6.3.15"
 						},
 						{
 							"label": "latest",
@@ -408,7 +408,8 @@
 			"publicIPNewOrExisting": "[steps('publicip').loadbalancerpublicip.newOrExistingOrNone]",
 			"publicIPName": "[steps('publicip').loadbalancerpublicip.name]",
 			"publicIPResourceGroup": "[steps('publicip').loadbalancerpublicip.resourceGroup]",
-			"publicIPAddressSKU": "[steps('publicip').publicip.sku]",
+			"publicIPType": "[steps('publicip').loadbalancerpublicip.publicIPAllocationMethod]",
+			"publicIPSKU": "[steps('publicip').loadbalancerpublicip.sku]",
 			"vnetNewOrExisting": "[steps('networking').virtualnetworksection.virtualnetwork.newOrExisting]",
 			"vnetName": "[steps('networking').virtualnetworksection.virtualnetwork.name]",
 			"vnetResourceGroup": "[steps('networking').virtualnetworksection.virtualnetwork.resourceGroup]",

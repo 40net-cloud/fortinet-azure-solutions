@@ -213,14 +213,6 @@
     "fwbBNic1Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('fwbBNic1Name'))]",
     "fwbBNic2Name": "[concat(variables('fwbBVmName'),'-Nic2')]",
     "fwbBNic2Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('fwbBNic2Name'))]",
-    "fwbANic3Name": "[concat(variables('fwbAVmName'),'-Nic3')]",
-    "fwbANic3Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('fwbANic3Name'))]",
-    "fwbBNic3Name": "[concat(variables('fwbBVmName'),'-Nic3')]",
-    "fwbBNic3Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('fwbBNic3Name'))]",
-    "fwbANic4Name": "[concat(variables('fwbAVmName'),'-Nic4')]",
-    "fwbANic4Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('fwbANic4Name'))]",
-    "fwbBNic4Name": "[concat(variables('fwbBVmName'),'-Nic4')]",
-    "fwbBNic4Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('fwbBNic4Name'))]",
 
     "publicIPName": "[if(equals(parameters('publicIPName'),''),concat(parameters('fortiWebNamePrefix'),'-FGT-PIP'),parameters('publicIPName'))]",
     "publicIPId": "[if(equals(parameters('publicIPNewOrExisting'),'new'),resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPName')),resourceId(parameters('publicIPResourceGroup'),'Microsoft.Network/publicIPAddresses',variables('publicIPName')))]",
@@ -229,29 +221,18 @@
     "NSGId": "[resourceID('Microsoft.Network/networkSecurityGroups/',variables('NSGName'))]",
 
     "sn1IPArray": "[split(parameters('subnet1Prefix'),'.')]",
-    "sn1IPArray2ndString": "[string(variables('sn1IPArray')[3])]",
-    "sn1IPArray2nd": "[split(variables('sn1IPArray2ndString'),'/')]",
-    "sn1CIDRmask": "[string(int(variables('sn1IPArray2nd')[1]))]",
-    "sn1IPArray3": "[string(add(int(variables('sn1IPArray2nd')[0]),1))]",
     "sn1IPArray2": "[string(int(variables('sn1IPArray')[2]))]",
     "sn1IPArray1": "[string(int(variables('sn1IPArray')[1]))]",
     "sn1IPArray0": "[string(int(variables('sn1IPArray')[0]))]",
-    "sn1GatewayIP": "[concat(variables('sn1IPArray0'),'.',variables('sn1IPArray1'),'.',variables('sn1IPArray2'),'.',variables('sn1IPArray3'))]",
     "sn1IPStartAddress": "[split(parameters('subnet1StartAddress'),'.')]",
     "sn1IPfwbA": "[concat(variables('sn1IPArray0'),'.',variables('sn1IPArray1'),'.',variables('sn1IPArray2'),'.',int(variables('sn1IPStartAddress')[3]))]",
     "sn1IPfwbB": "[concat(variables('sn1IPArray0'),'.',variables('sn1IPArray1'),'.',variables('sn1IPArray2'),'.',add(int(variables('sn1IPStartAddress')[3]),1))]",
 
     "sn2IPArray": "[split(parameters('subnet2Prefix'),'.')]",
-    "sn2IPArray2ndString": "[string(variables('sn2IPArray')[3])]",
-    "sn2IPArray2nd": "[split(variables('sn2IPArray2ndString'),'/')]",
-    "sn2CIDRmask": "[string(int(variables('sn2IPArray2nd')[1]))]",
-    "sn2IPArray3": "[string(add(int(variables('sn2IPArray2nd')[0]),1))]",
     "sn2IPArray2": "[string(int(variables('sn2IPArray')[2]))]",
     "sn2IPArray1": "[string(int(variables('sn2IPArray')[1]))]",
     "sn2IPArray0": "[string(int(variables('sn2IPArray')[0]))]",
-    "sn2GatewayIP": "[concat(variables('sn2IPArray0'),'.',variables('sn2IPArray1'),'.',variables('sn2IPArray2'),'.',variables('sn2IPArray3'))]",
     "sn2IPStartAddress": "[split(parameters('subnet2StartAddress'),'.')]",
-    "sn2IPlb": "[concat(variables('sn2IPArray0'),'.',variables('sn2IPArray1'),'.',variables('sn2IPArray2'),'.',int(variables('sn2IPStartAddress')[3]))]",
     "sn2IPfwbA": "[concat(variables('sn2IPArray0'),'.',variables('sn2IPArray1'),'.',variables('sn2IPArray2'),'.',add(int(variables('sn2IPStartAddress')[3]),1))]",
     "sn2IPfwbB": "[concat(variables('sn2IPArray0'),'.',variables('sn2IPArray1'),'.',variables('sn2IPArray2'),'.',add(int(variables('sn2IPStartAddress')[3]),2))]",
 
@@ -552,7 +533,7 @@
               },
               "protocol": "Tcp",
               "frontendPort": 40030,
-              "backendPort": 443,
+              "backendPort": 8443,
               "enableFloatingIP": false
             }
           },
@@ -576,7 +557,7 @@
               },
               "protocol": "Tcp",
               "frontendPort": 40031,
-              "backendPort": 443,
+              "backendPort": 8443,
               "enableFloatingIP": false
             }
           }
