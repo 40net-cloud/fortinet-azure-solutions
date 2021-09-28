@@ -18,9 +18,9 @@ BeforeAll {
     $templateName = "Active-Passive"
     $sourcePath = "$env:BUILD_SOURCESDIRECTORY\FortiWeb\$templateName"
     $scriptPath = "$env:BUILD_SOURCESDIRECTORY\FortiWeb\$templateName\test"
-    $templateFileName = "azuredeploy.json"
+    $templateFileName = "mainTemplate.json"
     $templateFileLocation = "$sourcePath\$templateFileName"
-    $templateParameterFileName = "azuredeploy.parameters.json"
+    $templateParameterFileName = "mainTemplate.parameters.json"
     $templateParameterFileLocation = "$sourcePath\$templateParameterFileName"
 
     # Basic Variables
