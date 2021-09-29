@@ -896,12 +896,31 @@
                 "id": "[variables('externalLBProbeId')]"
               },
               "protocol": "Udp",
-              "frontendPort": 10551,
-              "backendPort": 10551,
-              "enableFloatingIP": true,
+              "frontendPort": 500,
+              "backendPort": 500,
+              "enableFloatingIP": false,
               "idleTimeoutInMinutes": 5
             },
-            "name": "PublicLBRule-FE1-udp10551"
+            "name": "PublicLBRule-FE1-IPSEC-IKE"
+          },
+          {
+            "properties": {
+              "frontendIPConfiguration": {
+                "id": "[variables('externalLBFEId')]"
+              },
+              "backendAddressPool": {
+                "id": "[variables('externalLBBEId')]"
+              },
+              "probe": {
+                "id": "[variables('externalLBProbeId')]"
+              },
+              "protocol": "Udp",
+              "frontendPort": 4500,
+              "backendPort": 4500,
+              "enableFloatingIP": false,
+              "idleTimeoutInMinutes": 5
+            },
+            "name": "PublicLBRule-FE1-IPSEC-NATT"
           }
         ],
         "probes": [
