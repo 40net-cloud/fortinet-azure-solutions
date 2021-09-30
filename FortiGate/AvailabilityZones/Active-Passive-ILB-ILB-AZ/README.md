@@ -2,7 +2,7 @@
 
 ## How to deploy
 
-The FortiGate solution can be deployed using the Azure Portal or Azure CLI.
+The FortiGate solution can be deployed using the Azure Portal or Azure Portal Wizard.
 
 ### Azure Portal
 
