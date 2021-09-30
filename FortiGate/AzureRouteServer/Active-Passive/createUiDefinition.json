@@ -713,7 +713,7 @@
 						"label": "FortiGate License",
 						"elements": [
 							{
-								"name": "customdatatext",
+								"name": "licensetext",
 								"type": "Microsoft.Common.TextBlock",
 								"visible": true,
 								"options": {
@@ -769,7 +769,7 @@
 								"visible": true,
 								"options": {
 									"text": "When your organisation is subscribed to Flex-VM you can provide the licenses token here."
-								},
+								}
 							},
 							{
 								"name": "licenseaflexvmtoken",

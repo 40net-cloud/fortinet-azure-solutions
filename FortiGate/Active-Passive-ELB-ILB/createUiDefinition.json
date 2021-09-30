@@ -655,7 +655,7 @@
 						"label": "FortiGate License",
 						"elements": [
 							{
-								"name": "customdatatext",
+								"name": "licensetext",
 								"type": "Microsoft.Common.TextBlock",
 								"visible": true,
 								"options": {
