@@ -325,6 +325,13 @@
         "description": "Primary FortiGate BYOL license content"
       }
     },
+    "fortiGateLicenseBYOLB": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Secondary FortiGate BYOL license content"
+      }
+    },
     "fortiGateLicenseFlexVMA": {
       "type": "string",
       "defaultValue": "",
@@ -337,13 +344,6 @@
       "defaultValue": "",
       "metadata": {
         "description": "Secondary FortiGate BYOL Flex-VM license token"
-      }
-    },
-    "fortiGateLicenseBYOLB": {
-      "type": "string",
-      "defaultValue": "",
-      "metadata": {
-        "description": "Secondary FortiGate BYOL license content"
       }
     },
     "location": {
