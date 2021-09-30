@@ -1,0 +1,126 @@
+#!/bin/bash
+echo "
+##############################################################################################################
+#
+# Create a virtual network environment for FortiGate deployments
+#
+##############################################################################################################
+"
+
+if [ -z "$DEPLOY_LOCATION" ]
+then
+    # Input location
+    echo -n "Enter location (e.g. eastus2): "
+    stty_orig=`stty -g` # save original terminal setting.
+    read location         # read the location
+    stty $stty_orig     # restore terminal setting.
+    if [ -z "$location" ]
+    then
+        location="eastus2"
+    fi
+else
+    location="$DEPLOY_LOCATION"
+fi
+echo ""
+echo "--> Deployment in '$location' location ..."
+
+if [ -z "$DEPLOY_PREFIX" ]
+then
+    # Input prefix
+    echo -n "Enter prefix: "
+    stty_orig=`stty -g` # save original terminal setting.
+    read prefix         # read the prefix
+    stty $stty_orig     # restore terminal setting.
+    if [ -z "$prefix" ]
+    then
+        prefix="FORTI"
+    fi
+else
+    prefix="$DEPLOY_PREFIX"
+fi
+echo ""
+echo "--> Using prefix '$prefix' for all resources ..."
+
+if [ -z "$DEPLOY_USERNAME" ]; then
+    # Input username
+    echo -n "Enter username: "
+    stty_orig=$(stty -g) # save original terminal setting.
+    read username        # read the prefix
+    stty $stty_orig      # restore terminal setting.
+    if [ -z "$username" ]; then
+        username="azureuser"
+    fi
+else
+    username="$DEPLOY_USERNAME"
+fi
+echo ""
+echo "--> Using username '$username' ..."
+
+if [ -z "$DEPLOY_PASSWORD" ]; then
+    # Input password
+    echo -n "Enter password: "
+    stty_orig=$(stty -g) # save original terminal setting.
+    stty -echo           # turn-off echoing.
+    read password        # read the password
+    stty $stty_orig      # restore terminal setting.
+else
+    password="$DEPLOY_PASSWORD"
+    echo ""
+    echo "--> Using password found in env variable DEPLOY_PASSWORD ..."
+fi
+
+##############################################################################################################
+# Variables
+##############################################################################################################
+rg="$prefix-RG"
+vnet="$prefix-VNET"
+vnetspoke="$prefix-SPOKE"
+subnetspoke="SUBNET-SPOKE"
+
+lnxSize="Standard_B1ls"
+lnxImageURN="Canonical:0001-com-ubuntu-server-focal:20_04-lts:latest"
+
+
+##############################################################################################################
+# Create Resource Group
+##############################################################################################################
+echo ""
+echo "--> Creating $rg resource group ..."
+az group create --location "$location" --name "$rg"
+
+##############################################################################################################
+# Create VNET
+##############################################################################################################
+echo ""
+echo "--> Creating VNET $vnet ..."
+az network vnet create --name "$vnet" --resource-group $rg --address-prefixes 172.16.150.0/24
+az network vnet subnet create --resource-group $rg --vnet-name "$vnet" --name "ExternalSubnet" --address-prefixes 172.16.150.0/28
+az network vnet subnet create --resource-group $rg --vnet-name "$vnet" --name "InternalSubnet" --address-prefixes 172.16.150.16/28
+az network vnet subnet create --resource-group $rg --vnet-name "$vnet" --name "HASyncSubnet" --address-prefixes 172.16.150.32/28
+az network vnet subnet create --resource-group $rg --vnet-name "$vnet" --name "ManagementSubnet" --address-prefixes 172.16.150.48/28
+az network vnet subnet create --resource-group $rg --vnet-name "$vnet" --name "RouteServerSubnet" --address-prefixes 172.16.150.64/27
+az network vnet subnet create --resource-group $rg --vnet-name "$vnet" --name "ProtectedSubnet" --address-prefixes 172.16.150.96/27
+
+##############################################################################################################
+# Create Spoke VNET
+##############################################################################################################
+echo ""
+echo "--> Creating Spoke VNET $vnet ..."
+az network vnet create --resource-group "$rg" --name "$vnetspoke" --address-prefix "172.16.151.0/24" --subnet-name "$subnetspoke" --subnet-prefix "172.16.151.0/25" --location "$location"
+az network vnet peering create --resource-group "$rg" --name HUB-2-SPOKE --vnet-name "$vnet" --remote-vnet "$vnetspoke" --allow-vnet-access --allow-forwarded-traffic
+az network vnet peering create --resource-group "$rg" --name HUB-2-SPOKE --vnet-name "$vnetspoke" --remote-vnet "$vnet" --allow-vnet-access --allow-forwarded-traffic
+
+##############################################################################################################
+# Create VM
+##############################################################################################################
+az network nic create --resource-group "$rg" --name "$prefix-VM-LNX-NIC" --vnet-name "$vnetspoke" --subnet "$subnetspoke" --location "$location"
+az vm create --resource-group "$rg" --name "$prefix-VM-LNX" --nics "$prefix-VM-LNX-NIC" --image UbuntuLTS --location "$location" --size "$lnxSize" \
+                --admin-username "$username" --admin-password "$password" --image "$lnxImageURN" --output json
+
+echo "
+##############################################################################################################
+# DONE
+##############################################################################################################
+"
+
+exit 0
