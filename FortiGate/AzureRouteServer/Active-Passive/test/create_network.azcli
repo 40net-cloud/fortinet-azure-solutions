@@ -107,8 +107,8 @@ az network vnet subnet create --resource-group $rg --vnet-name "$vnet" --name "P
 echo ""
 echo "--> Creating Spoke VNET $vnet ..."
 az network vnet create --resource-group "$rg" --name "$vnetspoke" --address-prefix "172.16.151.0/24" --subnet-name "$subnetspoke" --subnet-prefix "172.16.151.0/25" --location "$location"
-az network vnet peering create --resource-group "$rg" --name HUB-2-SPOKE --vnet-name "$vnet" --remote-vnet "$vnetspoke" --allow-vnet-access --allow-forwarded-traffic --allow-gateway-transit
-az network vnet peering create --resource-group "$rg" --name HUB-2-SPOKE --vnet-name "$vnetspoke" --remote-vnet "$vnet" --allow-vnet-access --allow-forwarded-traffic --use-remote-gateways
+az network vnet peering create --resource-group "$rg" --name HUB-2-SPOKE --vnet-name "$vnet" --remote-vnet "$vnetspoke" --allow-vnet-access --allow-forwarded-traffic
+az network vnet peering create --resource-group "$rg" --name HUB-2-SPOKE --vnet-name "$vnetspoke" --remote-vnet "$vnet" --allow-vnet-access --allow-forwarded-traffic
 
 ##############################################################################################################
 # Create VM
