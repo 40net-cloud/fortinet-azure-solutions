@@ -325,6 +325,13 @@
         "description": "Primary FortiGate BYOL license content"
       }
     },
+    "fortiGateLicenseBYOLB": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Secondary FortiGate BYOL license content"
+      }
+    },
     "fortiGateLicenseFlexVMA": {
       "type": "string",
       "defaultValue": "",
@@ -337,13 +344,6 @@
       "defaultValue": "",
       "metadata": {
         "description": "Secondary FortiGate BYOL Flex-VM license token"
-      }
-    },
-    "fortiGateLicenseBYOLB": {
-      "type": "string",
-      "defaultValue": "",
-      "metadata": {
-        "description": "Secondary FortiGate BYOL license content"
       }
     },
     "location": {
@@ -486,7 +486,7 @@
     "externalLBId": "[resourceId('Microsoft.Network/loadBalancers',variables('externalLBName'))]",
     "externalLBFEName": "[concat(parameters('fortiGateNamePrefix'),'-ELB-',parameters('subnet1Name'),'-FrontEnd')]",
     "externalLBFEId": "[resourceID('Microsoft.Network/loadBalancers/frontendIPConfigurations/',variables('externalLBName'),variables('externalLBFEName'))]",
-    "externalLBBEName": "[concat(parameters('fortiGateNamePrefix'),'-ILB-',parameters('subnet1Name'),'-BackEnd')]",
+    "externalLBBEName": "[concat(parameters('fortiGateNamePrefix'),'-ELB-',parameters('subnet1Name'),'-BackEnd')]",
     "externalLBBEId": "[resourceID('Microsoft.Network/loadBalancers/backendAddressPools/',variables('externalLBName'),variables('externalLBBEName'))]",
     "externalLBProbeName": "lbprobe",
     "externalLBProbeId": "[resourceId('Microsoft.Network/loadBalancers/probes/',variables('externalLBName'),variables('externalLBProbeName'))]"
