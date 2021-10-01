@@ -1,5 +1,5 @@
 resources:
-  - repo: self
+- repo: self
 
 pool:
   vmImage: 'ubuntu-latest'
@@ -22,8 +22,8 @@ steps:
   displayName: 'Running tests'
   inputs:
     azureSubscription: 'AzureSubscription'
-    ScriptPath: 'FortiGate/AvailabilityZones/Active-Passive-SDN-AZ/test/invokePester.ps1'
-    ScriptArguments: '-templatename FortiGate/AvailabilityZones/Active-Passive-SDN -sshkey $(sshkey.secureFilePath) -sshkeypub $(sshkeypub.secureFilePath)'
+    ScriptPath: 'FortiWeb/Active-Active/test/invokePester.ps1'
+    ScriptArguments: '-templatename FortiWeb/Active-Active -sshkey $(sshkey.secureFilePath) -sshkeypub $(sshkeypub.secureFilePath)'
     azurePowerShellVersion: LatestVersion
     pwsh: true
 
@@ -49,6 +49,6 @@ trigger:
     - dev
   paths:
     exclude:
-    - FortiGate/AvailabilityZones/Active-Passive-SDN-AZ/*.md
+    - FortiWeb/Active-Active/*.md
     include:
-    - FortiGate/AvailabilityZones/Active-Passive-SDN-AZ/*
+    - FortiWeb/Active-Active/*

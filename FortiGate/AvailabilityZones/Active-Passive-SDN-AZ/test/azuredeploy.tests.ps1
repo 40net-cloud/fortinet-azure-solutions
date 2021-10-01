@@ -8,41 +8,46 @@
     This file has been created as an example of using Pester to evaluate ARM templates
 #>
 
-Function random-password ($length = 15) {
-    $punc = 46..46
-    $digits = 48..57
-    $letters = 65..90 + 97..122
+param (
+    [string]$sshkey,
+    [string]$sshkeypub
+)
 
-    # Thanks to
-    # https://blogs.technet.com/b/heyscriptingguy/archive/2012/01/07/use-pow
-    $password = get-random -count $length `
-        -input ($punc + $digits + $letters) |
-        % -begin { $aa = $null } `
-        -process {$aa += [char]$_} `
-        -end {$aa}
+BeforeAll {
+    $templateName = "Active-Passive-SDN-AZ"
+    $sourcePath = "$env:BUILD_SOURCESDIRECTORY\FortiGate\$templateName"
+    $scriptPath = "$env:BUILD_SOURCESDIRECTORY\FortiGate\$templateName\test"
+    $templateFileName = "azuredeploy.json"
+    $templateFileLocation = "$sourcePath\$templateFileName"
+    $templateMetadataFileName = "metadata.json"
+    $templateMetadataFileLocation = "$sourcePath\$templateMetadataFileName"
+    $templateParameterFileName = "azuredeploy.parameters.json"
+    $templateParameterFileLocation = "$sourcePath\$templateParameterFileName"
 
-    return $password
+    # Basic Variables
+    $testsRandom = Get-Random 10001
+    $testsPrefix = "FORTIQA"
+    $testsResourceGroupName = "FORTIQA-$testsRandom-$templateName"
+    $testsAdminUsername = "azureuser"
+    $testsResourceGroupLocation = "West Europe"
+
+    # ARM Template Variables
+    $config = "config system global `n set gui-theme mariner `n end `n config system admin `n edit devops `n set accprofile super_admin `n set ssh-public-key1 `""
+    $config += Get-Content $sshkeypub
+    $config += "`" `n set password $testsResourceGroupName `n next `n end"
+    $publicIP2Name = "$testsPrefix-FGT-A-MGMT-PIP"
+    $publicIP3Name = "$testsPrefix-FGT-B-MGMT-PIP"
+    $params = @{ 'adminUsername'=$testsAdminUsername
+                 'adminPassword'=$testsResourceGroupName
+                 'fortiGateNamePrefix'=$testsPrefix
+                 'fortiGateAditionalCustomData'=$config
+                 'publicIP2Name'=$publicIP2Name
+                 'publicIP3Name'=$publicIP3Name
+               }
+    $ports = @(443, 22)
 }
 
-$templateName = "Active-Passive-SDN-AZ"
-$sourcePath = "$env:BUILD_SOURCESDIRECTORY\FortiGate\AvailabilityZones\$templateName"
-$scriptPath = "$env:BUILD_SOURCESDIRECTORY\FortiGate\AvailabilityZones\$templateName\test"
-$templateFileName = "azuredeploy.json"
-$templateFileLocation = "$sourcePath\$templateFileName"
-$templateMetadataFileName = "metadata.json"
-$templateMetadataFileLocation = "$sourcePath\$templateMetadataFileName"
-$templateParameterFileName = "azuredeploy.parameters.json"
-$templateParameterFileLocation = "$sourcePath\$templateParameterFileName"
-
-# Basic Variables
-$testsRandom = Get-Random 10001
-$testsPrefix = "FORTIQA"
-$testsResourceGroupName = "FORTIQA-$testsRandom-$templateName"
-$testsAdminUsername = "azureuser"
-#$testsAdminPassword = $testsResourceGroupName | ConvertTo-SecureString -AsPlainText -Force
-$testsResourceGroupLocation = "West Europe"
-
-Describe 'FGT A/P SDN AZ' {
+Describe 'FGT A/P SDN' {
     Context 'Validation' {
         It 'Has a JSON template' {
             $templateFileLocation | Should -Exist
@@ -68,6 +73,7 @@ Describe 'FGT A/P SDN AZ' {
 
         It 'Creates the expected Azure resources' {
             $expectedResources = 'Microsoft.Resources/deployments',
+                                 'Microsoft.Compute/availabilitySets',
                                  'Microsoft.Network/routeTables',
                                  'Microsoft.Network/virtualNetworks',
                                  'Microsoft.Network/networkSecurityGroups',
@@ -89,32 +95,51 @@ Describe 'FGT A/P SDN AZ' {
         }
 
         It 'Contains the expected parameters' {
-            $expectedTemplateParameters = 'adminPassword',
+            $expectedTemplateParameters = 'acceleratedNetworking',
+                                          'availabilityOptions'
+                                          'adminPassword',
                                           'adminUsername',
-                                          'fortigateImageSKU',
-                                          'fortigateImageVersion',
-                                          'fortigateNamePrefix',
+                                          'fortiGateAditionalCustomData',
+                                          'fortiGateImageSKU',
+                                          'fortiGateImageVersion',
+                                          'fortiGateLicenseBYOLA',
+                                          'fortiGateLicenseBYOLB',
+                                          'fortiGateLicenseFlexVMA',
+                                          'fortiGateLicenseFlexVMB',
+                                          'fortiGateNamePrefix',
+                                          'fortiManager',
+                                          'fortiManagerIP',
+                                          'fortiManagerSerial',
                                           'fortinetTags',
                                           'instanceType',
                                           'location',
+                                          'publicIP2AddressSKU',
+                                          'publicIP2AddressType',
                                           'publicIP2Name',
                                           'publicIP2NewOrExisting',
                                           'publicIP2ResourceGroup',
+                                          'publicIP3AddressSKU',
+                                          'publicIP3AddressType',
                                           'publicIP3Name',
                                           'publicIP3NewOrExisting',
                                           'publicIP3ResourceGroup',
+                                          'publicIPAddressSKU',
                                           'publicIPAddressType',
                                           'publicIPName',
                                           'publicIPNewOrExisting',
                                           'publicIPResourceGroup',
                                           'subnet1Name',
                                           'subnet1Prefix',
+                                          'subnet1StartAddress',
                                           'subnet2Name',
                                           'subnet2Prefix',
+                                          'subnet2StartAddress',
                                           'subnet3Name',
                                           'subnet3Prefix',
+                                          'subnet3StartAddress',
                                           'subnet4Name',
                                           'subnet4Prefix',
+                                          'subnet4StartAddress',
                                           'subnet5Name',
                                           'subnet5Prefix',
                                           'vnetAddressPrefix',
@@ -124,26 +149,12 @@ Describe 'FGT A/P SDN AZ' {
             $templateParameters = (get-content $templateFileLocation | ConvertFrom-Json -ErrorAction SilentlyContinue).Parameters | Get-Member -MemberType NoteProperty | % Name | sort
             $templateParameters | Should -Be $expectedTemplateParameters
         }
-
     }
 
     Context 'Deployment' {
 
-        # Set working directory & create resource group
-        Set-Location $sourcePath
-        New-AzResourceGroup -Name $testsResourceGroupName -Location "$testsResourceGroupLocation"
-
-        # Validate all ARM templates one by one
-        $testsErrorFound = $false
-
-        $params = @{ 'adminUsername'=$testsAdminUsername
-                     'adminPassword'=$testsResourceGroupName
-                     'fortigateNamePrefix'=$testsPrefix
-                    }
-        $publicIPName = "FGTAMgmtPublicIP"
-        $publicIP2Name = "FGTBMgmtPublicIP"
-
         It "Test Deployment" {
+            New-AzResourceGroup -Name $testsResourceGroupName -Location "$testsResourceGroupLocation"
             (Test-AzResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName" -TemplateFile "$templateFileName" -TemplateParameterObject $params).Count | Should -Not -BeGreaterThan 0
         }
         It "Deployment" {
@@ -157,23 +168,52 @@ Describe 'FGT A/P SDN AZ' {
             Write-Host ($result | Format-Table | Out-String)
             $result | Should -Not -Be $null
         }
+    }
 
-        443, 22 | Foreach-Object {
-            it "FGT A: Port [$_] is listening" {
-                $result = Get-AzPublicIpAddress -Name $publicIPName -ResourceGroupName $testsResourceGroupName
-                $portListening = (Test-Connection -TargetName $result.IpAddress -TCPPort $_ -TimeoutSeconds 100)
+    Context 'Deployment test' {
+
+        BeforeAll {
+            $fgta = (Get-AzPublicIpAddress -Name $publicIPName -ResourceGroupName $testsResourceGroupName).IpAddress
+            $fgtb = (Get-AzPublicIpAddress -Name $publicIPName -ResourceGroupName $testsResourceGroupName).IpAddress
+            Write-Host ("FortiGate A public IP: " + $fgta)
+            Write-Host ("FortiGate B public IP: " + $fgtb)
+            chmod 400 $sshkey
+            $verify_commands = @'
+            config system console
+            set output standard
+            end
+            show system interface
+            show router static
+            diag debug cloudinit show
+            exit
+'@
+            $OFS = "`n"
+        }
+        It "FGT A: Ports listening" {
+            ForEach( $port in $ports ) {
+                Write-Host ("Check port: $port" )
+                $portListening = (Test-Connection -TargetName $fgta -TCPPort $port -TimeoutSeconds 100)
                 $portListening | Should -Be $true
             }
         }
-
-        443, 22 | Foreach-Object {
-            it "FGT B: Port [$_] is listening" {
-                $result = Get-AzPublicIpAddress -Name $publicIP2Name -ResourceGroupName $testsResourceGroupName
-                $portListening = (Test-Connection -TargetName $result.IpAddress -TCPPort $_ -TimeoutSeconds 100)
+        It "FGT B: Ports listening" {
+            ForEach( $port in $ports ) {
+                Write-Host ("Check port: $port" )
+                $portListening = (Test-Connection -TargetName $fgtb -TCPPort $port -TimeoutSeconds 100)
                 $portListening | Should -Be $true
             }
         }
+        It "FGT A: Verify configuration" {
+            $result = $verify_commands | ssh -tt -i $sshkey -o StrictHostKeyChecking=no devops@$fgta
+            Write-Host ("Config: " + $result) -Separator `n
+        }
+        It "FGT B: Verify configuration" {
+            $result = $verify_commands | ssh -tt -i $sshkey -o StrictHostKeyChecking=no devops@$fgtb
+            Write-Host ("Config: " + $result) -Separator `n
+        }
+    }
 
+    Context 'Cleanup' {
         It "Cleanup of deployment" {
             Remove-AzResourceGroup -Name $testsResourceGroupName -Force
         }
