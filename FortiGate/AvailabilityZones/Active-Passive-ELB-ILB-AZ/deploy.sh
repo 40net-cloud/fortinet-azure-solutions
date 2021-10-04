@@ -125,7 +125,7 @@ Deployment information:
 
 Username: $USERNAME
 
-FortiGate IP addesses
+FortiGate IP addresses
 "
 query="[?virtualMachine.name.starts_with(@, '$prefix')].{virtualMachine:virtualMachine.name, publicIP:virtualMachine.network.publicIpAddresses[0].ipAddress,privateIP:virtualMachine.network.privateIpAddresses[0]}"
 az vm list-ip-addresses --query "$query" --output tsv
