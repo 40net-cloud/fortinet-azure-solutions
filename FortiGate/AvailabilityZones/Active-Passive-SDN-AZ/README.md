@@ -1,4 +1,4 @@
-# Availability Zone - Active/Passive High Available FortiGate pair with Fabdric Connector Failover
+# Availability Zone - Active/Passive High Available FortiGate pair with Fabric Connector Failover
 
 [![Build Status](https://dev.azure.com/jvh-2520/Fortinet-Azure/_apis/build/status/AvailabilityZone/Active-Passive-SDN-AZ?branchName=main)](https://dev.azure.com/jvh-2520/Fortinet-Azure/_build/latest?definitionId=16&branchName=main)
 
@@ -37,20 +37,12 @@ The FortiGate solution can be deployed using the Azure Portal or Azure CLI. Ther
 
 ### Azure Portal
 
+Standard Custom Template Deployment:
+[![Deploy Azure Portal Button](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.svg?sanitize=true)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2F40net-cloud%2Ffortinet-azure-solutions%2Fmain%2FFortiGate%2FAvailabilityZones%2FActive-Passive-SDN-AZ%2Fazuredeploy.json)
 
-<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2F40net-cloud%2Ffortinet-azure-solutions%2Fmain%2FFortiGate%2FAvailabilityZones%2FActive-Passive-SDN-AZ%2Fazuredeploy.json" target="_blank">
-  <img src="https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.svg?sanitize=true"/>
-</a>
-<a href="http://armviz.io/#/?load=https%3A%2F%2Fraw.githubusercontent.com%2F40net-cloud%2Ffortinet-azure-solutions$2Fmain%2FFortiGate%2FAvailabilityZones%2FActive-Passive-SDN-AZ%2Fazuredeploy.json" target="_blank">
-  <img src="https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/visualizebutton.svg?sanitize=true"/>
-</a>
+Azure Portal Wizard Template Deployment:
 
-<br/>
-Azure Portal Wizard:
-<br/>
-<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2F40net-cloud%2Ffortinet-azure-solutions%2Fmain%2FFortiGate%2FAvailabilityZones%2FActive-Passive-SDN-AZ%2Fazuredeploy.json/createUIDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2F40net-cloud%2Ffortinet-azure-solutions%2Fmain%2FFortiGate%2FAvailabilityZones%2FActive-Passive-SDN-AZ%2FcreateUiDefinition.json" target="_blank">
-  <img src="https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.svg?sanitize=true"/>
-</a>
+[![Deploy Azure Portal Wizard Button](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.svg?sanitize=true)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2F40net-cloud%2Ffortinet-azure-solutions%2Fmain%2FFortiGate%2FAvailabilityZones%2FActive-Passive-SDN-AZ%2Fazuredeploy.json/createUIDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2F40net-cloud%2Ffortinet-azure-solutions%2Fmain%2FFortiGate%2FAvailabilityZones%2FActive-Passive-SDN-AZ%2FcreateUiDefinition.json)
 
 ### Azure CLI
 
@@ -73,4 +65,4 @@ More documentation can be found on [the Availability Set version of this templat
 
 ## License
 
-[License](LICENSE) © Fortinet Technologies. All rights reserved.
+[License](/LICENSE) © Fortinet Technologies. All rights reserved.
