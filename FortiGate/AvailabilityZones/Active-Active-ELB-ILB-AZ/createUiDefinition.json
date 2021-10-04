@@ -16,10 +16,11 @@
 		"basics": [
 			{
 				"name": "instancetypeinfo",
-				"type": "Microsoft.Common.TextBlock",
+				"type": "Microsoft.Common.InfoBox",
 				"visible": true,
 				"options": {
-					"text": "FortiGate - Active/Active - External and Internal Load Balancers - Availability Set or Zone"
+					"icon": "Info",
+					"text": "FortiGate Deployment Type - Active/Active - External and Internal Load Balancers - Availability Set or Zone"
 				}
 			},
 			{
