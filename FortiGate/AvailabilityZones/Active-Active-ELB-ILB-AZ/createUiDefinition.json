@@ -15,6 +15,14 @@
 		],
 		"basics": [
 			{
+				"name": "instancetypeinfo",
+				"type": "Microsoft.Common.TextBlock",
+				"visible": true,
+				"options": {
+					"text": "FortiGate - Active/Active - External and Internal Load Balancers - Availability Set or Zone"
+				}
+			},
+			{
 				"name": "adminUsername",
 				"type": "Microsoft.Common.TextBox",
 				"label": "FortiGate administrative username",
