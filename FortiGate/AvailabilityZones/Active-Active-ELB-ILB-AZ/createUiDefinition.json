@@ -20,7 +20,7 @@
 				"visible": true,
 				"options": {
 					"icon": "Info",
-					"text": "FortiGate Deployment Type - Active/Active - External and Internal Load Balancers - Availability Set or Zone"
+					"text": "FortiGate Deployment Type - Active/Active - External and Internal Load Balancers - Availability Set or Availability Zones"
 				}
 			},
 			{
