@@ -3,7 +3,7 @@ echo "
 ##############################################################################################################
 #
 # Fortinet FortiGate ARM deployment template
-# Active/Active loadbalanced pair of standalone FortiGates for resilience and scale using Availability Zones
+# Active/Active load balanced pair of standalone FortiGates for resilience and scale using Availability Zones
 # or an Availability Set
 #
 ##############################################################################################################
@@ -94,7 +94,7 @@ az group create --location "$location" --name "$rg"
 echo "--> Validation deployment in $rg resource group ..."
 az deployment group validate --resource-group "$rg" \
                         --template-file azuredeploy.json \
-                        --parameters adminUsername="$username" adminPassword=$passwd fortigateNamePrefix=$prefix
+                        --parameters adminUsername="$username" adminPassword=$passwd fortiGateNamePrefix=$prefix
 result=$?
 if [ $result != 0 ];
 then
@@ -106,7 +106,7 @@ fi
 echo "--> Deployment of $rg resources ..."
 az deployment group create --confirm-with-what-if --resource-group "$rg" \
                         --template-file azuredeploy.json \
-                        --parameters adminUsername="$username" adminPassword=$passwd fortigateNamePrefix=$prefix
+                        --parameters adminUsername="$username" adminPassword=$passwd fortiGateNamePrefix=$prefix
 result=$?
 if [[ $result != 0 ]];
 then
@@ -117,11 +117,11 @@ echo "
 ##############################################################################################################
 #
 # FortiGate Azure deployment using ARM Template
-# Active/Active loadbalanced pair of standalone FortiGates for resilience and scale using Availability Zones
+# Active/Active load balanced pair of standalone FortiGates for resilience and scale using Availability Zones
 # or an Availability Set
 #
 # You can access both management GUIs and SSH using the public IP address of the load balancer using HTTPS on
-# port 40030, 40031 and for SSH on port 50030 and 50031. The FortiGate VMs are also acessible using their
+# port 40030, 40031 and for SSH on port 50030 and 50031. The FortiGate VMs are also accessible using their
 # private IPs on the internal subnet using HTTPS on port 443 and SSH on port 22.
 #
 ##############################################################################################################
@@ -130,7 +130,7 @@ Deployment information:
 
 Username: $username
 
-FortiGate IP addesses
+FortiGate IP addresses
 "
 query="[?virtualMachine.name.starts_with(@, '$prefix')].{virtualMachine:virtualMachine.name, publicIP:virtualMachine.network.publicIpAddresses[0].ipAddress,privateIP:virtualMachine.network.privateIpAddresses[0]}"
 az vm list-ip-addresses --query "$query" --output tsv
