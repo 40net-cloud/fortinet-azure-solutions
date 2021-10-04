@@ -36,11 +36,13 @@ The FortiGate solution can be deployed using the Azure Portal or Azure CLI. Ther
 
 ### Azure Portal
 
-Standard Custom Template Deployment:<br/> <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2F40net-cloud%2Ffortinet-azure-solutions%2Fmain%2FFortiGate%2FAvailabilityZones%2FActive-Passive-ELB-ILB-AZ%2Fazuredeploy.json" target="_blank"><img src="https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.svg?sanitize=true"/></a>
+Standard Custom Template Deployment:
 
-Azure Portal Wizard Template Deployment:<br/> <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2F40net-cloud%2Ffortinet-azure-solutions%2Fmain%2FFortiGate%2FAvailabilityZones%2FActive-Passive-ELB-ILB-AZ%2Fazuredeploy.json/createUIDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2F40net-cloud%2Ffortinet-azure-solutions%2Fmain%2FFortiGate%2FAvailabilityZones%2FActive-Passive-ELB-ILB-AZ%2FcreateUiDefinition.json" target="_blank"><img src="https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.svg?sanitize=true"/></a>
+[![Deploy Azure Portal Button](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.svg?sanitize=true)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2F40net-cloud%2Ffortinet-azure-solutions%2Fmain%2FFortiGate%2FAvailabilityZones%2FActive-Passive-ELB-ILB-AZ%2Fazuredeploy.json)
 
-Visualize the Azure Deployment:<br/><a href="http://armviz.io/#/?load=https%3A%2F%2Fraw.githubusercontent.com%2F40net-cloud%2Ffortinet-azure-solutions$2Fmain%2FFortiGate%2FAvailabilityZones%2FActive-Passive-ELB-ILB-AZ%2Fazuredeploy.json" target="_blank"><img src="https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/visualizebutton.svg?sanitize=true"/></a>
+Azure Portal Wizard Template Deployment:
+
+[![Deploy Azure Portal Button](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.svg?sanitize=true)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2F40net-cloud%2Ffortinet-azure-solutions%2Fmain%2FFortiGate%2FAvailabilityZones%2FActive-Passive-ELB-ILB-AZ%2Fazuredeploy.json/createUIDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2F40net-cloud%2Ffortinet-azure-solutions%2Fmain%2FFortiGate%2FAvailabilityZones%2FActive-Passive-ELB-ILB-AZ%2FcreateUiDefinition.json)
 
 ### Azure CLI
 
@@ -50,7 +52,7 @@ To deploy via Azure Cloud Shell you can connect via the Azure Portal or directly
 - Login into the Azure Cloud Shell
 - Run the following command in the Azure Cloud:
 
-`cd ~/clouddrive/ && wget -qO- https://github.com/40net-cloud/fortinet-azure-solutions/archive/main.tar.gz | tar zxf - && cd ~/clouddrive/fortinet-azure-solutions-main/FortiGate/Active-Passive-ELB-ILB-AZ/ && ./deploy.sh`
+`cd ~/clouddrive/ && wget -qO- https://github.com/40net-cloud/fortinet-azure-solutions/archive/main.tar.gz | tar zxf - && cd ~/clouddrive/fortinet-azure-solutions-main/FortiGate/AvailabilityZones/Active-Passive-ELB-ILB-AZ/ && ./deploy.sh`
 
 - The script will ask you a few questions to bootstrap a full deployment.
 
@@ -64,7 +66,7 @@ The ARM template deploys different resources and it is required to have the acce
 
 - The template will deploy Standard F4s VMs for this architecture. Other VM instances are supported as well with a minimum of 4 NICs. A list can be found [here](https://docs.fortinet.com/document/fortigate/6.4.0/azure-cookbook/562841/instance-type-support)
 - Licenses for Fortigate
-  - BYOL: A demo license can be made available via your Fortinet partner or on our website. These can be injected during deployment or added after deployment. Purchased licenses need to be registered on the [Fortinet support site] (<http://support.fortinet.com>). Download the .lic file after registration. Note, these files may not work until 30 minutes after it's initial creation.
+  - BYOL: A demo license can be made available via your Fortinet partner or on our website. These can be injected during deployment or added after deployment. Purchased licenses need to be registered on the [Fortinet support site](http://support.fortinet.com). Download the .lic file after registration. Note, these files may not work until 30 minutes after it's initial creation.
   - PAYG or OnDemand: These licenses are automatically generated during the deployment of the FortiGate systems.
 - The password provided during deployment must need password complexity rules from Microsoft Azure:
   - It must be 12 characters or longer
@@ -103,4 +105,4 @@ For other questions related to this project, contact [github@fortinet.com](mailt
 
 ## License
 
-[License](LICENSE) © Fortinet Technologies. All rights reserved.
+[License](/LICENSE) © Fortinet Technologies. All rights reserved.
