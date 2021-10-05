@@ -59,12 +59,12 @@
         "existing"
       ],
       "metadata": {
-        "description": "Public IP for the Load Balancer for inbound and outbound data of the FortiGate VMs"
+        "description": "Public IP for the Load Balancer for inbound and outbound data of the FortiWeb VMs"
       }
     },
     "publicIPName": {
       "type": "string",
-      "defaultValue": "FGTAPClusterPublicIP",
+      "defaultValue": "FWBAPClusterPublicIP",
       "metadata": {
         "description": "Name of Public IP address element."
       }
@@ -199,8 +199,8 @@
     "subnet1Id": "[if(equals(parameters('vnetNewOrExisting'),'new'),resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet1Name')),resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet1Name')))]",
     "subnet2Id": "[if(equals(parameters('vnetNewOrExisting'),'new'),resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet2Name')),resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet2Name')))]",
 
-    "fwbAVmName": "[concat(parameters('fortiWebNamePrefix'),'-FGT-A')]",
-    "fwbBVmName": "[concat(parameters('fortiWebNamePrefix'),'-FGT-B')]",
+    "fwbAVmName": "[concat(parameters('fortiWebNamePrefix'),'-FWB-A')]",
+    "fwbBVmName": "[concat(parameters('fortiWebNamePrefix'),'-FWB-B')]",
 
     "fwbANic1Name": "[concat(variables('fwbAVmName'),'-Nic1')]",
     "fwbANic1Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('fwbANic1Name'))]",
@@ -211,7 +211,7 @@
     "fwbBNic2Name": "[concat(variables('fwbBVmName'),'-Nic2')]",
     "fwbBNic2Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('fwbBNic2Name'))]",
 
-    "publicIPName": "[if(equals(parameters('publicIPName'),''),concat(parameters('fortiWebNamePrefix'),'-FGT-PIP'),parameters('publicIPName'))]",
+    "publicIPName": "[if(equals(parameters('publicIPName'),''),concat(parameters('fortiWebNamePrefix'),'-FWB-PIP'),parameters('publicIPName'))]",
     "publicIPId": "[if(equals(parameters('publicIPNewOrExisting'),'new'),resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPName')),resourceId(parameters('publicIPResourceGroup'),'Microsoft.Network/publicIPAddresses',variables('publicIPName')))]",
 
     "NSGName": "[concat(parameters('fortiWebNamePrefix'),'-',uniqueString(resourceGroup().id),'-NSG')]",
