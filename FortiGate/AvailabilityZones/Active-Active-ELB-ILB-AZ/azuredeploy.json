@@ -2,13 +2,6 @@
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "DeploymentType": {
-      "type": "string",
-      "defaultValue": "Note: Active/Active - External and Internal Load Balancers - Availability Set or Availability Zones",
-      "metadata": {
-        "description": "Note: Active/Active - External and Internal Load Balancers - Availability Set or Availability Zones"
-      }
-    },
     "adminUsername": {
       "type": "string",
       "metadata": {
