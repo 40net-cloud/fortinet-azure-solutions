@@ -11,7 +11,7 @@ This ARM template will deploy a single FortiWeb Manager VM containing the follow
 - 1 VM deployed from provided image with a single NIC
 - 2 disks (boot and log) mounted in the VM instance
 - (optionally) 1 VNET with 1 subnet
-- (optionally) 1 Public IP Address associated with VM  
+- (optionally) 1 Public IP Address associated with VM
 
 This Azure ARM template can also be extended or customized based on your requirements. Additional subnets besides the ones mentioned above are not automatically generated. By extending the Azure ARM templates additional subnets can be added. Additional subnets will require their own routing tables.
 
@@ -72,15 +72,15 @@ $rule4 = New-AzNetworkSecurityRuleConfig -Name "Allow_443_In" -Protocol TCP -Sou
 $rule5 = New-AzNetworkSecurityRuleConfig -Name "Allow_8989_In" -Protocol TCP -SourcePortRange * -DestinationPortRange 8989 -SourceAddressPrefix * -DestinationAddressPrefix * -Access Allow -Priority 100 -Direction Inbound
 $nsg = New-AzNetworkSecurityGroup -Name "FORTI-NSG" -ResourceGroupName $rg -Location $location -SecurityRules $rule1,$rule2
 
-# Network interfaces for external and internal of the FGT
+# Network interfaces for external and internal of the FWB
 $virtualNetwork = Get-AzVirtualNetwork -Name "FORTI-VNET" -ResourceGroupName $rg
 
-$nic1 = New-AzNetworkInterface -ResourceGroupName $rg -Location $location -Name "FORTI-FGT-A-NIC1" -PublicIpAddressId $pip.Id -SubnetId $virtualNetwork.Subnets[0].Id -NetworkSecurityGroupId $nsg.Id
+$nic1 = New-AzNetworkInterface -ResourceGroupName $rg -Location $location -Name "FORTI-FWB-A-NIC1" -PublicIpAddressId $pip.Id -SubnetId $virtualNetwork.Subnets[0].Id -NetworkSecurityGroupId $nsg.Id
 
 # Virtual Machine
 $vm = New-AzVMConfig -VMName "fwbmanager" -VMSize "Standard_F2s_v2"
 $credentials = New-Object PSCredential $username, ($password | ConvertTo-SecureString -AsPlainText -Force)
-$vm = Set-AzVMOperatingSystem -VM $vm -Linux -ComputerName "FORTI-FGT-A" -Credential $credentials
+$vm = Set-AzVMOperatingSystem -VM $vm -Linux -ComputerName "FORTI-FWB-A" -Credential $credentials
 $vm = Add-AzVMNetworkInterface -VM $vm -Id $nic1.Id -Primary
 $vm = Add-AzVMNetworkInterface -VM $vm -Id $nic2.Id
 $vm = Set-AzVMSourceImage -VM $vm -Id $imagedisk.Id
