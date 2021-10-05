@@ -21,16 +21,11 @@ This Azure ARM template will automatically deploy a full working environment con
 
 ![active/active design](images/fgt-aa.png)
 
-This ARM template can also be used to extend or customized based on your requirements. Additional subnets besides the one's mentioned above are not automatically generated. By adapting the ARM templates you can add additional subnets which preferably require their own routing tables.
+This ARM template can also be used to extend or customized based on your requirements. Additional subnets besides the ones mentioned above are not automatically generated. By adapting the ARM templates you can add additional subnets which preferably require their own routing tables.
 
 ## How to deploy
 
-The FortiGate solution can be deployed using the Azure Portal or Azure CLI. There are 4 variables needed to complete kickstart the deployment. The deploy.sh script will ask them automatically. When you deploy the ARM template the Azure Portal will request the variables as a requirement.
-
-- PREFIX : This prefix will be added to each of the resources created by the templates for easy of use, manageability and visibility.
-- LOCATION : This is the Azure region where the deployment will be deployed
-- USERNAME : The username used to login to the FortiGate GUI and SSH management UI.
-- PASSWORD : The password used for the FortiGate GUI and SSH management UI.
+The FortiGate solution can be deployed using the Azure Portal.
 
 ### Azure Portal
 
@@ -42,30 +37,15 @@ Azure Portal Wizard Template Deployment:
 
 [![Deploy Azure Portal Button](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.svg?sanitize=true)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2F40net-cloud%2Ffortinet-azure-solutions%2Fmain%2FFortiGate%2FAvailabilityZones%2FActive-Active-ELB-ILB-AZ%2Fazuredeploy.json/createUIDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2F40net-cloud%2Ffortinet-azure-solutions%2Fmain%2FFortiGate%2FAvailabilityZones%2FActive-Active-ELB-ILB-AZ%2FcreateUiDefinition.json)
 
-### Azure CLI
-
-To deploy via Azure Cloud Shell you can connect via the Azure Portal or directly to [https://shell.azure.com/](https://shell.azure.com/).
-
-- Login into the Azure Cloud Shell
-- Run the following command in the Azure Cloud:
-
-`cd ~/clouddrive/ && wget -q -O main.zip https://github.com/40net-cloud/fortinet-azure-solutions/archive/refs/heads/main.zip && unzip main.zip && cd ~/clouddrive/fortinet-azure-solutions-main/FortiGate/AvailabilityZones/Active-Active-ELB-ILB-AZ/ && ./deploy.sh`
-
-- The script will ask you a few questions to bootstrap a full deployment.
-
-![Azure Cloud Shell](images/azure-cloud-shell.png)
-
-After deployment you will be shown the IP address of all deployed components. You can access both management GUIs and SSH using the public IP address of the load balancer using HTTPS on port 40030, 40031 and for SSH on port 50030 and 50031. THe FortiGate VMs are also accessible using their private IPs on the internal subnet using HTTPS on port 443 and SSH on port 22.
-
 ## Requirements and limitations
 
 The ARM template deploys different resources and it is required to have the access rights and quota in your Microsoft Azure subscription to deploy the resources.
 
-- The template will deploy Standard F2s VMs for this architecture. Other VM instances are supported as well with a minimum of 2 NICs. A list can be found [here](https://docs.fortinet.com/document/fortigate/6.4.0/azure-cookbook/562841/instance-type-support)
+- The template will deploy Standard F2s VMs for this architecture. Other VM instances are supported as well with a minimum of 2 NICs. A list can be found [here](https://docs.fortinet.com/document/fortigate-public-cloud/7.0.0/azure-administration-guide/562841/instance-type-support)
 - Licenses for Fortigate
-  - BYOL: A demo license can be made available via your Fortinet partner or on our website. These can be injected during deployment or added after deployment. Purchased licenses need to be registered on the [Fortinet support site](http://support.fortinet.com). Download the .lic file after registration. Note, these files may not work until 30 minutes after it's initial creation.
-  - PAYG or OnDemand: These licenses are automatically generated during the deployment of the FortiGate systems.
-- The password provided during deployment must need password complexity rules from Microsoft Azure:
+  - BYOL: A demo license can be made available via your Fortinet partner. These can be injected during deployment or added after deployment. Purchased licenses need to be registered on the [Fortinet support site](http://support.fortinet.com). Download the .lic file after registration. Note, these files may not work until 30 minutes after their initial creation.
+  - PAYG or OnDemand: These licenses are automatically generated during the deployment of the FortiGates.
+- The password provided during deployment must meet password complexity rules from Microsoft Azure:
   - It must be 12 characters or longer
   - It needs to contain characters from at least 3 of the following groups: uppercase characters, lowercase characters, numbers, and special characters excluding '\' or '-'
 - The terms for the FortiGate PAYG or BYOL image in the Azure Marketplace needs to be accepted once before usage. This is done automatically during deployment via the Azure Portal. For the Azure CLI the commands below need to be run before the first deployment in a subscription.
@@ -78,11 +58,11 @@ The ARM template deploys different resources and it is required to have the acce
 
 The FortiGate VMs need a specific configuration to match the deployed environment. This configuration can be injected during provisioning or afterwards via the different options including GUI, CLI, FortiManager or REST API.
 
-- [Default configuration using this template](doc/config-provisioning.md)
+- [Default configuration using this template](/FortiGate/Active-Active-ELB-ILB/doc/config-provisioning.md)
 
 ### Fabric Connector
 
-The FortiGate-VM uses [Managed Identities](https://docs.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/) for the SDN Fabric Connector. A SDN Fabric Connector is created automatically during deployment. After deployment, it is required apply the 'Reader' role to the Azure Subscription you want to resolve Azure Resources from. More information can be found on the [Fortinet Documentation Libary](https://docs.fortinet.com/vm/azure/fortigate/7.0/azure-administration-guide/7.0.0/236610/creating-a-fabric-connector-using-a-managed-identity).
+The FortiGate-VM uses [Managed Identities](https://docs.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/) for the SDN Fabric Connector. A SDN Fabric Connector is created automatically during deployment. After deployment, it is required apply the 'Reader' role to the Azure Subscription you want to resolve Azure Resources from. More information can be found on the [Fortinet Documentation Library](https://docs.fortinet.com/vm/azure/fortigate/7.0/azure-administration-guide/7.0.0/236610/creating-a-fabric-connector-using-a-managed-identity).
 
 ### North South traffic
 
@@ -90,9 +70,9 @@ When configuring the policies on the FortiGates to allow and forward traffic to 
 
 It is possible to use FGSP to synchronize sessions and thereby allow asymmetric return traffic. However this is not best practice from a security perspective, because it limits the ability of IPS by potentially only seeing one side of the conversation on each FGT. The FortiGate IPS takes both sides of the conversation into account for increased security and visibility. Reducing this visibility on the FortiGate may decrease the IPS efficacy.
 
-Often S-NAT is not desired because it's necessary to retain the original source IP. For HTTP or HTTPS traffic in particular, you can enable the Load Balancing feature on the FortiGate which gives you the option to copy the source IP into the X-Forwarded-For header, [review here.](https://docs.fortinet.com/uploaded/files/3637/fortigate-load-balancing-56.pdf)
+Often S-NAT is not desired because it's necessary to retain the original source IP. For HTTP or HTTPS traffic in particular, you can enable the Load Balancing feature on the FortiGate which gives you the option to copy the source IP into the X-Forwarded-For header, [review here.](https://docs.fortinet.com/document/fortigate/7.0.1/administration-guide/883151/learn-client-ip-addresses)
 
-If you do prefer to use FGSP for session synchronization. It can be enable during deployment by un-commenting the section in the customdata.tpl file or adding this recommended configuration to both FortiGate VMs.
+If you prefer to use FGSP for session synchronization. It can be enable during deployment by adding this recommended configuration to both FortiGate VMs.
 
 ```sh
 config system ha
@@ -115,7 +95,7 @@ end
 
 ### Configuration synchronization
 
-The FortiGate VMs are, in this Active/Active setup, independent units. The FGCP protocol, used in the Active/Passive setup, to sync the configuration is not applicable here. To enable configuration sync between both unit the sync from the autoscaling setup can be used. This will sync all configuration except for the specific configuration item proper to the specific VM like hostname, routing and others. To enable the configuration sync the config below can be used on both.
+The FortiGate VMs are, in this Active/Active setup, independent units. The FGCP protocol, used in the Active/Passive setup, to sync the configuration is not applicable here. To enable configuration sync between both units the sync from the autoscaling setup can be used. This will sync all configuration except for the specific configuration item proper to the specific VM like hostname, routing and others. To enable the configuration sync the config below can be used on both.
 
 FortiGate A
 
