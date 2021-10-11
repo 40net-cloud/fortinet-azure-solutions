@@ -181,7 +181,7 @@ fi
 echo "--> Deployment of FortiGate NGFW ..."
 az deployment group create --resource-group "$rg" \
                            --template-uri "https://raw.githubusercontent.com/40net-cloud/fortinet-azure-solutions/main/FortiGate/A-Single-VM/azuredeploy.json" \
-                           --parameters adminUsername="$USERNAME" adminPassword="$PASSWORD" fortigateNamePrefix="$prefix"
+                           --parameters adminUsername="$USERNAME" adminPassword="$PASSWORD" fortiGateNamePrefix="$prefix"
 result=$?
 if [[ $result != 0 ]];
 then
