@@ -293,7 +293,7 @@
 							"domainNameLabel": "DNS name linked to this public IP"
 						},
 						"defaultValue": {
-							"publicIpAddressName": "FGTAPClusterPublicIP",
+							"publicIpAddressName": "FWBAPClusterPublicIP",
 							"domainNameLabel": "mydomain"
 						},
 						"constraints": {
