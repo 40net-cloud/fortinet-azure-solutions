@@ -205,6 +205,7 @@ end
 config system settings
 set allow-subnet-overlap enable
 end
+{{#if connectionConfiguration.IsBgpEnabled }}
 config system interface
 edit "{{ ../vpnSiteConfiguration.Name }}-1"
 set vdom "root"
@@ -233,6 +234,7 @@ set remote-as {{ gatewayConfiguration.BgpSetting.Asn }}
 next
 end
 end
+{{/if}}
 config system settings
     set gui-multiple-interface-policy enable
 end
