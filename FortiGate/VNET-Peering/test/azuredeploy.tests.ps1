@@ -93,9 +93,9 @@ Describe 'VNET Peering' {
             $expectedTemplateParameters = 'acceleratedNetworking',
                                           'adminPassword',
                                           'adminUsername',
-                                          'fortigateImageSKU',
-                                          'fortigateImageVersion',
-                                          'fortigateNamePrefix',
+                                          'fortiGateImageSKU',
+                                          'fortiGateImageVersion',
+                                          'fortiGateNamePrefix',
                                           'fortinetTags',
                                           'instanceType',
                                           'location',
@@ -154,7 +154,7 @@ Describe 'VNET Peering' {
 
         $params = @{ 'adminUsername'=$testsAdminUsername
                      'adminPassword'=$testsResourceGroupName
-                     'fortigateNamePrefix'=$testsPrefix
+                     'fortiGateNamePrefix'=$testsPrefix
                     }
         $publicIPName = "FGTAMgmtPublicIP"
         $publicIP2Name = "FGTBMgmtPublicIP"
