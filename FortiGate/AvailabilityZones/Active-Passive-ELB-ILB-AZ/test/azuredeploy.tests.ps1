@@ -153,11 +153,11 @@ $templateParameters = (get-content $templateFileLocation | ConvertFrom-Json -Err
         $params = @{
             'adminUsername'=$testsAdminUsername
             'adminPassword'=$testsResourceGroupName
-            'fortigateNamePrefix'=$testsPrefix
+            'fortiGateNamePrefix'=$testsPrefix
         }
         $publicIP2Name = "$testsPrefix-FGT-A-MGMT-PIP"
         $publicIP3Name = "$testsPrefix-FGT-B-MGMT-PIP"
-            
+
         It "Test Deployment" {
             (Test-AzResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName" -TemplateFile "$templateFileName" -TemplateParameterObject $params).Count | Should -Not -BeGreaterThan 0
         }

@@ -19,7 +19,7 @@
         "type": "Microsoft.Common.TextBox",
         "label": "FortiWeb administrative username",
         "defaultValue": "",
-        "toolTip": "Username for the FortiWeb virtual appliance. Must not be root, administrator or admin",
+        "toolTip": "Username for the FortiWeb virtual appliance. Most not be root, administrator or admin",
         "constraints": {
           "required": true,
           "validations": [
