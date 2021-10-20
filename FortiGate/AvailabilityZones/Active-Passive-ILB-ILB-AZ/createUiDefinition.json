@@ -15,6 +15,15 @@
     ],
     "basics": [
       {
+        "name": "instancetypeinfo",
+        "type": "Microsoft.Common.InfoBox",
+        "visible": true,
+        "options": {
+          "icon": "Info",
+          "text": "FortiGate Deployment Type - Active/Passive - Internal Only Load Balancer - Availability Set or Availability Zones"
+        }
+      },
+      {
         "name": "adminUsername",
         "type": "Microsoft.Common.TextBox",
         "label": "FortiGate administrative username",
