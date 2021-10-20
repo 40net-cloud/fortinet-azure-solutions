@@ -126,13 +126,13 @@ Describe 'FWB Single VM' {
     Context 'Deployment test' {
 
         BeforeAll {
-            $fgt = (Get-AzPublicIpAddress -Name $publicIPName -ResourceGroupName $testsResourceGroupName).IpAddress
-            Write-Host ("FortiWeb public IP: " + $fgt)
+            $FWB = (Get-AzPublicIpAddress -Name $publicIPName -ResourceGroupName $testsResourceGroupName).IpAddress
+            Write-Host ("FortiWeb public IP: " + $FWB)
         }
         It "FWB: Ports listening" {
             ForEach( $port in $ports ) {
                 Write-Host ("Check port: $port" )
-                $portListening = (Test-Connection -TargetName $fgt -TCPPort $port -TimeoutSeconds 100)
+                $portListening = (Test-Connection -TargetName $FWB -TCPPort $port -TimeoutSeconds 100)
                 $portListening | Should -Be $true
             }
         }
