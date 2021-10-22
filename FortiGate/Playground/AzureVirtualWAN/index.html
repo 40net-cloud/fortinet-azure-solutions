@@ -195,13 +195,13 @@ next
 end
 config vpn ipsec phase2-interface
 edit "{{{trimString ../vpnSiteConfiguration.Name 0 12 }}}-1"
-set phase1name "{{ ../vpnSiteConfiguration.Name }}-1"
+set phase1name "{{{trimString ../vpnSiteConfiguration.Name 0 12 }}}-1"
 set proposal aes256-sha1
 set dhgrp 2
 set keylifeseconds {{ connectionConfiguration.IPsecParameters.SALifeTimeInSeconds }}
 next
 edit "{{{trimString ../vpnSiteConfiguration.Name 0 12 }}}-2"
-set phase1name "{{ ../vpnSiteConfiguration.Name }}-2"
+set phase1name "{{{trimString ../vpnSiteConfiguration.Name 0 12 }}}-1"
 set proposal aes256-sha1
 set dhgrp 2
 set keylifeseconds {{ connectionConfiguration.IPsecParameters.SALifeTimeInSeconds }}
