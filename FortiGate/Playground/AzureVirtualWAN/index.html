@@ -171,7 +171,8 @@
       };
     </script>
     <script id="vpnSiteTemplate" type="text/template">{{#vpnSiteConnections}}
-config vpn ipsec phase1-interface
+config vpn ipsec 
+-interface
 edit "{{{trimString ../vpnSiteConfiguration.Name 0 12 }}}-1"
 set interface "## EXTERNAL INTERFACE ##"
 set ike-version 2
@@ -201,7 +202,7 @@ set dhgrp 2
 set keylifeseconds {{ connectionConfiguration.IPsecParameters.SALifeTimeInSeconds }}
 next
 edit "{{{trimString ../vpnSiteConfiguration.Name 0 12 }}}-2"
-set phase1name "{{{trimString ../vpnSiteConfiguration.Name 0 12 }}}-1"
+set phase1name "{{{trimString ../vpnSiteConfiguration.Name 0 12 }}}-2"
 set proposal aes256-sha1
 set dhgrp 2
 set keylifeseconds {{ connectionConfiguration.IPsecParameters.SALifeTimeInSeconds }}
