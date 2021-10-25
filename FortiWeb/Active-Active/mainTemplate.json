@@ -37,10 +37,11 @@
       "allowedValues": [
         "6.2.5",
         "6.3.15",
+        "6.3.16",
         "latest"
       ],
       "metadata": {
-        "description": "Only 6.x has the A/P HA feature currently"
+        "description": "FortiWeb versions available in the Azure Marketplace. Additional version can be downloaded via https://support.fortinet.com/"
       }
     },
     "instanceType": {
@@ -184,7 +185,7 @@
       "defaultValue": {
         "publisher": "Fortinet",
         "template": "FWB-Active-Active-ELB",
-        "provider": "6EB3B02F-50E5-4A3E-8CB8-2E12925831FWBAP"
+        "provider": "6EB3B02F-50E5-4A3E-8CB8-2E12925831FWBAA"
       }
     }
   },

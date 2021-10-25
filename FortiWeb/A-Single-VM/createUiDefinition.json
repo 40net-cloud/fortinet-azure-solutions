@@ -109,6 +109,10 @@
               "value": "6.3.15"
             },
             {
+              "label": "6.3.16",
+              "value": "6.3.16"
+            },
+            {
               "label": "latest",
               "value": "latest"
             }
