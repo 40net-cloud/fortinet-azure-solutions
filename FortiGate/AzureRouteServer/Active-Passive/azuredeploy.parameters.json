@@ -17,10 +17,10 @@
         "fortiGateImageVersion": {
             "value": "latest"
         },
-        "fortiGateAAditionalCustomData": {
+        "fortiGateAAdditionalCustomData": {
             "value": ""
         },
-        "fortiGateBAditionalCustomData": {
+        "fortiGateBAdditionalCustomData": {
             "value": ""
         },
         "fortiGateBGPASN": {

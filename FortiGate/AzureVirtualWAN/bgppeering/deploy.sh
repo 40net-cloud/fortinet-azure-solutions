@@ -574,7 +574,7 @@ az deployment group create --resource-group "$rg" \
     --template-uri "https://raw.githubusercontent.com/40net-cloud/fortinet-azure-solutions/main/FortiGate/A-Single-VM/azuredeploy.json" \
     --parameters adminUsername="$username" adminPassword="$password" fortiGateNamePrefix="$prefix-$location" fortiGateImageSKU="$vhubAFGTSKU" \
     vnetNewOrExisting="existing" vnetName="$vhubASpokeFGTName" vnetResourceGroup="$rg" \
-    vnetAddressPrefix="$vhubASpokeFGTPrefix" fortiGateAditionalCustomData="$vhubAFGTCustomData" \
+    vnetAddressPrefix="$vhubASpokeFGTPrefix" fortiGateAdditionalCustomData="$vhubAFGTCustomData" \
     subnet1Name="$vhubASpokeFGTSubnet1Name" subnet1Prefix="$vhubASpokeFGTSubnet1Prefix" subnet1StartAddress="$vhubASpokeFGTSubnet1StartAddress" \
     subnet2Name="$vhubASpokeFGTSubnet2Name" subnet2Prefix="$vhubASpokeFGTSubnet2Prefix" subnet2StartAddress="$vhubASpokeFGTSubnet2StartAddress" \
     subnet3Name="$vhubASpokeFGTSubnet5Name" subnet3Prefix="$vhubASpokeFGTSubnet5Prefix"
@@ -592,7 +592,7 @@ az deployment group create --resource-group "$rg" \
     --template-uri "https://raw.githubusercontent.com/40net-cloud/fortinet-azure-solutions/main/FortiGate/A-Single-VM/azuredeploy.json" \
     --parameters adminUsername="$username" adminPassword="$password" location="$locationB" fortiGateNamePrefix="$prefix-$locationB" fortiGateImageSKU="$vhubBFGTSKU" \
     vnetNewOrExisting="existing" vnetName="$vhubBSpokeFGTName" vnetResourceGroup="$rg" \
-    vnetAddressPrefix="$vhubBSpokeFGTPrefix" fortiGateAditionalCustomData="$vhubBFGTCustomData" \
+    vnetAddressPrefix="$vhubBSpokeFGTPrefix" fortiGateAdditionalCustomData="$vhubBFGTCustomData" \
     subnet1Name="$vhubBSpokeFGTSubnet1Name" subnet1Prefix="$vhubBSpokeFGTSubnet1Prefix" subnet1StartAddress="$vhubBSpokeFGTSubnet1StartAddress" \
     subnet2Name="$vhubBSpokeFGTSubnet2Name" subnet2Prefix="$vhubBSpokeFGTSubnet2Prefix" subnet2StartAddress="$vhubBSpokeFGTSubnet2StartAddress" \
     subnet3Name="$vhubBSpokeFGTSubnet5Name" subnet3Prefix="$vhubBSpokeFGTSubnet5Prefix"
