@@ -137,8 +137,24 @@
               "value": "6.4.6"
             },
             {
+              "label": "6.4.7",
+              "value": "6.4.7"
+            },
+            {
+              "label": "6.4.8",
+              "value": "6.4.8"
+            },
+            {
               "label": "7.0.0",
               "value": "7.0.0"
+            },
+            {
+              "label": "7.0.1",
+              "value": "7.0.1"
+            },
+            {
+              "label": "7.0.2",
+              "value": "7.0.2"
             },
             {
               "label": "latest",
@@ -652,7 +668,7 @@
       "fortiManager": "[steps('advanced').fortimanager.enabled]",
       "fortiManagerIP": "[steps('advanced').fortimanager.fortimanagerip]",
       "fortiManagerSerial": "[steps('advanced').fortimanager.fortimanagerserial]",
-      "fortiGateAditionalCustomData": "[steps('advanced').customdata.config]",
+      "fortiGateAdditionalCustomData": "[steps('advanced').customdata.config]",
       "fortiGateLicenseBYOL": "[steps('advanced').fgtlicense.licensecontent]",
       "fortiGateLicenseFlexVM": "[steps('advanced').fgtlicense.licenseflexvmtoken]"
     }

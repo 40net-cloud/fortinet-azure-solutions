@@ -43,7 +43,7 @@
         "description": "FortiAnalyzer version"
       }
     },
-    "aditionalCustomData": {
+    "additionalCustomData": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
