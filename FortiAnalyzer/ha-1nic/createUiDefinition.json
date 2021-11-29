@@ -544,7 +544,7 @@
       "subnet1Name": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet1.name]",
       "subnet1Prefix": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet1.addressPrefix]",
       "subnet1StartAddress": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet1.startAddress]",
-      "aditionalCustomData": "[steps('advanced').customdata.config]",
+      "additionalCustomData": "[steps('advanced').customdata.config]",
       "fortiAnalyzerLicenseBYOL": "[steps('advanced').fazlicense.licensecontent]"
     }
   }
