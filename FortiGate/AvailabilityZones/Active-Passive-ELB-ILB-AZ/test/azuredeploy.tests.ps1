@@ -92,7 +92,7 @@ Describe 'FGT A/P LB' {
             'fortiGateNamePrefix',
             'fortiGateImageSKU',
             'fortiGateImageVersion',
-            'fortiGateAditionalCustomData',
+            'fortiGateAdditionalCustomData',
             'instanceType',
             'availabilityOptions',
             'acceleratedNetworking',

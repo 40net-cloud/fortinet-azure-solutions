@@ -42,7 +42,7 @@
         "description": "FortiManager version"
       }
     },
-    "aditionalCustomData": {
+    "additionalCustomData": {
       "type": "string",
       "defaultValue": "",
       "metadata": {

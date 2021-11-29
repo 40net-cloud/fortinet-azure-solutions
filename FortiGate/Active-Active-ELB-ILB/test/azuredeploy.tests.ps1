@@ -37,7 +37,7 @@ BeforeAll {
     $params = @{ 'adminUsername'=$testsAdminUsername
                  'adminPassword'=$testsResourceGroupName
                  'fortiGateNamePrefix'=$testsPrefix
-                 'fortiGateAditionalCustomData'=$config
+                 'fortiGateAdditionalCustomData'=$config
                  'publicIPName'=$publicIPName
                }
     $ports = @(40030, 50030, 40031, 50031)
@@ -86,7 +86,7 @@ Describe 'FGT A/A' {
             $expectedTemplateParameters = 'acceleratedNetworking',
                                           'adminPassword',
                                           'adminUsername',
-                                          'fortiGateAditionalCustomData',
+                                          'fortiGateAdditionalCustomData',
                                           'fortiGateImageSKU',
                                           'fortiGateImageVersion',
                                           'fortiGateLicenseBYOLA',

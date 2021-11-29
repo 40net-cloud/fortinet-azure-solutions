@@ -86,7 +86,7 @@ Describe 'FGT A/A' {
                                             'fortiGateNamePrefix',
                                             'fortiGateImageSKU',
                                             'fortiGateImageVersion',
-                                            'fortiGateAditionalCustomData',
+                                            'fortiGateAdditionalCustomData',
                                             'instanceType',
                                             'availabilityOptions',
                                             'acceleratedNetworking',
