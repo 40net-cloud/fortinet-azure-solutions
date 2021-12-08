@@ -11,11 +11,26 @@ The FortiGate can be used in different scenario's to protect assets deployed in 
 
 Click [here](https://www.fortinet.com/products/public-cloud-security/azure#usecases) for a general overview of the different public cloud use cases.
 
-## Resiliency and High Availability
+## Deployment options and architectures
 
 When designing a reliable architecture in Microsoft Azure it is important to take resiliency and High Availability into account. Microsoft has the [Microsoft Azure Well-Architected Framework](https://docs.microsoft.com/en-us/azure/architecture/framework/resiliency/overview) available.
 
-Running the FortiGate Next-Generation Firewall inside of Microsoft Azure can offer different levels of reliability based on these building blocks
+Running the FortiGate Next-Generation Firewall inside of Microsoft Azure can offer different levels of reliability based on the different building blocks and architectures. Over the years, new functionality has been released in Microsoft Azure for specific deployments.
+
+For each architecture/building block, there is information in the table whether it is supported (yes) by each architecture or not (no). Take into account that each architecture has requirements and limitations that are listed on their respective page.
+
+| Use cases/ Architectures              | [Single FGT](https://github.com/40net-cloud/fortinet-azure-solutions/tree/main/FortiGate/A-Single-VM) | [Active Passive SDN ](https://github.com/40net-cloud/fortinet-azure-solutions/tree/main/FortiGate/Active-Passive-SDN)| [Active Passive ELB/ILB](https://github.com/40net-cloud/fortinet-azure-solutions/tree/main/FortiGate/Active-Passive-ELB-ILB) | [Active Active ELB/ILB](https://github.com/40net-cloud/fortinet-azure-solutions/tree/main/FortiGate/Active-Active-ELB-ILB) | [Virtual WAN](https://github.com/40net-cloud/fortinet-azure-solutions/tree/main/FortiGate/AzureVirtualWAN) | [Active Passive Azure Route Server](https://github.com/40net-cloud/fortinet-azure-solutions/tree/main/FortiGate/AzureRouteServer) | [Auto-Scale Cluster](https://github.com/40net-cloud/fortinet-azure-solutions/tree/main/FortiGate/Autoscale) | [Gateway Load Balancer](https://github.com/fortinetsolutions/Azure-Templates/tree/master/GWLB) |
+|---------------------------------------|------------|--------------------|------------------------|-----------------------|-------------|-----------------------------------|--------------------|-----------------------|
+| North-South (ingress) filtering       |     YES    |         YES        |           YES          |          YES        |     YES     |                YES                |         YES       |          YES          |
+| East-West filtering                   |     YES    |         YES        |           YES          |          YES          |     YES     |                YES                |         YES        |           NO          |
+| South-North (egress) filtering        |     YES    |         YES        |           YES          |          YES          |     YES     |                YES                |         YES        |          YES          |
+| SDWAN                                 |     YES    |         YES        |           YES          |          YES          |     YES     |                YES                |         YES        |           NO          |
+| Site to Site VPN                      |     YES    |         YES        |           YES          |          YES          |     YES     |                YES                |         YES        |           NO          |
+| Client to Site VPN                    |     YES    |         YES        |           YES          |          YES          |     YES     |                YES                |         YES        |           NO          |
+| Express Route Filtering               |     YES    |         YES        |           YES          |          YES          |     YES     |                YES                |         YES        |           NO          |
+| Scalability - vertical                |     YES    |         YES        |           YES          |          YES          |     YES     |                YES                |         YES        |          YES          |
+| Scalability - horizontal              |     NO     |         NO         |           NO           |          YES          |     YES     |                 NO                |         YES        |          YES          |
+| Protect resources in multiple regions |     YES    |         YES        |           YES          |          YES          |     YES      |                YES                 |         YES        |          YES          |
 
 ### SLA
 
