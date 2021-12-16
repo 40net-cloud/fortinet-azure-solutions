@@ -18,7 +18,7 @@ This Azure ARM template will automatically deploy a full working environment con
 - 1 external Azure Standard Load Balancer for communication with internet
 - 1 internal Azure Standard Load Balancer to receive all internal traffic and forwarding towards Azure Gateways connecting ExpressRoute or Azure VPN's
 - 1 VNET with 2 protected subnets and 4 subnets required for the FortiGate deployment (external, internal, ha mgmt and ha sync). If using an existing vnet, it must already have 5 subnets
-- 3 public IPs. The first public IP is for cluster access to/through the active FortiGate.  The other two PIPs are for Management access
+- 3 public IPs. The first public IP is for cluster access to/through the active FortiGate. The other two PIPs are for Management access
 - User Defined Routes (UDR) for the protected subnets
 
 ![active/passive design](images/fgt-ap.png)

@@ -65,7 +65,7 @@
     "instanceType": {
       "type": "string",
       "defaultValue": "Standard_F4s",
-      "allowedValues": [ "Standard_F4s", "Standard_F8s", "Standard_F16s", "Standard_F4", "Standard_F8", "Standard_F16", "Standard_F8s_v2", "Standard_F16s_v2", "Standard_F32s_v2", "Standard_DS3_v2", "Standard_DS4_v2", "Standard_DS5_v2", "Standard_D8s_v3", "Standard_D16s_v3", "Standard_D32s_v3"],
+      "allowedValues": [ "Standard_F4s", "Standard_F8s", "Standard_F16s", "Standard_F4", "Standard_F8", "Standard_F16", "Standard_F8s_v2", "Standard_F16s_v2", "Standard_F32s_v2", "Standard_DS3_v2", "Standard_DS4_v2", "Standard_DS5_v2", "Standard_D8s_v3", "Standard_D16s_v3", "Standard_D32s_v3" ],
       "metadata": {
         "description": "Virtual Machine size selection - must be F4 or other instance that supports 4 NICs"
       }
@@ -94,8 +94,7 @@
       "defaultValue": "new",
       "allowedValues": [
         "new",
-        "existing",
-        "none"
+        "existing"
       ],
       "metadata": {
         "description": "Use a public IP, and if it is new or existing"
@@ -518,21 +517,21 @@
     "externalLBId": "[resourceId('Microsoft.Network/loadBalancers',variables('externalLBName'))]",
     "externalLBFEName": "[concat(parameters('fortiGateNamePrefix'),'-ELB-',parameters('subnet1Name'),'-FrontEnd')]",
     "externalLBFEId": "[resourceID('Microsoft.Network/loadBalancers/frontendIPConfigurations/',variables('externalLBName'),variables('externalLBFEName'))]",
-    "externalLBBEName": "[concat(parameters('fortiGateNamePrefix'),'-ILB-',parameters('subnet1Name'),'-BackEnd')]",
+    "externalLBBEName": "[concat(parameters('fortiGateNamePrefix'),'-ELB-',parameters('subnet1Name'),'-BackEnd')]",
     "externalLBBEId": "[resourceID('Microsoft.Network/loadBalancers/backendAddressPools/',variables('externalLBName'),variables('externalLBBEName'))]",
     "externalLBProbeName": "lbprobe",
     "externalLBProbeId": "[resourceId('Microsoft.Network/loadBalancers/probes/',variables('externalLBName'),variables('externalLBProbeName'))]",
 
     "useAZ": "[and(not(empty(pickZones('Microsoft.Compute', 'virtualMachines', variables('location')))), equals(parameters('availabilityOptions'), 'Availability Zones'))]",
-    "zone1": ["1"],
-    "zone2": ["2"]
+    "zone1": [ "1" ],
+    "zone2": [ "2" ]
   },
   "resources": [
     {
       "apiVersion": "2020-10-01",
       "name": "[concat(parameters('fortiGateNamePrefix'), '-fortinetdeployment-', uniquestring(resourceGroup().id))]",
       "type": "Microsoft.Resources/deployments",
-      "properties":{
+      "properties": {
         "mode": "Incremental",
         "template": {
           "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
@@ -555,7 +554,7 @@
         "platformUpdateDomainCount": 2
       },
       "sku": {
-        "name":  "Aligned"
+        "name": "Aligned"
       }
     },
     {
@@ -756,8 +755,7 @@
       },
       "name": "[variables('publicIP1Name')]",
       "location": "[parameters('location')]",
-      "sku":
-      {
+      "sku": {
         "name": "Standard"
       },
       "properties": {
@@ -773,8 +771,7 @@
       },
       "name": "[variables('publicIP2Name')]",
       "location": "[parameters('location')]",
-      "sku":
-      {
+      "sku": {
         "name": "Standard"
       },
       "properties": {
@@ -790,8 +787,7 @@
       },
       "name": "[variables('publicIP3Name')]",
       "location": "[parameters('location')]",
-      "sku":
-      {
+      "sku": {
         "name": "Standard"
       },
       "properties": {
@@ -806,8 +802,7 @@
       "tags": {
         "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
-      "sku":
-      {
+      "sku": {
         "name": "Standard"
       },
       "dependsOn": [
