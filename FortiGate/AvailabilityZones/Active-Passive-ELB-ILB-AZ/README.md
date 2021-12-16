@@ -41,11 +41,11 @@ Azure Portal Wizard Template Deployment:
 
 ## Requirements and limitations
 
-More documentation can be found on [the Availability Set version of this template](/FortiGate/Active-Passive-ELB-ILB/README.md#fortigate-configuration#requirements-and-limitations).
+More documentation can be found on [the Availability Set version of this template](/FortiGate/Active-Passive-ELB-ILB/README.md#requirements-and-limitations).
 
 ## FortiGate configuration
 
-More documentation can be found on [the Availability Set version of this template](/FortiGate/Active-Passive-ELB-ILB/README.md#fortigate-configuration#fortigate-configuration).
+More documentation can be found on [the Availability Set version of this template](/FortiGate/Active-Passive-ELB-ILB/README.md#fortigate-configuration).
 
 ## Troubleshooting
 
