@@ -275,7 +275,7 @@
                   "addressPrefixSize": "/20"
                 },
                 "constraints": {
-                  "minAddressPrefixSize": "/24"
+                  "minAddressPrefixSize": "/26"
                 },
                 "options": {
                   "hideExisting": false
@@ -288,8 +288,8 @@
                       "addressPrefixSize": "/26"
                     },
                     "constraints": {
-                      "minAddressPrefixSize": "/27",
-                      "minAddressCount": 12,
+                      "minAddressPrefixSize": "/29",
+                      "minAddressCount": 2,
                       "requireContiguousAddresses": true
                     }
                   },
@@ -300,8 +300,8 @@
                       "addressPrefixSize": "/26"
                     },
                     "constraints": {
-                      "minAddressPrefixSize": "/27",
-                      "minAddressCount": 8,
+                      "minAddressPrefixSize": "/29",
+                      "minAddressCount": 3,
                       "requireContiguousAddresses": true
                     }
                   },
@@ -312,8 +312,8 @@
                       "addressPrefixSize": "/26"
                     },
                     "constraints": {
-                      "minAddressPrefixSize": "/27",
-                      "minAddressCount": 8,
+                      "minAddressPrefixSize": "/29",
+                      "minAddressCount": 2,
                       "requireContiguousAddresses": true
                     }
                   },
@@ -324,8 +324,8 @@
                       "addressPrefixSize": "/26"
                     },
                     "constraints": {
-                      "minAddressPrefixSize": "/27",
-                      "minAddressCount": 8,
+                      "minAddressPrefixSize": "/29",
+                      "minAddressCount": 2,
                       "requireContiguousAddresses": true
                     }
                   },
@@ -457,7 +457,7 @@
               }
             },
             "options": {
-              "hideNone": false,
+              "hideNone": true,
               "hideDomainNameLabel": true
             },
             "visible": true
@@ -509,6 +509,7 @@
               }
             },
             "options": {
+              "hideNone": false,
               "hideDomainNameLabel": true
             },
             "visible": true
@@ -813,7 +814,7 @@
       "publicIP2NewOrExisting": "[steps('publicip').fgtamgmtpublicip.newOrExistingOrNone]",
       "publicIP3NewOrExisting": "[steps('publicip').fgtbmgmtpublicip.newOrExistingOrNone]",
       "publicIP1Name": "[steps('publicip').loadbalancerpublicip.name]",
-      "publicIPResourceGroup": "[steps('publicip').loadbalancerpublicip.resourceGroup]",
+      "publicIP1ResourceGroup": "[steps('publicip').loadbalancerpublicip.resourceGroup]",
       "publicIP2Name": "[steps('publicip').fgtamgmtpublicip.name]",
       "publicIP2ResourceGroup": "[steps('publicip').fgtamgmtpublicip.resourceGroup]",
       "publicIP3Name": "[steps('publicip').fgtbmgmtpublicip.name]",
