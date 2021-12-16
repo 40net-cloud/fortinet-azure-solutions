@@ -41,36 +41,11 @@ Azure Portal Wizard Template Deployment:
 
 ## Requirements and limitations
 
-The ARM template deploys different resources and it is required to have the access rights and quota in your Microsoft Azure subscription to deploy the resources.
-
-- The template will deploy Standard F4s VMs for this architecture. Other VM instances are supported as well with a minimum of 4 NICs. A list can be found [here](https://docs.fortinet.com/document/fortigate-public-cloud/7.0.0/azure-administration-guide/562841/instance-type-support)
-- Licenses for Fortigate
-  - BYOL: A demo license can be made available via your Fortinet partner or on our website. These can be injected during deployment or added after deployment. Purchased licenses need to be registered on the [Fortinet support site](http://support.fortinet.com). Download the .lic file after registration. Note, these files may not work until 30 minutes after its initial creation.
-  - PAYG or OnDemand: These licenses are automatically generated during the deployment of the FortiGate systems.
-- The password provided during deployment must need password complexity rules from Microsoft Azure:
-  - It must be 12 characters or longer
-  - It needs to contain characters from at least 3 of the following groups: uppercase characters, lowercase characters, numbers, and special characters excluding '\' or '-'
-- The terms for the FortiGate PAYG or BYOL image in the Azure Marketplace needs to be accepted once before usage. This is done automatically during deployment via the Azure Portal. For the Azure CLI the commands below need to be run before the first deployment in a subscription.
-  - BYOL
-`az vm image accept-terms --publisher fortinet --offer fortinet_fortigate-vm_v5 --plan fortinet_fg-vm`
-  - PAYG
-`az vm image accept-terms --publisher fortinet --offer fortinet_fortigate-vm_v5 --plan fortinet_fg-vm_payg_20190624`
+More documentation can be found on [the Availability Set version of this template](/FortiGate/Active-Passive-ELB-ILB/README.md#fortigate-configuration#requirements-and-limitations).
 
 ## FortiGate configuration
 
-The FortiGate VMs need a specific configuration to match the deployed environment. This configuration can be injected during provisioning or afterwards via the different options including GUI, CLI, FortiManager or REST API.
-
-- [Default configuration using this template](doc/config-provisioning.md)
-- [High Availability probe](doc/config-ha.md)
-- [Cloud-init](doc/config-cloud-init.md)
-- [Inbound connections](doc/config-inbound-connections.md)
-- [Outbound connections](doc/config-outbound-connections.md)
-  - [NAT considerations: 1-to-1 and 1-to-many](doc/config-outbound-nat-considerations.md)
-- [East-West connections](doc/config-east-west-connections.md)
-
-### Fabric Connector
-
-The FortiGate-VM uses [Managed Identities](https://docs.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/) for the SDN Fabric Connector. A SDN Fabric Connector is created automatically during deployment. After deployment, it is required apply the 'Reader' role to the Azure Subscription you want to resolve Azure Resources from. More information can be found on the [Fortinet Documentation Library](https://docs.fortinet.com/vm/azure/fortigate/7.0/azure-administration-guide/7.0.0/236610/creating-a-fabric-connector-using-a-managed-identity).
+More documentation can be found on [the Availability Set version of this template](/FortiGate/Active-Passive-ELB-ILB/README.md#fortigate-configuration#fortigate-configuration).
 
 ## Troubleshooting
 
