@@ -142,8 +142,28 @@
               "value": "6.4.5"
             },
             {
+              "label": "6.4.6",
+              "value": "6.4.6"
+            },
+            {
+              "label": "6.4.7",
+              "value": "6.4.7"
+            },
+            {
+              "label": "6.4.8",
+              "value": "6.4.8"
+            },
+            {
               "label": "7.0.0",
               "value": "7.0.0"
+            },
+            {
+              "label": "7.0.1",
+              "value": "7.0.1"
+            },
+            {
+              "label": "7.0.2",
+              "value": "7.0.2"
             },
             {
               "label": "latest",
@@ -290,7 +310,7 @@
                   "addressPrefixSize": "/22"
                 },
                 "constraints": {
-                  "minAddressPrefixSize": "/24"
+                  "minAddressPrefixSize": "/27"
                 },
                 "options": {
                   "hideExisting": false
@@ -303,8 +323,8 @@
                       "addressPrefixSize": "/26"
                     },
                     "constraints": {
-                      "minAddressPrefixSize": "/27",
-                      "minAddressCount": 12,
+                      "minAddressPrefixSize": "/29",
+                      "minAddressCount": 2,
                       "requireContiguousAddresses": true
                     }
                   },
@@ -315,8 +335,8 @@
                       "addressPrefixSize": "/26"
                     },
                     "constraints": {
-                      "minAddressPrefixSize": "/27",
-                      "minAddressCount": 8,
+                      "minAddressPrefixSize": "/29",
+                      "minAddressCount": 3,
                       "requireContiguousAddresses": true
                     }
                   },
@@ -424,7 +444,7 @@
             "type": "Microsoft.Common.TextBlock",
             "visible": true,
             "options": {
-              "text": "The Load Balancer public IP will be used for public services hosted on the FortiGate such as IPSEC termination or services behind the Fortigate such as a webserver. The FortiGate Management public IPs are used for management of the virtual machines. They are also used for the Fabric connector to retrieve information from the Azure platform."
+              "text": "The Load Balancer public IP will be used for public services hosted on the FortiGate such as IPSEC termination or services behind the FortiGate such as a webserver. The FortiGate Management public IPs are used for management of the virtual machines. They are also used for the Fabric connector to retrieve information from the Azure platform."
             }
           },
           {
@@ -751,7 +771,7 @@
       "acceleratedNetworking": "[steps('networking').acceleratednetworksection.acceleratednetworking]",
       "publicIP1NewOrExisting": "[steps('publicip').loadbalancerpublicip.newOrExistingOrNone]",
       "publicIP1Name": "[steps('publicip').loadbalancerpublicip.name]",
-      "publicIPResourceGroup": "[steps('publicip').loadbalancerpublicip.resourceGroup]",
+      "publicIP1ResourceGroup": "[steps('publicip').loadbalancerpublicip.resourceGroup]",
       "vnetNewOrExisting": "[steps('networking').virtualnetworksection.virtualnetwork.newOrExisting]",
       "vnetName": "[steps('networking').virtualnetworksection.virtualnetwork.name]",
       "vnetResourceGroup": "[steps('networking').virtualnetworksection.virtualnetwork.resourceGroup]",
