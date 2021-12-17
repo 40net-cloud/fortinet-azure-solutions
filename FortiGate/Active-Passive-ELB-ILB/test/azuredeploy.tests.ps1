@@ -94,6 +94,7 @@ Describe 'FGT A/P LB' {
             $expectedTemplateParameters = 'acceleratedNetworking',
                                           'adminPassword',
                                           'adminUsername',
+                                          'availabilityOptions',
                                           'fortiGateAdditionalCustomData',
                                           'fortiGateImageSKU',
                                           'fortiGateImageVersion',
@@ -108,16 +109,16 @@ Describe 'FGT A/P LB' {
                                           'fortinetTags',
                                           'instanceType',
                                           'location',
+                                          'publicIP1AddressType',
+                                          'publicIP1Name',
+                                          'publicIP1NewOrExisting',
+                                          'publicIP1ResourceGroup',
                                           'publicIP2Name',
                                           'publicIP2NewOrExisting',
                                           'publicIP2ResourceGroup',
                                           'publicIP3Name',
                                           'publicIP3NewOrExisting',
                                           'publicIP3ResourceGroup',
-                                          'publicIPAddressType',
-                                          'publicIPName',
-                                          'publicIPNewOrExisting',
-                                          'publicIPResourceGroup',
                                           'subnet1Name',
                                           'subnet1Prefix',
                                           'subnet1StartAddress',
@@ -145,10 +146,10 @@ Describe 'FGT A/P LB' {
 
         It "Test Deployment" {
             New-AzResourceGroup -Name $testsResourceGroupName -Location "$testsResourceGroupLocation"
-            (Test-AzResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName" -TemplateFile "$templateFileName" -TemplateParameterObject $params).Count | Should -Not -BeGreaterThan 0
+            (Test-AzResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName" -TemplateFile "$templateFileLocation" -TemplateParameterObject $params).Count | Should -Not -BeGreaterThan 0
         }
         It "Deployment" {
-            $resultDeployment = New-AzResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName" -TemplateFile "$templateFileName" -TemplateParameterObject $params
+            $resultDeployment = New-AzResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName" -TemplateFile "$templateFileLocation" -TemplateParameterObject $params
             Write-Host ($resultDeployment | Format-Table | Out-String)
             Write-Host ("Deployment state: " + $resultDeployment.ProvisioningState | Out-String)
             $resultDeployment.ProvisioningState | Should -Be "Succeeded"
