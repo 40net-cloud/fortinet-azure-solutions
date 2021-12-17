@@ -33,12 +33,12 @@ BeforeAll {
     $config = "config system global `n set gui-theme mariner `n end `n config system admin `n edit devops `n set accprofile super_admin `n set ssh-public-key1 `""
     $config += Get-Content $sshkeypub
     $config += "`" `n set password $testsResourceGroupName `n next `n end"
-    $publicIPName = "$testsPrefix-FGT-PIP"
+    $publicIP1Name = "$testsPrefix-FGT-PIP"
     $params = @{ 'adminUsername'=$testsAdminUsername
                  'adminPassword'=$testsResourceGroupName
                  'fortiGateNamePrefix'=$testsPrefix
                  'fortiGateAdditionalCustomData'=$config
-                 'publicIPName'=$publicIPName
+                 'publicIP1Name'=$publicIP1Name
                }
     $ports = @(40030, 50030, 40031, 50031)
 }
@@ -86,6 +86,7 @@ Describe 'FGT A/A' {
             $expectedTemplateParameters = 'acceleratedNetworking',
                                           'adminPassword',
                                           'adminUsername',
+                                          'availabilityOptions',
                                           'fortiGateAdditionalCustomData',
                                           'fortiGateImageSKU',
                                           'fortiGateImageVersion',
@@ -100,9 +101,9 @@ Describe 'FGT A/A' {
                                           'fortinetTags',
                                           'instanceType',
                                           'location',
-                                          'publicIPName',
-                                          'publicIPNewOr-Existing',
-                                          'publicIPResourceGroup',
+                                          'publicIP1Name',
+                                          'publicIP1NewOr-Existing',
+                                          'publicIP1ResourceGroup',
                                           'subnet1Name',
                                           'subnet1Prefix',
                                           'subnet1StartAddress',
@@ -125,10 +126,10 @@ Describe 'FGT A/A' {
 
         It "Test deployment" {
             New-AzResourceGroup -Name $testsResourceGroupName -Location "$testsResourceGroupLocation"
-            (Test-AzResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName" -TemplateFile "$templateFileName" -TemplateParameterObject $params).Count | Should -Not -BeGreaterThan 0
+            (Test-AzResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName" -TemplateFile "$templateFileLocation" -TemplateParameterObject $params).Count | Should -Not -BeGreaterThan 0
         }
         It "Deployment" {
-            $resultDeployment = New-AzResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName" -TemplateFile "$templateFileName" -TemplateParameterObject $params
+            $resultDeployment = New-AzResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName" -TemplateFile "$templateFileLocation" -TemplateParameterObject $params
             Write-Host ($resultDeployment | Format-Table | Out-String)
             Write-Host ("Deployment state: " + $resultDeployment.ProvisioningState | Out-String)
             $resultDeployment.ProvisioningState | Should -Be "Succeeded"
