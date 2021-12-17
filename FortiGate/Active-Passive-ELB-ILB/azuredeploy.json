@@ -380,9 +380,9 @@
     "imagePublisher": "fortinet",
     "imageOffer": "fortinet_fortigate-vm_v5",
 
-    "fgAvailabilitySetName": "[concat(parameters('fortiGateNamePrefix'),'-AvailabilitySet')]",
-    "fgAvailabilitySetId": {
-      "id": "[resourceId('Microsoft.Compute/availabilitySets', variables('fgAvailabilitySetName'))]"
+    "availabilitySetName": "[concat(parameters('fortiGateNamePrefix'),'-AvailabilitySet')]",
+    "availabilitySetId": {
+      "id": "[resourceId('Microsoft.Compute/availabilitySets', variables('availabilitySetName'))]"
     },
 
     "vnetName": "[if(equals(parameters('vnetName'),''),concat(parameters('fortiGateNamePrefix'),'-VNET'),parameters('vnetName'))]",
@@ -529,7 +529,7 @@
       "apiVersion": "2021-03-01",
       "type": "Microsoft.Compute/availabilitySets",
       "condition": "[not(variables('useAZ'))]",
-      "name": "[variables('fgAvailabilitySetName')]",
+      "name": "[variables('availabilitySetName')]",
       "location": "[parameters('location')]",
       "tags": {
         "provider": "[toUpper(parameters('fortinetTags').provider)]"
@@ -1160,7 +1160,7 @@
         "hardwareProfile": {
           "vmSize": "[parameters('instanceType')]"
         },
-        "availabilitySet": "[if(not(variables('useAZ')), variables('fgAvailabilitySetId'), json('null'))]",
+        "availabilitySet": "[if(not(variables('useAZ')), variables('availabilitySetId'), json('null'))]",
         "osProfile": {
           "computerName": "[variables('fgaVmName')]",
           "adminUsername": "[parameters('adminUsername')]",
@@ -1242,7 +1242,7 @@
         "hardwareProfile": {
           "vmSize": "[parameters('instanceType')]"
         },
-        "availabilitySet": "[if(not(variables('useAZ')), variables('fgAvailabilitySetId'), json('null'))]",
+        "availabilitySet": "[if(not(variables('useAZ')), variables('availabilitySetId'), json('null'))]",
         "osProfile": {
           "computerName": "[variables('fgbVmName')]",
           "adminUsername": "[parameters('adminUsername')]",

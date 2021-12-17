@@ -402,8 +402,8 @@
     "imagePublisher": "fortinet",
     "imageOffer": "fortinet_fortigate-vm_v5",
 
-    "fgAvailabilitySetName": "[concat(parameters('fortiGateNamePrefix'),'-AvailabilitySet')]",
-    "fgAvailabilitySetId": "[resourceId('Microsoft.Compute/availabilitySets', variables('fgAvailabilitySetName'))]",
+    "availabilitySetName": "[concat(parameters('fortiGateNamePrefix'),'-AvailabilitySet')]",
+    "availabilitySetId": "[resourceId('Microsoft.Compute/availabilitySets', variables('availabilitySetName'))]",
 
     "vnetName": "[if(equals(parameters('vnetName'),''),concat(parameters('fortiGateNamePrefix'),'-VNET'),parameters('vnetName'))]",
     "subnet1Id": "[if(equals(parameters('vnetNewOrExisting'),'new'),resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet1Name')),resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet1Name')))]",
@@ -528,7 +528,7 @@
     },
     {
       "type": "Microsoft.Compute/availabilitySets",
-      "name": "[variables('fgAvailabilitySetName')]",
+      "name": "[variables('availabilitySetName')]",
       "apiVersion": "2020-06-01",
       "tags": {
        "provider": "[toUpper(parameters('fortinetTags').provider)]"
@@ -977,7 +977,7 @@
           "vmSize": "[parameters('instanceType')]"
         },
         "availabilitySet": {
-          "id": "[variables('fgAvailabilitySetId')]"
+          "id": "[variables('availabilitySetId')]"
         },
         "osProfile": {
           "computerName": "[variables('fgaVmName')]",
@@ -1057,7 +1057,7 @@
           "vmSize": "[parameters('instanceType')]"
         },
         "availabilitySet": {
-          "id": "[variables('fgAvailabilitySetId')]"
+          "id": "[variables('availabilitySetId')]"
         },
         "osProfile": {
           "computerName": "[variables('fgbVmName')]",
