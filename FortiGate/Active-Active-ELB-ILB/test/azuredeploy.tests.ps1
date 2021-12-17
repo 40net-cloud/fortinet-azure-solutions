@@ -102,7 +102,7 @@ Describe 'FGT A/A' {
                                           'instanceType',
                                           'location',
                                           'publicIP1Name',
-                                          'publicIP1NewOr-Existing',
+                                          'publicIP1NewOrExisting',
                                           'publicIP1ResourceGroup',
                                           'subnet1Name',
                                           'subnet1Prefix',
@@ -144,7 +144,7 @@ Describe 'FGT A/A' {
     Context 'Deployment test' {
 
         BeforeAll {
-            $fgt = (Get-AzPublicIpAddress -Name $publicIPName -ResourceGroupName $testsResourceGroupName).IpAddress
+            $fgt = (Get-AzPublicIpAddress -Name $publicIP1Name -ResourceGroupName $testsResourceGroupName).IpAddress
             Write-Host ("FortiGate public IP: " + $fgt)
             chmod 400 $sshkey
             $verify_commands = @'
