@@ -11,7 +11,7 @@ on:
 
 jobs:
   terraform_AP:
-    name: 'Terraform AP-ELB-ILB'
+    name: 'Terraform Active-Passive-ELB-ILB'
     runs-on: ubuntu-latest
     env:
       TF_VAR_PREFIX: "FORTIQA-AP-ELB-ILB-${{ github.run_id }}-${{ github.run_number }}"
