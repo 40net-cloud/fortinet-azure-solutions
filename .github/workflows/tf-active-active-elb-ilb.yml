@@ -11,10 +11,10 @@ on:
 
 jobs:
   terraform_AA:
-    name: 'Terraform AA-ELB-ILB'
+    name: 'Terraform Active-Active-ELB-ILB'
     runs-on: ubuntu-latest
     env:
-      TF_VAR_PREFIX: "FORTIQA-AA-ELB-ILB-${{ github.run_id }}-${{ github.run_number }}"
+      TF_VAR_PREFIX: "FORTIQA-Active-Active-ELB-ILB-${{ github.run_id }}-${{ github.run_number }}"
       TF_VAR_LOCATION: "westeurope"
       TF_VAR_USERNAME: "azureuser"
       TF_VAR_PASSWORD: "${{ secrets.PASSWORD }}"
