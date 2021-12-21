@@ -96,9 +96,9 @@ Describe 'FGT A/P SDN' {
 
         It 'Contains the expected parameters' {
             $expectedTemplateParameters = 'acceleratedNetworking',
-                                          'availabilityOptions'
                                           'adminPassword',
                                           'adminUsername',
+                                          'availabilityOptions',
                                           'fortiGateAdditionalCustomData',
                                           'fortiGateImageSKU',
                                           'fortiGateImageVersion',
@@ -152,19 +152,6 @@ Describe 'FGT A/P SDN' {
     }
 
     Context 'Deployment' {
-        # Set working directory & create resource group
-        Set-Location $sourcePath
-        New-AzResourceGroup -Name $testsResourceGroupName -Location "$testsResourceGroupLocation"
-
-        # Validate all ARM templates one by one
-        $testsErrorFound = $false
-
-        $params = @{ 'adminUsername'=$testsAdminUsername
-                     'adminPassword'=$testsResourceGroupName
-                     'fortiGateNamePrefix'=$testsPrefix
-                    }
-        $publicIPName = "FGTAMgmtPublicIP"
-        $publicIP2Name = "FGTBMgmtPublicIP"
 
         It "Test Deployment" {
             New-AzResourceGroup -Name $testsResourceGroupName -Location "$testsResourceGroupLocation"

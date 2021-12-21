@@ -114,7 +114,7 @@ Describe 'FGT A/A' {
                                           'subnet3Prefix',
                                           'vnetAddressPrefix',
                                           'vnetName',
-                                          'vnetNewOr-Existing',
+                                          'vnetNewOrExisting',
                                           'vnetResourceGroup'
             $templateParameters = (get-content $templateFileLocation | ConvertFrom-Json -ErrorAction SilentlyContinue).Parameters | Get-Member -MemberType NoteProperty | % Name | sort
             $templateParameters | Should -Be $expectedTemplateParameters
