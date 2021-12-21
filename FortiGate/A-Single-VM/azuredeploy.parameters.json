@@ -90,7 +90,7 @@
             "value": ""
         },
         "location": {
-            "value": "[resourceGroup().location]"
+            "value": ""
         },
         "fortinetTags": {
             "value": {
