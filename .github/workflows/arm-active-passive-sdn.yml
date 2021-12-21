@@ -1,17 +1,17 @@
-name: ARM Template test A-Single-VM
+name: ARM Template test Active-Passive-SDN
 
 env:
-  ARMPath: FortiGate/A-Single-VM/
+  ARMPath: FortiGate/Active-Passive-SDN/
 
 on:
   push:
     paths:
-    - 'FortiGate/A-Single-VM/**'
-    - '!FortiGate/A-Single-VM/**.md'
+    - 'FortiGate/Active-Passive-SDN/**'
+    - '!FortiGate/Active-Passive-SDN/**.md'
 
 jobs:
   ARM_AA:
-    name: 'ARM Template A-Single-VM'
+    name: 'ARM Template Active-Passive-SDN'
     runs-on: ubuntu-latest
     env:
       ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
