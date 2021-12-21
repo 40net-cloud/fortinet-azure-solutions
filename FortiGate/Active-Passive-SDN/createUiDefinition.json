@@ -15,6 +15,15 @@
     ],
     "basics": [
       {
+        "name": "instancetypeinfo",
+        "type": "Microsoft.Common.InfoBox",
+        "visible": true,
+        "options": {
+          "icon": "Info",
+          "text": "FortiGate Deployment Type - Active/Passive - SDN Connector - Availability Set or Availability Zones"
+        }
+      },
+      {
         "name": "adminUsername",
         "type": "Microsoft.Common.TextBox",
         "label": "FortiGate administrative username",
@@ -163,6 +172,27 @@
           ]
         },
         "visible": true
+      },
+      {
+        "name": "availabilityOptions",
+        "type": "Microsoft.Common.DropDown",
+        "label": "FortiGate Availability Options",
+        "defaultValue": "Availability Set",
+        "toolTip": "Deploy FortiGate VMs in an Availability Set or Availability Zones. If Availability Zones deployment is selected but the location does not support Availability Zones an Availability Set will be deployed. If Availability Zones deployment is selected and Availability Zones are available in the location, FortiGate A will be placed in Zone 1, FortiGate B will be placed in Zone 2",
+        "constraints": {
+          "required": false,
+          "allowedValues": [
+            {
+              "label": "Availability Set",
+              "value": "Availability Set"
+            },
+            {
+              "label": "Availability Zones",
+              "value": "Availability Zones"
+            }
+          ]
+        },
+        "visible": true
       }
     ],
     "steps": [
@@ -201,6 +231,9 @@
               "Standard_F8s_v2",
               "Standard_F16s_v2",
               "Standard_F32s_v2",
+              "Standard_D8_v3",
+              "Standard_D16_v3",
+              "Standard_D32_v3",
               "Standard_DS3_v2",
               "Standard_DS4_v2",
               "Standard_DS5_v2",
@@ -703,22 +736,23 @@
       "fortiGateImageVersion": "[basics('fortiGateImageVersion')]",
       "adminUsername": "[basics('adminUsername')]",
       "adminPassword": "[basics('adminPassword')]",
+      "availabilityOptions": "[basics('availabilityOptions')]",
       "location": "[location()]",
       "instanceType": "[steps('instancetype').instancetypeselection]",
       "acceleratedNetworking": "[steps('networking').acceleratednetworksection.acceleratednetworking]",
-      "publicIPNewOrExisting": "[steps('publicip').loadbalancerpublicip.newOrExistingOrNone]",
+      "publicIP1NewOrExisting": "[steps('publicip').loadbalancerpublicip.newOrExistingOrNone]",
       "publicIP2NewOrExisting": "[steps('publicip').fgtamgmtpublicip.newOrExistingOrNone]",
       "publicIP3NewOrExisting": "[steps('publicip').fgtbmgmtpublicip.newOrExistingOrNone]",
-      "publicIPName": "[steps('publicip').loadbalancerpublicip.name]",
-      "publicIPResourceGroup": "[steps('publicip').loadbalancerpublicip.resourceGroup]",
+      "publicIP1Name": "[steps('publicip').loadbalancerpublicip.name]",
+      "publicIP1ResourceGroup": "[steps('publicip').loadbalancerpublicip.resourceGroup]",
       "publicIP2Name": "[steps('publicip').fgtamgmtpublicip.name]",
       "publicIP2ResourceGroup": "[steps('publicip').fgtamgmtpublicip.resourceGroup]",
       "publicIP3Name": "[steps('publicip').fgtbmgmtpublicip.name]",
       "publicIP3ResourceGroup": "[steps('publicip').fgtbmgmtpublicip.resourceGroup]",
-      "publicIPAddressSKU": "[steps('publicip').loadbalancerpublicip.sku]",
+      "publicIP1AddressSKU": "[steps('publicip').loadbalancerpublicip.sku]",
       "publicIP2AddressSKU": "[steps('publicip').fgtamgmtpublicip.sku]",
       "publicIP3AddressSKU": "[steps('publicip').fgtbmgmtpublicip.sku]",
-      "publicIPAddressType": "[steps('publicip').loadbalancerpublicip.publicIPAllocationMethod]",
+      "publicIP1AddressType": "[steps('publicip').loadbalancerpublicip.publicIPAllocationMethod]",
       "publicIP2AddressType": "[steps('publicip').fgtamgmtpublicip.publicIPAllocationMethod]",
       "publicIP3AddressType": "[steps('publicip').fgtbmgmtpublicip.publicIPAllocationMethod]",
       "vnetNewOrExisting": "[steps('networking').virtualnetworksection.virtualnetwork.newOrExisting]",

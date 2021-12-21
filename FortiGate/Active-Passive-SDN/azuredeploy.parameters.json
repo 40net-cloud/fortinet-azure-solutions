@@ -23,10 +23,13 @@
         "instanceType": {
             "value": "Standard_F4s"
         },
+        "availabilityOptions": {
+            "value": "Availability Set"
+        },
         "acceleratedNetworking": {
             "value": "true"
         },
-        "publicIPNewOrExisting": {
+        "publicIP1NewOrExisting": {
             "value": "new"
         },
         "publicIP2NewOrExisting": {
@@ -35,16 +38,16 @@
         "publicIP3NewOrExisting": {
             "value": "new"
         },
-        "publicIPName": {
+        "publicIP1Name": {
             "value": ""
         },
-        "publicIPResourceGroup": {
+        "publicIP1ResourceGroup": {
             "value": ""
         },
-        "publicIP2AddressSKU": {
+        "publicIP1AddressSKU": {
             "value": "Standard"
         },
-        "publicIP2AddressType": {
+        "publicIP1AddressType": {
             "value": "Static"
         },
         "publicIP2Name": {
@@ -52,6 +55,12 @@
         },
         "publicIP2ResourceGroup": {
             "value": ""
+        },
+        "publicIP2AddressSKU": {
+            "value": "Standard"
+        },
+        "publicIP2AddressType": {
+            "value": "Static"
         },
         "publicIP3AddressSKU": {
             "value": "Standard"
@@ -64,12 +73,6 @@
         },
         "publicIP3ResourceGroup": {
             "value": ""
-        },
-        "publicIPAddressSKU": {
-            "value": "Standard"
-        },
-        "publicIPAddressType": {
-            "value": "Static"
         },
         "vnetNewOrExisting": {
             "value": "new"
@@ -138,6 +141,12 @@
             "value": ""
         },
         "fortiGateLicenseBYOLB": {
+            "value": ""
+        },
+        "fortiGateLicenseFlexVMA": {
+            "value": ""
+        },
+        "fortiGateLicenseFlexVMB": {
             "value": ""
         },
         "location": {
