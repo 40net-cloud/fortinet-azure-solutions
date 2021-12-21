@@ -436,7 +436,8 @@
       "name": "[variables('fwbNic2Name')]",
       "location": "[parameters('location')]",
       "dependsOn": [
-        "[variables('vnetName')]"
+        "[variables('vnetName')]",
+        "[variables('NSGId')]"
       ],
       "properties": {
         "ipConfigurations": [
