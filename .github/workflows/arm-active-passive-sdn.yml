@@ -10,7 +10,7 @@ on:
     - '!FortiGate/Active-Passive-SDN/**.md'
 
 jobs:
-  ARM_AA:
+  ARM_Active-Passive-SDN:
     name: 'ARM Template Active-Passive-SDN'
     runs-on: ubuntu-latest
     env:

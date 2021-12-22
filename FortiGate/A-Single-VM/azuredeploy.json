@@ -596,6 +596,10 @@
     }
   ],
   "outputs": {
+    "publicIP": {
+      "type": "string",
+      "value": "[reference(variables('publicIPName')).ipAddress]"
+    },
     "customdata": {
       "type": "string",
       "value": "[variables('fgaCustomData')]"
