@@ -605,5 +605,4 @@
       "value": "[variables('fgaCustomData')]"
     }
   }
-
 }
