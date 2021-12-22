@@ -33,4 +33,4 @@ jobs:
       shell: bash
       continue-on-error: true
       run: |
-        echo "${{ fromJSON(steps.armttktest.outputs.results) }}"
+        echo "${{ toJSON(fromJSON(steps.armttktest.outputs.results)) }}"
