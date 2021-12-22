@@ -10,7 +10,7 @@ on:
     - '!FortiGate/A-Single-VM/**.md'
 
 jobs:
-  ARM_AA:
+  ARM_A-Single-VM:
     name: 'ARM Template A-Single-VM'
     runs-on: ubuntu-latest
     env:
@@ -29,8 +29,8 @@ jobs:
       with:
         path: ${{ env.ARMPath }}
 
-    - name: Test result - path
-      shell: bash
-      continue-on-error: true
-      run: |
-        echo "${{ fromJSON(steps.armttktest.outputs.results) }}"
+#    - name: Test result - path
+#      shell: bash
+#      continue-on-error: true
+#      run: |
+#        echo "${{ fromJSON(steps.armttktest.outputs.results) }}"

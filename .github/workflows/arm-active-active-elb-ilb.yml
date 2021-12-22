@@ -10,7 +10,7 @@ on:
     - '!FortiGate/Active-Active-ELB-ILB/**.md'
 
 jobs:
-  ARM_AA:
+  ARM_Active-Active-ELB-ILB:
     name: 'ARM Template Active-Active-ELB-ILB'
     runs-on: ubuntu-latest
     env:
