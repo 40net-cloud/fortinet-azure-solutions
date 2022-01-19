@@ -299,7 +299,7 @@
                   "addressPrefixSize": "/20"
                 },
                 "constraints": {
-                  "minAddressPrefixSize": "/26"
+                  "minAddressPrefixSize": "/29"
                 },
                 "options": {
                   "hideExisting": false
