@@ -166,6 +166,10 @@
               "value": "7.0.2"
             },
             {
+              "label": "7.0.3",
+              "value": "7.0.3"
+            },
+            {
               "label": "latest",
               "value": "latest"
             }
@@ -310,7 +314,7 @@
                   "addressPrefixSize": "/22"
                 },
                 "constraints": {
-                  "minAddressPrefixSize": "/27"
+                  "minAddressPrefixSize": "/29"
                 },
                 "options": {
                   "hideExisting": false
@@ -347,7 +351,7 @@
                       "addressPrefixSize": "/24"
                     },
                     "constraints": {
-                      "minAddressPrefixSize": "/27",
+                      "minAddressPrefixSize": "/29",
                       "minAddressCount": 8,
                       "requireContiguousAddresses": true
                     }

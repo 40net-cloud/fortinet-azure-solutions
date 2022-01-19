@@ -347,7 +347,7 @@
                   "addressPrefixSize": "/24"
                 },
                 "constraints": {
-                  "minAddressPrefixSize": "/27"
+                  "minAddressPrefixSize": "/29"
                 },
                 "options": {
                   "hideExisting": false

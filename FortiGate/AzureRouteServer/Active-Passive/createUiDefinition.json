@@ -298,7 +298,7 @@
                       "addressPrefixSize": "/27"
                     },
                     "constraints": {
-                      "minAddressPrefixSize": "/27",
+                      "minAddressPrefixSize": "/29",
                       "minAddressCount": 25,
                       "requireContiguousAddresses": true
                     }
