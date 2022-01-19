@@ -5,19 +5,19 @@
     "adminUsername": {
       "type": "string",
       "metadata": {
-        "description": "Username for the Virtual Machine"
+        "description": "Username for the FortiGate VM"
       }
     },
     "adminPassword": {
       "type": "securestring",
       "metadata": {
-        "description": "Password for the Virtual Machine"
+        "description": "Password for the FortiGate VM"
       }
     },
     "fortiGateNamePrefix": {
       "type": "string",
       "metadata": {
-        "description": "Name for FortiGate virtual appliances (A & B will be appended to the end of each respectively)"
+        "description": "Naming prefix for all deployed resources. The FortiGate VMs will have the suffix '-FGT-A' and '-FGT-B'. For example if the prefix is 'ACME-01' the FortiGates will be named 'ACME-01-FGT-A' and 'ACME-01-FGT-B'"
       }
     },
     "fortiGateImageSKU": {
@@ -28,7 +28,7 @@
         "fortinet_fg-vm_payg_20190624"
       ],
       "metadata": {
-        "description": "Identifies whether to to use PAYG (on demand licensing) or BYOL license model (where license is purchased separately)"
+        "description": "Identifies whether to to use PAYG (on demand licensing) or BYOL license model (where license is purchased separately"
       }
     },
     "fortiGateImageVersion": {
@@ -49,10 +49,11 @@
         "7.0.0",
         "7.0.1",
         "7.0.2",
+        "7.0.3",
         "latest"
       ],
       "metadata": {
-        "description": "Only 6.0.0 has the A/P HA feature currently"
+        "description": "Select the image version"
       }
     },
     "fortiGateAdditionalCustomData": {
@@ -87,21 +88,21 @@
         "none"
       ],
       "metadata": {
-        "description": "Choose between an existing or new public IP for the External Azure Load Balancer"
+        "description": "Choose between an existing or new public IP address linked to the external interface of the FortiGate VM"
       }
     },
     "publicIPName": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
-        "description": "Name of Public IP address element"
+        "description": "Name of Public IP address, if no name is provided the default name will be the Resource Group Name as the Prefix and '-FGT-PIP' as the suffix"
       }
     },
     "publicIPResourceGroup": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
-        "description": "Resource group to which the Public IP belongs"
+        "description": "Public IP Resource Group, this value is required if an existing Public IP is selected"
       }
     },
     "publicIPAddressType": {
@@ -130,14 +131,14 @@
       "type": "string",
       "defaultValue": "",
       "metadata": {
-        "description": "Name of the Azure virtual network"
+        "description": "Name of the Azure virtual network, required if utilizing an existing VNET. If no name is provided the default name will be the Resource Group Name as the Prefix and '-VNET' as the suffix"
       }
     },
     "vnetResourceGroup": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
-        "description": "Resource Group containing the existing virtual network (with new vnet the current resourcegroup is used)"
+        "description": "Resource Group containing the existing virtual network, leave blank if a new VNET is being utilize"
       }
     },
     "vnetAddressPrefix": {
@@ -151,14 +152,14 @@
       "type": "string",
       "defaultValue": "ExternalSubnet",
       "metadata": {
-        "description": "External Subnet"
+        "description": "Subnet 1 Name"
       }
     },
     "subnet1Prefix": {
       "type": "string",
       "defaultValue": "172.16.136.0/26",
       "metadata": {
-        "description": "External Subnet Prefix"
+        "description": "Subnet 1 Prefix"
       }
     },
     "subnet1StartAddress": {
@@ -170,37 +171,37 @@
     },
     "subnet2Name": {
       "type": "string",
-      "defaultValue": "TransitSubnet",
+      "defaultValue": "InternalSubnet",
       "metadata": {
-        "description": "Internal Subnet"
+        "description": "Subnet 2 Subnet"
       }
     },
     "subnet2Prefix": {
       "type": "string",
       "defaultValue": "172.16.136.64/26",
       "metadata": {
-        "description": "Internal Subnet Prefix"
+        "description": "Subnet 2 Prefix"
       }
     },
     "subnet2StartAddress": {
       "type": "string",
       "defaultValue": "172.16.136.68",
       "metadata": {
-        "description": "Subnet 2 start address, 2 consecutive private IPs are required"
+        "description": "Subnet 2 start address, 1 consecutive private IPs are required"
       }
     },
     "subnet3Name": {
       "type": "string",
       "defaultValue": "ProtectedASubnet",
       "metadata": {
-        "description": "Protected A Subnet 5 Name"
+        "description": "Subnet 3 Name"
       }
     },
     "subnet3Prefix": {
       "type": "string",
       "defaultValue": "172.16.137.0/24",
       "metadata": {
-        "description": "Protected A Subnet 3 Prefix"
+        "description": "Subnet 3 Prefix"
       }
     },
     "fortiManager": {
@@ -595,10 +596,14 @@
     }
   ],
   "outputs": {
+    "publicIP": {
+      "type": "string",
+      "value": "[reference(variables('publicIPName')).ipAddress]"
+    },
     "customdata": {
       "type": "string",
       "value": "[variables('fgaCustomData')]"
     }
   }
-
 }
+

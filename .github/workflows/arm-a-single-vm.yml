@@ -2,6 +2,7 @@ name: ARM Template test A-Single-VM
 
 env:
   ARMPath: FortiGate/A-Single-VM/
+  ARMTestPath: FortiGate/A-Single-VM/test/
 
 on:
   push:
@@ -10,7 +11,7 @@ on:
     - '!FortiGate/A-Single-VM/**.md'
 
 jobs:
-  ARM_AA:
+  ARM_A-Single-VM:
     name: 'ARM Template A-Single-VM'
     runs-on: ubuntu-latest
     env:
@@ -34,3 +35,25 @@ jobs:
       continue-on-error: true
       run: |
         echo "${{ toJSON(fromJSON(steps.armttktest.outputs.results)) }}"
+
+    - name: Azure Login via Az module
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZURE_CREDENTIALS}}
+        enable-AzPSSession: true
+
+    - name: Generate SSH key
+      shell: bash
+      continue-on-error: true
+      run: |
+        ssh-keygen -t rsa -b 4096 -f .github/workflows/secrets/id_rsa -C "fortigate_test@40net.cloud" -N ""
+
+    - name: Run Pester tests (pwsh)
+      run: |
+        Write-host $PSVersionTable.PSVersion.Major $PSVersionTable.PSRemotingProtocolVersion.Minor
+        Set-PSRepository psgallery -InstallationPolicy trusted
+        Install-Module -Name Pester -RequiredVersion 5.0.4 -confirm:$false -Force
+        $container = New-PesterContainer -Path "${{ env.ARMPath }}" -Data @{sshkey = ".github/workflows/secrets/id_rsa"; sshkeypub = ".github/workflows/secrets/id_rsa.pub"}
+        Invoke-Pester -Container $container -Output Detailed -PassThru -Path "${{ env.ARMPath }}"
+      shell: pwsh
+
