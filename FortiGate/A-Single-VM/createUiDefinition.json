@@ -302,7 +302,7 @@
                   "addressPrefixSize": "/22"
                 },
                 "constraints": {
-                  "minAddressPrefixSize": "/27"
+                  "minAddressPrefixSize": "/29"
                 },
                 "options": {
                   "hideExisting": false

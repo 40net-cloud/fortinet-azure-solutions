@@ -288,7 +288,7 @@
                       "addressPrefixSize": "/26"
                     },
                     "constraints": {
-                      "minAddressPrefixSize": "/27",
+                      "minAddressPrefixSize": "/29",
                       "minAddressCount": 12,
                       "requireContiguousAddresses": true
                     }
@@ -300,7 +300,7 @@
                       "addressPrefixSize": "/26"
                     },
                     "constraints": {
-                      "minAddressPrefixSize": "/27",
+                      "minAddressPrefixSize": "/29",
                       "minAddressCount": 8,
                       "requireContiguousAddresses": true
                     }
@@ -312,7 +312,7 @@
                       "addressPrefixSize": "/26"
                     },
                     "constraints": {
-                      "minAddressPrefixSize": "/27",
+                      "minAddressPrefixSize": "/29",
                       "minAddressCount": 8,
                       "requireContiguousAddresses": true
                     }
@@ -324,7 +324,7 @@
                       "addressPrefixSize": "/26"
                     },
                     "constraints": {
-                      "minAddressPrefixSize": "/27",
+                      "minAddressPrefixSize": "/29",
                       "minAddressCount": 8,
                       "requireContiguousAddresses": true
                     }
@@ -336,7 +336,7 @@
                       "addressPrefixSize": "/24"
                     },
                     "constraints": {
-                      "minAddressPrefixSize": "/27",
+                      "minAddressPrefixSize": "/29",
                       "minAddressCount": 8,
                       "requireContiguousAddresses": true
                     }
@@ -348,7 +348,7 @@
                       "addressPrefixSize": "/24"
                     },
                     "constraints": {
-                      "minAddressPrefixSize": "/27",
+                      "minAddressPrefixSize": "/29",
                       "minAddressCount": 8,
                       "requireContiguousAddresses": true
                     }
