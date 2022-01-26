@@ -140,7 +140,7 @@
         "description": "Resource group to which the Public IP belongs."
       }
     },
-    "publicIPAddressType": {
+    "publicIP1AddressType": {
       "type": "string",
       "defaultValue": "Static",
       "allowedValues": [
@@ -152,7 +152,7 @@
       }
     },
 
-    "publicIP2AddressSKU": {
+    "publicIP2AddressSku": {
       "type": "string",
       "defaultValue": "Standard",
       "allowedValues": [
@@ -224,7 +224,7 @@
         "description": "Resource group to which the Public IP belongs."
       }
     },
-    "publicIPAddressSKU": {
+    "publicIP1AddressSku": {
       "type": "string",
       "defaultValue": "Standard",
       "allowedValues": [
@@ -707,10 +707,10 @@
       "name": "[variables('publicIP1Name')]",
       "location": "[parameters('location')]",
       "sku": {
-        "name": "[parameters('publicIPAddressSKU')]"
+        "name": "[parameters('publicIP1AddressSku')]"
       },
       "properties": {
-        "publicIPAllocationMethod": "[parameters('publicIPAddressType')]"
+        "publicIPAllocationMethod": "[parameters('publicIP1AddressType')]"
       }
     },
     {
@@ -723,7 +723,7 @@
       "name": "[variables('publicIP2Name')]",
       "location": "[parameters('location')]",
       "sku": {
-        "name": "[parameters('publicIP2AddressSKU')]"
+        "name": "[parameters('publicIP2AddressSku')]"
       },
       "properties": {
         "publicIPAllocationMethod": "[parameters('publicIP2AddressType')]"
@@ -1166,5 +1166,23 @@
         }
       }
     }
-  ]
+  ],
+  "outputs": {
+    "fortiGatePublicIP": {
+      "type": "string",
+      "value": "[if(not(equals(parameters('publicIP1NewOrExisting'), 'none')), reference(variables('publicIP1Id')).ipAddress, json('null'))]"
+    },
+    "fortiGateFQDN": {
+      "type": "string",
+      "value": "[if(not(equals(parameters('publicIP1NewOrExisting'), 'none')), reference(variables('publicIP1Id')).dnsSettings.fqdn, json('null'))]"
+    },
+    "fortiGateAManagementPublicIP": {
+      "type": "string",
+      "value": "[if(not(equals(parameters('publicIP2NewOrExisting'), 'none')), reference(variables('publicIP2Id')).ipAddress, json('null'))]"
+    },
+    "fortiGateBManagementPublicIP": {
+      "type": "string",
+      "value": "[if(not(equals(parameters('publicIP3NewOrExisting'), 'none')), reference(variables('publicIP3Id')).ipAddress, json('null'))]"
+    }
+  }
 }

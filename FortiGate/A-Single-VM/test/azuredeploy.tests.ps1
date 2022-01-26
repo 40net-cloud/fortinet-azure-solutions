@@ -39,7 +39,7 @@ BeforeAll {
                  'adminPassword'=$testsResourceGroupName
                  'fortiGateNamePrefix'=$testsPrefix
                  'fortiGateAdditionalCustomData'=$config
-                 'publicIPName'=$publicIPName
+                 'publicIP1Name'=$publicIPName
                }
     $ports = @(443, 22)
 }
@@ -57,6 +57,7 @@ Describe 'FGT Single VM' {
         It 'Converts from JSON and has the expected properties' {
             $expectedProperties = '$schema',
             'contentVersion',
+            'outputs',
             'parameters',
             'resources',
             'variables'
@@ -66,6 +67,7 @@ Describe 'FGT Single VM' {
 
         It 'Creates the expected Azure resources' {
             $expectedResources = 'Microsoft.Resources/deployments',
+                                 'Microsoft.Storage/storageAccounts',
                                  'Microsoft.Network/routeTables',
                                  'Microsoft.Network/virtualNetworks',
                                  'Microsoft.Network/networkSecurityGroups',
@@ -93,10 +95,11 @@ Describe 'FGT Single VM' {
                                           'fortinetTags',
                                           'instanceType',
                                           'location',
-                                          'publicIPAddressType',
-                                          'publicIPName',
-                                          'publicIPNewOrExisting',
-                                          'publicIPResourceGroup',
+                                          'publicIP1AddressType',
+                                          'publicIP1Name',
+                                          'publicIP1NewOrExisting',
+                                          'publicIP1ResourceGroup',
+                                          'publicIP1Sku',
                                           'subnet1Name',
                                           'subnet1Prefix',
                                           'subnet1StartAddress',
