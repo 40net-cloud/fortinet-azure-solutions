@@ -44,7 +44,7 @@
         "publicIP1ResourceGroup": {
             "value": ""
         },
-        "publicIP1AddressSKU": {
+        "publicIP1AddressSku": {
             "value": "Standard"
         },
         "publicIP1AddressType": {
@@ -56,13 +56,13 @@
         "publicIP2ResourceGroup": {
             "value": ""
         },
-        "publicIP2AddressSKU": {
+        "publicIP2AddressSku": {
             "value": "Standard"
         },
         "publicIP2AddressType": {
             "value": "Static"
         },
-        "publicIP3AddressSKU": {
+        "publicIP3AddressSku": {
             "value": "Standard"
         },
         "publicIP3AddressType": {
