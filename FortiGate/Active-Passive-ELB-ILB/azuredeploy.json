@@ -737,7 +737,10 @@
         "name": "Standard"
       },
       "properties": {
-        "publicIPAllocationMethod": "[parameters('publicIP1AddressType')]"
+        "publicIPAllocationMethod": "[parameters('publicIP1AddressType')]",
+        "dnsSettings": {
+          "domainNameLabel": "[concat(toLower(parameters('fortiGateNamePrefix')), '-', uniquestring(resourceGroup().id))]"
+        }
       }
     },
     {
@@ -1298,5 +1301,23 @@
         }
       }
     }
-  ]
+  ],
+  "outputs": {
+    "fortiGatePublicIP": {
+      "type": "string",
+      "value": "[reference(variables('publicIP1Id')).ipAddress]"
+    },
+    "fortiGateFQDN": {
+      "type": "string",
+      "value": "[reference(variables('publicIP1Id')).dnsSettings.fqdn]"
+    },
+    "fortiGateAManagementPublicIP": {
+      "type": "string",
+      "value": "[if(not(equals(parameters('publicIP2NewOrExisting'), 'none')), reference(variables('publicIP2Id')).ipAddress, json('null'))]"
+    },
+    "fortiGateBManagementPublicIP": {
+      "type": "string",
+      "value": "[if(not(equals(parameters('publicIP3NewOrExisting'), 'none')), reference(variables('publicIP3Id')).ipAddress, json('null'))]"
+    }
+  }
 }
