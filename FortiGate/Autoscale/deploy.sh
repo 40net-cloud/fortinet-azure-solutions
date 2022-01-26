@@ -11,12 +11,12 @@ echo "
 # Stop on error
 set +e
 
-RELEASE_VERSION="2.0.5"
+RELEASE_VERSION="3.4.0"
 
-DOWNLOAD_LINK="https://github.com/fortinet/fortigate-autoscale/releases/download/$RELEASE_VERSION/fortigate-autoscale-azure-template-deployment.zip"
+DOWNLOAD_LINK="https://github.com/fortinet/fortigate-autoscale-azure/releases/download/$RELEASE_VERSION/fortigate-autoscale-azure.zip"
 DOWNLOAD_DIRECTORY="download"
 DOWNLOAD_FILENAME="$RELEASE_VERSION.zip"
-DEPLOY_PACKAGE_URL="https://github.com/fortinet/fortigate-autoscale/releases/download/$RELEASE_VERSION/fortigate-autoscale-azure-funcapp.zip"
+DEPLOY_PACKAGE_URL="https://github.com/fortinet/fortigate-autoscale-azure/releases/download/$RELEASE_VERSION/fortigate-autoscale-azure-funcapp.zip"
 
 if [ -f "$DOWNLOAD_DIRECTORY/$DOWNLOAD_FILENAME" ] || [ -d "$DOWNLOAD_DIRECTORY/$RELEASE_VERSION" ]
 then

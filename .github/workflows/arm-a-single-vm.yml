@@ -50,7 +50,7 @@ jobs:
 
     - name: Run Pester tests (pwsh)
       run: |
-        ssh-keygen -t rsa -b 4096 -f .github/workflows/secrets/id_rsa -C "fortigate_test@40net.cloud" -N ""
+        ssh-keygen -t rsa -b 4096 -f .github/workflows/secrets/id_rsa -C "fortigate_test@40net.cloud" -N '""'
         Write-host $PSVersionTable.PSVersion.Major $PSVersionTable.PSRemotingProtocolVersion.Minor
         Set-PSRepository psgallery -InstallationPolicy trusted
         Install-Module -Name Pester -RequiredVersion 5.0.4 -confirm:$false -Force
