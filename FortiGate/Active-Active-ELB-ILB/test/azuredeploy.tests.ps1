@@ -56,6 +56,7 @@ Describe 'FGT A/A' {
         It 'Converts from JSON and has the expected properties' {
             $expectedProperties = '$schema',
             'contentVersion',
+            'outputs',
             'parameters',
             'resources',
             'variables'
