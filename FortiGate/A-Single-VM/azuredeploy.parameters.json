@@ -26,17 +26,20 @@
         "acceleratedNetworking": {
             "value": "false"
         },
-        "publicIPNewOrExisting": {
+        "publicIP1NewOrExisting": {
             "value": "new"
         },
-        "publicIPName": {
+        "publicIP1Name": {
             "value": ""
         },
-        "publicIPResourceGroup": {
+        "publicIP1ResourceGroup": {
             "value": ""
         },
-        "publicIPAddressType": {
+        "publicIP1AddressType": {
             "value": "Static"
+        },
+        "publicIP1Sku": {
+            "value": "Standard"
         },
         "vnetNewOrExisting": {
             "value": "new"
@@ -60,7 +63,7 @@
             "value": "172.16.136.4"
         },
         "subnet2Name": {
-            "value": "TransitSubnet"
+            "value": "InternalSubnet"
         },
         "subnet2Prefix": {
             "value": "172.16.136.64/26"

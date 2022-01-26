@@ -42,18 +42,20 @@ jobs:
         creds: ${{secrets.AZURE_CREDENTIALS}}
         enable-AzPSSession: true
 
-    - name: Generate SSH key
-      shell: bash
-      continue-on-error: true
-      run: |
-        ssh-keygen -t rsa -b 4096 -f .github/workflows/secrets/id_rsa -C "fortigate_test@40net.cloud" -N ""
+#    - name: Generate SSH key
+#      shell: bash
+#      continue-on-error: true
+#      run: |
+#        ssh-keygen -t rsa -b 4096 -f .github/workflows/secrets/id_rsa -C "fortigate_test@40net.cloud" -N ""
 
     - name: Run Pester tests (pwsh)
       run: |
+        mkdir -p /home/runner/.ssh/
+        ssh-keygen -t rsa -b 4096 -f /home/runner/.ssh/id_rsa -C "fortigate_test@40net.cloud" -N '""'
         Write-host $PSVersionTable.PSVersion.Major $PSVersionTable.PSRemotingProtocolVersion.Minor
         Set-PSRepository psgallery -InstallationPolicy trusted
         Install-Module -Name Pester -RequiredVersion 5.0.4 -confirm:$false -Force
-        $container = New-PesterContainer -Path "${{ env.ARMPath }}" -Data @{sshkey = ".github/workflows/secrets/id_rsa"; sshkeypub = ".github/workflows/secrets/id_rsa.pub"}
+        $container = New-PesterContainer -Path "${{ env.ARMPath }}" -Data @{sshkey = "/home/runnner/.ssh/id_rsa"; sshkeypub = "/home/runner/.ssh/id_rsa.pub"}
         Invoke-Pester -Container $container -Output Detailed -PassThru -Path "${{ env.ARMPath }}"
       shell: pwsh
 

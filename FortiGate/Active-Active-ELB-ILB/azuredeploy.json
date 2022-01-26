@@ -587,7 +587,10 @@
         "name": "Standard"
       },
       "properties": {
-        "publicIPAllocationMethod": "static"
+        "publicIPAllocationMethod": "static",
+        "dnsSettings": {
+          "domainNameLabel": "[concat(toLower(parameters('fortiGateNamePrefix')), '-', uniquestring(resourceGroup().id))]"
+        }
       }
     },
     {
@@ -1028,5 +1031,15 @@
         }
       }
     }
-  ]
+  ],
+  "outputs": {
+    "fortiGatePublicIP": {
+      "type": "string",
+      "value": "[reference(variables('publicIP1Id')).ipAddress]"
+    },
+    "fortiGateFQDN": {
+      "type": "string",
+      "value": "[reference(variables('publicIP1Id')).dnsSettings.fqdn]"
+    }
+  }
 }
