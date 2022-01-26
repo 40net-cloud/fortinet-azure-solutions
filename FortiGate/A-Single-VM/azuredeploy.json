@@ -296,6 +296,9 @@
     "fgaNic2Name": "[concat(variables('fgaVmName'),'-Nic2')]",
     "fgaNic2Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('fgaNic2Name'))]",
 
+    "serialConsoleStorageAccountName": "[concat('console', uniquestring(resourceGroup().id))]",
+    "serialConsoleStorageAccountType": "Standard_LRS",
+
     "publicIP1Name": "[if(equals(parameters('publicIP1Name'),''),concat(parameters('fortiGateNamePrefix'),'-FGT-PIP'),parameters('publicIP1Name'))]",
     "publicIP1Id": "[if(equals(parameters('publicIP1NewOrExisting'),'new'),resourceId('Microsoft.Network/publicIPAddresses',variables('publicIP1Name')),resourceId(parameters('publicIP1ResourceGroup'),'Microsoft.Network/publicIPAddresses',variables('publicIP1Name')))]",
     "publicIP1AddressId": { "id": "[variables('publicIP1Id')]" },
@@ -339,6 +342,16 @@
          "contentVersion": "1.0.0.0",
          "resources": []
        }
+      }
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts",
+      "name": "[variables('serialConsoleStorageAccountName')]",
+      "apiVersion": "2021-02-01",
+      "location": "[parameters('location')]",
+      "kind": "Storage",
+      "sku": {
+        "name": "[variables('serialConsoleStorageAccountType')]"
       }
     },
     {
@@ -605,6 +618,12 @@
               "id": "[variables('fgaNic2Id')]"
             }
           ]
+        },
+        "diagnosticsProfile": {
+          "bootDiagnostics": {
+            "enabled": true,
+            "storageUri": "[reference(variables('serialConsoleStorageAccountName'), '2015-06-15').primaryEndpoints['blob']]"
+          }
         }
       }
     }
