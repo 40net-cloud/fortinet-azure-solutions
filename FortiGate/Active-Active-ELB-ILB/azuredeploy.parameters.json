@@ -74,6 +74,9 @@
         "subnet3Prefix": {
             "value": "172.16.137.0/24"
         },
+        "serialConsole": {
+            "value": "yes"
+        },
         "fortiManager": {
             "value": "no"
         },

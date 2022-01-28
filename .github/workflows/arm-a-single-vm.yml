@@ -49,13 +49,28 @@ jobs:
 #        ssh-keygen -t rsa -b 4096 -f .github/workflows/secrets/id_rsa -C "fortigate_test@40net.cloud" -N ""
 
     - name: Run Pester tests (pwsh)
-      run: |
-        mkdir -p /home/runner/.ssh/
-        ssh-keygen -t rsa -b 4096 -f /home/runner/.ssh/id_rsa -C "fortigate_test@40net.cloud" -N '""'
-        Write-host $PSVersionTable.PSVersion.Major $PSVersionTable.PSRemotingProtocolVersion.Minor
-        Set-PSRepository psgallery -InstallationPolicy trusted
-        Install-Module -Name Pester -RequiredVersion 5.0.4 -confirm:$false -Force
-        $container = New-PesterContainer -Path "${{ env.ARMPath }}" -Data @{sshkey = "/home/runnner/.ssh/id_rsa"; sshkeypub = "/home/runner/.ssh/id_rsa.pub"}
-        Invoke-Pester -Container $container -Output Detailed -PassThru -Path "${{ env.ARMPath }}"
-      shell: pwsh
+      uses: azure/powershell@v1
+      with:
+        inlineScript: |
+          mkdir -p /home/runner/.ssh/
+          ssh-keygen -t rsa -b 4096 -f /home/runner/.ssh/id_rsa -C "fortigate_test@40net.cloud" -N '""'
+          Write-host $PSVersionTable.PSVersion.Major $PSVersionTable.PSRemotingProtocolVersion.Minor
+          Set-PSRepository psgallery -InstallationPolicy trusted
+          Install-Module -Name Pester -RequiredVersion 5.0.4 -confirm:$false -Force
+          $container = New-PesterContainer -Path "${{ env.ARMPath }}" -Data @{sshkey = "/home/runnner/.ssh/id_rsa"; sshkeypub = "/home/runner/.ssh/id_rsa.pub"}
+          $config = New-PesterConfiguration
+          $config.Run.Container = $container
+          $config.Run.Exit = $true
+          $config.Run.PassThru = $true
+          $config.TestResult.OutputFormat = "NUnitXML"
+          $config.TestResult.OutputPath = "Test-Pester.XML"
+          $config.Output.Verbosity = 'Detailed'
+          Invoke-Pester -Configuration $config
+        azPSVersion: "latest"
 
+    - name: Post result to Teams
+      uses: toko-bifrost/ms-teams-deploy-card@master #  or "./" if in a local set-up
+      if: always()
+      with:
+        github-token: ${{ github.token }}
+        webhook-uri: ${{ secrets.MS_TEAMS_WEBHOOK_URI }}
