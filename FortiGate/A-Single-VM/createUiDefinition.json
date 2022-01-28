@@ -580,6 +580,44 @@
             ]
           },
           {
+            "name": "serialconsole",
+            "type": "Microsoft.Common.Section",
+            "label": "Serial Console",
+            "elements": [
+              {
+                "name": "enabled",
+                "type": "Microsoft.Common.OptionsGroup",
+                "label": "Enable Serial Console",
+                "defaultValue": "yes",
+                "toolTip": "Enables the serial console and creates a required storage account.",
+                "constraints": {
+                  "allowedValues": [
+                    {
+                      "label": "yes",
+                      "value": "yes"
+                    },
+                    {
+                      "label": "no",
+                      "value": "no"
+                    }
+                  ],
+                  "required": true
+                },
+                "visible": true
+              },
+              {
+                "name": "standardsku",
+                "type": "Microsoft.Common.InfoBox",
+                "visible": true,
+                "options": {
+                  "icon": "Info",
+                  "text": "This requires a storage account which willl be created during deployment.",
+                  "uri": "https://docs.microsoft.com/en-us/troubleshoot/azure/virtual-machines/serial-console-overview"
+                }
+              }
+            ]
+          }
+          {
             "name": "fgtlicense",
             "type": "Microsoft.Common.Section",
             "label": "FortiGate License",
@@ -670,6 +708,7 @@
       "subnet2StartAddress": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet2.startAddress]",
       "subnet3Name": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet3.name]",
       "subnet3Prefix": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet3.addressPrefix]",
+      "serialConsole": "[steps('advanced').serialconsole.enabled]",
       "fortiManager": "[steps('advanced').fortimanager.enabled]",
       "fortiManagerIP": "[steps('advanced').fortimanager.fortimanagerip]",
       "fortiManagerSerial": "[steps('advanced').fortimanager.fortimanagerserial]",
