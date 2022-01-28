@@ -4,7 +4,7 @@ After deployment, the below configuration has been automatically injected during
 
 ## FortiGate A
 
-<pre>
+```text
 config system sdn-connector
   edit AzureSDN
     set type azure
@@ -12,23 +12,23 @@ config system sdn-connector
 end
 config router static
   edit 1
-    set gateway <b>172.16.136.1</b>
+    set gateway **172.16.136.1**
     set device port1
   next
   edit 2
-    set dst <b>172.16.136.0/22</b>
+    set dst **172.16.136.0/22**
     set device port2
-    set gateway <b>172.16.136.65</b>
+    set gateway **172.16.136.65**
   next
   edit 3
     set dst 168.63.129.16 255.255.255.255
     set device port2
-    set gateway <b>172.16.136.65</b>
+    set gateway **172.16.136.65**
   next
   edit 4
     set dst 168.63.129.16 255.255.255.255
     set device port1
-    set gateway <b>172.16.136.1</b>
+    set gateway **172.16.136.1**
   next
 end
 config system probe-response
@@ -38,24 +38,24 @@ end
 config system interface
   edit port1
     set mode static
-    set ip <b>172.16.136.5/26</b>
+    set ip **172.16.136.5/26**
     set description external
     set allowaccess probe-response
   next
   edit port2
     set mode static
-    set ip <b>172.16.136.69/24</b>
+    set ip **172.16.136.69/24**
     set description internal
     set allowaccess probe-response
   next
   edit port3
     set mode static
-    set ip <b>172.16.136.133/24</b>
+    set ip **172.16.136.133/24**
     set description hasyncport
   next
   edit port4
     set mode static
-    set ip <b>172.16.136.197/24</b>
+    set ip **172.16.136.197/24**
     set description management
     set allowaccess ping https ssh ftm
   next
@@ -70,19 +70,19 @@ config system ha
   config ha-mgmt-interfaces
     edit 1
       set interface port4
-      set gateway <b>172.16.136.193</b>
+      set gateway **172.16.136.193**
     next
   end
   set override disable
   set priority 255
   set unicast-hb enable
-  set unicast-hb-peerip <b>172.16.136.134</b>
+  set unicast-hb-peerip **172.16.136.134**
 end
-</pre>
+```
 
 ## FortiGate B
 
-<pre>
+```text
 config system sdn-connector
   edit AzureSDN
     set type azure
@@ -90,23 +90,23 @@ config system sdn-connector
 end
 config router static
   edit 1
-    set gateway <b>172.16.136.1</b>
+    set gateway **172.16.136.1**
     set device port1
   next
   edit 2
-    set dst <b>172.16.136.0/22</b>
+    set dst **172.16.136.0/22**
     set device port2
-    set gateway <b>172.16.136.65</b>
+    set gateway **172.16.136.65**
   next
   edit 3
     set dst 168.63.129.16 255.255.255.255
     set device port2
-    set gateway <b>172.16.136.65</b>
+    set gateway **172.16.136.65**
   next
   edit 4
     set dst 168.63.129.16 255.255.255.255
     set device port1
-    set gateway <b>172.16.136.1</b>
+    set gateway **172.16.136.1**
   next
 end
 config system probe-response
@@ -116,24 +116,24 @@ end
 config system interface
   edit port1
     set mode static
-    set ip <b>172.16.136.6/26</b>
+    set ip **172.16.136.6/26**
     set description external
     set allowaccess probe-response
   next
   edit port2
     set mode static
-    set ip <b>172.16.136.70/26</b>
+    set ip **172.16.136.70/26**
     set description internal
     set allowaccess probe-response
   next
   edit port3
     set mode static
-    set ip <b>172.16.136.134/26</b>
+    set ip **172.16.136.134/26**
     set description hasyncport
   next
   edit port4
     set mode static
-    set ip <b>172.16.136.198/26</b>
+    set ip **172.16.136.198/26**
     set description management
     set allowaccess ping https ssh ftm
   next
@@ -148,13 +148,12 @@ config system ha
   config ha-mgmt-interfaces
     edit 1
       set interface port4
-      set gateway <b>172.16.136.193</b>
+      set gateway **172.16.136.193**
     next
   end
   set override disable
   set priority 1
   set unicast-hb enable
-  set unicast-hb-peerip <b>172.16.136.133</b>
+  set unicast-hb-peerip **172.16.136.133**
 end
-
-</pre>
+```
