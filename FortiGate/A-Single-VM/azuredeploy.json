@@ -215,6 +215,17 @@
         "description": "Subnet 3 Prefix"
       }
     },
+    "serialConsole": {
+      "type": "string",
+      "defaultValue": "yes",
+      "allowedValues": [
+        "yes",
+        "no"
+      ],
+      "metadata": {
+        "description": "Enable Serial Console"
+      }
+    },
     "fortiManager": {
       "type": "string",
       "defaultValue": "no",
@@ -298,6 +309,7 @@
 
     "serialConsoleStorageAccountName": "[concat('console', uniquestring(resourceGroup().id))]",
     "serialConsoleStorageAccountType": "Standard_LRS",
+    "serialConsoleEnabled": "[if(equals(parameters('serialConsole'),'yes'),'true','false')]",
 
     "publicIP1Name": "[if(equals(parameters('publicIP1Name'),''),concat(parameters('fortiGateNamePrefix'),'-FGT-PIP'),parameters('publicIP1Name'))]",
     "publicIP1Id": "[if(equals(parameters('publicIP1NewOrExisting'),'new'),resourceId('Microsoft.Network/publicIPAddresses',variables('publicIP1Name')),resourceId(parameters('publicIP1ResourceGroup'),'Microsoft.Network/publicIPAddresses',variables('publicIP1Name')))]",
@@ -345,6 +357,7 @@
       }
     },
     {
+      "condition": "[equals(parameters('serialConsole'), 'yes')]",
       "type": "Microsoft.Storage/storageAccounts",
       "name": "[variables('serialConsoleStorageAccountName')]",
       "apiVersion": "2021-02-01",
@@ -621,8 +634,8 @@
         },
         "diagnosticsProfile": {
           "bootDiagnostics": {
-            "enabled": true,
-            "storageUri": "[reference(variables('serialConsoleStorageAccountName'), '2021-08-01').primaryEndpoints['blob']]"
+            "enabled": "[variables('serialConsoleEnabled')]",
+            "storageUri": "[if(equals(parameters('serialConsole'), 'yes'), reference(variables('serialConsoleStorageAccountName'), '2021-08-01').primaryEndpoints['blob'], json('null'))]"
           }
         }
       }
