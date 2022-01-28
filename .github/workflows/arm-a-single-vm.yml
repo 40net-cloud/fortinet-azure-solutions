@@ -58,6 +58,6 @@ jobs:
           Set-PSRepository psgallery -InstallationPolicy trusted
           Install-Module -Name Pester -RequiredVersion 5.0.4 -confirm:$false -Force
           $container = New-PesterContainer -Path "${{ env.ARMPath }}" -Data @{sshkey = "/home/runnner/.ssh/id_rsa"; sshkeypub = "/home/runner/.ssh/id_rsa.pub"}
-          Invoke-Pester -Container $container -Output Detailed -PassThru -Path "${{ env.ARMPath }}"
+          Invoke-Pester -Container $container -Output Detailed -PassThru -EnableExit -Path "${{ env.ARMPath }}"
         azPSVersion: "latest"
 
