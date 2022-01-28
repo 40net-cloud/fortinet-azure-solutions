@@ -1,6 +1,6 @@
 # FortiGate Next-Generation Firewall - A Single VM
 
-[![Build Status](https://dev.azure.com/jvh-2520/Fortinet-Azure/_apis/build/status/A-FortiGate-Single-VM?branchName=main)](https://dev.azure.com/jvh-2520/Fortinet-Azure/_build/latest?definitionId=32&branchName=main)
+[![ARM Template test A-Single-VM](https://github.com/40net-cloud/fortinet-azure-solutions/actions/workflows/arm-a-single-vm.yml/badge.svg)](https://github.com/40net-cloud/fortinet-azure-solutions/actions/workflows/arm-a-single-vm.yml)
 
 ## Introduction
 
