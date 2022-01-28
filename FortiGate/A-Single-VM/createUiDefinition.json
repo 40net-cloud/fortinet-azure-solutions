@@ -616,7 +616,7 @@
                 }
               }
             ]
-          }
+          },
           {
             "name": "fgtlicense",
             "type": "Microsoft.Common.Section",
