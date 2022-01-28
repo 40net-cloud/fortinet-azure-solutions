@@ -68,3 +68,9 @@ jobs:
           Invoke-Pester -Configuration $config
         azPSVersion: "latest"
 
+    - name: Post result to Teams
+      uses: toko-bifrost/ms-teams-deploy-card@master #  or "./" if in a local set-up
+      if: always()
+      with:
+        github-token: ${{ github.token }}
+        webhook-uri: ${{ secrets.MS_TEAMS_WEBHOOK_URI }}
