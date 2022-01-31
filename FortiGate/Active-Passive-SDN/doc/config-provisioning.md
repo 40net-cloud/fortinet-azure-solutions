@@ -4,18 +4,18 @@ After deployment, the below configuration has been automatically injected during
 
 ## FortiGate A
 
-```text
+<pre><code>
 config system global
   set admin-sport 8443
 end
 config router static
   edit 1
-    set gateway **10.0.1.1**
+    set gateway <b>10.0.1.1</b>
     set device port1
   next
   edit 2
-    set dst **10.0.0.0/16**
-    set gateway **10.0.2.1**
+    set dst <b>10.0.0.0/16</b>
+    set gateway <b>10.0.2.1</b>
     set device "port2"
   next
 end
@@ -23,26 +23,26 @@ config system interface
   edit "port1"
     set vdom "root"
     set mode static
-    set ip **10.0.1.4 255.255.255.0**
+    set ip <b>10.0.1.4 255.255.255.0</b>
     set allowaccess ping https ssh
     set description "external"
   next
   edit "port2"
     set vdom "root"
     set mode static
-    set ip **10.0.2.4 255.255.255.0**
+    set ip <b>10.0.2.4 255.255.255.0</b>
     set description "internal"
   next
   edit "port3"
     set vdom "root"
     set mode static
-    set ip **10.0.3.4 255.255.255.240**
+    set ip <b>10.0.3.4 255.255.255.240</b>
     set description "hasyncport"
   next
   edit "port4"
     set vdom "root"
     set mode static
-    set ip **10.0.4.4 255.255.255.240**
+    set ip <b>10.0.4.4 255.255.255.240</b>
     set allowaccess ping https ssh
     set description "management"
   next
@@ -57,30 +57,30 @@ config system ha
   config ha-mgmt-interfaces
     edit 1
       set interface "port4"
-      set gateway **10.0.4.1**
+      set gateway <b>10.0.4.1</b>
     next
   end
   set override disable
   set priority 255
   set unicast-hb enable
-  set unicast-hb-peerip **10.0.3.5**
+  set unicast-hb-peerip <b>10.0.3.5</b>
 end
-```
+</code></pre>
 
 ## FortiGate B
 
-```text
+<pre><code>
 config system global
   set admin-sport 8443
 end
 config router static
   edit 1
-    set gateway **10.0.1.1**
+    set gateway <b>10.0.1.1</b>
     set device port1
   next
   edit 2
-    set dst **10.0.0.0 255.255.0.0**
-    set gateway **10.0.2.1**
+    set dst <b>10.0.0.0 255.255.0.0</b>
+    set gateway <b>10.0.2.1</b>
   set device "port2"
   next
 end
@@ -88,25 +88,25 @@ config system interface
   edit "port1"
     set vdom "root"
     set mode static
-    set ip **10.0.1.5 255.255.255.0**
+    set ip <b>10.0.1.5 255.255.255.0</b>
     set allowaccess ping https ssh
     set description "external"
   next
   edit "port2"
     set vdom "root"
     set mode static
-    set ip **10.0.2.5 255.255.255.0**
+    set ip <b>10.0.2.5 255.255.255.0</b>
     set description "internal"
   next
   edit "port3"
     set mode static
-    set ip **10.0.3.5 255.255.255.240**
+    set ip <b>10.0.3.5 255.255.255.240</b>
     set description "hasyncport"
   next
   edit "port4"
     set vdom "root"
     set mode static
-    set ip **10.0.4.5 255.255.255.240**
+    set ip <b>10.0.4.5 255.255.255.240</b>
     set allowaccess ping https ssh
     set description "management"
   next
@@ -121,12 +121,12 @@ config system ha
   config ha-mgmt-interfaces
     edit 1
       set interface "port4"
-      set gateway **10.0.4.1**
+      set gateway <b>10.0.4.1</b>
     next
   end
   set override disable
   set priority 1
   set unicast-hb enable
-  set unicast-hb-peerip **10.0.3.4**
+  set unicast-hb-peerip <b>10.0.3.4</b>
 end
-```
+</code></pre>

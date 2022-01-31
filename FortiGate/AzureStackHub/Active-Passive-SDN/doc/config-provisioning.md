@@ -4,7 +4,7 @@ After deployment, the below configuration has been automatically injected during
 
 ## FortiGate A
 
-```text
+<pre><code>
 config system global
   set admin-sport 8443
 end
@@ -66,12 +66,11 @@ config system ha
   set unicast-hb enable
   set unicast-hb-peerip 10.0.3.5
 end
-
-```
+</code></pre>
 
 ## FortiGate B
 
-```text
+<pre><code>
 config system global
   set admin-sport 8443
 end
@@ -131,4 +130,4 @@ config system ha
   set unicast-hb enable
   set unicast-hb-peerip 10.0.3.4
 end
-```
+</code></pre>
