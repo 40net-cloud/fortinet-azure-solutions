@@ -4,7 +4,7 @@ After deployment, the below configuration has been automatically injected during
 
 ## FortiGate A
 
-<pre>
+```text
 config system sdn-connector
   edit AzureSDN
     set type azure
@@ -96,11 +96,11 @@ config router bgp
         next
     end
 end
-</pre>
+```
 
 ## FortiGate B
 
-<pre>
+```text
 config system sdn-connector
   edit AzureSDN
     set type azure
@@ -198,4 +198,4 @@ config router bgp
     end
 end
 
-</pre>
+```
