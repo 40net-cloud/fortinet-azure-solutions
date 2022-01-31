@@ -40,10 +40,10 @@ The FortiGate solution can be deployed using the Azure Portal or Azure CLI. Ther
 
 ### Azure Portal
 
-Azure Portal Wizard:
+Azure Portal Wizard Template Deployment:
 [![Deploy Azure Portal Button](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.svg?sanitize=true)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2F40net-cloud%2Ffortinet-azure-solutions%2Fmain%2FFortiGate%2FActive-Passive-ELB-ILB%2Fazuredeploy.json/createUIDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2F40net-cloud%2Ffortinet-azure-solutions%2Fmain%2FFortiGate%2FActive-Passive-ELB-ILB%2FcreateUiDefinition.json)
 
-Custom deployment:
+Standard Custom Template Deployment:
 [![Deploy Azure Portal Button](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.svg?sanitize=true)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2F40net-cloud%2Ffortinet-azure-solutions%2Fmain%2FFortiGate%2FActive-Passive-ELB-ILB%2Fazuredeploy.json)
 [![Visualize](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/visualizebutton.svg?sanitize=true)](http://armviz.io/#/?load=https%3A%2F%2Fraw.githubusercontent.com%2F40net-cloud%2Ffortinet-azure-solutions$2Fmain%2FFortiGate%2FActive-Passive-ELB-ILB%2Fazuredeploy.json)
 
@@ -86,6 +86,7 @@ The ARM template deploys different resources and it is required to have the acce
 The FortiGate VMs need a specific configuration to match the deployed environment. This configuration can be injected during provisioning or afterwards via the different options including GUI, CLI, FortiManager or REST API.
 
 - [Default configuration using this template](doc/config-provisioning.md)
+- [Availability Zone](doc/config-availability-zone.md)
 - [High Availability probe](doc/config-ha.md)
 - [Cloud-init](doc/config-cloud-init.md)
 - [Inbound connections](doc/config-inbound-connections.md)

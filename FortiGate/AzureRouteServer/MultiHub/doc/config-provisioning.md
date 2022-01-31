@@ -4,7 +4,7 @@ After deployment, the below configuration has been automatically injected during
 
 ## FortiGate A
 
-<pre>
+```text
 config system sdn-connector
   edit AzureSDN
     set type azure
@@ -144,11 +144,11 @@ config firewall policy
     set logtraffic-start enable
   next
 end
-</pre>
+```
 
 ## FortiGate B
 
-<pre>
+```text
 config system sdn-connector
   edit AzureSDN
     set type azure
@@ -234,10 +234,9 @@ config system interface
   edit vx1
     set vdom root
     set ip ', variables('overlaySubnetIPhubAfgB'), '/', variables('overlaySubnetCIDRmask'), '\n set allowaccess ping\n set type vxlan\n set snmp-index 7\n set interface port1\n next\n end\n config router bgp\n config neighbor\n edit', variables('overlaySubnetIPhubBfgA'), '\n set ebgp-enforce-multihop enable\n set soft-reconfiguration enable\n set remote-as ', parameters('hubBFortiGateASN'), '\n next\n edit ', variables('overlaySubnetIPhubBfgB'), '\n set ebgp-enforce-multihop enable\n set soft-reconfiguration enable\n set remote-as', parameters('hubBFortiGateASN'), '\n next\n end\n end')]",
-</pre>
+```
 
-
-
+```text
 config router bgp
   set as 65007
   set keepalive-timer 1
@@ -261,3 +260,4 @@ config router bgp
     next
   end
 end
+```
