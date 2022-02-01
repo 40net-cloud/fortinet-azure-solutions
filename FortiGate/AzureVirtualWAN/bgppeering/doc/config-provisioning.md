@@ -4,7 +4,7 @@ After deployment, the below configuration has been automatically injected during
 
 ## FortiGate Hub A
 
-```text
+<pre><code>
 config system sdn-connector
   edit AzureSDN
     set type azure
@@ -110,11 +110,11 @@ config firewall policy
     set logtraffic-start enable
   next
 end
-```
+</code></pre>
 
 ## FortiGate Hub B
 
-```text
+<pre><code>
 config system sdn-connector
   edit AzureSDN
     set type azure
@@ -219,4 +219,4 @@ config firewall policy
     set logtraffic-start enable
   next
 end
-```
+</code></pre>

@@ -644,7 +644,7 @@
   "outputs": {
     "fortiGatePublicIP": {
       "type": "string",
-      "value": "[if(not(equals(parameters('publicIP1NewOrExisting'), 'none')), reference(variables('publicIP1Id')).ipAddress, json('null'))]"
+      "value": "[if(and(not(equals(parameters('publicIP1NewOrExisting'), 'none')),equals(parameters('publicIP1AddressType'),'Standard')), reference(variables('publicIP1Id')).ipAddress, json('null'))]"
     },
     "fortiGateFQDN": {
       "type": "string",

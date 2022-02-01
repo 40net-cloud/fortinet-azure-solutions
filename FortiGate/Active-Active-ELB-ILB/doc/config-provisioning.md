@@ -4,7 +4,7 @@ After deployment, the below configuration has been automatically injected during
 
 ## FortiGate A
 
-```text
+<pre><code>
 config system sdn-connector
   edit AzureSDN
     set type azure
@@ -49,11 +49,11 @@ config system interface
     set allowaccess ping ssh https probe-response
   next
 end
-```
+</code></pre>
 
 ## FortiGate B
 
-```text
+<pre><code>
 config system sdn-connector
   edit AzureSDN
     set type azure
@@ -98,4 +98,4 @@ config system interface
     set allowaccess ping ssh https probe-response
   next
 end
-```
+</code></pre>
