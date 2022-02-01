@@ -101,17 +101,6 @@
         "description": "Public IP for the Load Balancer for inbound and outbound data of the FortiGate VMs"
       }
     },
-    "publicIP1AddressType": {
-      "type": "string",
-      "defaultValue": "Static",
-      "allowedValues": [
-        "Dynamic",
-        "Static"
-      ],
-      "metadata": {
-        "description": "Type of public IP address"
-      }
-    },
     "publicIP1Name": {
       "type": "string",
       "defaultValue": "",
@@ -763,7 +752,7 @@
         "name": "Standard"
       },
       "properties": {
-        "publicIPAllocationMethod": "[parameters('publicIP1AddressType')]",
+        "publicIPAllocationMethod": "Static",
         "dnsSettings": {
           "domainNameLabel": "[concat(toLower(parameters('fortiGateNamePrefix')), '-', uniquestring(resourceGroup().id))]"
         }
@@ -783,7 +772,7 @@
         "name": "Standard"
       },
       "properties": {
-        "publicIPAllocationMethod": "[parameters('publicIP1AddressType')]"
+        "publicIPAllocationMethod": "Static"
       }
     },
     {
@@ -800,7 +789,7 @@
         "name": "Standard"
       },
       "properties": {
-        "publicIPAllocationMethod": "[parameters('publicIP1AddressType')]"
+        "publicIPAllocationMethod": "Static"
       }
     },
     {
