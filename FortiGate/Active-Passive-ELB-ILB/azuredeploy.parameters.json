@@ -32,9 +32,6 @@
     "publicIP1NewOrExisting": {
       "value": "new"
     },
-    "publicIP1AddressType": {
-      "value": "Static"
-    },
     "publicIP1Name": {
       "value": ""
     },
