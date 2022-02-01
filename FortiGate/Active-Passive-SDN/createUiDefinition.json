@@ -20,7 +20,8 @@
         "visible": true,
         "options": {
           "icon": "Info",
-          "text": "FortiGate Deployment Type - Active/Passive - SDN Connector - Availability Set or Availability Zones"
+          "text": "FortiGate Deployment Type - Active/Passive - SDN Connector - Availability Set or Availability Zones",
+          "uri": "https://github.com/fortinet/azure-templates/tree/main/FortiGate/Active-Passive-SDN"
         }
       },
       {
@@ -372,7 +373,7 @@
                 "options": {
                   "icon": "Info",
                   "text": "The external subnet will have a public IP attached to the FortiGate network interface of the primary FortiGate. The SDN connector after configuration will, on failover, move the public IP to the secondary FortiGate. The internal subnet is a transit subnet containing only the FortiGate interfaces for traffic to and from the internal networks. Internal systems should be installed in a protected subnet with user defined route configuration.",
-                  "uri": "https://github.com/fortinet/azure-templates/tree/main/FortiGate/Active-Passive-ELB-ILB"
+                  "uri": "https://github.com/fortinet/azure-templates/tree/main/FortiGate/Active-Passive-SDN"
                 }
               }
             ]
