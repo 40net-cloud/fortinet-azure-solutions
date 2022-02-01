@@ -15,6 +15,16 @@
     ],
     "basics": [
       {
+        "name": "instancetypeinfo",
+        "type": "Microsoft.Common.InfoBox",
+        "visible": true,
+        "options": {
+          "icon": "Info",
+          "text": "FortiGate Deployment Type - Single VM",
+          "uri": "https://github.com/fortinet/azure-templates/tree/main/FortiGate/A-Single-VM"
+        }
+      },
+      {
         "name": "adminUsername",
         "type": "Microsoft.Common.TextBox",
         "label": "FortiGate administrative username",
