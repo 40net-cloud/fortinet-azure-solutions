@@ -99,7 +99,7 @@ Describe 'FGT Single VM' {
                                           'publicIP1Name',
                                           'publicIP1NewOrExisting',
                                           'publicIP1ResourceGroup',
-                                          'publicIP1Sku',
+                                          'publicIP1SKU',
                                           'serialConsole',
                                           'subnet1Name',
                                           'subnet1Prefix',

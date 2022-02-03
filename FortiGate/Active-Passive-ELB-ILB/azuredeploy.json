@@ -1332,19 +1332,19 @@
   "outputs": {
     "fortiGatePublicIP": {
       "type": "string",
-      "value": "[reference(variables('publicIP1Id')).ipAddress]"
+      "value": "[if(equals(parameters('publicIP1NewOrExisting'), 'new'), reference(variables('publicIP1Id')).ipAddress, '')]"
     },
     "fortiGateFQDN": {
       "type": "string",
-      "value": "[reference(variables('publicIP1Id')).dnsSettings.fqdn]"
+      "value": "[if(equals(parameters('publicIP1NewOrExisting'), 'new'), reference(variables('publicIP1Id')).dnsSettings.fqdn, '')]"
     },
     "fortiGateAManagementPublicIP": {
       "type": "string",
-      "value": "[if(not(equals(parameters('publicIP2NewOrExisting'), 'none')), reference(variables('publicIP2Id')).ipAddress, json('null'))]"
+      "value": "[if(equals(parameters('publicIP2NewOrExisting'), 'new'), reference(variables('publicIP2Id')).ipAddress, '')]"
     },
     "fortiGateBManagementPublicIP": {
       "type": "string",
-      "value": "[if(not(equals(parameters('publicIP3NewOrExisting'), 'none')), reference(variables('publicIP3Id')).ipAddress, json('null'))]"
+      "value": "[if(equals(parameters('publicIP3NewOrExisting'), 'new'), reference(variables('publicIP3Id')).ipAddress, '')]"
     }
   }
 }
