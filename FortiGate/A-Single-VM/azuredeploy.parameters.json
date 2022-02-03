@@ -38,7 +38,7 @@
         "publicIP1AddressType": {
             "value": "Static"
         },
-        "publicIP1Sku": {
+        "publicIP1SKU": {
             "value": "Standard"
         },
         "vnetNewOrExisting": {
