@@ -705,7 +705,7 @@
       "publicIP1Name": "[steps('publicip').publicip.name]",
       "publicIP1ResourceGroup": "[steps('publicip').publicip.resourceGroup]",
       "publicIP1AddressType": "[steps('publicip').publicip.publicIPAllocationMethod]",
-      "publicIP1Sku": "[steps('publicip').publicip.sku]",
+      "publicIP1SKU": "[steps('publicip').publicip.sku]",
       "vnetNewOrExisting": "[steps('networking').virtualnetworksection.virtualnetwork.newOrExisting]",
       "vnetName": "[steps('networking').virtualnetworksection.virtualnetwork.name]",
       "vnetResourceGroup": "[steps('networking').virtualnetworksection.virtualnetwork.resourceGroup]",
