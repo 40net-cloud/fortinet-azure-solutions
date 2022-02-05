@@ -2,7 +2,7 @@ name: FortiGate Azure Marketplace Version Update
 
 on:
   schedule:
-    - cron:  '00 19 * * *'
+    - cron:  '00 22 * * *'
   push:
     branches: [ dev ]
     paths:
