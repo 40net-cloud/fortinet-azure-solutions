@@ -6,7 +6,6 @@ on:
 
 on:
   push:
-    branches: [ dev ]
     paths:
     - 'FortiGate/**'
 
