@@ -1,12 +1,15 @@
 name: FortiGate Azure Marketplace Version Update
 
 on:
+  workflow_dispatch:
+
   schedule:
     - cron:  '00 22 * * *'
+
   push:
     branches: [ dev ]
     paths:
-    - 'FortiGate/**'
+      - 'FortiGate/**'
 
 jobs:
   ARM-FGT-Version-Update:
