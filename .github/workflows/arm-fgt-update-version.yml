@@ -24,28 +24,30 @@ jobs:
         creds: ${{secrets.AZURE_CREDENTIALS}}
         enable-AzPSSession: true
 
-    - name: Package and convert templates
-      shell: azure/powershell@v1bash
-      run: |
-        Get-Location
-        $buildingBlocks = @("A-Single-VM", "Active-Active-ELB-ILB","Active-Passive-ELB-ILB","Active-Passive-SDN")
-        $fgtMarketplaceVersions = @()
-        $fgtMarketplaceVersionsUI = @()
+    - name: Verify FGT published version, update templates when new version found
+      uses: azure/powershell@v1
+      with:
+        inlineScript: |
+          Get-Location
+          $buildingBlocks = @("A-Single-VM", "Active-Active-ELB-ILB","Active-Passive-ELB-ILB","Active-Passive-SDN")
+          $fgtMarketplaceVersions = @()
+          $fgtMarketplaceVersionsUI = @()
 
-        $fortigateVersions = Get-AzVMImage -PublisherName "fortinet" -Location eastus -Offer "fortinet_fortigate-vm_v5" -sku "fortinet_fg-vm"
-        $fgtMarketplaceVersions += $($fortigateVersions).Version
-        $fgtMarketplaceVersions += "latest"
-        $fgtMarketplaceVersions | ForEach-Object { $fgtMarketplaceVersionsUI += [pscustomobject]@{label=$_;value=$_} }
+          $fortigateVersions = Get-AzVMImage -PublisherName "fortinet" -Location eastus -Offer "fortinet_fortigate-vm_v5" -sku "fortinet_fg-vm"
+          $fgtMarketplaceVersions += $($fortigateVersions).Version
+          $fgtMarketplaceVersions += "latest"
+          $fgtMarketplaceVersions | ForEach-Object { $fgtMarketplaceVersionsUI += [pscustomobject]@{label=$_;value=$_} }
 
-        foreach ($buildingBlock in $buildingBlocks) {
-          $content = Get-Content -Raw -Path "./FortiGate/${buildingBlock}/azuredeploy.json" | ConvertFrom-Json
-          $content.parameters.fortiGateImageVersion.allowedValues = $fgtMarketplaceVersions
-          $content | ConvertTo-Json -depth 100 | Out-File "./FortiGate/${buildingBlock}/azuredeploy.json"
+          foreach ($buildingBlock in $buildingBlocks) {
+            $content = Get-Content -Raw -Path "./FortiGate/${buildingBlock}/azuredeploy.json" | ConvertFrom-Json
+            $content.parameters.fortiGateImageVersion.allowedValues = $fgtMarketplaceVersions
+            $content | ConvertTo-Json -depth 100 | Out-File "./FortiGate/${buildingBlock}/azuredeploy.json"
 
-          $content = Get-Content -Raw -Path "./FortiGate/${buildingBlock}/createUiDefinition.json" | ConvertFrom-Json
-          $content.parameters.basics.Where({$_.Name.equals("fortiGateImageVersion")}).constraints.allowedValues = $fgtMarketplaceVersionsUI
-          $content | ConvertTo-Json -depth 100 | Out-File "./FortiGate/${buildingBlock}/createUiDefinition.json"
-        }
+            $content = Get-Content -Raw -Path "./FortiGate/${buildingBlock}/createUiDefinition.json" | ConvertFrom-Json
+            $content.parameters.basics.Where({$_.Name.equals("fortiGateImageVersion")}).constraints.allowedValues = $fgtMarketplaceVersionsUI
+            $content | ConvertTo-Json -depth 100 | Out-File "./FortiGate/${buildingBlock}/createUiDefinition.json"
+          }
+        azPSVersion: "latest"
 
     - name: Create Pull Request
       id: cpr
