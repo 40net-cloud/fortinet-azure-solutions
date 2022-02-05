@@ -1,7 +1,12 @@
 name: FortiGate Azure Marketplace Version Update
 
 on:
+  schedule:
+    - cron:  '00 19 * * *'
+
+on:
   push:
+    branches: [ dev ]
     paths:
     - 'FortiGate/**'
 
@@ -21,6 +26,7 @@ jobs:
     - name: Package and convert templates
       shell: azure/powershell@v1bash
       run: |
+        Get-Location
         $buildingBlocks = @("A-Single-VM", "Active-Active-ELB-ILB","Active-Passive-ELB-ILB","Active-Passive-SDN")
         $fgtMarketplaceVersions = @()
         $fgtMarketplaceVersionsUI = @()
