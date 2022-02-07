@@ -68,5 +68,4 @@ jobs:
           automated pr
         assignees: jvhoof
         reviewers: jvhoof
-        milestone: 1
         draft: false
