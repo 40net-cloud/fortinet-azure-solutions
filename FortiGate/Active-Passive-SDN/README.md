@@ -1,6 +1,6 @@
 # Active/Passive High Available FortiGate pair with Fabric Connector Failover
 
-[![Build Status](https://dev.azure.com/jvh-2520/Fortinet-Azure/_apis/build/status/Active-Passive-SDN?branchName=main)](https://dev.azure.com/jvh-2520/Fortinet-Azure/_build/latest?definitionId=12&branchName=main)
+[![ARM Template test Active-Passive-SDN](https://github.com/40net-cloud/fortinet-azure-solutions/actions/workflows/arm-active-passive-sdn.yml/badge.svg)](https://github.com/40net-cloud/fortinet-azure-solutions/actions/workflows/arm-active-passive-sdn.yml)
 
 ## Introduction
 
