@@ -1,6 +1,6 @@
 # Active/Passive High Available FortiGate pair with external and internal Azure Standard Load Balancer
 
-[![Build Status](https://dev.azure.com/jvh-2520/Fortinet-Azure/_apis/build/status/Azure-Passive-ELB-ILB?branchName=main)](https://dev.azure.com/jvh-2520/Fortinet-Azure/_build/latest?definitionId=13&branchName=main)
+[![ARM Template test Active-Passive-ELB-ILB](https://github.com/40net-cloud/fortinet-azure-solutions/actions/workflows/arm-active-passive-elb-ilb.yml/badge.svg)](https://github.com/40net-cloud/fortinet-azure-solutions/actions/workflows/arm-active-passive-elb-ilb.yml)
 
 ## Introduction
 

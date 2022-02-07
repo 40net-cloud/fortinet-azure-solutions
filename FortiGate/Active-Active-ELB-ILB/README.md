@@ -1,6 +1,6 @@
 # Active/Active loadbalanced pair of standalone FortiGates for resilience and scale
 
-[![Build Status](https://dev.azure.com/jvh-2520/Fortinet-Azure/_apis/build/status/Active-Active-ELB-ILB?branchName=main)](https://dev.azure.com/jvh-2520/Fortinet-Azure/_build/latest?definitionId=9&branchName=main)
+[![ARM Template test Active-Active-ELB-ILB](https://github.com/40net-cloud/fortinet-azure-solutions/actions/workflows/arm-active-active-elb-ilb.yml/badge.svg)](https://github.com/40net-cloud/fortinet-azure-solutions/actions/workflows/arm-active-active-elb-ilb.yml)
 
 ## Introduction
 
