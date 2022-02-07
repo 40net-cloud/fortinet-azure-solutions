@@ -28,7 +28,6 @@ jobs:
       uses: azure/powershell@v1
       with:
         inlineScript: |
-          Get-Location
           $buildingBlocks = @("A-Single-VM", "Active-Active-ELB-ILB","Active-Passive-ELB-ILB","Active-Passive-SDN")
           $fgtMarketplaceVersions = @()
           $fgtMarketplaceVersionsUI = @()
@@ -36,16 +35,13 @@ jobs:
           $fortigateVersions = Get-AzVMImage -PublisherName "fortinet" -Location eastus -Offer "fortinet_fortigate-vm_v5" -sku "fortinet_fg-vm"
           $fgtMarketplaceVersions += $($fortigateVersions).Version
           $fgtMarketplaceVersions += "latest"
+          $fgtMarketplaceVersions | ConvertTo-Json | Out-File -Filepath "./fgtversion.json"
           $fgtMarketplaceVersions | ForEach-Object { $fgtMarketplaceVersionsUI += [pscustomobject]@{label=$_;value=$_} }
+          $fgtMarketplaceVersionsUI | ConvertTo-Json | Out-File -Filepath "./fgtversionui.json"
 
           foreach ($buildingBlock in $buildingBlocks) {
-            $content = Get-Content -Raw -Path "./FortiGate/${buildingBlock}/azuredeploy.json" | ConvertFrom-Json
-            $content.parameters.fortiGateImageVersion.allowedValues = $fgtMarketplaceVersions
-            $content | ConvertTo-Json -depth 100 | Out-File "./FortiGate/${buildingBlock}/azuredeploy.json"
-
-            $content = Get-Content -Raw -Path "./FortiGate/${buildingBlock}/createUiDefinition.json" | ConvertFrom-Json
-            $content.parameters.basics.Where({$_.Name.equals("fortiGateImageVersion")}).constraints.allowedValues = $fgtMarketplaceVersionsUI
-            $content | ConvertTo-Json -depth 100 | Out-File "./FortiGate/${buildingBlock}/createUiDefinition.json"
+            Get-Content -Raw -Path "./FortiGate/${buildingBlock}/azuredeploy.json" | jq --slurpfile content "./fgtversion.json" '.parameters.fortiGateImageVersion.allowedValues = $content[]' | Out-File -FilePath "./FortiGate/${buildingBlock}/azuredeploy.json"
+            Get-Content -Raw -Path "./FortiGate/${buildingBlock}/createUiDefinition.json" | jq --slurpfile content "./fgtversion.json" '.parameters.fortiGateImageVersion.allowedValues = $content[]' | Out-File -FilePath "./FortiGate/${buildingBlock}/createUiDefinition.json"
           }
         azPSVersion: "latest"
 
