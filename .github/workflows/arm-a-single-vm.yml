@@ -2,7 +2,6 @@ name: ARM Template test A-Single-VM
 
 env:
   ARMPath: FortiGate/A-Single-VM/
-  ARMTestPath: FortiGate/A-Single-VM/test/
 
 on:
   push:
