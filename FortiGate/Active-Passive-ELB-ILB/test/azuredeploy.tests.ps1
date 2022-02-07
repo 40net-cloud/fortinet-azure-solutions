@@ -15,8 +15,8 @@ param (
 
 BeforeAll {
     $templateName = "Active-Passive-ELB-ILB"
-    $sourcePath = "$env:BUILD_SOURCESDIRECTORY\FortiGate\$templateName"
-    $scriptPath = "$env:BUILD_SOURCESDIRECTORY\FortiGate\$templateName\test"
+    $sourcePath = "$env:GITHUB_WORKSPACE\FortiGate\$templateName"
+    $scriptPath = "$env:GITHUB_WORKSPACE\FortiGate\$templateName\test"
     $templateFileName = "azuredeploy.json"
     $templateFileLocation = "$sourcePath\$templateFileName"
     $templateParameterFileName = "azuredeploy.parameters.json"
@@ -120,6 +120,7 @@ Describe 'FGT A/P LB' {
                                           'publicIP3Name',
                                           'publicIP3NewOrExisting',
                                           'publicIP3ResourceGroup',
+                                          'serialConsole',
                                           'subnet1Name',
                                           'subnet1Prefix',
                                           'subnet1StartAddress',
