@@ -110,7 +110,6 @@ Describe 'FGT A/P LB' {
                                           'fortinetTags',
                                           'instanceType',
                                           'location',
-                                          'publicIP1AddressType',
                                           'publicIP1Name',
                                           'publicIP1NewOrExisting',
                                           'publicIP1ResourceGroup',
