@@ -14,7 +14,7 @@ In Microsoft Azure, this single FortiGate-VM setup a basic setup to start explor
 
 This Azure ARM template will automatically deploy a full working environment containing the following components.
 
-- 1 FortiGate firewalls in an active/passive deployment
+- 1 standalone FortiGate firewall
 - 1 VNETs containing a protected subnet
 - User Defined Routes (UDR) for the protected subnets
 
@@ -54,7 +54,7 @@ After deployment, you will be shown the IP addresses of all deployed components.
 
 The ARM template deploys different resources and it is required to have the access rights and quota in your Microsoft Azure subscription to deploy the resources.
 
-- The template will deploy Standard F2s VMs for this architecture. Other VM instances are supported as well with a minimum of 2 NICs. A list can be found [here](https://docs.fortinet.com/document/fortigate/6.4.0/azure-cookbook/562841/instance-type-support)
+- The template will deploy Standard F2s VMs for this architecture. Other VM instances are supported as well with a minimum of 2 NICs. A list can be found [here](https://docs.fortinet.com/document/fortigate-public-cloud/7.0.0/azure-administration-guide/562841/instance-type-support)
 - Licenses for Fortigate
   - BYOL: A demo license can be made available via your Fortinet partner or on our website. These can be injected during deployment or added after deployment. Purchased licenses need to be registered on the [Fortinet support site](http://support.fortinet.com). Download the .lic file after registration. Note, these files may not work until 30 minutes after it's initial creation.
   - PAYG or OnDemand: These licenses are automatically generated during the deployment of the FortiGate systems.
