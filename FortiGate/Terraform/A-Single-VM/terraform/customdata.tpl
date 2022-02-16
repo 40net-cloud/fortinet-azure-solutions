@@ -67,17 +67,6 @@ config system admin
     next
 end
 %{ endif }
-config system api-user
-    edit restapi
-         set api-key p50sqq4dsqg8czmtywjh31wq674G48
-         set accprofile "super_admin"
-         config trusthost
-             edit 1
-                 set ipv4-trusthost 94.255.228.230 255.255.255.255
-             next
-        end
-    next
-end
 #
 # Example config to provision an API user which can be used with the FortiGate Terraform Provider
 # The API key is either an encrypted version. An unencrypted key can provided (exact 30 char long)
@@ -93,20 +82,6 @@ end
 #    next
 #end
 #
-# Uncomment for FGSP to allow assymetric traffic
-# Verify the README
-#config system ha
-#    set session-pickup enable
-#    set session-pickup-connectionless enable
-#    set session-pickup-expectation enable
-#    set session-pickup-nat enable
-#    set override disable
-#end
-#config system cluster-sync
-#    edit 0
-#        set peerip ${fgt_ha_peerip}
-#    next
-#end
 %{ if fgt_license_flexvm != "" }
 exec vm-license ${fgt_license_flexvm}
 %{ endif }
