@@ -16,7 +16,6 @@ param (
 BeforeAll {
     $templateName = "Active-Passive-SDN"
     $sourcePath = "$env:GITHUB_WORKSPACE\FortiGate\$templateName"
-    $scriptPath = "$env:GITHUB_WORKSPACE\FortiGate\$templateName\test"
     $templateFileName = "azuredeploy.json"
     $templateFileLocation = "$sourcePath\$templateFileName"
     $templateMetadataFileName = "metadata.json"
