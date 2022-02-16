@@ -88,7 +88,7 @@ resource "azurerm_lb_rule" "lbruletcp" {
   backend_port                   = 80
   frontend_ip_configuration_name = "${var.PREFIX}-ELB-PIP"
   probe_id                       = azurerm_lb_probe.elbprobe.id
-  backend_address_pool_id        = azurerm_lb_backend_address_pool.elbbackend.id
+  backend_address_pool_ids       = [azurerm_lb_backend_address_pool.elbbackend.id]
   enable_floating_ip             = true
 }
 
@@ -101,7 +101,7 @@ resource "azurerm_lb_rule" "lbruleudp" {
   backend_port                   = 10551
   frontend_ip_configuration_name = "${var.PREFIX}-ELB-PIP"
   probe_id                       = azurerm_lb_probe.elbprobe.id
-  backend_address_pool_id        = azurerm_lb_backend_address_pool.elbbackend.id
+  backend_address_pool_ids       = [azurerm_lb_backend_address_pool.elbbackend.id]
   enable_floating_ip             = true
 }
 
@@ -180,7 +180,7 @@ resource "azurerm_lb_rule" "lb_haports_rule" {
   backend_port                   = 0
   frontend_ip_configuration_name = "${var.PREFIX}-ILB-PIP"
   probe_id                       = azurerm_lb_probe.ilbprobe.id
-  backend_address_pool_id        = azurerm_lb_backend_address_pool.ilbbackend.id
+  backend_address_pool_ids       = [azurerm_lb_backend_address_pool.ilbbackend.id]
 }
 
 resource "azurerm_network_interface" "fgtaifcext" {

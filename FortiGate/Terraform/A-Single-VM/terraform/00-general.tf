@@ -31,22 +31,14 @@ variable "FGT_IMAGE_SKU" {
 
 variable "FGT_VERSION" {
   description = "FortiGate version by default the 'latest' available version in the Azure Marketplace is selected"
-  default     = "6.4.8"
+  default     = "latest"
 }
 
-variable "FGT_BYOL_LICENSE_FILE_A" {
+variable "FGT_BYOL_LICENSE_FILE" {
   default = ""
 }
 
-variable "FGT_BYOL_LICENSE_FILE_B" {
-  default = ""
-}
-
-variable "FGT_BYOL_FLEXVM_LICENSE_FILE_A" {
-  default = ""
-}
-
-variable "FGT_BYOL_FLEXVM_LICENSE_FILE_B" {
+variable "FGT_BYOL_FLEXVM_LICENSE_FILE" {
   default = ""
 }
 
@@ -61,7 +53,7 @@ variable "FGT_SSH_PUBLIC_KEY_FILE" {
 ##############################################################################################################
 variable "FGT_ACCELERATED_NETWORKING" {
   description = "Enables Accelerated Networking for the network interfaces of the FortiGate"
-  default     = "true"
+  default     = "false"
 }
 
 ##############################################################################################################
@@ -126,23 +118,13 @@ variable "subnetmask" {
   }
 }
 
-variable "fgt_ipaddress_a" {
+variable "fgt_ipaddress" {
   type        = map(string)
   description = ""
 
   default = {
-    "1" = "172.16.136.5"  # External
-    "2" = "172.16.136.69" # Internal
-  }
-}
-
-variable "fgt_ipaddress_b" {
-  type        = map(string)
-  description = ""
-
-  default = {
-    "1" = "172.16.136.6"  # External
-    "2" = "172.16.136.70" # Internal
+    "1" = "172.16.136.4"  # External
+    "2" = "172.16.136.68" # Internal
   }
 }
 
@@ -156,22 +138,16 @@ variable "gateway_ipaddress" {
   }
 }
 
-variable "lb_internal_ipaddress" {
-  description = ""
-
-  default = "172.16.136.68"
-}
-
 variable "fgt_vmsize" {
-  default = "Standard_F4s"
+  default = "Standard_F2s"
 }
 
 variable "fortinet_tags" {
   type = map(string)
   default = {
     publisher : "Fortinet",
-    template : "Active-Active-ELB-ILB",
-    provider : "7EB3B02F-50E5-4A3E-8CB8-2E129258AA"
+    template : "A-Single-VM",
+    provider : "7EB3B02F-50E5-4A3E-8CB8-2E129258FGT"
   }
 }
 
