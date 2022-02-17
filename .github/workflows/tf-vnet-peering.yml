@@ -1,21 +1,21 @@
-name: Terraform test Active-Active-ELB-ILB
+name: Terraform test VNET Peering
 
 env:
-  TFPath: FortiGate/Terraform/Active-Active-ELB-ILB/terraform/
+  TFPath: FortiGate/Terraform/VNET-Peering/terraform/
 
 on:
   push:
     paths:
-    - 'FortiGate/Terraform/Active-Active-ELB-ILB/**.tf'
-    - 'FortiGate/Terraform/Active-Active-ELB-ILB/**.tpl'
-    - 'FortiGate/Terraform/Active-Active-ELB-ILB/**.hcl'
+    - 'FortiGate/Terraform/VNET-Peering/**.tf'
+    - 'FortiGate/Terraform/VNET-Peering/**.tpl'
+    - 'FortiGate/Terraform/VNET-Peering/**.hcl'
 
 jobs:
-  terraform_AA:
-    name: 'Terraform Active-Active-ELB-ILB'
+  terraform_VNETP:
+    name: 'Terraform VNET-Peering-ELB-ILB'
     runs-on: ubuntu-latest
     env:
-      TF_VAR_PREFIX: "FORTIQA-Active-Active-ELB-ILB-${{ github.run_id }}-${{ github.run_number }}"
+      TF_VAR_PREFIX: "FORTIQA-VNET-Peering-${{ github.run_id }}-${{ github.run_number }}"
       TF_VAR_LOCATION: "westeurope"
       TF_VAR_USERNAME: "azureuser"
       TF_VAR_PASSWORD: "${{ secrets.PASSWORD }}"
@@ -60,7 +60,6 @@ jobs:
       run: echo '${{ steps.show.outputs.stdout }}' > plan.json # Do not change
 
     - name: Run infracost diff
-      id: cost
       uses: infracost/infracost-gh-action@master
       env:
         INFRACOST_API_KEY: ${{ secrets.INFRACOST_API_KEY }}
@@ -69,7 +68,3 @@ jobs:
         entrypoint: /scripts/ci/diff.sh # Do not change
         path: plan.json # Do not change
         show_skipped: true
-
-    - name: "Infracost output"
-      run: echo '${{ steps.cost.outputs.total_monthly_cost }}'
-

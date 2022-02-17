@@ -6,8 +6,8 @@ env:
 on:
   push:
     paths:
-    - 'FortiGate/Active-Active-ELB-ILB/**'
-    - '!FortiGate/Active-Active-ELB-ILB/**.md'
+    - 'FortiGate/Active-Active-ELB-ILB/**.json'
+    - 'FortiGate/Active-Active-ELB-ILB/**.tests.ps1'
 
 jobs:
   ARM_Active-Active-ELB-ILB:

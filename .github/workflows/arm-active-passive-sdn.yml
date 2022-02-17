@@ -6,8 +6,8 @@ env:
 on:
   push:
     paths:
-    - 'FortiGate/Active-Passive-SDN/**'
-    - '!FortiGate/Active-Passive-SDN/**.md'
+    - 'FortiGate/Active-Passive-SDN/**.json'
+    - 'FortiGate/Active-Passive-SDN/**.tests.ps1'
 
 jobs:
   ARM_Active-Passive-SDN:
