@@ -1,20 +1,21 @@
-name: Terraform test VNET Peering
+name: Terraform test A-Single-VM
 
 env:
-  TFPath: FortiGate/Terraform/VNET-Peering/terraform/
+  TFPath: FortiGate/Terraform/A-Single-VM/terraform/
 
 on:
   push:
     paths:
-    - 'FortiGate/Terraform/VNET-Peering/**'
-    - '!FortiGate/Terraform/VNET-Peering/**.md'
+    - 'FortiGate/Terraform/A-Single-VM/**.tf'
+    - 'FortiGate/Terraform/A-Single-VM/**.tpl'
+    - 'FortiGate/Terraform/A-Single-VM/**.hcl'
 
 jobs:
-  terraform_VNETP:
-    name: 'Terraform VNET-Peering-ELB-ILB'
+  terraform_AA:
+    name: 'Terraform A-Single-VM'
     runs-on: ubuntu-latest
     env:
-      TF_VAR_PREFIX: "FORTIQA-VNET-Peering-${{ github.run_id }}-${{ github.run_number }}"
+      TF_VAR_PREFIX: "FORTIQA-A-Single-VM-${{ github.run_id }}-${{ github.run_number }}"
       TF_VAR_LOCATION: "westeurope"
       TF_VAR_USERNAME: "azureuser"
       TF_VAR_PASSWORD: "${{ secrets.PASSWORD }}"
@@ -59,6 +60,7 @@ jobs:
       run: echo '${{ steps.show.outputs.stdout }}' > plan.json # Do not change
 
     - name: Run infracost diff
+      id: cost
       uses: infracost/infracost-gh-action@master
       env:
         INFRACOST_API_KEY: ${{ secrets.INFRACOST_API_KEY }}
@@ -67,3 +69,7 @@ jobs:
         entrypoint: /scripts/ci/diff.sh # Do not change
         path: plan.json # Do not change
         show_skipped: true
+
+    - name: "Infracost output"
+      run: echo '${{ steps.cost.outputs.total_monthly_cost }}'
+

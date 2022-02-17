@@ -6,8 +6,8 @@ env:
 on:
   push:
     paths:
-    - 'FortiGate/A-Single-VM/**'
-    - '!FortiGate/A-Single-VM/**.md'
+    - 'FortiGate/A-Single-VM/**.json'
+    - 'FortiGate/A-Single-VM/**.tests.ps1'
 
 jobs:
   ARM_A-Single-VM:
