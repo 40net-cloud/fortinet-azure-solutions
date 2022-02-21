@@ -16,8 +16,8 @@ $VerbosePreference = "Continue"
 
 BeforeAll {
     $templateName = "A-Single-VM"
-    $sourcePath = "$env:BUILD_SOURCESDIRECTORY\FortiWeb\$templateName"
-    $scriptPath = "$env:BUILD_SOURCESDIRECTORY\FortiWeb\$templateName\test"
+    $sourcePath = "$env:GITHUB_WORKSPACE\FortiWeb\$templateName"
+    $scriptPath = "$env:GITHUB_WORKSPACE\FortiWeb\$templateName\test"
     $templateFileName = "mainTemplate.json"
     $templateFileLocation = "$sourcePath\$templateFileName"
     $templateParameterFileName = "mainTemplate.parameters.json"
@@ -84,7 +84,6 @@ Describe 'FWB Single VM' {
                                           'publicIPName',
                                           'publicIPNewOrExistingOrNone',
                                           'publicIPResourceGroup',
-                                          'publicIPSKU',
                                           'publicIPType',
                                           'subnet1Name',
                                           'subnet1Prefix',
