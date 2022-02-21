@@ -20,6 +20,9 @@
         "instanceType": {
             "value": "Standard_F2s"
         },
+        "acceleratedNetworking": {
+            "value": "false"
+        },
         "publicIPNewOrExistingOrNone": {
             "value": "new"
         },
@@ -66,7 +69,7 @@
             "value": "172.16.136.68"
         },
         "location": {
-            "value": ""
+            "value": "[resourceGroup().location]"
         },
         "fortinetTags": {
             "value": {
