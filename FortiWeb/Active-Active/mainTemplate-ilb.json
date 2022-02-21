@@ -64,54 +64,6 @@
         "description": "Deploy FortiGate VMs in an Availability Set or Availability Zones. If Availability Zones deployment is selected but the location does not support Availability Zones an Availability Set will be deployed. If Availability Zones deployment is selected and Availability Zones are available in the location, FortiGate A will be placed in Zone 1, FortiGate B will be placed in Zone 2"
       }
     },
-    "publicIPNewOrExisting": {
-      "type": "string",
-      "defaultValue": "new",
-      "allowedValues": [
-        "new",
-        "existing",
-        "none"
-      ],
-      "metadata": {
-        "description": "Public IP for the Load Balancer for inbound and outbound data of the FortiWeb VMs"
-      }
-    },
-    "publicIPName": {
-      "type": "string",
-      "defaultValue": "FWBAPClusterPublicIP",
-      "metadata": {
-        "description": "Name of Public IP address element."
-      }
-    },
-    "publicIPResourceGroup": {
-      "type": "string",
-      "defaultValue": "",
-      "metadata": {
-        "description": "Resource group to which the Public IP belongs."
-      }
-    },
-    "publicIPType": {
-      "type": "string",
-      "defaultValue": "Static",
-      "allowedValues": [
-        "Dynamic",
-        "Static"
-      ],
-      "metadata": {
-        "description": "Type of public IP address"
-      }
-    },
-    "publicIPSKU": {
-      "type": "string",
-      "defaultValue": "Basic",
-      "allowedValues": [
-        "Basic",
-        "Standard"
-      ],
-      "metadata": {
-        "description": "SKU of public IP address"
-      }
-    },
     "vnetNewOrExisting": {
       "type": "string",
       "defaultValue": "new",
@@ -211,6 +163,9 @@
 
     "vnetName": "[if(equals(parameters('vnetName'),''),concat(parameters('fortiWebNamePrefix'),'-VNET'),parameters('vnetName'))]",
     "subnet1Id": "[if(equals(parameters('vnetNewOrExisting'),'new'),resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet1Name')),resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet1Name')))]",
+    "subnet1IdRef": {
+      "id": "[variables('subnet1Id')]"
+    },
     "subnet2Id": "[if(equals(parameters('vnetNewOrExisting'),'new'),resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet2Name')),resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet2Name')))]",
 
     "fwbAVmName": "[concat(parameters('fortiWebNamePrefix'),'-FWB-A')]",
@@ -225,12 +180,6 @@
     "fwbBNic2Name": "[concat(variables('fwbBVmName'),'-Nic2')]",
     "fwbBNic2Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('fwbBNic2Name'))]",
 
-    "publicIPName": "[if(equals(parameters('publicIPName'),''),concat(parameters('fortiWebNamePrefix'),'-FWB-PIP'),parameters('publicIPName'))]",
-    "publicIPId": "[if(not(equals(parameters('publicIPNewOrExisting'),'none')),if(equals(parameters('publicIPNewOrExisting'),'new'),resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPName')),resourceId(parameters('publicIPResourceGroup'),'Microsoft.Network/publicIPAddresses',variables('publicIPName'))),json(''))]",
-    "publicIPAddressId": {
-      "id": "[variables('publicIPId')]"
-    },
-
     "NSGName": "[concat(parameters('fortiWebNamePrefix'),'-',uniqueString(resourceGroup().id),'-NSG')]",
     "NSGId": "[resourceID('Microsoft.Network/networkSecurityGroups/',variables('NSGName'))]",
 
@@ -241,6 +190,7 @@
     "sn1IPStartAddress": "[split(parameters('subnet1StartAddress'),'.')]",
     "sn1IPfwbA": "[concat(variables('sn1IPArray0'),'.',variables('sn1IPArray1'),'.',variables('sn1IPArray2'),'.',int(variables('sn1IPStartAddress')[3]))]",
     "sn1IPfwbB": "[concat(variables('sn1IPArray0'),'.',variables('sn1IPArray1'),'.',variables('sn1IPArray2'),'.',add(int(variables('sn1IPStartAddress')[3]),1))]",
+    "sn1IPlb": "[concat(variables('sn1IPArray0'),'.',variables('sn1IPArray1'),'.',variables('sn1IPArray2'),'.',add(int(variables('sn1IPStartAddress')[3]),2))]",
 
     "sn2IPArray": "[split(parameters('subnet2Prefix'),'.')]",
     "sn2IPArray2": "[string(int(variables('sn2IPArray')[2]))]",
@@ -447,23 +397,6 @@
       }
     },
     {
-      "condition": "[equals(parameters('publicIPNewOrExisting'), 'new')]",
-      "type": "Microsoft.Network/publicIPAddresses",
-      "apiVersion": "2020-04-01",
-      "tags": {
-        "provider": "[toUpper(parameters('fortinetTags').provider)]"
-      },
-      "name": "[variables('publicIPName')]",
-      "location": "[parameters('location')]",
-      "sku":
-      {
-        "name": "[parameters('publicIPSKU')]"
-      },
-      "properties": {
-        "publicIPAllocationMethod": "[parameters('publicIPType')]"
-      }
-    },
-    {
       "apiVersion": "2020-04-01",
       "type": "Microsoft.Network/loadBalancers",
       "name": "[variables('externalLBName')]",
@@ -471,19 +404,14 @@
       "tags": {
         "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
-      "sku":
-      {
-        "name": "[parameters('publicIPSKU')]"
-      },
-      "dependsOn": [
-        "[variables('publicIPId')]"
-      ],
       "properties": {
         "frontendIPConfigurations": [
           {
             "name": "[variables('externalLBFEName')]",
             "properties": {
-              "publicIPAddress": "[variables('publicIPaddressId')]"
+              "privateIPAddress": "[variables('sn1IPlb')]",
+              "privateIPAllocationMethod": "Static",
+              "subnet": "[variables('subnet1IdRef')]"
             }
           }
         ],
