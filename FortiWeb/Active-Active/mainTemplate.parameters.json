@@ -20,6 +20,12 @@
         "instanceType": {
             "value": "Standard_F2s"
         },
+        "availabilityOptions": {
+            "value": "Availability Set"
+        },
+        "acceleratedNetworking": {
+            "value": "false"
+        },
         "publicIPNewOrExisting": {
             "value": "new"
         },
@@ -31,9 +37,6 @@
         },
         "publicIPType": {
             "value": "Static"
-        },
-        "publicIPSKU": {
-            "value": "Basic"
         },
         "vnetNewOrExisting": {
             "value": "new"
@@ -66,13 +69,13 @@
             "value": "172.16.136.68"
         },
         "location": {
-            "value": ""
+            "value": "[resourceGroup().location]"
         },
         "fortinetTags": {
             "value": {
                 "publisher": "Fortinet",
-                "template": "FWB-Active-Passive-ELB",
-                "provider": "6EB3B02F-50E5-4A3E-8CB8-2E12925831FWBAP"
+                "template": "FWB-Active-Active-ELB",
+                "provider": "6EB3B02F-50E5-4A3E-8CB8-2E12925831FWBAA"
             }
         }
     }
