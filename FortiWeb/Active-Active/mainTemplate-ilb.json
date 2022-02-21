@@ -98,7 +98,7 @@
     },
     "subnet1Name": {
       "type": "string",
-      "defaultValue": "ExternalSubnet",
+      "defaultValue": "InternalSubnet",
       "metadata": {
         "description": "Subnet 1 Name"
       }
@@ -202,24 +202,24 @@
     "sn2IPfwbA": "[concat(variables('sn2IPArray0'),'.',variables('sn2IPArray1'),'.',variables('sn2IPArray2'),'.',add(int(variables('sn2IPStartAddress')[3]),1))]",
     "sn2IPfwbB": "[concat(variables('sn2IPArray0'),'.',variables('sn2IPArray1'),'.',variables('sn2IPArray2'),'.',add(int(variables('sn2IPStartAddress')[3]),2))]",
 
-    "externalLBName_NatRule_FWBAdminPerm_fwbA": "[concat(variables('fwbAVmName'),'FWBAdminPerm')]",
-    "externalLBId_NatRule_FWBAdminPerm_fwbA": "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'),variables('externalLBName_NatRule_FWBAdminPerm_fwbA'))]",
-    "externalLBName_NatRule_SSH_fwbA": "[concat(variables('fwbAVmName'),'SSH')]",
-    "externalLBId_NatRule_SSH_fwbA": "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'),variables('externalLBName_NatRule_SSH_fwbA'))]",
-    "externalLBName_NatRule_FWBAdminPerm_fwbB": "[concat(variables('fwbBVmName'),'FWBAdminPerm')]",
-    "externalLBId_NatRule_FWBAdminPerm_fwbB": "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'),variables('externalLBName_NatRule_FWBAdminPerm_fwbB'))]",
-    "externalLBName_NatRule_SSH_fwbB": "[concat(variables('fwbBVmName'),'SSH')]",
-    "externalLBId_NatRule_SSH_fwbB": "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'),variables('externalLBName_NatRule_SSH_fwbB'))]",
-    "externalLBName": "[concat(parameters('fortiWebNamePrefix'),'-ExternalLoadBalancer')]",
-    "externalLBId": "[resourceId('Microsoft.Network/loadBalancers',variables('externalLBName'))]",
-    "externalLBFEName": "[concat(parameters('fortiWebNamePrefix'),'-ELB-',parameters('subnet1Name'),'-FrontEnd')]",
-    "externalLBFEId": "[resourceID('Microsoft.Network/loadBalancers/frontendIPConfigurations/',variables('externalLBName'),variables('externalLBFEName'))]",
-    "externalLBBEName": "[concat(parameters('fortiWebNamePrefix'),'-ILB-',parameters('subnet1Name'),'-BackEnd')]",
-    "externalLBBEId": "[resourceID('Microsoft.Network/loadBalancers/backendAddressPools/',variables('externalLBName'),variables('externalLBBEName'))]",
-    "externalLBProbeName": "heatlhProbeHttp",
-    "externalLBProbeId": "[resourceId('Microsoft.Network/loadBalancers/probes/',variables('externalLBName'),variables('externalLBProbeName'))]",
-    "externalLBProbe2Name": "heatlhProbeHttps",
-    "externalLBProbe2Id": "[resourceId('Microsoft.Network/loadBalancers/probes/',variables('externalLBName'),variables('externalLBProbeName'))]",
+    "internalLBName_NatRule_FWBAdminPerm_fwbA": "[concat(variables('fwbAVmName'),'FWBAdminPerm')]",
+    "internalLBId_NatRule_FWBAdminPerm_fwbA": "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('internalLBName'),variables('internalLBName_NatRule_FWBAdminPerm_fwbA'))]",
+    "internalLBName_NatRule_SSH_fwbA": "[concat(variables('fwbAVmName'),'SSH')]",
+    "internalLBId_NatRule_SSH_fwbA": "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('internalLBName'),variables('internalLBName_NatRule_SSH_fwbA'))]",
+    "internalLBName_NatRule_FWBAdminPerm_fwbB": "[concat(variables('fwbBVmName'),'FWBAdminPerm')]",
+    "internalLBId_NatRule_FWBAdminPerm_fwbB": "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('internalLBName'),variables('internalLBName_NatRule_FWBAdminPerm_fwbB'))]",
+    "internalLBName_NatRule_SSH_fwbB": "[concat(variables('fwbBVmName'),'SSH')]",
+    "internalLBId_NatRule_SSH_fwbB": "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('internalLBName'),variables('internalLBName_NatRule_SSH_fwbB'))]",
+    "internalLBName": "[concat(parameters('fortiWebNamePrefix'),'-InternalLoadBalancer')]",
+    "internalLBId": "[resourceId('Microsoft.Network/loadBalancers',variables('internalLBName'))]",
+    "internalLBFEName": "[concat(parameters('fortiWebNamePrefix'),'-ELB-',parameters('subnet1Name'),'-FrontEnd')]",
+    "internalLBFEId": "[resourceID('Microsoft.Network/loadBalancers/frontendIPConfigurations/',variables('internalLBName'),variables('internalLBFEName'))]",
+    "internalLBBEName": "[concat(parameters('fortiWebNamePrefix'),'-ILB-',parameters('subnet1Name'),'-BackEnd')]",
+    "internalLBBEId": "[resourceID('Microsoft.Network/loadBalancers/backendAddressPools/',variables('internalLBName'),variables('internalLBBEName'))]",
+    "internalLBProbeName": "heatlhProbeHttp",
+    "internalLBProbeId": "[resourceId('Microsoft.Network/loadBalancers/probes/',variables('internalLBName'),variables('internalLBProbeName'))]",
+    "internalLBProbe2Name": "heatlhProbeHttps",
+    "internalLBProbe2Id": "[resourceId('Microsoft.Network/loadBalancers/probes/',variables('internalLBName'),variables('internalLBProbeName'))]",
     "useAZ": "[and(not(empty(pickZones('Microsoft.Compute', 'virtualMachines', parameters('location')))), equals(parameters('availabilityOptions'), 'Availability Zones'))]",
     "zone1": [
       "1"
@@ -401,7 +401,7 @@
     {
       "apiVersion": "2020-04-01",
       "type": "Microsoft.Network/loadBalancers",
-      "name": "[variables('externalLBName')]",
+      "name": "[variables('internalLBName')]",
       "location": "[parameters('location')]",
       "tags": {
         "provider": "[toUpper(parameters('fortinetTags').provider)]"
@@ -415,7 +415,7 @@
       "properties": {
         "frontendIPConfigurations": [
           {
-            "name": "[variables('externalLBFEName')]",
+            "name": "[variables('internalLBFEName')]",
             "properties": {
               "privateIPAddress": "[variables('sn1IPlb')]",
               "privateIPAllocationMethod": "Static",
@@ -425,20 +425,20 @@
         ],
         "backendAddressPools": [
           {
-            "name": "[variables('externalLBBEName')]"
+            "name": "[variables('internalLBBEName')]"
           }
         ],
         "loadBalancingRules": [
           {
             "properties": {
               "frontendIPConfiguration": {
-                "id": "[variables('externalLBFEId')]"
+                "id": "[variables('internalLBFEId')]"
               },
               "backendAddressPool": {
-                "id": "[variables('externalLBBEId')]"
+                "id": "[variables('internalLBBEId')]"
               },
               "probe": {
-                "id": "[variables('externalLBProbeId')]"
+                "id": "[variables('internalLBProbeId')]"
               },
               "protocol": "Tcp",
               "frontendPort": 80,
@@ -451,13 +451,13 @@
           {
             "properties": {
               "frontendIPConfiguration": {
-                "id": "[variables('externalLBFEId')]"
+                "id": "[variables('internalLBFEId')]"
               },
               "backendAddressPool": {
-                "id": "[variables('externalLBBEId')]"
+                "id": "[variables('internalLBBEId')]"
               },
               "probe": {
-                "id": "[variables('externalLBProbe2Id')]"
+                "id": "[variables('internalLBProbe2Id')]"
               },
               "protocol": "Tcp",
               "frontendPort": 443,
@@ -470,10 +470,10 @@
         ],
         "inboundNatRules": [
           {
-            "name": "[variables('externalLBName_NatRule_SSH_fwbA')]",
+            "name": "[variables('internalLBName_NatRule_SSH_fwbA')]",
             "properties": {
               "frontendIPConfiguration": {
-                "id": "[variables('externalLBFEId')]"
+                "id": "[variables('internalLBFEId')]"
               },
               "protocol": "Tcp",
               "frontendPort": 50030,
@@ -482,10 +482,10 @@
             }
           },
           {
-            "name": "[variables('externalLBName_NatRule_FWBAdminPerm_fwbA')]",
+            "name": "[variables('internalLBName_NatRule_FWBAdminPerm_fwbA')]",
             "properties": {
               "frontendIPConfiguration": {
-                "id": "[variables('externalLBFEId')]"
+                "id": "[variables('internalLBFEId')]"
               },
               "protocol": "Tcp",
               "frontendPort": 40030,
@@ -494,10 +494,10 @@
             }
           },
           {
-            "name": "[variables('externalLBName_NatRule_SSH_fwbB')]",
+            "name": "[variables('internalLBName_NatRule_SSH_fwbB')]",
             "properties": {
               "frontendIPConfiguration": {
-                "id": "[variables('externalLBFEId')]"
+                "id": "[variables('internalLBFEId')]"
               },
               "protocol": "Tcp",
               "frontendPort": 50031,
@@ -506,10 +506,10 @@
             }
           },
           {
-            "name": "[variables('externalLBName_NatRule_FWBAdminPerm_fwbB')]",
+            "name": "[variables('internalLBName_NatRule_FWBAdminPerm_fwbB')]",
             "properties": {
               "frontendIPConfiguration": {
-                "id": "[variables('externalLBFEId')]"
+                "id": "[variables('internalLBFEId')]"
               },
               "protocol": "Tcp",
               "frontendPort": 40031,
@@ -526,7 +526,7 @@
               "intervalInSeconds": 15,
               "numberOfProbes": 2
             },
-            "name": "[variables('externalLBProbeName')]"
+            "name": "[variables('internalLBProbeName')]"
           },
           {
             "properties": {
@@ -535,7 +535,7 @@
               "intervalInSeconds": 15,
               "numberOfProbes": 2
             },
-            "name": "[variables('externalLBProbe2Name')]"
+            "name": "[variables('internalLBProbe2Name')]"
           }
         ]
       }
@@ -550,7 +550,7 @@
       "location": "[parameters('location')]",
       "dependsOn": [
         "[variables('vnetName')]",
-        "[variables('externalLBId')]",
+        "[variables('internalLBId')]",
         "[variables('NSGId')]"
       ],
       "properties": {
@@ -565,15 +565,15 @@
               },
               "loadBalancerBackendAddressPools": [
                 {
-                  "id": "[variables('externalLBBEId')]"
+                  "id": "[variables('internalLBBEId')]"
                 }
               ],
               "loadBalancerInboundNatRules": [
                 {
-                  "id": "[variables('externalLBId_NatRule_SSH_fwbA')]"
+                  "id": "[variables('internalLBId_NatRule_SSH_fwbA')]"
                 },
                 {
-                  "id": "[variables('externalLBId_NatRule_FWBAdminPerm_fwbA')]"
+                  "id": "[variables('internalLBId_NatRule_FWBAdminPerm_fwbA')]"
                 }
               ]
             }
@@ -595,7 +595,7 @@
       "location": "[parameters('location')]",
       "dependsOn": [
         "[variables('vnetName')]",
-        "[variables('externalLBId')]",
+        "[variables('internalLBId')]",
         "[variables('NSGId')]"
       ],
       "properties": {
@@ -610,15 +610,15 @@
               },
               "loadBalancerBackendAddressPools": [
                 {
-                  "id": "[variables('externalLBBEId')]"
+                  "id": "[variables('internalLBBEId')]"
                 }
               ],
               "loadBalancerInboundNatRules": [
                 {
-                  "id": "[variables('externalLBId_NatRule_SSH_fwbB')]"
+                  "id": "[variables('internalLBId_NatRule_SSH_fwbB')]"
                 },
                 {
-                  "id": "[variables('externalLBId_NatRule_FWBAdminPerm_fwbB')]"
+                  "id": "[variables('internalLBId_NatRule_FWBAdminPerm_fwbB')]"
                 }
               ]
             }
