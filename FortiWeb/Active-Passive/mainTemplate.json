@@ -53,6 +53,17 @@
         "description": "Virtual Machine size selection - must be F4 or other instance that supports 4 NICs"
       }
     },
+    "availabilityOptions": {
+      "type": "string",
+      "allowedValues": [
+        "Availability Set",
+        "Availability Zones"
+      ],
+      "defaultValue": "Availability Set",
+      "metadata": {
+        "description": "Deploy FortiGate VMs in an Availability Set or Availability Zones. If Availability Zones deployment is selected but the location does not support Availability Zones an Availability Set will be deployed. If Availability Zones deployment is selected and Availability Zones are available in the location, FortiGate A will be placed in Zone 1, FortiGate B will be placed in Zone 2"
+      }
+    },
     "publicIPNewOrExisting": {
       "type": "string",
       "defaultValue": "new",
@@ -252,7 +263,14 @@
     "externalLBProbeName": "heatlhProbeHttp",
     "externalLBProbeId": "[resourceId('Microsoft.Network/loadBalancers/probes/',variables('externalLBName'),variables('externalLBProbeName'))]",
     "externalLBProbe2Name": "heatlhProbeHttps",
-    "externalLBProbe2Id": "[resourceId('Microsoft.Network/loadBalancers/probes/',variables('externalLBName'),variables('externalLBProbeName'))]"
+    "externalLBProbe2Id": "[resourceId('Microsoft.Network/loadBalancers/probes/',variables('externalLBName'),variables('externalLBProbeName'))]",
+    "useAZ": "[and(not(empty(pickZones('Microsoft.Compute', 'virtualMachines', parameters('location')))), equals(parameters('availabilityOptions'), 'Availability Zones'))]",
+    "zone1": [
+      "1"
+    ],
+    "zone2": [
+      "2"
+    ]
   },
   "resources": [
     {
@@ -269,9 +287,10 @@
       }
     },
     {
+      "condition": "[not(variables('useAZ'))]",
+      "apiVersion": "2021-07-01",
       "type": "Microsoft.Compute/availabilitySets",
       "name": "[variables('availabilitySetName')]",
-      "apiVersion": "2021-07-01",
       "tags": {
        "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
@@ -728,16 +747,17 @@
       }
     },
     {
+      "apiVersion": "2021-07-01",
       "type": "Microsoft.Compute/virtualMachines",
       "name": "[variables('fwbAVmName')]",
-      "apiVersion": "2021-07-01",
+      "location": "[parameters('location')]",
       "tags": {
        "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
       "identity": {
         "type": "SystemAssigned"
       },
-      "location": "[parameters('location')]",
+      "zones": "[if(variables('useAZ'), variables('zone1'), json('null'))]",
       "plan": {
         "name": "[parameters('fortiWebImageSKU')]",
         "publisher": "[variables('imagePublisher')]",
@@ -751,9 +771,7 @@
         "hardwareProfile": {
           "vmSize": "[parameters('instanceType')]"
         },
-        "availabilitySet": {
-          "id": "[variables('availabilitySetId')]"
-        },
+        "availabilitySet": "[if(not(variables('useAZ')), variables('availabilitySetId'), json('null'))]",
         "osProfile": {
           "computerName": "[variables('fwbAVmName')]",
           "adminUsername": "[parameters('adminUsername')]",
@@ -796,16 +814,17 @@
       }
     },
     {
+      "apiVersion": "2021-07-01",
       "type": "Microsoft.Compute/virtualMachines",
       "name": "[variables('fwbBVmName')]",
-      "apiVersion": "2021-07-01",
+      "location": "[parameters('location')]",
       "tags": {
        "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
       "identity": {
         "type": "SystemAssigned"
       },
-      "location": "[parameters('location')]",
+      "zones": "[if(variables('useAZ'), variables('zone2'), json('null'))]",
       "plan": {
         "name": "[parameters('fortiWebImageSKU')]",
         "publisher": "[variables('imagePublisher')]",
@@ -819,9 +838,7 @@
         "hardwareProfile": {
           "vmSize": "[parameters('instanceType')]"
         },
-        "availabilitySet": {
-          "id": "[variables('availabilitySetId')]"
-        },
+        "availabilitySet": "[if(not(variables('useAZ')), variables('availabilitySetId'), json('null'))]",
         "osProfile": {
           "computerName": "[variables('fwbBVmName')]",
           "adminUsername": "[parameters('adminUsername')]",

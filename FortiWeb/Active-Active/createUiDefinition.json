@@ -15,6 +15,16 @@
     ],
     "basics": [
       {
+        "name": "instancetypeinfo",
+        "type": "Microsoft.Common.InfoBox",
+        "visible": true,
+        "options": {
+          "icon": "Info",
+          "text": "FortiWeb Deployment Type - Active/Active - Availability Set or Availability Zones",
+          "uri": "https://github.com/fortinet/azure-templates/tree/main/FortiWeb/Active-Active"
+        }
+      },
+      {
         "name": "adminUsername",
         "type": "Microsoft.Common.TextBox",
         "label": "FortiWeb administrative username",
@@ -123,6 +133,27 @@
           ]
         },
         "visible": true
+      },
+      {
+        "name": "availabilityOptions",
+        "type": "Microsoft.Common.DropDown",
+        "label": "FortiGate Availability Options",
+        "defaultValue": "Availability Set",
+        "toolTip": "Deploy FortiGate VMs in an Availability Set or Availability Zones. If Availability Zones deployment is selected but the location does not support Availability Zones an Availability Set will be deployed. If Availability Zones deployment is selected and Availability Zones are available in the location, FortiGate A will be placed in Zone 1, FortiGate B will be placed in Zone 2",
+        "constraints": {
+          "required": false,
+          "allowedValues": [
+            {
+              "label": "Availability Set",
+              "value": "Availability Set"
+            },
+            {
+              "label": "Availability Zones",
+              "value": "Availability Zones"
+            }
+          ]
+        },
+        "visible": true
       }
     ],
     "steps": [
@@ -142,7 +173,7 @@
               "text": "For this FortiWeb deployment, it is recommended to use the general purpose or compute optimized virtual machines. A selection of supported instances sizes is listed in our documentation.",
               "link": {
                 "label": "Learn more",
-                "uri": "https://docs.fortinet.com/vm/azure/fortigate/7.0/azure-administration-guide/7.0.0/562841/instance-type-support"
+                "uri": "https://docs.fortinet.com/document/fortiweb-public-cloud/latest/about-fortiweb-for-azure/527834/instance-type-support"
               }
             }
           },
@@ -153,22 +184,36 @@
             "toolTip": "Select the instance size of your FortiWeb VM solution. Minimum 4 NICs are required.",
             "recommendedSizes": [
               "Standard_F2s",
-              "Standard_F4s",
-              "Standard_F8s",
-              "Standard_F16s",
+              "Standard_F1",
               "Standard_F2",
               "Standard_F4",
               "Standard_F8",
               "Standard_F16",
+              "Standard_F1s",
+              "Standard_F2s",
+              "Standard_F4s",
+              "Standard_F8s",
+              "Standard_F16s",
               "Standard_F2s_v2",
               "Standard_F4s_v2",
               "Standard_F8s_v2",
               "Standard_F16s_v2",
               "Standard_F32s_v2",
+              "Standard_D1_v2",
+              "Standard_D2_v2",
+              "Standard_D3_v2",
+              "Standard_D4_v2",
+              "Standard_D5_v2",
+              "Standard_DS1_v2",
               "Standard_DS2_v2",
               "Standard_DS3_v2",
               "Standard_DS4_v2",
               "Standard_DS5_v2",
+              "Standard_D2_v3",
+              "Standard_D4_v3",
+              "Standard_D8_v3",
+              "Standard_D16_v3",
+              "Standard_D32_v3",
               "Standard_D2s_v3",
               "Standard_D4s_v3",
               "Standard_D8s_v3",
@@ -178,25 +223,36 @@
             "constraints": {
               "allowedValues": [
                 "Standard_F2s",
-                "Standard_F1s",
-                "Standard_F4s",
-                "Standard_F8s",
-                "Standard_F16s",
                 "Standard_F1",
                 "Standard_F2",
                 "Standard_F4",
                 "Standard_F8",
                 "Standard_F16",
+                "Standard_F1s",
+                "Standard_F2s",
+                "Standard_F4s",
+                "Standard_F8s",
+                "Standard_F16s",
                 "Standard_F2s_v2",
                 "Standard_F4s_v2",
                 "Standard_F8s_v2",
                 "Standard_F16s_v2",
                 "Standard_F32s_v2",
+                "Standard_D1_v2",
+                "Standard_D2_v2",
+                "Standard_D3_v2",
+                "Standard_D4_v2",
+                "Standard_D5_v2",
                 "Standard_DS1_v2",
                 "Standard_DS2_v2",
                 "Standard_DS3_v2",
                 "Standard_DS4_v2",
                 "Standard_DS5_v2",
+                "Standard_D2_v3",
+                "Standard_D4_v3",
+                "Standard_D8_v3",
+                "Standard_D16_v3",
+                "Standard_D32_v3",
                 "Standard_D2s_v3",
                 "Standard_D4s_v3",
                 "Standard_D8s_v3",
@@ -363,6 +419,7 @@
       "fortiWebImageVersion": "[basics('fortiWebImageVersion')]",
       "adminUsername": "[basics('adminUsername')]",
       "adminPassword": "[basics('adminPassword')]",
+      "availabilityOptions": "[basics('availabilityOptions')]",
       "location": "[location()]",
       "instanceType": "[steps('instancetype').instancetypeselection]",
       "publicIPNewOrExisting": "[steps('publicip').loadbalancerpublicip.newOrExistingOrNone]",
