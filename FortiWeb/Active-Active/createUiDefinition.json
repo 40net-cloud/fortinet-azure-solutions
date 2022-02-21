@@ -406,7 +406,7 @@
             "visible": true,
             "options": {
               "icon": "Info",
-              "text": "This deployment uses standard SKU public IP's and load balancers. For production, Microsoft recommends standard SKU public IPs. Select the standard SKU in the create new option or choose a standard SKU public IP you already created before. Microsoft Azure offers a migration path from a basic to standard SKU public IP.",
+              "text": "If you select None an internal Load Balancer will be deployed. This deployment uses standard SKU public IP's and load balancers. For production, Microsoft recommends standard SKU public IPs. Select the standard SKU in the create new option or choose a standard SKU public IP you already created before. Microsoft Azure offers a migration path from a basic to standard SKU public IP.",
               "uri": "https://docs.microsoft.com/en-us/azure/virtual-network/virtual-network-public-ip-address-upgrade?tabs=option-upgrade-cli%2Coption-migrate-powershell"
             }
           }
@@ -435,7 +435,7 @@
             "type": "Microsoft.Common.InfoBox",
             "options": {
               "icon": "Info",
-              "text": "The External Load Balancer Public IP is Standard SKU. Proceed."
+              "text": "The External Load Balancer Public IP is Standard SKU or none was selected and an Internal Load Balancer will be deployed. Proceed."
             },
             "visible": "[or(equals(steps('publicip').loadbalancerpublicip.sku, 'Standard'),equals(steps('publicip').loadbalancerpublicip.newOrExistingOrNone, 'none'))]"
           }
