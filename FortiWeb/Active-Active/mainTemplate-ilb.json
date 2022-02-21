@@ -159,7 +159,9 @@
     "imageOffer": "fortinet_fortiweb-vm_v5",
 
     "availabilitySetName": "[concat(parameters('fortiWebNamePrefix'),'-AvailabilitySet')]",
-    "availabilitySetId": "[resourceId('Microsoft.Compute/availabilitySets', variables('availabilitySetName'))]",
+    "availabilitySetId": {
+      "id": "[resourceId('Microsoft.Compute/availabilitySets', variables('availabilitySetName'))]"
+    },
 
     "vnetName": "[if(equals(parameters('vnetName'),''),concat(parameters('fortiWebNamePrefix'),'-VNET'),parameters('vnetName'))]",
     "subnet1Id": "[if(equals(parameters('vnetNewOrExisting'),'new'),resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet1Name')),resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet1Name')))]",
@@ -404,6 +406,12 @@
       "tags": {
         "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
+      "sku": {
+        "name": "Standard"
+      },
+      "dependsOn": [
+        "[variables('vnetName')]"
+      ],
       "properties": {
         "frontendIPConfigurations": [
           {

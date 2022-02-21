@@ -101,17 +101,6 @@
         "description": "Type of public IP address"
       }
     },
-    "publicIPSKU": {
-      "type": "string",
-      "defaultValue": "Basic",
-      "allowedValues": [
-        "Basic",
-        "Standard"
-      ],
-      "metadata": {
-        "description": "SKU of public IP address"
-      }
-    },
     "vnetNewOrExisting": {
       "type": "string",
       "defaultValue": "new",
@@ -457,7 +446,7 @@
       "location": "[parameters('location')]",
       "sku":
       {
-        "name": "[parameters('publicIPSKU')]"
+        "name": "Standard"
       },
       "properties": {
         "publicIPAllocationMethod": "[parameters('publicIPType')]"
@@ -473,7 +462,7 @@
       },
       "sku":
       {
-        "name": "[parameters('publicIPSKU')]"
+        "name": "Standard"
       },
       "dependsOn": [
         "[variables('publicIPId')]"
