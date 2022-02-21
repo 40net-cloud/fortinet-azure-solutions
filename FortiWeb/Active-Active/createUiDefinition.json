@@ -386,7 +386,7 @@
               "domainNameLabel": "DNS name linked to this public IP"
             },
             "defaultValue": {
-              "publicIpAddressName": "FWBAPClusterPublicIP",
+              "publicIpAddressName": "FWBClusterPublicIP",
               "domainNameLabel": "mydomain"
             },
             "constraints": {
@@ -395,7 +395,7 @@
               }
             },
             "options": {
-              "hideNone": true,
+              "hideNone": false,
               "hideDomainNameLabel": true
             },
             "visible": true
@@ -406,9 +406,38 @@
             "visible": true,
             "options": {
               "icon": "Info",
-              "text": "This deployment can use standard or basic SKU public IP's and load balancers. For production, Microsoft recommends standard SKU public IPs. Select the standard SKU in the create new option or choose a standard SKU public IP you already created before. Microsoft Azure offers a migration path from a basic to standard SKU public IP.",
+              "text": "This deployment uses standard SKU public IP's and load balancers. For production, Microsoft recommends standard SKU public IPs. Select the standard SKU in the create new option or choose a standard SKU public IP you already created before. Microsoft Azure offers a migration path from a basic to standard SKU public IP.",
               "uri": "https://docs.microsoft.com/en-us/azure/virtual-network/virtual-network-public-ip-address-upgrade?tabs=option-upgrade-cli%2Coption-migrate-powershell"
             }
+          }
+        ]
+      },
+      {
+        "name": "publicipreview",
+        "label": "Public IP Verification",
+        "subLabel": {
+          "preValidation": "Public IP SKU Review",
+          "postValidation": "Done"
+        },
+        "bladeTitle": "Public IP SKU Review",
+        "elements": [
+          {
+            "name": "BasicIPWarning1",
+            "type": "Microsoft.Common.InfoBox",
+            "options": {
+              "icon": "Error",
+              "text": "The External Load Balancer Public IP is configured using Basic SKU. Please return to previous blade and use Standard type public IPs to support Azure Standard Load Balancers"
+            },
+            "visible": "[not(or(equals(steps('publicip').loadbalancerpublicip.sku, 'Standard')),equals(steps('publicip').loadbalancerpublicip.newOrExistingOrNone, 'none'))]"
+          },
+          {
+            "name": "StandardIPConfirmation1",
+            "type": "Microsoft.Common.InfoBox",
+            "options": {
+              "icon": "Info",
+              "text": "The External Load Balancer Public IP is Standard SKU. Proceed."
+            },
+            "visible": "[or(equals(steps('publicip').loadbalancerpublicip.sku, 'Standard'),equals(steps('publicip').loadbalancerpublicip.newOrExistingOrNone, 'none'))]"
           }
         ]
       }
@@ -426,7 +455,6 @@
       "publicIPName": "[steps('publicip').loadbalancerpublicip.name]",
       "publicIPResourceGroup": "[steps('publicip').loadbalancerpublicip.resourceGroup]",
       "publicIPType": "[steps('publicip').loadbalancerpublicip.publicIPAllocationMethod]",
-      "publicIPSKU": "[steps('publicip').loadbalancerpublicip.sku]",
       "vnetNewOrExisting": "[steps('networking').virtualnetworksection.virtualnetwork.newOrExisting]",
       "vnetName": "[steps('networking').virtualnetworksection.virtualnetwork.name]",
       "vnetResourceGroup": "[steps('networking').virtualnetworksection.virtualnetwork.resourceGroup]",

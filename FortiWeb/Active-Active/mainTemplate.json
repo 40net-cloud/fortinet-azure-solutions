@@ -196,10 +196,15 @@
     "imageOffer": "fortinet_fortiweb-vm_v5",
 
     "availabilitySetName": "[concat(parameters('fortiWebNamePrefix'),'-AvailabilitySet')]",
-    "availabilitySetId": "[resourceId('Microsoft.Compute/availabilitySets', variables('availabilitySetName'))]",
+    "availabilitySetId": {
+      "id": "[resourceId('Microsoft.Compute/availabilitySets', variables('availabilitySetName'))]"
+    },
 
     "vnetName": "[if(equals(parameters('vnetName'),''),concat(parameters('fortiWebNamePrefix'),'-VNET'),parameters('vnetName'))]",
     "subnet1Id": "[if(equals(parameters('vnetNewOrExisting'),'new'),resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet1Name')),resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet1Name')))]",
+    "subnet1IdRef": {
+      "id": "[variables('subnet1Id')]"
+    },
     "subnet2Id": "[if(equals(parameters('vnetNewOrExisting'),'new'),resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet2Name')),resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet2Name')))]",
 
     "fwbAVmName": "[concat(parameters('fortiWebNamePrefix'),'-FWB-A')]",
@@ -215,9 +220,23 @@
     "fwbBNic2Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('fwbBNic2Name'))]",
 
     "publicIPName": "[if(equals(parameters('publicIPName'),''),concat(parameters('fortiWebNamePrefix'),'-FWB-PIP'),parameters('publicIPName'))]",
-    "publicIPId": "[if(not(equals(parameters('publicIPNewOrExisting'),'none')),if(equals(parameters('publicIPNewOrExisting'),'new'),resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPName')),resourceId(parameters('publicIPResourceGroup'),'Microsoft.Network/publicIPAddresses',variables('publicIPName'))),json(''))]",
+    "publicIPId": "[if(equals(parameters('publicIPNewOrExisting'),'new'),resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPName')),resourceId(parameters('publicIPResourceGroup'),'Microsoft.Network/publicIPAddresses',variables('publicIPName')))]",
     "publicIPAddressId": {
       "id": "[variables('publicIPId')]"
+    },
+
+
+    "ilbProperties": {
+      "properties": {
+        "privateIPAddress": "[variables('sn1IPlb')]",
+        "privateIPAllocationMethod": "Static",
+        "subnet": "[variables('subnet1IdRef')]"
+      }
+    },
+    "elbProperties": {
+      "properties": {
+        "publicIPAddress": "[variables('publicIPaddressId')]"
+      }
     },
 
     "NSGName": "[concat(parameters('fortiWebNamePrefix'),'-',uniqueString(resourceGroup().id),'-NSG')]",
@@ -230,6 +249,7 @@
     "sn1IPStartAddress": "[split(parameters('subnet1StartAddress'),'.')]",
     "sn1IPfwbA": "[concat(variables('sn1IPArray0'),'.',variables('sn1IPArray1'),'.',variables('sn1IPArray2'),'.',int(variables('sn1IPStartAddress')[3]))]",
     "sn1IPfwbB": "[concat(variables('sn1IPArray0'),'.',variables('sn1IPArray1'),'.',variables('sn1IPArray2'),'.',add(int(variables('sn1IPStartAddress')[3]),1))]",
+    "sn1IPlb": "[concat(variables('sn1IPArray0'),'.',variables('sn1IPArray1'),'.',variables('sn1IPArray2'),'.',add(int(variables('sn1IPStartAddress')[3]),2))]",
 
     "sn2IPArray": "[split(parameters('subnet2Prefix'),'.')]",
     "sn2IPArray2": "[string(int(variables('sn2IPArray')[2]))]",
@@ -247,11 +267,11 @@
     "externalLBId_NatRule_FWBAdminPerm_fwbB": "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'),variables('externalLBName_NatRule_FWBAdminPerm_fwbB'))]",
     "externalLBName_NatRule_SSH_fwbB": "[concat(variables('fwbBVmName'),'SSH')]",
     "externalLBId_NatRule_SSH_fwbB": "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'),variables('externalLBName_NatRule_SSH_fwbB'))]",
-    "externalLBName": "[concat(parameters('fortiWebNamePrefix'),'-ExternalLoadBalancer')]",
+    "externalLBName": "[concat(parameters('fortiWebNamePrefix'),'-LoadBalancer')]",
     "externalLBId": "[resourceId('Microsoft.Network/loadBalancers',variables('externalLBName'))]",
-    "externalLBFEName": "[concat(parameters('fortiWebNamePrefix'),'-ELB-',parameters('subnet1Name'),'-FrontEnd')]",
+    "externalLBFEName": "[concat(parameters('fortiWebNamePrefix'),'-LB-',parameters('subnet1Name'),'-FrontEnd')]",
     "externalLBFEId": "[resourceID('Microsoft.Network/loadBalancers/frontendIPConfigurations/',variables('externalLBName'),variables('externalLBFEName'))]",
-    "externalLBBEName": "[concat(parameters('fortiWebNamePrefix'),'-ILB-',parameters('subnet1Name'),'-BackEnd')]",
+    "externalLBBEName": "[concat(parameters('fortiWebNamePrefix'),'-LB-',parameters('subnet1Name'),'-BackEnd')]",
     "externalLBBEId": "[resourceID('Microsoft.Network/loadBalancers/backendAddressPools/',variables('externalLBName'),variables('externalLBBEName'))]",
     "externalLBProbeName": "heatlhProbeHttp",
     "externalLBProbeId": "[resourceId('Microsoft.Network/loadBalancers/probes/',variables('externalLBName'),variables('externalLBProbeName'))]",
@@ -460,20 +480,18 @@
       "tags": {
         "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
-      "sku":
-      {
+      "sku": {
         "name": "Standard"
       },
       "dependsOn": [
-        "[variables('publicIPId')]"
+        "[variables('publicIPName')]",
+        "[variables('vnetName')]"
       ],
       "properties": {
         "frontendIPConfigurations": [
           {
             "name": "[variables('externalLBFEName')]",
-            "properties": {
-              "publicIPAddress": "[variables('publicIPaddressId')]"
-            }
+            "properties": "[if(equals(parameters('publicIPNewOrExisting'),'none'), variables('ilbProperties').properties, variables('elbProperties').properties)]"
           }
         ],
         "backendAddressPools": [
@@ -872,4 +890,4 @@
       }
     }
   ]
-  }
+}
