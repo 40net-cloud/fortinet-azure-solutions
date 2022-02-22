@@ -47,6 +47,22 @@ Content-Disposition: attachment; filename="${fgt_license_file}"
 
 ```
 
+If you want to inject the license file via the AzureCLI, Powershell or via the Azure Portal (Custom Deployment) as a string, you need to remove the newline characters. The string in the 'fortiGateLicenseBYOLA' or 'fortiGateLicenseBYOLB' parameters should be a without newline. To remove the newline or carriage return out of the license file retrieved from Fortinet support you can use the below command:
+
+Bash
+```text
+$ tr -d '\r\n' < FGVMXXXXXXXXXXXX.lic
+
+-----BEGIN FGT VM LICENSE-----YourLicenseCode-----END FGT VM LICENSE-----
+```
+
+Powershell
+```text
+> (Get-Content 'FGVMXXXXXXXXXXXX.lic') -join ''
+
+-----BEGIN FGT VM LICENSE-----YourLicenseCode-----END FGT VM LICENSE-----
+```
+
 ### Externally loaded configuration and/or license file
 
 In certain environments it is possible to pull a configuration and license from a central repository. For example an Azure Storage Account or configuration management system. It is possible to provide these instead of the full configuration. The configURI and licenseURI need to be replaced with a HTTP(S) url that is accessible by the FortiGate during deployment.
@@ -72,10 +88,24 @@ These links give you more information on these provisioning techniques:
 After deployment, it is possible to review the cloudinit data on the FortiGate by running the command 'diag debug cloudinit show'
 
 ```text
-fgtasg-byol300000W # diag debug cloudinit show
->> Run config script
->> Finish running script
->> fgtasg-byol300000W $ config sys interface
->> fgtasg-byol300000W (interface) $ edit "port2"
->> fgtasg-byol300000W (port2) $ set mode dhcp
+FTNT-FGT-A # diagnose debug cloudinit show
+ >> Checking metadata source azure
+ >> Azure waiting for customdata file
+ >> Azure waiting for customdata file
+ >> Azure customdata file found
+ >> Azure cloudinit decrypt successfully
+ >> MIME parsed config script
+ >> MIME parsed VM license
+ >> Azure customdata processed successfully
+ >> Trying to install vmlicense ...
+ >> Run config script
+ >> Finish running script
+ >> FTNT-FGT-A $  config system sdn-connector
+ >> FTNT-FGT-A (sdn-connector) $  edit AzureSDN
+ >> FTNT-FGT-A (AzureSDN) $  set type azure
+ >> FTNT-FGT-A (AzureSDN) $  next
+ >> FTNT-FGT-A (sdn-connector) $  end
+ >> FTNT-FGT-A $  config router static
+ >> FTNT-FGT-A (static) $  edit 1
+...
 ```
