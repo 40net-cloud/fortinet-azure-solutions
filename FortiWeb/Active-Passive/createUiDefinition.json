@@ -127,6 +127,10 @@
               "value": "6.3.17"
             },
             {
+              "label": "7.0.0",
+              "value": "7.0.0"
+            },
+            {
               "label": "latest",
               "value": "latest"
             }
