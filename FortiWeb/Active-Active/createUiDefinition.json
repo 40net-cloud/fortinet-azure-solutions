@@ -359,6 +359,56 @@
                 }
               }
             ]
+          },
+          {
+            "name": "acceleratednetworksection",
+            "type": "Microsoft.Common.Section",
+            "label": "Accelerated networking",
+            "elements": [
+              {
+                "name": "acceleratednetworkingtext",
+                "type": "Microsoft.Common.TextBlock",
+                "visible": true,
+                "options": {
+                  "text": "Enables SR-IOV support allowing direct acces from the NIC in the Azure infrastructure to the FortiGate VM.",
+                  "link": {
+                    "label": "Learn more",
+                    "uri": "https://docs.fortinet.com/vm/azure/fortigate/7.0/azure-administration-guide/7.0.0/651644/enabling-accelerated-networking-on-the-fortigate-vm"
+                  }
+                }
+              },
+              {
+                "name": "acceleratednetworking",
+                "type": "Microsoft.Common.OptionsGroup",
+                "label": "Accelerated Networking",
+                "defaultValue": "Enabled",
+                "toolTip": "Accelerated Networking enables direct connection between the VM and network card. Only available on 2 CPU F/Fs and 4 CPU D/Dsv2, D/Dsv3, E/Esv3, Fsv2, Lsv2, Ms/Mms and Ms/Mmsv2",
+                "constraints": {
+                  "required": false,
+                  "allowedValues": [
+                    {
+                      "label": "Enabled",
+                      "value": "true"
+                    },
+                    {
+                      "label": "Disabled",
+                      "value": "false"
+                    }
+                  ]
+                },
+                "visible": true
+              },
+              {
+                "name": "acceleratednetworkinginfo",
+                "type": "Microsoft.Common.InfoBox",
+                "visible": true,
+                "options": {
+                  "icon": "Info",
+                  "text": "Accelerated Networking is supported on most general purpose and compute-optimized instance sizes with 2 or more vCPUs. On instances that support hyperthreading, Accelerated Networking is supported on VM instances with 4 or more vCPUs. Deployment with the accelerated networking feature enabled on a host that doesn't support it will result in a failure to connect to it. The accelerated networking can be disabled after deployment from the Azure Portal or Azure CLI.",
+                  "uri": "https://docs.microsoft.com/en-us/azure/virtual-machines/sizes"
+                }
+              }
+            ]
           }
         ]
       },
@@ -454,6 +504,7 @@
       "adminPassword": "[basics('adminPassword')]",
       "availabilityOptions": "[basics('availabilityOptions')]",
       "location": "[location()]",
+      "acceleratedNetworking": "[steps('networking').acceleratednetworksection.acceleratednetworking]",
       "instanceType": "[steps('instancetype').instancetypeselection]",
       "publicIPNewOrExisting": "[steps('publicip').loadbalancerpublicip.newOrExistingOrNone]",
       "publicIPName": "[steps('publicip').loadbalancerpublicip.name]",
