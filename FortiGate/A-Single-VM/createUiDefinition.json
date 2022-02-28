@@ -171,6 +171,14 @@
               "value": "7.0.3"
             },
             {
+              "label": "7.0.4",
+              "value": "7.0.4"
+            },
+            {
+              "label": "7.0.5",
+              "value": "7.0.5"
+            },
+            {
               "label": "latest",
               "value": "latest"
             }
