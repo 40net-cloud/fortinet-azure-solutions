@@ -1,21 +1,21 @@
-name: Terraform test Active-Passive-ELB-ILB
+name: '[FGT] Terraform test Active-Active-ELB-ILB'
 
 env:
-  TFPath: FortiGate/Terraform/Active-Passive-ELB-ILB/terraform/
+  TFPath: FortiGate/Terraform/Active-Active-ELB-ILB/terraform/
 
 on:
   push:
     paths:
-    - 'FortiGate/Terraform/Active-Passive-ELB-ILB/**.tf'
-    - 'FortiGate/Terraform/Active-Passive-ELB-ILB/**.tpl'
-    - 'FortiGate/Terraform/Active-Passive-ELB-ILB/**.hcl'
+    - 'FortiGate/Terraform/Active-Active-ELB-ILB/**.tf'
+    - 'FortiGate/Terraform/Active-Active-ELB-ILB/**.tpl'
+    - 'FortiGate/Terraform/Active-Active-ELB-ILB/**.hcl'
 
 jobs:
-  terraform_AP:
-    name: 'Terraform Active-Passive-ELB-ILB'
+  terraform_AA:
+    name: 'Terraform Active-Active-ELB-ILB'
     runs-on: ubuntu-latest
     env:
-      TF_VAR_PREFIX: "FORTIQA-AP-ELB-ILB-${{ github.run_id }}-${{ github.run_number }}"
+      TF_VAR_PREFIX: "FORTIQA-Active-Active-ELB-ILB-${{ github.run_id }}-${{ github.run_number }}"
       TF_VAR_LOCATION: "westeurope"
       TF_VAR_USERNAME: "azureuser"
       TF_VAR_PASSWORD: "${{ secrets.PASSWORD }}"
@@ -60,6 +60,7 @@ jobs:
       run: echo '${{ steps.show.outputs.stdout }}' > plan.json # Do not change
 
     - name: Run infracost diff
+      id: cost
       uses: infracost/infracost-gh-action@master
       env:
         INFRACOST_API_KEY: ${{ secrets.INFRACOST_API_KEY }}
@@ -68,3 +69,7 @@ jobs:
         entrypoint: /scripts/ci/diff.sh # Do not change
         path: plan.json # Do not change
         show_skipped: true
+
+    - name: "Infracost output"
+      run: echo '${{ steps.cost.outputs.total_monthly_cost }}'
+

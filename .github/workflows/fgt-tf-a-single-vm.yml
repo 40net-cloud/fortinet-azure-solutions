@@ -1,21 +1,21 @@
-name: Terraform test Active-Active-ELB-ILB
+name: '[FGT] Terraform test A-Single-VM'
 
 env:
-  TFPath: FortiGate/Terraform/Active-Active-ELB-ILB/terraform/
+  TFPath: FortiGate/Terraform/A-Single-VM/terraform/
 
 on:
   push:
     paths:
-    - 'FortiGate/Terraform/Active-Active-ELB-ILB/**.tf'
-    - 'FortiGate/Terraform/Active-Active-ELB-ILB/**.tpl'
-    - 'FortiGate/Terraform/Active-Active-ELB-ILB/**.hcl'
+    - 'FortiGate/Terraform/A-Single-VM/**.tf'
+    - 'FortiGate/Terraform/A-Single-VM/**.tpl'
+    - 'FortiGate/Terraform/A-Single-VM/**.hcl'
 
 jobs:
   terraform_AA:
-    name: 'Terraform Active-Active-ELB-ILB'
+    name: 'Terraform A-Single-VM'
     runs-on: ubuntu-latest
     env:
-      TF_VAR_PREFIX: "FORTIQA-Active-Active-ELB-ILB-${{ github.run_id }}-${{ github.run_number }}"
+      TF_VAR_PREFIX: "FORTIQA-A-Single-VM-${{ github.run_id }}-${{ github.run_number }}"
       TF_VAR_LOCATION: "westeurope"
       TF_VAR_USERNAME: "azureuser"
       TF_VAR_PASSWORD: "${{ secrets.PASSWORD }}"
