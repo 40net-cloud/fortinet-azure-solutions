@@ -54,6 +54,18 @@
         "description": "Virtual Machine size selection"
       }
     },
+    "acceleratedNetworking": {
+      "type": "string",
+      "defaultValue": "false",
+      "allowedValues": [
+        "false",
+        "true"
+      ],
+      "metadata": {
+        "description": "Accelerated Networking enables direct connection between the VM and network card. Only available on 2 CPU F/Fs and 4 CPU D/Dsv2, D/Dsv3, E/Esv3, Fsv2, Lsv2, Ms/Mms and Ms/Mmsv2"
+      }
+    },
+
     "publicIPNewOrExistingOrNone": {
       "type": "string",
       "defaultValue": "new",
@@ -424,6 +436,7 @@
           }
         ],
         "enableIPForwarding": false,
+        "enableAcceleratedNetworking": "[parameters('acceleratedNetworking')]",
         "networkSecurityGroup": {
           "id": "[variables('NSGId')]"
         }
@@ -455,6 +468,7 @@
           }
         ],
         "enableIPForwarding": false,
+        "enableAcceleratedNetworking": "[parameters('acceleratedNetworking')]",
         "networkSecurityGroup": {
           "id": "[variables('NSGId')]"
         }
