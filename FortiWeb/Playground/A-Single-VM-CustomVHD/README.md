@@ -2,6 +2,8 @@
 
 ![FortiWeb-VM azure design](../../A-Single-VM/images/fwb-single-vm.png)
 
+## Deployment
+
 ### Azure Portal
 
 [![Deploy To Azure](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.svg?sanitize=true)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2F40net-cloud%2Ffortinet-azure-solutions%2Fmain%2FFortiWeb%2FPlayground%2FA-Single-VM-CustomVHD%2FmainTemplate.json)

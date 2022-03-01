@@ -369,7 +369,7 @@
               "text": "This deployment can use standard or basic SKU public IP's. For production, Microsoft recommends standard SKU public IPs. Select the standard SKU in the create new option or choose a standard SKU public IP you already created before. Microsoft Azure offers a migration path from a basic to standard SKU public IP.",
               "uri": "https://docs.microsoft.com/en-us/azure/virtual-network/virtual-network-public-ip-address-upgrade?tabs=option-upgrade-cli%2Coption-migrate-powershell"
             }
-          },
+          }
         ]
       },
       {
