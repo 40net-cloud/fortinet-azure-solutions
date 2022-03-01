@@ -28,6 +28,7 @@
     },
     "fortiWebAdditionalCustomData": {
       "type": "string",
+      "defaultValue": "",
       "metadata": {
         "description": "The ARM template provides a basic configuration. Additional configuration can be added here."
       }
@@ -478,6 +479,7 @@
       "name": "[variables('fwbImageName')]",
       "location": "[parameters('location')]",
       "properties": {
+        "hyperVGeneration": "V1",
         "storageProfile": {
           "osDisk": {
             "osType": "Linux",
