@@ -206,7 +206,7 @@
     "customDataCombined": {
       "cloud-initd": "enable",
       "usr-cli": "[variables('customDataBody')]",
-      "HaAzureInit": "disable",
+      "HaAzureInit": "enable",
       "FwbLicenseBYOL": "[parameters('fortiWebLicenseBYOL')]"
     },
     "fwbCustomData": "[base64(string(variables('customDataCombined')))]",
