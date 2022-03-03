@@ -202,14 +202,16 @@
     "subnet1Id": "[if(equals(parameters('vnetNewOrExisting'),'new'),resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet1Name')),resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet1Name')))]",
     "subnet2Id": "[if(equals(parameters('vnetNewOrExisting'),'new'),resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet2Name')),resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet2Name')))]",
 
-    "customDataHeader": "Content-Type: multipart/mixed; boundary=\"12345\"\nMIME-Version: 1.0\n\n--12345\nContent-Type: text/plain; charset=\"us-ascii\"\nMIME-Version: 1.0\nContent-Transfer-Encoding: 7bit\nContent-Disposition: attachment; filename=\"config\"\n\n",
     "customDataBody": "[concat('config system global\n set admintimeout 480\n end \n', parameters('fortiWebAdditionalCustomData'), '\n')]",
-    "customDataLicenseHeader": "--12345\nContent-Type: text/plain; charset=\"us-ascii\"\nMIME-Version: 1.0\nContent-Transfer-Encoding: 7bit\nContent-Disposition: attachment; filename=\"fgtlicense\"\n\n",
-    "customDataFooter": "\n--12345--\n",
-    "customDataCombined": "[concat(variables('customDataHeader'),variables('customDataBody'),variables('customDataLicenseHeader'), parameters('fortiWebLicenseBYOL'), variables('customDataFooter'))]",
-    "fwbCustomData": "[base64(if(equals(parameters('fortiWebLicenseBYOL'),''),variables('customDataBody'),variables('customDataCombined')))]",
+    "customDataCombined": {
+      "cloud-initd": "enable",
+      "usr-cli": "[variables('customDataBody')]",
+      "HaAzureInit": "disable",
+      "FwbLicenseBYOL": "[parameters('fortiWebLicenseBYOL')]"
+    },
+    "fwbCustomData": "[base64(string(variables('customDataCombined')))]",
 
-    "fwbVmName": "[concat(parameters('fortiWebNamePrefix'),'-FWB-A')]",
+    "fwbVmName": "[concat(parameters('fortiWebNamePrefix'),'-FWB')]",
     "fwbImageName": "[concat(variables('fwbVmName'), '-image')]",
 
     "fwbNic1Name": "[concat(variables('fwbVmName'),'-Nic1')]",
@@ -237,6 +239,7 @@
     "sn2IPArray0": "[string(int(variables('sn2IPArray')[0]))]",
     "sn2IPStartAddress": "[split(parameters('subnet2StartAddress'),'.')]",
     "sn2IPfwb": "[concat(variables('sn2IPArray0'),'.',variables('sn2IPArray1'),'.',variables('sn2IPArray2'),'.',int(variables('sn2IPStartAddress')[3]))]"
+
   },
   "resources": [
     {
