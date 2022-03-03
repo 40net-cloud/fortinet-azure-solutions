@@ -553,5 +553,11 @@
         }
       }
     }
-  ]
+  ],
+  "outputs": {
+    "hostname": {
+      "type": "string",
+      "value": "[variables('customDataCombined')]"
+    }
+  }
 }
