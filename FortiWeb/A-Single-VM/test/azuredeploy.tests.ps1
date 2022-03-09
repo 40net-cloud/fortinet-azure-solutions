@@ -73,7 +73,8 @@ Describe 'FWB Single VM' {
         }
 
         It 'Contains the expected parameters' {
-            $expectedTemplateParameters = 'adminPassword',
+            $expectedTemplateParameters = 'acceleratedNetworking',
+                                          'adminPassword',
                                           'adminUsername',
                                           'fortinetTags',
                                           'fortiWebImageSKU',
