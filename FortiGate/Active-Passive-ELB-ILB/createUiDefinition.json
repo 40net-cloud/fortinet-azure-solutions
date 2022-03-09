@@ -581,7 +581,7 @@
               "icon": "Error",
               "text": "The FortiGate A management Public IP is configured using Basic SKU. Please return to previous blade and use Standard type public IPs to support Azure Standard Load Balancers"
             },
-            "visible": "[not(or(equals(steps('publicip').fgtagmtpublicip.newOrExistingOrNone,'none'),equals(steps('publicip').fgtamgmtpublicip.sku, 'Standard')))]"
+            "visible": "[not(or(equals(steps('publicip').fgtamgmtpublicip.newOrExistingOrNone,'none'),equals(steps('publicip').fgtamgmtpublicip.sku, 'Standard')))]"
           },
           {
             "name": "StandardIPConfirmation2",
@@ -590,7 +590,7 @@
               "icon": "Info",
               "text": "The FortiGate A management Public IP is Standard SKU or none selected. Proceed."
             },
-            "visible": "[or(equals(steps('publicip').fgtagmtpublicip.newOrExistingOrNone,'none'),equals(steps('publicip').fgtamgmtpublicip.sku, 'Standard')]"
+            "visible": "[equals(steps('publicip').fgtamgmtpublicip.sku, 'Standard')]"
           },
           {
             "name": "BasicIPWarning3",
@@ -599,7 +599,7 @@
               "icon": "Error",
               "text": "The FortiGate B management Public IP is configured using Basic SKU. Please return to previous blade and use Standard type public IPs to support Azure Standard Load Balancers"
             },
-            "visible": "[not(or(equals(steps('publicip').fgtbgmtpublicip.newOrExistingOrNone,'none'),equals(steps('publicip').fgtbmgmtpublicip.sku, 'Standard')))]"
+            "visible": "[not(or(equals(steps('publicip').fgtbmgmtpublicip.newOrExistingOrNone,'none'),equals(steps('publicip').fgtbmgmtpublicip.sku, 'Standard')))]"
           },
           {
             "name": "StandardIPConfirmation3",
@@ -608,7 +608,7 @@
               "icon": "Info",
               "text": "The FortiGate B management Public IP is Standard SKU or none selected. Proceed."
             },
-            "visible": "[or(equals(steps('publicip').fgtbgmtpublicip.newOrExistingOrNone,'none'),equals(steps('publicip').fgtbmgmtpublicip.sku, 'Standard')]"
+            "visible": "[equals(steps('publicip').fgtbmgmtpublicip.sku, 'Standard')]"
           }
         ]
       },
@@ -905,27 +905,6 @@
       "fortiGateLicenseBYOLB": "[steps('advanced').fgtlicense.licensebcontent]",
       "fortiGateLicenseFlexVMA": "[steps('advanced').fgtlicense.licenseaflexvmtoken]",
       "fortiGateLicenseFlexVMB": "[steps('advanced').fgtlicense.licensebflexvmtoken]"
-    },
-    "fortiGateImageVersion": {
-      "allowedValues": [
-        "6.2.0",
-        "6.2.2",
-        "6.2.4",
-        "6.2.5",
-        "6.4.0",
-        "6.4.2",
-        "6.4.3",
-        "6.4.5",
-        "6.4.6",
-        "6.4.7",
-        "6.4.8",
-        "7.0.0",
-        "7.0.1",
-        "7.0.2",
-        "7.0.3",
-        "7.0.4",
-        "latest"
-      ]
     }
   }
 }
