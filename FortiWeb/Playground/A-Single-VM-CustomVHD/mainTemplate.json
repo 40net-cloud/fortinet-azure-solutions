@@ -557,7 +557,7 @@
   "outputs": {
     "hostname": {
       "type": "string",
-      "value": "[variables('customDataCombined')]"
+      "value": "[string(variables('customDataCombined'))]"
     }
   }
 }
