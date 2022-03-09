@@ -426,7 +426,7 @@
     "fgaCustomData": "[base64(if(equals(parameters('fortiGateLicenseBYOLA'),''),variables('fgaCustomDataBody'),variables('fgaCustomDataCombined')))]",
     "fgbCustomData": "[base64(if(equals(parameters('fortiGateLicenseBYOLB'),''),variables('fgbCustomDataBody'),variables('fgbCustomDataCombined')))]",
 
-    "routeTableName": "FGTDefaultAPRouteTable",
+    "routeTableName": "[concat(parameters('fortiGateNamePrefix'),'-RouteTable-',parameters('subnet5Name'))]",
     "routeTableId": "[resourceId('Microsoft.Network/routeTables',variables('routeTableName'))]",
 
     "fgaVmName": "[variables('vmName')]",

@@ -276,7 +276,7 @@
     "fg2VmName": "[concat(parameters('fortiGateNamePrefix'),'-FGT-B')]",
     "fgImageName": "[concat(parameters('fortiGateNamePrefix'), '-FGT-image')]",
 
-    "routeTableName": "FGTDefaultAPRouteTable",
+    "routeTableName": "[concat(parameters('fortiGateNamePrefix'),'-RouteTable-',parameters('subnet5Name'))]",
     "routeTableId": "[resourceId('Microsoft.Network/routeTables',variables('routeTableName'))]",
 
     "network_NIC_fg11_Name": "[concat(variables('fg1VmName'),'-Nic1')]",

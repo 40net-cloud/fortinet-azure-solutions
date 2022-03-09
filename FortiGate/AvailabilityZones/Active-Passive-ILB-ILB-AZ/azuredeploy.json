@@ -320,7 +320,7 @@
     "fgaCustomData": "[base64(if(equals(parameters('fortiGateLicenseBYOLA'),''),variables('fgaCustomDataBody'),variables('fgaCustomDataCombined')))]",
     "fgbCustomData": "[base64(if(equals(parameters('fortiGateLicenseBYOLB'),''),variables('fgbCustomDataBody'),variables('fgbCustomDataCombined')))]",
 
-    "routeTableName": "[concat(parameters('fortiGateNamePrefix'),'-ap-routetable')]",
+    "routeTableName": "[concat(parameters('fortiGateNamePrefix'),'-RouteTable-',parameters('subnet5Name'))]",
     "routeTableId": "[resourceId('Microsoft.Network/routeTables',variables('routeTableName'))]",
 
     "fgaNic1Name": "[concat(variables('fgaVmName'),'-Nic1')]",
