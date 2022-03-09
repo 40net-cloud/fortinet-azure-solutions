@@ -1,4 +1,4 @@
-name: '[FGT] ARM Template test Active-Passive-ELB-ILB'
+name: '[FGT] ARM - Active-Passive-ELB-ILB'
 
 env:
   ARMPath: FortiGate/Active-Passive-ELB-ILB/

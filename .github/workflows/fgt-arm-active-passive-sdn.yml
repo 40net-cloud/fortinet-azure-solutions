@@ -1,4 +1,4 @@
-name: '[FGT] ARM Template test Active-Passive-SDN'
+name: '[FGT] ARM - Active-Passive-SDN'
 
 env:
   ARMPath: FortiGate/Active-Passive-SDN/

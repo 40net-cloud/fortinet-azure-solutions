@@ -1,4 +1,4 @@
-name: '[FGT] Terraform test A-Single-VM'
+name: '[FGT] TF - A-Single-VM'
 
 env:
   TFPath: FortiGate/Terraform/A-Single-VM/terraform/

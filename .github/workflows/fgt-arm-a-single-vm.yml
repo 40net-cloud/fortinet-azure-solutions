@@ -1,4 +1,4 @@
-name: '[FGT] ARM Template test A-Single-VM'
+name: '[FGT] ARM - A-Single-VM'
 
 env:
   ARMPath: FortiGate/A-Single-VM/

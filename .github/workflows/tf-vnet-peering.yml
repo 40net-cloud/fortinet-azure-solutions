@@ -1,4 +1,4 @@
-name: Terraform test VNET Peering
+name: '[FGT] TF - VNET Peering'
 
 env:
   TFPath: FortiGate/Terraform/VNET-Peering/terraform/

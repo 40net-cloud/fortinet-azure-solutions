@@ -1,4 +1,4 @@
-name: '[FGT] Terraform test Active-Passive-ELB-ILB'
+name: '[FGT] TF - Active-Passive-ELB-ILB'
 
 env:
   TFPath: FortiGate/Terraform/Active-Passive-ELB-ILB/terraform/

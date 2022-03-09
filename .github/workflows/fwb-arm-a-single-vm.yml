@@ -1,4 +1,4 @@
-name: '[FWB] ARM Template A-Single-VM'
+name: '[FWB] ARM - A-Single-VM'
 
 env:
   ARMPath: FortiWeb/A-Single-VM/
