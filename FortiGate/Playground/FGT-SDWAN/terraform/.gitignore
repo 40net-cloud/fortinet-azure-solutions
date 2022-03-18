@@ -1,4 +1,0 @@
-# Ignore everything in this directory
-.terraform/
-# Except this file
-!.gitignore
