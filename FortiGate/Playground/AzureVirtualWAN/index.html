@@ -171,8 +171,7 @@
       };
     </script>
     <script id="vpnSiteTemplate" type="text/template">{{#vpnSiteConnections}}
-config vpn ipsec 
--interface
+config vpn ipsec phase1-interface
 edit "{{{trimString ../vpnSiteConfiguration.Name 0 12 }}}-1"
 set interface "## EXTERNAL INTERFACE ##"
 set ike-version 2
