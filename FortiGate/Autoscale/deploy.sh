@@ -11,7 +11,7 @@ echo "
 # Stop on error
 set +e
 
-RELEASE_VERSION="3.4.0"
+RELEASE_VERSION="3.5.0"
 
 DOWNLOAD_LINK="https://github.com/fortinet/fortigate-autoscale-azure/releases/download/$RELEASE_VERSION/fortigate-autoscale-azure.zip"
 DOWNLOAD_DIRECTORY="download"
@@ -21,26 +21,27 @@ DEPLOY_PACKAGE_URL="https://github.com/fortinet/fortigate-autoscale-azure/releas
 if [ -f "$DOWNLOAD_DIRECTORY/$DOWNLOAD_FILENAME" ] || [ -d "$DOWNLOAD_DIRECTORY/$RELEASE_VERSION" ]
 then
 	echo "--> Cleanup previous deployment..."
-	echo ""
 	rm -rf "$DOWNLOAD_DIRECTORY/$RELEASE_VERSION/" "$DOWNLOAD_DIRECTORY/$DOWNLOAD_FILENAME"
 fi
 
 echo ""
 echo "--> Download FortiGate Autoscale package from github ..."
 echo ""
-wget –quiet -O "$DOWNLOAD_DIRECTORY/$DOWNLOAD_FILENAME" $DOWNLOAD_LINK
+wget --quiet -O "${DOWNLOAD_DIRECTORY}/${DOWNLOAD_FILENAME}" "${DOWNLOAD_LINK}"
 if [ -f "$DOWNLOAD_DIRECTORY/$DOWNLOAD_FILENAME" ]
 then
     echo "--> Preparing and extracting package ..."
-    echo ""
     mkdir -p "$DOWNLOAD_DIRECTORY/$RELEASE_VERSION"
-    unzip -d "$DOWNLOAD_DIRECTORY/$RELEASE_VERSION" $DOWNLOAD_DIRECTORY/$DOWNLOAD_FILENAME
+    unzip -q -d "$DOWNLOAD_DIRECTORY/$RELEASE_VERSION" $DOWNLOAD_DIRECTORY/$DOWNLOAD_FILENAME
+    echo ""
+    echo "--> Extraction done ..."
 else
     echo "--> Download of Autoscale deployment package failed from [$DOWNLOAD_LINK] ..."
     exit 1
 fi
 
 templatefilename="$DOWNLOAD_DIRECTORY/$RELEASE_VERSION/templates/deploy_fortigate_autoscale.hybrid_licensing.json"
+parameterfilename="$DOWNLOAD_DIRECTORY/$RELEASE_VERSION/templates/deploy_fortigate_autoscale.hybrid_licensing.params.json"
 if [ "2.0.5" == "$RELEASE_VERSION" ]
 then
 	echo ""
@@ -63,6 +64,7 @@ fi
 if [ -z "$DEPLOY_LOCATION" ]
 then
     # Input location
+	echo ""
     echo -n "Enter location (e.g. eastus2): "
     stty_orig=`stty -g` # save original terminal setting.
     read location         # read the location
@@ -130,43 +132,43 @@ fi
 echo "--> Using username '$username' ..."
 echo ""
 
-if [ -z "$DEPLOY_CLIENT_ID" ]
+if [ -z "$DEPLOY_APP_ID" ]
 then
     # Input Service Principal Client ID
-    echo -n "Enter client id: "
+    echo -n "Enter service principal app id: "
     stty_orig=`stty -g` # save original terminal setting.
-    read clientid         # read the prefix
+    read appid         # read the prefix
     stty $stty_orig     # restore terminal setting.
 else
-    clientid="$DEPLOY_CLIENT_ID"
+    appid="$DEPLOY_APP_ID"
 fi
-echo "--> Using Client ID '$clientid' for all resources ..."
+echo "--> Using App ID '$appid' for all resources ..."
 echo ""
 
-if [ -z "$DEPLOY_CLIENT_SECRET" ]
+if [ -z "$DEPLOY_OBJECT_ID" ]
 then
     # Input Service Principal Client ID
-    echo -n "Enter client secret: "
+    echo -n "Enter service principal object id: "
     stty_orig=`stty -g` # save original terminal setting.
-    read clientsecret         # read the prefix
+    read objectid         # read the prefix
     stty $stty_orig     # restore terminal setting.
 else
-    clientsecret="$DEPLOY_CLIENT_SECRET"
+    objectid="$DEPLOY_OBJECT_ID"
 fi
-echo "--> Using client secret '$clientsecret' for all resources ..."
+echo "--> Using Object ID '$objectid' for all resources ..."
 echo ""
 
-if [ -z "$DEPLOY_PACKAGE_URL" ]
+if [ -z "$DEPLOY_APP_SECRET" ]
 then
     # Input Service Principal Client ID
-    echo -n "Enter deployment package url: "
+    echo -n "Enter service principal client secret: "
     stty_orig=`stty -g` # save original terminal setting.
-    read packageurl         # read the prefix
+    read appsecret         # read the prefix
     stty $stty_orig     # restore terminal setting.
 else
-    packageurl="$DEPLOY_PACKAGE_URL"
+    appsecret="$DEPLOY_APP_SECRET"
 fi
-echo "--> Using package url '$packageurl' for all resources ..."
+echo "--> Using client secret '$appsecret' for all resources ..."
 echo ""
 
 # Create resource group
@@ -178,9 +180,12 @@ az group create --location "$location" --name "$rg"
 echo "--> Validation deployment in $rg resource group ..."
 az deployment group validate --resource-group "$rg" \
                            --template-file $templatefilename \
-                           --parameters ResourceNamePrefix="$prefix" RestAppID="$clientid" RestAppSecret="$clientsecret" \
-					FortiGatePSKSecret="$passwd" AdminUsername="$username" AdminPassword=$passwd \
-					PackageResURL="$packageurl" InstanceType="$instancetype"
+                           --parameters $parameterfilename \
+                           --parameters ResourceNamePrefix="$prefix" ServicePrincipalAppID="$appid" ServicePrincipalAppSecret="$appsecret" \
+                                        ServicePrincipalObjectID="$objectid" FortiAnalyzerIntegrationOptions="no" \
+                                        FortiGatePSKSecret="$passwd" AdminUsername="$username" AdminPassword="$passwd" \
+                                        AccessRestrictionIPRange="0.0.0.0/0"
+
 result=$?
 if [ $result != 0 ];
 then
@@ -188,15 +193,17 @@ then
     exit $result;
 fi
 
-deployment_name="$rg-$location"
+deploymentName="$rg-$location"
 # Template deployment
-echo "--> Deployment of $rg resources with deployment name [$deployment_name]..."
+echo "--> Deployment of $rg resources with deployment name [$deploymentName]..."
 az deployment group create --resource-group "$rg" \
+                           --name "$deploymentName" \
                            --template-file $templatefilename \
-                           --name "$deployment_name" \
-                           --parameters ResourceNamePrefix="$prefix" RestAppID="$clientid" RestAppSecret="$clientsecret" \
-					FortiGatePSKSecret="$passwd" AdminUsername="$username" AdminPassword=$passwd \
-					PackageResURL="$packageurl" InstanceType="$instancetype"
+                           --parameters $parameterfilename \
+                           --parameters ResourceNamePrefix="$prefix" ServicePrincipalAppID="$appid" ServicePrincipalAppSecret="$appsecret" \
+                                        ServicePrincipalObjectID="$objectid" FortiAnalyzerIntegrationOptions="no" \
+                                        FortiGatePSKSecret="$passwd" AdminUsername="$username" AdminPassword="$passwd" \
+                                        AccessRestrictionIPRange="0.0.0.0/0"
 result=$?
 if [ $result != 0 ]
 then
@@ -210,10 +217,9 @@ else
     fi
 
     echo "--> Copy configset to Azure Storage Account ..."
-    storageAccountName=`az deployment group show --resource-group "$rg" --name "$rg-$location" \
+    storageAccountName=`az deployment group show --resource-group "$rg" --name "$deploymentName" \
                             --query 'properties.outputs.storageAccountName.value' -o tsv`
-    storageAccountAccessKey=`az deployment group show --resource-group "$rg" --name "$rg-$location" \
-                            --query 'properties.outputs.storageAccountAccessKey.value' -o tsv`
+    storageAccountAccessKey=`az storage account keys list -g $rg -n $storageAccountName --query '[0].value' -o tsv`
     echo "--> Azure Storage Account found [$storageAccountName] ..."
     az storage blob upload-batch --account-name "$storageAccountName" --account-key "$storageAccountAccessKey" -s "$DOWNLOAD_DIRECTORY/$RELEASE_VERSION/assets/configset" -d "configset"
 
@@ -238,13 +244,13 @@ Thank you for the deployment of the Azure Azure Autoscaling cluster of FortiGate
 loadbalancing rules for your services.
 
 The FortiGate instances can be accesss on the public IP on port 40030 and above using HTTPS and 50030 for SSH
-"
+
  IP Public Azure Load Balancer:"
 publicIpIds=$(az network lb show -g "$rg" -n "$prefix-ExternalLoadBalancer" --query "frontendIpConfigurations[].publicIpAddress.id" --out tsv)
 while read publicIpId; do
     az network public-ip show --ids "$publicIpId" --query "{ ipAddress: ipAddress, fqdn: dnsSettings.fqdn }" --out tsv
 done <<< "$publicIpIds"
-echo "
+
 echo "
 ##############################################################################################################
 "
