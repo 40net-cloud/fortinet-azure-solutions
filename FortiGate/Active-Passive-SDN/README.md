@@ -21,6 +21,10 @@ This Azure ARM template will automatically deploy a full working environment con
 
 ![active/passive design](images/fgt-ap-sdn.png)
 
+To enhance the availability of the solution VM can be installed in different Availability Zones instead of an Availability Set. If Availability Zones deployment is selected but the location does not support Availability Zones an Availability Set will be deployed. If Availability Zones deployment is selected and Availability Zones are available in the location, FortiGate A will be placed in Zone 1, FortiGate B will be placed in Zone 2.
+
+![active/passive design](images/fgt-ap-sdn-az.png)
+
 This ARM template can also be used to extend or customized based on your requirements. Additional subnets besides the one's mentioned above are not automatically generated. By adapting the ARM templates you can add additional subnets which preferably require their own routing tables.
 
 ## How to deploy
