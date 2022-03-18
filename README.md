@@ -1,1 +1,0 @@
-# Fortinet Azure Templates
