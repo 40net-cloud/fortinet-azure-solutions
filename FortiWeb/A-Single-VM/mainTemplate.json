@@ -516,7 +516,7 @@
       "name": "[variables('fwbVmName')]",
       "apiVersion": "2021-07-01",
       "tags": {
-       "provider": "[toUpper(parameters('fortinetTags').provider)]"
+        "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
       "identity": {
         "type": "SystemAssigned"
