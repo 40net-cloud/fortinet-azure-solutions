@@ -101,18 +101,6 @@
           "required": false,
           "allowedValues": [
             {
-              "label": "6.2.5",
-              "value": "6.2.5"
-            },
-            {
-              "label": "6.3.15",
-              "value": "6.3.15"
-            },
-            {
-              "label": "6.3.16",
-              "value": "6.3.16"
-            },
-            {
               "label": "6.3.17",
               "value": "6.3.17"
             },
