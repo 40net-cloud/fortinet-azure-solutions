@@ -62,6 +62,7 @@ Describe 'FWB Single VM' {
 
         It 'Creates the expected Azure resources' {
             $expectedResources = 'Microsoft.Resources/deployments',
+                                 'Microsoft.Storage/storageAccounts',
                                  'Microsoft.Network/virtualNetworks',
                                  'Microsoft.Network/networkSecurityGroups',
                                  'Microsoft.Network/publicIPAddresses',
@@ -77,6 +78,7 @@ Describe 'FWB Single VM' {
                                           'adminPassword',
                                           'adminUsername',
                                           'fortinetTags',
+                                          'fortiWebAdditionalCustomData',
                                           'fortiWebImageSKU',
                                           'fortiWebImageVersion',
                                           'fortiWebNamePrefix',
@@ -87,6 +89,7 @@ Describe 'FWB Single VM' {
                                           'publicIPResourceGroup',
                                           'publicIPSKU',
                                           'publicIPType',
+                                          'serialConsole',$env:GITHUB_WORKSPACE
                                           'subnet1Name',
                                           'subnet1Prefix',
                                           'subnet1StartAddress',
