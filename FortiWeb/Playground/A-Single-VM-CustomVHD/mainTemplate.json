@@ -175,6 +175,17 @@
         "description": "Subnet 2 start address, 2 consecutive private IPs are required"
       }
     },
+    "serialConsole": {
+      "type": "string",
+      "defaultValue": "yes",
+      "allowedValues": [
+        "yes",
+        "no"
+      ],
+      "metadata": {
+        "description": "Enable Serial Console"
+      }
+    },
     "fortiWebLicenseBYOL": {
       "type": "string",
       "defaultValue": "",
@@ -218,6 +229,9 @@
     "fwbNic1Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('fwbNic1Name'))]",
     "fwbNic2Name": "[concat(variables('fwbVmName'),'-Nic2')]",
     "fwbNic2Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('fwbNic2Name'))]",
+    "serialConsoleStorageAccountName": "[concat('console', uniquestring(resourceGroup().id))]",
+    "serialConsoleStorageAccountType": "Standard_LRS",
+    "serialConsoleEnabled": "[if(equals(parameters('serialConsole'),'yes'),'true','false')]",
 
     "publicIPName": "[if(equals(parameters('publicIPName'),''),concat(parameters('fortiWebNamePrefix'),'-FWB-PIP'),parameters('publicIPName'))]",
     "publicIPId": "[if(equals(parameters('publicIPNewOrExistingOrNone'),'new'),resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPName')),resourceId(parameters('publicIPResourceGroup'),'Microsoft.Network/publicIPAddresses',variables('publicIPName')))]",
@@ -239,7 +253,6 @@
     "sn2IPArray0": "[string(int(variables('sn2IPArray')[0]))]",
     "sn2IPStartAddress": "[split(parameters('subnet2StartAddress'),'.')]",
     "sn2IPfwb": "[concat(variables('sn2IPArray0'),'.',variables('sn2IPArray1'),'.',variables('sn2IPArray2'),'.',int(variables('sn2IPStartAddress')[3]))]"
-
   },
   "resources": [
     {
@@ -550,6 +563,12 @@
               "id": "[variables('fwbNic2Id')]"
             }
           ]
+        },
+        "diagnosticsProfile": {
+          "bootDiagnostics": {
+            "enabled": "[variables('serialConsoleEnabled')]",
+            "storageUri": "[if(equals(parameters('serialConsole'), 'yes'), reference(variables('serialConsoleStorageAccountName'), '2021-08-01').primaryEndpoints['blob'], json('null'))]"
+          }
         }
       }
     }

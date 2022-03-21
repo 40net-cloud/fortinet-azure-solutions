@@ -17,6 +17,9 @@
         "fortiWebImageVersion": {
             "value": "latest"
         },
+        "fortiWebAdditionalCustomData": {
+            "value": ""
+        },
         "instanceType": {
             "value": "Standard_F2s"
         },
@@ -68,8 +71,11 @@
         "subnet2StartAddress": {
             "value": "172.16.136.68"
         },
+        "serialConsole": {
+            "value": "yes"
+        },
         "location": {
-            "value": "[resourceGroup().location]"
+            "value": ""
         },
         "fortinetTags": {
             "value": {

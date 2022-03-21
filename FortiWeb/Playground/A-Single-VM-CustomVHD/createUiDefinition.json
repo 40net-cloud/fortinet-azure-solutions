@@ -276,7 +276,7 @@
                 "type": "Microsoft.Common.TextBlock",
                 "visible": true,
                 "options": {
-                  "text": "Enables SR-IOV support allowing direct acces from the NIC in the Azure infrastructure to the FortiGate VM.",
+                  "text": "Enables SR-IOV support allowing direct acces from the NIC in the Azure infrastructure to the FortiWeb VM.",
                   "link": {
                     "label": "Learn more",
                     "uri": "https://docs.fortinet.com/vm/azure/fortigate/7.0/azure-administration-guide/7.0.0/651644/enabling-accelerated-networking-on-the-fortigate-vm"
@@ -418,7 +418,45 @@
                 "options": {
                   "icon": "Info",
                   "text": "The default configuration already included in this deployment can be found on our github page. ",
-                  "uri": "https://github.com/fortinet/azure-templates/blob/main/FortiGate/A-Single-VM/doc/config-provisioning.md"
+                  "uri": "https://github.com/fortinet/azure-templates/blob/main/FortiWeb/A-Single-VM/doc/config-provisioning.md"
+                }
+              }
+            ]
+          },
+          {
+            "name": "serialconsole",
+            "type": "Microsoft.Common.Section",
+            "label": "Serial Console",
+            "elements": [
+              {
+                "name": "enabled",
+                "type": "Microsoft.Common.OptionsGroup",
+                "label": "Enable Serial Console",
+                "defaultValue": "yes",
+                "toolTip": "Enables the serial console and creates a required storage account.",
+                "constraints": {
+                  "allowedValues": [
+                    {
+                      "label": "yes",
+                      "value": "yes"
+                    },
+                    {
+                      "label": "no",
+                      "value": "no"
+                    }
+                  ],
+                  "required": true
+                },
+                "visible": true
+              },
+              {
+                "name": "standardsku",
+                "type": "Microsoft.Common.InfoBox",
+                "visible": true,
+                "options": {
+                  "icon": "Info",
+                  "text": "This requires a storage account which willl be created during deployment.",
+                  "uri": "https://docs.microsoft.com/en-us/troubleshoot/azure/virtual-machines/serial-console-overview"
                 }
               }
             ]
@@ -481,6 +519,7 @@
       "subnet2Name": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet2.name]",
       "subnet2Prefix": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet2.addressPrefix]",
       "subnet2StartAddress": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet2.startAddress]",
+      "serialConsole": "[steps('advanced').serialconsole.enabled]",
       "fortiWebAdditionalCustomData": "[steps('advanced').customdata.config]",
       "fortiWebLicenseBYOL": "[steps('advanced').fwblicense.licensecontent]"
     }

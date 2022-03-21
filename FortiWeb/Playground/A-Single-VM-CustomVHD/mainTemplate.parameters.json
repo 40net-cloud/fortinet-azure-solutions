@@ -68,6 +68,9 @@
         "subnet2StartAddress": {
             "value": "172.16.136.68"
         },
+        "serialConsole": {
+            "value": "yes"
+        },
         "fortiWebLicenseBYOL": {
             "value": ""
         },
