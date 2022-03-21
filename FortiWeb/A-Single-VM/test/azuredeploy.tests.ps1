@@ -33,10 +33,10 @@ BeforeAll {
     # ARM Template Variables
     $publicIPName = "$testsPrefix-FWB-PIP"
     $params = @{ 'adminUsername'=$testsAdminUsername
-                 'adminPassword'=$testsResourceGroupName
-                 'fortiWebNamePrefix'=$testsPrefix
-                 'publicIPName'=$publicIPName
-               }
+                    'adminPassword'=$testsResourceGroupName
+                    'fortiWebNamePrefix'=$testsPrefix
+                    'publicIPName'=$publicIPName
+                }
     $ports = @(8443, 22)
 }
 
@@ -62,44 +62,44 @@ Describe 'FWB Single VM' {
 
         It 'Creates the expected Azure resources' {
             $expectedResources = 'Microsoft.Resources/deployments',
-                                 'Microsoft.Storage/storageAccounts',
-                                 'Microsoft.Network/virtualNetworks',
-                                 'Microsoft.Network/networkSecurityGroups',
-                                 'Microsoft.Network/publicIPAddresses',
-                                 'Microsoft.Network/networkInterfaces',
-                                 'Microsoft.Network/networkInterfaces',
-                                 'Microsoft.Compute/virtualMachines'
+                                    'Microsoft.Storage/storageAccounts',
+                                    'Microsoft.Network/virtualNetworks',
+                                    'Microsoft.Network/networkSecurityGroups',
+                                    'Microsoft.Network/publicIPAddresses',
+                                    'Microsoft.Network/networkInterfaces',
+                                    'Microsoft.Network/networkInterfaces',
+                                    'Microsoft.Compute/virtualMachines'
             $templateResources = (get-content $templateFileLocation | ConvertFrom-Json -ErrorAction SilentlyContinue).Resources.type
             $templateResources | Should -Be $expectedResources
         }
 
         It 'Contains the expected parameters' {
             $expectedTemplateParameters = 'acceleratedNetworking',
-                                          'adminPassword',
-                                          'adminUsername',
-                                          'fortinetTags',
-                                          'fortiWebAdditionalCustomData',
-                                          'fortiWebImageSKU',
-                                          'fortiWebImageVersion',
-                                          'fortiWebNamePrefix',
-                                          'instanceType',
-                                          'location',
-                                          'publicIPName',
-                                          'publicIPNewOrExistingOrNone',
-                                          'publicIPResourceGroup',
-                                          'publicIPSKU',
-                                          'publicIPType',
-                                          'serialConsole',$env:GITHUB_WORKSPACE
-                                          'subnet1Name',
-                                          'subnet1Prefix',
-                                          'subnet1StartAddress',
-                                          'subnet2Name',
-                                          'subnet2Prefix',
-                                          'subnet2StartAddress',
-                                          'vnetAddressPrefix',
-                                          'vnetName',
-                                          'vnetNewOrExisting',
-                                          'vnetResourceGroup'
+                                            'adminPassword',
+                                            'adminUsername',
+                                            'fortinetTags',
+                                            'fortiWebAdditionalCustomData',
+                                            'fortiWebImageSKU',
+                                            'fortiWebImageVersion',
+                                            'fortiWebNamePrefix',
+                                            'instanceType',
+                                            'location',
+                                            'publicIPName',
+                                            'publicIPNewOrExistingOrNone',
+                                            'publicIPResourceGroup',
+                                            'publicIPSKU',
+                                            'publicIPType',
+                                            'serialConsole',
+                                            'subnet1Name',
+                                            'subnet1Prefix',
+                                            'subnet1StartAddress',
+                                            'subnet2Name',
+                                            'subnet2Prefix',
+                                            'subnet2StartAddress',
+                                            'vnetAddressPrefix',
+                                            'vnetName',
+                                            'vnetNewOrExisting',
+                                            'vnetResourceGroup'
             $templateParameters = (get-content $templateFileLocation | ConvertFrom-Json -ErrorAction SilentlyContinue).Parameters | Get-Member -MemberType NoteProperty | % Name | Sort-Object
             $templateParameters | Should -Be $expectedTemplateParameters
         }
