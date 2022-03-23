@@ -1,8 +1,8 @@
-# Active/Passive High Available FortiGate pair with external and internal Azure Standard Load Balancer
+# FortiGate Active/Passive High Availability with Azure Standard Load Balancer - External and Internal
 
 # Introduction
 
-This design adds a second internal interface to seperate for example ExpressRoute. Deployment is similar to the basic building block Active-Passive with Exteral and Internal Azure Load Balancer found [here](../../Active-Passive-ELB-ILB/README.md). The main difference is that we added an extra network interface.
+This design adds a second internal interface to seperate for example ExpressRoute, use zones or VDOM. Deployment is similar to the basic building block Active-Passive with Exteral and Internal Azure Load Balancer found [here](../../Active-Passive-ELB-ILB/README.md). The main difference is that we added an extra network interface. A Terraform version is available [here](Terraform/)
 
 # Design
 
