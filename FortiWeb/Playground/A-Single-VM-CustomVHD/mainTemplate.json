@@ -36,7 +36,7 @@
     "instanceType": {
       "type": "string",
       "defaultValue": "Standard_F2s",
-      "allowedValues": [ "Standard_F1s", "Standard_F2s", "Standard_F4s", "Standard_F8s", "Standard_F16s", "Standard_F1", "Standard_F2", "Standard_F4", "Standard_F8", "Standard_F16", "Standard_F2s_v2", "Standard_F4s_v2", "Standard_F8s_v2", "Standard_F16s_v2", "Standard_F32s_v2", "Standard_DS1_v2", "Standard_DS2_v2", "Standard_DS3_v2", "Standard_DS4_v2", "Standard_DS5_v2", "Standard_D2s_v3", "Standard_D4s_v3", "Standard_D8s_v3", "Standard_D16s_v3", "Standard_D32s_v3"],
+      "allowedValues": [ "Standard_F1s", "Standard_F2s", "Standard_F4s", "Standard_F8s", "Standard_F16s", "Standard_F1", "Standard_F2", "Standard_F4", "Standard_F8", "Standard_F16", "Standard_F2s_v2", "Standard_F4s_v2", "Standard_F8s_v2", "Standard_F16s_v2", "Standard_F32s_v2", "Standard_DS1_v2", "Standard_DS2_v2", "Standard_DS3_v2", "Standard_DS4_v2", "Standard_DS5_v2", "Standard_D2s_v3", "Standard_D4s_v3", "Standard_D8s_v3", "Standard_D16s_v3", "Standard_D32s_v3" ],
       "metadata": {
         "description": "Virtual Machine size selection"
       }
@@ -201,10 +201,10 @@
       }
     },
     "fortinetTags": {
-    "type": "object",
-    "defaultValue": {
-      "publisher": "Fortinet",
-      "provider": "6EB3B02F-50E5-4A3E-8CB8-2E12925831FWBVM"
+      "type": "object",
+      "defaultValue": {
+        "publisher": "Fortinet",
+        "provider": "6EB3B02F-50E5-4A3E-8CB8-2E12925831FWBVM"
       }
     }
   },
@@ -259,13 +259,24 @@
       "apiVersion": "2020-10-01",
       "name": "pid-2e181e90-36f0-4061-9842-64c219116819-partnercenter",
       "type": "Microsoft.Resources/deployments",
-      "properties":{
-       "mode": "Incremental",
-       "template": {
-         "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
-         "contentVersion": "1.0.0.0",
-         "resources": []
-       }
+      "properties": {
+        "mode": "Incremental",
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "resources": []
+        }
+      }
+    },
+    {
+      "condition": "[equals(parameters('serialConsole'), 'yes')]",
+      "type": "Microsoft.Storage/storageAccounts",
+      "name": "[variables('serialConsoleStorageAccountName')]",
+      "apiVersion": "2021-02-01",
+      "location": "[parameters('location')]",
+      "kind": "Storage",
+      "sku": {
+        "name": "[variables('serialConsoleStorageAccountType')]"
       }
     },
     {
@@ -416,8 +427,7 @@
       },
       "name": "[variables('publicIPName')]",
       "location": "[parameters('location')]",
-      "sku":
-      {
+      "sku": {
         "name": "[parameters('publicIPSKU')]"
       },
       "properties": {
@@ -460,7 +470,7 @@
     {
       "apiVersion": "2020-04-01",
       "tags": {
-       "provider": "[toUpper(parameters('fortinetTags').provider)]"
+        "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[variables('fwbNic2Name')]",
@@ -512,7 +522,7 @@
       "name": "[variables('fwbVmName')]",
       "apiVersion": "2021-07-01",
       "tags": {
-       "provider": "[toUpper(parameters('fortinetTags').provider)]"
+        "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
       "identity": {
         "type": "SystemAssigned"
@@ -572,11 +582,5 @@
         }
       }
     }
-  ],
-  "outputs": {
-    "hostname": {
-      "type": "string",
-      "value": "[string(variables('customDataCombined'))]"
-    }
-  }
+  ]
 }

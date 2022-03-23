@@ -203,6 +203,13 @@
         "description": "Enable Serial Console"
       }
     },
+    "fortiWebLicenseBYOL": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "FortiWeb BYOL license content"
+      }
+    },
     "location": {
       "type": "string",
       "defaultValue": "[resourceGroup().location]",
@@ -211,10 +218,10 @@
       }
     },
     "fortinetTags": {
-    "type": "object",
-    "defaultValue": {
-      "publisher": "Fortinet",
-      "provider": "6EB3B02F-50E5-4A3E-8CB8-2E12925831FWBVM"
+      "type": "object",
+      "defaultValue": {
+        "publisher": "Fortinet",
+        "provider": "6EB3B02F-50E5-4A3E-8CB8-2E12925831FWBVM"
       }
     }
   },
@@ -230,7 +237,8 @@
     "customDataCombined": {
       "cloud-initd": "enable",
       "usr-cli": "[variables('customDataBody')]",
-      "HaAzureInit": "enable"
+      "HaAzureInit": "enable",
+      "FwbLicenseBYOL": "[parameters('fortiWebLicenseBYOL')]"
     },
     "fwbCustomData": "[base64(string(variables('customDataCombined')))]",
 
@@ -270,13 +278,13 @@
       "apiVersion": "2020-10-01",
       "name": "pid-2e181e90-36f0-4061-9842-64c219116819-partnercenter",
       "type": "Microsoft.Resources/deployments",
-      "properties":{
-       "mode": "Incremental",
-       "template": {
-         "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
-         "contentVersion": "1.0.0.0",
-         "resources": []
-       }
+      "properties": {
+        "mode": "Incremental",
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "resources": []
+        }
       }
     },
     {
@@ -438,8 +446,7 @@
       },
       "name": "[variables('publicIPName')]",
       "location": "[parameters('location')]",
-      "sku":
-      {
+      "sku": {
         "name": "[parameters('publicIPSKU')]"
       },
       "properties": {
@@ -482,7 +489,7 @@
     {
       "apiVersion": "2020-04-01",
       "tags": {
-       "provider": "[toUpper(parameters('fortinetTags').provider)]"
+        "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[variables('fwbNic2Name')]",
