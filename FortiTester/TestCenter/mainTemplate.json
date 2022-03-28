@@ -184,26 +184,7 @@
         "description": "Subnet 2 start address, 8 consecutive private IPs are required"
       }
     },
-    "subnet3Name": {
-      "type": "string",
-      "defaultValue": "Subnet2",
-      "metadata": {
-        "description": "Subnet2"
-      }
-    },
-    "subnet3Prefix": {
-      "type": "string",
-      "defaultValue": "172.16.138.0/24",
-      "metadata": {
-        "description": "Subnet 2 Prefix"
-      }
-    },
-    "subnet3StartAddress": {
-      "type": "string",
-      "defaultValue": "172.16.138.4",
-      "metadata": {
-        "description": "Subnet 2 start address, 8 consecutive private IPs are required"
-      }
+    
     },
     "serialConsole": {
       "type": "string",
@@ -238,7 +219,7 @@
     "vnetName": "[if(equals(parameters('vnetName'),''),concat(parameters('fortiTesterNamePrefix'),'-VNET'),parameters('vnetName'))]",
     "subnet1Id": "[if(equals(parameters('vnetNewOrExisting'),'new'),resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet1Name')),resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet1Name')))]",
     "subnet2Id": "[if(equals(parameters('vnetNewOrExisting'),'new'),resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet2Name')),resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet2Name')))]",
-    "subnet3Id": "[if(equals(parameters('vnetNewOrExisting'),'new'),resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet3Name')),resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet2Name')))]",
+    
 
     "ftsVmName": "[concat(parameters('fortiTesterNamePrefix'),'-FTS')]",
 
@@ -273,12 +254,7 @@
     "sn2IPStartAddress": "[split(parameters('subnet2StartAddress'),'.')]",
 	"sn2IPStartAddress3": "[int(variables('sn2IPStartAddress')[3])]",
 
-    "sn3IPArray": "[split(parameters('subnet3Prefix'),'.')]",
-    "sn3IPArray2": "[string(int(variables('sn3IPArray')[2]))]",
-    "sn3IPArray1": "[string(int(variables('sn3IPArray')[1]))]",
-    "sn3IPArray0": "[string(int(variables('sn3IPArray')[0]))]",
-    "sn3IPStartAddress": "[split(parameters('subnet3StartAddress'),'.')]",
-	"sn3IPStartAddress3": "[int(variables('sn3IPStartAddress')[3])]"
+    
 
   },
   "resources": [
@@ -330,13 +306,8 @@
             "properties": {
               "addressPrefix": "[parameters('subnet2Prefix')]"
             }
-          },
-          {
-            "name": "[parameters('subnet3Name')]",
-            "properties": {
-              "addressPrefix": "[parameters('subnet3Prefix')]"
-            }
           }
+          
         ]
       }
     },
@@ -507,8 +478,8 @@
       },
       "dependsOn": [
         "[variables('ftsNic1Id')]",
-        "[variables('ftsNic2Id')]",
-        "[variables('ftsNic3Id')]"
+        "[variables('ftsNic2Id')]"
+        
       ],
       "properties": {
         "hardwareProfile": {
@@ -550,12 +521,6 @@
                 "primary": false
               },
               "id": "[variables('ftsNic2Id')]"
-            },
-            {
-              "properties": {
-                "primary": false
-              },
-              "id": "[variables('ftsNic3Id')]"
             }
           ]
         },
