@@ -280,12 +280,12 @@
     "sn3IPArray0": "[string(int(variables('sn3IPArray')[0]))]",
     "sn3IPStartAddress": "[split(parameters('subnet3StartAddress'),'.')]",
 	"sn3IPStartAddress3": "[int(variables('sn3IPStartAddress')[3])]"
-	
+
   },
   "resources": [
     {
       "apiVersion": "2020-10-01",
-      "name": "pid-2e181e90-36f0-4061-9842-64c219116819-partnercenter",
+      "name": "pid-partnercenter",
       "type": "Microsoft.Resources/deployments",
       "properties": {
         "mode": "Incremental",
@@ -655,7 +655,7 @@
               }
             }
           }
-		  
+
         ],
         "enableIPForwarding": false,
         "enableAcceleratedNetworking": "[parameters('acceleratedNetworking')]"

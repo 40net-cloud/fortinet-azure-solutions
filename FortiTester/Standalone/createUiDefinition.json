@@ -96,23 +96,30 @@
         "constraints": {
           "required": false,
           "allowedValues": [
-	     "3.7.0",
-	     "3.8.0",
-             "latest"
+            {
+              "label": "3.7.0",
+              "value": "3.7.0"
+            },
+            {
+              "label": "3.8.0",
+              "value": "3.8.0"
+            },
+            {
+              "label": "latest",
+              "value": "latest"
+            }
           ]
         },
         "visible": true
       }
-	  
-	  
     ],
-     
+    "steps": [],
     "outputs": {
       "fortiTesterNamePrefix": "[basics('fortiTesterNamePrefix')]",
       "fortiTesterImageSKU": "[basics('fortiTesterImageSKU')]",
       "fortiTesterImageVersion": "[basics('fortiTesterImageVersion')]",
       "adminUsername": "[basics('adminUsername')]",
-      "adminPassword": "[basics('adminPassword')]"      
+      "adminPassword": "[basics('adminPassword')]"
     }
   }
 }
