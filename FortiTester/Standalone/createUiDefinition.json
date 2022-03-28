@@ -1,0 +1,119 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/0.1.2-preview/CreateUIDefinition.MultiVm.json#",
+  "handler": "Microsoft.Azure.CreateUIDef",
+  "version": "0.1.2-preview",
+  "parameters": {
+    "config": {
+      "basics": {
+        "resourceGroup": {
+          "allowExisting": true
+        }
+      }
+    },
+    "resourceTypes": [
+      "microsoft.resources/resourcegroups"
+    ],
+    "basics": [
+      {
+        "name": "adminUsername",
+        "type": "Microsoft.Common.TextBox",
+        "label": "FortiTester administrative username",
+        "defaultValue": "",
+        "toolTip": "Username for the FortiTester virtual appliance. Most not be root, administrator or admin",
+        "constraints": {
+          "required": true,
+          "validations": [
+            {
+              "regex": "^[a-z0-9A-Z]{1,30}$",
+              "message": "Only alphanumeric characters are allowed, and the value must be 1-30 characters long"
+            },
+            {
+              "isValid": "[not(contains(toLower(basics('adminUsername')),'root'))]",
+              "message": "Usernames must not include reserved words"
+            },
+            {
+              "isValid": "[not(contains(toLower(basics('adminUsername')),'admin'))]",
+              "message": "Usernames must not include reserved words"
+            }
+          ]
+        },
+        "visible": true
+      },
+      {
+        "name": "adminPassword",
+        "type": "Microsoft.Common.PasswordBox",
+        "label": {
+          "password": "FortiTester password",
+          "confirmPassword": "Confirm password"
+        },
+        "toolTip": "Password for the Virtual Machine",
+        "constraints": {
+          "required": true,
+          "regex": "^(?:(?=.*[a-z])(?:(?=.*[A-Z])(?=.*[\\d\\W])|(?=.*\\W)(?=.*\\d))|(?=.*\\W)(?=.*[A-Z])(?=.*\\d)).{12,}$",
+          "validationMessage": "The password must be between 12 characters or longer, and contain characters from at least 3 of the following groups: uppercase characters, lowercase characters, numbers, and special characters excluding '\\' or '-'."
+        },
+        "options": {
+          "hideConfirmation": false
+        },
+        "visible": true
+      },
+      {
+        "name": "FortiTesterNamePrefix",
+        "type": "Microsoft.Common.TextBox",
+        "label": "FortiTester Name Prefix",
+        "defaultValue": "",
+        "toolTip": "Naming prefix for all deployed resources",
+        "constraints": {
+          "required": true,
+          "regex": "^[A-Za-z0-9]{1,15}$",
+          "validationMessage": "Only alphanumeric characters are allowed, and the value must be 1 to 15 characters."
+        },
+        "visible": true
+      },
+      {
+        "name": "FortiTesterImageSKU",
+        "type": "Microsoft.Common.DropDown",
+        "label": "FortiTester Image SKU",
+        "defaultValue": "fts-vm-byol",
+        "toolTip": " BYOL license model (where license is purchased separately)",
+        "constraints": {
+          "required": false,
+          "allowedValues": [
+            {
+              "label": "Bring Your Own License",
+              "value": "fts-vm-byol"
+            }
+          ]
+        },
+        "visible": true
+      },
+      {
+        "name": "FortiTesterImageVersion",
+        "type": "Microsoft.Common.DropDown",
+        "label": "FortiTester Image Version",
+        "defaultValue": "latest",
+        "toolTip": "Select the image version",
+        "constraints": {
+          "required": false,
+          "allowedValues": [
+				"3.7.0",
+				"3.8.0",
+				"latest"
+          ]
+        },
+        "visible": true
+      }
+	  
+	  
+    ],
+     
+    "outputs": {
+      "FortiTesterNamePrefix": "[basics('FortiTesterNamePrefix')]",
+      "FortiTesterImageSKU": "[basics('FortiTesterImageSKU')]",
+      "FortiTesterImageVersion": "[basics('FortiTesterImageVersion')]",
+      "adminUsername": "[basics('adminUsername')]",
+      "adminPassword": "[basics('adminPassword')]",
+      
+    }
+  }
+}
