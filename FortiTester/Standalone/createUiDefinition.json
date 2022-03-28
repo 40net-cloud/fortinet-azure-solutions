@@ -58,7 +58,7 @@
         "visible": true
       },
       {
-        "name": "FortiTesterNamePrefix",
+        "name": "fortiTesterNamePrefix",
         "type": "Microsoft.Common.TextBox",
         "label": "FortiTester Name Prefix",
         "defaultValue": "",
@@ -71,7 +71,7 @@
         "visible": true
       },
       {
-        "name": "FortiTesterImageSKU",
+        "name": "fortiTesterImageSKU",
         "type": "Microsoft.Common.DropDown",
         "label": "FortiTester Image SKU",
         "defaultValue": "fts-vm-byol",
@@ -88,7 +88,7 @@
         "visible": true
       },
       {
-        "name": "FortiTesterImageVersion",
+        "name": "fortiTesterImageVersion",
         "type": "Microsoft.Common.DropDown",
         "label": "FortiTester Image Version",
         "defaultValue": "latest",
@@ -96,9 +96,9 @@
         "constraints": {
           "required": false,
           "allowedValues": [
-				"3.7.0",
-				"3.8.0",
-				"latest"
+	     "3.7.0",
+	     "3.8.0",
+             "latest"
           ]
         },
         "visible": true
@@ -108,12 +108,11 @@
     ],
      
     "outputs": {
-      "FortiTesterNamePrefix": "[basics('FortiTesterNamePrefix')]",
-      "FortiTesterImageSKU": "[basics('FortiTesterImageSKU')]",
-      "FortiTesterImageVersion": "[basics('FortiTesterImageVersion')]",
+      "fortiTesterNamePrefix": "[basics('fortiTesterNamePrefix')]",
+      "fortiTesterImageSKU": "[basics('fortiTesterImageSKU')]",
+      "fortiTesterImageVersion": "[basics('fortiTesterImageVersion')]",
       "adminUsername": "[basics('adminUsername')]",
-      "adminPassword": "[basics('adminPassword')]",
-      
+      "adminPassword": "[basics('adminPassword')]"      
     }
   }
 }
