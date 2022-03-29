@@ -400,10 +400,6 @@
     "fgaNic3Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('fgaNic3Name'))]",
     "fgbNic3Name": "[concat(variables('fgbVmName'),'-Nic3')]",
     "fgbNic3Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('fgbNic3Name'))]",
-    "fgaNic4Name": "[concat(variables('fgaVmName'),'-Nic4')]",
-    "fgaNic4Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('fgaNic4Name'))]",
-    "fgbNic4Name": "[concat(variables('fgbVmName'),'-Nic4')]",
-    "fgbNic4Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('fgbNic4Name'))]",
     "serialConsoleStorageAccountName": "[concat('console', uniquestring(resourceGroup().id))]",
     "serialConsoleStorageAccountType": "Standard_LRS",
     "serialConsoleEnabled": "[if(equals(parameters('serialConsole'),'yes'),'true','false')]",
@@ -1116,12 +1112,6 @@
                 "primary": false
               },
               "id": "[variables('fgaNic3Id')]"
-            },
-            {
-              "properties": {
-                "primary": false
-              },
-              "id": "[variables('fgaNic4Id')]"
             }
           ]
         },
@@ -1203,12 +1193,6 @@
                 "primary": false
               },
               "id": "[variables('fgbNic3Id')]"
-            },
-            {
-              "properties": {
-                "primary": false
-              },
-              "id": "[variables('fgbNic4Id')]"
             }
           ]
         },
