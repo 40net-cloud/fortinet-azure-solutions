@@ -42,6 +42,12 @@
         "description": "FortiTester versions available in the Azure Marketplace. Additional version can be downloaded via https://support.fortinet.com"
       }
     },
+	"fortiTesterAdditionalCustomData": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "The ARM template provides a basic configuration. Additional configuration can be added here."
+      },
     "instanceType": {
       "type": "string",
       "defaultValue": "Standard_F2s",
