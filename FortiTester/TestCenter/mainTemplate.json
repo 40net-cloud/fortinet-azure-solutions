@@ -189,7 +189,7 @@
       "metadata": {
         "description": "Subnet 2 start address, 8 consecutive private IPs are required"
       }
-    },
+    }
     
     },
     "serialConsole": {
@@ -234,8 +234,6 @@
     },
     "ftsCustomData": "[base64(string(variables('customDataCombined')))]",
 
-    "ftsVmName": "[concat(parameters('fortiWebNamePrefix'),'-FWB')]",
-
     "ftsVmName": "[concat(parameters('fortiTesterNamePrefix'),'-FTS')]",
 
     "ftsNic1Name": "[concat(variables('ftsVmName'),'-Nic1')]",
@@ -267,7 +265,7 @@
     "sn2IPArray1": "[string(int(variables('sn2IPArray')[1]))]",
     "sn2IPArray0": "[string(int(variables('sn2IPArray')[0]))]",
     "sn2IPStartAddress": "[split(parameters('subnet2StartAddress'),'.')]",
-	"sn2IPStartAddress3": "[int(variables('sn2IPStartAddress')[3])]",
+	"sn2IPStartAddress3": "[int(variables('sn2IPStartAddress')[3])]"
 
     
 
