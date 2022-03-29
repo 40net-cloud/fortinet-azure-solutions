@@ -52,7 +52,7 @@
     },
     "acceleratedNetworking": {
       "type": "string",
-      "defaultValue": "false",
+      "defaultValue": "true",
       "allowedValues": [
         "false",
         "true"
