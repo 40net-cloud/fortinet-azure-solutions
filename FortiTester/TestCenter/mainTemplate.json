@@ -212,7 +212,7 @@
         "provider": "6EB3B02F-50E5-4A3E-8CB8-2E12925831FTSVM"
       }
     }
-  },
+  ,
   "variables": {
     "imagePublisher": "fortinet",
     "imageOffer": "fortinet-fortitester",
@@ -489,7 +489,7 @@
         "osProfile": {
           "computerName": "[variables('ftsVmName')]",
           "adminUsername": "[parameters('adminUsername')]",
-          "adminPassword": "[parameters('adminPassword')]",
+          "adminPassword": "[parameters('adminPassword')]"
 		  
         },
         "storageProfile": {
