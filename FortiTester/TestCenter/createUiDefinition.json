@@ -471,7 +471,7 @@
       "subnet2Name": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet2.name]",
       "subnet2Prefix": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet2.addressPrefix]",
       "subnet2StartAddress": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet2.startAddress]",
-      "serialConsole": "[steps('advanced').serialconsole.enabled]",
+      "serialConsole": "[steps('advanced').serialconsole.enabled]"
       
     }
   }
