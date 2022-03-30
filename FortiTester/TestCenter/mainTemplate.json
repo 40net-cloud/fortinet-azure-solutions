@@ -42,12 +42,7 @@
         "description": "FortiTester versions available in the Azure Marketplace. Additional version can be downloaded via https://support.fortinet.com"
       }
     },
-	"fortiTesterAdditionalCustomData": {
-      "type": "string",
-      "defaultValue": "",
-      "metadata": {
-        "description": "The ARM template provides a basic configuration. Additional configuration can be added here."
-      },
+	
     "instanceType": {
       "type": "string",
       "defaultValue": "Standard_F2s",
@@ -225,14 +220,7 @@
     "vnetName": "[if(equals(parameters('vnetName'),''),concat(parameters('fortiTesterNamePrefix'),'-VNET'),parameters('vnetName'))]",
     "subnet1Id": "[if(equals(parameters('vnetNewOrExisting'),'new'),resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet1Name')),resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet1Name')))]",
     "subnet2Id": "[if(equals(parameters('vnetNewOrExisting'),'new'),resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet2Name')),resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet2Name')))]",
-    "customDataBody": "[concat('config system global\n set admintimeout 480\n end \n', parameters('fortiTesterAdditionalCustomData'), '\n')]",
-    "customDataCombined": {
-      "cloud-initd": "enable",
-      "usr-cli": "[variables('customDataBody')]",
-      "HaAzureInit": "enable",
-      "FtsLicenseBYOL": "[parameters('fortiTesterLicenseBYOL')]"
-    },
-    "ftsCustomData": "[base64(string(variables('customDataCombined')))]",
+    
 
     "ftsVmName": "[concat(parameters('fortiTesterNamePrefix'),'-FTS')]",
 
@@ -502,7 +490,7 @@
           "computerName": "[variables('ftsVmName')]",
           "adminUsername": "[parameters('adminUsername')]",
           "adminPassword": "[parameters('adminPassword')]",
-		  "customData": "[variables('ftsCustomData')]"
+		  
         },
         "storageProfile": {
           "imageReference": {

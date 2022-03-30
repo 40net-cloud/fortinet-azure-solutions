@@ -371,7 +371,7 @@
               "domainNameLabel": "DNS name linked to this public IP"
             },
             "defaultValue": {
-              "publicIpAddressName": "FWBPublicIP",
+              "publicIpAddressName": "FTSPublicIP",
               "domainNameLabel": "mydomain"
             },
             "constraints": {
@@ -405,40 +405,7 @@
           "postValidation": "Done"
         },
         "elements": [
-          {
-            "name": "customdata",
-            "type": "Microsoft.Common.Section",
-            "label": "Custom Data",
-            "elements": [
-              {
-                "name": "customdatatext",
-                "type": "Microsoft.Common.TextBlock",
-                "visible": true,
-                "options": {
-                  "text": "Pass a configuration file into the virtual machine while it is being provisioned. This is additional to the configuration for this architecture."
-                }
-              },
-              {
-                "name": "config",
-                "type": "Microsoft.Common.TextBox",
-                "label": "Custom Data",
-                "toolTip": "Custom Data",
-                "placeholder": "Add you required additional configuration here.",
-                "multiLine": true,
-                "constraints": {
-                  "required": false,
-                  "validations": [
-                    {
-                      "regex": "^[\\w\\W\n\t]{0,10240}$",
-                      "message": "All characters allowed, max 10240 characters."
-                    }
-                  ]
-                },
-                "visible": true
-              }
-              
-            ]
-          },
+          
           {
             "name": "serialconsole",
             "type": "Microsoft.Common.Section",
@@ -505,7 +472,7 @@
       "subnet2Prefix": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet2.addressPrefix]",
       "subnet2StartAddress": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet2.startAddress]",
       "serialConsole": "[steps('advanced').serialconsole.enabled]",
-      "fortiTesterAdditionalCustomData": "[steps('advanced').customdata.config]"
+      
     }
   }
 }
