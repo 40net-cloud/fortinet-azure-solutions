@@ -23,9 +23,7 @@
     "fortiTesterImageSKU": {
       "type": "string",
       "defaultValue": "fts-vm-byol",
-      "allowedValues": [
-        "fts-vm-byol"
-      ],
+      "allowedValues": ["fts-vm-byol"],
       "metadata": {
         "description": "Identifies SKU BYOL license model (where license is purchased separately)"
       }
@@ -33,20 +31,41 @@
     "fortiTesterImageVersion": {
       "type": "string",
       "defaultValue": "latest",
-      "allowedValues": [
-        "3.7.0",
-        "3.8.0",
-        "latest"
-      ],
+      "allowedValues": ["3.7.0", "3.8.0", "latest"],
       "metadata": {
         "description": "FortiTester versions available in the Azure Marketplace. Additional version can be downloaded via https://support.fortinet.com"
       }
     },
-	
     "instanceType": {
       "type": "string",
       "defaultValue": "Standard_F2s",
-      "allowedValues": [ "Standard_F1s", "Standard_F2s", "Standard_F4s", "Standard_F8s", "Standard_F16s", "Standard_F1", "Standard_F2", "Standard_F4", "Standard_F8", "Standard_F16", "Standard_F2s_v2", "Standard_F4s_v2", "Standard_F8s_v2", "Standard_F16s_v2", "Standard_F32s_v2", "Standard_DS1_v2", "Standard_DS2_v2", "Standard_DS3_v2", "Standard_DS4_v2", "Standard_DS5_v2", "Standard_D2s_v3", "Standard_D4s_v3", "Standard_D8s_v3", "Standard_D16s_v3", "Standard_D32s_v3" ],
+      "allowedValues": [
+        "Standard_F1s",
+        "Standard_F2s",
+        "Standard_F4s",
+        "Standard_F8s",
+        "Standard_F16s",
+        "Standard_F1",
+        "Standard_F2",
+        "Standard_F4",
+        "Standard_F8",
+        "Standard_F16",
+        "Standard_F2s_v2",
+        "Standard_F4s_v2",
+        "Standard_F8s_v2",
+        "Standard_F16s_v2",
+        "Standard_F32s_v2",
+        "Standard_DS1_v2",
+        "Standard_DS2_v2",
+        "Standard_DS3_v2",
+        "Standard_DS4_v2",
+        "Standard_DS5_v2",
+        "Standard_D2s_v3",
+        "Standard_D4s_v3",
+        "Standard_D8s_v3",
+        "Standard_D16s_v3",
+        "Standard_D32s_v3"
+      ],
       "metadata": {
         "description": "Virtual Machine size selection"
       }
@@ -54,23 +73,15 @@
     "acceleratedNetworking": {
       "type": "string",
       "defaultValue": "true",
-      "allowedValues": [
-        "false",
-        "true"
-      ],
+      "allowedValues": ["false", "true"],
       "metadata": {
         "description": "Accelerated Networking enables direct connection between the VM and network card. Only available on 2 CPU F/Fs and 4 CPU D/Dsv2, D/Dsv3, E/Esv3, Fsv2, Lsv2, Ms/Mms and Ms/Mmsv2"
       }
     },
-
     "publicIPNewOrExistingOrNone": {
       "type": "string",
       "defaultValue": "new",
-      "allowedValues": [
-        "new",
-        "existing",
-        "none"
-      ],
+      "allowedValues": ["new", "existing", "none"],
       "metadata": {
         "description": "Choose between an existing or new public IP for the External Azure Load Balancer"
       }
@@ -92,10 +103,7 @@
     "publicIPType": {
       "type": "string",
       "defaultValue": "Static",
-      "allowedValues": [
-        "Dynamic",
-        "Static"
-      ],
+      "allowedValues": ["Dynamic", "Static"],
       "metadata": {
         "description": "Type of public IP address"
       }
@@ -103,10 +111,7 @@
     "publicIPSKU": {
       "type": "string",
       "defaultValue": "Basic",
-      "allowedValues": [
-        "Basic",
-        "Standard"
-      ],
+      "allowedValues": ["Basic", "Standard"],
       "metadata": {
         "description": "SKU of public IP address"
       }
@@ -114,10 +119,7 @@
     "vnetNewOrExisting": {
       "type": "string",
       "defaultValue": "new",
-      "allowedValues": [
-        "new",
-        "existing"
-      ],
+      "allowedValues": ["new", "existing"],
       "metadata": {
         "description": "Identify whether to use a new or existing vnet"
       }
@@ -184,16 +186,11 @@
       "metadata": {
         "description": "Subnet 2 start address, 8 consecutive private IPs are required"
       }
-    }
-    
     },
     "serialConsole": {
       "type": "string",
       "defaultValue": "yes",
-      "allowedValues": [
-        "yes",
-        "no"
-      ],
+      "allowedValues": ["yes", "no"],
       "metadata": {
         "description": "Enable Serial Console"
       }
@@ -212,7 +209,7 @@
         "provider": "6EB3B02F-50E5-4A3E-8CB8-2E12925831FTSVM"
       }
     }
-  ,
+  },
   "variables": {
     "imagePublisher": "fortinet",
     "imageOffer": "fortinet-fortitester",
@@ -220,7 +217,6 @@
     "vnetName": "[if(equals(parameters('vnetName'),''),concat(parameters('fortiTesterNamePrefix'),'-VNET'),parameters('vnetName'))]",
     "subnet1Id": "[if(equals(parameters('vnetNewOrExisting'),'new'),resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet1Name')),resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet1Name')))]",
     "subnet2Id": "[if(equals(parameters('vnetNewOrExisting'),'new'),resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet2Name')),resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet2Name')))]",
-    
 
     "ftsVmName": "[concat(parameters('fortiTesterNamePrefix'),'-FTS')]",
 
@@ -228,7 +224,6 @@
     "ftsNic1Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('ftsNic1Name'))]",
     "ftsNic2Name": "[concat(variables('ftsVmName'),'-Nic2')]",
     "ftsNic2Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('ftsNic2Name'))]",
-
 
     "serialConsoleStorageAccountName": "[concat('console', uniquestring(resourceGroup().id))]",
     "serialConsoleStorageAccountType": "Standard_LRS",
@@ -253,10 +248,7 @@
     "sn2IPArray1": "[string(int(variables('sn2IPArray')[1]))]",
     "sn2IPArray0": "[string(int(variables('sn2IPArray')[0]))]",
     "sn2IPStartAddress": "[split(parameters('subnet2StartAddress'),'.')]",
-	"sn2IPStartAddress3": "[int(variables('sn2IPStartAddress')[3])]"
-
-    
-
+    "sn2IPStartAddress3": "[int(variables('sn2IPStartAddress')[3])]"
   },
   "resources": [
     {
@@ -291,9 +283,7 @@
       "location": "[parameters('location')]",
       "properties": {
         "addressSpace": {
-          "addressPrefixes": [
-            "[parameters('vnetAddressPrefix')]"
-          ]
+          "addressPrefixes": ["[parameters('vnetAddressPrefix')]"]
         },
         "subnets": [
           {
@@ -308,7 +298,6 @@
               "addressPrefix": "[parameters('subnet2Prefix')]"
             }
           }
-          
         ]
       }
     },
@@ -405,10 +394,7 @@
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[variables('ftsNic1Name')]",
       "location": "[parameters('location')]",
-      "dependsOn": [
-        "[variables('vnetName')]",
-        "[variables('NSGId')]"
-      ],
+      "dependsOn": ["[variables('vnetName')]", "[variables('NSGId')]"],
       "properties": {
         "ipConfigurations": [
           {
@@ -438,10 +424,7 @@
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[variables('ftsNic2Name')]",
       "location": "[parameters('location')]",
-      "dependsOn": [
-        "[variables('vnetName')]",
-        "[variables('NSGId')]"
-      ],
+      "dependsOn": ["[variables('vnetName')]", "[variables('NSGId')]"],
       "properties": {
         "ipConfigurations": [
           {
@@ -477,11 +460,7 @@
         "publisher": "[variables('imagePublisher')]",
         "product": "[variables('imageOffer')]"
       },
-      "dependsOn": [
-        "[variables('ftsNic1Id')]",
-        "[variables('ftsNic2Id')]"
-        
-      ],
+      "dependsOn": ["[variables('ftsNic1Id')]", "[variables('ftsNic2Id')]"],
       "properties": {
         "hardwareProfile": {
           "vmSize": "[parameters('instanceType')]"
@@ -490,7 +469,6 @@
           "computerName": "[variables('ftsVmName')]",
           "adminUsername": "[parameters('adminUsername')]",
           "adminPassword": "[parameters('adminPassword')]"
-		  
         },
         "storageProfile": {
           "imageReference": {
