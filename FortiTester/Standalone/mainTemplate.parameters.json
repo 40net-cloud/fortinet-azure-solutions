@@ -81,7 +81,7 @@
             "value": "yes"
         },
         "location": {
-            "value": "[resourceGroup().location]"
+            "value": ""
         },
         "fortinetTags": {
             "value": {
