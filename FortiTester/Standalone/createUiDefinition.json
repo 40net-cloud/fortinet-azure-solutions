@@ -74,7 +74,7 @@
         "name": "fortiTesterImageSKU",
         "type": "Microsoft.Common.DropDown",
         "label": "FortiTester Image SKU",
-        "defaultValue": "fts-vm-byol",
+        "defaultValue": "Bring Your Own License",
         "toolTip": " BYOL license model (where license is purchased separately)",
         "constraints": {
           "required": false,
@@ -97,8 +97,8 @@
           "required": false,
           "allowedValues": [
             {
-              "label": "3.7.0",
-              "value": "3.7.0"
+              "label": "3.7.00",
+              "value": "3.7.00"
             },
             {
               "label": "3.8.0",
