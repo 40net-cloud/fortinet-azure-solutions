@@ -68,6 +68,7 @@ Describe 'FTS Standalone' {
                                     'Microsoft.Network/publicIPAddresses',
                                     'Microsoft.Network/networkInterfaces',
                                     'Microsoft.Network/networkInterfaces',
+                                    'Microsoft.Network/networkInterfaces',
                                     'Microsoft.Compute/virtualMachines'
             $templateResources = (get-content $templateFileLocation | ConvertFrom-Json -ErrorAction SilentlyContinue).Resources.type
             $templateResources | Should -Be $expectedResources
@@ -78,7 +79,6 @@ Describe 'FTS Standalone' {
                                             'adminPassword',
                                             'adminUsername',
                                             'fortinetTags',
-                                            'fortiTesterAdditionalCustomData',
                                             'fortiTesterImageSKU',
                                             'fortiTesterImageVersion',
                                             'fortiTesterNamePrefix',
@@ -96,6 +96,9 @@ Describe 'FTS Standalone' {
                                             'subnet2Name',
                                             'subnet2Prefix',
                                             'subnet2StartAddress',
+                                            'subnet3Name',
+                                            'subnet3Prefix',
+                                            'subnet3StartAddress',
                                             'vnetAddressPrefix',
                                             'vnetName',
                                             'vnetNewOrExisting',

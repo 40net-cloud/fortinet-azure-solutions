@@ -78,7 +78,6 @@ Describe 'FTS TestCenter' {
                                             'adminPassword',
                                             'adminUsername',
                                             'fortinetTags',
-                                            'fortiTesterAdditionalCustomData',
                                             'fortiTesterImageSKU',
                                             'fortiTesterImageVersion',
                                             'fortiTesterNamePrefix',
