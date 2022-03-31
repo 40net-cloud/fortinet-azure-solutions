@@ -10,9 +10,7 @@
         }
       }
     },
-    "resourceTypes": [
-      "microsoft.resources/resourcegroups"
-    ],
+    "resourceTypes": ["microsoft.resources/resourcegroups"],
     "basics": [
       {
         "name": "adminUsername",
@@ -74,8 +72,8 @@
         "name": "fortiTesterImageSKU",
         "type": "Microsoft.Common.DropDown",
         "label": "FortiTester Image SKU",
-        "defaultValue": "fts-vm-byol",
-        "toolTip": " BYOL license model (where license is purchased separately)",
+        "defaultValue": "Bring Your Own License",
+        "toolTip": " BYOL license model (license is purchased separately)",
         "constraints": {
           "required": false,
           "allowedValues": [
@@ -97,8 +95,8 @@
           "required": false,
           "allowedValues": [
             {
-              "label": "3.7.0",
-              "value": "3.7.0"
+              "label": "3.7.00",
+              "value": "3.7.00"
             },
             {
               "label": "3.8.0",
@@ -114,7 +112,7 @@
       }
     ],
     "steps": [
-	{
+      {
         "name": "instancetype",
         "label": "Instance Type",
         "subLabel": {
@@ -209,7 +207,7 @@
           }
         ]
       },
-	{
+      {
         "name": "networking",
         "label": "Networking",
         "subLabel": {
@@ -343,7 +341,7 @@
           }
         ]
       },
-	  {
+      {
         "name": "publicip",
         "label": "Public IP",
         "subLabel": {
@@ -405,7 +403,6 @@
           "postValidation": "Done"
         },
         "elements": [
-          
           {
             "name": "serialconsole",
             "type": "Microsoft.Common.Section",
@@ -446,17 +443,17 @@
           }
         ]
       }
-	],
+    ],
     "outputs": {
       "fortiTesterNamePrefix": "[basics('fortiTesterNamePrefix')]",
       "fortiTesterImageSKU": "[basics('fortiTesterImageSKU')]",
       "fortiTesterImageVersion": "[basics('fortiTesterImageVersion')]",
       "adminUsername": "[basics('adminUsername')]",
       "adminPassword": "[basics('adminPassword')]",
-	  "location": "[location()]",
+      "location": "[location()]",
       "instanceType": "[steps('instancetype').instancetypeselection]",
-	  "acceleratedNetworking": "[steps('networking').acceleratednetworksection.acceleratednetworking]",
-	  "publicIPNewOrExistingOrNone": "[steps('publicip').publicip.newOrExistingOrNone]",
+      "acceleratedNetworking": "[steps('networking').acceleratednetworksection.acceleratednetworking]",
+      "publicIPNewOrExistingOrNone": "[steps('publicip').publicip.newOrExistingOrNone]",
       "publicIPName": "[steps('publicip').publicip.name]",
       "publicIPResourceGroup": "[steps('publicip').publicip.resourceGroup]",
       "publicIPType": "[steps('publicip').publicip.publicIPAllocationMethod]",
@@ -472,7 +469,6 @@
       "subnet2Prefix": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet2.addressPrefix]",
       "subnet2StartAddress": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet2.startAddress]",
       "serialConsole": "[steps('advanced').serialconsole.enabled]"
-      
     }
   }
 }

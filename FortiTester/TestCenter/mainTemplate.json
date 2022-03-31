@@ -31,7 +31,7 @@
     "fortiTesterImageVersion": {
       "type": "string",
       "defaultValue": "latest",
-      "allowedValues": ["3.7.0", "3.8.0", "latest"],
+      "allowedValues": ["3.7.00", "3.8.0", "latest"],
       "metadata": {
         "description": "FortiTester versions available in the Azure Marketplace. Additional version can be downloaded via https://support.fortinet.com"
       }
