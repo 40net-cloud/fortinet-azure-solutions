@@ -267,7 +267,7 @@
     },
     "subnet2Id": "[if(equals(parameters('vnetNewOrExisting'),'new'),resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet2Name')),resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet2Name')))]",
 
-    "fwbACustomDataBody": "[concat('config system global\n set admintimeout 480\n end \n', parameters('fortiWebBAdditionalCustomData'), '\n')]",
+    "fwbACustomDataBody": "[concat('config system ha\n set mode active-active-high-volume\n set group-id 1', parameters('fortiWebHaGroupId'), ' set group-name ', tolower(parameters('fortiWebNamePrefix')), ' set priority 1\n set tunnel-local ', variables('sn2IPfwbA'), ' set tunnel-peer ', variables('sn2IPfwbA'), 'set monitor port1 port2\nend\n', parameters('fortiWebAAdditionalCustomData'), '\n')]",
     "fwbACustomDataCombined": {
       "cloud-initd": "enable",
       "usr-cli": "[variables('fwbACustomDataBody')]",
@@ -285,7 +285,7 @@
     },
     "fwbACustomData": "[base64(string(variables('fwbACustomDataCombined')))]",
 
-    "fwbBCustomDataBody": "[concat('config system global\n set admintimeout 480\n end \n', parameters('fortiWebAAdditionalCustomData'), '\n')]",
+    "fwbBCustomDataBody": "[concat('config system ha\n set mode active-active-high-volume\n set group-id 1', parameters('fortiWebHaGroupId'), ' set group-name ', tolower(parameters('fortiWebNamePrefix')), ' set priority 1\n set tunnel-local ', variables('sn2IPfwbB'), ' set tunnel-peer ', variables('sn2IPfwbA'), 'set monitor port1 port2\nend\n', parameters('fortiWebBAdditionalCustomData'), '\n')]",
     "fwbbCustomDataCombined": {
       "cloud-initd": "enable",
       "usr-cli": "[variables('fwbBCustomDataBody')]",
@@ -951,7 +951,7 @@
           "computerName": "[variables('fwbBVmName')]",
           "adminUsername": "[parameters('adminUsername')]",
           "adminPassword": "[parameters('adminPassword')]",
-          "customData": "[variables('fwbACustomData')]"
+          "customData": "[variables('fwbBCustomData')]"
         },
         "storageProfile": {
           "imageReference": {
