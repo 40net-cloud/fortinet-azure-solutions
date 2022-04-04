@@ -35,9 +35,6 @@
       "type": "string",
       "defaultValue": "latest",
       "allowedValues": [
-        "6.2.5",
-        "6.3.15",
-        "6.3.16",
         "6.3.17",
         "7.0.0",
         "latest"
@@ -46,10 +43,46 @@
         "description": "FortiWeb versions available in the Azure Marketplace. Additional version can be downloaded via https://support.fortinet.com/"
       }
     },
+    "fortiWebHaOverride": {
+      "type": "string",
+      "defaultValue": "disable",
+      "allowedValues": [
+        "enable",
+        "disable"
+      ],
+      "metadata": {
+        "description": "HA Override"
+      }
+    },
+    "fortiWebHaGroupId": {
+      "type": "int",
+      "defaultValue": 1,
+      "minValue": 0,
+      "maxValue": 63,
+      "metadata": {
+        "description": "Type a group id that identifies of HA cluster. Mininum is 0, Maximum is 63."
+      }
+    },
+
+    "fortiWebAAdditionalCustomData": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "The ARM template provides a basic configuration. Additional configuration can be added here."
+      }
+    },
+    "fortiWebBAdditionalCustomData": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "The ARM template provides a basic configuration. Additional configuration can be added here."
+      }
+    },
+
     "instanceType": {
       "type": "string",
       "defaultValue": "Standard_F2s",
-      "allowedValues": [ "Standard_F1s", "Standard_F2s", "Standard_F4s", "Standard_F8s", "Standard_F16s", "Standard_F1", "Standard_F2", "Standard_F4", "Standard_F8", "Standard_F16", "Standard_F2s_v2", "Standard_F4s_v2", "Standard_F8s_v2", "Standard_F16s_v2", "Standard_F32s_v2", "Standard_DS1_v2", "Standard_DS2_v2", "Standard_DS3_v2", "Standard_DS4_v2", "Standard_DS5_v2", "Standard_D2s_v3", "Standard_D4s_v3", "Standard_D8s_v3", "Standard_D16s_v3", "Standard_D32s_v3"],
+      "allowedValues": [ "Standard_F1s", "Standard_F2s", "Standard_F4s", "Standard_F8s", "Standard_F16s", "Standard_F1", "Standard_F2", "Standard_F4", "Standard_F8", "Standard_F16", "Standard_F2s_v2", "Standard_F4s_v2", "Standard_F8s_v2", "Standard_F16s_v2", "Standard_F32s_v2", "Standard_DS1_v2", "Standard_DS2_v2", "Standard_DS3_v2", "Standard_DS4_v2", "Standard_DS5_v2", "Standard_D2s_v3", "Standard_D4s_v3", "Standard_D8s_v3", "Standard_D16s_v3", "Standard_D32s_v3" ],
       "metadata": {
         "description": "Virtual Machine size selection - must be F4 or other instance that supports 4 NICs"
       }
@@ -187,6 +220,21 @@
         "description": "Subnet 2 start address, 3 consecutive private IPs are required"
       }
     },
+    "fortiWebALicenseBYOL": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "FortiWeb BYOL license content"
+      }
+    },
+    "fortiWebBLicenseBYOL": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "FortiWeb BYOL license content"
+      }
+    },
+
     "location": {
       "type": "string",
       "defaultValue": "[resourceGroup().location]",
@@ -219,6 +267,40 @@
     },
     "subnet2Id": "[if(equals(parameters('vnetNewOrExisting'),'new'),resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet2Name')),resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet2Name')))]",
 
+    "fwbACustomDataBody": "[concat('config system global\n set admintimeout 480\n end \n', parameters('fortiWebBAdditionalCustomData'), '\n')]",
+    "fwbACustomDataCombined": {
+      "cloud-initd": "enable",
+      "usr-cli": "[variables('fwbACustomDataBody')]",
+      "HaAzureInit": "enable",
+      "HaInstanceCount": "2",
+      "HaInstanceId": "1",
+      "HaNamePrefix": "[parameters('fortiWebNamePrefix')]",
+      "HaInstanceName": "[variables('fwbAVmName')]",
+      "HaMode": "active-active-high-volume",
+      "HaGroupId": "[parameters('fortiWebHaGroupId')]",
+      "HaGroupName": "[tolower(parameters('fortiWebNamePrefix'))]",
+      "HaOverride": "[parameters('fortiWebHaOverride')]",
+      "FwbLicenseBYOL": "[parameters('fortiWebALicenseBYOL')]"
+    },
+    "fwbACustomData": "[base64(string(variables('fwbACustomDataCombined')))]",
+
+    "fwbBCustomDataBody": "[concat('config system global\n set admintimeout 480\n end \n', parameters('fortiWebAAdditionalCustomData'), '\n')]",
+    "fwbbCustomDataCombined": {
+      "cloud-initd": "enable",
+      "usr-cli": "[variables('fwbBCustomDataBody')]",
+      "HaAzureInit": "enable",
+      "HaInstanceCount": "2",
+      "HaInstanceId": "1",
+      "HaNamePrefix": "[parameters('fortiWebNamePrefix')]",
+      "HaInstanceName": "[variables('fwbBVmName')]",
+      "HaMode": "active-active-high-volume",
+      "HaGroupId": "[parameters('fortiWebHaGroupId')]",
+      "HaGroupName": "[tolower(parameters('fortiWebNamePrefix'))]",
+      "HaOverride": "[parameters('fortiWebHaOverride')]",
+      "FwbLicenseBYOL": "[parameters('fortiWebBLicenseBYOL')]"
+    },
+    "fwbBCustomData": "[base64(string(variables('fwbBCustomDataCombined')))]",
+
     "fwbAVmName": "[concat(parameters('fortiWebNamePrefix'),'-FWB-A')]",
     "fwbBVmName": "[concat(parameters('fortiWebNamePrefix'),'-FWB-B')]",
 
@@ -236,7 +318,6 @@
     "publicIPAddressId": {
       "id": "[variables('publicIPId')]"
     },
-
 
     "ilbProperties": {
       "properties": {
@@ -302,13 +383,13 @@
       "apiVersion": "2020-10-01",
       "name": "pid-2e181e90-36f0-4061-9842-64c219116819-partnercenter",
       "type": "Microsoft.Resources/deployments",
-      "properties":{
-       "mode": "Incremental",
-       "template": {
-         "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
-         "contentVersion": "1.0.0.0",
-         "resources": []
-       }
+      "properties": {
+        "mode": "Incremental",
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "resources": []
+        }
       }
     },
     {
@@ -317,7 +398,7 @@
       "type": "Microsoft.Compute/availabilitySets",
       "name": "[variables('availabilitySetName')]",
       "tags": {
-       "provider": "[toUpper(parameters('fortinetTags').provider)]"
+        "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
       "location": "[parameters('location')]",
       "properties": {
@@ -325,7 +406,7 @@
         "platformUpdateDomainCount": 2
       },
       "sku": {
-        "name":  "Aligned"
+        "name": "Aligned"
       }
     },
     {
@@ -476,8 +557,7 @@
       },
       "name": "[variables('publicIPName')]",
       "location": "[parameters('location')]",
-      "sku":
-      {
+      "sku": {
         "name": "Standard"
       },
       "properties": {
@@ -663,6 +743,7 @@
           }
         ],
         "enableIPForwarding": false,
+        "enableAcceleratedNetworking": "[parameters('acceleratedNetworking')]",
         "networkSecurityGroup": {
           "id": "[variables('NSGId')]"
         }
@@ -708,6 +789,7 @@
           }
         ],
         "enableIPForwarding": false,
+        "enableAcceleratedNetworking": "[parameters('acceleratedNetworking')]",
         "networkSecurityGroup": {
           "id": "[variables('NSGId')]"
         }
@@ -716,7 +798,7 @@
     {
       "apiVersion": "2020-04-01",
       "tags": {
-       "provider": "[toUpper(parameters('fortinetTags').provider)]"
+        "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[variables('fwbANic2Name')]",
@@ -737,13 +819,14 @@
             }
           }
         ],
-        "enableIPForwarding": false
+        "enableIPForwarding": false,
+        "enableAcceleratedNetworking": "[parameters('acceleratedNetworking')]"
       }
     },
     {
       "apiVersion": "2020-04-01",
       "tags": {
-       "provider": "[toUpper(parameters('fortinetTags').provider)]"
+        "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[variables('fwbBNic2Name')]",
@@ -764,7 +847,8 @@
             }
           }
         ],
-        "enableIPForwarding": false
+        "enableIPForwarding": false,
+        "enableAcceleratedNetworking": "[parameters('acceleratedNetworking')]"
       }
     },
     {
@@ -773,7 +857,7 @@
       "name": "[variables('fwbAVmName')]",
       "location": "[parameters('location')]",
       "tags": {
-       "provider": "[toUpper(parameters('fortinetTags').provider)]"
+        "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
       "identity": {
         "type": "SystemAssigned"
@@ -796,7 +880,8 @@
         "osProfile": {
           "computerName": "[variables('fwbAVmName')]",
           "adminUsername": "[parameters('adminUsername')]",
-          "adminPassword": "[parameters('adminPassword')]"
+          "adminPassword": "[parameters('adminPassword')]",
+          "customData": "[variables('fwbACustomData')]"
         },
         "storageProfile": {
           "imageReference": {
@@ -840,7 +925,7 @@
       "name": "[variables('fwbBVmName')]",
       "location": "[parameters('location')]",
       "tags": {
-       "provider": "[toUpper(parameters('fortinetTags').provider)]"
+        "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
       "identity": {
         "type": "SystemAssigned"
@@ -863,7 +948,8 @@
         "osProfile": {
           "computerName": "[variables('fwbBVmName')]",
           "adminUsername": "[parameters('adminUsername')]",
-          "adminPassword": "[parameters('adminPassword')]"
+          "adminPassword": "[parameters('adminPassword')]",
+          "customData": "[variables('fwbACustomData')]"
         },
         "storageProfile": {
           "imageReference": {
