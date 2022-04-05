@@ -220,6 +220,17 @@
         "description": "Subnet 2 start address, 3 consecutive private IPs are required"
       }
     },
+    "serialConsole": {
+      "type": "string",
+      "defaultValue": "yes",
+      "allowedValues": [
+        "yes",
+        "no"
+      ],
+      "metadata": {
+        "description": "Enable Serial Console"
+      }
+    },
     "fortiWebALicenseBYOL": {
       "type": "string",
       "defaultValue": "",
@@ -234,7 +245,34 @@
         "description": "FortiWeb BYOL license content"
       }
     },
-
+    "haAppId": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Active/Active config - Azure Service Principal Application Id"
+      }
+    },
+    "haAppSecret": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Active/Active config - Azure Service Principal Application Secret"
+      }
+    },
+    "haSubscriptionId": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Active/Active config - Azure Service Principal Subscription Id"
+      }
+    },
+    "haTenantId": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Active/Active config - Azure Service Principal Tenant Id"
+      }
+    },
     "location": {
       "type": "string",
       "defaultValue": "[resourceGroup().location]",
@@ -267,13 +305,19 @@
     },
     "subnet2Id": "[if(equals(parameters('vnetNewOrExisting'),'new'),resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet2Name')),resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet2Name')))]",
 
-    "fwbGlobalDataBody": "[concat('config system settings\n set enable-file-upload enable\n end\n')]",
-    "fwbACustomDataBody": "[concat(variables('fwbGlobalDataBody'), 'config system ha\n set mode active-active-high-volume\n set group-id 1', parameters('fortiWebHaGroupId'), ' set group-name ', tolower(parameters('fortiWebNamePrefix')), ' set priority 1\n set tunnel-local ', variables('sn2IPfwbA'), ' set tunnel-peer ', variables('sn2IPfwbA'), 'set monitor port1 port2\nend\n', parameters('fortiWebAAdditionalCustomData'), '\n')]",
+    "fwbGlobalDataBody": "[concat('config system settings\n set enable-file-upload enable\n end\nconfig system admin\nedit admin\nset password Q1w2e34567890--\nend\n')]",
+    "fwbACustomDataBodyHA": "[concat('config system ha\n set mode active-active-high-volume\n set group-id ', parameters('fortiWebHaGroupId'), ' set group-name ', tolower(parameters('fortiWebNamePrefix')), ' set priority 1\n set tunnel-local ', variables('sn2IPfwbA'), ' set tunnel-peer ', variables('sn2IPfwbA'), 'set monitor port1 port2\nend\n')]",
+    "fwbACustomDataBody": "[concat(variables('fwbGlobalDataBody'), variables('fwbACustomDataBodyHA'), parameters('fortiWebAAdditionalCustomData'), '\n')]",
     "fwbACustomDataCombined": {
       "cloud-initd": "enable",
       "usr-cli": "[variables('fwbACustomDataBody')]",
       "HaAzureInit": "enable",
-      "HaResourceGroupName":"[resourceGroup().name]",
+      "HaResourceGroupName": "[resourceGroup().name]",
+      "HaSubscriptionId": "[parameters('HASubscriptionId')]",
+      "HaTenantId": "[parameters('HATenantId')]",
+      "HaApplicationId": "[parameters('HAAppId')]",
+      "HaApplicationPassword": "[parameters('HAAppSecret')]",
+      "HaLoadblancerName": "[variables('externalLBName')]",
       "HaInstanceCount": "2",
       "HaInstanceId": "1",
       "HaNamePrefix": "[parameters('fortiWebNamePrefix')]",
@@ -286,14 +330,20 @@
     },
     "fwbACustomData": "[base64(string(variables('fwbACustomDataCombined')))]",
 
-    "fwbBCustomDataBody": "[concat(variables('fwbGlobalDataBody'), 'config system ha\n set mode active-active-high-volume\n set group-id 1', parameters('fortiWebHaGroupId'), ' set group-name ', tolower(parameters('fortiWebNamePrefix')), ' set priority 1\n set tunnel-local ', variables('sn2IPfwbB'), ' set tunnel-peer ', variables('sn2IPfwbA'), 'set monitor port1 port2\nend\n', parameters('fortiWebBAdditionalCustomData'), '\n')]",
+    "fwbBCustomDataBodyHA": "[concat('config system ha\n set mode active-active-high-volume\n set group-id ', parameters('fortiWebHaGroupId'), ' set group-name ', tolower(parameters('fortiWebNamePrefix')), ' set priority 2\n set tunnel-local ', variables('sn2IPfwbB'), ' set tunnel-peer ', variables('sn2IPfwbA'), 'set monitor port1 port2\nend\n')]",
+    "fwbBCustomDataBody": "[concat(variables('fwbGlobalDataBody'), variables('fwbBCustomDataBodyHA'), parameters('fortiWebBAdditionalCustomData'), '\n')]",
     "fwbbCustomDataCombined": {
       "cloud-initd": "enable",
       "usr-cli": "[variables('fwbBCustomDataBody')]",
       "HaAzureInit": "enable",
-      "HaResourceGroupName":"[resourceGroup().name]",
+      "HaResourceGroupName": "[resourceGroup().name]",
+      "HaSubscriptionId": "[parameters('HASubscriptionId')]",
+      "HaTenantId": "[parameters('HATenantId')]",
+      "HaApplicationId": "[parameters('HAAppId')]",
+      "HaApplicationPassword": "[parameters('HAAppSecret')]",
+      "HaLoadblancerName": "[variables('externalLBName')]",
       "HaInstanceCount": "2",
-      "HaInstanceId": "1",
+      "HaInstanceId": "2",
       "HaNamePrefix": "[parameters('fortiWebNamePrefix')]",
       "HaInstanceName": "[variables('fwbBVmName')]",
       "HaMode": "active-active-high-volume",
@@ -315,6 +365,11 @@
     "fwbBNic1Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('fwbBNic1Name'))]",
     "fwbBNic2Name": "[concat(variables('fwbBVmName'),'-Nic2')]",
     "fwbBNic2Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('fwbBNic2Name'))]",
+
+    "serialConsoleStorageAccountName": "[concat('console', uniquestring(resourceGroup().id))]",
+    "serialConsoleStorageAccountType": "Standard_LRS",
+    "serialConsoleEnabled": "[if(equals(parameters('serialConsole'),'yes'),'true','false')]",
+
 
     "publicIPName": "[if(equals(parameters('publicIPName'),''),concat(parameters('fortiWebNamePrefix'),'-FWB-PIP'),parameters('publicIPName'))]",
     "publicIPId": "[if(equals(parameters('publicIPNewOrExisting'),'new'),resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPName')),resourceId(parameters('publicIPResourceGroup'),'Microsoft.Network/publicIPAddresses',variables('publicIPName')))]",
@@ -393,6 +448,17 @@
           "contentVersion": "1.0.0.0",
           "resources": []
         }
+      }
+    },
+    {
+      "condition": "[equals(parameters('serialConsole'), 'yes')]",
+      "type": "Microsoft.Storage/storageAccounts",
+      "name": "[variables('serialConsoleStorageAccountName')]",
+      "apiVersion": "2021-02-01",
+      "location": "[parameters('location')]",
+      "kind": "Storage",
+      "sku": {
+        "name": "[variables('serialConsoleStorageAccountType')]"
       }
     },
     {
@@ -919,6 +985,12 @@
               "id": "[variables('fwbANic2Id')]"
             }
           ]
+        },
+        "diagnosticsProfile": {
+          "bootDiagnostics": {
+            "enabled": "[variables('serialConsoleEnabled')]",
+            "storageUri": "[if(equals(parameters('serialConsole'), 'yes'), reference(variables('serialConsoleStorageAccountName'), '2021-08-01').primaryEndpoints['blob'], json('null'))]"
+          }
         }
       }
     },
@@ -987,8 +1059,28 @@
               "id": "[variables('fwbBNic2Id')]"
             }
           ]
+        },
+        "diagnosticsProfile": {
+          "bootDiagnostics": {
+            "enabled": "[variables('serialConsoleEnabled')]",
+            "storageUri": "[if(equals(parameters('serialConsole'), 'yes'), reference(variables('serialConsoleStorageAccountName'), '2021-08-01').primaryEndpoints['blob'], json('null'))]"
+          }
         }
       }
     }
-  ]
+  ],
+  "outputs": {
+    "fortiGatePublicIP": {
+      "type": "string",
+      "value": "[if(equals(parameters('publicIPNewOrExisting'), 'new'), reference(variables('publicIPId')).ipAddress, '')]"
+    },
+    "fwbACustomData": {
+      "type": "string",
+      "value": "[variables('fwbACustomData')]"
+    },
+    "fwbBCustomData": {
+      "type": "string",
+      "value": "[variables('fwbBCustomData')]"
+    }
+  }
 }

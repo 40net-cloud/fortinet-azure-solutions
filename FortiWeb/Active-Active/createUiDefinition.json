@@ -482,6 +482,83 @@
             "visible": "[or(equals(steps('publicip').loadbalancerpublicip.sku, 'Standard'),equals(steps('publicip').loadbalancerpublicip.newOrExistingOrNone, 'none'))]"
           }
         ]
+      },
+      {
+        "name": "advanced",
+        "label": "Advanced",
+        "subLabel": {
+          "preValidation": "Configure High Availability Service Principal",
+          "postValidation": "Done"
+        },
+        "elements": [
+          {
+            "name": "highavailability",
+            "type": "Microsoft.Common.Section",
+            "label": "High Availability",
+            "elements": [
+              {
+                "name": "highavailabilitytext",
+                "type": "Microsoft.Common.TextBlock",
+                "visible": true,
+                "options": {
+                  "text": "Provide Azure Service Principal details required for the setup of the Active/Active clustering."
+                }
+              },
+              {
+                "name": "hasubscriptionid",
+                "type": "Microsoft.Common.TextBox",
+                "label": "Subcription ID",
+                "defaultValue": "",
+                "toolTip": "Active/Active config - Azure Service Principal Subscription Id",
+                "constraints": {
+                  "required": false,
+                  "regex": "^[A-Za-z0-9-]{1,64}$",
+                  "validationMessage": "Only alphanumeric characters and a dash are allowed, and the value must be 1 to 64 characters."
+                },
+                "visible": true
+              },
+              {
+                "name": "hatenantid",
+                "type": "Microsoft.Common.TextBox",
+                "label": "Tenant ID",
+                "defaultValue": "",
+                "toolTip": "Active/Active config - Azure Service Principal Tenant Id",
+                "constraints": {
+                  "required": false,
+                  "regex": "^[A-Za-z0-9-]{1,64}$",
+                  "validationMessage": "Only alphanumeric characters and a dash are allowed, and the value must be 1 to 64 characters."
+                },
+                "visible": true
+              },
+              {
+                "name": "haappid",
+                "type": "Microsoft.Common.TextBox",
+                "label": "Application ID",
+                "defaultValue": "",
+                "toolTip": "Active/Active config - Azure Service Principal Application Id",
+                "constraints": {
+                  "required": false,
+                  "regex": "^[A-Za-z0-9-]{1,64}$",
+                  "validationMessage": "Only alphanumeric characters and a dash are allowed, and the value must be 1 to 64 characters."
+                },
+                "visible": true
+              },
+              {
+                "name": "haappsecret",
+                "type": "Microsoft.Common.TextBox",
+                "label": "Applicatin Secret",
+                "defaultValue": "",
+                "toolTip": "Active/Active config - Azure Service Principal Application Secret",
+                "constraints": {
+                  "required": false,
+                  "regex": "^[A-Za-z0-9-]{1,64}$",
+                  "validationMessage": "Only alphanumeric characters and a dash are allowed, and the value must be 1 to 64 characters."
+                },
+                "visible": true
+              }
+            ]
+          }
+        ]
       }
     ],
     "outputs": {
@@ -507,7 +584,11 @@
       "subnet1StartAddress": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet1.startAddress]",
       "subnet2Name": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet2.name]",
       "subnet2Prefix": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet2.addressPrefix]",
-      "subnet2StartAddress": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet2.startAddress]"
+      "subnet2StartAddress": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet2.startAddress]",
+      "haTenantId": "[steps('advanced').highavailability.hatenantid]",
+      "haSubscriptionId": "[steps('advanced').highavailability.hasubscriptionid]",
+      "haApplicationId": "[steps('advanced').highavailability.haapplicationid]",
+      "haApplicationSecret": "[steps('advanced').highavailability.haapplicationsecret]"
     }
   }
 }
