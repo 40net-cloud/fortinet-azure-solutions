@@ -81,6 +81,7 @@ Describe 'FWB Single VM' {
                                             'fortiWebAdditionalCustomData',
                                             'fortiWebImageSKU',
                                             'fortiWebImageVersion',
+                                            'fortiWebLicenseBYOL',
                                             'fortiWebNamePrefix',
                                             'instanceType',
                                             'location',
