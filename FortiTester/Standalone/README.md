@@ -10,7 +10,6 @@ This Azure ARM template will automatically deploy a full working environment con
 
 - 1 standalone FortiTester
 - 1 VNETs containing a management subnet and testing subnet 1 and 2
-- User Defined Routes (UDR) for the subnets 1 and 2
 - Accelerated Networking is enabled by default
 
 ![FortiTester-VM azure design](images/fts-standalone.png)
