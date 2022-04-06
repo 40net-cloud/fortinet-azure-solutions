@@ -10,8 +10,20 @@
         }
       }
     },
-    "resourceTypes": ["microsoft.resources/resourcegroups"],
+    "resourceTypes": [
+      "microsoft.resources/resourcegroups"
+    ],
     "basics": [
+      {
+        "name": "instancetypeinfo",
+        "type": "Microsoft.Common.InfoBox",
+        "visible": true,
+        "options": {
+          "icon": "Info",
+          "text": "FortiTester Deployment Type - Standalone",
+          "uri": "https://github.com/fortinet/azure-templates/tree/main/FortiTester/A-Single-VM"
+        }
+      },
       {
         "name": "adminUsername",
         "type": "Microsoft.Common.TextBox",
@@ -73,7 +85,7 @@
         "type": "Microsoft.Common.DropDown",
         "label": "FortiTester Image SKU",
         "defaultValue": "Bring Your Own License",
-        "toolTip": " BYOL license model (license is purchased separately)",
+        "toolTip": " BYOL license model (where license is purchased separately)",
         "constraints": {
           "required": false,
           "allowedValues": [
@@ -125,10 +137,10 @@
             "type": "Microsoft.Common.TextBlock",
             "visible": true,
             "options": {
-              "text": "For this FortiTester deployment, it is recommended to use the general purpose or compute optimized virtual machines. A selection of supported instances sizes is listed in our documentation.",
+              "text": "For this FortiGate deployment, it is recommended to use the general purpose or compute optimized virtual machines. A selection of supported instances sizes is listed in our documentation. FortiGate Active/Passive HA uses the FGCP protocol for configuration sync and HA failover. This requires dedicated sync and management ports. A minimum of 4 NICs is required for the instance type.",
               "link": {
                 "label": "Learn more",
-                "uri": "https://docs.fortinet.com/document/fortitester-public-cloud/7.1.0/deploying-fortitester-vm-on-azure"
+                "uri": "https://docs.fortinet.com/vm/azure/fortigate/7.0/azure-administration-guide/7.0.0/562841/instance-type-support"
               }
             }
           },
@@ -136,74 +148,58 @@
             "name": "instancetypeselection",
             "type": "Microsoft.Compute.SizeSelector",
             "label": "Size",
-            "toolTip": "Select the instance size of your FortiTester VM solution. Minimum 4 NICs are required.",
+            "toolTip": "Select the instance size of your FortiGate VM solution. Minimum 4 NICs are required.",
             "recommendedSizes": [
-              "Standard_F2s",
-              "Standard_F1s",
               "Standard_F4s",
               "Standard_F8s",
               "Standard_F16s",
-              "Standard_F1",
-              "Standard_F2",
               "Standard_F4",
               "Standard_F8",
               "Standard_F16",
-              "Standard_F2s_v2",
-              "Standard_F4s_v2",
               "Standard_F8s_v2",
               "Standard_F16s_v2",
               "Standard_F32s_v2",
-              "Standard_DS1_v2",
-              "Standard_DS2_v2",
+              "Standard_D3_v2",
+              "Standard_D4_v2",
+              "Standard_D5_v2",
               "Standard_DS3_v2",
               "Standard_DS4_v2",
               "Standard_DS5_v2",
-              "Standard_D2s_v3",
-              "Standard_D4s_v3",
+              "Standard_D8s_v3",
+              "Standard_D16_v3",
+              "Standard_D32_v3",
               "Standard_D8s_v3",
               "Standard_D16s_v3",
               "Standard_D32s_v3"
             ],
-            "constraints": {
-              "allowedValues": [
-                "Standard_F2s",
-                "Standard_F1s",
-                "Standard_F4s",
-                "Standard_F8s",
-                "Standard_F16s",
-                "Standard_F1",
-                "Standard_F2",
-                "Standard_F4",
-                "Standard_F8",
-                "Standard_F16",
-                "Standard_F2s_v2",
-                "Standard_F4s_v2",
-                "Standard_F8s_v2",
-                "Standard_F16s_v2",
-                "Standard_F32s_v2",
-                "Standard_DS1_v2",
-                "Standard_DS2_v2",
-                "Standard_DS3_v2",
-                "Standard_DS4_v2",
-                "Standard_DS5_v2",
-                "Standard_D2s_v3",
-                "Standard_D4s_v3",
-                "Standard_D8s_v3",
-                "Standard_D16s_v3",
-                "Standard_D32s_v3"
-              ]
-            },
             "options": {
               "hideDiskTypeFilter": false
             },
             "osPlatform": "Linux",
             "imageReference": {
               "publisher": "Fortinet",
-              "offer": "fortinet-fortitester",
-              "sku": "[basics('FortiTesterImageSKU')]"
+              "offer": "fortinet_fortigate-vm_v5",
+              "sku": "[basics('fortiGateImageSKU')]"
             },
-            "count": 1,
+            "count": 2,
             "visible": true
+          },
+          {
+            "name": "acceleratednetworksection",
+            "type": "Microsoft.Common.Section",
+            "label": "Accelerated networking",
+            "elements": [
+              {
+                "name": "acceleratednetworkinginfo",
+                "type": "Microsoft.Common.InfoBox",
+                "visible": true,
+                "options": {
+                  "icon": "Info",
+                  "text": "SR-IOV support allowing direct acces from the NIC in the Azure infrastructure to the FortiTester VM. FortiTester only supports Accelerated Networking interfaces. Accelerated Networking is supported on most general purpose and compute-optimized instance sizes with 2 or more vCPUs. On instances that support hyperthreading, Accelerated Networking is supported on VM instances with 4 or more vCPUs. Deployment with the accelerated networking feature enabled on a host that doesn't support it will result in a failure to connect to it.",
+                  "uri": "https://docs.microsoft.com/en-us/azure/virtual-machines/sizes"
+                }
+              }
+            ]
           }
         ]
       },
@@ -236,12 +232,12 @@
                   "subnets": "Subnets"
                 },
                 "toolTip": {
-                  "virtualNetwork": "Virtual Network for deployment of the FortiTester VM solution",
+                  "virtualNetwork": "Virtual Network for deployment of the FortiGate VM solution",
                   "subnets": "Standard deployment is to have an "
                 },
                 "defaultValue": {
                   "name": "FortiTester-VNET",
-                  "addressPrefixSize": "/23"
+                  "addressPrefixSize": "/22"
                 },
                 "constraints": {
                   "minAddressPrefixSize": "/29"
@@ -251,9 +247,9 @@
                 },
                 "subnets": {
                   "subnet1": {
-                    "label": "MGMT Subnet",
+                    "label": "Management Subnet",
                     "defaultValue": {
-                      "name": "MGMTSubnet",
+                      "name": "ManagementSubnet",
                       "addressPrefixSize": "/26"
                     },
                     "constraints": {
@@ -263,10 +259,22 @@
                     }
                   },
                   "subnet2": {
-                    "label": "Internal subnet",
+                    "label": "Subnet Client",
                     "defaultValue": {
-                      "name": "InternalSubnet",
-                      "addressPrefixSize": "/26"
+                      "name": "ClientSubnet",
+                      "addressPrefixSize": "/24"
+                    },
+                    "constraints": {
+                      "minAddressPrefixSize": "/29",
+                      "minAddressCount": 1,
+                      "requireContiguousAddresses": true
+                    }
+                  },
+                  "subnet3": {
+                    "label": "Subnet Server",
+                    "defaultValue": {
+                      "name": "ServerSubnet",
+                      "addressPrefixSize": "/24"
                     },
                     "constraints": {
                       "minAddressPrefixSize": "/29",
@@ -283,61 +291,53 @@
                 "visible": true,
                 "options": {
                   "icon": "Info",
-                  "text": "The MGMT subnet will have a public IP attached to the FortiTester network interface. The internal subnet is a transit subnet containing only the FortiTester interfaces for traffic to and from the internal networks.",
-                  "uri": "https://github.com/40net-cloud/fortinet-azure-solutions/tree/main/FortiTester/TestCenter"
+                  "text": "The external subnet will have a public IP attached to the FortiGate network interface. The internal subnet is a transit subnet containing only the FortiGate interfaces for traffic to and from the internal networks. Internal systems should be installed in a protected subnet with user defined route configuration.",
+                  "uri": "https://github.com/fortinet/azure-templates/tree/main/FortiGate/A-Single-VM"
                 }
               }
             ]
           },
           {
-            "name": "acceleratednetworksection",
+            "name": "secondaryips",
             "type": "Microsoft.Common.Section",
-            "label": "Accelerated networking",
+            "label": "Secondary IPs",
             "elements": [
               {
-                "name": "acceleratednetworkingtext",
+                "name": "secondaryipstext",
                 "type": "Microsoft.Common.TextBlock",
                 "visible": true,
                 "options": {
-                  "text": "Enables SR-IOV support allowing direct acces from the NIC in the Azure infrastructure to the FortiTester VM.",
-                  "link": {
-                    "label": "Learn more",
-                    "uri": "https://docs.fortinet.com/vm/azure/fortigate/7.0/azure-administration-guide/7.0.0/651644/enabling-accelerated-networking-on-the-fortigate-vm"
-                  }
+                  "text": "Add additional secondary IPs to the VMs network interface for specific tests with multiple clients. Specify the number of secondary IPs to be added during deployment."
                 }
               },
               {
-                "name": "acceleratednetworking",
-                "type": "Microsoft.Common.OptionsGroup",
-                "label": "Accelerated Networking",
-                "defaultValue": "Enabled",
-                "toolTip": "Accelerated Networking enables direct connection between the VM and network card. Only available on 2 CPU F/Fs and 4 CPU D/Dsv2, D/Dsv3, E/Esv3, Fsv2, Lsv2, Ms/Mms and Ms/Mmsv2",
+                "name": "subnet2secondaryips",
+                "type": "Microsoft.Common.TextBox",
+                "label": "Subnet 1 Secondary IPs count",
+                "defaultValue": "",
+                "toolTip": "Amount of additional IPs for the FortiTester in client subnet",
                 "constraints": {
                   "required": false,
-                  "allowedValues": [
-                    {
-                      "label": "Enabled",
-                      "value": "true"
-                    },
-                    {
-                      "label": "Disabled",
-                      "value": "false"
-                    }
-                  ]
+                  "regex": "^[0-9]{1,3}$",
+                  "validationMessage": "Range 0-256"
                 },
                 "visible": true
               },
               {
-                "name": "acceleratednetworkinginfo",
-                "type": "Microsoft.Common.InfoBox",
-                "visible": true,
-                "options": {
-                  "icon": "Info",
-                  "text": "Accelerated Networking is supported on most general purpose and compute-optimized instance sizes with 2 or more vCPUs. On instances that support hyperthreading, Accelerated Networking is supported on VM instances with 4 or more vCPUs. Deployment with the accelerated networking feature enabled on a host that doesn't support it will result in a failure to connect to it. The accelerated networking can be disabled after deployment from the Azure Portal or Azure CLI.",
-                  "uri": "https://docs.microsoft.com/en-us/azure/virtual-machines/sizes"
-                }
+                "name": "subnet3secondaryips",
+                "type": "Microsoft.Common.TextBox",
+                "label": "Subnet 1 Secondary IPs count",
+                "defaultValue": "",
+                "toolTip": "Amounnt of additional IPs for the FortiTester in server subnet",
+                "constraints": {
+                  "required": false,
+                  "regex": "^[0-9]{1,3}$",
+                  "validationMessage": "Range 0-256"
+                },
+                "visible": true
               }
-            ]
+            ],
+            "visible": true
           }
         ]
       },
@@ -354,22 +354,22 @@
             "type": "Microsoft.Common.TextBlock",
             "visible": true,
             "options": {
-              "text": "The public IP will be used for web and api services hosted behind the FortiTester and management of the FortiTester virtual machine from MGMT. The management UI of the FortiTester virtual machine is available on port HTTPS/8443."
+              "text": "The Load Balancer public IP will be used for public services hosted on the FortiGate such as IPSEC termination or services behind the Fortigate such as a webserver. The FortiGate Management public IPs are used for management of the virtual machines. They are also used for the Fabric connector to retrieve information from the Azure platform."
             }
           },
           {
-            "name": "publicip",
+            "name": "ftscpublicip",
             "type": "Microsoft.Network.PublicIpAddressCombo",
             "label": {
-              "publicIpAddress": "Public IP address",
+              "publicIpAddress": "FortiTester Client Management",
               "domainNameLabel": "Domain name label"
             },
             "toolTip": {
-              "publicIpAddress": "Public IP attached to FortiTester VM",
+              "publicIpAddress": "Public IP attached to FortiTester Client",
               "domainNameLabel": "DNS name linked to this public IP"
             },
             "defaultValue": {
-              "publicIpAddressName": "FTSPublicIP",
+              "publicIpAddressName": "FTSClientPublicIP",
               "domainNameLabel": "mydomain"
             },
             "constraints": {
@@ -378,20 +378,36 @@
               }
             },
             "options": {
-              "hideNone": false,
+              "hideNone": true,
               "hideDomainNameLabel": true
             },
             "visible": true
           },
           {
-            "name": "standardsku",
-            "type": "Microsoft.Common.InfoBox",
-            "visible": true,
+            "name": "ftsspublicip",
+            "type": "Microsoft.Network.PublicIpAddressCombo",
+            "label": {
+              "publicIpAddress": "FortiTester Server Management",
+              "domainNameLabel": "Domain name label"
+            },
+            "toolTip": {
+              "publicIpAddress": "Public IP attached to FortiTester Server",
+              "domainNameLabel": "DNS name linked to this public IP"
+            },
+            "defaultValue": {
+              "publicIpAddressName": "FTSServerPublicIP",
+              "domainNameLabel": "mydomain"
+            },
+            "constraints": {
+              "required": {
+                "domainNameLabel": false
+              }
+            },
             "options": {
-              "icon": "Info",
-              "text": "This deployment can use standard or basic SKU public IP's. For production, Microsoft recommends standard SKU public IPs. Select the standard SKU in the create new option or choose a standard SKU public IP you already created before. Microsoft Azure offers a migration path from a basic to standard SKU public IP.",
-              "uri": "https://docs.microsoft.com/en-us/azure/virtual-network/virtual-network-public-ip-address-upgrade?tabs=option-upgrade-cli%2Coption-migrate-powershell"
-            }
+              "hideNone": true,
+              "hideDomainNameLabel": true
+            },
+            "visible": true
           }
         ]
       },
@@ -428,16 +444,6 @@
                   "required": true
                 },
                 "visible": true
-              },
-              {
-                "name": "standardsku",
-                "type": "Microsoft.Common.InfoBox",
-                "visible": true,
-                "options": {
-                  "icon": "Info",
-                  "text": "This requires a storage account which willl be created during deployment.",
-                  "uri": "https://docs.microsoft.com/en-us/troubleshoot/azure/virtual-machines/serial-console-overview"
-                }
               }
             ]
           }
@@ -452,12 +458,16 @@
       "adminPassword": "[basics('adminPassword')]",
       "location": "[location()]",
       "instanceType": "[steps('instancetype').instancetypeselection]",
-      "acceleratedNetworking": "[steps('networking').acceleratednetworksection.acceleratednetworking]",
-      "publicIPNewOrExistingOrNone": "[steps('publicip').publicip.newOrExistingOrNone]",
-      "publicIPName": "[steps('publicip').publicip.name]",
-      "publicIPResourceGroup": "[steps('publicip').publicip.resourceGroup]",
-      "publicIPType": "[steps('publicip').publicip.publicIPAllocationMethod]",
-      "publicIPSKU": "[steps('publicip').publicip.sku]",
+      "publicIP1NewOrExistingOrNone": "[steps('publicip').ftscpublicip.newOrExistingOrNone]",
+      "publicIP1Name": "[steps('publicip').ftscpublicip.name]",
+      "publicIP1ResourceGroup": "[steps('publicip').ftscpublicip.resourceGroup]",
+      "publicIP1Type": "[steps('publicip').ftscpublicip.publicIPAllocationMethod]",
+      "publicIP1SKU": "[steps('publicip').ftscpublicip.sku]",
+      "publicIP2NewOrExistingOrNone": "[steps('publicip').ftsspublicip.newOrExistingOrNone]",
+      "publicIP2Name": "[steps('publicip').ftsspublicip.name]",
+      "publicIP2ResourceGroup": "[steps('publicip').ftsspublicip.resourceGroup]",
+      "publicIP2Type": "[steps('publicip').ftsspublicip.publicIPAllocationMethod]",
+      "publicIP2SKU": "[steps('publicip').ftsspublicip.sku]",
       "vnetNewOrExisting": "[steps('networking').virtualnetworksection.virtualnetwork.newOrExisting]",
       "vnetName": "[steps('networking').virtualnetworksection.virtualnetwork.name]",
       "vnetResourceGroup": "[steps('networking').virtualnetworksection.virtualnetwork.resourceGroup]",
@@ -468,6 +478,11 @@
       "subnet2Name": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet2.name]",
       "subnet2Prefix": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet2.addressPrefix]",
       "subnet2StartAddress": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet2.startAddress]",
+      "subnet2SecondaryIPCount": "[steps('networking').secondaryips.subnet2secondaryips]",
+      "subnet3Name": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet3.name]",
+      "subnet3Prefix": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet3.addressPrefix]",
+      "subnet3StartAddress": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet3.startAddress]",
+      "subnet3SecondaryIPCount": "[steps('networking').secondaryips.subnet3secondaryips]",
       "serialConsole": "[steps('advanced').serialconsole.enabled]"
     }
   }

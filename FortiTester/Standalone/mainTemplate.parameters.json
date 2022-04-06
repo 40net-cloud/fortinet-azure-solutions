@@ -23,19 +23,19 @@
         "acceleratedNetworking": {
             "value": "true"
         },
-        "publicIPNewOrExistingOrNone": {
+        "publicIP1NewOrExistingOrNone": {
             "value": "new"
         },
-        "publicIPName": {
+        "publicIP1Name": {
             "value": ""
         },
-        "publicIPResourceGroup": {
+        "publicIP1ResourceGroup": {
             "value": ""
         },
-        "publicIPType": {
+        "publicIP1Type": {
             "value": "Static"
         },
-        "publicIPSKU": {
+        "publicIP1SKU": {
             "value": "Basic"
         },
         "vnetNewOrExisting": {

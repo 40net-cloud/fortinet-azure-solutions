@@ -1,6 +1,19 @@
-# FortiTester - A Single VM
+# FortiTester - TestCenter
 
-![FortiTester-VM azure design](images/fwb-single-vm.png)
+## Introduction
+
+This ARM template deploys a single FortiTester accompanied by the required infrastructure towards TestCenter mode. A second FortiTester can be deployed in the Subnet 2 using this template.
+
+## Design
+
+This Azure ARM template will automatically deploy a full working environment containing the following components.
+
+- 2 FortiTester VMs where each can be configured as client or server
+- 1 VNETs containing a management subnet and testing client and server subnet
+- User Defined Routes (UDR) for the client and server subnets
+- Accelerated Networking is enabled by default
+
+![FortiTester-VM azure design](images/fts-testcenter.png)
 
 ### Azure Portal
 

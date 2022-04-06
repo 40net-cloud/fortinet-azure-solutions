@@ -23,7 +23,7 @@
     "fortiTesterImageSKU": {
       "type": "string",
       "defaultValue": "fts-vm-byol",
-      "allowedValues": ["fts-vm-byol"],
+      "allowedValues": [ "fts-vm-byol" ],
       "metadata": {
         "description": "Identifies SKU BYOL license model (where license is purchased separately)"
       }
@@ -31,14 +31,14 @@
     "fortiTesterImageVersion": {
       "type": "string",
       "defaultValue": "latest",
-      "allowedValues": ["3.7.00", "3.8.0", "latest"],
+      "allowedValues": [ "3.7.00", "3.8.0", "latest" ],
       "metadata": {
         "description": "FortiTester versions available in the Azure Marketplace. Additional version can be downloaded via https://support.fortinet.com"
       }
     },
     "instanceType": {
       "type": "string",
-      "defaultValue": "Standard_F2s",
+      "defaultValue": "Standard_F4s",
       "allowedValues": [
         "Standard_F1s",
         "Standard_F2s",
@@ -73,45 +73,84 @@
     "acceleratedNetworking": {
       "type": "string",
       "defaultValue": "true",
-      "allowedValues": ["false", "true"],
+      "allowedValues": [ "false", "true" ],
       "metadata": {
         "description": "Accelerated Networking enables direct connection between the VM and network card. Only available on 2 CPU F/Fs and 4 CPU D/Dsv2, D/Dsv3, E/Esv3, Fsv2, Lsv2, Ms/Mms and Ms/Mmsv2"
       }
     },
-    "publicIPNewOrExistingOrNone": {
+
+    "publicIP1NewOrExistingOrNone": {
       "type": "string",
       "defaultValue": "new",
-      "allowedValues": ["new", "existing", "none"],
+      "allowedValues": [ "new", "existing", "none" ],
       "metadata": {
-        "description": "Choose between an existing or new public IP for the External Azure Load Balancer"
+        "description": "Choose between an existing or new public IP for FortiTester Management"
       }
     },
-    "publicIPName": {
+    "publicIP1Name": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
         "description": "Name of Public IP address element"
       }
     },
-    "publicIPResourceGroup": {
+    "publicIP1ResourceGroup": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
         "description": "Resource group to which the Public IP belongs"
       }
     },
-    "publicIPType": {
+    "publicIP1Type": {
       "type": "string",
       "defaultValue": "Static",
-      "allowedValues": ["Dynamic", "Static"],
+      "allowedValues": [ "Dynamic", "Static" ],
       "metadata": {
         "description": "Type of public IP address"
       }
     },
-    "publicIPSKU": {
+    "publicIP1SKU": {
       "type": "string",
       "defaultValue": "Basic",
-      "allowedValues": ["Basic", "Standard"],
+      "allowedValues": [ "Basic", "Standard" ],
+      "metadata": {
+        "description": "SKU of public IP address"
+      }
+    },
+    "publicIP2NewOrExistingOrNone": {
+      "type": "string",
+      "defaultValue": "new",
+      "allowedValues": [ "new", "existing", "none" ],
+      "metadata": {
+        "description": "Choose between an existing or new public IP for FortiTester Management"
+      }
+    },
+    "publicIP2Name": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Name of Public IP address element"
+      }
+    },
+    "publicIP2ResourceGroup": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Resource group to which the Public IP belongs"
+      }
+    },
+    "publicIP2Type": {
+      "type": "string",
+      "defaultValue": "Static",
+      "allowedValues": [ "Dynamic", "Static" ],
+      "metadata": {
+        "description": "Type of public IP address"
+      }
+    },
+    "publicIP2SKU": {
+      "type": "string",
+      "defaultValue": "Standard",
+      "allowedValues": [ "Basic", "Standard" ],
       "metadata": {
         "description": "SKU of public IP address"
       }
@@ -119,7 +158,7 @@
     "vnetNewOrExisting": {
       "type": "string",
       "defaultValue": "new",
-      "allowedValues": ["new", "existing"],
+      "allowedValues": [ "new", "existing" ],
       "metadata": {
         "description": "Identify whether to use a new or existing vnet"
       }
@@ -149,14 +188,14 @@
       "type": "string",
       "defaultValue": "MGMTSubnet",
       "metadata": {
-        "description": "MGMT Subnet"
+        "description": "Management Subnet"
       }
     },
     "subnet1Prefix": {
       "type": "string",
       "defaultValue": "172.16.136.0/24",
       "metadata": {
-        "description": "MGMT Subnet Prefix"
+        "description": "Management Subnet Prefix"
       }
     },
     "subnet1StartAddress": {
@@ -187,10 +226,49 @@
         "description": "Subnet 2 start address, 8 consecutive private IPs are required"
       }
     },
+    "subnet2SecondaryIPCount": {
+      "type": "int",
+      "defaultValue": 0,
+      "minValue": 0,
+      "maxValue": 256,
+      "metadata": {
+        "description": "Number of secondary IPs needed to perform tests with multiple clients. Maximum 256 in Azure."
+      }
+    },
+    "subnet3Name": {
+      "type": "string",
+      "defaultValue": "Subnet2",
+      "metadata": {
+        "description": "Subnet2"
+      }
+    },
+    "subnet3Prefix": {
+      "type": "string",
+      "defaultValue": "172.16.138.0/24",
+      "metadata": {
+        "description": "Subnet 2 Prefix"
+      }
+    },
+    "subnet3StartAddress": {
+      "type": "string",
+      "defaultValue": "172.16.138.4",
+      "metadata": {
+        "description": "Subnet 2 start address, 8 consecutive private IPs are required"
+      }
+    },
+    "subnet3SecondaryIPCount": {
+      "type": "int",
+      "defaultValue": 0,
+      "minValue": 0,
+      "maxValue": 256,
+      "metadata": {
+        "description": "Number of secondary IPs needed to perform tests with multiple clients. Maximum 256 in Azure."
+      }
+    },
     "serialConsole": {
       "type": "string",
       "defaultValue": "yes",
-      "allowedValues": ["yes", "no"],
+      "allowedValues": [ "yes", "no" ],
       "metadata": {
         "description": "Enable Serial Console"
       }
@@ -217,21 +295,31 @@
     "vnetName": "[if(equals(parameters('vnetName'),''),concat(parameters('fortiTesterNamePrefix'),'-VNET'),parameters('vnetName'))]",
     "subnet1Id": "[if(equals(parameters('vnetNewOrExisting'),'new'),resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet1Name')),resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet1Name')))]",
     "subnet2Id": "[if(equals(parameters('vnetNewOrExisting'),'new'),resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet2Name')),resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet2Name')))]",
+    "subnet3Id": "[if(equals(parameters('vnetNewOrExisting'),'new'),resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet3Name')),resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet2Name')))]",
 
-    "ftsVmName": "[concat(parameters('fortiTesterNamePrefix'),'-FTS')]",
+    "ftsCVmName": "[concat(parameters('fortiTesterNamePrefix'),'-FTS-CLIENT')]",
+    "ftsSVmName": "[concat(parameters('fortiTesterNamePrefix'),'-FTS-SERVER')]",
 
-    "ftsNic1Name": "[concat(variables('ftsVmName'),'-Nic1')]",
-    "ftsNic1Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('ftsNic1Name'))]",
-    "ftsNic2Name": "[concat(variables('ftsVmName'),'-Nic2')]",
-    "ftsNic2Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('ftsNic2Name'))]",
+    "ftsCNic1Name": "[concat(variables('ftsCVmName'),'-Nic1')]",
+    "ftsCNic1Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('ftsCNic1Name'))]",
+    "ftsCNic2Name": "[concat(variables('ftsCVmName'),'-Nic2')]",
+    "ftsCNic2Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('ftsCNic2Name'))]",
+
+    "ftsSNic1Name": "[concat(variables('ftsSVmName'),'-Nic1')]",
+    "ftsSNic1Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('ftsSNic1Name'))]",
+    "ftsSNic2Name": "[concat(variables('ftsSVmName'),'-Nic2')]",
+    "ftsSNic2Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('ftsSNic2Name'))]",
 
     "serialConsoleStorageAccountName": "[concat('console', uniquestring(resourceGroup().id))]",
     "serialConsoleStorageAccountType": "Standard_LRS",
     "serialConsoleEnabled": "[if(equals(parameters('serialConsole'),'yes'),'true','false')]",
 
-    "publicIPName": "[if(equals(parameters('publicIPName'),''),concat(parameters('fortiTesterNamePrefix'),'-FTS-PIP'),parameters('publicIPName'))]",
-    "publicIPId": "[if(equals(parameters('publicIPNewOrExistingOrNone'),'new'),resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPName')),resourceId(parameters('publicIPResourceGroup'),'Microsoft.Network/publicIPAddresses',variables('publicIPName')))]",
-    "publicIPAddressId": { "id": "[variables('publicIPId')]" },
+    "publicIP1Name": "[if(equals(parameters('publicIP1Name'),''),concat(parameters('fortiTesterNamePrefix'),'-FTS-CLIENT-PIP'),parameters('publicIP1Name'))]",
+    "publicIP1Id": "[if(equals(parameters('publicIP1NewOrExistingOrNone'),'new'),resourceId('Microsoft.Network/publicIPAddresses',variables('publicIP1Name')),resourceId(parameters('publicIP1ResourceGroup'),'Microsoft.Network/publicIPAddresses',variables('publicIP1Name')))]",
+    "publicIP1AddressId": { "id": "[variables('publicIP1Id')]" },
+    "publicIP2Name": "[if(equals(parameters('publicIP2Name'),''),concat(parameters('fortiTesterNamePrefix'),'-FTS-SERVER-PIP'),parameters('publicIP2Name'))]",
+    "publicIP2Id": "[if(equals(parameters('publicIP2NewOrExistingOrNone'),'new'),resourceId('Microsoft.Network/publicIPAddresses',variables('publicIP2Name')),resourceId(parameters('publicIP2ResourceGroup'),'Microsoft.Network/publicIPAddresses',variables('publicIP2Name')))]",
+    "publicIP2AddressId": { "id": "[variables('publicIP2Id')]" },
 
     "NSGName": "[concat(parameters('fortiTesterNamePrefix'),'-',uniqueString(resourceGroup().id),'-NSG')]",
     "NSGId": "[resourceID('Microsoft.Network/networkSecurityGroups/',variables('NSGName'))]",
@@ -241,14 +329,87 @@
     "sn1IPArray1": "[string(int(variables('sn1IPArray')[1]))]",
     "sn1IPArray0": "[string(int(variables('sn1IPArray')[0]))]",
     "sn1IPStartAddress": "[split(parameters('subnet1StartAddress'),'.')]",
-    "sn1IPfts": "[concat(variables('sn1IPArray0'),'.',variables('sn1IPArray1'),'.',variables('sn1IPArray2'),'.',int(variables('sn1IPStartAddress')[3]))]",
+    "sn1IPftsC": "[concat(variables('sn1IPArray0'),'.',variables('sn1IPArray1'),'.',variables('sn1IPArray2'),'.',int(variables('sn1IPStartAddress')[3]))]",
+    "sn1IPftsS": "[concat(variables('sn1IPArray0'),'.',variables('sn1IPArray1'),'.',variables('sn1IPArray2'),'.',add(int(variables('sn1IPStartAddress')[3]),1))]",
 
     "sn2IPArray": "[split(parameters('subnet2Prefix'),'.')]",
     "sn2IPArray2": "[string(int(variables('sn2IPArray')[2]))]",
     "sn2IPArray1": "[string(int(variables('sn2IPArray')[1]))]",
     "sn2IPArray0": "[string(int(variables('sn2IPArray')[0]))]",
     "sn2IPStartAddress": "[split(parameters('subnet2StartAddress'),'.')]",
-    "sn2IPStartAddress3": "[int(variables('sn2IPStartAddress')[3])]"
+    "sn2IPStartAddress3": "[int(variables('sn2IPStartAddress')[3])]",
+    "sn2PrimaryIP": [
+      {
+        "name": "ipconfig1",
+        "properties": {
+          "primary": true,
+          "privateIPAllocationMethod": "Static",
+          "privateIPAddress": "[concat(variables('sn2IPArray0'),'.',variables('sn2IPArray1'),'.',variables('sn2IPArray2'),'.',variables('sn2IPStartAddress3'))]",
+          "subnet": {
+            "id": "[variables('subnet2Id')]"
+          }
+        }
+      }
+    ],
+    "sn2secondaryIPs": {
+      "copy": [
+        {
+          "count": "[parameters('subnet2SecondaryIPCount')]",
+          "input": {
+            "name": "[concat('ipconfig', copyIndex('ipconfig', 2))]",
+            "properties": {
+              "primary": false,
+              "privateIPAllocationMethod": "Static",
+              "privateIPAddress": "[concat(variables('sn2IPArray0'),'.',variables('sn2IPArray1'),'.',variables('sn2IPArray2'),'.',add(variables('sn2IPStartAddress3'),copyIndex('ipconfig', 1)))]",
+              "subnet": {
+                "id": "[variables('subnet2Id')]"
+              }
+            }
+          },
+          "name": "ipconfig"
+        }
+      ]
+    },
+
+    "sn3IPArray": "[split(parameters('subnet3Prefix'),'.')]",
+    "sn3IPArray2": "[string(int(variables('sn3IPArray')[2]))]",
+    "sn3IPArray1": "[string(int(variables('sn3IPArray')[1]))]",
+    "sn3IPArray0": "[string(int(variables('sn3IPArray')[0]))]",
+    "sn3IPStartAddress": "[split(parameters('subnet3StartAddress'),'.')]",
+    "sn3IPStartAddress3": "[int(variables('sn3IPStartAddress')[3])]",
+    "sn3PrimaryIP": [
+      {
+        "name": "ipconfig1",
+        "properties": {
+          "primary": true,
+          "privateIPAllocationMethod": "Static",
+          "privateIPAddress": "[concat(variables('sn3IPArray0'),'.',variables('sn3IPArray1'),'.',variables('sn3IPArray2'),'.',variables('sn3IPStartAddress3'))]",
+          "subnet": {
+            "id": "[variables('subnet3Id')]"
+          }
+        }
+      }
+    ],
+    "sn3secondaryIPs": {
+      "copy": [
+        {
+          "count": "[parameters('subnet3SecondaryIPCount')]",
+          "input": {
+            "name": "[concat('ipconfig', copyIndex('ipconfig', 2))]",
+            "properties": {
+              "primary": false,
+              "privateIPAllocationMethod": "Static",
+              "privateIPAddress": "[concat(variables('sn3IPArray0'),'.',variables('sn3IPArray1'),'.',variables('sn3IPArray2'),'.',add(variables('sn3IPStartAddress3'),copyIndex('ipconfig', 1)))]",
+              "subnet": {
+                "id": "[variables('subnet3Id')]"
+              }
+            }
+          },
+          "name": "ipconfig"
+        }
+      ]
+    }
+
   },
   "resources": [
     {
@@ -283,7 +444,7 @@
       "location": "[parameters('location')]",
       "properties": {
         "addressSpace": {
-          "addressPrefixes": ["[parameters('vnetAddressPrefix')]"]
+          "addressPrefixes": [ "[parameters('vnetAddressPrefix')]" ]
         },
         "subnets": [
           {
@@ -296,6 +457,12 @@
             "name": "[parameters('subnet2Name')]",
             "properties": {
               "addressPrefix": "[parameters('subnet2Prefix')]"
+            }
+          },
+          {
+            "name": "[parameters('subnet3Name')]",
+            "properties": {
+              "addressPrefix": "[parameters('subnet3Prefix')]"
             }
           }
         ]
@@ -371,19 +538,35 @@
       }
     },
     {
-      "condition": "[equals(parameters('publicIPNewOrExistingOrNone'), 'new')]",
+      "condition": "[equals(parameters('publicIP1NewOrExistingOrNone'), 'new')]",
       "type": "Microsoft.Network/publicIPAddresses",
       "apiVersion": "2020-04-01",
       "tags": {
         "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
-      "name": "[variables('publicIPName')]",
+      "name": "[variables('publicIP1Name')]",
       "location": "[parameters('location')]",
       "sku": {
-        "name": "[parameters('publicIPSKU')]"
+        "name": "[parameters('publicIP1SKU')]"
       },
       "properties": {
-        "publicIPAllocationMethod": "[parameters('publicIPType')]"
+        "publicIPAllocationMethod": "[parameters('publicIP1Type')]"
+      }
+    },
+    {
+      "condition": "[equals(parameters('publicIP2NewOrExistingOrNone'), 'new')]",
+      "type": "Microsoft.Network/publicIPAddresses",
+      "apiVersion": "2020-04-01",
+      "tags": {
+        "provider": "[toUpper(parameters('fortinetTags').provider)]"
+      },
+      "name": "[variables('publicIP2Name')]",
+      "location": "[parameters('location')]",
+      "sku": {
+        "name": "[parameters('publicIP2SKU')]"
+      },
+      "properties": {
+        "publicIPAllocationMethod": "[parameters('publicIP2Type')]"
       }
     },
     {
@@ -392,17 +575,17 @@
         "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
       "type": "Microsoft.Network/networkInterfaces",
-      "name": "[variables('ftsNic1Name')]",
+      "name": "[variables('ftsCNic1Name')]",
       "location": "[parameters('location')]",
-      "dependsOn": ["[variables('vnetName')]", "[variables('NSGId')]"],
+      "dependsOn": [ "[variables('vnetName')]", "[variables('NSGId')]" ],
       "properties": {
         "ipConfigurations": [
           {
             "name": "ipconfig1",
             "properties": {
-              "privateIPAddress": "[variables('sn1IPfts')]",
+              "privateIPAddress": "[variables('sn1IPftsC')]",
               "privateIPAllocationMethod": "Static",
-              "publicIPAddress": "[if(not(equals(parameters('publicIPNewOrExistingOrNone'), 'none')), variables('publicIPAddressId') , json('null'))]",
+              "publicIPAddress": "[if(not(equals(parameters('publicIP1NewOrExistingOrNone'), 'none')), variables('publicIP1AddressId') , json('null'))]",
               "subnet": {
                 "id": "[variables('subnet1Id')]"
               }
@@ -422,31 +605,63 @@
         "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
       "type": "Microsoft.Network/networkInterfaces",
-      "name": "[variables('ftsNic2Name')]",
+      "name": "[variables('ftsCNic2Name')]",
       "location": "[parameters('location')]",
-      "dependsOn": ["[variables('vnetName')]", "[variables('NSGId')]"],
+      "dependsOn": [ "[variables('vnetName')]", "[variables('NSGId')]" ],
+      "properties": {
+        "ipConfigurations": "[concat(take(variables('sn2PrimaryIP'), 1), take(variables('sn2secondaryIPs').ipconfig, parameters('subnet2SecondaryIPCount')))]",
+        "enableIPForwarding": false,
+        "enableAcceleratedNetworking": "[parameters('acceleratedNetworking')]"
+      }
+    },
+    {
+      "apiVersion": "2020-04-01",
+      "tags": {
+        "provider": "[toUpper(parameters('fortinetTags').provider)]"
+      },
+      "type": "Microsoft.Network/networkInterfaces",
+      "name": "[variables('ftsSNic1Name')]",
+      "location": "[parameters('location')]",
+      "dependsOn": [ "[variables('vnetName')]", "[variables('NSGId')]" ],
       "properties": {
         "ipConfigurations": [
           {
             "name": "ipconfig1",
             "properties": {
-              "primary": true,
+              "privateIPAddress": "[variables('sn1IPftsS')]",
               "privateIPAllocationMethod": "Static",
-              "privateIPAddress": "[concat(variables('sn2IPArray0'),'.',variables('sn2IPArray1'),'.',variables('sn2IPArray2'),'.',variables('sn2IPStartAddress3'))]",
+              "publicIPAddress": "[if(not(equals(parameters('publicIP2NewOrExistingOrNone'), 'none')), variables('publicIP2AddressId') , json('null'))]",
               "subnet": {
-                "id": "[variables('subnet2Id')]"
+                "id": "[variables('subnet1Id')]"
               }
             }
           }
         ],
         "enableIPForwarding": false,
+        "enableAcceleratedNetworking": "[parameters('acceleratedNetworking')]",
+        "networkSecurityGroup": {
+          "id": "[variables('NSGId')]"
+        }
+      }
+    },
+    {
+      "apiVersion": "2020-04-01",
+      "tags": {
+        "provider": "[toUpper(parameters('fortinetTags').provider)]"
+      },
+      "type": "Microsoft.Network/networkInterfaces",
+      "name": "[variables('ftsSNic2Name')]",
+      "location": "[parameters('location')]",
+      "dependsOn": [ "[variables('vnetName')]", "[variables('NSGId')]" ],
+      "properties": {
+        "ipConfigurations": "[concat(take(variables('sn3PrimaryIP'), 1), take(variables('sn3secondaryIPs').ipconfig, parameters('subnet3SecondaryIPCount')))]",
+        "enableIPForwarding": false,
         "enableAcceleratedNetworking": "[parameters('acceleratedNetworking')]"
       }
     },
-
     {
       "type": "Microsoft.Compute/virtualMachines",
-      "name": "[variables('ftsVmName')]",
+      "name": "[variables('ftsCVmName')]",
       "apiVersion": "2021-07-01",
       "tags": {
         "provider": "[toUpper(parameters('fortinetTags').provider)]"
@@ -460,13 +675,16 @@
         "publisher": "[variables('imagePublisher')]",
         "product": "[variables('imageOffer')]"
       },
-      "dependsOn": ["[variables('ftsNic1Id')]", "[variables('ftsNic2Id')]"],
+      "dependsOn": [
+        "[variables('ftsCNic1Id')]",
+        "[variables('ftsCNic2Id')]"
+      ],
       "properties": {
         "hardwareProfile": {
           "vmSize": "[parameters('instanceType')]"
         },
         "osProfile": {
-          "computerName": "[variables('ftsVmName')]",
+          "computerName": "[variables('ftsCVmName')]",
           "adminUsername": "[parameters('adminUsername')]",
           "adminPassword": "[parameters('adminPassword')]"
         },
@@ -494,13 +712,84 @@
               "properties": {
                 "primary": true
               },
-              "id": "[variables('ftsNic1Id')]"
+              "id": "[variables('ftsCNic1Id')]"
             },
             {
               "properties": {
                 "primary": false
               },
-              "id": "[variables('ftsNic2Id')]"
+              "id": "[variables('ftsCNic2Id')]"
+            }
+          ]
+        },
+        "diagnosticsProfile": {
+          "bootDiagnostics": {
+            "enabled": "[variables('serialConsoleEnabled')]",
+            "storageUri": "[if(equals(parameters('serialConsole'), 'yes'), reference(variables('serialConsoleStorageAccountName'), '2021-08-01').primaryEndpoints['blob'], json('null'))]"
+          }
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Compute/virtualMachines",
+      "name": "[variables('ftsSVmName')]",
+      "apiVersion": "2021-07-01",
+      "tags": {
+        "provider": "[toUpper(parameters('fortinetTags').provider)]"
+      },
+      "identity": {
+        "type": "SystemAssigned"
+      },
+      "location": "[parameters('location')]",
+      "plan": {
+        "name": "[parameters('fortiTesterImageSKU')]",
+        "publisher": "[variables('imagePublisher')]",
+        "product": "[variables('imageOffer')]"
+      },
+      "dependsOn": [
+        "[variables('ftsSNic1Id')]",
+        "[variables('ftsSNic2Id')]"
+      ],
+      "properties": {
+        "hardwareProfile": {
+          "vmSize": "[parameters('instanceType')]"
+        },
+        "osProfile": {
+          "computerName": "[variables('ftsSVmName')]",
+          "adminUsername": "[parameters('adminUsername')]",
+          "adminPassword": "[parameters('adminPassword')]"
+        },
+        "storageProfile": {
+          "imageReference": {
+            "publisher": "[variables('imagePublisher')]",
+            "offer": "[variables('imageOffer')]",
+            "sku": "[parameters('fortiTesterImageSKU')]",
+            "version": "[parameters('fortiTesterImageVersion')]"
+          },
+          "osDisk": {
+            "createOption": "FromImage"
+          },
+          "dataDisks": [
+            {
+              "diskSizeGB": 40,
+              "lun": 0,
+              "createOption": "Empty"
+            }
+          ]
+        },
+        "networkProfile": {
+          "networkInterfaces": [
+            {
+              "properties": {
+                "primary": true
+              },
+              "id": "[variables('ftsSNic1Id')]"
+            },
+            {
+              "properties": {
+                "primary": false
+              },
+              "id": "[variables('ftsSNic2Id')]"
             }
           ]
         },

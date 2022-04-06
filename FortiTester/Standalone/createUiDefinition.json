@@ -273,7 +273,7 @@
                   "subnet3": {
                     "label": "Subnet 2",
                     "defaultValue": {
-                      "name": "Subnet 2",
+                      "name": "Subnet2",
                       "addressPrefixSize": "/24"
                     },
                     "constraints": {
@@ -365,7 +365,7 @@
               "domainNameLabel": "Domain name label"
             },
             "toolTip": {
-              "publicIpAddress": "Public IP attached to the public load balancer",
+              "publicIpAddress": "Public IP attached to FortiTester",
               "domainNameLabel": "DNS name linked to this public IP"
             },
             "defaultValue": {
@@ -432,9 +432,11 @@
       "adminPassword": "[basics('adminPassword')]",
       "location": "[location()]",
       "instanceType": "[steps('instancetype').instancetypeselection]",
-      "publicIPNewOrExisting": "[steps('publicip').ftspublicip.newOrExistingOrNone]",
-      "publicIPName": "[steps('publicip').ftspublicip.name]",
-      "publicIPResourceGroup": "[steps('publicip').ftspublicip.resourceGroup]",
+      "publicIP1NewOrExistingOrNone": "[steps('publicip').ftspublicip.newOrExistingOrNone]",
+      "publicIP1Name": "[steps('publicip').ftspublicip.name]",
+      "publicIP1ResourceGroup": "[steps('publicip').ftspublicip.resourceGroup]",
+      "publicIP1Type": "[steps('publicip').ftspublicip.publicIPAllocationMethod]",
+      "publicIP1SKU": "[steps('publicip').ftspublicip.sku]",
       "vnetNewOrExisting": "[steps('networking').virtualnetworksection.virtualnetwork.newOrExisting]",
       "vnetName": "[steps('networking').virtualnetworksection.virtualnetwork.name]",
       "vnetResourceGroup": "[steps('networking').virtualnetworksection.virtualnetwork.resourceGroup]",

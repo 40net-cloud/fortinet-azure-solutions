@@ -79,7 +79,7 @@
       }
     },
 
-    "publicIPNewOrExistingOrNone": {
+    "publicIP1NewOrExistingOrNone": {
       "type": "string",
       "defaultValue": "new",
       "allowedValues": [ "new", "existing", "none" ],
@@ -87,21 +87,21 @@
         "description": "Choose between an existing or new public IP for FortiTester Management"
       }
     },
-    "publicIPName": {
+    "publicIP1Name": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
         "description": "Name of Public IP address element"
       }
     },
-    "publicIPResourceGroup": {
+    "publicIP1ResourceGroup": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
         "description": "Resource group to which the Public IP belongs"
       }
     },
-    "publicIPType": {
+    "publicIP1Type": {
       "type": "string",
       "defaultValue": "Static",
       "allowedValues": [ "Dynamic", "Static" ],
@@ -109,7 +109,7 @@
         "description": "Type of public IP address"
       }
     },
-    "publicIPSKU": {
+    "publicIP1SKU": {
       "type": "string",
       "defaultValue": "Basic",
       "allowedValues": [ "Basic", "Standard" ],
@@ -272,9 +272,9 @@
     "serialConsoleStorageAccountType": "Standard_LRS",
     "serialConsoleEnabled": "[if(equals(parameters('serialConsole'),'yes'),'true','false')]",
 
-    "publicIPName": "[if(equals(parameters('publicIPName'),''),concat(parameters('fortiTesterNamePrefix'),'-FTS-PIP'),parameters('publicIPName'))]",
-    "publicIPId": "[if(equals(parameters('publicIPNewOrExistingOrNone'),'new'),resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPName')),resourceId(parameters('publicIPResourceGroup'),'Microsoft.Network/publicIPAddresses',variables('publicIPName')))]",
-    "publicIPAddressId": { "id": "[variables('publicIPId')]" },
+    "publicIP1Name": "[if(equals(parameters('publicIP1Name'),''),concat(parameters('fortiTesterNamePrefix'),'-FTS-PIP'),parameters('publicIP1Name'))]",
+    "publicIP1Id": "[if(equals(parameters('publicIP1NewOrExistingOrNone'),'new'),resourceId('Microsoft.Network/publicIP1Addresses',variables('publicIP1Name')),resourceId(parameters('publicIP1ResourceGroup'),'Microsoft.Network/publicIP1Addresses',variables('publicIP1Name')))]",
+    "publicIP1AddressId": { "id": "[variables('publicIP1Id')]" },
 
     "NSGName": "[concat(parameters('fortiTesterNamePrefix'),'-',uniqueString(resourceGroup().id),'-NSG')]",
     "NSGId": "[resourceID('Microsoft.Network/networkSecurityGroups/',variables('NSGName'))]",
@@ -492,19 +492,19 @@
       }
     },
     {
-      "condition": "[equals(parameters('publicIPNewOrExistingOrNone'), 'new')]",
+      "condition": "[equals(parameters('publicIP1NewOrExistingOrNone'), 'new')]",
       "type": "Microsoft.Network/publicIPAddresses",
       "apiVersion": "2020-04-01",
       "tags": {
         "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
-      "name": "[variables('publicIPName')]",
+      "name": "[variables('publicIP1Name')]",
       "location": "[parameters('location')]",
       "sku": {
-        "name": "[parameters('publicIPSKU')]"
+        "name": "[parameters('publicIP1SKU')]"
       },
       "properties": {
-        "publicIPAllocationMethod": "[parameters('publicIPType')]"
+        "publicIPAllocationMethod": "[parameters('publicIP1Type')]"
       }
     },
     {
@@ -523,7 +523,7 @@
             "properties": {
               "privateIPAddress": "[variables('sn1IPfts')]",
               "privateIPAllocationMethod": "Static",
-              "publicIPAddress": "[if(not(equals(parameters('publicIPNewOrExistingOrNone'), 'none')), variables('publicIPAddressId') , json('null'))]",
+              "publicIPAddress": "[if(not(equals(parameters('publicIP1NewOrExistingOrNone'), 'none')), variables('publicIP1AddressId') , json('null'))]",
               "subnet": {
                 "id": "[variables('subnet1Id')]"
               }
