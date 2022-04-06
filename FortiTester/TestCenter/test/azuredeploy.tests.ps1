@@ -31,8 +31,8 @@ BeforeAll {
     $testsResourceGroupLocation = "westeurope"
 
     # ARM Template Variables
-    $publicIP1Name = "$prefix-FTS-CLIENT-PIP"
-    $publicIP2Name = "$prefix-FTS-SERVER-PIP"
+    $publicIP1Name = "$testsPrefix-FTS-CLIENT-PIP"
+    $publicIP2Name = "$testsPrefix-FTS-SERVER-PIP"
     $params = @{ 'adminUsername' = $testsAdminUsername
         'adminPassword'          = $testsResourceGroupName
         'fortiTesterNamePrefix'  = $testsPrefix
