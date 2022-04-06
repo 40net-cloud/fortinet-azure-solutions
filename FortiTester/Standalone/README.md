@@ -1,6 +1,19 @@
-# FortiTester - A Single VM
+# FortiTester - Standalone
 
-![FortiTester-VM azure design](images/fwb-single-vm.png)
+## Introduction
+
+This ARM template deploys a single FortiTester accompanied by the required infrastructure in Standalone mode. The Subnet 1 and Subnet 2 can be used deploy the device under test and to transfer traffic between the 2 FTS interfaces.
+
+## Design
+
+This Azure ARM template will automatically deploy a full working environment containing the following components.
+
+- 1 standalone FortiTester
+- 1 VNETs containing a management subnet and testing subnet 1 and 2
+- User Defined Routes (UDR) for the subnets 1 and 2
+- Accelerated Networking is enabled by default
+
+![FortiTester-VM azure design](images/fts-standalone.png)
 
 ### Azure Portal
 

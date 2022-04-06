@@ -84,7 +84,7 @@
       "defaultValue": "new",
       "allowedValues": [ "new", "existing", "none" ],
       "metadata": {
-        "description": "Choose between an existing or new public IP for the External Azure Load Balancer"
+        "description": "Choose between an existing or new public IP for FortiTester Management"
       }
     },
     "publicIPName": {
