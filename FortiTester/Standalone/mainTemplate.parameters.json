@@ -68,6 +68,9 @@
         "subnet2StartAddress": {
             "value": "172.16.137.4"
         },
+        "subnet2SecondaryIPCount": {
+            "value": 0
+        },
         "subnet3Name": {
             "value": "Subnet2"
         },
@@ -76,6 +79,9 @@
         },
         "subnet3StartAddress": {
             "value": "172.16.138.4"
+        },
+        "subnet3SecondaryIPCount": {
+            "value": 0
         },
         "serialConsole": {
             "value": "yes"

@@ -432,7 +432,6 @@
       "adminPassword": "[basics('adminPassword')]",
       "location": "[location()]",
       "instanceType": "[steps('instancetype').instancetypeselection]",
-      "acceleratedNetworking": "[steps('networking').acceleratednetworksection.acceleratednetworking]",
       "publicIPNewOrExisting": "[steps('publicip').ftspublicip.newOrExistingOrNone]",
       "publicIPName": "[steps('publicip').ftspublicip.name]",
       "publicIPResourceGroup": "[steps('publicip').ftspublicip.resourceGroup]",
@@ -452,7 +451,6 @@
       "subnet3StartAddress": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet3.startAddress]",
       "subnet3SecondaryIPCount": "[steps('networking').secondaryips.subnet3secondaryips]",
       "serialConsole": "[steps('advanced').serialconsole.enabled]"
-
     }
   }
 }
