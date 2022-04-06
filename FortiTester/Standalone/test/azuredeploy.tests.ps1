@@ -31,11 +31,9 @@ BeforeAll {
     $testsResourceGroupLocation = "westeurope"
 
     # ARM Template Variables
-    $publicIPName = "$testsPrefix-FTS-PIP"
     $params = @{ 'adminUsername'=$testsAdminUsername
                     'adminPassword'=$testsResourceGroupName
                     'fortiTesterNamePrefix'=$testsPrefix
-                    'publicIPName'=$publicIPName
                 }
     $ports = @(443, 22)
 }
@@ -84,20 +82,22 @@ Describe 'FTS Standalone' {
                                             'fortiTesterNamePrefix',
                                             'instanceType',
                                             'location',
-                                            'publicIPName',
-                                            'publicIPNewOrExistingOrNone',
-                                            'publicIPResourceGroup',
-                                            'publicIPSKU',
-                                            'publicIPType',
+                                            'publicIP1Name',
+                                            'publicIP1NewOrExistingOrNone',
+                                            'publicIP1ResourceGroup',
+                                            'publicIP1SKU',
+                                            'publicIP1Type',
                                             'serialConsole',
                                             'subnet1Name',
                                             'subnet1Prefix',
                                             'subnet1StartAddress',
                                             'subnet2Name',
                                             'subnet2Prefix',
+                                            'subnet2SecondaryIPCount',
                                             'subnet2StartAddress',
                                             'subnet3Name',
                                             'subnet3Prefix',
+                                            'subnet3SecondaryIPCount',
                                             'subnet3StartAddress',
                                             'vnetAddressPrefix',
                                             'vnetName',

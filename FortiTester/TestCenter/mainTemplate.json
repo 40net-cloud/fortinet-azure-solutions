@@ -439,7 +439,7 @@
     {
       "condition": "[equals(parameters('vnetNewOrExisting'), 'new')]",
       "type": "Microsoft.Network/virtualNetworks",
-      "apiVersion": "2020-04-01",
+      "apiVersion": "2020-11-01",
       "name": "[variables('vnetName')]",
       "location": "[parameters('location')]",
       "properties": {
@@ -469,7 +469,7 @@
       }
     },
     {
-      "apiVersion": "2020-04-01",
+      "apiVersion": "2020-11-01",
       "tags": {
         "provider": "[toUpper(parameters('FortinetTags').provider)]"
       },
@@ -540,7 +540,7 @@
     {
       "condition": "[equals(parameters('publicIP1NewOrExistingOrNone'), 'new')]",
       "type": "Microsoft.Network/publicIPAddresses",
-      "apiVersion": "2020-04-01",
+      "apiVersion": "2020-11-01",
       "tags": {
         "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
@@ -556,7 +556,7 @@
     {
       "condition": "[equals(parameters('publicIP2NewOrExistingOrNone'), 'new')]",
       "type": "Microsoft.Network/publicIPAddresses",
-      "apiVersion": "2020-04-01",
+      "apiVersion": "2020-11-01",
       "tags": {
         "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
@@ -570,7 +570,7 @@
       }
     },
     {
-      "apiVersion": "2020-04-01",
+      "apiVersion": "2020-11-01",
       "tags": {
         "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
@@ -600,7 +600,7 @@
       }
     },
     {
-      "apiVersion": "2020-04-01",
+      "apiVersion": "2020-11-01",
       "tags": {
         "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
@@ -615,7 +615,7 @@
       }
     },
     {
-      "apiVersion": "2020-04-01",
+      "apiVersion": "2020-11-01",
       "tags": {
         "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
@@ -645,7 +645,7 @@
       }
     },
     {
-      "apiVersion": "2020-04-01",
+      "apiVersion": "2020-11-01",
       "tags": {
         "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
