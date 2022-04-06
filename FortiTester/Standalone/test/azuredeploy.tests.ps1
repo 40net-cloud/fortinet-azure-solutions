@@ -31,9 +31,11 @@ BeforeAll {
     $testsResourceGroupLocation = "westeurope"
 
     # ARM Template Variables
+    $publicIP1Name = "$prefix-FTS-PIP"
     $params = @{ 'adminUsername'=$testsAdminUsername
                     'adminPassword'=$testsResourceGroupName
                     'fortiTesterNamePrefix'=$testsPrefix
+                    'publicIP1Name'=$publicIP1Name
                 }
     $ports = @(443, 22)
 }
@@ -133,7 +135,7 @@ Describe 'FTS Standalone' {
     Context 'Deployment test' {
 
         BeforeAll {
-            $FTS = (Get-AzPublicIpAddress -Name $publicIPName -ResourceGroupName $testsResourceGroupName).IpAddress
+            $FTS = (Get-AzPublicIpAddress -Name $publicIP1Name -ResourceGroupName $testsResourceGroupName).IpAddress
             Write-Host ("FortiTester public IP: " + $FTS)
         }
         It "FTS: Ports listening" {

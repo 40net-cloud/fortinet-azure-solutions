@@ -31,9 +31,13 @@ BeforeAll {
     $testsResourceGroupLocation = "westeurope"
 
     # ARM Template Variables
+    $publicIP1Name = "$prefix-FTS-CLIENT-PIP"
+    $publicIP2Name = "$prefix-FTS-SERVER-PIP"
     $params = @{ 'adminUsername'=$testsAdminUsername
                     'adminPassword'=$testsResourceGroupName
                     'fortiTesterNamePrefix'=$testsPrefix
+                    'publicIP1Name'=$publicIP1Name
+                    'publicIP2Name'=$publicIP2Name
                 }
     $ports = @(443, 22)
 }
@@ -64,8 +68,12 @@ Describe 'FTS TestCenter' {
                                     'Microsoft.Network/virtualNetworks',
                                     'Microsoft.Network/networkSecurityGroups',
                                     'Microsoft.Network/publicIPAddresses',
+                                    'Microsoft.Network/publicIPAddresses',
                                     'Microsoft.Network/networkInterfaces',
                                     'Microsoft.Network/networkInterfaces',
+                                    'Microsoft.Network/networkInterfaces',
+                                    'Microsoft.Network/networkInterfaces',
+                                    'Microsoft.Compute/virtualMachines'
                                     'Microsoft.Compute/virtualMachines'
             $templateResources = (get-content $templateFileLocation | ConvertFrom-Json -ErrorAction SilentlyContinue).Resources.type
             $templateResources | Should -Be $expectedResources
@@ -137,13 +145,20 @@ Describe 'FTS TestCenter' {
     Context 'Deployment test' {
 
         BeforeAll {
-            $FTS = (Get-AzPublicIpAddress -Name $publicIPName -ResourceGroupName $testsResourceGroupName).IpAddress
-            Write-Host ("FortiTester public IP: " + $FTS)
+            $FTSC = (Get-AzPublicIpAddress -Name $publicIP1Name -ResourceGroupName $testsResourceGroupName).IpAddress
+            Write-Host ("FortiTester Client Public IP: " + $FTSC)
+            $FTSS = (Get-AzPublicIpAddress -Name $publicIP2Name -ResourceGroupName $testsResourceGroupName).IpAddress
+            Write-Host ("FortiTester Server Public IP: " + $FTSS)
         }
         It "FTS: Ports listening" {
             ForEach( $port in $ports ) {
-                Write-Host ("Check port: $port" )
-                $portListening = (Test-Connection -TargetName $FTS -TCPPort $port -TimeoutSeconds 100)
+                Write-Host ("FTS Client - Check port: $port" )
+                $portListening = (Test-Connection -TargetName $FTSC -TCPPort $port -TimeoutSeconds 100)
+                $portListening | Should -Be $true
+            }
+            ForEach( $port in $ports ) {
+                Write-Host ("FTS Server - Check port: $port" )
+                $portListening = (Test-Connection -TargetName $FTSS -TCPPort $port -TimeoutSeconds 100)
                 $portListening | Should -Be $true
             }
         }
