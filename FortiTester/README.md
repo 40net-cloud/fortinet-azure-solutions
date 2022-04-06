@@ -2,7 +2,8 @@
 
 This directory includes a set of templates using ARM or Terraform to get you started in Azure with FortiTester.
 
-- [single 1 NIC](single-1nic/): Default deployment ARM template in a new or existing VNET with or without access from internet via a public IP
+- [Standalone](Standalone/): Standalone deployment ARM template with FortiTester connected to both client and server subnets
+- [TestCenter](TestCenter/): TestCenter deployment ARM template with a client and server FortiTester
 - [Terraform](Terraform/single-1nic/): Default deployment using Terraform
 
 ## Support
