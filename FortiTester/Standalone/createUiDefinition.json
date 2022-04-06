@@ -449,11 +449,11 @@
       "subnet2Name": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet2.name]",
       "subnet2Prefix": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet2.addressPrefix]",
       "subnet2StartAddress": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet2.startAddress]",
-      "subnet2SecondaryIPCount": "[steps('networking').secondaryips.subnet2secondaryips]",
+      "subnet2SecondaryIPCount": "[int(steps('networking').secondaryips.subnet2secondaryips)]",
       "subnet3Name": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet3.name]",
       "subnet3Prefix": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet3.addressPrefix]",
       "subnet3StartAddress": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet3.startAddress]",
-      "subnet3SecondaryIPCount": "[steps('networking').secondaryips.subnet3secondaryips]",
+      "subnet3SecondaryIPCount": "[int(steps('networking').secondaryips.subnet3secondaryips)]",
       "serialConsole": "[steps('advanced').serialconsole.enabled]"
     }
   }
