@@ -23,7 +23,7 @@
     "fortiTesterImageSKU": {
       "type": "string",
       "defaultValue": "fts-vm-byol",
-      "allowedValues": ["fts-vm-byol"],
+      "allowedValues": [ "fts-vm-byol" ],
       "metadata": {
         "description": "Identifies SKU BYOL license model (where license is purchased separately)"
       }
@@ -31,7 +31,7 @@
     "fortiTesterImageVersion": {
       "type": "string",
       "defaultValue": "latest",
-      "allowedValues": ["3.7.00", "3.8.0", "latest"],
+      "allowedValues": [ "3.7.00", "3.8.0", "latest" ],
       "metadata": {
         "description": "FortiTester versions available in the Azure Marketplace. Additional version can be downloaded via https://support.fortinet.com"
       }
@@ -73,7 +73,7 @@
     "acceleratedNetworking": {
       "type": "string",
       "defaultValue": "true",
-      "allowedValues": ["false", "true"],
+      "allowedValues": [ "false", "true" ],
       "metadata": {
         "description": "Accelerated Networking enables direct connection between the VM and network card. Only available on 2 CPU F/Fs and 4 CPU D/Dsv2, D/Dsv3, E/Esv3, Fsv2, Lsv2, Ms/Mms and Ms/Mmsv2"
       }
@@ -82,7 +82,7 @@
     "publicIPNewOrExistingOrNone": {
       "type": "string",
       "defaultValue": "new",
-      "allowedValues": ["new", "existing", "none"],
+      "allowedValues": [ "new", "existing", "none" ],
       "metadata": {
         "description": "Choose between an existing or new public IP for the External Azure Load Balancer"
       }
@@ -104,7 +104,7 @@
     "publicIPType": {
       "type": "string",
       "defaultValue": "Static",
-      "allowedValues": ["Dynamic", "Static"],
+      "allowedValues": [ "Dynamic", "Static" ],
       "metadata": {
         "description": "Type of public IP address"
       }
@@ -112,7 +112,7 @@
     "publicIPSKU": {
       "type": "string",
       "defaultValue": "Basic",
-      "allowedValues": ["Basic", "Standard"],
+      "allowedValues": [ "Basic", "Standard" ],
       "metadata": {
         "description": "SKU of public IP address"
       }
@@ -120,7 +120,7 @@
     "vnetNewOrExisting": {
       "type": "string",
       "defaultValue": "new",
-      "allowedValues": ["new", "existing"],
+      "allowedValues": [ "new", "existing" ],
       "metadata": {
         "description": "Identify whether to use a new or existing vnet"
       }
@@ -150,14 +150,14 @@
       "type": "string",
       "defaultValue": "MGMTSubnet",
       "metadata": {
-        "description": "MGMT Subnet"
+        "description": "Management Subnet"
       }
     },
     "subnet1Prefix": {
       "type": "string",
       "defaultValue": "172.16.136.0/24",
       "metadata": {
-        "description": "MGMT Subnet Prefix"
+        "description": "Management Subnet Prefix"
       }
     },
     "subnet1StartAddress": {
@@ -188,6 +188,15 @@
         "description": "Subnet 2 start address, 8 consecutive private IPs are required"
       }
     },
+    "subnet2SecondaryIPCount": {
+      "type": "int",
+      "defaultValue": 0,
+      "minValue": 0,
+      "maxValue": 256,
+      "metadata": {
+        "description": "Number of secondary IPs needed to perform tests with multiple clients. Maximum 256 in Azure."
+      }
+    },
     "subnet3Name": {
       "type": "string",
       "defaultValue": "Subnet2",
@@ -209,10 +218,19 @@
         "description": "Subnet 2 start address, 8 consecutive private IPs are required"
       }
     },
+    "subnet3SecondaryIPCount": {
+      "type": "int",
+      "defaultValue": 0,
+      "minValue": 0,
+      "maxValue": 256,
+      "metadata": {
+        "description": "Number of secondary IPs needed to perform tests with multiple clients. Maximum 256 in Azure."
+      }
+    },
     "serialConsole": {
       "type": "string",
       "defaultValue": "yes",
-      "allowedValues": ["yes", "no"],
+      "allowedValues": [ "yes", "no" ],
       "metadata": {
         "description": "Enable Serial Console"
       }
@@ -274,13 +292,78 @@
     "sn2IPArray0": "[string(int(variables('sn2IPArray')[0]))]",
     "sn2IPStartAddress": "[split(parameters('subnet2StartAddress'),'.')]",
     "sn2IPStartAddress3": "[int(variables('sn2IPStartAddress')[3])]",
+    "sn2PrimaryIP": [
+      {
+        "name": "ipconfig1",
+        "properties": {
+          "primary": true,
+          "privateIPAllocationMethod": "Static",
+          "privateIPAddress": "[concat(variables('sn2IPArray0'),'.',variables('sn2IPArray1'),'.',variables('sn2IPArray2'),'.',variables('sn2IPStartAddress3'))]",
+          "subnet": {
+            "id": "[variables('subnet2Id')]"
+          }
+        }
+      }
+    ],
+    "sn2secondaryIPs": {
+      "copy": [
+        {
+          "count": "[parameters('subnet2SecondaryIPCount')]",
+          "input": {
+            "name": "[concat('ipconfig', copyIndex('ipconfig', 2))]",
+            "properties": {
+              "primary": false,
+              "privateIPAllocationMethod": "Static",
+              "privateIPAddress": "[concat(variables('sn2IPArray0'),'.',variables('sn2IPArray1'),'.',variables('sn2IPArray2'),'.',add(variables('sn2IPStartAddress3'),copyIndex('ipconfig', 1)))]",
+              "subnet": {
+                "id": "[variables('subnet2Id')]"
+              }
+            }
+          },
+          "name": "ipconfig"
+        }
+      ]
+    },
 
     "sn3IPArray": "[split(parameters('subnet3Prefix'),'.')]",
     "sn3IPArray2": "[string(int(variables('sn3IPArray')[2]))]",
     "sn3IPArray1": "[string(int(variables('sn3IPArray')[1]))]",
     "sn3IPArray0": "[string(int(variables('sn3IPArray')[0]))]",
     "sn3IPStartAddress": "[split(parameters('subnet3StartAddress'),'.')]",
-    "sn3IPStartAddress3": "[int(variables('sn3IPStartAddress')[3])]"
+    "sn3IPStartAddress3": "[int(variables('sn3IPStartAddress')[3])]",
+    "sn3PrimaryIP": [
+      {
+        "name": "ipconfig1",
+        "properties": {
+          "primary": true,
+          "privateIPAllocationMethod": "Static",
+          "privateIPAddress": "[concat(variables('sn3IPArray0'),'.',variables('sn3IPArray1'),'.',variables('sn3IPArray2'),'.',variables('sn3IPStartAddress3'))]",
+          "subnet": {
+            "id": "[variables('subnet3Id')]"
+          }
+        }
+      }
+    ],
+    "sn3secondaryIPs": {
+      "copy": [
+        {
+          "count": "[parameters('subnet3SecondaryIPCount')]",
+          "input": {
+            "name": "[concat('ipconfig', copyIndex('ipconfig', 2))]",
+            "properties": {
+              "primary": false,
+              "privateIPAllocationMethod": "Static",
+              "privateIPAddress": "[concat(variables('sn3IPArray0'),'.',variables('sn3IPArray1'),'.',variables('sn3IPArray2'),'.',add(variables('sn3IPStartAddress3'),copyIndex('ipconfig', 1)))]",
+              "subnet": {
+                "id": "[variables('subnet3Id')]"
+              }
+            }
+          },
+          "name": "ipconfig"
+        }
+      ]
+    }
+
   },
   "resources": [
     {
@@ -315,7 +398,7 @@
       "location": "[parameters('location')]",
       "properties": {
         "addressSpace": {
-          "addressPrefixes": ["[parameters('vnetAddressPrefix')]"]
+          "addressPrefixes": [ "[parameters('vnetAddressPrefix')]" ]
         },
         "subnets": [
           {
@@ -432,7 +515,7 @@
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[variables('ftsNic1Name')]",
       "location": "[parameters('location')]",
-      "dependsOn": ["[variables('vnetName')]", "[variables('NSGId')]"],
+      "dependsOn": [ "[variables('vnetName')]", "[variables('NSGId')]" ],
       "properties": {
         "ipConfigurations": [
           {
@@ -462,91 +545,9 @@
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[variables('ftsNic2Name')]",
       "location": "[parameters('location')]",
-      "dependsOn": ["[variables('vnetName')]", "[variables('NSGId')]"],
+      "dependsOn": [ "[variables('vnetName')]", "[variables('NSGId')]" ],
       "properties": {
-        "ipConfigurations": [
-          {
-            "name": "ipconfig1",
-            "properties": {
-              "primary": true,
-              "privateIPAllocationMethod": "Static",
-              "privateIPAddress": "[concat(variables('sn2IPArray0'),'.',variables('sn2IPArray1'),'.',variables('sn2IPArray2'),'.',variables('sn2IPStartAddress3'))]",
-              "subnet": {
-                "id": "[variables('subnet2Id')]"
-              }
-            }
-          },
-          {
-            "name": "ipconfig2",
-            "properties": {
-              "privateIPAllocationMethod": "Static",
-              "privateIPAddress": "[concat(variables('sn2IPArray0'),'.',variables('sn2IPArray1'),'.',variables('sn2IPArray2'),'.',add(variables('sn2IPStartAddress3'),1))]",
-              "subnet": {
-                "id": "[variables('subnet2Id')]"
-              }
-            }
-          },
-          {
-            "name": "ipconfig3",
-            "properties": {
-              "privateIPAllocationMethod": "Static",
-              "privateIPAddress": "[concat(variables('sn2IPArray0'),'.',variables('sn2IPArray1'),'.',variables('sn2IPArray2'),'.',add(variables('sn2IPStartAddress3'),2))]",
-              "subnet": {
-                "id": "[variables('subnet2Id')]"
-              }
-            }
-          },
-          {
-            "name": "ipconfig4",
-            "properties": {
-              "privateIPAllocationMethod": "Static",
-              "privateIPAddress": "[concat(variables('sn2IPArray0'),'.',variables('sn2IPArray1'),'.',variables('sn2IPArray2'),'.',add(variables('sn2IPStartAddress3'),3))]",
-              "subnet": {
-                "id": "[variables('subnet2Id')]"
-              }
-            }
-          },
-          {
-            "name": "ipconfig5",
-            "properties": {
-              "privateIPAllocationMethod": "Static",
-              "privateIPAddress": "[concat(variables('sn2IPArray0'),'.',variables('sn2IPArray1'),'.',variables('sn2IPArray2'),'.',add(variables('sn2IPStartAddress3'),4))]",
-              "subnet": {
-                "id": "[variables('subnet2Id')]"
-              }
-            }
-          },
-          {
-            "name": "ipconfig6",
-            "properties": {
-              "privateIPAllocationMethod": "Static",
-              "privateIPAddress": "[concat(variables('sn2IPArray0'),'.',variables('sn2IPArray1'),'.',variables('sn2IPArray2'),'.',add(variables('sn2IPStartAddress3'),5))]",
-              "subnet": {
-                "id": "[variables('subnet2Id')]"
-              }
-            }
-          },
-          {
-            "name": "ipconfig7",
-            "properties": {
-              "privateIPAllocationMethod": "Static",
-              "privateIPAddress": "[concat(variables('sn2IPArray0'),'.',variables('sn2IPArray1'),'.',variables('sn2IPArray2'),'.',add(variables('sn2IPStartAddress3'),6))]",
-              "subnet": {
-                "id": "[variables('subnet2Id')]"
-              }
-            }
-          },
-          {
-            "name": "ipconfig8",
-            "properties": {
-              "privateIPAllocationMethod": "Static",
-              "privateIPAddress": "[concat(variables('sn2IPArray0'),'.',variables('sn2IPArray1'),'.',variables('sn2IPArray2'),'.',add(variables('sn2IPStartAddress3'),7))]",
-              "subnet": {
-                "id": "[variables('subnet2Id')]"
-              }
-            }
-          }
-        ],
+        "ipConfigurations": "[concat(take(variables('sn2PrimaryIP'), 1), take(variables('sn2secondaryIPs').ipconfig, parameters('subnet2SecondaryIPCount')))]",
         "enableIPForwarding": false,
         "enableAcceleratedNetworking": "[parameters('acceleratedNetworking')]"
       }
@@ -559,92 +560,9 @@
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[variables('ftsNic3Name')]",
       "location": "[parameters('location')]",
-      "dependsOn": ["[variables('vnetName')]", "[variables('NSGId')]"],
+      "dependsOn": [ "[variables('vnetName')]", "[variables('NSGId')]" ],
       "properties": {
-        "ipConfigurations": [
-          {
-            "name": "ipconfig1",
-            "properties": {
-              "primary": true,
-              "privateIPAddressVersion": "IPv4",
-              "privateIPAllocationMethod": "Static",
-              "privateIPAddress": "[concat(variables('sn3IPArray0'),'.',variables('sn3IPArray1'),'.',variables('sn3IPArray2'),'.',variables('sn3IPStartAddress3'))]",
-              "subnet": {
-                "id": "[variables('subnet3Id')]"
-              }
-            }
-          },
-          {
-            "name": "ipconfig2",
-            "properties": {
-              "privateIPAllocationMethod": "Static",
-              "privateIPAddress": "[concat(variables('sn3IPArray0'),'.',variables('sn3IPArray1'),'.',variables('sn3IPArray2'),'.',add(variables('sn3IPStartAddress3'),1))]",
-              "subnet": {
-                "id": "[variables('subnet3Id')]"
-              }
-            }
-          },
-          {
-            "name": "ipconfig3",
-            "properties": {
-              "privateIPAllocationMethod": "Static",
-              "privateIPAddress": "[concat(variables('sn3IPArray0'),'.',variables('sn3IPArray1'),'.',variables('sn3IPArray2'),'.',add(variables('sn3IPStartAddress3'),2))]",
-              "subnet": {
-                "id": "[variables('subnet3Id')]"
-              }
-            }
-          },
-          {
-            "name": "ipconfig4",
-            "properties": {
-              "privateIPAllocationMethod": "Static",
-              "privateIPAddress": "[concat(variables('sn3IPArray0'),'.',variables('sn3IPArray1'),'.',variables('sn3IPArray2'),'.',add(variables('sn3IPStartAddress3'),3))]",
-              "subnet": {
-                "id": "[variables('subnet3Id')]"
-              }
-            }
-          },
-          {
-            "name": "ipconfig5",
-            "properties": {
-              "privateIPAllocationMethod": "Static",
-              "privateIPAddress": "[concat(variables('sn3IPArray0'),'.',variables('sn3IPArray1'),'.',variables('sn3IPArray2'),'.',add(variables('sn3IPStartAddress3'),4))]",
-              "subnet": {
-                "id": "[variables('subnet3Id')]"
-              }
-            }
-          },
-          {
-            "name": "ipconfig6",
-            "properties": {
-              "privateIPAllocationMethod": "Static",
-              "privateIPAddress": "[concat(variables('sn3IPArray0'),'.',variables('sn3IPArray1'),'.',variables('sn3IPArray2'),'.',add(variables('sn3IPStartAddress3'),5))]",
-              "subnet": {
-                "id": "[variables('subnet3Id')]"
-              }
-            }
-          },
-          {
-            "name": "ipconfig7",
-            "properties": {
-              "privateIPAllocationMethod": "Static",
-              "privateIPAddress": "[concat(variables('sn3IPArray0'),'.',variables('sn3IPArray1'),'.',variables('sn3IPArray2'),'.',add(variables('sn3IPStartAddress3'),6))]",
-              "subnet": {
-                "id": "[variables('subnet3Id')]"
-              }
-            }
-          },
-          {
-            "name": "ipconfig8",
-            "properties": {
-              "privateIPAllocationMethod": "Static",
-              "privateIPAddress": "[concat(variables('sn3IPArray0'),'.',variables('sn3IPArray1'),'.',variables('sn3IPArray2'),'.',add(variables('sn3IPStartAddress3'),7))]",
-              "subnet": {
-                "id": "[variables('subnet3Id')]"
-              }
-            }
-          }
-        ],
+        "ipConfigurations": "[concat(take(variables('sn3PrimaryIP'), 1), take(variables('sn3secondaryIPs').ipconfig, parameters('subnet3SecondaryIPCount')))]",
         "enableIPForwarding": false,
         "enableAcceleratedNetworking": "[parameters('acceleratedNetworking')]"
       }
