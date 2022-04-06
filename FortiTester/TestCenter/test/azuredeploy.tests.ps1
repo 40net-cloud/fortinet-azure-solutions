@@ -33,12 +33,12 @@ BeforeAll {
     # ARM Template Variables
     $publicIP1Name = "$prefix-FTS-CLIENT-PIP"
     $publicIP2Name = "$prefix-FTS-SERVER-PIP"
-    $params = @{ 'adminUsername'=$testsAdminUsername
-                    'adminPassword'=$testsResourceGroupName
-                    'fortiTesterNamePrefix'=$testsPrefix
-                    'publicIP1Name'=$publicIP1Name
-                    'publicIP2Name'=$publicIP2Name
-                }
+    $params = @{ 'adminUsername' = $testsAdminUsername
+        'adminPassword'          = $testsResourceGroupName
+        'fortiTesterNamePrefix'  = $testsPrefix
+        'publicIP1Name'          = $publicIP1Name
+        'publicIP2Name'          = $publicIP2Name
+    }
     $ports = @(443, 22)
 }
 
@@ -64,57 +64,57 @@ Describe 'FTS TestCenter' {
 
         It 'Creates the expected Azure resources' {
             $expectedResources = 'Microsoft.Resources/deployments',
-                                    'Microsoft.Storage/storageAccounts',
-                                    'Microsoft.Network/virtualNetworks',
-                                    'Microsoft.Network/networkSecurityGroups',
-                                    'Microsoft.Network/publicIPAddresses',
-                                    'Microsoft.Network/publicIPAddresses',
-                                    'Microsoft.Network/networkInterfaces',
-                                    'Microsoft.Network/networkInterfaces',
-                                    'Microsoft.Network/networkInterfaces',
-                                    'Microsoft.Network/networkInterfaces',
-                                    'Microsoft.Compute/virtualMachines'
-                                    'Microsoft.Compute/virtualMachines'
+            'Microsoft.Storage/storageAccounts',
+            'Microsoft.Network/virtualNetworks',
+            'Microsoft.Network/networkSecurityGroups',
+            'Microsoft.Network/publicIPAddresses',
+            'Microsoft.Network/publicIPAddresses',
+            'Microsoft.Network/networkInterfaces',
+            'Microsoft.Network/networkInterfaces',
+            'Microsoft.Network/networkInterfaces',
+            'Microsoft.Network/networkInterfaces',
+            'Microsoft.Compute/virtualMachines'
+            'Microsoft.Compute/virtualMachines'
             $templateResources = (get-content $templateFileLocation | ConvertFrom-Json -ErrorAction SilentlyContinue).Resources.type
             $templateResources | Should -Be $expectedResources
         }
 
         It 'Contains the expected parameters' {
             $expectedTemplateParameters = 'acceleratedNetworking',
-                                            'adminPassword',
-                                            'adminUsername',
-                                            'fortinetTags',
-                                            'fortiTesterImageSKU',
-                                            'fortiTesterImageVersion',
-                                            'fortiTesterNamePrefix',
-                                            'instanceType',
-                                            'location',
-                                            'publicIP1Name',
-                                            'publicIP1NewOrExistingOrNone',
-                                            'publicIP1ResourceGroup',
-                                            'publicIP1SKU',
-                                            'publicIP1Type',
-                                            'publicIP2Name',
-                                            'publicIP2NewOrExistingOrNone',
-                                            'publicIP2ResourceGroup',
-                                            'publicIP2SKU',
-                                            'publicIP2Type',
-                                            'serialConsole',
-                                            'subnet1Name',
-                                            'subnet1Prefix',
-                                            'subnet1StartAddress',
-                                            'subnet2Name',
-                                            'subnet2Prefix',
-                                            'subnet2SecondaryIPCount',
-                                            'subnet2StartAddress',
-                                            'subnet3Name',
-                                            'subnet3Prefix',
-                                            'subnet3SecondaryIPCount',
-                                            'subnet3StartAddress',
-                                            'vnetAddressPrefix',
-                                            'vnetName',
-                                            'vnetNewOrExisting',
-                                            'vnetResourceGroup'
+            'adminPassword',
+            'adminUsername',
+            'fortinetTags',
+            'fortiTesterImageSKU',
+            'fortiTesterImageVersion',
+            'fortiTesterNamePrefix',
+            'instanceType',
+            'location',
+            'publicIP1Name',
+            'publicIP1NewOrExistingOrNone',
+            'publicIP1ResourceGroup',
+            'publicIP1SKU',
+            'publicIP1Type',
+            'publicIP2Name',
+            'publicIP2NewOrExistingOrNone',
+            'publicIP2ResourceGroup',
+            'publicIP2SKU',
+            'publicIP2Type',
+            'serialConsole',
+            'subnet1Name',
+            'subnet1Prefix',
+            'subnet1StartAddress',
+            'subnet2Name',
+            'subnet2Prefix',
+            'subnet2SecondaryIPCount',
+            'subnet2StartAddress',
+            'subnet3Name',
+            'subnet3Prefix',
+            'subnet3SecondaryIPCount',
+            'subnet3StartAddress',
+            'vnetAddressPrefix',
+            'vnetName',
+            'vnetNewOrExisting',
+            'vnetResourceGroup'
             $templateParameters = (get-content $templateFileLocation | ConvertFrom-Json -ErrorAction SilentlyContinue).Parameters | Get-Member -MemberType NoteProperty | % Name | Sort-Object
             $templateParameters | Should -Be $expectedTemplateParameters
         }
@@ -125,7 +125,9 @@ Describe 'FTS TestCenter' {
 
         It "Test Deployment" {
             New-AzResourceGroup -Name $testsResourceGroupName -Location "$testsResourceGroupLocation"
-            (Test-AzResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName" -TemplateFile "$templateFileLocation" -TemplateParameterObject $params).Count | Should -Not -BeGreaterThan 0
+            $resultTest = Test-AzResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName" -TemplateFile "$templateFileLocation" -TemplateParameterObject $params
+            Write-Host ("Test Deployment state: " + $resultTest.Details | Out-String)
+            $resultTest.Count | Should -Not -BeGreaterThan 0
         }
         It "Deployment" {
             Write-Host ( "Deployment name: $testsResourceGroupName" )
@@ -151,12 +153,12 @@ Describe 'FTS TestCenter' {
             Write-Host ("FortiTester Server Public IP: " + $FTSS)
         }
         It "FTS: Ports listening" {
-            ForEach( $port in $ports ) {
+            ForEach ( $port in $ports ) {
                 Write-Host ("FTS Client - Check port: $port" )
                 $portListening = (Test-Connection -TargetName $FTSC -TCPPort $port -TimeoutSeconds 100)
                 $portListening | Should -Be $true
             }
-            ForEach( $port in $ports ) {
+            ForEach ( $port in $ports ) {
                 Write-Host ("FTS Server - Check port: $port" )
                 $portListening = (Test-Connection -TargetName $FTSS -TCPPort $port -TimeoutSeconds 100)
                 $portListening | Should -Be $true
