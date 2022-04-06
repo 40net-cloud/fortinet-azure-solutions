@@ -312,27 +312,29 @@
               },
               {
                 "name": "subnet2secondaryips",
-                "type": "Microsoft.Common.TextBox",
-                "label": "Subnet 1 Secondary IPs count",
-                "defaultValue": "0",
+                "label": "Client Subnet Secondary IPs count",
+                "type": "Microsoft.Common.Slider",
+                "min": 0,
+                "max": 256,
+                "defaultValue": 0,
+                "showStepMarkers": false,
                 "toolTip": "Amount of additional IPs for the FortiTester in client subnet",
                 "constraints": {
-                  "required": false,
-                  "regex": "^[0-9]{1,3}$",
-                  "validationMessage": "Range 0-256"
+                  "required": false
                 },
                 "visible": true
               },
               {
                 "name": "subnet3secondaryips",
-                "type": "Microsoft.Common.TextBox",
-                "label": "Subnet 1 Secondary IPs count",
-                "defaultValue": "0",
-                "toolTip": "Amounnt of additional IPs for the FortiTester in server subnet",
+                "label": "Server Subnet Secondary IPs count",
+                "type": "Microsoft.Common.Slider",
+                "min": 0,
+                "max": 256,
+                "defaultValue": 0,
+                "showStepMarkers": false,
+                "toolTip": "Amount of additional IPs for the FortiTester in server subnet",
                 "constraints": {
-                  "required": false,
-                  "regex": "^[0-9]{1,3}$",
-                  "validationMessage": "Range 0-256"
+                  "required": false
                 },
                 "visible": true
               }
