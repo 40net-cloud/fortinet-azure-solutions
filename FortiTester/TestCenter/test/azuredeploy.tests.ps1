@@ -73,7 +73,7 @@ Describe 'FTS TestCenter' {
             'Microsoft.Network/networkInterfaces',
             'Microsoft.Network/networkInterfaces',
             'Microsoft.Network/networkInterfaces',
-            'Microsoft.Compute/virtualMachines'
+            'Microsoft.Compute/virtualMachines',
             'Microsoft.Compute/virtualMachines'
             $templateResources = (get-content $templateFileLocation | ConvertFrom-Json -ErrorAction SilentlyContinue).Resources.type
             $templateResources | Should -Be $expectedResources
