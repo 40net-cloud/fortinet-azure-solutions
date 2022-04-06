@@ -507,7 +507,7 @@
               {
                 "name": "hasubscriptionid",
                 "type": "Microsoft.Common.TextBox",
-                "label": "Subcription ID",
+                "label": "Subscription ID",
                 "defaultValue": "",
                 "toolTip": "Active/Active config - Azure Service Principal Subscription Id",
                 "constraints": {
@@ -531,7 +531,7 @@
                 "visible": true
               },
               {
-                "name": "haappid",
+                "name": "haapplicationid",
                 "type": "Microsoft.Common.TextBox",
                 "label": "Application ID",
                 "defaultValue": "",
@@ -544,7 +544,7 @@
                 "visible": true
               },
               {
-                "name": "haappsecret",
+                "name": "haapplicationsecret",
                 "type": "Microsoft.Common.TextBox",
                 "label": "Applicatin Secret",
                 "defaultValue": "",
