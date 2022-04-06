@@ -21,7 +21,7 @@
         "options": {
           "icon": "Info",
           "text": "FortiTester Deployment Type - Standalone",
-          "uri": "https://github.com/fortinet/azure-templates/tree/main/FortiTester/A-Single-VM"
+          "uri": "https://github.com/fortinet/azure-templates/tree/main/FortiTester/Standalone"
         }
       },
       {
@@ -314,7 +314,7 @@
                 "name": "subnet2secondaryips",
                 "type": "Microsoft.Common.TextBox",
                 "label": "Subnet 1 Secondary IPs count",
-                "defaultValue": "",
+                "defaultValue": "0",
                 "toolTip": "Amount of additional IPs for the FortiTester in Subnet 1",
                 "constraints": {
                   "required": false,
@@ -327,7 +327,7 @@
                 "name": "subnet3secondaryips",
                 "type": "Microsoft.Common.TextBox",
                 "label": "Subnet 1 Secondary IPs count",
-                "defaultValue": "",
+                "defaultValue": "0",
                 "toolTip": "Amounnt of additional IPs for the FortiTester in Subnet 2",
                 "constraints": {
                   "required": false,

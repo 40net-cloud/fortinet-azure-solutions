@@ -273,7 +273,7 @@
     "serialConsoleEnabled": "[if(equals(parameters('serialConsole'),'yes'),'true','false')]",
 
     "publicIP1Name": "[if(equals(parameters('publicIP1Name'),''),concat(parameters('fortiTesterNamePrefix'),'-FTS-PIP'),parameters('publicIP1Name'))]",
-    "publicIP1Id": "[if(equals(parameters('publicIP1NewOrExistingOrNone'),'new'),resourceId('Microsoft.Network/publicIP1Addresses',variables('publicIP1Name')),resourceId(parameters('publicIP1ResourceGroup'),'Microsoft.Network/publicIP1Addresses',variables('publicIP1Name')))]",
+    "publicIP1Id": "[if(equals(parameters('publicIP1NewOrExistingOrNone'),'new'),resourceId('Microsoft.Network/publicIPAddresses',variables('publicIP1Name')),resourceId(parameters('publicIP1ResourceGroup'),'Microsoft.Network/publicIP1Addresses',variables('publicIP1Name')))]",
     "publicIP1AddressId": { "id": "[variables('publicIP1Id')]" },
 
     "NSGName": "[concat(parameters('fortiTesterNamePrefix'),'-',uniqueString(resourceGroup().id),'-NSG')]",
