@@ -4,14 +4,16 @@
   "parameters": {
     "adminUsername": {
       "type": "string",
+	  "defaultValue": "Default Username 'admin'",
       "metadata": {
-        "description": "Username for the Virtual Machine."
+        "description": "Default Username for the Virtual Machine is always 'admin'."
       }
     },
     "adminPassword": {
-      "type": "securestring",
+      "type": "string",
+	  "defaultValue": "Default Password Vm-id",
       "metadata": {
-        "description": "Password for the Virtual Machine."
+        "description": "Get Vm-id for the FortiSandbox VM using the Azure CLI command: az vm list –output tsv -g [Your resource group]"
       }
     },
     "fortiSandboxNamePrefix": {
@@ -46,7 +48,7 @@
    
     "instanceType": {
       "type": "string",
-      "defaultValue": "Standard_F4s",
+      "defaultValue": "Standard_B4ms",
       "allowedValues": [
         "Standard_F4s",
         "Standard_F8s",
@@ -62,7 +64,9 @@
         "Standard_DS5_v2",
         "Standard_D8s_v3",
         "Standard_D16s_v3",
-        "Standard_D32s_v3"
+        "Standard_D32s_v3",
+		"Standard_B4ms",
+		"Standard_B2ms"
       ],
       "metadata": {
         "description": "Virtual Machine size selection - must be F4 or other instance that supports 4 NICs"
@@ -81,7 +85,7 @@
     },
     "acceleratedNetworking": {
       "type": "string",
-      "defaultValue": "true",
+      "defaultValue": "false",
       "allowedValues": [
         "true",
         "false"
