@@ -15,7 +15,7 @@ This Azure ARM template will automatically deploy a full working environment con
 
 ![FortiTester-VM azure design](images/fts-testcenter.png)
 
-### Azure Portal
+## Deployment - Azure Portal
 
 Azure Portal Wizard:
 [![Azure Portal Wizard](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.svg?sanitize=true)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2F40net-cloud%2Ffortinet-azure-solutions%2Fmain%2FFortiTester%2FTestCenter%2FmainTemplate.json/createUIDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2F40net-cloud%2Ffortinet-azure-solutions%2Fmain%2FFortiTester%2FTestCenter%2FcreateUiDefinition.json)
