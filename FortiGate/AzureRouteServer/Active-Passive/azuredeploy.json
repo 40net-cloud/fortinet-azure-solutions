@@ -609,7 +609,7 @@
     {
       "type": "Microsoft.Network/routeTables",
       "name": "[variables('routeTableFGTName')]",
-      "apiVersion": "2020-04-01",
+      "apiVersion": "2020-11-01",
       "tags": {
        "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
@@ -629,7 +629,7 @@
     {
       "condition": "[equals(parameters('vnetNewOrExisting'), 'new')]",
       "type": "Microsoft.Network/virtualNetworks",
-      "apiVersion": "2020-04-01",
+      "apiVersion": "2020-11-01",
       "name": "[variables('vnetName')]",
       "location": "[parameters('location')]",
       "dependsOn": [
@@ -694,7 +694,7 @@
       }
     },
     {
-      "apiVersion": "2020-04-01",
+      "apiVersion": "2020-11-01",
       "tags": {
         "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
@@ -792,7 +792,7 @@
     {
       "condition": "[equals(parameters('publicIPNewOrExisting'), 'new')]",
       "type": "Microsoft.Network/publicIPAddresses",
-      "apiVersion": "2020-04-01",
+      "apiVersion": "2020-11-01",
       "tags": {
         "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
@@ -809,7 +809,7 @@
     {
       "condition": "[equals(parameters('publicIP2NewOrExisting'), 'new')]",
       "type": "Microsoft.Network/publicIPAddresses",
-      "apiVersion": "2020-04-01",
+      "apiVersion": "2020-11-01",
       "tags": {
         "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
@@ -825,7 +825,7 @@
     {
       "condition": "[equals(parameters('publicIP3NewOrExisting'), 'new')]",
       "type": "Microsoft.Network/publicIPAddresses",
-      "apiVersion": "2020-04-01",
+      "apiVersion": "2020-11-01",
       "tags": {
         "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
@@ -841,7 +841,7 @@
     {
       "condition": "[equals(parameters('publicIP4NewOrExisting'), 'new')]",
       "type": "Microsoft.Network/publicIPAddresses",
-      "apiVersion": "2020-04-01",
+      "apiVersion": "2020-11-01",
       "tags": {
         "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
@@ -855,7 +855,7 @@
       }
     },
     {
-      "apiVersion": "2020-04-01",
+      "apiVersion": "2020-11-01",
       "type": "Microsoft.Network/loadBalancers",
       "name": "[variables('externalLBName')]",
       "location": "[parameters('location')]",
@@ -958,7 +958,7 @@
       }
     },
     {
-      "apiVersion": "2020-04-01",
+      "apiVersion": "2020-11-01",
       "tags": {
         "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
@@ -996,7 +996,7 @@
       }
     },
     {
-      "apiVersion": "2020-04-01",
+      "apiVersion": "2020-11-01",
       "tags": {
         "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
@@ -1034,7 +1034,7 @@
       }
     },
     {
-      "apiVersion": "2020-04-01",
+      "apiVersion": "2020-11-01",
       "tags": {
        "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
@@ -1065,7 +1065,7 @@
       }
     },
     {
-      "apiVersion": "2020-04-01",
+      "apiVersion": "2020-11-01",
       "tags": {
        "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
@@ -1097,7 +1097,7 @@
       }
     },
     {
-      "apiVersion": "2020-04-01",
+      "apiVersion": "2020-11-01",
       "tags": {
        "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
@@ -1128,7 +1128,7 @@
       }
     },
     {
-      "apiVersion": "2020-04-01",
+      "apiVersion": "2020-11-01",
       "tags": {
        "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
@@ -1160,7 +1160,7 @@
       }
     },
     {
-      "apiVersion": "2020-04-01",
+      "apiVersion": "2020-11-01",
       "tags": {
        "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
@@ -1192,7 +1192,7 @@
       }
     },
     {
-      "apiVersion": "2020-04-01",
+      "apiVersion": "2020-11-01",
       "tags": {
        "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },

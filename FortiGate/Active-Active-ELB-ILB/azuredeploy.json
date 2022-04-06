@@ -467,7 +467,7 @@
     {
       "condition": "[equals(parameters('vnetNewOrExisting'), 'new')]",
       "type": "Microsoft.Network/virtualNetworks",
-      "apiVersion": "2020-04-01",
+      "apiVersion": "2020-11-01",
       "name": "[variables('vnetName')]",
       "location": "[parameters('location')]",
       "dependsOn": [
@@ -505,7 +505,7 @@
       }
     },
     {
-      "apiVersion": "2020-04-01",
+      "apiVersion": "2020-11-01",
       "type": "Microsoft.Network/loadBalancers",
       "name": "[variables('internalLBName')]",
       "location": "[parameters('location')]",
@@ -571,7 +571,7 @@
       }
     },
     {
-      "apiVersion": "2020-04-01",
+      "apiVersion": "2020-11-01",
       "type": "Microsoft.Network/routeTables",
       "name": "[variables('routeTable3Name')]",
       "location": "[parameters('location')]",
@@ -592,7 +592,7 @@
       }
     },
     {
-      "apiVersion": "2020-04-01",
+      "apiVersion": "2020-11-01",
       "type": "Microsoft.Network/networkSecurityGroups",
       "name": "[variables('nsgName')]",
       "location": "[parameters('location')]",
@@ -634,7 +634,7 @@
     },
     {
       "condition": "[equals(parameters('publicIP1NewOrExisting'), 'new')]",
-      "apiVersion": "2020-04-01",
+      "apiVersion": "2020-11-01",
       "type": "Microsoft.Network/publicIPAddresses",
       "name": "[variables('publicIP1Name')]",
       "location": "[parameters('location')]",
@@ -652,7 +652,7 @@
       }
     },
     {
-      "apiVersion": "2020-04-01",
+      "apiVersion": "2020-11-01",
       "type": "Microsoft.Network/loadBalancers",
       "name": "[variables('externalLBName')]",
       "location": "[parameters('location')]",
@@ -785,7 +785,7 @@
       }
     },
     {
-      "apiVersion": "2020-04-01",
+      "apiVersion": "2020-11-01",
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[variables('fgaNic1Name')]",
       "location": "[parameters('location')]",
@@ -831,7 +831,7 @@
       }
     },
     {
-      "apiVersion": "2020-04-01",
+      "apiVersion": "2020-11-01",
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[variables('fgbNic1Name')]",
       "location": "[parameters('location')]",
@@ -878,7 +878,7 @@
       }
     },
     {
-      "apiVersion": "2020-04-01",
+      "apiVersion": "2020-11-01",
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[variables('fgaNic2Name')]",
       "location": "[parameters('location')]",
@@ -915,7 +915,7 @@
       }
     },
     {
-      "apiVersion": "2020-04-01",
+      "apiVersion": "2020-11-01",
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[variables('fgbNic2Name')]",
       "location": "[parameters('location')]",
