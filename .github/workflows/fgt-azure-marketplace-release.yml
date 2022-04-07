@@ -47,7 +47,9 @@ jobs:
               $content | ConvertTo-Json -depth 100 | Out-File "${dest}/createUIDefinition.json"
             }
             Compress-Archive -Path "./releases/*" -DestinationPath templates.zip
-      #        zip -r ./releases/fortigate-azure-templates.zip ./releases/*
+          azPSVersion: "latest"
+
+#        zip -r ./releases/fortigate-azure-templates.zip ./releases/*
       - name: upload-templates-zip
         uses: svenstaro/upload-release-action@v2
         with:
