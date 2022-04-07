@@ -46,7 +46,7 @@ jobs:
               $content.parameters.basics.Where({$_.Name.equals("fortiGateImageVersion")}).constraints.allowedValues = $fgtMarketplaceVersionsUI
               $content | ConvertTo-Json -depth 100 | Out-File "${dest}/createUIDefinition.json"
             }
-            Compress-Archive -Path "./releases/*" -DestinationPath templates.zip
+            Compress-Archive -Path "./releases/*" -DestinationPath "./releases/fortigate-azure-templates.zip"
           azPSVersion: "latest"
 
 #        zip -r ./releases/fortigate-azure-templates.zip ./releases/*
@@ -54,8 +54,8 @@ jobs:
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{secrets.GITHUB_TOKEN}}
-          file: ./templates/templates.zip
-          asset_name: fortiadc-ha-azure-templates.zip
+          file: ./releases/fortigate-azure-templates.zip
+          asset_name: fortigate-azure-templates.zip
           tag: ${{github.ref}}
           overwrite: true
-          body: "FortiADC Azure HA Release"
+          body: "FortiGate Azure Marketplace Release"
