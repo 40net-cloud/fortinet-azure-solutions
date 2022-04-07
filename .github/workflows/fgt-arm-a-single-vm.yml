@@ -5,6 +5,8 @@ env:
 
 on:
   push:
+    branches:
+      - main
     paths:
     - 'FortiGate/A-Single-VM/**.json'
     - 'FortiGate/A-Single-VM/**.tests.ps1'

@@ -1,4 +1,4 @@
-name: '[FGT] Azure Marketplace Version Update'
+name: '[FGT] Azure Marketplace version update'
 
 on:
   workflow_dispatch:

@@ -5,6 +5,8 @@ env:
 
 on:
   push:
+    branches:
+      - main
     paths:
     - 'FortiGate/Active-Active-ELB-ILB/**.json'
     - 'FortiGate/Active-Active-ELB-ILB/**.tests.ps1'

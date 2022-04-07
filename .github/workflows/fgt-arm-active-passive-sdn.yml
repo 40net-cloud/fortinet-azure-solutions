@@ -5,6 +5,8 @@ env:
 
 on:
   push:
+    branches:
+      - main
     paths:
     - 'FortiGate/Active-Passive-SDN/**.json'
     - 'FortiGate/Active-Passive-SDN/**.tests.ps1'
