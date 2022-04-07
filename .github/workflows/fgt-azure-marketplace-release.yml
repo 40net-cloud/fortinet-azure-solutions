@@ -5,6 +5,8 @@ on:
     tags:
       - '*'
 
+  workflow_dispatch:
+
 jobs:
   build:
     name: Getting all data ready for publishing
