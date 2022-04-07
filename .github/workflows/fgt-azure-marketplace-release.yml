@@ -1,4 +1,4 @@
-name: FortiGate Azure Marketplace release
+name: [FGT] Azure Marketplace release
 
 on:
   push:
