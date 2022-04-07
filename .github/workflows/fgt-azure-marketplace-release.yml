@@ -12,7 +12,7 @@ jobs:
     name: Getting all data ready for publishing
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Azure Login via Az module
         uses: azure/login@v1
@@ -42,7 +42,7 @@ jobs:
               $content.parameters.fortiGateImageVersion.allowedValues = $fgtMarketplaceVersions
               $content | ConvertTo-Json -depth 100 | Out-File "${dest}/mainTemplate.json"
 
-              $content = Get-Content -Raw -Path "../FortiGate/${buildingBlock}/createUiDefinition.json" | ConvertFrom-Json
+              $content = Get-Content -Raw -Path "./FortiGate/${buildingBlock}/createUiDefinition.json" | ConvertFrom-Json
               $content.parameters.basics.Where({$_.Name.equals("fortiGateImageVersion")}).constraints.allowedValues = $fgtMarketplaceVersionsUI
               $content | ConvertTo-Json -depth 100 | Out-File "${dest}/createUIDefinition.json"
             }
