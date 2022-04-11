@@ -95,7 +95,7 @@
             },
             {
               "label": "Pay As You Go",
-              "value": "fortinet_fg-vm_payg_20190624"
+              "value": "fortinet_fg-vm_payg_2020"
             }
           ]
         },
@@ -355,7 +355,7 @@
                 },
                 "toolTip": {
                   "virtualNetwork": "Virtual Network for deployment of the FortiGate VM solution",
-                  "subnets": "Standard deployment is to have an "
+                  "subnets": "Standard deployment is to have an external and internal subnet"
                 },
                 "defaultValue": {
                   "name": "FortiGate-VNET",
