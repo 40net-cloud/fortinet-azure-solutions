@@ -6,9 +6,9 @@ env:
 on:
   push:
     paths:
-    - 'FortiGate/Terraform/A-Single-VM/**.tf'
-    - 'FortiGate/Terraform/A-Single-VM/**.tpl'
-    - 'FortiGate/Terraform/A-Single-VM/**.hcl'
+    - 'FortiGate/Terraform/A-Single-VM/*.tf'
+    - 'FortiGate/Terraform/A-Single-VM/*.tpl'
+    - 'FortiGate/Terraform/A-Single-VM/*.hcl'
 
 jobs:
   terraform_AA:

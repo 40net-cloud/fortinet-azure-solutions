@@ -8,7 +8,7 @@ on:
     branches:
       - main
     paths:
-    - 'FortiGate/Active-Passive-ELB-ILB/**.json'
+    - 'FortiGate/Active-Passive-ELB-ILB/*.json'
     - 'FortiGate/Active-Passive-ELB-ILB/**.tests.ps1'
 
 jobs:

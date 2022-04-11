@@ -6,9 +6,9 @@ env:
 on:
   push:
     paths:
-    - 'FortiGate/Terraform/Active-Active-ELB-ILB/**.tf'
-    - 'FortiGate/Terraform/Active-Active-ELB-ILB/**.tpl'
-    - 'FortiGate/Terraform/Active-Active-ELB-ILB/**.hcl'
+    - 'FortiGate/Terraform/Active-Active-ELB-ILB/*.tf'
+    - 'FortiGate/Terraform/Active-Active-ELB-ILB/*.tpl'
+    - 'FortiGate/Terraform/Active-Active-ELB-ILB/*.hcl'
 
 jobs:
   terraform_AA:

@@ -6,7 +6,7 @@ env:
 on:
   push:
     paths:
-    - 'FortiTester/Standalone/**.json'
+    - 'FortiTester/Standalone/*.json'
     - 'FortiTester/Standalone/**.tests.ps1'
 
 jobs:
