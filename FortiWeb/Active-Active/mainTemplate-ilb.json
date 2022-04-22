@@ -25,7 +25,7 @@
       "defaultValue": "fortinet_fw-vm",
       "allowedValues": [
         "fortinet_fw-vm",
-        "fortinet_fw-vm_payg"
+        "fortinet_fw-vm_payg_v2"
       ],
       "metadata": {
         "description": "Identifies whether to to use PAYG (on demand licensing) or BYOL license model (where license is purchased separately)"
