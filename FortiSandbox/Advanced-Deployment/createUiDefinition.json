@@ -28,7 +28,7 @@
         "name": "vmAdminUsername",
         "type": "Microsoft.Common.TextBox",
         "label": "FortiSandbox administrative username",
-        "defaultValue": "admin",
+        "defaultValue": "",
         "toolTip": "Default Username for the Virtual Machine is always 'admin'.",
         "constraints": {
           "required": true,
