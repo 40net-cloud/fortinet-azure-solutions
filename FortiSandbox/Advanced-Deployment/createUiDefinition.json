@@ -440,7 +440,7 @@
     ],
     "outputs": {
       "resourceNamePrefix": "[basics('resourceNamePrefix')]",
-      "FortiSandboxImageSKU": "[basics('FortiSandboxImageSKU')]",
+      "fortiSandboxImageSKU": "[basics('FortiSandboxImageSKU')]",
       "fortiSandboxImageVersion": "[basics('fortiSandboxImageVersion')]",
       "vmAdminUsername": "[basics('vmAdminUsername')]",
       "vmAdminPassword": "[basics('vmAdminPassword')]",
@@ -467,8 +467,8 @@
 	  
 	  
 	  "publicIPNewOrExisting": "[steps('publicip').mgmtpublicip.newOrExistingOrNone]",
-	  "publicIP1ResourceGroup": "[steps('publicip').mgmtpublicip.resourceGroup]",
-      "publicIPName": "[steps('publicip').mgmtpublicip.name]"
+	  "publicIPResourceGroup": "[steps('publicip').mgmtpublicip.resourceGroup]",
+      "PublicIPNamePrefix": "[steps('publicip').mgmtpublicip.name]"
 	  
 	  
       
