@@ -51,7 +51,6 @@ jobs:
             Compress-Archive -Path "./releases/*" -DestinationPath "./releases/fortigate-azure-templates.zip"
           azPSVersion: "latest"
 
-#        zip -r ./releases/fortigate-azure-templates.zip ./releases/*
       - name: upload-templates-zip
         uses: svenstaro/upload-release-action@v2
         with:
