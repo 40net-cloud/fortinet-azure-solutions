@@ -41,12 +41,10 @@ jobs:
               $content = Get-Content -Raw -Path "./FortiGate/${buildingBlock}/azuredeploy.json" | ConvertFrom-Json
               $content.parameters.fortiGateImageVersion.allowedValues = $fgtMarketplaceVersions
               $content | ConvertTo-Json -depth 100 | Out-File "${dest}/mainTemplate.json"
-              "`n" | Out-File -Append "${dest}/mainTemplate.json"
 
               $content = Get-Content -Raw -Path "./FortiGate/${buildingBlock}/createUiDefinition.json" | ConvertFrom-Json
               $content.parameters.basics.Where({$_.Name.equals("fortiGateImageVersion")}).constraints.allowedValues = $fgtMarketplaceVersionsUI
               $content | ConvertTo-Json -depth 100 | Out-File "${dest}/createUiDefinition.json"
-              "`n" | Out-File -Append "${dest}/createUiDefinition.json"
             }
             Compress-Archive -Path "./releases/*" -DestinationPath "./releases/fortigate-azure-templates.zip"
           azPSVersion: "latest"
