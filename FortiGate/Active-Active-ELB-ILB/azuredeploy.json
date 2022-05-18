@@ -915,7 +915,8 @@
       },
       "dependsOn": [
         "[variables('internalLBId')]",
-        "[variables('vnetName')]"
+        "[variables('vnetName')]",
+        "[variables('NSGId')]"
       ],
       "properties": {
         "ipConfigurations": [
@@ -953,7 +954,8 @@
       "dependsOn": [
         "[variables('internalLBId')]",
         "[variables('vnetName')]",
-        "[variables('fgaNic2Id')]"
+        "[variables('fgaNic2Id')]",
+        "[variables('NSGId')]"
       ],
       "properties": {
         "ipConfigurations": [

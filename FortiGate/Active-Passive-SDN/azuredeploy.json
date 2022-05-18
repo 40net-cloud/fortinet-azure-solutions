@@ -890,7 +890,8 @@
       "name": "[variables('fgaNic2Name')]",
       "location": "[parameters('location')]",
       "dependsOn": [
-        "[variables('vnetName')]"
+        "[variables('vnetName')]",
+        "[variables('NSGId')]"
       ],
       "properties": {
         "ipConfigurations": [
@@ -922,7 +923,8 @@
       "location": "[parameters('location')]",
       "dependsOn": [
         "[variables('vnetName')]",
-        "[variables('fgaNic2Name')]"
+        "[variables('fgaNic2Name')]",
+        "[variables('NSGId')]"
       ],
       "properties": {
         "ipConfigurations": [
@@ -953,7 +955,8 @@
       "name": "[variables('fgaNic3Name')]",
       "location": "[parameters('location')]",
       "dependsOn": [
-        "[variables('vnetName')]"
+        "[variables('vnetName')]",
+        "[variables('NSGId')]"
       ],
       "properties": {
         "ipConfigurations": [
@@ -985,7 +988,8 @@
       "location": "[parameters('location')]",
       "dependsOn": [
         "[variables('vnetName')]",
-        "[variables('fgaNic3Name')]"
+        "[variables('fgaNic3Name')]",
+        "[variables('NSGId')]"
       ],
       "properties": {
         "ipConfigurations": [
@@ -1016,7 +1020,8 @@
       "name": "[variables('fgaNic4Name')]",
       "location": "[parameters('location')]",
       "dependsOn": [
-        "[variables('vnetName')]"
+        "[variables('vnetName')]",
+        "[variables('NSGId')]"
       ],
       "properties": {
         "ipConfigurations": [
@@ -1049,7 +1054,8 @@
       "location": "[parameters('location')]",
       "dependsOn": [
         "[variables('vnetName')]",
-        "[variables('fgaNic4Name')]"
+        "[variables('fgaNic4Name')]",
+        "[variables('NSGId')]"
       ],
       "properties": {
         "ipConfigurations": [

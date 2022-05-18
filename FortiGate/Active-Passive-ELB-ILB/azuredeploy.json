@@ -997,7 +997,8 @@
       "location": "[parameters('location')]",
       "dependsOn": [
         "[variables('vnetName')]",
-        "[variables('internalLBId')]"
+        "[variables('internalLBId')]",
+        "[variables('NSGId')]"
       ],
       "properties": {
         "ipConfigurations": [
@@ -1034,7 +1035,8 @@
       "location": "[parameters('location')]",
       "dependsOn": [
         "[variables('vnetName')]",
-        "[variables('internalLBId')]"
+        "[variables('internalLBId')]",
+        "[variables('NSGId')]"
       ],
       "properties": {
         "ipConfigurations": [
@@ -1070,7 +1072,8 @@
       "name": "[variables('fgaNic3Name')]",
       "location": "[parameters('location')]",
       "dependsOn": [
-        "[variables('vnetName')]"
+        "[variables('vnetName')]",
+        "[variables('NSGId')]"
       ],
       "properties": {
         "ipConfigurations": [
@@ -1101,7 +1104,8 @@
       "name": "[variables('fgbNic3Name')]",
       "location": "[parameters('location')]",
       "dependsOn": [
-        "[variables('vnetName')]"
+        "[variables('vnetName')]",
+        "[variables('NSGId')]"
       ],
       "properties": {
         "ipConfigurations": [
@@ -1132,7 +1136,8 @@
       "name": "[variables('fgaNic4Name')]",
       "location": "[parameters('location')]",
       "dependsOn": [
-        "[variables('vnetName')]"
+        "[variables('vnetName')]",
+        "[variables('NSGId')]"
       ],
       "properties": {
         "ipConfigurations": [
@@ -1164,7 +1169,8 @@
       "name": "[variables('fgbNic4Name')]",
       "location": "[parameters('location')]",
       "dependsOn": [
-        "[variables('vnetName')]"
+        "[variables('vnetName')]",
+        "[variables('NSGId')]"
       ],
       "properties": {
         "ipConfigurations": [
