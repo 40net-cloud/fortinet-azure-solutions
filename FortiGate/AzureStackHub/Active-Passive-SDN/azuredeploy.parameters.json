@@ -23,9 +23,6 @@
         "instanceType": {
             "value": "Standard_F4s"
         },
-        "acceleratedNetworking": {
-            "value": "true"
-        },
         "publicIPNewOrExisting": {
             "value": "new"
         },
@@ -141,7 +138,7 @@
             "value": ""
         },
         "location": {
-            "value": "[resourceGroup().location]"
+            "value": ""
         },
         "fortinetTags": {
             "value": {
