@@ -21,52 +21,28 @@
         "options": {
           "icon": "Info",
           "text": "FortiSandbox Deployment Type - advanced - Select Vm numbers - Availability Set or Availability Zones",
-          "uri": "https://github.com/40net-cloud/fortinet-azure-solutions/tree/main/FortiSandbox/Advanced%20Deployment"
+          "uri": "https://github.com/40net-cloud/fortinet-azure-solutions/tree/main/FortiSandbox/Advanced-Deployment"
         }
       },
       {
         "name": "vmAdminUsername",
-        "type": "Microsoft.Common.TextBox",
-        "label": "FortiSandbox administrative username",
-        "defaultValue": "",
-        "toolTip": "Default Username for the Virtual Machine is always 'admin'.",
-        "constraints": {
-          "required": true,
-          "validations": [
-            {
-              "regex": "^[a-z0-9A-Z]{1,30}$",
-              "message": "Only alphanumeric characters are allowed, and the value must be 1-30 characters long"
-            },
-            {
-              "isValid": "[not(contains(toLower(basics('vmAdminUsername')),'root'))]",
-              "message": "Usernames must not include reserved words"
-            },
-            {
-              "isValid": "[not(contains(toLower(basics('vmAdminUsername')),'admin'))]",
-              "message": "Usernames must not include reserved words"
-            }
-          ]
-        },
-        "visible": true
-      },
+        "type": "Microsoft.Common.InfoBox",
+        "visible": true ,
+		"options": {
+          "icon": "Info",
+          "text": "Default Username for the Virtual Machine is always 'admin'."
+      	}
+	  },
       {
         "name": "vmAdminPassword",
-        "type": "Microsoft.Common.PasswordBox",
-        "label": {
-          "password": "FortiSandbox password",
-          "confirmPassword": "Confirm password"
-        },
-        "toolTip": "Default Password Vm-id. Get Vm-id for the FortiSandbox VM using the Azure CLI command: az vm list –output tsv -g [Your resource group]",
-        "constraints": {
-          "required": true,
-          "regex": "^(?:(?=.*[a-z])(?:(?=.*[A-Z])(?=.*[\\d\\W])|(?=.*\\W)(?=.*\\d))|(?=.*\\W)(?=.*[A-Z])(?=.*\\d)).{12,}$",
-          "validationMessage": "The password must be between 12 characters or longer, and contain characters from at least 3 of the following groups: uppercase characters, lowercase characters, numbers, and special characters excluding '\\' or '-'."
-        },
-        "options": {
-          "hideConfirmation": false
-        },
-        "visible": true
-      },
+        "type": "Microsoft.Common.InfoBox",
+		"visible": true,
+		"options": {
+          "icon": "Info",
+          "text": "Default Password Vm-id. Get Vm-id for the FortiSandbox VM using the Azure CLI command: az vm list –output tsv -g [Your resource group]"
+      	}
+	  },
+      
       {
         "name": "resourceNamePrefix",
         "type": "Microsoft.Common.TextBox",
@@ -221,7 +197,7 @@
             "label": "Size",
             "toolTip": "Select the instance size of your FortiSandbox VM solution. Minimum 3 NICs are required.",
             "recommendedSizes": [
-              "Standard_F4s",
+              "Standard_B4ms",
 				"Standard_F8s",
 				"Standard_F16s",
 				"Standard_F4",
@@ -442,8 +418,7 @@
       "resourceNamePrefix": "[basics('resourceNamePrefix')]",
       "fortiSandboxImageSKU": "[basics('FortiSandboxImageSKU')]",
       "fortiSandboxImageVersion": "[basics('fortiSandboxImageVersion')]",
-      "vmAdminUsername": "[basics('vmAdminUsername')]",
-      "vmAdminPassword": "[basics('vmAdminPassword')]",
+      
 	  "vmCount": "[basics('vmCount')]",
       "availabilityOptions": "[basics('availabilityOptions')]",
       "location": "[location()]",
