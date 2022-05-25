@@ -233,7 +233,7 @@
               "text": "For this FortiGate deployment, it is recommended to use the general purpose or compute optimized virtual machines. A selection of supported instances sizes is listed in our documentation. FortiGate Active/Passive HA uses the FGCP protocol for configuration sync and HA failover. This requires dedicated sync and management ports. A minimum of 4 NICs is required for the instance type.",
               "link": {
                 "label": "Learn more",
-                "uri": "https://docs.fortinet.com/vm/azure/fortigate/7.0/azure-administration-guide/7.0.0/562841/instance-type-support"
+                "uri": "https://docs.fortinet.com/document/fortigate-public-cloud/7.2.0/azure-administration-guide/562841/instance-type-support"
               }
             }
           },
@@ -283,6 +283,49 @@
               "Standard_D16ads_v5",
               "Standard_D32ads_v5"
             ],
+            "constraints": {
+              "allowedValues": [
+                "Standard_F4s",
+                "Standard_F8s",
+                "Standard_F16s",
+                "Standard_F4",
+                "Standard_F8",
+                "Standard_F16",
+                "Standard_F8s_v2",
+                "Standard_F16s_v2",
+                "Standard_F32s_v2",
+                "Standard_DS3_v2",
+                "Standard_DS4_v2",
+                "Standard_DS5_v2",
+                "Standard_D8s_v3",
+                "Standard_D16s_v3",
+                "Standard_D32s_v3",
+                "Standard_D8_v4",
+                "Standard_D16_v4",
+                "Standard_D32_v4",
+                "Standard_D8s_v4",
+                "Standard_D16s_v4",
+                "Standard_D32s_v4",
+                "Standard_D8a_v4",
+                "Standard_D16a_v4",
+                "Standard_D32a_v4",
+                "Standard_D8as_v4",
+                "Standard_D16as_v4",
+                "Standard_D32as_v4",
+                "Standard_D8_v5",
+                "Standard_D16_v5",
+                "Standard_D32_v5",
+                "Standard_D8s_v5",
+                "Standard_D16s_v5",
+                "Standard_D32s_v5",
+                "Standard_D8as_v5",
+                "Standard_D16as_v5",
+                "Standard_D32as_v5",
+                "Standard_D8ads_v5",
+                "Standard_D16ads_v5",
+                "Standard_D32ads_v5"
+              ]
+            },
             "options": {
               "hideDiskTypeFilter": false
             },
@@ -428,7 +471,7 @@
                   "text": "Enables SR-IOV support allowing the FortiOS to bypass the hypervisor and talk directly with the PCIe card underneath.",
                   "link": {
                     "label": "Learn more",
-                    "uri": "https://docs.fortinet.com/vm/azure/fortigate/7.0/azure-administration-guide/7.0.0/651644/enabling-accelerated-networking-on-the-fortigate-vm"
+                    "uri": "https://docs.fortinet.com/document/fortigate-public-cloud/7.2.0/azure-administration-guide/651644/enabling-accelerated-networking-on-the-fortigate-vm"
                   }
                 }
               },

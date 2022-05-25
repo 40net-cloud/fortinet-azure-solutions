@@ -192,7 +192,7 @@
               "text": "For this FortiGate deployment, it is recommended to use the general purpose or compute optimized virtual machines. A selection of supported instances sizes is listed in our documentation. FortiGate Active/Passive HA uses the FGCP protocol for configuration sync and HA failover. This requires dedicated sync and management ports. A minimum of 4 NICs is required for the instance type.",
               "link": {
                 "label": "Learn more",
-                "uri": "https://docs.fortinet.com/vm/azure/fortigate/7.0/azure-administration-guide/7.0.0/562841/instance-type-support"
+                "uri": "https://docs.fortinet.com/document/fortigate-public-cloud/7.2.0/azure-administration-guide/562841/instance-type-support"
               }
             }
           },
@@ -381,7 +381,7 @@
                   "text": "Enables SR-IOV support allowing the FortiOS to bypass the hypervisor and talk directly with the PCIe hardware.",
                   "link": {
                     "label": "Learn more",
-                    "uri": "https://docs.fortinet.com/vm/azure/fortigate/7.0/azure-administration-guide/7.0.0/651644/enabling-accelerated-networking-on-the-fortigate-vm"
+                    "uri": "https://docs.fortinet.com/document/fortigate-public-cloud/7.2.0/azure-administration-guide/651644/enabling-accelerated-networking-on-the-fortigate-vm"
                   }
                 }
               },
