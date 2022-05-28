@@ -37,7 +37,7 @@ jobs:
       continue-on-error: true
       run: |
         echo "${{ toJSON(fromJSON(steps.armttktest.outputs.results)) }}"
-        result=`echo "${{ toJSON(fromJSON(steps.armttktest.outputs.results)) }}" | jq '.[].Passed'`
+        result=`echo "${{ steps.armttktest.outputs.results }}" | jq '.[].Passed'`
         if [[ "$result" =~ .*"false".* ]]; then
           echo "Errors found in ARM-TTK check!"
           exit 1
