@@ -4,6 +4,7 @@ env:
   ARMPath: FortiGate/A-Single-VM/
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
