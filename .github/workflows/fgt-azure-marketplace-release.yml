@@ -40,6 +40,7 @@ jobs:
 
               $content = Get-Content -Raw -Path "./FortiGate/${buildingBlock}/azuredeploy.json" | ConvertFrom-Json
               $content.parameters.fortiGateImageVersion.allowedValues = $fgtMarketplaceVersions
+              $content.resources.Where({$_.type -eq 'Microsoft.Resources/deployments'})[0].name = "pid-776b2227-2743-485a-b385-e9dfd42bfe75-partnercenter"
               $content | ConvertTo-Json -depth 100 | Out-File "${dest}/mainTemplate.json"
               "" | Out-File -Append "${dest}/mainTemplate.json"
 
