@@ -78,14 +78,12 @@ resource "azurerm_lb_backend_address_pool" "elbbackend" {
 }
 
 resource "azurerm_lb_probe" "elbprobe" {
-  resource_group_name = azurerm_resource_group.resourcegroup.name
   loadbalancer_id     = azurerm_lb.elb.id
   name                = "lbprobe"
   port                = 8008
 }
 
 resource "azurerm_lb_rule" "lbruletcp" {
-  resource_group_name            = azurerm_resource_group.resourcegroup.name
   loadbalancer_id                = azurerm_lb.elb.id
   name                           = "PublicLBRule-FE1-http"
   protocol                       = "Tcp"
@@ -93,12 +91,11 @@ resource "azurerm_lb_rule" "lbruletcp" {
   backend_port                   = 80
   frontend_ip_configuration_name = "${var.PREFIX}-ELB-PIP"
   probe_id                       = azurerm_lb_probe.elbprobe.id
-  backend_address_pool_id        = azurerm_lb_backend_address_pool.elbbackend.id
+  backend_address_pool_ids       = [azurerm_lb_backend_address_pool.elbbackend.id]
   enable_floating_ip             = true
 }
 
 resource "azurerm_lb_rule" "lbruleudp" {
-  resource_group_name            = azurerm_resource_group.resourcegroup.name
   loadbalancer_id                = azurerm_lb.elb.id
   name                           = "PublicLBRule-FE1-udp10551"
   protocol                       = "Udp"
@@ -106,12 +103,11 @@ resource "azurerm_lb_rule" "lbruleudp" {
   backend_port                   = 10551
   frontend_ip_configuration_name = "${var.PREFIX}-ELB-PIP"
   probe_id                       = azurerm_lb_probe.elbprobe.id
-  backend_address_pool_id        = azurerm_lb_backend_address_pool.elbbackend.id
+  backend_address_pool_ids       = [azurerm_lb_backend_address_pool.elbbackend.id]
   enable_floating_ip             = true
 }
 
 resource "azurerm_lb_rule" "lbruleike" {
-  resource_group_name            = azurerm_resource_group.resourcegroup.name
   loadbalancer_id                = azurerm_lb.elb.id
   name                           = "PublicLBRule-FE1-ike-udp-500"
   protocol                       = "Udp"
@@ -119,12 +115,11 @@ resource "azurerm_lb_rule" "lbruleike" {
   backend_port                   = 500
   frontend_ip_configuration_name = "${var.PREFIX}-ELB-PIP"
   probe_id                       = azurerm_lb_probe.elbprobe.id
-  backend_address_pool_id        = azurerm_lb_backend_address_pool.elbbackend.id
+  backend_address_pool_ids       = [azurerm_lb_backend_address_pool.elbbackend.id]
   enable_floating_ip             = false
 }
 
 resource "azurerm_lb_rule" "lbruleipsec" {
-  resource_group_name            = azurerm_resource_group.resourcegroup.name
   loadbalancer_id                = azurerm_lb.elb.id
   name                           = "PublicLBRule-FE1-ipsec-udp-4500"
   protocol                       = "Udp"
@@ -132,7 +127,7 @@ resource "azurerm_lb_rule" "lbruleipsec" {
   backend_port                   = 4500
   frontend_ip_configuration_name = "${var.PREFIX}-ELB-PIP"
   probe_id                       = azurerm_lb_probe.elbprobe.id
-  backend_address_pool_id        = azurerm_lb_backend_address_pool.elbbackend.id
+  backend_address_pool_ids       = [azurerm_lb_backend_address_pool.elbbackend.id]
   enable_floating_ip             = false
 }
 
@@ -156,14 +151,12 @@ resource "azurerm_lb_backend_address_pool" "ilbbackend" {
 }
 
 resource "azurerm_lb_probe" "ilbprobe" {
-  resource_group_name = azurerm_resource_group.resourcegroup.name
   loadbalancer_id     = azurerm_lb.ilb.id
   name                = "lbprobe"
   port                = 8008
 }
 
 resource "azurerm_lb_rule" "lb_haports_rule" {
-  resource_group_name            = azurerm_resource_group.resourcegroup.name
   loadbalancer_id                = azurerm_lb.ilb.id
   name                           = "lb_haports_rule"
   protocol                       = "All"
@@ -171,7 +164,7 @@ resource "azurerm_lb_rule" "lb_haports_rule" {
   backend_port                   = 0
   frontend_ip_configuration_name = "${var.PREFIX}-ILB-PIP"
   probe_id                       = azurerm_lb_probe.ilbprobe.id
-  backend_address_pool_id        = azurerm_lb_backend_address_pool.ilbbackend.id
+  backend_address_pool_ids       = [azurerm_lb_backend_address_pool.ilbbackend.id]
 }
 
 resource "azurerm_network_interface" "fgtaifcext" {

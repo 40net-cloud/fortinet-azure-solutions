@@ -73,10 +73,9 @@ resource "azurerm_lb_backend_address_pool" "elbbackend" {
 }
 
 resource "azurerm_lb_probe" "elbprobe" {
-  resource_group_name = azurerm_resource_group.resourcegroup.name
-  loadbalancer_id     = azurerm_lb.elb.id
-  name                = "lbprobe"
-  port                = 8008
+  loadbalancer_id = azurerm_lb.elb.id
+  name            = "lbprobe"
+  port            = 8008
 }
 
 resource "azurerm_lb_rule" "lbruletcp" {
