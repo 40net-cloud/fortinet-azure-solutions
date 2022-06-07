@@ -616,88 +616,97 @@
         "bladeTitle": "Public IP SKU Review",
         "elements": [
           {
+            "name": "EqualIPConfirmation3",
+            "type": "Microsoft.Common.InfoBox",
+            "options": {
+              "icon": "Warning",
+              "text": "It is avisable to have all public IPs of the same SKU. Please return to previous blade and adapt all public IP SKUs."
+            },
+            "visible": "[and(not(and(equals(steps('publicip').externalpublicip.sku, 'Basic'),equals(steps('publicip').fgtamgmtpublicip.sku, 'Basic'),equals(steps('publicip').fgtbmgmtpublicip.sku, 'Basic'))),not(and(equals(steps('publicip').externalpublicip.sku, 'Standard'),equals(steps('publicip').fgtamgmtpublicip.sku, 'Standard'),equals(steps('publicip').fgtbmgmtpublicip.sku, 'Standard'))))]"
+          },
+          {
             "name": "BasicIPWarningAZ1",
             "type": "Microsoft.Common.InfoBox",
             "options": {
               "icon": "Error",
               "text": "Availability Zones can only support Standard SKU public IP. The External public IP is configured using Basic SKU. Please return to previous blade and use Standard type public IPs to support Availability Zones"
             },
-            "visible": "[and(equals(basics('availabilityOptions'),'Availability Zone'),not(equals(steps('publicip').externalpublicip.sku, 'Standard')))]"
+            "visible": "[and(equals(basics('availabilityOptions'),'Availability Zones'),not(equals(steps('publicip').externalpublicip.sku, 'Standard')))]"
           },
           {
             "name": "StandardIPConfirmation1",
             "type": "Microsoft.Common.InfoBox",
             "options": {
               "icon": "Info",
-              "text": "The External public IP is Standard SKU. Availability Set support both Basic and Standard SKU public IP. Proceed."
+              "text": "The External public IP is Standard SKU. Proceed."
             },
-            "visible": "[and(equals(basics('availabilityOptions'),'Availability Set'),equals(steps('publicip').externalpublicip.sku, 'Standard'))]"
+            "visible": "[equals(steps('publicip').externalpublicip.sku, 'Standard')]"
           },
           {
             "name": "BasicIPConfirmation1",
             "type": "Microsoft.Common.InfoBox",
             "options": {
-              "icon": "Warning",
+              "icon": "Info",
               "text": "The External public IP is Basic SKU. Availability Set support both Basic and Standard SKU public IP. Upgraded public IPs from Basic to Standard will remain non-zonal. Proceed.",
               "uri": "https://docs.microsoft.com/en-us/azure/virtual-network/ip-services/public-ip-addresses"
             },
-            "visible": "[and(equals(basics('availabilityOptions'),'Availability Set'),equals(steps('publicip').externalpublicip.sku, 'Basic')]"
+            "visible": "[and(equals(basics('availabilityOptions'),'Availability Set'),equals(steps('publicip').externalpublicip.sku, 'Basic'))]"
           },
           {
             "name": "BasicIPWarningAZ2",
             "type": "Microsoft.Common.InfoBox",
             "options": {
               "icon": "Error",
-              "text": "Availability Zones can only support Standard SKU public IP. The External public IP is configured using Basic SKU. Please return to previous blade and use Standard type public IPs to support Availability Zones"
+              "text": "Availability Zones can only support Standard SKU public IP. The FortiGate A management public IP is configured using Basic SKU. Please return to previous blade and use Standard type public IPs to support Availability Zones"
             },
-            "visible": "[and(equals(basics('availabilityOptions'),'Availability Zone'),not(equals(steps('publicip').fgtamgmtpublicip.sku, 'Standard')))]"
+            "visible": "[and(equals(basics('availabilityOptions'),'Availability Zones'),not(equals(steps('publicip').fgtamgmtpublicip.sku, 'Standard')))]"
           },
           {
             "name": "StandardIPConfirmation2",
             "type": "Microsoft.Common.InfoBox",
             "options": {
               "icon": "Info",
-              "text": "The External public IP is Standard SKU. Availability Set support both Basic and Standard SKU public IP. Proceed."
+              "text": "The FortiGate A management public IP is Standard SKU. Proceed."
             },
-            "visible": "[and(equals(basics('availabilityOptions'),'Availability Set'),equals(steps('publicip').fgtamgmtpublicip.sku, 'Standard'))]"
+            "visible": "[equals(steps('publicip').fgtamgmtpublicip.sku, 'Standard')]"
           },
           {
             "name": "BasicIPConfirmation2",
             "type": "Microsoft.Common.InfoBox",
             "options": {
-              "icon": "Warning",
-              "text": "The External public IP is Basic SKU. Availability Set support both Basic and Standard SKU public IP. Upgraded public IPs from Basic to Standard will remain non-zonal. Proceed.",
+              "icon": "Info",
+              "text": "The FortiGate A management public IP is Basic SKU. Availability Set support both Basic and Standard SKU public IP. Upgraded public IPs from Basic to Standard will remain non-zonal. Proceed.",
               "uri": "https://docs.microsoft.com/en-us/azure/virtual-network/ip-services/public-ip-addresses"
             },
-            "visible": "[and(equals(basics('availabilityOptions'),'Availability Set'),equals(steps('publicip').fgtamgmtpublicip.sku, 'Basic')]"
+            "visible": "[and(equals(basics('availabilityOptions'),'Availability Set'),equals(steps('publicip').fgtamgmtpublicip.sku, 'Basic'))]"
           },
           {
             "name": "BasicIPWarningAZ3",
             "type": "Microsoft.Common.InfoBox",
             "options": {
               "icon": "Error",
-              "text": "Availability Zones can only support Standard SKU public IP. The External public IP is configured using Basic SKU. Please return to previous blade and use Standard type public IPs to support Availability Zones"
+              "text": "Availability Zones can only support Standard SKU public IP. The FortiGate B management public IP is configured using Basic SKU. Please return to previous blade and use Standard type public IPs to support Availability Zones"
             },
-            "visible": "[and(equals(basics('availabilityOptions'),'Availability Zone'),not(equals(steps('publicip').fgtbmgmtpublicip.sku, 'Standard')))]"
+            "visible": "[and(equals(basics('availabilityOptions'),'Availability Zones'),not(equals(steps('publicip').fgtbmgmtpublicip.sku, 'Standard')))]"
           },
           {
             "name": "StandardIPConfirmation3",
             "type": "Microsoft.Common.InfoBox",
             "options": {
               "icon": "Info",
-              "text": "The External public IP is Standard SKU. Availability Set support both Basic and Standard SKU public IP. Proceed."
+              "text": "The FortiGate B management public IP is Standard SKU. Proceed."
             },
-            "visible": "[and(equals(basics('availabilityOptions'),'Availability Set'),equals(steps('publicip').fgtbmgmtpublicip.sku, 'Standard'))]"
+            "visible": "[equals(steps('publicip').fgtbmgmtpublicip.sku, 'Standard')]"
           },
           {
             "name": "BasicIPConfirmation3",
             "type": "Microsoft.Common.InfoBox",
             "options": {
-              "icon": "Warning",
-              "text": "The External public IP is Basic SKU. Availability Set support both Basic and Standard SKU public IP. Upgraded public IPs from Basic to Standard will remain non-zonal. Proceed.",
+              "icon": "Info",
+              "text": "The FortiGate B management public IP is Basic SKU. Availability Set support both Basic and Standard SKU public IP. Upgraded public IPs from Basic to Standard will remain non-zonal. Proceed.",
               "uri": "https://docs.microsoft.com/en-us/azure/virtual-network/ip-services/public-ip-addresses"
             },
-            "visible": "[and(equals(basics('availabilityOptions'),'Availability Set'),equals(steps('publicip').fgtbmgmtpublicip.sku, 'Basic')]"
+            "visible": "[and(equals(basics('availabilityOptions'),'Availability Set'),equals(steps('publicip').fgtbmgmtpublicip.sku, 'Basic'))]"
           }
         ]
       },
