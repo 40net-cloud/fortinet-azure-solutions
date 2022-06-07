@@ -517,10 +517,10 @@
             }
           },
           {
-            "name": "loadbalancerpublicip",
+            "name": "externalpublicip",
             "type": "Microsoft.Network.PublicIpAddressCombo",
             "label": {
-              "publicIpAddress": "External Public IP",
+              "publicIpAddress": "External public IP",
               "domainNameLabel": "Domain name label"
             },
             "toolTip": {
@@ -603,6 +603,101 @@
               "text": "This deployment can use Basic or Standard SKU public IP. Microsoft Azure offers a migration path from a basic to standard SKU public IP. All public IPs can be set to none. If no alternative internet access is provided, the SDN Connector functionality for both HA failover (via the HA MGMT NIC) and dynamic objects will not work.",
               "uri": "https://docs.microsoft.com/en-us/azure/virtual-network/virtual-network-public-ip-address-upgrade?tabs=option-upgrade-cli%2Coption-migrate-powershell"
             }
+          }
+        ]
+      },
+      {
+        "name": "publicipreview",
+        "label": "Public IP Verification",
+        "subLabel": {
+          "preValidation": "Public IP SKU Review",
+          "postValidation": "Done"
+        },
+        "bladeTitle": "Public IP SKU Review",
+        "elements": [
+          {
+            "name": "BasicIPWarningAZ1",
+            "type": "Microsoft.Common.InfoBox",
+            "options": {
+              "icon": "Error",
+              "text": "Availability Zones can only support Standard SKU public IP. The External public IP is configured using Basic SKU. Please return to previous blade and use Standard type public IPs to support Availability Zones"
+            },
+            "visible": "[and(equals(basics('availabilityOptions'),'Availability Zone'),not(equals(steps('publicip').externalpublicip.sku, 'Standard')))]"
+          },
+          {
+            "name": "StandardIPConfirmation1",
+            "type": "Microsoft.Common.InfoBox",
+            "options": {
+              "icon": "Info",
+              "text": "The External public IP is Standard SKU. Availability Set support both Basic and Standard SKU public IP. Proceed."
+            },
+            "visible": "[and(equals(basics('availabilityOptions'),'Availability Set'),equals(steps('publicip').externalpublicip.sku, 'Standard'))]"
+          },
+          {
+            "name": "BasicIPConfirmation1",
+            "type": "Microsoft.Common.InfoBox",
+            "options": {
+              "icon": "Warning",
+              "text": "The External public IP is Basic SKU. Availability Set support both Basic and Standard SKU public IP. Upgraded public IPs from Basic to Standard will remain non-zonal. Proceed.",
+              "uri": "https://docs.microsoft.com/en-us/azure/virtual-network/ip-services/public-ip-addresses"
+            },
+            "visible": "[and(equals(basics('availabilityOptions'),'Availability Set'),equals(steps('publicip').externalpublicip.sku, 'Basic')]"
+          },
+          {
+            "name": "BasicIPWarningAZ2",
+            "type": "Microsoft.Common.InfoBox",
+            "options": {
+              "icon": "Error",
+              "text": "Availability Zones can only support Standard SKU public IP. The External public IP is configured using Basic SKU. Please return to previous blade and use Standard type public IPs to support Availability Zones"
+            },
+            "visible": "[and(equals(basics('availabilityOptions'),'Availability Zone'),not(equals(steps('publicip').fgtamgmtpublicip.sku, 'Standard')))]"
+          },
+          {
+            "name": "StandardIPConfirmation2",
+            "type": "Microsoft.Common.InfoBox",
+            "options": {
+              "icon": "Info",
+              "text": "The External public IP is Standard SKU. Availability Set support both Basic and Standard SKU public IP. Proceed."
+            },
+            "visible": "[and(equals(basics('availabilityOptions'),'Availability Set'),equals(steps('publicip').fgtamgmtpublicip.sku, 'Standard'))]"
+          },
+          {
+            "name": "BasicIPConfirmation2",
+            "type": "Microsoft.Common.InfoBox",
+            "options": {
+              "icon": "Warning",
+              "text": "The External public IP is Basic SKU. Availability Set support both Basic and Standard SKU public IP. Upgraded public IPs from Basic to Standard will remain non-zonal. Proceed.",
+              "uri": "https://docs.microsoft.com/en-us/azure/virtual-network/ip-services/public-ip-addresses"
+            },
+            "visible": "[and(equals(basics('availabilityOptions'),'Availability Set'),equals(steps('publicip').fgtamgmtpublicip.sku, 'Basic')]"
+          },
+          {
+            "name": "BasicIPWarningAZ3",
+            "type": "Microsoft.Common.InfoBox",
+            "options": {
+              "icon": "Error",
+              "text": "Availability Zones can only support Standard SKU public IP. The External public IP is configured using Basic SKU. Please return to previous blade and use Standard type public IPs to support Availability Zones"
+            },
+            "visible": "[and(equals(basics('availabilityOptions'),'Availability Zone'),not(equals(steps('publicip').fgtbmgmtpublicip.sku, 'Standard')))]"
+          },
+          {
+            "name": "StandardIPConfirmation3",
+            "type": "Microsoft.Common.InfoBox",
+            "options": {
+              "icon": "Info",
+              "text": "The External public IP is Standard SKU. Availability Set support both Basic and Standard SKU public IP. Proceed."
+            },
+            "visible": "[and(equals(basics('availabilityOptions'),'Availability Set'),equals(steps('publicip').fgtbmgmtpublicip.sku, 'Standard'))]"
+          },
+          {
+            "name": "BasicIPConfirmation3",
+            "type": "Microsoft.Common.InfoBox",
+            "options": {
+              "icon": "Warning",
+              "text": "The External public IP is Basic SKU. Availability Set support both Basic and Standard SKU public IP. Upgraded public IPs from Basic to Standard will remain non-zonal. Proceed.",
+              "uri": "https://docs.microsoft.com/en-us/azure/virtual-network/ip-services/public-ip-addresses"
+            },
+            "visible": "[and(equals(basics('availabilityOptions'),'Availability Set'),equals(steps('publicip').fgtbmgmtpublicip.sku, 'Basic')]"
           }
         ]
       },
@@ -863,19 +958,19 @@
       "location": "[location()]",
       "instanceType": "[steps('instancetype').instancetypeselection]",
       "acceleratedNetworking": "[steps('networking').acceleratednetworksection.acceleratednetworking]",
-      "publicIP1NewOrExisting": "[steps('publicip').loadbalancerpublicip.newOrExistingOrNone]",
+      "publicIP1NewOrExisting": "[steps('publicip').externalpublicip.newOrExistingOrNone]",
       "publicIP2NewOrExisting": "[steps('publicip').fgtamgmtpublicip.newOrExistingOrNone]",
       "publicIP3NewOrExisting": "[steps('publicip').fgtbmgmtpublicip.newOrExistingOrNone]",
-      "publicIP1Name": "[steps('publicip').loadbalancerpublicip.name]",
-      "publicIP1ResourceGroup": "[steps('publicip').loadbalancerpublicip.resourceGroup]",
+      "publicIP1Name": "[steps('publicip').externalpublicip.name]",
+      "publicIP1ResourceGroup": "[steps('publicip').externalpublicip.resourceGroup]",
       "publicIP2Name": "[steps('publicip').fgtamgmtpublicip.name]",
       "publicIP2ResourceGroup": "[steps('publicip').fgtamgmtpublicip.resourceGroup]",
       "publicIP3Name": "[steps('publicip').fgtbmgmtpublicip.name]",
       "publicIP3ResourceGroup": "[steps('publicip').fgtbmgmtpublicip.resourceGroup]",
-      "publicIP1AddressSku": "[steps('publicip').loadbalancerpublicip.sku]",
+      "publicIP1AddressSku": "[steps('publicip').externalpublicip.sku]",
       "publicIP2AddressSku": "[steps('publicip').fgtamgmtpublicip.sku]",
       "publicIP3AddressSku": "[steps('publicip').fgtbmgmtpublicip.sku]",
-      "publicIP1AddressType": "[steps('publicip').loadbalancerpublicip.publicIPAllocationMethod]",
+      "publicIP1AddressType": "[steps('publicip').externalpublicip.publicIPAllocationMethod]",
       "publicIP2AddressType": "[steps('publicip').fgtamgmtpublicip.publicIPAllocationMethod]",
       "publicIP3AddressType": "[steps('publicip').fgtbmgmtpublicip.publicIPAllocationMethod]",
       "vnetNewOrExisting": "[steps('networking').virtualnetworksection.virtualnetwork.newOrExisting]",
