@@ -402,7 +402,7 @@
                   "openMode": "text",
                   "encoding": "UTF-8"
                 },
-                "visible": "[equals(basics('fortiGateImageSKU'), 'fortinet_fg-vm')]"
+                "visible": "[and(equals(basics('fortiGateImageSKU'), 'fortinet_fg-vm'),not(steps('instance').fgtLicense.fgtLicenseFlexVMCheck))]"
               },
               {
                 "name": "fgtBcontent",
@@ -419,7 +419,7 @@
                   "openMode": "text",
                   "encoding": "UTF-8"
                 },
-                "visible": "[equals(basics('fortiGateImageSKU'), 'fortinet_fg-vm')]"
+                "visible": "[and(equals(basics('fortiGateImageSKU'), 'fortinet_fg-vm'),not(steps('instance').fgtLicense.fgtLicenseFlexVMCheck))]"
               },
               {
                 "name": "fgtLicenseFlexVMCheck",
