@@ -388,6 +388,12 @@
                 }
               },
               {
+                "name": "fgtLicenseFlexVMCheck",
+                "type": "Microsoft.Common.CheckBox",
+                "label": "My organisation is using the Flex-VM subscription service.",
+                "visible": "[equals(basics('fortiGateImageSKU'), 'fortinet_fg-vm')]"
+              },
+              {
                 "name": "fgtAcontent",
                 "type": "Microsoft.Common.FileUpload",
                 "label": "FortiGate A License",
@@ -420,12 +426,6 @@
                   "encoding": "UTF-8"
                 },
                 "visible": "[and(equals(basics('fortiGateImageSKU'), 'fortinet_fg-vm'),not(steps('instance').fgtLicense.fgtLicenseFlexVMCheck))]"
-              },
-              {
-                "name": "fgtLicenseFlexVMCheck",
-                "type": "Microsoft.Common.CheckBox",
-                "label": "My organisation is using the Flex-VM subscription service.",
-                "visible": "[equals(basics('fortiGateImageSKU'), 'fortinet_fg-vm')]"
               },
               {
                 "name": "fgtAflexvm",
