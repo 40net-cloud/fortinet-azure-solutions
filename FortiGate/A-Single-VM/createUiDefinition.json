@@ -425,7 +425,7 @@
                     "location": "onBasics"
                   }
                 },
-                "visible": "[equals(steps('instance').availabilityOptions.availabilitySelection,'Availability set')]"
+                "visible": "[equals(steps('instance').availabilityOptions.availabilityOptions,'Availability set')]"
               },
               {
                 "name": "availabilityZoneSelector",
@@ -448,7 +448,7 @@
                     }
                   ]
                 },
-                "visible": "[equals(steps('instance').availabilityOptions.availabilitySelection,'Availability zone')]"
+                "visible": "[equals(steps('instance').availabilityOptions.availabilityOptions,'Availability zone')]"
               },
               {
                 "name": "availabilityOptionsFooter",
