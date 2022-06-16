@@ -394,7 +394,7 @@
                 "type": "Microsoft.Common.DropDown",
                 "label": "Availability Option",
                 "defaultValue": "No infrastructure redundancy required",
-                "toolTip": "Deploy FortiGate VMs in an availability set or availability zone.",
+                "toolTip": "Deploy FortiGate VMs in a new or existing availability set or or a specific availability zone.",
                 "constraints": {
                   "required": false,
                   "allowedValues": [
@@ -415,9 +415,16 @@
                 "visible": true
               },
               {
+                "name": "availabilitySetNew",
+                "type": "Microsoft.Common.CheckBox",
+                "label": "Create a new availability set?",
+                "visible": "[equals(steps('instance').availabilityOptions.availabilityOptions,'Availability set')]"
+              },
+              {
                 "name": "availabilitySetSelector",
                 "type": "Microsoft.Solutions.ResourceSelector",
                 "label": "Select the availability set for your FortiGate",
+                "toolTip": "Select your existing availability set you want to add this FortiGate VM to",
                 "resourceType": "Microsoft.Compute/availabilitySets",
                 "options": {
                   "filter": {
@@ -425,12 +432,12 @@
                     "location": "onBasics"
                   }
                 },
-                "visible": "[equals(steps('instance').availabilityOptions.availabilityOptions,'Availability set')]"
+                "visible": "[and(not(steps('instance').availabilityOptions.availabilitySetNew),equals(steps('instance').availabilityOptions.availabilityOptions,'Availability set'))]"
               },
               {
                 "name": "availabilityZoneSelector",
                 "type": "Microsoft.Common.DropDown",
-                "label": "Select the availability zone for your FortiGate",
+                "label": "Select the availability zone for your FortiGate VM",
                 "defaultValue": "Zone 2",
                 "constraints": {
                   "allowedValues": [
