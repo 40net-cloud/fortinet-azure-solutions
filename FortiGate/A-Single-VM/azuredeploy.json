@@ -151,7 +151,7 @@
         "description": "Deploy FortiGate VM in an Availability Set or Availability Zones. If Availability Zones deployment is selected but the location does not support Availability Zones an Availability Set will be deployed. If Availability Zones deployment is selected and Availability Zones are available in the location, FortiGate A will be placed in Zone 1, FortiGate B will be placed in Zone 2"
       }
     },
-    "existingAvailabilitySetId": {
+    "existingAvailabilitySetName": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
@@ -381,9 +381,9 @@
   "variables": {
     "imagePublisher": "fortinet",
     "imageOffer": "fortinet_fortigate-vm_v5",
-    "availabilitySetName": "[concat(parameters('fortiGateNamePrefix'),'-AvailabilitySet')]",
+    "availabilitySetName": "[if(equals(parameters('existingAvailabilitySetName'),''),concat(parameters('fortiGateNamePrefix'),'-AvailabilitySet'),parameters('existingAvailabilitySetName'))]",
     "availabilitySetId": {
-      "id": "[if(equals(parameters('existingAvailabilitySetId'),''), resourceId('Microsoft.Compute/availabilitySets', variables('availabilitySetName')),parameters('existingAvailabilitySetId'))]"
+      "id": "[resourceId('Microsoft.Compute/availabilitySets', variables('availabilitySetName'))]"
     },
     "useAS": "[equals(parameters('availabilityOptions'), 'Availability set')]",
     "useAZ": "[and(not(empty(pickZones('Microsoft.Compute', 'virtualMachines', parameters('location')))), equals(parameters('availabilityOptions'), 'Availability zone'))]",
@@ -467,7 +467,7 @@
     {
       "apiVersion": "2021-03-01",
       "type": "Microsoft.Compute/availabilitySets",
-      "condition": "[and(variables('useAS'),equals(parameters('existingAvailabilitySetId'),''))]",
+      "condition": "[and(variables('useAS'),equals(parameters('existingAvailabilitySetName'),''))]",
       "name": "[variables('availabilitySetName')]",
       "location": "[parameters('location')]",
       "tags": {

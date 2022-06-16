@@ -435,6 +435,15 @@
                 "visible": "[and(not(steps('instance').availabilityOptions.availabilitySetNew),equals(steps('instance').availabilityOptions.availabilityOptions,'Availability set'))]"
               },
               {
+                "name": "availabilitySetInfo",
+                "type": "Microsoft.Common.InfoBox",
+                "options": {
+                  "icon": "Info",
+                  "text": "The FortiGate VM and availability set are required to exist in the same resource group."
+                },
+                "visible": "[and(not(steps('instance').availabilityOptions.availabilitySetNew),equals(steps('instance').availabilityOptions.availabilityOptions,'Availability set'))]"
+              },
+              {
                 "name": "availabilityZoneSelector",
                 "type": "Microsoft.Common.DropDown",
                 "label": "Select the availability zone for your FortiGate VM",
@@ -906,7 +915,7 @@
       "location": "[location()]",
       "instanceType": "[steps('instance').instancetype.selection]",
       "availabilityOptions": "[steps('instance').availabilityOptions.availabilityOptions]",
-      "existingAvailabilitySetId": "[steps('instance').availabilityOptions.availabilitySetSelector.id]",
+      "existingAvailabilitySetName": "[steps('instance').availabilityOptions.availabilitySetSelector.name]",
       "availabilityZoneNumber": "[steps('instance').availabilityOptions.availabilityZoneSelector]",
       "fortiGateLicenseBYOL": "[steps('instance').fgtLicense.fgtcontent]",
       "fortiGateLicenseFlexVM": "[steps('instance').fgtLicense.fgtflexvm]",
