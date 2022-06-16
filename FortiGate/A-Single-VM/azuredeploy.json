@@ -139,6 +139,33 @@
         "description": "Virtual Machine size selection - must be F4 or other instance that supports 4 NICs"
       }
     },
+    "availabilityOptions": {
+      "type": "string",
+      "allowedValues": [
+        "None",
+        "Availability set",
+        "Availability zone"
+      ],
+      "defaultValue": "None",
+      "metadata": {
+        "description": "Deploy FortiGate VM in an Availability Set or Availability Zones. If Availability Zones deployment is selected but the location does not support Availability Zones an Availability Set will be deployed. If Availability Zones deployment is selected and Availability Zones are available in the location, FortiGate A will be placed in Zone 1, FortiGate B will be placed in Zone 2"
+      }
+    },
+    "existingAvailabilitySetName": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Name of existing Availability Set in case you want to replace or add a FortiGate to an existing cluster."
+      }
+    },
+    "availabilityZoneNumber": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Name of existing Availability Set in case you want to replace or add a FortiGate to an existing cluster."
+      }
+    },
+
     "acceleratedNetworking": {
       "type": "string",
       "defaultValue": "false",
@@ -354,6 +381,13 @@
   "variables": {
     "imagePublisher": "fortinet",
     "imageOffer": "fortinet_fortigate-vm_v5",
+    "availabilitySetName": "[if(equals(parameters('existingAvailabilitySetName'),''),concat(parameters('fortiGateNamePrefix'),'-AvailabilitySet'),parameters('existingAvailabilitySetName'))]",
+    "availabilitySetId": {
+      "id": "[resourceId('Microsoft.Compute/availabilitySets', variables('availabilitySetName'))]"
+    },
+    "useAS": "[equals(parameters('availabilityOptions'), 'Availability set')]",
+    "useAZ": "[and(not(empty(pickZones('Microsoft.Compute', 'virtualMachines', parameters('location')))), equals(parameters('availabilityOptions'), 'Availability zone'))]",
+    "zone1": "[if(equals(parameters('availabilityZoneNumber'),''),pickZones('Microsoft.Compute', 'virtualMachines', parameters('location')),array(parameters('availabilityZoneNumber')))]",
     "vnetName": "[if(equals(parameters('vnetName'),''),concat(parameters('fortiGateNamePrefix'),'-VNET'),parameters('vnetName'))]",
     "subnet1Id": "[if(equals(parameters('vnetNewOrExisting'),'new'),resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet1Name')),resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet1Name')))]",
     "subnet2Id": "[if(equals(parameters('vnetNewOrExisting'),'new'),resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet2Name')),resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet2Name')))]",
@@ -428,6 +462,23 @@
       "kind": "Storage",
       "sku": {
         "name": "[variables('serialConsoleStorageAccountType')]"
+      }
+    },
+    {
+      "apiVersion": "2021-03-01",
+      "type": "Microsoft.Compute/availabilitySets",
+      "condition": "[and(variables('useAS'),equals(parameters('existingAvailabilitySetName'),''))]",
+      "name": "[variables('availabilitySetName')]",
+      "location": "[parameters('location')]",
+      "tags": {
+        "provider": "[toUpper(parameters('fortinetTags').provider)]"
+      },
+      "properties": {
+        "platformFaultDomainCount": 2,
+        "platformUpdateDomainCount": 2
+      },
+      "sku": {
+        "name": "Aligned"
       }
     },
     {
@@ -642,6 +693,7 @@
         "type": "SystemAssigned"
       },
       "location": "[parameters('location')]",
+      "zones": "[if(variables('useAZ'), variables('zone1'), json('null'))]",
       "plan": {
         "name": "[parameters('fortiGateImageSKU')]",
         "publisher": "[variables('imagePublisher')]",
@@ -655,6 +707,7 @@
         "hardwareProfile": {
           "vmSize": "[parameters('instanceType')]"
         },
+        "availabilitySet": "[if(variables('useAS'), variables('availabilitySetId'), json('null'))]",
         "osProfile": {
           "computerName": "[variables('fgtVmName')]",
           "adminUsername": "[parameters('adminUsername')]",
