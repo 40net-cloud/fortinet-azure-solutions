@@ -906,7 +906,7 @@
       "location": "[location()]",
       "instanceType": "[steps('instance').instancetype.selection]",
       "availabilityOptions": "[steps('instance').availabilityOptions.availabilityOptions]",
-      "existingAvailabilitySetName": "[steps('instance').availabilityOptions.availabilitySetSelector.name]",
+      "existingAvailabilitySetId": "[steps('instance').availabilityOptions.availabilitySetSelector.id]",
       "availabilityZoneNumber": "[steps('instance').availabilityOptions.availabilityZoneSelector]",
       "fortiGateLicenseBYOL": "[steps('instance').fgtLicense.fgtcontent]",
       "fortiGateLicenseFlexVM": "[steps('instance').fgtLicense.fgtflexvm]",
