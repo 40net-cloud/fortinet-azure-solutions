@@ -390,7 +390,7 @@
                 }
               },
               {
-                "name": "availabilitySelection",
+                "name": "availabilityOptions",
                 "type": "Microsoft.Common.DropDown",
                 "label": "Availability Option",
                 "defaultValue": "No infrastructure redundancy required",
