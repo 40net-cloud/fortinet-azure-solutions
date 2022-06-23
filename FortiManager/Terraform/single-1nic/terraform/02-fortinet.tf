@@ -100,7 +100,7 @@ resource "azurerm_network_interface" "fmgifc" {
   ip_configuration {
     name                          = "interface1"
     subnet_id                     = azurerm_subnet.subnet1.id
-    private_ip_address_allocation = "static"
+    private_ip_address_allocation = "Static"
     private_ip_address            = var.fmg_ipaddress_a["1"]
     public_ip_address_id          = azurerm_public_ip.fmgpip.id
   }

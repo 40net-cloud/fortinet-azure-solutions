@@ -106,7 +106,7 @@ resource "azurerm_network_interface" "ftsifc1" {
   ip_configuration {
     name                          = "ipconfig1"
     subnet_id                     = azurerm_subnet.subnet1.id
-    private_ip_address_allocation = "static"
+    private_ip_address_allocation = "Static"
     private_ip_address            = var.fts_ipaddress["1"]
     public_ip_address_id          = azurerm_public_ip.ftspip.id
   }
@@ -122,7 +122,7 @@ resource "azurerm_network_interface" "ftsifc2" {
   ip_configuration {
     name                          = "ipconfig1"
     subnet_id                     = azurerm_subnet.subnet2.id
-    private_ip_address_allocation = "static"
+    private_ip_address_allocation = "Static"
     private_ip_address            = var.fts_ipaddress["2"]
   }
 }
@@ -137,7 +137,7 @@ resource "azurerm_network_interface" "ftsifc3" {
   ip_configuration {
     name                          = "interface1"
     subnet_id                     = azurerm_subnet.subnet3.id
-    private_ip_address_allocation = "static"
+    private_ip_address_allocation = "Static"
     private_ip_address            = var.fts_ipaddress["3"]
   }
 }

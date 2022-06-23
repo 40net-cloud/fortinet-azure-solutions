@@ -188,7 +188,7 @@ resource "azurerm_network_interface" "fgtaifcext" {
   ip_configuration {
     name                          = "interface1"
     subnet_id                     = azurerm_subnet.subnet1.id
-    private_ip_address_allocation = "static"
+    private_ip_address_allocation = "Static"
     private_ip_address            = var.fgt_ipaddress_a["1"]
   }
 }
@@ -213,7 +213,7 @@ resource "azurerm_network_interface" "fgtaifcint" {
   ip_configuration {
     name                          = "interface1"
     subnet_id                     = azurerm_subnet.subnet2.id
-    private_ip_address_allocation = "static"
+    private_ip_address_allocation = "Static"
     private_ip_address            = var.fgt_ipaddress_a["2"]
   }
 }
@@ -305,7 +305,7 @@ resource "azurerm_network_interface" "fgtbifcext" {
   ip_configuration {
     name                          = "interface1"
     subnet_id                     = azurerm_subnet.subnet1.id
-    private_ip_address_allocation = "static"
+    private_ip_address_allocation = "Static"
     private_ip_address            = var.fgt_ipaddress_b["1"]
   }
 }
@@ -343,7 +343,7 @@ resource "azurerm_network_interface" "fgtbifcint" {
   ip_configuration {
     name                          = "interface1"
     subnet_id                     = azurerm_subnet.subnet2.id
-    private_ip_address_allocation = "static"
+    private_ip_address_allocation = "Static"
     private_ip_address            = var.fgt_ipaddress_b["2"]
   }
 }

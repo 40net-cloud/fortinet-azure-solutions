@@ -22,7 +22,7 @@ resource "azurerm_network_interface" "fgtbifcext" {
   ip_configuration {
     name                          = "interface1"
     subnet_id                     = azurerm_subnet.subnetb1.id
-    private_ip_address_allocation = "static"
+    private_ip_address_allocation = "Static"
     private_ip_address            = var.fgt_external_ipaddress["b"]
     public_ip_address_id          = azurerm_public_ip.fgtbpip.id
   }
@@ -38,7 +38,7 @@ resource "azurerm_network_interface" "fgtbifcint" {
   ip_configuration {
     name                          = "interface1"
     subnet_id                     = azurerm_subnet.subnetb2.id
-    private_ip_address_allocation = "static"
+    private_ip_address_allocation = "Static"
     private_ip_address            = var.fgt_internal_ipaddress["b"]
   }
 }
