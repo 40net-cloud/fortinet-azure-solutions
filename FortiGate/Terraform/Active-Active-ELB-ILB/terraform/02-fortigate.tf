@@ -79,7 +79,6 @@ resource "azurerm_lb_probe" "elbprobe" {
 }
 
 resource "azurerm_lb_rule" "lbruletcp" {
-  resource_group_name            = azurerm_resource_group.resourcegroup.name
   loadbalancer_id                = azurerm_lb.elb.id
   name                           = "PublicLBRule-FE1-http"
   protocol                       = "Tcp"
@@ -92,7 +91,6 @@ resource "azurerm_lb_rule" "lbruletcp" {
 }
 
 resource "azurerm_lb_rule" "lbruleudp" {
-  resource_group_name            = azurerm_resource_group.resourcegroup.name
   loadbalancer_id                = azurerm_lb.elb.id
   name                           = "PublicLBRule-FE1-udp10551"
   protocol                       = "Udp"
@@ -164,14 +162,12 @@ resource "azurerm_lb_backend_address_pool" "ilbbackend" {
 }
 
 resource "azurerm_lb_probe" "ilbprobe" {
-  resource_group_name = azurerm_resource_group.resourcegroup.name
   loadbalancer_id     = azurerm_lb.ilb.id
   name                = "lbprobe"
   port                = 8008
 }
 
 resource "azurerm_lb_rule" "lb_haports_rule" {
-  resource_group_name            = azurerm_resource_group.resourcegroup.name
   loadbalancer_id                = azurerm_lb.ilb.id
   name                           = "lb_haports_rule"
   protocol                       = "All"
