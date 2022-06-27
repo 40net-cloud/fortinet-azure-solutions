@@ -418,6 +418,7 @@
                 "name": "availabilitySetNew",
                 "type": "Microsoft.Common.CheckBox",
                 "label": "Create a new availability set?",
+                "toolTip": "Check this box if you want to create a new availability set and add the FortiGate VM to it.",
                 "visible": "[equals(steps('instance').availabilityOptions.availabilityOptions,'Availability set')]"
               },
               {
@@ -447,6 +448,7 @@
                 "name": "availabilityZoneSelector",
                 "type": "Microsoft.Common.DropDown",
                 "label": "Select the availability zone for your FortiGate VM",
+                "toolTip": "Select the availability zone for your FortiGate VM",
                 "defaultValue": "Zone 2",
                 "constraints": {
                   "allowedValues": [
@@ -495,6 +497,7 @@
                 "name": "fgtLicenseFlexVMCheck",
                 "type": "Microsoft.Common.CheckBox",
                 "label": "My organisation is using the Flex-VM subscription service.",
+                "toolTip": "Select this box to enter a Flex-VM token",
                 "visible": "[equals(basics('fortiGateImageSKU'), 'fortinet_fg-vm')]"
               },
               {

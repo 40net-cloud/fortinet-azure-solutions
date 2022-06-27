@@ -68,6 +68,7 @@ Describe 'FGT Single VM' {
         It 'Creates the expected Azure resources' {
             $expectedResources = 'Microsoft.Resources/deployments',
                                  'Microsoft.Storage/storageAccounts',
+                                 'Microsoft.Compute/availabilitySets',
                                  'Microsoft.Network/routeTables',
                                  'Microsoft.Network/virtualNetworks',
                                  'Microsoft.Network/networkSecurityGroups',
@@ -83,6 +84,9 @@ Describe 'FGT Single VM' {
             $expectedTemplateParameters = 'acceleratedNetworking',
                                           'adminPassword',
                                           'adminUsername',
+                                          'availabilityOptions',
+                                          'availabilityZoneNumber',
+                                          'existingAvailabilitySetName',
                                           'fortiGateAdditionalCustomData',
                                           'fortiGateImageSKU',
                                           'fortiGateImageVersion',
