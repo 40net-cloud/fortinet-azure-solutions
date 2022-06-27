@@ -78,9 +78,9 @@ resource "azurerm_lb_backend_address_pool" "elbbackend" {
 }
 
 resource "azurerm_lb_probe" "elbprobe" {
-  loadbalancer_id     = azurerm_lb.elb.id
-  name                = "lbprobe"
-  port                = 8008
+  loadbalancer_id = azurerm_lb.elb.id
+  name            = "lbprobe"
+  port            = 8008
 }
 
 resource "azurerm_lb_rule" "lbruletcp" {
@@ -151,9 +151,9 @@ resource "azurerm_lb_backend_address_pool" "ilbbackend" {
 }
 
 resource "azurerm_lb_probe" "ilbprobe" {
-  loadbalancer_id     = azurerm_lb.ilb.id
-  name                = "lbprobe"
-  port                = 8008
+  loadbalancer_id = azurerm_lb.ilb.id
+  name            = "lbprobe"
+  port            = 8008
 }
 
 resource "azurerm_lb_rule" "lb_haports_rule" {
