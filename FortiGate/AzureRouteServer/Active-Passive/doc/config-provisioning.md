@@ -152,7 +152,7 @@ config system interface
   edit port4
     set mode static
     set ip <b>172.16.136.197/27</b>
-    set description management
+    set description hammgmtport
     set allowaccess ping https ssh ftm
   next
 end
