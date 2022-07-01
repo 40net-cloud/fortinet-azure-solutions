@@ -57,7 +57,7 @@ To deploy via Azure Cloud Shell you can connect via the Azure Portal or directly
 
 - The script will ask you a few questions to bootstrap a full deployment.
 
-![Azure Cloud Shell](images/azure-cloud-shell.png)
+![Azure Cloud Shell](../../Active-Passive-ELB-ILB/images/azure-cloud-shell.png)
 
 After deployment you will be shown the IP address of all deployed components. Both FortiGate VMs are accessible using the public management IPs using HTTPS on port 443 and SSH on port 22.
 

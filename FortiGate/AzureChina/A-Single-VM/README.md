@@ -16,7 +16,7 @@ This Azure ARM template will automatically deploy a full working environment con
 - 1 VNETs containing a protected subnet
 - User Defined Routes (UDR) for the protected subnets
 
-![FortiGate-VM azure design](images/fgt-single-vm.png)
+![FortiGate-VM azure design](../../A-Single-VM/images/fgt-single-vm.png)
 
 This Azure ARM template can also be extended or customized based on your requirements. Additional subnets besides the ones mentioned above are not automatically generated. By extending the Azure ARM templates additional subnets can be added. Additional subnets will require their own routing tables.
 
@@ -47,7 +47,7 @@ cd ~/clouddrive/ && wget -qO- https://github.com/40net-cloud/fortinet-azure-solu
 tar zxf - && cd ~/clouddrive/fortinet-azure-solutions-main/FortiGate/A-Single-VM/ && ./deploy.sh
 ```
 
-![Azure Cloud Shell](images/azure-cloud-shell.png)
+![Azure Cloud Shell](../../A-Single-VM/images/azure-cloud-shell.png)
 
 After deployment, you will be shown the IP addresses of all deployed components. This information is also stored in the output directory in the 'summary.out' file. You can access both management GUI's using the public management IP addresses using HTTPS on port 443.
 
