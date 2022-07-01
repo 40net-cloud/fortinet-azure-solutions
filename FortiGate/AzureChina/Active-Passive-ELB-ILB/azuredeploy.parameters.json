@@ -12,7 +12,7 @@
             "value": "## TO BE DEFINED ##"
         },
         "fortiGateImageSKU": {
-            "value": "fortinet_fg-vm_6_0"
+            "value": "fortinet_fg-vm_7_0"
         },
         "fortiGateImageVersion": {
             "value": "latest"
@@ -23,38 +23,38 @@
         "instanceType": {
             "value": "Standard_F4s"
         },
+        "availabilityOptions": {
+            "value": "Availability Set"
+        },
         "acceleratedNetworking": {
             "value": "true"
         },
-        "publicIPNewOrExisting": {
+        "publicIP1NewOrExisting": {
             "value": "new"
+        },
+        "publicIP1Name": {
+            "value": ""
+        },
+        "publicIP1ResourceGroup": {
+            "value": ""
         },
         "publicIP2NewOrExisting": {
             "value": "new"
         },
-        "publicIP3NewOrExisting": {
-            "value": "new"
-        },
-        "publicIPName": {
-            "value": "FGTAPClusterPublicIP"
-        },
-        "publicIPResourceGroup": {
-            "value": ""
-        },
         "publicIP2Name": {
-            "value": "FGTAMgmtPublicIP"
+            "value": ""
         },
         "publicIP2ResourceGroup": {
             "value": ""
         },
+        "publicIP3NewOrExisting": {
+            "value": "new"
+        },
         "publicIP3Name": {
-            "value": "FGTBMgmtPublicIP"
+            "value": ""
         },
         "publicIP3ResourceGroup": {
             "value": ""
-        },
-        "publicIPAddressType": {
-            "value": "Static"
         },
         "vnetNewOrExisting": {
             "value": "new"
@@ -105,10 +105,13 @@
             "value": "172.16.136.196"
         },
         "subnet5Name": {
-            "value": "ProtectedSubnet"
+            "value": "ProtectedASubnet"
         },
         "subnet5Prefix": {
             "value": "172.16.137.0/24"
+        },
+        "serialConsole": {
+            "value": "yes"
         },
         "fortiManager": {
             "value": "no"
@@ -123,6 +126,12 @@
             "value": ""
         },
         "fortiGateLicenseBYOLB": {
+            "value": ""
+        },
+        "fortiGateLicenseFlexVMA": {
+            "value": ""
+        },
+        "fortiGateLicenseFlexVMB": {
             "value": ""
         },
         "location": {
