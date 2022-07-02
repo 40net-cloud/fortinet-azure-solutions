@@ -91,11 +91,7 @@
           "allowedValues": [
             {
               "label": "Bring Your Own License",
-              "value": "fortinet_fg-vm"
-            },
-            {
-              "label": "Pay As You Go",
-              "value": "fortinet_fg-vm_payg_2022"
+              "value": "fortinet_fg-vm_7_0"
             }
           ]
         },
@@ -368,7 +364,7 @@
                 "osPlatform": "Linux",
                 "imageReference": {
                   "publisher": "Fortinet",
-                  "offer": "fortinet_fortigate-vm_v5",
+                  "offer": "fortinet_fortigate-vm_v7_0",
                   "sku": "[basics('fortiGateImageSKU')]"
                 },
                 "count": 1,

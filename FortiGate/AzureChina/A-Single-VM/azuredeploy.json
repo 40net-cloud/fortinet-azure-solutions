@@ -33,7 +33,7 @@
         "fortinet_fg-vm_7_0"
       ],
       "metadata": {
-        "description": "Identifies whether to to use PAYG (on demand licensing) or BYOL license model (where license is purchased separately"
+        "description": "Identifies SKU for BYOL license model (where license is purchased separately)"
       }
     },
     "fortiGateImageVersion": {
