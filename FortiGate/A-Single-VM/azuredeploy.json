@@ -22,8 +22,9 @@
     },
     "fortiGateName": {
       "type": "string",
+      "defaultValue": "",
       "metadata": {
-        "description": "Custom naming for the deployed FortiGate resources. This will override the prefix for the FortiGate name."
+        "description": "Custom naming for the deployed FortiGate resources. This will override the automatic generation based on the prefix for the FortiGate name."
       }
     },
     "fortiGateImageSKU": {
