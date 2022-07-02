@@ -107,84 +107,8 @@
           "required": false,
           "allowedValues": [
             {
-              "label": "6.2.0",
-              "value": "6.2.0"
-            },
-            {
-              "label": "6.2.2",
-              "value": "6.2.2"
-            },
-            {
-              "label": "6.2.4",
-              "value": "6.2.4"
-            },
-            {
-              "label": "6.2.5",
-              "value": "6.2.5"
-            },
-            {
-              "label": "6.4.0",
-              "value": "6.4.0"
-            },
-            {
-              "label": "6.4.2",
-              "value": "6.4.2"
-            },
-            {
-              "label": "6.4.3",
-              "value": "6.4.3"
-            },
-            {
-              "label": "6.4.5",
-              "value": "6.4.5"
-            },
-            {
-              "label": "6.4.6",
-              "value": "6.4.6"
-            },
-            {
-              "label": "6.4.7",
-              "value": "6.4.7"
-            },
-            {
-              "label": "6.4.8",
-              "value": "6.4.8"
-            },
-            {
-              "label": "6.4.9",
-              "value": "6.4.9"
-            },
-            {
-              "label": "7.0.0",
-              "value": "7.0.0"
-            },
-            {
-              "label": "7.0.1",
-              "value": "7.0.1"
-            },
-            {
-              "label": "7.0.2",
-              "value": "7.0.2"
-            },
-            {
-              "label": "7.0.3",
-              "value": "7.0.3"
-            },
-            {
               "label": "7.0.4",
               "value": "7.0.4"
-            },
-            {
-              "label": "7.0.5",
-              "value": "7.0.5"
-            },
-            {
-              "label": "7.0.6",
-              "value": "7.0.6"
-            },
-            {
-              "label": "7.2.0",
-              "value": "7.2.0"
             },
             {
               "label": "latest",
@@ -488,7 +412,7 @@
               {
                 "name": "fgtLicenseBYOLInfo",
                 "type": "Microsoft.Common.TextBlock",
-                "visible": "[equals(basics('fortiGateImageSKU'), 'fortinet_fg-vm')]",
+                "visible": "[equals(basics('fortiGateImageSKU'), 'fortinet_fg-vm_7_0')]",
                 "options": {
                   "text": "Bring Your Own License was selected in the basics blade. The license file(s) retrieved from support.fortinet.com can be uploaded here or uploaded after deployment."
                 }
@@ -498,7 +422,7 @@
                 "type": "Microsoft.Common.CheckBox",
                 "label": "My organisation is using the Flex-VM subscription service.",
                 "toolTip": "Select this box to enter a Flex-VM token",
-                "visible": "[equals(basics('fortiGateImageSKU'), 'fortinet_fg-vm')]"
+                "visible": "[equals(basics('fortiGateImageSKU'), 'fortinet_fg-vm_7_0')]"
               },
               {
                 "name": "fgtcontent",
@@ -515,7 +439,7 @@
                   "openMode": "text",
                   "encoding": "UTF-8"
                 },
-                "visible": "[and(equals(basics('fortiGateImageSKU'), 'fortinet_fg-vm'),not(steps('instance').fgtLicense.fgtLicenseFlexVMCheck))]"
+                "visible": "[and(equals(basics('fortiGateImageSKU'), 'fortinet_fg-vm_7_0'),not(steps('instance').fgtLicense.fgtLicenseFlexVMCheck))]"
               },
               {
                 "name": "fgtflexvm",
@@ -538,7 +462,7 @@
                   "text": "Pay As You Go licenses was selected in the basics blade and provisioned automatically durig deployment. Registration of the PAYG license is required to receive support.",
                   "uri": "https://docs.fortinet.com/document/fortigate-public-cloud/7.2.0/azure-administration-guide/533394/creating-a-support-account"
                 },
-                "visible": "[not(equals(basics('fortiGateImageSKU'), 'fortinet_fg-vm'))]"
+                "visible": "[not(equals(basics('fortiGateImageSKU'), 'fortinet_fg-vm_7_0'))]"
               },
               {
                 "name": "fgtLicenseMigrateInfo",
