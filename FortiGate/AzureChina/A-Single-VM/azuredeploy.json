@@ -28,7 +28,7 @@
     },
     "fortiGateImageSKU": {
       "type": "string",
-      "defaultValue": "fortinet_fg-vm",
+      "defaultValue": "fortinet_fg-vm_7_0",
       "allowedValues": [
         "fortinet_fg-vm_7_0"
       ],
