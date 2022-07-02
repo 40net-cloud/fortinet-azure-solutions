@@ -395,6 +395,7 @@
                 "name": "fgtLicenseFlexVMCheck",
                 "type": "Microsoft.Common.CheckBox",
                 "label": "My organisation is using the Flex-VM subscription service.",
+                "toolTip": "My organisation is using the Flex-VM subscription service.",
                 "visible": "[equals(basics('fortiGateImageSKU'), 'fortinet_fg-vm')]"
               },
               {
