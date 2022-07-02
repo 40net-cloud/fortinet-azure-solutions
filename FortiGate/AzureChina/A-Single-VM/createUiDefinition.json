@@ -288,7 +288,7 @@
                 "osPlatform": "Linux",
                 "imageReference": {
                   "publisher": "Fortinet",
-                  "offer": "fortinet_fortigate-vm_v7_0",
+                  "offer": "fortinet_fortigate-vm_7_0",
                   "sku": "[basics('fortiGateImageSKU')]"
                 },
                 "count": 1,
