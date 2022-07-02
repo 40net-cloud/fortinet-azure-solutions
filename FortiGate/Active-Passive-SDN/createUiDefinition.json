@@ -514,7 +514,7 @@
                   "subnets": "Requirement to have 4 subnets connected to the FortiGate VM: external, internal, hasync and management"
                 },
                 "defaultValue": {
-                  "name": "FortiGate-VNET",
+                  "name": "[if(equals(basics('fortiGateNamePrefix'),''),'FortiGate-VNET',concat(basics('fortiGateNamePrefix'),'-VNET'))]",
                   "addressPrefixSize": "/21"
                 },
                 "constraints": {

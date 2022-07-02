@@ -1,4 +1,4 @@
-# Azure China - FortiGate Next-Generation Firewall - A Single VM
+# Azure China - Active/Passive High Available FortiGate pair with external and internal Azure Standard Load Balancer
 
 ## Introduction
 
