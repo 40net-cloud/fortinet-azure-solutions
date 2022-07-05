@@ -669,7 +669,6 @@
               "domainNameLabel": "DNS name linked to this public IP"
             },
             "defaultValue": {
-              "publicIpAddressName": "FGTAPClusterPublicIP",
               "publicIpAddressName": "[if(equals(basics('fortiGateNamePrefix'),''),'FGTAPClusterPublicIP',concat(basics('fortiGateNamePrefix'),'-FGT-PIP'))]",
               "domainNameLabel": "mydomain"
             },
