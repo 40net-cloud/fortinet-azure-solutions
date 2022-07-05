@@ -162,9 +162,9 @@ resource "azurerm_lb_backend_address_pool" "ilbbackend" {
 }
 
 resource "azurerm_lb_probe" "ilbprobe" {
-  loadbalancer_id     = azurerm_lb.ilb.id
-  name                = "lbprobe"
-  port                = 8008
+  loadbalancer_id = azurerm_lb.ilb.id
+  name            = "lbprobe"
+  port            = 8008
 }
 
 resource "azurerm_lb_rule" "lb_haports_rule" {
