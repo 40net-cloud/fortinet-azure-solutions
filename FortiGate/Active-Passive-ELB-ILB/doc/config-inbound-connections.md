@@ -28,13 +28,19 @@ In the diagram the different steps to establish a session are layed out. This fl
 
 #### Traffic transiting the FortiGate VMs
 
-Enabling the Floating IP option in a load balancing rule results in the Azure Load Balancer to pass the source and destination IP unchanged to the backend FortiGate VMs. In the FortiGate VM you can use the Virtual IP (VIP) construct to pick up this traffic and perform Destination Network Address Translation (DNAT). If you disable the Floating IP option on the load balancing rule the destination IP of the inbound packet is translated (DNAT) to the IP address of the backend FortiGate VMs as configured in the backend configuration of the Azure Load Balancer. In our example, this would be 172.16.136.5 or 172.16.136.6 for the primary or secondary FortiGate respectively. To configure the FortiGate for a non floating IP load balancing rule it is required to create a VIP with the same name on each FortiGate VM and assign it in the rulebase on both units.
+Enabling the Floating IP option in a load balancing rule results in the Azure Load Balancer to pass the source and destination IP unchanged to the backend FortiGate VMs. In the FortiGate VM you can use the Virtual IP (VIP) construct to pick up this traffic and perform Destination Network Address Translation (DNAT).
+
+If you disable the Floating IP option on the load balancing rule the destination IP of the inbound packet is translated (DNAT) to the IP address of the backend FortiGate VMs as configured in the backend configuration of the Azure Load Balancer. In our example, this would be 172.16.136.5 or 172.16.136.6 for the primary or secondary FortiGate respectively. To configure the FortiGate for a non floating IP load balancing rule it is required to create a VIP with the same name on each FortiGate VM and assign it in the rulebase on both units.
 
 In case you have a requirement to host multiple public IPs for different services using the Floating IP method makes it easy for the FortiGate to distinguish the different inbound requests.
+
+An example of the configuration of the FortiGate can be found [here](#fortigate).
 
 #### Traffic connecting to a service on the FortiGate VMs
 
 For trafic destined to terminate on the FortiGate VMs (e.g. IPSEC tunnels, SSL VPN, ...) the FortiGate is by default not aware of the public IP address attached to the Azure Load Balancer. In this case, where you have the service part of the FortiGate VMs it is best practice to disable the Floating IP option.
+
+An example of the configuration of the FortiGate can be found [here](#configuration---ipsec).
 
 ## Configuration
 
