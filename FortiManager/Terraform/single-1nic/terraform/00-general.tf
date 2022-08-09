@@ -21,16 +21,16 @@ variable "PASSWORD" {
 }
 
 ##############################################################################################################
-# FortiGate license type
+# FortiManager license type
 ##############################################################################################################
 
 variable "FMG_IMAGE_SKU" {
-  description = "Azure Marketplace default image sku hourly (PAYG 'fortinet_fg-vm_payg_20190624') or byol (Bring your own license 'fortinet_fg-vm')"
+  description = "Azure Marketplace default image byol (Bring your own license 'fortinet-fortimanager)"
   default     = "fortinet-fortimanager"
 }
 
 variable "FMG_VERSION" {
-  description = "FortiGate version by default the 'latest' available version in the Azure Marketplace is selected"
+  description = "FortiManager version by default the 'latest' available version in the Azure Marketplace is selected"
   default     = "latest"
 }
 
@@ -61,7 +61,7 @@ provider "azurerm" {
 }
 
 ##############################################################################################################
-# Accept the Terms license for the FortiGate Marketplace image
+# Accept the Terms license for the FortiManager Marketplace image
 # This is a one-time agreement that needs to be accepted per subscription
 # https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/marketplace_agreement
 ##############################################################################################################
