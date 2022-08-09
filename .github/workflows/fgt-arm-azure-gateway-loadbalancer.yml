@@ -1,0 +1,51 @@
+name: '[FGT] ARM - Azure Gateway Load Balancer'
+
+env:
+  ARMPath: FortiGate/AzureGatewayLoadBalancer/
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+    - 'FortiGate/AzureGatewayLoadBalancer/*.json'
+    - 'FortiGate/AzureGatewayLoadBalancer/**.tests.ps1'
+
+jobs:
+  ARM_AzureGatewayLoadBalancer:
+    name: 'ARM Template AzureGatewayLoadBalancer'
+    runs-on: ubuntu-latest
+    env:
+      ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+      ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+      ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+
+    steps:
+    - name: "Checkout"
+      uses: actions/checkout@v2
+
+    - name: Test ARM Templates - path
+      id: armttktest
+      uses: aliencube/arm-ttk-actions@v0.3
+      with:
+        path: ${{ env.ARMPath }}
+
+    - name: Test result - path
+      shell: bash
+      continue-on-error: true
+      run: |
+        echo "${{ toJSON(fromJSON(steps.armttktest.outputs.results)) }}"
+
+    - name: Azure Login via Az module
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZURE_CREDENTIALS}}
+        enable-AzPSSession: true
+
+    - name: Post result to Teams
+      uses: toko-bifrost/ms-teams-deploy-card@master #  or "./" if in a local set-up
+      if: always()
+      with:
+        github-token: ${{ github.token }}
+        webhook-uri: ${{ secrets.MS_TEAMS_WEBHOOK_URI }}
