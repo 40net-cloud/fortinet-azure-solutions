@@ -124,7 +124,7 @@ Inbound connections are considered the connections coming from the internet towa
 The producer environment only sees public IPs and doesn't require specific routing as the FortiGate uses a ![virtual wire pair](https://docs.fortinet.com/document/fortigate/7.2.1/administration-guide/166804/virtual-wire-pair) to pick up, inspect the traffic and send it back to the producer environment.
 
 <p align="center">
-  <img width="800px" src="images/gwlb-inbound.png" alt="inbound flow">
+  <img width="800px" src="images/gwlbflow-inbound.png" alt="inbound flow">
 </p>
 
 1. Connection from client to the Standard Public IP - s: a.b.c.d - d: w.x.y.z
@@ -141,7 +141,7 @@ Outbound connections are considered the connections coming from the internal sub
 The producer environment only sees public IPs and doesn't require specific routing as the FortiGate uses a ![virtual wire pair](https://docs.fortinet.com/document/fortigate/7.2.1/administration-guide/166804/virtual-wire-pair) to pick up, inspect the traffic and send it back to the producer environment.
 
 <p align="center">
-  <img width="800px" src="images/gwlb-outbound.png" alt="inbound flow">
+  <img width="800px" src="images/gwlbflow-outbound.png" alt="outbound flow">
 </p>
 
 1. Outbound connection from the VM to the internet - s: 10.1.0.5 - d: a.b.c.d
