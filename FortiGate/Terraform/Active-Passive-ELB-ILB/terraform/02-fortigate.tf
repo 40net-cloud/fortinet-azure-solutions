@@ -76,6 +76,9 @@ resource "azurerm_lb_probe" "elbprobe" {
   loadbalancer_id = azurerm_lb.elb.id
   name            = "lbprobe"
   port            = 8008
+  interval_in_seconds = 5
+  number_of_probes = 2
+  protocol = Tcp
 }
 
 resource "azurerm_lb_rule" "lbruletcp" {
@@ -123,6 +126,9 @@ resource "azurerm_lb_probe" "ilbprobe" {
   loadbalancer_id = azurerm_lb.ilb.id
   name            = "lbprobe"
   port            = 8008
+  interval_in_seconds = 5
+  number_of_probes = 2
+  protocol = Tcp
 }
 
 resource "azurerm_lb_rule" "lb_haports_rule" {
