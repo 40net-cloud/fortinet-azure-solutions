@@ -621,16 +621,30 @@
       "properties": {
         "securityRules": [
           {
-            "name": "AllowAllInbound",
+            "name": "mgmt-https",
             "properties": {
-              "description": "Allow all in",
-              "protocol": "*",
+              "description": "Allow HTTPS to FGT",
+              "protocol": "Tcp",
               "sourcePortRange": "*",
-              "destinationPortRange": "*",
+              "destinationPortRange": "443",
               "sourceAddressPrefix": "*",
               "destinationAddressPrefix": "*",
               "access": "Allow",
               "priority": 100,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "mgmt-ssh",
+            "properties": {
+              "description": "Allow SSH to FGT",
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "22",
+              "sourceAddressPrefix": "*",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 101,
               "direction": "Inbound"
             }
           },
