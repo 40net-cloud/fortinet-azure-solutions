@@ -138,7 +138,7 @@ The producer environment only sees public IPs and doesn't require specific routi
 
 Outbound connections are considered the connections coming from the internal subnets within the VNET or peered VNETs via the FortiGate towards the internet. Once the address translation (SNAT) needs to be done by Azure with the Standard Public IP or the Azure Standard Load Balancer the packet is send to the producer environment for inspection. In the diagram the different steps to establish a session are layed out.
 
-The producer environment only sees public IPs and doesn't require specific routing as the FortiGate uses a ![virtual wire pair](https://docs.fortinet.com/document/fortigate/7.2.1/administration-guide/166804/virtual-wire-pair) to pick up, inspect the traffic and send it back to the producer environment.
+The producer environment only sees public IPs and doesn't require specific routing as the FortiGate uses a [virtual wire pair](https://docs.fortinet.com/document/fortigate/7.2.1/administration-guide/166804/virtual-wire-pair) to pick up, inspect the traffic and send it back to the producer environment.
 
 <p align="center">
   <img width="800px" src="images/gwlbflow-outbound.png" alt="outbound flow">
