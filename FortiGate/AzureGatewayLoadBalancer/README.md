@@ -58,7 +58,7 @@ config system vxlan
         set interface "port1"
         set vni 801
         set dstport 2001
-        set remote-ip "172.16.136.4"
+        set remote-ip "172.16.136.68"
     next
     edit "intvxlan"
         set interface "port1"
@@ -130,7 +130,7 @@ The producer environment only sees public IPs and doesn't require specific routi
 1. Connection from client to the Standard Public IP - s: a.b.c.d - d: w.x.y.z
 2. The packet is picked up and transfered from the consumer environment towards the producer Azure Gateway Load Balancer. No NAT - s: a.b.c.d - d: w.x.y.z
 3. Traffic is send to one of the FortiGate VM across the inbound VXLAN tunnel. - s: a.b.c.d - d: w.x.y.z
-4. Traffic when allowed on the Virtual Wire Pair firewall policy is send back to the Azure Gateway Load Balancer across the outbound VXLAN tunnel. - s: a.b.c.d - d: w.x.y.z
+4. Traffic when allowed on the virtual wire pair firewall policy is send back to the Azure Gateway Load Balancer across the outbound VXLAN tunnel. - s: a.b.c.d - d: w.x.y.z
 5. The Azure Gateway Load Balancer sends the inspected packet back to the consumer VNET - s: a.b.c.d - d: w.x.y.z
 6. The inspected packet is translated (DNAT) to the receiving VM - s: a.b.c.d - d: 10.1.0.5
 
@@ -145,11 +145,11 @@ The producer environment only sees public IPs and doesn't require specific routi
 </p>
 
 1. Outbound connection from the VM to the internet - s: 10.1.0.5 - d: a.b.c.d
-2. The packet is translated (SNAT) as this the destination is internet and the send to the Azure Gateway Load Balancer for inspection - s: w.x.y.z - d: a.b.c.d
+2. The packet is translated (SNAT) and send to the Azure Gateway Load Balancer for inspection. The SNAT happens becuase this is outbound traffic to the internet. - s: w.x.y.z - d: a.b.c.d
 3. Traffic is send to one of the FortiGate VM across the inbound VXLAN tunnel. - s: w.x.y.z - d: a.b.c.d
-4. Traffic when allowed on the Virtual Wire Pair firewall policy is send back to the Azure Gateway Load Balancer across the outbound VXLAN tunnel. - s: a.b.c.d - d: w.x.y.z
+4. Traffic when allowed on the virtual wire pair firewall policy is send back to the Azure Gateway Load Balancer across the outbound VXLAN tunnel. - s: a.b.c.d - d: w.x.y.z
 5. The Azure Gateway Load Balancer sends the inspected packet back to the consumer VNET - s: w.x.y.z - d: a.b.c.d
-6. The inspected packet and allowed packet is send to the client on the internet - s: w.x.y.z - d: a.b.c.d
+6. The inspected and allowed packet is send to the client on the internet - s: w.x.y.z - d: a.b.c.d
 
 ## Support
 
