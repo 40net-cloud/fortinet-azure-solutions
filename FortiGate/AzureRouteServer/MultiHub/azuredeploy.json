@@ -32,7 +32,7 @@
       "defaultValue": "fortinet_fg-vm",
       "allowedValues": [
         "fortinet_fg-vm",
-        "fortinet_fg-vm_payg_20190624"
+        "fortinet_fg-vm_payg_2022"
       ],
       "metadata": {
         "description": "Identifies whether to to use PAYG (on demand licensing) or BYOL license model (where license is purchased separately)"

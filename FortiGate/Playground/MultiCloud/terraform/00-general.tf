@@ -58,8 +58,8 @@ variable "account" {
 ##############################################################################################################
 
 variable "FGT_IMAGE_SKU" {
-  description = "Azure Marketplace default image sku hourly (PAYG 'fortinet_fg-vm_payg_20190624') or byol (Bring your own license 'fortinet_fg-vm')"
-  default     = "fortinet_fg-vm_payg_20190624"
+  description = "Azure Marketplace default image sku hourly (PAYG 'fortinet_fg-vm_payg_2022') or byol (Bring your own license 'fortinet_fg-vm')"
+  default     = "fortinet_fg-vm_payg_2022"
 }
 
 variable "FGT_VERSION" {

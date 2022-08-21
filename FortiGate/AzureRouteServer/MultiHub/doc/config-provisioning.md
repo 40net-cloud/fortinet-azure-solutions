@@ -38,24 +38,24 @@ end
 config system interface
   edit port1
     set mode static
-    set ip <b>172.16.136.5/26</b>
+    set ip <b>172.16.136.4/26</b>
     set description external
     set allowaccess probe-response
   next
   edit port2
     set mode static
-    set ip <b>172.16.136.69/24</b>
+    set ip <b>172.16.136.68/24</b>
     set description internal
     set allowaccess probe-response
   next
   edit port3
     set mode static
-    set ip <b>172.16.136.133/24</b>
+    set ip <b>172.16.136.132/24</b>
     set description hasyncport
   next
   edit port4
     set mode static
-    set ip <b>172.16.136.197/24</b>
+    set ip <b>172.16.136.196/24</b>
     set description hammgmtport
     set allowaccess ping https ssh ftm
   next
@@ -99,13 +99,25 @@ config router bgp
       set remote-as 65515
       set interface port1
     next
+    edit <b>172.16.135.6</b>
+      set capability-default-originate enable
+      set ebgp-enforce-multihop enable
+      set soft-reconfiguration enable
+      set interface vx1
+    next
+    edit <b>172.16.135.7</b>
+      set capability-default-originate enable
+      set ebgp-enforce-multihop enable
+      set soft-reconfiguration enable
+      set interface vx1
+    next
   end
 end
 config system vxlan
   edit vx1
     set interface port1
     set vni 1000
-    set remote-ip <b>172.16.136.4 172.16.136.5</b>
+    set remote-ip <b>172.16.144.4 172.16.144.5</b>
   next
 end
 config system interface
