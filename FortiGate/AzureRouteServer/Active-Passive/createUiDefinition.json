@@ -462,7 +462,7 @@
             },
             "options": {
               "hideNone": false,
-              "hideDomainNameLabel": false
+              "hideDomainNameLabel": true
             },
             "visible": true
           },
