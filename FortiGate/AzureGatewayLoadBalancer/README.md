@@ -13,7 +13,7 @@ As you can see in the diagram, the Gateway Load Balancer and associated backend 
 All traffic in or out of the virtual machine via the Standard Load balancer or the Standard Public IP will be forwarded to the Gateway Load Balancer and inspected by a FortiGate VM. The primary template here deploys the right side (Provider Side) of this diagram. A sample consumer template is available here as well, but is not necessarily meant for production.
 
 <p align="center">
-  <img width="800px" src="images/gwlbdesign.png" alt="FortiGate and Azure Gateway Load Balancer design">
+  <img width="800px" src="images/gwlb-design.png" alt="FortiGate and Azure Gateway Load Balancer design">
 </p>
 
 ## Deployment
@@ -124,7 +124,7 @@ Inbound connections are considered the connections coming from the internet towa
 The producer environment only sees public IPs and doesn't require specific routing as the FortiGate uses a ![virtual wire pair](https://docs.fortinet.com/document/fortigate/7.2.1/administration-guide/166804/virtual-wire-pair) to pick up, inspect the traffic and send it back to the producer environment.
 
 <p align="center">
-  <img width="800px" src="images/gwlbflow-inbound.png" alt="inbound flow">
+  <img width="800px" src="images/gwlb-flow-inbound.png" alt="inbound flow">
 </p>
 
 1. Connection from client to the Standard Public IP - s: a.b.c.d - d: w.x.y.z
@@ -141,7 +141,7 @@ Outbound connections are considered the connections coming from the internal sub
 The producer environment only sees public IPs and doesn't require specific routing as the FortiGate uses a [virtual wire pair](https://docs.fortinet.com/document/fortigate/7.2.1/administration-guide/166804/virtual-wire-pair) to pick up, inspect the traffic and send it back to the producer environment.
 
 <p align="center">
-  <img width="800px" src="images/gwlbflow-outbound.png" alt="outbound flow">
+  <img width="800px" src="images/gwlb-flow-outbound.png" alt="outbound flow">
 </p>
 
 1. Outbound connection from the VM to the internet - s: 10.1.0.5 - d: a.b.c.d
