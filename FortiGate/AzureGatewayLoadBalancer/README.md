@@ -13,7 +13,7 @@ As you can see in the diagram, the Gateway Load Balancer and associated backend 
 All traffic in or out of the virtual machine via the Standard Load balancer or the Standard Public IP will be forwarded to the Gateway Load Balancer and inspected by a FortiGate VM. The primary template here deploys the right side (Provider Side) of this diagram. A sample consumer template is available here as well, but is not necessarily meant for production.
 
 <p align="center">
-  <img width="800px" src="images/gwlb-design.png" alt="FortiGate and Azure Gateway Load Balancer design">
+  <img width="800px" src="images/gwlb-overview.png" alt="FortiGate and Azure Gateway Load Balancer design">
 </p>
 
 ## Deployment
