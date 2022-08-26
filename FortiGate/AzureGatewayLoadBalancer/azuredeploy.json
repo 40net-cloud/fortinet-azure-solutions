@@ -431,7 +431,7 @@
     "sn1IPStartAddress": "[split(parameters('subnet1StartAddress'),'.')]",
     "sn1IPfga": "[concat(variables('sn1IPArray0'),'.',variables('sn1IPArray1'),'.',variables('sn1IPArray2'),'.',int(variables('sn1IPStartAddress')[3]))]",
     "sn1IPfgb": "[concat(variables('sn1IPArray0'),'.',variables('sn1IPArray1'),'.',variables('sn1IPArray2'),'.',add(int(variables('sn1IPStartAddress')[3]),1))]",
-    "sn1IPlb": "[concat(variables('sn1IPArray0'),'.',variables('sn1IPArray1'),'.',variables('sn1IPArray2'),'.',add(int(variables('sn1IPStartAddress')[3]),2)]",
+    "sn1IPlb": "[concat(variables('sn1IPArray0'),'.',variables('sn1IPArray1'),'.',variables('sn1IPArray2'),'.',add(int(variables('sn1IPStartAddress')[3]),2))]",
     "sn2IPArray": "[split(parameters('subnet2Prefix'),'.')]",
     "sn2IPArray2ndString": "[string(variables('sn2IPArray')[3])]",
     "sn2IPArray2nd": "[split(variables('sn2IPArray2ndString'),'/')]",
