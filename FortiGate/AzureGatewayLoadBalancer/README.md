@@ -58,13 +58,13 @@ config system vxlan
         set interface "port1"
         set vni 801
         set dstport 2001
-        set remote-ip "172.16.136.68"
+        set remote-ip "172.16.136.6"
     next
     edit "intvxlan"
         set interface "port1"
         set vni 800
         set dstport 2000
-        set remote-ip "172.16.136.68"
+        set remote-ip "172.16.136.6"
     next
 end
 config system interface
