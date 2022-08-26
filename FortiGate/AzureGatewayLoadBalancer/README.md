@@ -127,7 +127,7 @@ Open the network interface that has the public IP attached and in IP configurati
 ### Standard External Load Balancer
 Open the Load Balancer Front End IP configuration and select the Gateway Load Balancer to use.
 <p align="center">
-  <img width="800px" src="images/gwlb-ipconfig.png" alt="Network Interface IP Configuration">
+  <img width="800px" src="images/gwlb-loadbalancer.png" alt="Load Balancer Configuration">
 </p>
 
 ## Traffic flow
