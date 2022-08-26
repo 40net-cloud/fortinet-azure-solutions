@@ -551,7 +551,7 @@
               "privateIPAddress": "[variables('sn1IPlb')]",
               "privateIPAllocationMethod": "Static",
               "subnet": {
-                "id": "[variables('subnet2Id')]"
+                "id": "[variables('subnet1Id')]"
               }
             }
           }
