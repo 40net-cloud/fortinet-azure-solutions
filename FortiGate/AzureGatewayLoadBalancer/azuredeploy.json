@@ -441,7 +441,7 @@
     "sn2IPArray0": "[string(int(variables('sn2IPArray')[0]))]",
     "sn2GatewayIP": "[concat(variables('sn2IPArray0'),'.',variables('sn2IPArray1'),'.',variables('sn2IPArray2'),'.',variables('sn2IPArray3'))]",
     "sn2IPStartAddress": "[split(parameters('subnet2StartAddress'),'.')]",
-    "sn2IPfga": "[concat(variables('sn2IPArray0'),'.',variables('sn2IPArray1'),'.',variables('sn2IPArray2'),'.',add(int(variables('sn2IPStartAddress')[3])))]",
+    "sn2IPfga": "[concat(variables('sn2IPArray0'),'.',variables('sn2IPArray1'),'.',variables('sn2IPArray2'),'.',int(variables('sn2IPStartAddress')[3]))]",
     "sn2IPfgb": "[concat(variables('sn2IPArray0'),'.',variables('sn2IPArray1'),'.',variables('sn2IPArray2'),'.',add(int(variables('sn2IPStartAddress')[3]),1))]",
     "providerLBName": "[concat(parameters('fortiGateNamePrefix'),'-GatewayLoadBalancer')]",
     "providerLBId": "[resourceId('Microsoft.Network/loadBalancers',variables('providerLBName'))]",
