@@ -114,8 +114,23 @@ config firewall policy
 end
 ```
 
-## Traffic flow
+## Azure configuration
 
+The Azure Gateway Load Balancer can be attached to a instance-level Standard Public IP or a Standard External Load Balancer. Once you have your VMs configured with either the Public IP or the Load Balancer the Gateway Load Balancer can be configured. The FortiGate VMs don't intervene in the routing, address translation and NSGs. They need to be configured correctly for this setup to work. For outbound connections it is important to take into account the potential SNAT port exhaustion. More information is available in the links provider at the bottom of this document. 
+
+### Standard Public IP
+Open the network interface that has the public IP attached and in IP configuration menu you can select the Gateway Load Balancer to use.
+<p align="center">
+  <img width="800px" src="images/gwlb-ipconfig.png" alt="Network Interface IP Configuration">
+</p>
+
+### Standard External Load Balancer
+Open the Load Balancer Front End IP configuration and select the Gateway Load Balancer to use.
+<p align="center">
+  <img width="800px" src="images/gwlb-ipconfig.png" alt="Network Interface IP Configuration">
+</p>
+
+## Traffic flow
 
 ### Inbound connection
 
@@ -150,6 +165,13 @@ The producer environment only sees public IPs and doesn't require specific routi
 4. Traffic when allowed on the virtual wire pair firewall policy is send back to the Azure Gateway Load Balancer across the outbound VXLAN tunnel. - s: a.b.c.d - d: w.x.y.z
 5. The Azure Gateway Load Balancer sends the inspected packet back to the consumer VNET - s: w.x.y.z - d: a.b.c.d
 6. The inspected and allowed packet is send to the client on the internet - s: w.x.y.z - d: a.b.c.d
+
+## Links and documentation
+
+- [Azure Gateway Load Balancer](https://docs.microsoft.com/en-us/azure/load-balancer/gateway-overview)
+- [Azure Load Balancer SKUs](https://docs.microsoft.com/en-gb/azure/load-balancer/skus)
+- [Azure Load Balancer outbound connectivity](https://docs.microsoft.com/en-gb/azure/load-balancer/load-balancer-outbound-connections)
+- [Azure Load Balancer outbound rules](https://docs.microsoft.com/en-gb/azure/load-balancer/outbound-rules)
 
 ## Support
 
