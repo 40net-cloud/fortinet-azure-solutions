@@ -171,7 +171,7 @@ az deployment group validate --resource-group "$rg" \
     --parameters ResourceNamePrefix="$prefix" ServicePrincipalAppID="$appid" ServicePrincipalAppSecret="$appsecret" \
     ServicePrincipalObjectID="$objectid" FortiAnalyzerIntegrationOptions="no" \
     FortiGatePSKSecret="$passwd" AdminUsername="$username" AdminPassword="$passwd" \
-    AccessRestrictionIPRange="0.0.0.0/0"
+    InstanceType="$instancetype" AccessRestrictionIPRange="0.0.0.0/0"
 result=$?
 if [ $result != 0 ]; then
     echo "--> Validation failed ..."
@@ -188,7 +188,7 @@ az deployment group create --resource-group "$rg" \
     --parameters ResourceNamePrefix="$prefix" ServicePrincipalAppID="$appid" ServicePrincipalAppSecret="$appsecret" \
     ServicePrincipalObjectID="$objectid" FortiAnalyzerIntegrationOptions="no" \
     FortiGatePSKSecret="$passwd" AdminUsername="$username" AdminPassword="$passwd" \
-    AccessRestrictionIPRange="0.0.0.0/0"
+    InstanceType="$instancetype" AccessRestrictionIPRange="0.0.0.0/0"
 result=$?
 if [ $result != 0 ];
 then
