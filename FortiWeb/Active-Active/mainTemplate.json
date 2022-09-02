@@ -37,6 +37,7 @@
       "allowedValues": [
         "6.3.17",
         "7.0.0",
+        "7.0.2",
         "latest"
       ],
       "metadata": {
