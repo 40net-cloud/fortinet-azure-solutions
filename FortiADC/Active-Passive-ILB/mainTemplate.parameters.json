@@ -1,0 +1,70 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "adminUsername": {
+            "value": "## TO BE DEFINED ##"
+        },
+        "adminPassword": {
+            "value": "## TO BE DEFINED ##"
+        },
+        "fortiADCNamePrefix": {
+            "value": "## TO BE DEFINED ##"
+        },
+        "fortiADCImageSKU": {
+            "value": "fad-vm-byol"
+        },
+        "fortiADCImageVersion": {
+            "value": "latest"
+        },
+        "instanceType": {
+            "value": "Standard_F2s"
+        },
+        "availabilityOptions": {
+            "value": "Availability Set"
+        },
+        "internalLoadBalancerSKU": {
+            "value": "Basic"
+        },
+        "vnetNewOrExisting": {
+            "value": "new"
+        },
+        "vnetName": {
+            "value": ""
+        },
+        "vnetResourceGroup": {
+            "value": ""
+        },
+        "vnetAddressPrefix": {
+            "value": "172.16.136.0/22"
+        },
+        "subnet1Name": {
+            "value": "ExternalSubnet"
+        },
+        "subnet1Prefix": {
+            "value": "172.16.136.0/26"
+        },
+        "subnet1StartAddress": {
+            "value": "172.16.136.4"
+        },
+        "subnet2Name": {
+            "value": "InternalSubnet"
+        },
+        "subnet2Prefix": {
+            "value": "172.16.136.64/26"
+        },
+        "subnet2StartAddress": {
+            "value": "172.16.136.68"
+        },
+        "location": {
+            "value": ""
+        },
+        "fortinetTags": {
+            "value": {
+                "publisher": "Fortinet",
+                "template": "FAD-Active-Passive-ELB",
+                "provider": "6EB3B02F-50E5-4A3E-8CB8-2E12925831FADAP"
+            }
+        }
+    }
+}
