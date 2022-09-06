@@ -279,6 +279,27 @@
             },
             "count": 2,
             "visible": true
+          },
+          {
+            "name": "loadbalancersku",
+            "type": "Microsoft.Common.DropDown",
+            "label": "Azure Internal Load Balancer SKU",
+            "defaultValue": "Basic",
+            "toolTip": "",
+            "constraints": {
+              "required": false,
+              "allowedValues": [
+                {
+                  "label": "Basic",
+                  "value": "Basic"
+                },
+                {
+                  "label": "Standard",
+                  "value": "Standard"
+                }
+              ]
+            },
+            "visible": true
           }
         ]
       },
@@ -376,7 +397,7 @@
       "availabilityOptions": "[basics('availabilityOptions')]",
       "location": "[location()]",
       "instanceType": "[steps('instancetype').instancetypeselection]",
-      "internalLoadBalancerSKU": "[steps('publicip').loadbalancerpublicip.sku]",
+      "internalLoadBalancerSKU": "[steps('instancetype').loadbalancersku]",
       "vnetNewOrExisting": "[steps('networking').virtualnetworksection.virtualnetwork.newOrExisting]",
       "vnetName": "[steps('networking').virtualnetworksection.virtualnetwork.name]",
       "vnetResourceGroup": "[steps('networking').virtualnetworksection.virtualnetwork.resourceGroup]",
