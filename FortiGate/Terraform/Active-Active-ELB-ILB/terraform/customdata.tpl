@@ -67,17 +67,18 @@ config system admin
     next
 end
 %{ endif }
-config system api-user
-    edit restapi
-         set api-key p50sqq4dsqg8czmtywjh31wq674G48
-         set accprofile "super_admin"
-         config trusthost
-             edit 1
-                 set ipv4-trusthost 94.255.228.230 255.255.255.255
-             next
-        end
-    next
-end
+# API key can be set during cloud-init. The key needs to be exactly 30 chars long.
+#config system api-user
+#    edit restapi
+#         set api-key 123456789012345678901234567890
+#         set accprofile "super_admin"
+#         config trusthost
+#             edit 1
+#                 set ipv4-trusthost x.y.z.w 255.255.255.255
+#             next
+#        end
+#    next
+#end
 #
 # Example config to provision an API user which can be used with the FortiGate Terraform Provider
 # The API key is either an encrypted version. An unencrypted key can provided (exact 30 char long)
