@@ -65,7 +65,7 @@
         "toolTip": "Naming prefix for all deployed resources",
         "constraints": {
           "required": true,
-          "regex": "^[A-Za-z0-9]{1,15}$",
+          "regex": "^[A-Za-z0-9-]{1,15}$",
           "validationMessage": "Only alphanumeric characters are allowed, and the value must be 1 to 15 characters."
         },
         "visible": true
