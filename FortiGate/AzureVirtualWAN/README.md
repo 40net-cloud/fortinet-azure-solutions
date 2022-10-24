@@ -3,62 +3,49 @@
 
 ## Introduction
 
-Microsoft Azure Virtual WAN provides easy, unified and global connectivity. It support large-scale branch connectivity and optimal routing using the Microsoft global network. The FortiGate appliances located in branch and datacenter locations can connect into Microsoft Azure Virtual HUB. From the Azure Virtual HUB connections can be made to peered VNETs as well as other Virtual HUBs in different regions.
+Microsoft Azure Virtual WAN provides easy, unified and global connectivity. It supports large-scale branch connectivity and optimal routing using the Microsoft global network. 
 
-## Design
+Fortinet offers integration with Azure Virtual WAN in different ways to provide different security and connectivity solutions both inside Azure as well as on-premise locations into Azure. There are different architectures available that each provide specific functionality. Some functionality can be overlapping between the different architectures. In this overview, we are going to give all the information needed to select the architecture or combination of architectures for your environment.
 
-On this webpage we have created different scenarios on how to integrate FortiGate and Microsoft Azure Virtual WAN. All of these scenarios can be deployed using the associated ARM template into your Azure Subscription. Once connected and configured there is a webpage contained on this github that will convert the JSON configuration provided by Microsoft Azure Virtual WAN into a FortiGate VPN configuration that you can copy and paste into your device.
+Azure Virtual WAN offers options to interact with FortiGate Next-Generation Firewall in different locations. Different scenario's can be combined to provide more performance, separation of functions, management.
 
-* Scenario 1 : FortiGate branch connection into Virtual HUB using Azure VPN Gateway
+* Inside Azure Virtual WAN Hub. The FortiGate is deployed through a solution that is jointly managed by Microsoft Azure and FortiManager
+* Outside Azure Virtual WAN Hub in a peered spoke acting as a Cloud Security Services Hub
+* On-premises FortiGate in branch or datacenter connecting via SD-WAN using both IPSec tunnels and/or ExpressRoute
 
-* Scenario 2 : FortiGate integration inside Azure Virtual WAN HUB
-* Scenario 3 : FortiGate  integration inside Azure Virtual WAN HUB with additional Cloud Security Services Hub for publishing services to Internet 
-* Scenario 4 : FortiGate branch connection into Virtual HUB with peered VNETs secured by a FortiGate Active/Passive cluster
-* Scenario 5 : FortiGate  integration inside Azure Virtual WAN HUB with additional Cloud Security Services Hub for publishing services to Internet and SDWAN/VPN Services Hub for VPN connectivity
+### FortiGate inside Azure Virtual WAN Hub
+
+[//]: # (scenario 2)
+* [FortiGate Secure SD-WAN](#fgt-sdwan-insidehub) - Connecting your branches and datacenters into the FortiGate Next-Generation Firewall running in Virtual WAN Hub and managed by FortiManager 
+
+### FortiGate outside Azure Virtual WAN Hub
+
+In case the integrated model is doesn't fit your organisation or you already have a FortiGate cluster running in a hub spoke model you can connect this environment with Azure Virtual WAN.
+
+[//]: # (scenario 3)
+* Handling the inbound (north-south) connectivity use case with a separate FortiGate Next-Generation Firewall cluster in a spoke
+[//]: # (scenario 4)
+* Branch to spoke inspection - traffic inspection by the FortiGate-VM for traffic initiated in the branch or spoke
+[//]: # (scenario 5)
+* FortiGate Secure SD-WAN - connecting your branches to a FortiGate-VM cluster outside of the Virtual WAN hub
+
+### FortiGate connectivity to Azure Virtual WAN Hub
+[//]: # (-)
+* [FortiGate connectivity to the VPN Gateway inside of Virtual WAN Hub](#fgt2vpngateway)
 
 ## Deployment
 
-Deployment of the different scenario's is either via the ARM template or Azure CLI depending on the supported functionality in the deployment method. Generally the Azure CLI option is better supported at the moment for deployment. The Azure Cloud Shell is an in-browser version of Azure CLI that contains all the required tools for deployment in to Microsoft Azure. It is accessible via the Azure Portal or directly at [https://shell.azure.com/](https://shell.azure.com). You can copy and paste the below one-liner to get started with your deployment.
+Deployment of the different scenario's is either via the Azure Portal, ARM template or Azure CLI depending on the supported functionality in the deployment method. Depending on the availability a link to the Azure Portal, a guide or CLI command will be shown to get your started with the deployment. The links will be provided in each of the scenario subsections.
 
-You'll be prompted to provide a minimum of 2 required variables as well as specific variables per scenario:
+## Scenarios
 
-- PREFIX : This prefix will be prepended to each of the resources names created by the template for ease of use and visibility.
-- LOCATION : This is the Azure region where the deployment will be deployed.
+### FortiGate Secure SD-WAN - Connecting your branches and datacenters into the FortiGate Next-Generation Firewall running in Virtual WAN Hub and managed by FortiManager {#fgt-sdwan-insidehub}
 
-### Scenario 1 FortiGate branch connection into Virtual HUB using Azure VPN Gateway
+<p align="center">
+  <img src="images/overview1.png" alt="network drawing for FortiGate SD-WAN inside Virtual Hub"/>
+</p>
 
-![Azure Virtual WAN design](images/scenario1.png)
-
-Scenario 1 will deploy a branch to Azure Virtual HUB setup. Azure VirtualWAN components will be deployed and a first VPN branch site is configured in Azure VirtualWAN. To manage the VPN tunnels, you can use our Azure Function to manage both the Azure VirtualWAN and branch IPSEC config. For smaller setups or demo a convertor is linked that will convert your Azure VirtualWAN json info into a FortiGate configuration.
-
-- [FortiGate and Azure Virtual WAN integration](https://www.fortinet.com/content/dam/fortinet/assets/deployment-guides/dg-fortigate-azure-wan-integration.pdf)
-- [FortiGate Azure Virtual WAN config convertor](https://40net-cloud.github.io/fortinet-azure-solutions/FortiGate/AzureVirtualWAN/)
-
-To configure the first branch VPN tunnel the endpoint and private ip range of this branch are required during deployment:
-
-- VPNSITE PREFIX : This prefix will be prepended to each of the resources regarding the VPN Branch connecting into Virtual WAN.
-- VPNSITE PUBLIC IP ADDRESS : This is the public IP address of the FortiGate device connecting into Virtual WAN.
-
-Details about post deployment and Fortigate Azure Virtual WAN converter are provided 
-[here](https://github.com/piotr-nwt/Github/tree/master/fortinet-azure-solutions-main/FortiGate/AzureVirtualWAN#post-deployment)
-
-#### Azure Portal
-
-<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2F40net-cloud%2Ffortinet-azure-solutions%2Fmain%2FFortiGate%2FAzureVirtualWAN%2Fscenario1%2Fazuredeploy.json" target="_blank">
-  <img src="https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.svg?sanitize=true"/>
-</a>
-<a href="http://armviz.io/#/?load=https%3A%2F%2Fraw.githubusercontent.com%2F40net-cloud%2Ffortinet-azure-solutions$2Fmain%2FFortiGate%2FAzureVirtualWAN%2Fscenario1%2Fazuredeploy.json" target="_blank">
-  <img src="https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/visualizebutton.svg?sanitize=true"/>
-</a>
-
-#### Azure CLI
-
-`cd ~/clouddrive/ && wget -qO- https://github.com/40net-cloud/fortinet-azure-solutions/archive/main.tar.gz | tar zxf - && cd ~/clouddrive/fortinet-azure-solutions-main/FortiGate/AzureVirtualWAN/scenario1/ && ./deploy.sh`
-
-### Scenario 2 : FortiGate integration inside Azure Virtual WAN HUB
-![Azure Virtual WAN design](images/overview1.png)
-
-In Scenario 2 FortiGate-VMs are deployed and run natively inside Azure vWAN HUB in Active/Active Cluster.  With this integration, you can use a Managed Application to deploy FortiGate-VM into the Azure Virtual WAN hub, where the FortiGate will be deployed and configured automatically to peer via BGP with the Virtual WAN hub router, extending next-generation firewall and secure SD-WAN capabilities to the cloud. To further simplify the process, FortiGate-VM can be deployed directly from Azure Marketplace, or can be deployed from the virtual hub via the Azure portal. 
+In this scenario, FortiGate-VMs Active/Active cluster is deployed and runs natively inside Azure Virtual WAN Hub.  With this integration, you can use a Managed Application to deploy FortiGate-VM into the Azure Virtual WAN hub, where the FortiGate will be deployed and configured automatically to peer via BGP with the Virtual WAN hub router, extending next-generation firewall and secure SD-WAN capabilities to the cloud. To further simplify the process, FortiGate-VM can be deployed directly from Azure Marketplace, or can be deployed from the virtual hub via the Azure portal. 
 
 You can use the one-touch configurations from the Azure Virtual WAN portal to enable security policies and routing for North-South, East-West traffic, and internet-bound traffic. This allows you to apply FortiGate-VM’s extensive security services including IPS, application control, and SSL, as well as SD-WAN services such as application steering, to Virtual WAN traffic.
 The solution is scalable, load balanced and configured for active-active highly resilient deployments.
@@ -73,6 +60,34 @@ Below you can find links to sections describing in details architecture of this 
 [Architecture](flows/architecture.md)
 
 [Flows](flows/flows.md)
+
+### FortiGate connectivity to the VPN Gateway inside of Virtual WAN Hub {#fgt2vpngateway}
+
+![Azure Virtual WAN design](images/scenario1.png)
+
+In this scenario, the FortiGate in a branch location will connect to the Virtual HUB VPN Gateway. 
+
+To configure the VPN tunnels you need to configure both Azure and the FortiGate on-premises.
+
+- [Fortinet: local FortiGate to Azure VPN Gateway](https://docs.fortinet.com/document/fortigate-public-cloud/7.2.0/azure-administration-guide/989216/connecting-a-local-fortigate-to-an-azure-vnet-vpn)
+- [Microsoft: Create a site-to-site connection to Azure Virtual WAN](https://learn.microsoft.com/en-us/azure/virtual-wan/virtual-wan-site-to-site-portal)
+- [Microsoft: Supported encrption and authentication methods](https://learn.microsoft.com/en-us/azure/virtual-wan/virtual-wan-ipsec)
+
+For smaller setups or demo a convertor is linked that will convert your Azure VirtualWAN VPN config into a FortiGate configuration.
+- [FortiGate Azure Virtual WAN config convertor](https://40net-cloud.github.io/fortinet-azure-solutions/FortiGate/AzureVirtualWAN/)
+
+An ARM Template is provide to deploy a Azure Virtual WAN setup and a Virtual WAN configuration for a first VPN branch site. A prefix and public IP address of the branch FortiGate are required during deployment:
+
+- VPNSITE PREFIX : This prefix will be prepended to each of the resources regarding the VPN Branch connecting into Virtual WAN.
+- VPNSITE PUBLIC IP ADDRESS : This is the public IP address of the FortiGate device connecting into Virtual WAN.
+
+#### Deployment
+
+[![Deploy To Azure](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.svg?sanitize=true)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2F40net-cloud%2Ffortinet-azure-solutions%2Fmain%2FFortiGate%2FAzureVirtualWAN%2Fscenario1%2Fazuredeploy.json)
+[![Visualize](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/visualizebutton.svg?sanitize=true)](http://armviz.io/#/?load=https%3A%2F%2Fraw.githubusercontent.com%2F40net-cloud%2Ffortinet-azure-solutions$2Fmain%2FFortiGate%2FAzureVirtualWAN%2Fscenario1%2Fazuredeploy.json)
+
+Details about post deployment and Fortigate Azure Virtual WAN converter are provided [here](#post-deployment)
+
 
 
 ### Scenario 3: FortiGate  integration inside Azure Virtual WAN HUB with additional Cloud Security Services Hub for publishing services to Internet 
@@ -111,7 +126,7 @@ As a result this is very scalable architecture which fits the needs of large Ent
 
 In this architecture you can configure an Azure Virtual WAN hub router to peer with Fortigates in your Cloud Security Services Hub & SDWAN/VPN Services Hub  using BGP Peering described [here](https://learn.microsoft.com/en-us/azure/virtual-wan/create-bgp-peering-hub-portal)
 
-## Post deployment
+## Post deployment {#post-deployment}
 
 The deployment of the VPN Gateway inside the Azure Virtual HUB can take some time (>30min). Once everything is in the 'Succeeded' state. The VPN Site configuration can be downloaded from the Azure Portal.
 
