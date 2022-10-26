@@ -16,7 +16,8 @@ Azure Virtual WAN offers options to interact with FortiGate Next-Generation Fire
 ### FortiGate inside Azure Virtual WAN Hub
 
 [//]: # (scenario 2)
-* [FortiGate Secure SD-WAN](#fgt-sdwan-insidehub) - Connecting your branches and datacenters into the FortiGate Next-Generation Firewall running in Virtual WAN Hub and managed by FortiManager 
+* [FortiGate Secure SD-WAN](#fortigate-secure-sdwan-inside-azure-virtual-wan-hub): 
+Connecting your branches and datacenters into the FortiGate Next-Generation Firewall running in Virtual WAN Hub and managed by FortiManager 
 
 ### FortiGate outside Azure Virtual WAN Hub
 
@@ -39,16 +40,16 @@ Deployment of the different scenario's is either via the Azure Portal, ARM templ
 
 ## Scenarios
 
-### FortiGate Secure SD-WAN - Connecting your branches and datacenters into the FortiGate Next-Generation Firewall running in Virtual WAN Hub and managed by FortiManager {#fgt-sdwan-insidehub}
+### FortiGate Secure SD-WAN (inside Azure Virtual WAN Hub)
+*Connecting your branches and datacenters into the FortiGate Next-Generation Firewall running in Virtual WAN Hub and managed by FortiManager*
 
 <p align="center">
   <img src="images/overview1.png" alt="network drawing for FortiGate SD-WAN inside Virtual Hub"/>
 </p>
 
-In this scenario, FortiGate-VMs Active/Active cluster is deployed and runs natively inside Azure Virtual WAN Hub.  With this integration, you can use a Managed Application to deploy FortiGate-VM into the Azure Virtual WAN hub, where the FortiGate will be deployed and configured automatically to peer via BGP with the Virtual WAN hub router, extending next-generation firewall and secure SD-WAN capabilities to the cloud. To further simplify the process, FortiGate-VM can be deployed directly from Azure Marketplace, or can be deployed from the virtual hub via the Azure portal. 
+In this scenario, FortiGate-VMs Active/Active cluster is deployed and runs natively inside Azure Virtual WAN Hub. With this integration, the FortiGate-VMs are deployed using a Managed Application on Azure Marketplace, into the Azure Virtual WAN hub. During deployment the FortiGate-VMs are configured  to peer via BGP with the Virtual WAN hub router as well as link it with the FortiManager for further management. 
 
-You can use the one-touch configurations from the Azure Virtual WAN portal to enable security policies and routing for North-South, East-West traffic, and internet-bound traffic. This allows you to apply FortiGate-VM’s extensive security services including IPS, application control, and SSL, as well as SD-WAN services such as application steering, to Virtual WAN traffic.
-The solution is scalable, load balanced and configured for active-active highly resilient deployments.
+The solution is load balanced and configured for active-active highly resilient deployments.
 
 FortiGate-VM and Fortinet Secure SD-WAN Native Integration with Azure Virtual WAN provides multiple benefits like :
 - Elasticity as this solution is scalable, load balanced and configured for active-active highly resilient deployments
@@ -57,9 +58,7 @@ FortiGate-VM and Fortinet Secure SD-WAN Native Integration with Azure Virtual WA
 
 Below you can find links to sections describing in details architecture of this setup and flows for outbound and east-west connectivity.
 
-[Architecture](flows/architecture.md)
-
-[Flows](flows/flows.md)
+More information can be found [here](doc/insidevwan-sdwan.md)
 
 ### FortiGate connectivity to the VPN Gateway inside of Virtual WAN Hub {#fgt2vpngateway}
 
