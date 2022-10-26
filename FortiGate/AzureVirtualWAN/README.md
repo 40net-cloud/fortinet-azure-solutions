@@ -24,7 +24,7 @@ Connecting your branches and datacenters into the FortiGate Next-Generation Fire
 In case the integrated model is doesn't fit your organisation or you already have a FortiGate cluster running in a hub spoke model you can connect this environment with Azure Virtual WAN.
 
 [//]: # (scenario 3)
-* Handling the inbound (north-south) connectivity use case with a separate FortiGate Next-Generation Firewall cluster in a spoke
+* [North-South](north-south): Handling the inbound connectivity from internet to your workloads connected to Azure Virtual WAN
 [//]: # (scenario 4)
 * Branch to spoke inspection - traffic inspection by the FortiGate-VM for traffic initiated in the branch or spoke
 [//]: # (scenario 5)
@@ -60,7 +60,46 @@ Below you can find links to sections describing in details architecture of this 
 
 More information can be found [here](doc/insidevwan-sdwan.md)
 
-### FortiGate connectivity to the VPN Gateway inside of Virtual WAN Hub {#fgt2vpngateway}
+### North-South
+*Inbound connectivity from internet to your workloads connected to Azure Virtual WAN*
+
+<p align="center">
+  <img src="images/outsidevwan-ingress.png" alt="network drawing for ingress scenario"/>
+</p>
+
+In this scenario the ingress traffic flows are handled by a FortiGate cluster outside of the Virtual WAN Hub. The Public IPs assigned to the FortiGate instances inside the Virtual WAN Hub only provide access for management of the FortiGate by the FortiManager and IPSEC VPN tunnels. To provide any additional access to your workload a separate FortiGate cluster can be installed in a spoke VNET dubbed "Cloud Security Services Hub" that will handle the inbound traffic using a Azure Load Balancer. 
+
+This setup can be an [active/active](https://github.com/fortinet/azure-templates/tree/main/FortiGate/Active-Active-ELB-ILB) or [active/passive](https://github.com/fortinet/azure-templates/tree/main/FortiGate/Active-Passive-ELB-ILB) deployment or even an [autoscale deployment](https://github.com/40net-cloud/fortinet-azure-solutions/tree/main/FortiGate/Autoscale). The selection is based on your requirements and explained in our documentation [here](https://docs.fortinet.com/document/fortigate-public-cloud/7.2.0/azure-administration-guide/983245). Deployment of these setup can be done either via the Azure Marketplace or via the above GitHub links.
+
+The FortiGate inside of the Virtual WAN Hub offers the connectivity to the on-premises using Secure SD-WAN. Additionally, it can also act as a control point between the ingress setup and the workloads in the different spokes. The FortiGate inside of Virtual WAN is not required for this ingresss scenario to work. 
+
+In this scenario, you can configure an Azure Virtual WAN hub router to peer with Fortigates in your Cloud Security Services Hub using BGP Peering described [here](https://learn.microsoft.com/en-us/azure/virtual-wan/create-bgp-peering-hub-portal). More information about routing inside of Azure Virtual WAN can be found [here](https://learn.microsoft.com/en-us/azure/virtual-wan/about-virtual-hub-routing).
+
+### Scenario 4 : FortiGate branch connection into Virtual HUB with peered VNETs secured by a FortiGate Active/Passive cluster
+
+![Azure Virtual WAN design](images/scenario2.png)
+
+Scenario 4 uses the Azure Virtual WAN routing capabilities. Either using static routing or BGP dynamic routing. Both scenario's have separate page with more information.
+
+- [Static Routing](routing/)
+- [Dynamic routing using BGP Peering](bgppeering/)
+
+### Scenario 5 : FortiGate  integration inside Azure Virtual WAN HUB with additional Cloud Security Services Hub for publishing services to Internet and SDWAN/VPN Services Hub for VPN connectivity
+
+![Azure Virtual WAN design](images/vWAN_inbound_sdwan_diagram.png)
+
+For  Enterprise customers with substantial amount of resources deployed in Microsoft Azure and large number of on-premise branch officies which should be connected to Microsoft Azure vWAN HUB we created an architecture where different use-cases are handled by different FortiGate-VM HA clusters.
+
+Scenario 5 consist of:
+- Azure vWAN HUB with integrated FortiGate-VM which is used for North-South VNET to Internet and East-West VNET to VNET filtering
+- Cloud Security Services Hub (AP HA ELB/ILB FortiGate-VM cluster) which is used for secure publishing of services like HTTP, HTTPS, RDP etc. to the Internet
+- SDWAN/VPN Services Hub which is used for VPN/SDWAN connectivity between on-premise branch officies and Microsoft Azure
+
+As a result this is very scalable architecture which fits the needs of large Enterprise customers requiring high performance.
+
+In this architecture you can configure an Azure Virtual WAN hub router to peer with Fortigates in your Cloud Security Services Hub & SDWAN/VPN Services Hub  using BGP Peering described [here](https://learn.microsoft.com/en-us/azure/virtual-wan/create-bgp-peering-hub-portal)
+
+### FortiGate connectivity to the VPN Gateway inside of Virtual WAN Hub
 
 ![Azure Virtual WAN design](images/scenario1.png)
 
@@ -87,43 +126,6 @@ An ARM Template is provide to deploy a Azure Virtual WAN setup and a Virtual WAN
 
 Details about post deployment and Fortigate Azure Virtual WAN converter are provided [here](#post-deployment)
 
-
-
-### Scenario 3: FortiGate  integration inside Azure Virtual WAN HUB with additional Cloud Security Services Hub for publishing services to Internet 
-![Azure Virtual WAN design](images/vWAN_inbound-diagram.png)
-
-Scenario 3 combines integration of FortiGate-VMs in Azure vWAN HUB and Cloud Security Services Hub which consist of Active Passive HA FortiGate cluster with External & Internal Azure Load Balancer that is described in details [here](https://github.com/40net-cloud/fortinet-azure-solutions/tree/main/FortiGate/Active-Passive-ELB-ILB).
-You can find there information about the flows in this architecture as well as ARM template for it's deployment.
-
-This scenario can be used in situation when you would like to publish some services running in Azure like http/https to Internet using  Cloud Security Services Hub. As Public IPs used by FortiGates-VM running inside Azure vWAN HUB belongs to Microsoft and are kept in managed resource group belonging to Microsoft there is in no possibility to use use them to publish services.
-Therefore such combination of FortiGate vWAN Hub integration & Cloud Security Services Hub gives you possibility to overcome this limitation.
-
-In this architecture you can configure an Azure Virtual WAN hub router to peer with Fortigates in your Cloud Security Services Hub  using BGP Peering described [here](https://learn.microsoft.com/en-us/azure/virtual-wan/create-bgp-peering-hub-portal)
-
-
-### Scenario 4 : FortiGate branch connection into Virtual HUB with peered VNETs secured by a FortiGate Active/Passive cluster
-
-![Azure Virtual WAN design](images/scenario2.png)
-
-Scenario 4 uses the Azure Virtual WAN routing capabilities. Either using static routing or BGP dynamic routing. Both scenario's have separate page with more information.
-
-- [Static Routing](routing/)
-- [Dynamic routing using BGP Peering](bgppeering/)
-
-### Scenario 5 : FortiGate  integration inside Azure Virtual WAN HUB with additional Cloud Security Services Hub for publishing services to Internet and SDWAN/VPN Services Hub for VPN connectivity
-
-![Azure Virtual WAN design](images/vWAN_inbound_sdwan_diagram.png)
-
-For  Enterprise customers with substantial amount of resources deployed in Microsoft Azure and large number of on-premise branch officies which should be connected to Microsoft Azure vWAN HUB we created an architecture where different use-cases are handled by different FortiGate-VM HA clusters.
-
-Scenario 5 consist of:
-- Azure vWAN HUB with integrated FortiGate-VM which is used for North-South VNET to Internet and East-West VNET to VNET filtering
-- Cloud Security Services Hub (AP HA ELB/ILB FortiGate-VM cluster) which is used for secure publishing of services like HTTP, HTTPS, RDP etc. to the Internet
-- SDWAN/VPN Services Hub which is used for VPN/SDWAN connectivity between on-premise branch officies and Microsoft Azure
-
-As a result this is very scalable architecture which fits the needs of large Enterprise customers requiring high performance.
-
-In this architecture you can configure an Azure Virtual WAN hub router to peer with Fortigates in your Cloud Security Services Hub & SDWAN/VPN Services Hub  using BGP Peering described [here](https://learn.microsoft.com/en-us/azure/virtual-wan/create-bgp-peering-hub-portal)
 
 ## Post deployment {#post-deployment}
 
