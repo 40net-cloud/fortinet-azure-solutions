@@ -16,7 +16,7 @@ Azure Virtual WAN offers options to interact with FortiGate Next-Generation Fire
 ### FortiGate inside Azure Virtual WAN Hub
 
 [//]: # (scenario 2)
-* [FortiGate Secure SD-WAN](#fortigate-secure-sdwan-inside-azure-virtual-wan-hub): 
+* [FortiGate Secure SD-WAN](#fortigate-secure-sd-wan-inside-azure-virtual-wan-hub): 
 Connecting your branches and datacenters into the FortiGate Next-Generation Firewall running in Virtual WAN Hub and managed by FortiManager 
 
 ### FortiGate outside Azure Virtual WAN Hub
@@ -24,7 +24,7 @@ Connecting your branches and datacenters into the FortiGate Next-Generation Fire
 In case the integrated model is doesn't fit your organisation or you already have a FortiGate cluster running in a hub spoke model you can connect this environment with Azure Virtual WAN.
 
 [//]: # (scenario 3)
-* [North-South](north-south): Handling the inbound connectivity from internet to your workloads connected to Azure Virtual WAN
+* [North-South](#north-south): Handling the inbound connectivity from internet to your workloads connected to Azure Virtual WAN
 [//]: # (scenario 4)
 * Branch to spoke inspection - traffic inspection by the FortiGate-VM for traffic initiated in the branch or spoke
 [//]: # (scenario 5)
@@ -67,13 +67,14 @@ More information can be found [here](doc/insidevwan-sdwan.md)
   <img src="images/outsidevwan-ingress.png" alt="network drawing for ingress scenario"/>
 </p>
 
-In this scenario the ingress traffic flows are handled by a FortiGate cluster outside of the Virtual WAN Hub. The Public IPs assigned to the FortiGate instances inside the Virtual WAN Hub only provide access for management of the FortiGate by the FortiManager and IPSEC VPN tunnels. To provide any additional access to your workload a separate FortiGate cluster can be installed in a spoke VNET dubbed "Cloud Security Services Hub" that will handle the inbound traffic using a Azure Load Balancer. 
+In this scenario the ingress traffic flows are handled by a FortiGate cluster outside of the Virtual WAN Hub. The Public IPs assigned to the FortiGate instances inside the Virtual WAN Hub only provide access for management using FortiManager and IPSEC VPN tunnels. To provide any additional access to your workload a separate FortiGate cluster can be installed in a spoke VNET dubbed "Cloud Security Services Hub" that will handle the inbound traffic using a Azure Load Balancer. 
+
+In this scenario, you can configure an Azure Virtual WAN hub router to peer with Fortigates in your Cloud Security Services Hub using BGP Peering described [here](https://learn.microsoft.com/en-us/azure/virtual-wan/create-bgp-peering-hub-portal). More information about routing inside of Azure Virtual WAN can be found [here](https://learn.microsoft.com/en-us/azure/virtual-wan/about-virtual-hub-routing).
 
 This setup can be an [active/active](https://github.com/fortinet/azure-templates/tree/main/FortiGate/Active-Active-ELB-ILB) or [active/passive](https://github.com/fortinet/azure-templates/tree/main/FortiGate/Active-Passive-ELB-ILB) deployment or even an [autoscale deployment](https://github.com/40net-cloud/fortinet-azure-solutions/tree/main/FortiGate/Autoscale). The selection is based on your requirements and explained in our documentation [here](https://docs.fortinet.com/document/fortigate-public-cloud/7.2.0/azure-administration-guide/983245). Deployment of these setup can be done either via the Azure Marketplace or via the above GitHub links.
 
 The FortiGate inside of the Virtual WAN Hub offers the connectivity to the on-premises using Secure SD-WAN. Additionally, it can also act as a control point between the ingress setup and the workloads in the different spokes. The FortiGate inside of Virtual WAN is not required for this ingresss scenario to work. 
 
-In this scenario, you can configure an Azure Virtual WAN hub router to peer with Fortigates in your Cloud Security Services Hub using BGP Peering described [here](https://learn.microsoft.com/en-us/azure/virtual-wan/create-bgp-peering-hub-portal). More information about routing inside of Azure Virtual WAN can be found [here](https://learn.microsoft.com/en-us/azure/virtual-wan/about-virtual-hub-routing).
 
 ### Scenario 4 : FortiGate branch connection into Virtual HUB with peered VNETs secured by a FortiGate Active/Passive cluster
 
