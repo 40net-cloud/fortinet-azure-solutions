@@ -67,7 +67,7 @@ More information can be found [here](doc/insidevwan-sdwan.md)
   <img src="images/outsidevwan-ingress.png" alt="network drawing for ingress scenario"/>
 </p>
 
-In this scenario the ingress traffic flows are handled by a FortiGate cluster outside of the Virtual WAN Hub. The Public IPs assigned to the FortiGate instances inside the Virtual WAN Hub only provide access for management using FortiManager and IPSEC VPN tunnels. To provide any additional access to your workload a separate FortiGate cluster can be installed in a spoke VNET dubbed "Cloud Security Services Hub" that will handle the inbound traffic using a Azure Load Balancer. 
+In this scenario, the ingress traffic flows are handled by a FortiGate-VM cluster outside of the Virtual WAN Hub. The Public IPs assigned to the FortiGate instances inside the Virtual WAN Hub only provide access for management using FortiManager and IPSEC VPN tunnels. To provide any additional access to your workload a separate FortiGate cluster can be installed in a spoke VNET, dubbed "Cloud Security Services Hub", handling all the inbound traffic using an External Azure Load Balancer. 
 
 In this scenario, you can configure an Azure Virtual WAN hub router to peer with Fortigates in your Cloud Security Services Hub using BGP Peering described [here](https://learn.microsoft.com/en-us/azure/virtual-wan/create-bgp-peering-hub-portal). More information about routing inside of Azure Virtual WAN can be found [here](https://learn.microsoft.com/en-us/azure/virtual-wan/about-virtual-hub-routing).
 

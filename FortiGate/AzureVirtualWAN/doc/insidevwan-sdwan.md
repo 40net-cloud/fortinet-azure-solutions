@@ -13,9 +13,19 @@
 </p>
 
 Setup consist of:
-- 2 FortiGate-VMs in a active-active setup using FGSP and UTM Sync
-- 2 Public IPs associated with external NICs of the FortiGate-VMs
-- Inside of the Azure Virtual WAN Hub an Azure Internal Load Balancer and Azure Routing Service
+* 2 FortiGate-VMs in a active-active setup using FGSP and UTM Sync
+* 2 Public IPs associated with external NICs of the FortiGate-VMs
+* Inside of the Azure Virtual WAN Hub an Azure Internal Load Balancer and Azure Routing Service
+
+## Deployment
+
+The integration of the FortiGate inside of the Virtual WAN Hub requires FortiManager to manage the FortiGate instances and the SD-WAN configuration. The deployment process is detailed in the documentation [here](https://docs.fortinet.com/document/fortigate-public-cloud/7.2.2/azure-vwan-sd-wan-deployment-guide/311594/deployment-procedures).
+
+## Requirements and limitations
+
+* FortiManager and FortiGate 7.2.2 and above is required for the deployment integration into Azure Virtual WAN Hub.
+* Routing: During the deployment the FortiGate-VMs are coupled to the Azure Routing Service inside the Azure Virtual WAN Hub using BGP. This allows the FortiGate-VMs to inject routes to them for all the remote sites. The gateway the networks is always the ForitGate-VM ip address on the port2.
+* The FortiManager needs to be routable and accessible from the FortiGate instances. During the deployment the IP address or dns name of the FortiManager is provided and the FortiGate will try to connect to the FortiManager. Either the FortiManager is accessible via a public IP address and the default route is used. Alternatively, the FortiManager can be reach internal either in a spoke, another hub or on-premises if an IPSEC tunnel or ExpressRoute is terminated on the the Azure Virtual WAN Hub.
 
 ## Flows
 
