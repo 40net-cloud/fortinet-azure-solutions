@@ -76,6 +76,21 @@ In this scenario, you can configure an Azure Virtual WAN hub router to peer with
 
 More information can be found [here](doc/outsidevwan-north-south.md)
 
+### FortiGate Secure SD-WAN (outside Azure Virtual WAN Hub)
+*Connecting your branches and datacenters into the FortiGate Next-Generation Firewall running outside Virtual WAN Hub*
+
+<p align="center">
+  <img src="images/outsidevwan-ingress2.png" alt="network drawing for ingress scenario"/>
+</p>
+
+In this scenario, the VPN connections from the on-premises location are terminated on the FortiGate-VM cluster outside of the Virtual WAN Hub. This scenario is for customers that don't want to change the currently deployed Hub, have another firewall solution but want to add Fortinet SD-WAN or are migrating. 
+
+In this scenario, you can configure an Azure Virtual WAN hub router to peer with Fortigates in your Cloud Security Services Hub using BGP Peering.
+
+* [Microsoft: Azure Virtual WAN BGP peering](https://learn.microsoft.com/en-us/azure/virtual-wan/create-bgp-peering-hub-portal)
+* [Microsoft: Azure Virtual WAN Hub routing](https://learn.microsoft.com/en-us/azure/virtual-wan/about-virtual-hub-routing).
+
+More information can be found [here](doc/outsidevwan-sdwan.md)
 
 
 ### Scenario 4 : FortiGate branch connection into Virtual HUB with peered VNETs secured by a FortiGate Active/Passive cluster
