@@ -15,7 +15,6 @@ Azure Virtual WAN offers options to interact with FortiGate Next-Generation Fire
 
 ### FortiGate inside Azure Virtual WAN Hub
 
-[//]: # (scenario 2)
 * [FortiGate Secure SD-WAN](#fortigate-secure-sd-wan-inside-azure-virtual-wan-hub): 
 Connecting your branches and datacenters into the FortiGate Next-Generation Firewall running in Virtual WAN Hub and managed by FortiManager 
 
@@ -23,10 +22,8 @@ Connecting your branches and datacenters into the FortiGate Next-Generation Fire
 
 In case the integrated model is doesn't fit your organisation or you already have a FortiGate cluster running in a hub spoke model you can connect this environment with Azure Virtual WAN.
 
-[//]: # (scenario 3)
 * [North-South](#north-south): Handling the inbound connectivity from internet to your workloads connected to Azure Virtual WAN
-[//]: # (scenario 4)
-* Branch to spoke inspection - traffic inspection by the FortiGate-VM for traffic initiated in the branch or spoke
+* [Branch to spoke inspection](#fortigate-secure-sd-wan-inside-azure-virtual-wan-hub): Connecting your branches and datacenters into the FortiGate Next-Generation Firewall in Microsoft Azure
 [//]: # (scenario 5)
 * FortiGate Secure SD-WAN - connecting your branches to a FortiGate-VM cluster outside of the Virtual WAN hub
 
@@ -80,7 +77,7 @@ More information can be found [here](doc/outsidevwan-north-south.md)
 *Connecting your branches and datacenters into the FortiGate Next-Generation Firewall running outside Virtual WAN Hub*
 
 <p align="center">
-  <img src="images/outsidevwan-ingress2.png" alt="network drawing for ingress scenario"/>
+  <img src="images/outsidevwan-sdwan.png" alt="network drawing for ingress scenario"/>
 </p>
 
 In this scenario, the VPN connections from the on-premises location are terminated on the FortiGate-VM cluster outside of the Virtual WAN Hub. This scenario is for customers that don't want to change the currently deployed Hub, have another firewall solution but want to add Fortinet SD-WAN or are migrating. 
