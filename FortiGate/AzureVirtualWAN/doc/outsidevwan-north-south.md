@@ -42,7 +42,7 @@ A full demo of the BGP peering between Azure Virtual WAN and the FortiGate-VM ca
 1. Connection from client to the public IP of that is attached to the load balancing rule. - s: a.b.c.d - d: w.x.y.z
 2. Azure External Load Balancer sends the packet to the active FortiGate-VM. - s: a.b.c.d - d: w.x.y.z
 3. FGT inspects the packet and when allowed sends the packet to the server both source and destination are translated - s: 10.21.1.5 - d: 10.20.0.4
-4. Server responds to the request - s: 10.20.0.5 - d: 10.21.1.5
+4. Server responds to the request - s: 10.20.0.4 - d: 10.21.1.5
 5. The FortiGate translates the return packet back to the external IPs - s: w.x.y.z - d: a.b.c.d
 6. The Azure External Load Balancer returns the packet to the client - s: w.x.y.z - d: a.b.c.d
 
@@ -56,7 +56,7 @@ Add both FortiGate-VM port2 interfaces as BGP endpoints with the AS from the For
 
 ### FortiGate
 
-Configure the BGP endpoints with information retrieved from the Azure Virtual WAN Hub BGP peering configuration:
+Configure the BGP endpoints with information retrieved from the Virtual WAN Hub BGP peering configuration:
 ```
 config router bgp
     set as 64514
@@ -129,7 +129,7 @@ B       10.100.112.128/25 [20/0] via 10.100.32.4 (recursive via 10.21.1.1, port2
 S       168.63.129.16/32 [10/0] via 10.21.0.1, port1, [1/0]
                          [10/0] via 10.21.1.1, port2, [1/0]
 ```
-#### Effective routing table: Azure Virtual WAN Hub default
+#### Effective routing table: Virtual WAN Hub default
 
 ![Flows_north-south](../images/outsidevwan-north-south-effective-route2.png)
 

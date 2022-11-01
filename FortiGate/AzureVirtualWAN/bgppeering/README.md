@@ -2,7 +2,7 @@
 
 ## Introduction
 
-Azure Virtual WAN allows exchange of routing information using the BGP protocol between the Azure Virtual WAN hub router and the FortiGate NGFW system. This provides benefits over the static routing options updating both sides as new environments become available, e.g. new VPN tunnels are connected to the FortiGate are forwarded to Azure Virtual WAN hub, routing updates towards the FGT as new hubs and spokes are provisioned.
+Azure Virtual WAN allows exchange of routing information using the BGP protocol between the Virtual WAN Hub router and the FortiGate NGFW system. This provides benefits over the static routing options updating both sides as new environments become available, e.g. new VPN tunnels are connected to the FortiGate are forwarded to Virtual WAN Hub, routing updates towards the FGT as new hubs and spokes are provisioned.
 
 More information about the BGP peering integration can be found [here](https://docs.microsoft.com/en-us/azure/virtual-wan/scenario-bgp-peering-hub).
 

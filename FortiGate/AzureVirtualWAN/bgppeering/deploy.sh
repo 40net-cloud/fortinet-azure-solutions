@@ -116,7 +116,7 @@ lnxSize="Standard_B1ls"
 lnxImageURN="Canonical:0001-com-ubuntu-server-focal:20_04-lts:latest"
 
 ##############################################################################################################
-# Variables: Azure Virtual WAN Hub A
+# Variables: Virtual WAN Hub A
 ##############################################################################################################
 vhubAName="$prefix-$location-HUB"
 vhubAAddressPrefix="172.16.110.0/24"
@@ -241,7 +241,7 @@ end
 "
 
 ##############################################################################################################
-# Variables: Azure Virtual WAN Hub B
+# Variables: Virtual WAN Hub B
 ##############################################################################################################
 vhubBName="$prefix-$locationB-HUB"
 vhubBAddressPrefix="172.16.111.0/24"
