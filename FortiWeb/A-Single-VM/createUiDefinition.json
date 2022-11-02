@@ -693,7 +693,7 @@
       "adminPassword": "[basics('adminPassword')]",
       "location": "[location()]",
       "acceleratedNetworking": "[steps('networking').acceleratednetworksection.acceleratednetworking]",
-      "instanceType": "[steps('instancetype').instancetypeselection]",
+      "instanceType": "[steps('instance').instancetype.selection]",
       "availabilityOptions": "[steps('instance').availabilityOptions.availabilityOptions]",
       "existingAvailabilitySetName": "[steps('instance').availabilityOptions.availabilitySetSelector.name]",
       "availabilityZoneNumber": "[steps('instance').availabilityOptions.availabilityZoneSelector]",
