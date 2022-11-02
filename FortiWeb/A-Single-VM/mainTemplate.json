@@ -37,7 +37,7 @@
       "allowedValues": [
         "6.3.17",
         "7.0.0",
-        "7.0.2",
+        "7.0.3",
         "latest"
       ],
       "metadata": {
@@ -54,11 +54,104 @@
     "instanceType": {
       "type": "string",
       "defaultValue": "Standard_F2s",
-      "allowedValues": [ "Standard_F1s", "Standard_F2s", "Standard_F4s", "Standard_F8s", "Standard_F16s", "Standard_F1", "Standard_F2", "Standard_F4", "Standard_F8", "Standard_F16", "Standard_F2s_v2", "Standard_F4s_v2", "Standard_F8s_v2", "Standard_F16s_v2", "Standard_F32s_v2", "Standard_DS1_v2", "Standard_DS2_v2", "Standard_DS3_v2", "Standard_DS4_v2", "Standard_DS5_v2", "Standard_D2s_v3", "Standard_D4s_v3", "Standard_D8s_v3", "Standard_D16s_v3", "Standard_D32s_v3"],
+      "allowedValues": [
+        "Standard_F1s",
+        "Standard_F2s",
+        "Standard_F4s",
+        "Standard_F8s",
+        "Standard_F16s",
+        "Standard_F1",
+        "Standard_F2",
+        "Standard_F4",
+        "Standard_F8",
+        "Standard_F16",
+        "Standard_F2s_v2",
+        "Standard_F4s_v2",
+        "Standard_F8s_v2",
+        "Standard_F16s_v2",
+        "Standard_F32s_v2",
+        "Standard_DS1_v2",
+        "Standard_DS2_v2",
+        "Standard_DS3_v2",
+        "Standard_DS4_v2",
+        "Standard_DS5_v2",
+        "Standard_D2s_v3",
+        "Standard_D4s_v3",
+        "Standard_D8s_v3",
+        "Standard_D16s_v3",
+        "Standard_D32s_v3",
+        "Standard_D2_v4",
+        "Standard_D4_v4",
+        "Standard_D8_v4",
+        "Standard_D16_v4",
+        "Standard_D32_v4",
+        "Standard_D2s_v4",
+        "Standard_D4s_v4",
+        "Standard_D8s_v4",
+        "Standard_D16s_v4",
+        "Standard_D32s_v4",
+        "Standard_D2a_v4",
+        "Standard_D4a_v4",
+        "Standard_D8a_v4",
+        "Standard_D16a_v4",
+        "Standard_D32a_v4",
+        "Standard_D2as_v4",
+        "Standard_D4as_v4",
+        "Standard_D8as_v4",
+        "Standard_D16as_v4",
+        "Standard_D32as_v4",
+        "Standard_D2_v5",
+        "Standard_D4_v5",
+        "Standard_D8_v5",
+        "Standard_D16_v5",
+        "Standard_D32_v5",
+        "Standard_D2s_v5",
+        "Standard_D4s_v5",
+        "Standard_D8s_v5",
+        "Standard_D16s_v5",
+        "Standard_D32s_v5",
+        "Standard_D2as_v5",
+        "Standard_D4as_v5",
+        "Standard_D8as_v5",
+        "Standard_D16as_v5",
+        "Standard_D32as_v5",
+        "Standard_D2ads_v5",
+        "Standard_D4ads_v5",
+        "Standard_D8ads_v5",
+        "Standard_D16ads_v5",
+        "Standard_D32ads_v5"
+      ],
       "metadata": {
-        "description": "Virtual Machine size selection"
+        "description": "Virtual Machine size selection - must be F4 or other instance that supports 4 NICs"
       }
     },
+    "availabilityOptions": {
+      "type": "string",
+      "allowedValues": [
+        "None",
+        "Availability set",
+        "Availability zone"
+      ],
+      "defaultValue": "None",
+      "metadata": {
+        "description": "Deploy FortiGate VM in an Availability Set or Availability Zones. If Availability Zones deployment is selected but the location does not support Availability Zones an Availability Set will be deployed. If Availability Zones deployment is selected and Availability Zones are available in the location, FortiGate A will be placed in Zone 1, FortiGate B will be placed in Zone 2"
+      }
+    },
+    "existingAvailabilitySetName": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Name of existing Availability Set in case you want to replace or add a FortiGate to an existing cluster."
+      }
+    },
+    "availabilityZoneNumber": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Name of existing Availability Set in case you want to replace or add a FortiGate to an existing cluster."
+      }
+    },
+
     "acceleratedNetworking": {
       "type": "string",
       "defaultValue": "false",
@@ -230,6 +323,13 @@
     "imagePublisher": "fortinet",
     "imageOffer": "fortinet_fortiweb-vm_v5",
 
+    "availabilitySetName": "[if(equals(parameters('existingAvailabilitySetName'),''),concat(parameters('fortiWebNamePrefix'),'-AvailabilitySet'),parameters('existingAvailabilitySetName'))]",
+    "availabilitySetId": {
+      "id": "[resourceId('Microsoft.Compute/availabilitySets', variables('availabilitySetName'))]"
+    },
+    "useAS": "[equals(parameters('availabilityOptions'), 'Availability set')]",
+    "useAZ": "[and(not(empty(pickZones('Microsoft.Compute', 'virtualMachines', parameters('location')))), equals(parameters('availabilityOptions'), 'Availability zone'))]",
+    "zone1": "[if(equals(parameters('availabilityZoneNumber'),''),pickZones('Microsoft.Compute', 'virtualMachines', parameters('location')),array(parameters('availabilityZoneNumber')))]",
     "vnetName": "[if(equals(parameters('vnetName'),''),concat(parameters('fortiWebNamePrefix'),'-VNET'),parameters('vnetName'))]",
     "subnet1Id": "[if(equals(parameters('vnetNewOrExisting'),'new'),resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet1Name')),resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet1Name')))]",
     "subnet2Id": "[if(equals(parameters('vnetNewOrExisting'),'new'),resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet2Name')),resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet2Name')))]",
@@ -242,9 +342,7 @@
       "FwbLicenseBYOL": "[parameters('fortiWebLicenseBYOL')]"
     },
     "fwbCustomData": "[base64(string(variables('customDataCombined')))]",
-
     "fwbVmName": "[concat(parameters('fortiWebNamePrefix'),'-FWB')]",
-
     "fwbNic1Name": "[concat(variables('fwbVmName'),'-Nic1')]",
     "fwbNic1Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('fwbNic1Name'))]",
     "fwbNic2Name": "[concat(variables('fwbVmName'),'-Nic2')]",
@@ -530,6 +628,7 @@
         "type": "SystemAssigned"
       },
       "location": "[parameters('location')]",
+      "zones": "[if(variables('useAZ'), variables('zone1'), json('null'))]",
       "plan": {
         "name": "[parameters('fortiWebImageSKU')]",
         "publisher": "[variables('imagePublisher')]",
@@ -543,6 +642,7 @@
         "hardwareProfile": {
           "vmSize": "[parameters('instanceType')]"
         },
+        "availabilitySet": "[if(variables('useAS'), variables('availabilitySetId'), json('null'))]",
         "osProfile": {
           "computerName": "[variables('fwbVmName')]",
           "adminUsername": "[parameters('adminUsername')]",
