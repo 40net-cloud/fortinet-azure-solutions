@@ -110,7 +110,7 @@
         "description": "Accelerated Networking enables direct connection between the VM and network card. Only available on 2 CPU F/Fs and 4 CPU D/Dsv2, D/Dsv3, E/Esv3, Fsv2, Lsv2, Ms/Mms and Ms/Mmsv2"
       }
     },
-    "publicIPNewOrExisting": {
+    "publicIPNewOrExistingOrNone": {
       "type": "string",
       "defaultValue": "new",
       "allowedValues": [
@@ -373,7 +373,7 @@
 
 
     "publicIPName": "[if(equals(parameters('publicIPName'),''),concat(parameters('fortiWebNamePrefix'),'-FWB-PIP'),parameters('publicIPName'))]",
-    "publicIPId": "[if(equals(parameters('publicIPNewOrExisting'),'new'),resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPName')),resourceId(parameters('publicIPResourceGroup'),'Microsoft.Network/publicIPAddresses',variables('publicIPName')))]",
+    "publicIPId": "[if(equals(parameters('publicIPNewOrExistingOrNone'),'new'),resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPName')),resourceId(parameters('publicIPResourceGroup'),'Microsoft.Network/publicIPAddresses',variables('publicIPName')))]",
     "publicIPAddressId": {
       "id": "[variables('publicIPId')]"
     },
@@ -619,7 +619,7 @@
       }
     },
     {
-      "condition": "[equals(parameters('publicIPNewOrExisting'), 'new')]",
+      "condition": "[equals(parameters('publicIPNewOrExistingOrNone'), 'new')]",
       "type": "Microsoft.Network/publicIPAddresses",
       "apiVersion": "2022-05-01",
       "tags": {
@@ -653,7 +653,7 @@
         "frontendIPConfigurations": [
           {
             "name": "[variables('externalLBFEName')]",
-            "properties": "[if(equals(parameters('publicIPNewOrExisting'),'none'), variables('ilbProperties').properties, variables('elbProperties').properties)]"
+            "properties": "[if(equals(parameters('publicIPNewOrExistingOrNone'),'none'), variables('ilbProperties').properties, variables('elbProperties').properties)]"
           }
         ],
         "backendAddressPools": [
@@ -1073,7 +1073,7 @@
   "outputs": {
     "fortiGatePublicIP": {
       "type": "string",
-      "value": "[if(equals(parameters('publicIPNewOrExisting'), 'new'), reference(variables('publicIPId')).ipAddress, '')]"
+      "value": "[if(equals(parameters('publicIPNewOrExistingOrNone'), 'new'), reference(variables('publicIPId')).ipAddress, '')]"
     },
     "fwbACustomData": {
       "type": "string",

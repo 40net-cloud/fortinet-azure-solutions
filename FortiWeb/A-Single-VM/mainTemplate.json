@@ -53,7 +53,7 @@
     },
     "instanceType": {
       "type": "string",
-      "defaultValue": "Standard_F2s",
+      "defaultValue": "Standard_F2s_v2",
       "allowedValues": [
         "Standard_F1s",
         "Standard_F2s",
