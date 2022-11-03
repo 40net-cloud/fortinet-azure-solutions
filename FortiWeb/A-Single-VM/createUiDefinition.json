@@ -438,7 +438,7 @@
                   "subnets": "Standard deployment is to have an "
                 },
                 "defaultValue": {
-                  "name": "FortiWeb-VNET",
+                  "name": "[if(equals(basics('fortiWebNamePrefix'),''),'FortiWeb-VNET',concat(basics('fortiWebNamePrefix'),'-VNET'))]",
                   "addressPrefixSize": "/23"
                 },
                 "constraints": {
