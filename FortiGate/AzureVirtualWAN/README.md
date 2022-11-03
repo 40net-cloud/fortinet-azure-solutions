@@ -19,7 +19,7 @@ Connecting your branches and datacenters into the FortiGate Next-Generation Fire
 
 ### FortiGate outside Virtual WAN Hub
 
-In case the integrated model is doesn't fit your organisation or you already have a FortiGate cluster running in a hub spoke model you can connect this environment with Azure Virtual WAN.
+In case the integrated model doesn't fit your organisation or you already have a FortiGate cluster running in a hub spoke model you can connect this environment with Azure Virtual WAN.
 
 * [North-South](#north-south): Handling the inbound connectivity from internet to your workloads connected to Azure Virtual WAN
 * [Branch to spoke inspection](#fortigate-secure-sd-wan-inside-virtual-wan-hub): Connecting your branches and datacenters into the FortiGate Next-Generation Firewall in Microsoft Azure
