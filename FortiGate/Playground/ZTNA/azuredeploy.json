@@ -472,7 +472,7 @@
           "subnet2Prefix": { "value": "[parameters('subnet2Prefix')]" },
           "subnet2StartAddress": { "value": "[parameters('subnet2StartAddress')]" },
           "subnet3Name": { "value": "Protected" },
-          "subnet3Prefix": { "value": "" },
+          "subnet3Prefix": { "value": "172.16.10.0/24" },
           "serialConsole": { "value": "[parameters('serialConsole')]" },
           "fortiManager": { "value": "[parameters('fortiManager')]" },
           "fortiManagerIP": { "value": "[parameters('fortiManagerIP')]" },
