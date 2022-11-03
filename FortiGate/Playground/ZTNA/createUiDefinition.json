@@ -959,7 +959,7 @@
           {
             "name": "fortigateadminport",
             "type": "Microsoft.Common.Section",
-            "label": "Serial Console",
+            "label": "FortiGate",
             "elements": [
               {
                 "name": "value",
@@ -1053,7 +1053,7 @@
       "fortiManagerSerial": "[steps('advanced').fortimanager.fortimanagerserial]",
       "fortiGateAdditionalCustomData": "[steps('advanced').customdata.config]",
       "fortiGateAdminPort": "[steps('advanced').fortigateadminport.value]",
-      "backendwebserver": "[steps('ztna').backendwebserver]",
+      "backendWebServer": "[steps('ztna').backendwebserver]",
       "ztnaUsername": "[steps('ztna').username]",
       "ztnaPassword": "[steps('ztna').password]"
     }
