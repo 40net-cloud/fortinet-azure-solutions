@@ -374,9 +374,9 @@
   },
   "resources": [
     {
-      "apiVersion": "2020-10-01",
-      "name": "pid-2e181e90-36f0-4061-9842-64c219116819-partnercenter",
       "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2021-04-01",
+      "name": "pid-2e181e90-36f0-4061-9842-64c219116819-partnercenter",
       "properties": {
         "mode": "Incremental",
         "template": {
@@ -389,8 +389,8 @@
     {
       "condition": "[equals(parameters('serialConsole'), 'yes')]",
       "type": "Microsoft.Storage/storageAccounts",
-      "name": "[variables('serialConsoleStorageAccountName')]",
       "apiVersion": "2021-02-01",
+      "name": "[variables('serialConsoleStorageAccountName')]",
       "location": "[parameters('location')]",
       "kind": "Storage",
       "sku": {
@@ -400,7 +400,7 @@
     {
       "condition": "[equals(parameters('vnetNewOrExisting'), 'new')]",
       "type": "Microsoft.Network/virtualNetworks",
-      "apiVersion": "2020-11-01",
+      "apiVersion": "2022-05-01",
       "name": "[variables('vnetName')]",
       "location": "[parameters('location')]",
       "properties": {
@@ -426,11 +426,11 @@
       }
     },
     {
-      "apiVersion": "2020-11-01",
+      "type": "Microsoft.Network/networkSecurityGroups",
+      "apiVersion": "2022-05-01",
       "tags": {
         "provider": "[toUpper(parameters('FortinetTags').provider)]"
       },
-      "type": "Microsoft.Network/networkSecurityGroups",
       "name": "[variables('NSGName')]",
       "location": "[parameters('location')]",
       "properties": {
@@ -539,7 +539,7 @@
     {
       "condition": "[equals(parameters('publicIPNewOrExistingOrNone'), 'new')]",
       "type": "Microsoft.Network/publicIPAddresses",
-      "apiVersion": "2020-11-01",
+      "apiVersion": "2022-05-01",
       "tags": {
         "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
@@ -553,11 +553,11 @@
       }
     },
     {
-      "apiVersion": "2020-11-01",
+      "type": "Microsoft.Network/networkInterfaces",
+      "apiVersion": "2022-05-01",
       "tags": {
         "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
-      "type": "Microsoft.Network/networkInterfaces",
       "name": "[variables('fwbNic1Name')]",
       "location": "[parameters('location')]",
       "dependsOn": [
@@ -586,11 +586,11 @@
       }
     },
     {
-      "apiVersion": "2020-11-01",
+      "type": "Microsoft.Network/networkInterfaces",
+      "apiVersion": "2022-05-01",
       "tags": {
         "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
-      "type": "Microsoft.Network/networkInterfaces",
       "name": "[variables('fwbNic2Name')]",
       "location": "[parameters('location')]",
       "dependsOn": [
@@ -616,11 +616,11 @@
     },
     {
       "type": "Microsoft.Compute/virtualMachines",
-      "name": "[variables('fwbVmName')]",
-      "apiVersion": "2021-07-01",
+      "apiVersion": "2022-08-01",
       "tags": {
         "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
+      "name": "[variables('fwbVmName')]",
       "identity": {
         "type": "SystemAssigned"
       },
