@@ -264,10 +264,10 @@
                 "type": "Microsoft.Common.TextBlock",
                 "visible": true,
                 "options": {
-                  "text": "Deploy FortiWeb VMs in an availability set or availability zone.",
+                  "text": "Deploy FortiGate VMs in an Availability Set or Availability Zones.",
                   "link": {
                     "label": "Learn more",
-                    "uri": "https://github.com/fortinet/azure-templates/tree/main/FortiWeb#sla"
+                    "uri": "https://github.com/fortinet/azure-templates/tree/main/FortiGate#sla"
                   }
                 }
               },
@@ -275,80 +275,22 @@
                 "name": "availabilityOptions",
                 "type": "Microsoft.Common.DropDown",
                 "label": "Availability Option",
-                "defaultValue": "No infrastructure redundancy required",
-                "toolTip": "Deploy FortiWeb VMs in a new or existing availability set or or a specific availability zone.",
+                "defaultValue": "Availability Set",
+                "toolTip": "Deploy FortiGate VMs in an Availability Set or Availability Zones.",
                 "constraints": {
                   "required": false,
                   "allowedValues": [
                     {
-                      "label": "No infrastructure redundancy required",
-                      "value": "None"
+                      "label": "Availability Set",
+                      "value": "Availability Set"
                     },
                     {
-                      "label": "Availability set",
-                      "value": "Availability set"
-                    },
-                    {
-                      "label": "Availability zone",
-                      "value": "Availability zone"
+                      "label": "Availability Zones",
+                      "value": "Availability Zones"
                     }
                   ]
                 },
                 "visible": true
-              },
-              {
-                "name": "availabilitySetNew",
-                "type": "Microsoft.Common.CheckBox",
-                "label": "Create a new availability set?",
-                "toolTip": "Check this box if you want to create a new availability set and add the FortiWeb VM to it.",
-                "visible": "[equals(steps('instance').availabilityOptions.availabilityOptions,'Availability set')]"
-              },
-              {
-                "name": "availabilitySetSelector",
-                "type": "Microsoft.Solutions.ResourceSelector",
-                "label": "Select the availability set for your FortiWeb",
-                "toolTip": "Select your existing availability set you want to add this FortiWeb VM to",
-                "resourceType": "Microsoft.Compute/availabilitySets",
-                "options": {
-                  "filter": {
-                    "subscription": "onBasics",
-                    "location": "onBasics"
-                  }
-                },
-                "visible": "[and(not(steps('instance').availabilityOptions.availabilitySetNew),equals(steps('instance').availabilityOptions.availabilityOptions,'Availability set'))]"
-              },
-              {
-                "name": "availabilitySetInfo",
-                "type": "Microsoft.Common.InfoBox",
-                "options": {
-                  "icon": "Info",
-                  "text": "The FortiWeb VM and availability set are required to exist in the same resource group."
-                },
-                "visible": "[and(not(steps('instance').availabilityOptions.availabilitySetNew),equals(steps('instance').availabilityOptions.availabilityOptions,'Availability set'))]"
-              },
-              {
-                "name": "availabilityZoneSelector",
-                "type": "Microsoft.Common.DropDown",
-                "label": "Select the availability zone for your FortiWeb VM",
-                "toolTip": "Select the availability zone for your FortiWeb VM",
-                "defaultValue": "Zone 2",
-                "constraints": {
-                  "allowedValues": [
-                    {
-                      "label": "Zone 1",
-                      "value": "1"
-                    },
-                    {
-                      "label": "Zone 2",
-                      "value": "2"
-                    },
-                    {
-                      "label": "Zone 3",
-                      "value": "3"
-                    }
-                  ]
-                },
-                "visible": "[equals(steps('instance').availabilityOptions.availabilityOptions,'Availability zone')]"
               },
               {
                 "name": "availabilityOptionsFooter",
@@ -356,7 +298,7 @@
                 "visible": true,
                 "options": {
                   "icon": "Info",
-                  "text": "If availability zone deployment is selected but the location does not support availability zone an availability set will be deployed. If availability zone deployment is selected and availability zone are available in the location, FortiWeb A will be placed in Zone 1, FortiWeb B will be placed in Zone 2",
+                  "text": "If Availability Zones deployment is selected but the location does not support Availability Zones an Availability Set will be deployed. If Availability Zones deployment is selected and Availability Zones are available in the location, FortiGate A will be placed in Zone 1, FortiGate B will be placed in Zone 2",
                   "uri": "https://docs.microsoft.com/en-us/azure/availability-zones/az-overview"
                 }
               }
@@ -466,7 +408,7 @@
                   "subnets": "Requirement to have 4 subnets connected to the FortiWeb VM: external, internal"
                 },
                 "defaultValue": {
-                  "name": "FortiWeb-VNET",
+                  "name": "[if(equals(basics('fortiWebNamePrefix'),''),'FortiWeb-VNET',concat(basics('fortiWebNamePrefix'),'-VNET'))]",
                   "addressPrefixSize": "/20"
                 },
                 "constraints": {
@@ -716,11 +658,6 @@
                 "label": "Applicatin Secret",
                 "defaultValue": "",
                 "toolTip": "Active/Active config - Azure Service Principal Application Secret",
-                "constraints": {
-                  "required": false,
-                  "regex": "^[A-Za-z0-9-]{1,64}$",
-                  "validationMessage": "Only alphanumeric characters and a dash are allowed, and the value must be 1 to 64 characters."
-                },
                 "visible": true
               }
             ]
@@ -738,8 +675,6 @@
       "acceleratedNetworking": "[steps('networking').acceleratednetworksection.acceleratednetworking]",
       "instanceType": "[steps('instance').instancetype.selection]",
       "availabilityOptions": "[steps('instance').availabilityOptions.availabilityOptions]",
-      "existingAvailabilitySetName": "[steps('instance').availabilityOptions.availabilitySetSelector.name]",
-      "availabilityZoneNumber": "[steps('instance').availabilityOptions.availabilityZoneSelector]",
       "fortiWebALicenseBYOL": "[steps('instance').fwbLicense.licenseacontent]",
       "fortiWebBLicenseBYOL": "[steps('instance').fwbLicense.licensebcontent]",
       "publicIPNewOrExisting": "[steps('publicip').loadbalancerpublicip.newOrExistingOrNone]",
