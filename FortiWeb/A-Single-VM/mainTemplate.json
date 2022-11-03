@@ -611,10 +611,7 @@
           }
         ],
         "enableIPForwarding": false,
-        "enableAcceleratedNetworking": "[parameters('acceleratedNetworking')]",
-        "networkSecurityGroup": {
-          "id": "[variables('NSGId')]"
-        }
+        "enableAcceleratedNetworking": "[parameters('acceleratedNetworking')]"
       }
     },
     {
