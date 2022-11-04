@@ -493,6 +493,7 @@
       }
     },
     {
+      "condition": "[equals(parameters('vnetNewOrExisting'), 'new')]",
       "type": "Microsoft.Network/routeTables",
       "name": "[variables('routeTableProtectedName')]",
       "apiVersion": "2020-11-01",
