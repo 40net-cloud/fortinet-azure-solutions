@@ -11,6 +11,9 @@
         "fortiGateNamePrefix": {
             "value": "## TO BE DEFINED ##"
         },
+        "fortiGateName": {
+            "value": ""
+        },
         "fortiGateImageSKU": {
             "value": "fortinet_fg-vm"
         },
@@ -71,12 +74,6 @@
         "subnet2StartAddress": {
             "value": "172.16.136.68"
         },
-        "subnet3Name": {
-            "value": "ProtectedASubnet"
-        },
-        "subnet3Prefix": {
-            "value": "172.16.137.0/24"
-        },
         "serialConsole": {
             "value": "yes"
         },
@@ -95,12 +92,24 @@
         "fortiGateLicenseFlexVM": {
             "value": ""
         },
+        "fortiGateAdminPort": {
+            "value": "8443"
+        },
+        "backendWebServer": {
+            "value": "## TO BE DEFINED ##"
+        },
+        "ztnaUsername": {
+            "value": "## TO BE DEFINED ##"
+        },
+        "ztnaPassword": {
+            "value": "## TO BE DEFINED ##"
+        },
         "location": {
-            "value": ""
+            "value": "[resourceGroup().location]"
         },
         "fortinetTags": {
             "value": {
-                "publisher": "Fortinet",
+                "publisher": "Fortinet ZTNA demo",
                 "provider": "6EB3B02F-50E5-4A3E-8CB8-2E12925831VM"
             }
         }
