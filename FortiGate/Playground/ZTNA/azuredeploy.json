@@ -465,11 +465,11 @@
     },
     "ZTNAApplicationLoginURL": {
       "type": "string",
-      "value": "[concat('https://', reference(resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIp1Name')), '2018-03-01').ipAddress, ':9443/')]"
+      "value": "[concat('https://', reference('FGT-ZTNA-deployment').outputs.fortiGatePublicIP.value, ':9443/')]"
     },
     "ZTNAZTNALoginURL": {
       "type": "string",
-      "value": "[concat('https://', reference(resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIp1Name')), '2018-03-01').ipAddress, ':', parameters('fortiGateAdminPort'), '/')]"
+      "value": "[concat('https://', reference('FGT-ZTNA-deployment').outputs.fortiGatePublicIP.value, ':', parameters('fortiGateAdminPort'), '/')]"
     }
   }
 }
