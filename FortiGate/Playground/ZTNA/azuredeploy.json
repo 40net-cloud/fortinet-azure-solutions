@@ -436,7 +436,7 @@
           "publicIp1ResourceGroup": { "value": "[parameters('publicIp1ResourceGroup')]" },
           "publicIp1AddressType": { "value": "[parameters('publicIp1AddressType')]" },
           "publicIp1SKU": { "value": "[parameters('publicIp1SKU')]" },
-          "vnetNewOrExisting": { "value": "[parameters('vnetNewOrExisting')]" },
+          "vnetNewOrExisting": { "value": "existing" },
           "vnetName": { "value": "[parameters('vnetName')]" },
           "vnetResourceGroup": { "value": "[parameters('vnetResourceGroup')]" },
           "vnetAddressPrefix": { "value": "[parameters('vnetAddressPrefix')]" },
