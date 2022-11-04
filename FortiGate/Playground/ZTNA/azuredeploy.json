@@ -128,32 +128,6 @@
         "description": "Virtual Machine size selection - must be F4 or other instance that supports 4 NICs"
       }
     },
-    "availabilityOptions": {
-      "type": "string",
-      "allowedValues": [
-        "None",
-        "Availability set",
-        "Availability zone"
-      ],
-      "defaultValue": "None",
-      "metadata": {
-        "description": "Deploy FortiGate VM in an Availability Set or Availability Zones. If Availability Zones deployment is selected but the location does not support Availability Zones an Availability Set will be deployed. If Availability Zones deployment is selected and Availability Zones are available in the location, FortiGate A will be placed in Zone 1, FortiGate B will be placed in Zone 2"
-      }
-    },
-    "existingAvailabilitySetName": {
-      "type": "string",
-      "defaultValue": "",
-      "metadata": {
-        "description": "Name of existing Availability Set in case you want to replace or add a FortiGate to an existing cluster."
-      }
-    },
-    "availabilityZoneNumber": {
-      "type": "string",
-      "defaultValue": "",
-      "metadata": {
-        "description": "Name of existing Availability Set in case you want to replace or add a FortiGate to an existing cluster."
-      }
-    },
     "acceleratedNetworking": {
       "type": "string",
       "defaultValue": "false",
@@ -451,6 +425,7 @@
           "adminUsername": { "value": "[parameters('adminUsername')]" },
           "adminPassword": { "value": "[parameters('adminPassword')]" },
           "fortiGateNamePrefix": { "value": "[concat(parameters('fortiGateNamePrefix'))]" },
+          "fortiGateName": { "value": "[concat(parameters('fortiGateName'))]" },
           "fortiGateImageSKU": { "value": "[parameters('fortiGateImageSKU')]" },
           "fortiGateImageVersion": { "value": "[parameters('fortiGateImageVersion')]" },
           "fortiGateAdditionalCustomData": { "value": "[variables('customDataCombined')]" },
@@ -471,8 +446,6 @@
           "subnet2Name": { "value": "[parameters('subnet2Name')]" },
           "subnet2Prefix": { "value": "[parameters('subnet2Prefix')]" },
           "subnet2StartAddress": { "value": "[parameters('subnet2StartAddress')]" },
-          "subnet3Name": { "value": "Protected" },
-          "subnet3Prefix": { "value": "172.16.10.0/24" },
           "serialConsole": { "value": "[parameters('serialConsole')]" },
           "fortiManager": { "value": "[parameters('fortiManager')]" },
           "fortiManagerIP": { "value": "[parameters('fortiManagerIP')]" },
@@ -484,5 +457,19 @@
         }
       }
     }
-  ]
+  ],
+  "outputs": {
+    "AdminUsername": {
+      "type": "string",
+      "value": "[parameters('adminUsername')]"
+    },
+    "ZTNAApplicationLoginURL": {
+      "type": "string",
+      "value": "[concat('https://', reference(resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIp1Name')), '2018-03-01').ipAddress, ':9443/')]"
+    },
+    "ZTNAZTNALoginURL": {
+      "type": "string",
+      "value": "[concat('https://', reference(resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIp1Name')), '2018-03-01').ipAddress, ':', parameters('fortiGateAdminPort'), '/')]"
+    }
+  }
 }
