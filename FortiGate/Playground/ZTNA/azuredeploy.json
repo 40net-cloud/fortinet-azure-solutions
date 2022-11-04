@@ -462,6 +462,14 @@
     "AdminUsername": {
       "type": "string",
       "value": "[parameters('adminUsername')]"
+    },
+    "ZTNAApplicationLoginURL": {
+      "type": "string",
+      "value": "[concat('https://', reference(resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIp1Name')), '2018-03-01').ipAddress, ':9443/')]"
+    },
+    "ZTNAZTNALoginURL": {
+      "type": "string",
+      "value": "[concat('https://', reference(resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIp1Name')), '2018-03-01').ipAddress, ':', parameters('fortiGateAdminPort'), '/')]"
     }
   }
 }
