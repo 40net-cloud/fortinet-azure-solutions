@@ -318,6 +318,13 @@
         "description": "FortiGate HTTPS admin access port"
       }
     },
+    "ztnaHTTPSAccessPort": {
+      "type": "string",
+      "defaultValue": "9443",
+      "metadata": {
+        "description": "ZTNA HTTPS access port"
+      }
+    },
     "backendWebServer": {
       "type": "string",
       "metadata": {
@@ -359,7 +366,7 @@
     "customDataFirewallAddressGroup": "[concat('config firewall addrgrp\nedit \"WebServer\"\nset member \"webserver1\"\nnext\nend\n')]",
     "customDataUserLocal": "[concat('config user local\nedit ', parameters('ztnaUsername'), '\nset type password\nset passwd ', parameters('ztnaPassword'), '\nnext\nend\n')]",
     "customDataUserGroup": "[concat('config user group\nedit \"sslvpn_group\"\nset member ', parameters('ztnaUsername'), '\nnext\nend\n')]",
-    "customDataFirewallVip": "[concat('config firewall vip\nedit \"ZTNAServer\"\nset type access-proxy\nset extip ', parameters('subnet1StartAddress'), '\nset extintf \"port1\"\nset server-type https\nset extport 9443\nset ssl-certificate \"Fortinet_Factory\"\nnext\nend\n')]",
+    "customDataFirewallVip": "[concat('config firewall vip\nedit \"ZTNAServer\"\nset type access-proxy\nset extip ', parameters('subnet1StartAddress'), '\nset extintf \"port1\"\nset server-type https\nset extport ', parameters('ztnaHTTPSAccessPort'), '\nset ssl-certificate \"Fortinet_Factory\"\nnext\nend\n')]",
     "customDataFirewallAccessProxy": "[concat('config firewall access-proxy\nedit \"ZTNAServer\"\nset client-cert disable\nset vip \"ZTNAServer\"\nconfig api-gateway\nedit 1\nconfig realservers\nedit 1\nset ip ', parameters('backendWebServer'), '\nnext\nend\nnext\nend\nnext\nend\n')]",
     "customDataFirewallProxyPolicy": "[concat('config firewall proxy-policy\nedit 1\nset name \"ZTNA Web Server\"\nset proxy access-proxy\nset access-proxy \"ZTNAServer\"\nset srcintf \"port1\"\nset srcaddr \"all\"\nset dstaddr \"WebServer\"\nset action accept\nset schedule \"always\"\nset logtraffic all\nset groups \"sslvpn_group\"\nnext\nend\n')]",
     "customDataAuthentication": "[concat('config authentication scheme\nedit \"ZTNA\"\nset method basic\nset user-database \"local-user-db\"\nnext\nend\nconfig authentication rule\nedit \"ZTNA\"\nset srcintf \"port1\"\nset srcaddr \"all\"\nset ip-based disable\nset active-auth-method \"ZTNA\"\nnext\nend\n')]",
@@ -473,7 +480,7 @@
     },
     "ZTNAApplicationLoginURL": {
       "type": "string",
-      "value": "[concat('https://', reference('FGT-ZTNA-deployment').outputs.fortiGateFQDN.value, ':9443/')]"
+      "value": "[concat('https://', reference('FGT-ZTNA-deployment').outputs.fortiGateFQDN.value, ':', parameters('ztnaHTTPSAccessPort'), '/')]"
     },
     "ZTNAZTNALoginURL": {
       "type": "string",
