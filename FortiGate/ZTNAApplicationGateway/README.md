@@ -53,7 +53,7 @@ end
 config firewall vip
   edit "ZTNAServer"
     set type access-proxy
-    set extip <b>172.16.136.5</a>
+    set extip <b>172.16.136.5</b>
     set extintf "port1"
     set server-type https
     set extport 9443
