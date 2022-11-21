@@ -73,12 +73,12 @@ resource "azurerm_lb_backend_address_pool" "elbbackend" {
 }
 
 resource "azurerm_lb_probe" "elbprobe" {
-  loadbalancer_id = azurerm_lb.elb.id
-  name            = "lbprobe"
-  port            = 8008
+  loadbalancer_id     = azurerm_lb.elb.id
+  name                = "lbprobe"
+  port                = 8008
   interval_in_seconds = 5
-  number_of_probes = 2
-  protocol = Tcp
+  number_of_probes    = 2
+  protocol            = "Tcp"
 }
 
 resource "azurerm_lb_rule" "lbruletcp" {
@@ -123,12 +123,12 @@ resource "azurerm_lb_backend_address_pool" "ilbbackend" {
 }
 
 resource "azurerm_lb_probe" "ilbprobe" {
-  loadbalancer_id = azurerm_lb.ilb.id
-  name            = "lbprobe"
-  port            = 8008
+  loadbalancer_id     = azurerm_lb.ilb.id
+  name                = "lbprobe"
+  port                = 8008
   interval_in_seconds = 5
-  number_of_probes = 2
-  protocol = Tcp
+  number_of_probes    = 2
+  protocol            = "Tcp"
 }
 
 resource "azurerm_lb_rule" "lb_haports_rule" {
@@ -283,12 +283,34 @@ resource "azurerm_virtual_machine" "fgtavm" {
     disk_size_gb      = "10"
   }
 
-
   os_profile {
     computer_name  = "${var.PREFIX}-A-VM-FGT"
     admin_username = var.USERNAME
     admin_password = var.PASSWORD
-    custom_data    = data.template_file.fgt_a_custom_data.rendered
+    custom_data = templatefile("${path.module}/customdata.tpl", {
+      fgt_vm_name         = "${var.PREFIX}-A-VM-FGT"
+      fgt_license_file    = var.FGT_BYOL_LICENSE_FILE_A
+      fgt_license_flexvm  = var.FGT_BYOL_FLEXVM_LICENSE_FILE_A
+      fgt_username        = var.USERNAME
+      fgt_ssh_public_key  = var.FGT_SSH_PUBLIC_KEY_FILE
+      fgt_config_ha       = var.FGT_CONFIG_HA
+      fgt_external_ipaddr = var.fgt_ipaddress_a["1"]
+      fgt_external_mask   = var.subnetmask["1"]
+      fgt_external_gw     = var.gateway_ipaddress["1"]
+      fgt_internal_ipaddr = var.fgt_ipaddress_a["2"]
+      fgt_internal_mask   = var.subnetmask["2"]
+      fgt_internal_gw     = var.gateway_ipaddress["2"]
+      fgt_hasync_ipaddr   = var.fgt_ipaddress_a["3"]
+      fgt_hasync_mask     = var.subnetmask["3"]
+      fgt_hasync_gw       = var.gateway_ipaddress["3"]
+      fgt_mgmt_ipaddr     = var.fgt_ipaddress_a["4"]
+      fgt_mgmt_mask       = var.subnetmask["4"]
+      fgt_mgmt_gw         = var.gateway_ipaddress["4"]
+      fgt_ha_peerip       = var.fgt_ipaddress_b["3"]
+      fgt_ha_priority     = "255"
+      fgt_protected_net   = var.subnet["5"]
+      vnet_network        = var.vnet
+    })
   }
 
   os_profile_linux_config {
@@ -298,34 +320,6 @@ resource "azurerm_virtual_machine" "fgtavm" {
   tags = var.fortinet_tags
 }
 
-data "template_file" "fgt_a_custom_data" {
-  template = file("${path.module}/customdata.tpl")
-
-  vars = {
-    fgt_vm_name         = "${var.PREFIX}-A-VM-FGT"
-    fgt_license_file    = var.FGT_BYOL_LICENSE_FILE_A
-    fgt_license_flexvm  = var.FGT_BYOL_FLEXVM_LICENSE_FILE_A
-    fgt_username        = var.USERNAME
-    fgt_ssh_public_key  = var.FGT_SSH_PUBLIC_KEY_FILE
-    fgt_config_ha       = var.FGT_CONFIG_HA
-    fgt_external_ipaddr = var.fgt_ipaddress_a["1"]
-    fgt_external_mask   = var.subnetmask["1"]
-    fgt_external_gw     = var.gateway_ipaddress["1"]
-    fgt_internal_ipaddr = var.fgt_ipaddress_a["2"]
-    fgt_internal_mask   = var.subnetmask["2"]
-    fgt_internal_gw     = var.gateway_ipaddress["2"]
-    fgt_hasync_ipaddr   = var.fgt_ipaddress_a["3"]
-    fgt_hasync_mask     = var.subnetmask["3"]
-    fgt_hasync_gw       = var.gateway_ipaddress["3"]
-    fgt_mgmt_ipaddr     = var.fgt_ipaddress_a["4"]
-    fgt_mgmt_mask       = var.subnetmask["4"]
-    fgt_mgmt_gw         = var.gateway_ipaddress["4"]
-    fgt_ha_peerip       = var.fgt_ipaddress_b["3"]
-    fgt_ha_priority     = "255"
-    fgt_protected_net   = var.subnet["5"]
-    vnet_network        = var.vnet
-  }
-}
 
 resource "azurerm_network_interface" "fgtbifcext" {
   name                          = "${var.PREFIX}-B-VM-FGT-IFC-EXT"
@@ -474,7 +468,30 @@ resource "azurerm_virtual_machine" "fgtbvm" {
     computer_name  = "${var.PREFIX}-B-VM-FGT"
     admin_username = var.USERNAME
     admin_password = var.PASSWORD
-    custom_data    = data.template_file.fgt_b_custom_data.rendered
+    custom_data = templatefile("${path.module}/customdata.tpl", {
+      fgt_vm_name         = "${var.PREFIX}-B-VM-FGT"
+      fgt_license_file    = var.FGT_BYOL_LICENSE_FILE_B
+      fgt_license_flexvm  = var.FGT_BYOL_FLEXVM_LICENSE_FILE_B
+      fgt_username        = var.USERNAME
+      fgt_ssh_public_key  = var.FGT_SSH_PUBLIC_KEY_FILE
+      fgt_config_ha       = var.FGT_CONFIG_HA
+      fgt_external_ipaddr = var.fgt_ipaddress_b["1"]
+      fgt_external_mask   = var.subnetmask["1"]
+      fgt_external_gw     = var.gateway_ipaddress["1"]
+      fgt_internal_ipaddr = var.fgt_ipaddress_b["2"]
+      fgt_internal_mask   = var.subnetmask["2"]
+      fgt_internal_gw     = var.gateway_ipaddress["2"]
+      fgt_hasync_ipaddr   = var.fgt_ipaddress_b["3"]
+      fgt_hasync_mask     = var.subnetmask["3"]
+      fgt_hasync_gw       = var.gateway_ipaddress["3"]
+      fgt_mgmt_ipaddr     = var.fgt_ipaddress_b["4"]
+      fgt_mgmt_mask       = var.subnetmask["4"]
+      fgt_mgmt_gw         = var.gateway_ipaddress["4"]
+      fgt_ha_peerip       = var.fgt_ipaddress_a["3"]
+      fgt_ha_priority     = "255"
+      fgt_protected_net   = var.subnet["5"]
+      vnet_network        = var.vnet
+    })
   }
 
   os_profile_linux_config {
@@ -484,35 +501,6 @@ resource "azurerm_virtual_machine" "fgtbvm" {
   tags = {
     environment = "Quickstart-VNET-Peering"
     vendor      = "Fortinet"
-  }
-}
-
-data "template_file" "fgt_b_custom_data" {
-  template = file("${path.module}/customdata.tpl")
-
-  vars = {
-    fgt_vm_name         = "${var.PREFIX}-B-VM-FGT"
-    fgt_license_file    = var.FGT_BYOL_LICENSE_FILE_B
-    fgt_license_flexvm  = var.FGT_BYOL_FLEXVM_LICENSE_FILE_B
-    fgt_username        = var.USERNAME
-    fgt_ssh_public_key  = var.FGT_SSH_PUBLIC_KEY_FILE
-    fgt_config_ha       = var.FGT_CONFIG_HA
-    fgt_external_ipaddr = var.fgt_ipaddress_b["1"]
-    fgt_external_mask   = var.subnetmask["1"]
-    fgt_external_gw     = var.gateway_ipaddress["1"]
-    fgt_internal_ipaddr = var.fgt_ipaddress_b["2"]
-    fgt_internal_mask   = var.subnetmask["2"]
-    fgt_internal_gw     = var.gateway_ipaddress["2"]
-    fgt_hasync_ipaddr   = var.fgt_ipaddress_b["3"]
-    fgt_hasync_mask     = var.subnetmask["3"]
-    fgt_hasync_gw       = var.gateway_ipaddress["3"]
-    fgt_mgmt_ipaddr     = var.fgt_ipaddress_b["4"]
-    fgt_mgmt_mask       = var.subnetmask["4"]
-    fgt_mgmt_gw         = var.gateway_ipaddress["4"]
-    fgt_ha_peerip       = var.fgt_ipaddress_a["3"]
-    fgt_ha_priority     = "255"
-    fgt_protected_net   = var.subnet["5"]
-    vnet_network        = var.vnet
   }
 }
 
