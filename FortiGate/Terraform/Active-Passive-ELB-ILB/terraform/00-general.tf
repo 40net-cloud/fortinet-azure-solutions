@@ -92,11 +92,11 @@ provider "azurerm" {
 # This is a one-time agreement that needs to be accepted per subscription
 # https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/marketplace_agreement
 ##############################################################################################################
-resource "azurerm_marketplace_agreement" "fortinet" {
-  publisher = "fortinet"
-  offer     = "fortinet_fortigate-vm_v5"
-  plan      = var.FGT_IMAGE_SKU
-}
+#resource "azurerm_marketplace_agreement" "fortinet" {
+#  publisher = "fortinet"
+#  offer     = "fortinet_fortigate-vm_v5"
+#  plan      = var.FGT_IMAGE_SKU
+#}
 
 ##############################################################################################################
 # Static variables
