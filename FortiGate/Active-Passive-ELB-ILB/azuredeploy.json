@@ -440,6 +440,7 @@
       "id": "[resourceId('Microsoft.Compute/availabilitySets', variables('availabilitySetName'))]"
     },
     "useAZ": "[and(not(empty(pickZones('Microsoft.Compute', 'virtualMachines', parameters('location')))), equals(parameters('availabilityOptions'), 'Availability Zones'))]",
+    "pipZones": "[if(variables('useAZ'), pickZones('Microsoft.Network', 'publicIPAddresses', parameters('location'), 3), json('null'))]",
     "zone1": [
       "1"
     ],
@@ -798,6 +799,7 @@
       "sku": {
         "name": "Standard"
       },
+      "zones": "[variables('pipZones')]",
       "properties": {
         "publicIPAllocationMethod": "Static",
         "dnsSettings": {
@@ -817,6 +819,7 @@
       "sku": {
         "name": "Standard"
       },
+      "zones": "[variables('pipZones')]",
       "properties": {
         "publicIPAllocationMethod": "Static"
       }
@@ -833,6 +836,7 @@
       "sku": {
         "name": "Standard"
       },
+      "zones": "[variables('pipZones')]",
       "properties": {
         "publicIPAllocationMethod": "Static"
       }
