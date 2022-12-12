@@ -610,6 +610,7 @@
     "sn4IPfga": "[concat(variables('sn4IPArray0'),'.',variables('sn4IPArray1'),'.',variables('sn4IPArray2'),'.',int(variables('sn4IPStartAddress')[3]))]",
     "sn4IPfgb": "[concat(variables('sn4IPArray0'),'.',variables('sn4IPArray1'),'.',variables('sn4IPArray2'),'.',add(int(variables('sn4IPStartAddress')[3]),1))]",
     "useAZ": "[and(not(empty(pickZones('Microsoft.Compute', 'virtualMachines', parameters('location')))), equals(parameters('availabilityOptions'), 'Availability Zones'))]",
+    "pipZones": "[if(variables('useAZ'), pickZones('Microsoft.Network', 'publicIPAddresses', parameters('location'), 3), json('null'))]",
     "zone1": [
       "1"
     ],
@@ -785,6 +786,7 @@
       "sku": {
         "name": "[parameters('publicIP1AddressSku')]"
       },
+      "zones": "[variables('pipZones')]",
       "properties": {
         "publicIPAllocationMethod": "[parameters('publicIP1AddressType')]",
         "dnsSettings": {
@@ -804,6 +806,7 @@
       "sku": {
         "name": "[parameters('publicIP2AddressSku')]"
       },
+      "zones": "[variables('pipZones')]",
       "properties": {
         "publicIPAllocationMethod": "[parameters('publicIP2AddressType')]"
       }
@@ -820,6 +823,7 @@
       "sku": {
         "name": "[parameters('publicIP3AddressSKU')]"
       },
+      "zones": "[variables('pipZones')]",
       "properties": {
         "publicIPAllocationMethod": "[parameters('publicIP3AddressType')]"
       }

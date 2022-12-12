@@ -401,6 +401,7 @@
     },
     "useAS": "[equals(parameters('availabilityOptions'), 'Availability set')]",
     "useAZ": "[and(not(empty(pickZones('Microsoft.Compute', 'virtualMachines', parameters('location')))), equals(parameters('availabilityOptions'), 'Availability zone'))]",
+    "pipZones": "[if(variables('useAZ'), pickZones('Microsoft.Network', 'publicIPAddresses', parameters('location'), 3), json('null'))]",
     "zone1": "[if(equals(parameters('availabilityZoneNumber'),''),pickZones('Microsoft.Compute', 'virtualMachines', parameters('location')),array(parameters('availabilityZoneNumber')))]",
     "vnetName": "[if(equals(parameters('vnetName'),''),concat(parameters('fortiGateNamePrefix'),'-VNET'),parameters('vnetName'))]",
     "subnet1Id": "[if(equals(parameters('vnetNewOrExisting'),'new'),resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet1Name')),resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet1Name')))]",
@@ -625,6 +626,7 @@
       "sku": {
         "name": "[parameters('publicIP1SKU')]"
       },
+      "zones": "[variables('pipZones')]",
       "properties": {
         "publicIPAllocationMethod": "[parameters('publicIP1AddressType')]",
         "dnsSettings": {
