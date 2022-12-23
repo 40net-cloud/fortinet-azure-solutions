@@ -344,7 +344,31 @@
         "description": "Password for ZTNA client to connect"
       }
     },
-
+    "emsCloud": {
+      "type": "string",
+      "defaultValue": "yes",
+      "allowedValues": [
+        "yes",
+        "no"
+      ],
+      "metadata": {
+        "description": "Connect to FortiClient Cloud (yes) or FortiClient EMS (no)"
+      }
+    },
+    "emsServerIP": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "FortiClient EMS server name reachable by this gateway"
+      }
+    },
+    "emsServerPort": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "FortiClient EMS server port reachable by this gateway"
+      }
+    },
     "location": {
       "type": "string",
       "defaultValue": "[resourceGroup().location]",
@@ -363,16 +387,18 @@
   "variables": {
     "vnetName": "[if(equals(parameters('vnetName'),''),concat(parameters('fortiGateNamePrefix'),'-VNET'),parameters('vnetName'))]",
     "customDataSystemGlobal": "[concat('config system global\nset admin-sport ', parameters('fortiGateAdminPort'), '\nend\n')]",
+    "customDataDashboard": "config system admin\n edit admin\n config gui-dashboard\n edit 0\n set name \"FortiView ZTNA Servers\"\n set vdom root\n set layout-type standalone\n set csf disable\n config widget\n edit 1\n set type fortiview\n set width 1\n set height 1\n set csf-device all\n set fortiview-type ztnaServer\n set fortiview-sort-by bytes\n set fortiview-timeframe 5min\n set fortiview-visualization table\n next\n end\n next\n end\n next\n end\n config system settings\n set gui-implicit-policy disable\n set gui-dos-policy disable\n set gui-dynamic-routing disable\n set gui-threat-weight disable\n set gui-file-filter disable\n set gui-application-control disable\n set gui-endpoint-control disable\n set gui-vpn disable\n set gui-wireless-controller disable\n set gui-traffic-shaping disable\n set gui-webfilter disable\n set gui-dnsfilter disable\n set allow-subnet-overlap enable\n end\n", 
     "customDataFirewallAddress": "[concat('config firewall address\nedit webserver1\nset subnet ', parameters('backendWebServer'), ' 255.255.255.255\nnext\nend\n')]",
     "customDataFirewallAddressGroup": "[concat('config firewall addrgrp\nedit \"WebServer\"\nset member \"webserver1\"\nnext\nend\n')]",
     "customDataUserLocal": "[concat('config user local\nedit ', parameters('ztnaUsername'), '\nset type password\nset passwd ', parameters('ztnaPassword'), '\nnext\nend\n')]",
     "customDataUserGroup": "[concat('config user group\nedit \"sslvpn_group\"\nset member ', parameters('ztnaUsername'), '\nnext\nend\n')]",
-    "customDataFirewallVip": "[concat('config firewall vip\nedit \"ZTNAServer\"\nset type access-proxy\nset extip ', parameters('subnet1StartAddress'), '\nset extintf \"port1\"\nset server-type https\nset extport ', parameters('ztnaHTTPSAccessPort'), '\nset ssl-certificate \"Fortinet_Factory\"\nnext\nend\n')]",
+    "customDataFirewallVip": "[concat('config firewall vip\nedit \"ZTNAServer\"\nset type access-proxy\nset extip ', parameters('subnet1StartAddress'), '\nset extintf \"port1\"\nset server-type https\nset extport ', parameters('ztnaHTTPSAccessPort'), '\nset ssl-certificate \"Fortinet_SSL\"\nnext\nend\n')]",
     "customDataFirewallAccessProxy": "[concat('config firewall access-proxy\nedit \"ZTNAServer\"\nset client-cert disable\nset vip \"ZTNAServer\"\nconfig api-gateway\nedit 1\nconfig realservers\nedit 1\nset ip ', parameters('backendWebServer'), '\nnext\nend\nnext\nend\nnext\nend\n')]",
     "customDataFirewallProxyPolicy": "[concat('config firewall proxy-policy\nedit 1\nset name \"ZTNA Web Server\"\nset proxy access-proxy\nset access-proxy \"ZTNAServer\"\nset srcintf \"port1\"\nset srcaddr \"all\"\nset dstaddr \"WebServer\"\nset action accept\nset schedule \"always\"\nset logtraffic all\nset groups \"sslvpn_group\"\nnext\nend\n')]",
     "customDataAuthentication": "[concat('config authentication scheme\nedit \"ZTNA\"\nset method basic\nset user-database \"local-user-db\"\nnext\nend\nconfig authentication rule\nedit \"ZTNA\"\nset srcintf \"port1\"\nset srcaddr \"all\"\nset ip-based disable\nset active-auth-method \"ZTNA\"\nnext\nend\n')]",
-    "customDataEndPoint": "[concat('config endpoint-control fctems\nedit \"1\"\nset fortinetone-cloud-authentication enable\nnext\nend\n')]",
-    "customDataCombined": "[concat(variables('customDataSystemGlobal'),variables('customDataFirewallAddress'),variables('customDataFirewallAddressGroup'),variables('customDataUserLocal'),variables('customDataUserGroup'),variables('customDataFirewallAddress'), variables('customDataFirewallVip'),variables('customDataFirewallAccessProxy'),variables('customDataFirewallProxyPolicy'),variables('customDataAuthentication'),variables('customDataEndPoint'),parameters('fortiGateAdditionalCustomData'))]"
+    "customDataEMSCloud": "[concat('config endpoint-control fctems\nedit \"1\"\nset name ems-cloud\n set status enable\n set fortinetone-cloud-authentication enable\nnext\nend\n')]",
+    "customDataEMS": "[concat('config endpoint-control fctems\nedit \"1\"\nset name ems-local\n set status enable\n set server ', parameters('emsServerIP'), '\nset https-port ', parameters('emsServerPort'), '\nnext\nend\n')]",
+    "customDataCombined": "[concat(variables('customDataSystemGlobal'),variables('customDataDashboard'),variables('customDataFirewallAddress'),variables('customDataFirewallAddressGroup'),variables('customDataUserLocal'),variables('customDataUserGroup'),variables('customDataFirewallAddress'), variables('customDataFirewallVip'),variables('customDataFirewallAccessProxy'),variables('customDataFirewallProxyPolicy'),variables('customDataAuthentication'),if(equals(parameters('emsCloud'),'yes'),variables('customDataEMSCloud'),variables('customDataEMS')),parameters('fortiGateAdditionalCustomData'))]"
   },
   "resources": [
     {
