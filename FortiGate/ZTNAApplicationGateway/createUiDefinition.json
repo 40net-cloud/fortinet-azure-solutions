@@ -588,8 +588,8 @@
                   "required": false,
                   "validations": [
                     {
-                      "regex": "^[a-z0-9A-Z]{1,128}$",
-                      "message": "Only alphanumeric characters are allowed, and the value must be 1-30 characters long"
+                      "regex": "^[a-z0-9A-Z.-]{1,128}$",
+                      "message": "Only alphanumeric, hyphen and dot characters are allowed, and the value must be 1-30 characters long"
                     }
                   ]
                 },
@@ -605,8 +605,8 @@
                   "required": false,
                   "validations": [
                     {
-                      "regex": "^[a-z0-9A-Z]{1,30}$",
-                      "message": "Only alphanumeric characters are allowed, and the value must be 1-30 characters long"
+                      "regex": "^[0-9]{1,30}$",
+                      "message": "Only numeric characters are allowed."
                     }
                   ]
                 },
