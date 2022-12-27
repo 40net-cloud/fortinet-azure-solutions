@@ -110,7 +110,6 @@ variable "subnet" {
     "1" = "172.16.136.0/26"  # External
     "2" = "172.16.136.64/26" # Internal
     "3" = "172.16.137.0/24"  # Protected a
-    "4" = "172.16.138.0/24"  # Protected b
   }
 }
 
@@ -122,7 +121,6 @@ variable "subnetmask" {
     "1" = "26" # External
     "2" = "26" # Internal
     "3" = "24" # Protected a
-    "4" = "24" # Protected b
   }
 }
 
