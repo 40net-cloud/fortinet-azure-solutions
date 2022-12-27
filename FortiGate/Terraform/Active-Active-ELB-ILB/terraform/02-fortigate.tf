@@ -6,7 +6,7 @@
 ##############################################################################################################
 
 resource "azurerm_availability_set" "fgtavset" {
-  name                = "${var.PREFIX}-FGT-AVSET"
+  name                = "${var.PREFIX}-FGT-AvailabilitySet"
   location            = var.LOCATION
   managed             = true
   resource_group_name = azurerm_resource_group.resourcegroup.name
@@ -185,7 +185,7 @@ resource "azurerm_lb_rule" "lb_haports_rule" {
 }
 
 resource "azurerm_network_interface" "fgtaifcext" {
-  name                          = "${var.PREFIX}-FGT-A-IFC-EXT"
+  name                          = "${var.PREFIX}-FGT-A-Nic1-EXT"
   location                      = azurerm_resource_group.resourcegroup.location
   resource_group_name           = azurerm_resource_group.resourcegroup.name
   enable_ip_forwarding          = true
@@ -211,7 +211,7 @@ resource "azurerm_network_interface_backend_address_pool_association" "fgtaifcex
 }
 
 resource "azurerm_network_interface" "fgtaifcint" {
-  name                 = "${var.PREFIX}-FGT-A-IFC-INT"
+  name                 = "${var.PREFIX}-FGT-A-Nic2-INT"
   location             = azurerm_resource_group.resourcegroup.location
   resource_group_name  = azurerm_resource_group.resourcegroup.name
   enable_ip_forwarding = true
@@ -293,7 +293,7 @@ resource "azurerm_linux_virtual_machine" "fgtavm" {
 }
 
 resource "azurerm_network_interface" "fgtbifcext" {
-  name                          = "${var.PREFIX}-FGT-B-IFC-EXT"
+  name                          = "${var.PREFIX}-FGT-B-Nic1-EXT"
   location                      = azurerm_resource_group.resourcegroup.location
   resource_group_name           = azurerm_resource_group.resourcegroup.name
   enable_ip_forwarding          = true
@@ -331,7 +331,7 @@ resource "azurerm_network_interface_nat_rule_association" "fgtamgmtsshvm" {
 }
 
 resource "azurerm_network_interface" "fgtbifcint" {
-  name                          = "${var.PREFIX}-FGT-B-IFC-INT"
+  name                          = "${var.PREFIX}-FGT-B-Nic2-INT"
   location                      = azurerm_resource_group.resourcegroup.location
   resource_group_name           = azurerm_resource_group.resourcegroup.name
   enable_ip_forwarding          = true
@@ -343,6 +343,22 @@ resource "azurerm_network_interface" "fgtbifcint" {
     private_ip_address_allocation = "Static"
     private_ip_address            = var.fgt_ipaddress_b["2"]
   }
+}
+
+resource "azurerm_managed_disk" "fgtavm-datadisk" {
+  name                 = "${var.PREFIX}-FGT-A-DATADISK"
+  location             = azurerm_resource_group.resourcegroup.location
+  resource_group_name  = azurerm_resource_group.resourcegroup.name
+  storage_account_type = "Standard_LRS"
+  create_option        = "Empty"
+  disk_size_gb         = 50
+}
+
+resource "azurerm_virtual_machine_data_disk_attachment" "fgtavm-datadisk-attach" {
+  managed_disk_id    = azurerm_managed_disk.fgtavm-datadisk.id
+  virtual_machine_id = azurerm_linux_virtual_machine.fgtavm.id
+  lun                = 0
+  caching            = "ReadWrite"
 }
 
 resource "azurerm_network_interface_security_group_association" "fgtbifcintnsg" {
@@ -423,6 +439,22 @@ resource "azurerm_linux_virtual_machine" "fgtbvm" {
   }
 
   tags = var.fortinet_tags
+}
+
+resource "azurerm_managed_disk" "fgtbvm-datadisk" {
+  name                 = "${var.PREFIX}-FGT-B-DATADISK"
+  location             = azurerm_resource_group.resourcegroup.location
+  resource_group_name  = azurerm_resource_group.resourcegroup.name
+  storage_account_type = "Standard_LRS"
+  create_option        = "Empty"
+  disk_size_gb         = 50
+}
+
+resource "azurerm_virtual_machine_data_disk_attachment" "fgtbvm-datadisk-attach" {
+  managed_disk_id    = azurerm_managed_disk.fgtbvm-datadisk.id
+  virtual_machine_id = azurerm_linux_virtual_machine.fgtbvm.id
+  lun                = 0
+  caching            = "ReadWrite"
 }
 
 data "azurerm_public_ip" "elbpip" {

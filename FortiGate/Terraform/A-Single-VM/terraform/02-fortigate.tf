@@ -49,7 +49,7 @@ resource "azurerm_public_ip" "fgtpip" {
 }
 
 resource "azurerm_network_interface" "fgtifcext" {
-  name                          = "${var.PREFIX}-FGT-IFC-EXT"
+  name                          = "${var.PREFIX}-FGT-Nic1-EXT"
   location                      = azurerm_resource_group.resourcegroup.location
   resource_group_name           = azurerm_resource_group.resourcegroup.name
   enable_ip_forwarding          = true
@@ -70,7 +70,7 @@ resource "azurerm_network_interface_security_group_association" "fgtifcextnsg" {
 }
 
 resource "azurerm_network_interface" "fgtifcint" {
-  name                 = "${var.PREFIX}-FGT-IFC-INT"
+  name                 = "${var.PREFIX}-FGT-Nic2-INT"
   location             = azurerm_resource_group.resourcegroup.location
   resource_group_name  = azurerm_resource_group.resourcegroup.name
   enable_ip_forwarding = true
@@ -142,6 +142,22 @@ resource "azurerm_linux_virtual_machine" "fgtvm" {
   }
 
   tags = var.fortinet_tags
+}
+
+resource "azurerm_managed_disk" "fgtvm-datadisk" {
+  name                 = "${var.PREFIX}-FGT-VM-DATADISK"
+  location             = azurerm_resource_group.resourcegroup.location
+  resource_group_name  = azurerm_resource_group.resourcegroup.name
+  storage_account_type = "Standard_LRS"
+  create_option        = "Empty"
+  disk_size_gb         = 50
+}
+
+resource "azurerm_virtual_machine_data_disk_attachment" "fgtvm-datadisk-attach" {
+  managed_disk_id    = azurerm_managed_disk.fgtvm-datadisk.id
+  virtual_machine_id = azurerm_linux_virtual_machine.fgtvm.id
+  lun                = 0
+  caching            = "ReadWrite"
 }
 
 data "azurerm_public_ip" "fgtpip" {
