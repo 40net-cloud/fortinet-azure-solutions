@@ -235,20 +235,19 @@ resource "azurerm_network_interface_backend_address_pool_association" "fgtaifcin
   backend_address_pool_id = azurerm_lb_backend_address_pool.ilbbackend.id
 }
 
-resource "azurerm_virtual_machine" "fgtavm" {
-  name                         = "${var.PREFIX}-FGT-A-VM"
-  location                     = azurerm_resource_group.resourcegroup.location
-  resource_group_name          = azurerm_resource_group.resourcegroup.name
-  network_interface_ids        = [azurerm_network_interface.fgtaifcext.id, azurerm_network_interface.fgtaifcint.id]
-  primary_network_interface_id = azurerm_network_interface.fgtaifcext.id
-  vm_size                      = var.fgt_vmsize
-  availability_set_id          = azurerm_availability_set.fgtavset.id
+resource "azurerm_linux_virtual_machine" "fgtavm" {
+  name                  = "${var.PREFIX}-FGT-A-VM"
+  location              = azurerm_resource_group.resourcegroup.location
+  resource_group_name   = azurerm_resource_group.resourcegroup.name
+  network_interface_ids = [azurerm_network_interface.fgtaifcext.id, azurerm_network_interface.fgtaifcint.id]
+  size                  = var.fgt_vmsize
+  availability_set_id   = azurerm_availability_set.fgtavset.id
 
   identity {
     type = "SystemAssigned"
   }
 
-  storage_image_reference {
+  source_image_reference {
     publisher = "fortinet"
     offer     = "fortinet_fortigate-vm_v5"
     sku       = var.FGT_IMAGE_SKU
@@ -261,37 +260,33 @@ resource "azurerm_virtual_machine" "fgtavm" {
     name      = var.FGT_IMAGE_SKU
   }
 
-  storage_os_disk {
-    name              = "${var.PREFIX}-FGT-A-OSDISK"
-    caching           = "ReadWrite"
-    create_option     = "FromImage"
-    managed_disk_type = "Standard_LRS"
+  os_disk {
+    name                 = "${var.PREFIX}-FGT-A-OSDISK"
+    caching              = "ReadWrite"
+    storage_account_type = "Standard_LRS"
   }
 
-  os_profile {
-    computer_name  = "${var.PREFIX}-FGT-A"
-    admin_username = var.USERNAME
-    admin_password = var.PASSWORD
-    custom_data = templatefile("${path.module}/customdata.tpl", {
-      fgt_vm_name         = "${var.PREFIX}-FGT-A"
-      fgt_license_file    = var.FGT_BYOL_LICENSE_FILE_A
-      fgt_license_flexvm  = var.FGT_BYOL_FLEXVM_LICENSE_FILE_A
-      fgt_username        = var.USERNAME
-      fgt_ssh_public_key  = var.FGT_SSH_PUBLIC_KEY_FILE
-      fgt_external_ipaddr = var.fgt_ipaddress_a["1"]
-      fgt_external_mask   = var.subnetmask["1"]
-      fgt_external_gw     = var.gateway_ipaddress["1"]
-      fgt_internal_ipaddr = var.fgt_ipaddress_a["2"]
-      fgt_internal_mask   = var.subnetmask["2"]
-      fgt_internal_gw     = var.gateway_ipaddress["2"]
-      fgt_ha_peerip       = var.fgt_ipaddress_b["1"]
-      fgt_protected_net   = var.subnet["3"]
-      vnet_network        = var.vnet
-    })
-  }
+  admin_username                  = var.USERNAME
+  admin_password                  = var.PASSWORD
+  disable_password_authentication = false
+  custom_data = base64encode(templatefile("${path.module}/customdata.tpl", {
+    fgt_vm_name         = "${var.PREFIX}-FGT-A"
+    fgt_license_file    = var.FGT_BYOL_LICENSE_FILE_A
+    fgt_license_flexvm  = var.FGT_BYOL_FLEXVM_LICENSE_FILE_A
+    fgt_username        = var.USERNAME
+    fgt_ssh_public_key  = var.FGT_SSH_PUBLIC_KEY_FILE
+    fgt_external_ipaddr = var.fgt_ipaddress_a["1"]
+    fgt_external_mask   = var.subnetmask["1"]
+    fgt_external_gw     = var.gateway_ipaddress["1"]
+    fgt_internal_ipaddr = var.fgt_ipaddress_a["2"]
+    fgt_internal_mask   = var.subnetmask["2"]
+    fgt_internal_gw     = var.gateway_ipaddress["2"]
+    fgt_ha_peerip       = var.fgt_ipaddress_b["1"]
+    fgt_protected_net   = var.subnet["3"]
+    vnet_network        = var.vnet
+  }))
 
-  os_profile_linux_config {
-    disable_password_authentication = false
+  boot_diagnostics {
   }
 
   tags = var.fortinet_tags
@@ -373,20 +368,19 @@ resource "azurerm_network_interface_nat_rule_association" "fgtbmgmtsshvm" {
   nat_rule_id           = azurerm_lb_nat_rule.fgtbmgmtssh.id
 }
 
-resource "azurerm_virtual_machine" "fgtbvm" {
-  name                         = "${var.PREFIX}-FGT-B"
-  location                     = azurerm_resource_group.resourcegroup.location
-  resource_group_name          = azurerm_resource_group.resourcegroup.name
-  network_interface_ids        = [azurerm_network_interface.fgtbifcext.id, azurerm_network_interface.fgtbifcint.id]
-  primary_network_interface_id = azurerm_network_interface.fgtbifcext.id
-  vm_size                      = var.fgt_vmsize
-  availability_set_id          = azurerm_availability_set.fgtavset.id
+resource "azurerm_linux_virtual_machine" "fgtbvm" {
+  name                  = "${var.PREFIX}-FGT-B"
+  location              = azurerm_resource_group.resourcegroup.location
+  resource_group_name   = azurerm_resource_group.resourcegroup.name
+  network_interface_ids = [azurerm_network_interface.fgtbifcext.id, azurerm_network_interface.fgtbifcint.id]
+  size                  = var.fgt_vmsize
+  availability_set_id   = azurerm_availability_set.fgtavset.id
 
   identity {
     type = "SystemAssigned"
   }
 
-  storage_image_reference {
+  source_image_reference {
     publisher = "fortinet"
     offer     = "fortinet_fortigate-vm_v5"
     sku       = var.FGT_IMAGE_SKU
@@ -399,37 +393,33 @@ resource "azurerm_virtual_machine" "fgtbvm" {
     name      = var.FGT_IMAGE_SKU
   }
 
-  storage_os_disk {
-    name              = "${var.PREFIX}-FGT-B-OSDISK"
-    caching           = "ReadWrite"
-    create_option     = "FromImage"
-    managed_disk_type = "Standard_LRS"
+  os_disk {
+    name                 = "${var.PREFIX}-FGT-B-OSDISK"
+    caching              = "ReadWrite"
+    storage_account_type = "Standard_LRS"
   }
 
-  os_profile {
-    computer_name  = "${var.PREFIX}-FGT-B"
-    admin_username = var.USERNAME
-    admin_password = var.PASSWORD
-    custom_data = templatefile("${path.module}/customdata.tpl", {
-      fgt_vm_name         = "${var.PREFIX}-FGT-B"
-      fgt_license_file    = var.FGT_BYOL_LICENSE_FILE_B
-      fgt_license_flexvm  = var.FGT_BYOL_FLEXVM_LICENSE_FILE_B
-      fgt_username        = var.USERNAME
-      fgt_ssh_public_key  = var.FGT_SSH_PUBLIC_KEY_FILE
-      fgt_external_ipaddr = var.fgt_ipaddress_b["1"]
-      fgt_external_mask   = var.subnetmask["1"]
-      fgt_external_gw     = var.gateway_ipaddress["1"]
-      fgt_internal_ipaddr = var.fgt_ipaddress_b["2"]
-      fgt_internal_mask   = var.subnetmask["2"]
-      fgt_internal_gw     = var.gateway_ipaddress["2"]
-      fgt_ha_peerip       = var.fgt_ipaddress_a["1"]
-      fgt_protected_net   = var.subnet["3"]
-      vnet_network        = var.vnet
-    })
-  }
+  admin_username                  = var.USERNAME
+  admin_password                  = var.PASSWORD
+  disable_password_authentication = false
+  custom_data = base64encode(templatefile("${path.module}/customdata.tpl", {
+    fgt_vm_name         = "${var.PREFIX}-FGT-B"
+    fgt_license_file    = var.FGT_BYOL_LICENSE_FILE_B
+    fgt_license_flexvm  = var.FGT_BYOL_FLEXVM_LICENSE_FILE_B
+    fgt_username        = var.USERNAME
+    fgt_ssh_public_key  = var.FGT_SSH_PUBLIC_KEY_FILE
+    fgt_external_ipaddr = var.fgt_ipaddress_b["1"]
+    fgt_external_mask   = var.subnetmask["1"]
+    fgt_external_gw     = var.gateway_ipaddress["1"]
+    fgt_internal_ipaddr = var.fgt_ipaddress_b["2"]
+    fgt_internal_mask   = var.subnetmask["2"]
+    fgt_internal_gw     = var.gateway_ipaddress["2"]
+    fgt_ha_peerip       = var.fgt_ipaddress_a["1"]
+    fgt_protected_net   = var.subnet["3"]
+    vnet_network        = var.vnet
+  }))
 
-  os_profile_linux_config {
-    disable_password_authentication = false
+  boot_diagnostics {
   }
 
   tags = var.fortinet_tags

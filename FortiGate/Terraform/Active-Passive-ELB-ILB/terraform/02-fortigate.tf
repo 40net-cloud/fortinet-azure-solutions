@@ -242,20 +242,19 @@ resource "azurerm_network_interface_security_group_association" "fgtaifcmgmtnsg"
   network_security_group_id = azurerm_network_security_group.fgtnsg.id
 }
 
-resource "azurerm_virtual_machine" "fgtavm" {
-  name                         = "${var.PREFIX}-A-VM-FGT"
-  location                     = azurerm_resource_group.resourcegroup.location
-  resource_group_name          = azurerm_resource_group.resourcegroup.name
-  network_interface_ids        = [azurerm_network_interface.fgtaifcext.id, azurerm_network_interface.fgtaifcint.id, azurerm_network_interface.fgtaifchasync.id, azurerm_network_interface.fgtaifcmgmt.id]
-  primary_network_interface_id = azurerm_network_interface.fgtaifcext.id
-  vm_size                      = var.fgt_vmsize
-  availability_set_id          = azurerm_availability_set.fgtavset.id
+resource "azurerm_linux_virtual_machine" "fgtavm" {
+  name                  = "${var.PREFIX}-A-VM-FGT"
+  location              = azurerm_resource_group.resourcegroup.location
+  resource_group_name   = azurerm_resource_group.resourcegroup.name
+  network_interface_ids = [azurerm_network_interface.fgtaifcext.id, azurerm_network_interface.fgtaifcint.id, azurerm_network_interface.fgtaifchasync.id, azurerm_network_interface.fgtaifcmgmt.id]
+  size                  = var.fgt_vmsize
+  availability_set_id   = azurerm_availability_set.fgtavset.id
 
   identity {
     type = "SystemAssigned"
   }
 
-  storage_image_reference {
+  source_image_reference {
     publisher = "fortinet"
     offer     = "fortinet_fortigate-vm_v5"
     sku       = var.FGT_IMAGE_SKU
@@ -268,56 +267,60 @@ resource "azurerm_virtual_machine" "fgtavm" {
     name      = var.FGT_IMAGE_SKU
   }
 
-  storage_os_disk {
-    name              = "${var.PREFIX}-A-VM-FGT-OSDISK"
-    caching           = "ReadWrite"
-    create_option     = "FromImage"
-    managed_disk_type = "Standard_LRS"
+  os_disk {
+    name                 = "${var.PREFIX}-A-VM-FGT-OSDISK"
+    caching              = "ReadWrite"
+    storage_account_type = "Standard_LRS"
   }
 
-  storage_data_disk {
-    name              = "${var.PREFIX}-A-FGT-VM-DATADISK"
-    managed_disk_type = "Premium_LRS"
-    create_option     = "Empty"
-    lun               = 0
-    disk_size_gb      = "10"
-  }
+  admin_username                  = var.USERNAME
+  admin_password                  = var.PASSWORD
+  disable_password_authentication = false
+  custom_data = base64encode(templatefile("${path.module}/customdata.tpl", {
+    fgt_vm_name         = "${var.PREFIX}-A-VM-FGT"
+    fgt_license_file    = var.FGT_BYOL_LICENSE_FILE_A
+    fgt_license_flexvm  = var.FGT_BYOL_FLEXVM_LICENSE_FILE_A
+    fgt_username        = var.USERNAME
+    fgt_ssh_public_key  = var.FGT_SSH_PUBLIC_KEY_FILE
+    fgt_config_ha       = var.FGT_CONFIG_HA
+    fgt_external_ipaddr = var.fgt_ipaddress_a["1"]
+    fgt_external_mask   = var.subnetmask["1"]
+    fgt_external_gw     = var.gateway_ipaddress["1"]
+    fgt_internal_ipaddr = var.fgt_ipaddress_a["2"]
+    fgt_internal_mask   = var.subnetmask["2"]
+    fgt_internal_gw     = var.gateway_ipaddress["2"]
+    fgt_hasync_ipaddr   = var.fgt_ipaddress_a["3"]
+    fgt_hasync_mask     = var.subnetmask["3"]
+    fgt_hasync_gw       = var.gateway_ipaddress["3"]
+    fgt_mgmt_ipaddr     = var.fgt_ipaddress_a["4"]
+    fgt_mgmt_mask       = var.subnetmask["4"]
+    fgt_mgmt_gw         = var.gateway_ipaddress["4"]
+    fgt_ha_peerip       = var.fgt_ipaddress_b["3"]
+    fgt_ha_priority     = "255"
+    fgt_protected_net   = var.subnet["5"]
+    vnet_network        = var.vnet
+  }))
 
-  os_profile {
-    computer_name  = "${var.PREFIX}-A-VM-FGT"
-    admin_username = var.USERNAME
-    admin_password = var.PASSWORD
-    custom_data = templatefile("${path.module}/customdata.tpl", {
-      fgt_vm_name         = "${var.PREFIX}-A-VM-FGT"
-      fgt_license_file    = var.FGT_BYOL_LICENSE_FILE_A
-      fgt_license_flexvm  = var.FGT_BYOL_FLEXVM_LICENSE_FILE_A
-      fgt_username        = var.USERNAME
-      fgt_ssh_public_key  = var.FGT_SSH_PUBLIC_KEY_FILE
-      fgt_config_ha       = var.FGT_CONFIG_HA
-      fgt_external_ipaddr = var.fgt_ipaddress_a["1"]
-      fgt_external_mask   = var.subnetmask["1"]
-      fgt_external_gw     = var.gateway_ipaddress["1"]
-      fgt_internal_ipaddr = var.fgt_ipaddress_a["2"]
-      fgt_internal_mask   = var.subnetmask["2"]
-      fgt_internal_gw     = var.gateway_ipaddress["2"]
-      fgt_hasync_ipaddr   = var.fgt_ipaddress_a["3"]
-      fgt_hasync_mask     = var.subnetmask["3"]
-      fgt_hasync_gw       = var.gateway_ipaddress["3"]
-      fgt_mgmt_ipaddr     = var.fgt_ipaddress_a["4"]
-      fgt_mgmt_mask       = var.subnetmask["4"]
-      fgt_mgmt_gw         = var.gateway_ipaddress["4"]
-      fgt_ha_peerip       = var.fgt_ipaddress_b["3"]
-      fgt_ha_priority     = "255"
-      fgt_protected_net   = var.subnet["5"]
-      vnet_network        = var.vnet
-    })
-  }
-
-  os_profile_linux_config {
-    disable_password_authentication = false
+  boot_diagnostics {
   }
 
   tags = var.fortinet_tags
+}
+
+resource "azurerm_managed_disk" "fgtavm-datadisk" {
+  name                 = "${var.PREFIX}-A-VM-FGT-DATADISK"
+  location             = azurerm_resource_group.resourcegroup.location
+  resource_group_name  = azurerm_resource_group.resourcegroup.name
+  storage_account_type = "Standard_LRS"
+  create_option        = "Empty"
+  disk_size_gb         = 50
+}
+
+resource "azurerm_virtual_machine_data_disk_attachment" "fgtavm-datadisk-attach" {
+  managed_disk_id    = azurerm_managed_disk.fgtavm-datadisk.id
+  virtual_machine_id = azurerm_linux_virtual_machine.fgtavm.id
+  lun                = 0
+  caching            = "ReadWrite"
 }
 
 
@@ -423,20 +426,19 @@ resource "azurerm_network_interface_security_group_association" "fgtbifcmgmtnsg"
   network_security_group_id = azurerm_network_security_group.fgtnsg.id
 }
 
-resource "azurerm_virtual_machine" "fgtbvm" {
-  name                         = "${var.PREFIX}-B-VM-FGT"
-  location                     = azurerm_resource_group.resourcegroup.location
-  resource_group_name          = azurerm_resource_group.resourcegroup.name
-  network_interface_ids        = [azurerm_network_interface.fgtbifcext.id, azurerm_network_interface.fgtbifcint.id, azurerm_network_interface.fgtbifchasync.id, azurerm_network_interface.fgtbifcmgmt.id]
-  primary_network_interface_id = azurerm_network_interface.fgtbifcext.id
-  vm_size                      = var.fgt_vmsize
-  availability_set_id          = azurerm_availability_set.fgtavset.id
+resource "azurerm_linux_virtual_machine" "fgtbvm" {
+  name                  = "${var.PREFIX}-B-VM-FGT"
+  location              = azurerm_resource_group.resourcegroup.location
+  resource_group_name   = azurerm_resource_group.resourcegroup.name
+  network_interface_ids = [azurerm_network_interface.fgtbifcext.id, azurerm_network_interface.fgtbifcint.id, azurerm_network_interface.fgtbifchasync.id, azurerm_network_interface.fgtbifcmgmt.id]
+  size                  = var.fgt_vmsize
+  availability_set_id   = azurerm_availability_set.fgtavset.id
 
   identity {
     type = "SystemAssigned"
   }
 
-  storage_image_reference {
+  source_image_reference {
     publisher = "fortinet"
     offer     = "fortinet_fortigate-vm_v5"
     sku       = var.FGT_IMAGE_SKU
@@ -449,71 +451,72 @@ resource "azurerm_virtual_machine" "fgtbvm" {
     name      = var.FGT_IMAGE_SKU
   }
 
-  storage_os_disk {
-    name              = "${var.PREFIX}-B-VM-FGT-OSDISK"
-    caching           = "ReadWrite"
-    create_option     = "FromImage"
-    managed_disk_type = "Standard_LRS"
+  os_disk {
+    name                 = "${var.PREFIX}-B-VM-FGT-OSDISK"
+    caching              = "ReadWrite"
+    storage_account_type = "Standard_LRS"
   }
 
-  storage_data_disk {
-    name              = "${var.PREFIX}-B-FGT-VM-DATADISK"
-    managed_disk_type = "Premium_LRS"
-    create_option     = "Empty"
-    lun               = 0
-    disk_size_gb      = "10"
+  admin_username                  = var.USERNAME
+  admin_password                  = var.PASSWORD
+  disable_password_authentication = false
+  custom_data = base64encode(templatefile("${path.module}/customdata.tpl", {
+    fgt_vm_name         = "${var.PREFIX}-B-VM-FGT"
+    fgt_license_file    = var.FGT_BYOL_LICENSE_FILE_B
+    fgt_license_flexvm  = var.FGT_BYOL_FLEXVM_LICENSE_FILE_B
+    fgt_username        = var.USERNAME
+    fgt_ssh_public_key  = var.FGT_SSH_PUBLIC_KEY_FILE
+    fgt_config_ha       = var.FGT_CONFIG_HA
+    fgt_external_ipaddr = var.fgt_ipaddress_b["1"]
+    fgt_external_mask   = var.subnetmask["1"]
+    fgt_external_gw     = var.gateway_ipaddress["1"]
+    fgt_internal_ipaddr = var.fgt_ipaddress_b["2"]
+    fgt_internal_mask   = var.subnetmask["2"]
+    fgt_internal_gw     = var.gateway_ipaddress["2"]
+    fgt_hasync_ipaddr   = var.fgt_ipaddress_b["3"]
+    fgt_hasync_mask     = var.subnetmask["3"]
+    fgt_hasync_gw       = var.gateway_ipaddress["3"]
+    fgt_mgmt_ipaddr     = var.fgt_ipaddress_b["4"]
+    fgt_mgmt_mask       = var.subnetmask["4"]
+    fgt_mgmt_gw         = var.gateway_ipaddress["4"]
+    fgt_ha_peerip       = var.fgt_ipaddress_a["3"]
+    fgt_ha_priority     = "255"
+    fgt_protected_net   = var.subnet["5"]
+    vnet_network        = var.vnet
+  }))
+
+  boot_diagnostics {
   }
 
-  os_profile {
-    computer_name  = "${var.PREFIX}-B-VM-FGT"
-    admin_username = var.USERNAME
-    admin_password = var.PASSWORD
-    custom_data = templatefile("${path.module}/customdata.tpl", {
-      fgt_vm_name         = "${var.PREFIX}-B-VM-FGT"
-      fgt_license_file    = var.FGT_BYOL_LICENSE_FILE_B
-      fgt_license_flexvm  = var.FGT_BYOL_FLEXVM_LICENSE_FILE_B
-      fgt_username        = var.USERNAME
-      fgt_ssh_public_key  = var.FGT_SSH_PUBLIC_KEY_FILE
-      fgt_config_ha       = var.FGT_CONFIG_HA
-      fgt_external_ipaddr = var.fgt_ipaddress_b["1"]
-      fgt_external_mask   = var.subnetmask["1"]
-      fgt_external_gw     = var.gateway_ipaddress["1"]
-      fgt_internal_ipaddr = var.fgt_ipaddress_b["2"]
-      fgt_internal_mask   = var.subnetmask["2"]
-      fgt_internal_gw     = var.gateway_ipaddress["2"]
-      fgt_hasync_ipaddr   = var.fgt_ipaddress_b["3"]
-      fgt_hasync_mask     = var.subnetmask["3"]
-      fgt_hasync_gw       = var.gateway_ipaddress["3"]
-      fgt_mgmt_ipaddr     = var.fgt_ipaddress_b["4"]
-      fgt_mgmt_mask       = var.subnetmask["4"]
-      fgt_mgmt_gw         = var.gateway_ipaddress["4"]
-      fgt_ha_peerip       = var.fgt_ipaddress_a["3"]
-      fgt_ha_priority     = "255"
-      fgt_protected_net   = var.subnet["5"]
-      vnet_network        = var.vnet
-    })
-  }
+  tags = var.fortinet_tags
+}
 
-  os_profile_linux_config {
-    disable_password_authentication = false
-  }
+resource "azurerm_managed_disk" "fgtbvm-datadisk" {
+  name                 = "${var.PREFIX}-B-VM-FGT-DATADISK"
+  location             = azurerm_resource_group.resourcegroup.location
+  resource_group_name  = azurerm_resource_group.resourcegroup.name
+  storage_account_type = "Standard_LRS"
+  create_option        = "Empty"
+  disk_size_gb         = 50
+}
 
-  tags = {
-    environment = "Quickstart-VNET-Peering"
-    vendor      = "Fortinet"
-  }
+resource "azurerm_virtual_machine_data_disk_attachment" "fgtbvm-datadisk-attach" {
+  managed_disk_id    = azurerm_managed_disk.fgtbvm-datadisk.id
+  virtual_machine_id = azurerm_linux_virtual_machine.fgtbvm.id
+  lun                = 0
+  caching            = "ReadWrite"
 }
 
 data "azurerm_public_ip" "fgtamgmtpip" {
   name                = azurerm_public_ip.fgtamgmtpip.name
   resource_group_name = azurerm_resource_group.resourcegroup.name
-  depends_on          = [azurerm_virtual_machine.fgtavm]
+  depends_on          = [azurerm_linux_virtual_machine.fgtavm]
 }
 
 data "azurerm_public_ip" "fgtbmgmtpip" {
   name                = azurerm_public_ip.fgtbmgmtpip.name
   resource_group_name = azurerm_resource_group.resourcegroup.name
-  depends_on          = [azurerm_virtual_machine.fgtbvm]
+  depends_on          = [azurerm_linux_virtual_machine.fgtbvm]
 }
 
 output "fgt_a_public_ip_address" {

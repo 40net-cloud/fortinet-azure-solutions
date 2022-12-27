@@ -88,19 +88,19 @@ resource "azurerm_network_interface_security_group_association" "fgtifcintnsg" {
   network_security_group_id = azurerm_network_security_group.fgtnsg.id
 }
 
-resource "azurerm_virtual_machine" "fgtvm" {
+resource "azurerm_linux_virtual_machine" "fgtvm" {
   name                         = "${var.PREFIX}-FGT-VM"
   location                     = azurerm_resource_group.resourcegroup.location
   resource_group_name          = azurerm_resource_group.resourcegroup.name
   network_interface_ids        = [azurerm_network_interface.fgtifcext.id, azurerm_network_interface.fgtifcint.id]
   primary_network_interface_id = azurerm_network_interface.fgtifcext.id
-  vm_size                      = var.fgt_vmsize
+  size                         = var.fgt_vmsize
 
   identity {
     type = "SystemAssigned"
   }
 
-  storage_image_reference {
+  source_image_reference {
     publisher = "fortinet"
     offer     = "fortinet_fortigate-vm_v5"
     sku       = var.FGT_IMAGE_SKU
@@ -113,31 +113,16 @@ resource "azurerm_virtual_machine" "fgtvm" {
     name      = var.FGT_IMAGE_SKU
   }
 
-  storage_os_disk {
-    name              = "${var.PREFIX}-FGT-A-OSDISK"
-    caching           = "ReadWrite"
-    create_option     = "FromImage"
-    managed_disk_type = "Standard_LRS"
+  os_disk {
+    name                 = "${var.PREFIX}-FGT-A-OSDISK"
+    caching              = "ReadWrite"
+    storage_account_type = "Standard_LRS"
   }
 
-  os_profile {
-    computer_name  = "${var.PREFIX}-FGT-A"
-    admin_username = var.USERNAME
-    admin_password = var.PASSWORD
-    custom_data    = data.template_file.fgt_a_custom_data.rendered
-  }
-
-  os_profile_linux_config {
-    disable_password_authentication = false
-  }
-
-  tags = var.fortinet_tags
-}
-
-data "template_file" "fgt_a_custom_data" {
-  template = file("${path.module}/customdata.tpl")
-
-  vars = {
+  admin_username                  = var.USERNAME
+  admin_password                  = var.PASSWORD
+  disable_password_authentication = false
+  custom_data = base64encode(templatefile("${path.module}/customdata.tpl", {
     fgt_vm_name         = "${var.PREFIX}-FGT"
     fgt_license_file    = var.FGT_BYOL_LICENSE_FILE
     fgt_license_flexvm  = var.FGT_BYOL_FLEXVM_LICENSE_FILE
@@ -151,13 +136,18 @@ data "template_file" "fgt_a_custom_data" {
     fgt_internal_gw     = var.gateway_ipaddress["2"]
     fgt_protected_net   = var.subnet["3"]
     vnet_network        = var.vnet
+  }))
+
+  boot_diagnostics {
   }
+
+  tags = var.fortinet_tags
 }
 
 data "azurerm_public_ip" "fgtpip" {
   name                = azurerm_public_ip.fgtpip.name
   resource_group_name = azurerm_resource_group.resourcegroup.name
-  depends_on          = [azurerm_virtual_machine.fgtvm]
+  depends_on          = [azurerm_linux_virtual_machine.fgtvm]
 }
 
 output "fgt_public_ip_address" {
