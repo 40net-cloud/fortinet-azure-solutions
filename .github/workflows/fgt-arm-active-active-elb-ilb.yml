@@ -74,7 +74,7 @@ jobs:
       uses: skitionek/notify-microsoft-teams@master
       if: always()
       with:
-        webhook-url: ${{ secrets.MS_TEAMS_WEBHOOK_URI }}
+        webhook_url: ${{ secrets.MS_TEAMS_WEBHOOK_URI }}
         needs: ${{ toJson(needs) }}
         job: ${{ toJson(job) }}
         steps: ${{ toJson(steps) }}
