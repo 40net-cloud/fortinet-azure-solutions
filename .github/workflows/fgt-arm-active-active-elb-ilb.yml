@@ -51,7 +51,7 @@ jobs:
 #        ssh-keygen -t rsa -b 4096 -f .github/workflows/secrets/id_rsa -C "fortigate_test@40net.cloud" -N ""
 
     - name: Run Pester tests (pwsh)
-      uses: azure/powershell@v1.2.0:w
+      uses: azure/powershell@v1.2.0
       with:
         inlineScript: |
           mkdir -p /home/runner/.ssh/
