@@ -56,6 +56,9 @@ jobs:
         inlineScript: |
           mkdir -p /home/runner/.ssh/
           ssh-keygen -t rsa -b 4096 -f /home/runner/.ssh/id_rsa -C "fortigate_test@40net.cloud" -N '""'
+          chmod 700 /home/runner/.ssh/
+          chmod 400 /home/runner/.ssh/id_rsa 
+          chmod 400 /home/runner/.ssh/id_rsa.pub
           Write-host $PSVersionTable.PSVersion.Major $PSVersionTable.PSRemotingProtocolVersion.Minor
           Set-PSRepository psgallery -InstallationPolicy trusted
           Install-Module -Name Pester -RequiredVersion 5.0.4 -confirm:$false -Force
@@ -73,6 +76,6 @@ jobs:
     - name: Post result to Teams
       uses: freezer00/teams-webhook-action@v1.0.0
       with:
-        webhook_url: ${{secrets.webhook}}
+        webhook_url: ${{ secrets.MS_TEAMS_WEBHOOK_URI }}
         needs: ${{ toJson(needs) }}
         job: ${{ toJson(job) }}

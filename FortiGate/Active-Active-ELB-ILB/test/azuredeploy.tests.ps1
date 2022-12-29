@@ -146,6 +146,8 @@ Describe 'FGT A/A' {
     Context 'Deployment test' {
 
         BeforeAll {
+            Write-Host ("SSH Check: ")
+            Invoke-Expression "ls -la /home/runner/"
             Invoke-Expression "ls -la /home/runner/.ssh/"
             $fgt = (Get-AzPublicIpAddress -Name $publicIP1Name -ResourceGroupName $testsResourceGroupName).IpAddress
             Write-Host ("FortiGate public IP: " + $fgt)
