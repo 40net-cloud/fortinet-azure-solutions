@@ -41,11 +41,14 @@ BeforeAll {
                  'publicIP1Name'=$publicIP1Name
                }
     $ports = @(40030, 50030, 40031, 50031)
+    $script = @'
     mkdir -p /home/runner/.ssh/
     chmod 700 /home/runner/.ssh/
     ssh-keygen -t rsa -b 4096 -f /home/runner/.ssh/id_rsa -C "fortigate_test@40net.cloud" -N '""'
     chmod 400 /home/runner/.ssh/id_rsa*
     ls -la /home/runner/.ssh/
+'@
+    Invoke-Expression $script
 }
 
 Describe 'FGT A/A' {
