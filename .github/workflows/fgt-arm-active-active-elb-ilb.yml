@@ -60,7 +60,6 @@ jobs:
           Set-PSRepository psgallery -InstallationPolicy trusted
           Install-Module -Name Pester -RequiredVersion 5.0.4 -confirm:$false -Force
           $container = New-PesterContainer -Path "${{ env.ARMPath }}" -Data @{sshkey = "/home/runnner/.ssh/id_rsa"; sshkeypub = "/home/runner/.ssh/id_rsa.pub"}
-          ls -la /home/runner/.ssh/ 
           $config = New-PesterConfiguration
           $config.Run.Container = $container
           $config.Run.Exit = $true
