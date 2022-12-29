@@ -71,10 +71,8 @@ jobs:
         azPSVersion: "latest"
 
     - name: Post result to Teams
-      uses: skitionek/notify-microsoft-teams@master
-      if: always()
+      uses: freezer00/teams-webhook-action@v1.0.0
       with:
-        webhook_url: ${{ secrets.MS_TEAMS_WEBHOOK_URI }}
+        webhook_url: ${{secrets.webhook}}
         needs: ${{ toJson(needs) }}
         job: ${{ toJson(job) }}
-        steps: ${{ toJson(steps) }}
