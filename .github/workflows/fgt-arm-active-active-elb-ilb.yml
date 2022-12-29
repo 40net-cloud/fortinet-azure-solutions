@@ -4,6 +4,7 @@ env:
   ARMPath: FortiGate/Active-Active-ELB-ILB/
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
@@ -23,7 +24,7 @@ jobs:
 
     steps:
     - name: "Checkout"
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3.2.0
 
     - name: Test ARM Templates - path
       id: armttktest
@@ -38,7 +39,7 @@ jobs:
         echo "${{ toJSON(fromJSON(steps.armttktest.outputs.results)) }}"
 
     - name: Azure Login via Az module
-      uses: azure/login@v1
+      uses: azure/login@v1.4.6
       with:
         creds: ${{secrets.AZURE_CREDENTIALS}}
         enable-AzPSSession: true
@@ -50,7 +51,7 @@ jobs:
 #        ssh-keygen -t rsa -b 4096 -f .github/workflows/secrets/id_rsa -C "fortigate_test@40net.cloud" -N ""
 
     - name: Run Pester tests (pwsh)
-      uses: azure/powershell@v1
+      uses: azure/powershell@v1.2.0:w
       with:
         inlineScript: |
           mkdir -p /home/runner/.ssh/
@@ -71,8 +72,10 @@ jobs:
         azPSVersion: "latest"
 
     - name: Post result to Teams
-      uses: toko-bifrost/ms-teams-deploy-card@master #  or "./" if in a local set-up
+      uses: skitionek/notify-microsoft-teams@master
       if: always()
       with:
-        github-token: ${{ github.token }}
-        webhook-uri: ${{ secrets.MS_TEAMS_WEBHOOK_URI }}
+        webhook-url: ${{ secrets.MS_TEAMS_WEBHOOK_URI }}
+        needs: ${{ toJson(needs) }}
+        job: ${{ toJson(job) }}
+        steps: ${{ toJson(steps) }}
