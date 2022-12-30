@@ -42,7 +42,7 @@ jobs:
           chmod 400 /home/runner/.ssh/id_rsa*
           Set-PSRepository psgallery -InstallationPolicy trusted
           Install-Module -Name Pester -RequiredVersion 5.0.4 -confirm:$false -Force
-          $container = New-PesterContainer -Path ".github/workflows/test/" -Data @{sshkey = "/home/runnner/.ssh/id_rsa"; sshkeypub = "/home/runner/.ssh/id_rsa.pub"}
+          $container = New-PesterContainer -Path ".github/workflows/test/" -Data @{sshkey = "/home/runner/.ssh/id_rsa"; sshkeypub = "/home/runner/.ssh/id_rsa.pub"}
           $config = New-PesterConfiguration
           $config.Run.Container = $container
           $config.Run.Exit = $true
