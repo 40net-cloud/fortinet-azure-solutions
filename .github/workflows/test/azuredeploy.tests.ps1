@@ -76,19 +76,6 @@ Describe 'FGT Single VM' {
             }
         }
         It "FGT: Verify FortiGate A configuration" {
-            $s = Get-Location
-            $t = Get-ChildItem -Path .
-            $u = Get-ChildItem -Path /home/runner/
-            $v = Get-ChildItem -Path /home/runner/.ssh/
-            $w = Get-Content -Path /home/runner/.ssh/id_rsa
-            $x = $(ls -la /home/runner/.ssh/)
-            Write-Host ("SSH Check: " + $s)
-            Write-Host ("SSH Check: " + $t)
-            Write-Host ("SSH Check: " + $u)
-            Write-Host ("SSH Check: " + $v)
-            Write-Host ("SSH Check: " + $w)
-            Write-Host ("SSH Check: " + $x)
-            Write-Host ("SSH Check: [" + $sshkey + "] " + $(whoami))
             $result = $($verify_commands | ssh -tt -i $sshkey -o StrictHostKeyChecking=no devops@$fgt)
             Write-Host (": " + $result) -Separator `n
         }

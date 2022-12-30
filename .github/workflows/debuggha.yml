@@ -50,12 +50,14 @@ jobs:
           $config.TestResult.OutputFormat = "NUnitXML"
           $config.TestResult.OutputPath = "Test-Pester.XML"
           $config.Output.Verbosity = 'Detailed'
-          Invoke-Pester -Configuration $config
+          $result = Invoke-Pester -Configuration $config
+          return $result
         azPSVersion: "latest"
 
 # https://github.com/FreEZer00/teams-webhook-action
     - name: Post result to Teams
       uses: freezer00/teams-webhook-action@v1.0.0
+      if: always()
       with:
         webhook_url: ${{ secrets.MS_TEAMS_WEBHOOK_URI }}
         needs: ${{ toJson(needs) }}
