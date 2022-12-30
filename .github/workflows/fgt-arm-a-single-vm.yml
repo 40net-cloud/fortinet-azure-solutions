@@ -51,12 +51,6 @@ jobs:
         creds: ${{secrets.AZURE_CREDENTIALS}}
         enable-AzPSSession: true
 
-#    - name: Generate SSH key
-#      shell: bash
-#      continue-on-error: true
-#      run: |
-#        ssh-keygen -t rsa -b 4096 -f .github/workflows/secrets/id_rsa -C "fortigate_test@40net.cloud" -N ""
-
     - name: Run Pester tests (pwsh)
       uses: azure/powershell@v1.2.0
       with:
@@ -79,9 +73,17 @@ jobs:
           Invoke-Pester -Configuration $config
         azPSVersion: "latest"
 
+# https://github.com/FreEZer00/teams-webhook-action
     - name: Post result to Teams
-      uses: toko-bifrost/ms-teams-deploy-card@master #  or "./" if in a local set-up
+      uses: freezer00/teams-webhook-action@v1.0.0
       if: always()
       with:
-        github-token: ${{ github.token }}
-        webhook-uri: ${{ secrets.MS_TEAMS_WEBHOOK_URI }}
+        webhook_url: ${{ secrets.MS_TEAMS_WEBHOOK_URI }}
+        needs: ${{ toJson(needs) }}
+        job: ${{ toJson(job) }}
+#    - name: Post result to Teams
+#      uses: toko-bifrost/ms-teams-deploy-card@master #  or "./" if in a local set-up
+#      if: always()
+#      with:
+#        github-token: ${{ github.token }}
+#        webhook-uri: ${{ secrets.MS_TEAMS_WEBHOOK_URI }}
