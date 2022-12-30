@@ -27,7 +27,7 @@ jobs:
       uses: actions/checkout@v3.2.0
 
     - name: Test ARM Templates - path
-      uses: microsoft/action-armttk/.github/workflows/arm-ttk@0.0.5
+      uses: microsoft/action-armttk@v1
       with:
         workingPath: ${{ env.ARMPath }}
 
