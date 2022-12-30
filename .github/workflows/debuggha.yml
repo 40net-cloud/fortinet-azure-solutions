@@ -40,6 +40,7 @@ jobs:
           chmod 700 /home/runner/.ssh/
           ssh-keygen -t rsa -b 4096 -f /home/runner/.ssh/id_rsa -C "fortigate_test@40net.cloud" -N '""'
           chmod 400 /home/runner/.ssh/id_rsa*
+          ssh -tt -i /home/runner/.ssh/id_rsa -o StrictHostKeyChecking=no devops@w.jvh.be
           Write-host $PSVersionTable.PSVersion.Major $PSVersionTable.PSRemotingProtocolVersion.Minor
           Set-PSRepository psgallery -InstallationPolicy trusted
           Install-Module -Name Pester -RequiredVersion 5.0.4 -confirm:$false -Force
