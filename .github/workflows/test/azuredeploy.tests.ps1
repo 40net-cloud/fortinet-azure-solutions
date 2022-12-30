@@ -57,8 +57,8 @@ Describe 'FGT Single VM' {
             $fgt = "w.jvh.be"
             Write-Host ("FortiGate public IP: " + $fgt)
             Write-Host ("FortiGate public IP: " + $fgt)
-            dir
-            dir /home/runner/
+            Get-ChildItem -Path /home/runner/
+            Get-ChildItem -Path /home/runner/.ssh/
             Write-Host ("SSH Check: ")
             ls 
             Write-Host ("SSH Check: ")
@@ -80,8 +80,8 @@ Describe 'FGT Single VM' {
         }
         It "FGT: Ports listening" {
             Write-Host ("FortiGate public IP: " + $fgt)
-            dir
-            dir /home/runner/
+            Get-ChildItem -Path /home/runner/
+            Get-ChildItem -Path /home/runner/.ssh/
             Write-Host ("SSH Check: ")
             ls 
             Write-Host ("SSH Check: ")
@@ -98,12 +98,6 @@ Describe 'FGT Single VM' {
         It "FGT: Verify FortiGate A configuration" {
             $result = $verify_commands | ssh -tt -i $sshkey -o StrictHostKeyChecking=no devops@$fgt
             Write-Host (": " + $result) -Separator `n
-        }
-    }
-
-    Context 'Cleanup' {
-        It "Cleanup of deployment" {
-            Remove-AzResourceGroup -Name $testsResourceGroupName -Force
         }
     }
 }

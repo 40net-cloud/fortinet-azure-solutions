@@ -33,7 +33,7 @@ jobs:
         enable-AzPSSession: true
 
     - name: Run Pester tests (pwsh)
-      uses: azure/powershell@v1
+      uses: azure/powershell@v1.2.0
       with:
         inlineScript: |
           mkdir -p /home/runner/.ssh/
