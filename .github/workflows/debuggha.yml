@@ -1,0 +1,67 @@
+name: '[FGT] Debug GitHub Actions'
+
+env:
+  ARMPath: FortiGate/A-Single-VM/
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+    - 'FortiGate/A-Single-VM/*.json'
+    - 'FortiGate/A-Single-VM/**.tests.ps1'
+
+jobs:
+  ARM_A-Single-VM:
+    name: 'ARM Template A-Single-VM'
+    runs-on: ubuntu-latest
+    env:
+      ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+      ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+      ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+
+    steps:
+    - name: "Checkout"
+      uses: actions/checkout@v2
+
+    - name: Azure Login via Az module
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZURE_CREDENTIALS}}
+        enable-AzPSSession: true
+
+    - name: Run Pester tests (pwsh)
+      uses: azure/powershell@v1
+      with:
+        inlineScript: |
+          mkdir -p /home/runner/.ssh/
+          ssh-keygen -t rsa -b 4096 -f /home/runner/.ssh/id_rsa -C "fortigate_test@40net.cloud" -N '""'
+          Write-host $PSVersionTable.PSVersion.Major $PSVersionTable.PSRemotingProtocolVersion.Minor
+          Set-PSRepository psgallery -InstallationPolicy trusted
+          Install-Module -Name Pester -RequiredVersion 5.0.4 -confirm:$false -Force
+          $container = New-PesterContainer -Path ".github/workflows/test/" -Data @{sshkey = "/home/runnner/.ssh/id_rsa"; sshkeypub = "/home/runner/.ssh/id_rsa.pub"}
+          $config = New-PesterConfiguration
+          $config.Run.Container = $container
+          $config.Run.Exit = $true
+          $config.Run.PassThru = $true
+          $config.TestResult.OutputFormat = "NUnitXML"
+          $config.TestResult.OutputPath = "Test-Pester.XML"
+          $config.Output.Verbosity = 'Detailed'
+          Invoke-Pester -Configuration $config
+        azPSVersion: "latest"
+
+# https://github.com/FreEZer00/teams-webhook-action
+    - name: Post result to Teams
+      uses: freezer00/teams-webhook-action@v1.0.0
+      with:
+        webhook_url: ${{ secrets.MS_TEAMS_WEBHOOK_URI }}
+        needs: ${{ toJson(needs) }}
+        job: ${{ toJson(job) }}
+#    - name: Post result to Teams
+#      uses: toko-bifrost/ms-teams-deploy-card@master #  or "./" if in a local set-up
+#      if: always()
+#      with:
+#        github-token: ${{ github.token }}
+#        webhook-uri: ${{ secrets.MS_TEAMS_WEBHOOK_URI }}
