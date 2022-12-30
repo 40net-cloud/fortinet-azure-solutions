@@ -80,16 +80,15 @@ Describe 'FGT Single VM' {
             $t = Get-ChildItem -Path .
             $u = Get-ChildItem -Path /home/runner/
             $v = Get-ChildItem -Path /home/runner/.ssh/
-            $w = Get-Content -Path /home/runner/.ssh/id_rsa.pub
+            $w = Get-Content -Path /home/runner/.ssh/id_rsa
             $x = $(ls -la /home/runner/.ssh/)
-            $y = Get-Content -Path $sshkey
             Write-Host ("SSH Check: " + $s)
             Write-Host ("SSH Check: " + $t)
             Write-Host ("SSH Check: " + $u)
             Write-Host ("SSH Check: " + $v)
             Write-Host ("SSH Check: " + $w)
             Write-Host ("SSH Check: " + $x)
-            Write-Host ("SSH Check: " + $(whoami))
+            Write-Host ("SSH Check: [" + $sshkey + "] " + $(whoami))
             $result = $($verify_commands | ssh -tt -i $sshkey -o StrictHostKeyChecking=no devops@$fgt)
             Write-Host (": " + $result) -Separator `n
         }
