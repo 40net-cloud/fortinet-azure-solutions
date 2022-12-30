@@ -28,9 +28,9 @@ jobs:
 
     - name: Test ARM Templates - path
       id: armttktest
-      uses: aliencube/arm-ttk-actions@v0.3
+      uses: microsoft/action-armttk/.github/workflows/arm-ttk@0.0.5
       with:
-        path: ${{ env.ARMPath }}
+        workingPath: ${{ env.ARMPath }}
 
     - name: Test result - path
       shell: bash
