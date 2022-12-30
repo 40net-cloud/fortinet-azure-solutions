@@ -50,8 +50,7 @@ jobs:
           $config.TestResult.OutputFormat = "NUnitXML"
           $config.TestResult.OutputPath = "Test-Pester.XML"
           $config.Output.Verbosity = 'Detailed'
-          $result = Invoke-Pester -Configuration $config
-          return $result
+          Invoke-Pester -Configuration $config
         azPSVersion: "latest"
 
 # https://github.com/FreEZer00/teams-webhook-action
