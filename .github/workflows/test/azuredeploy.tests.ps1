@@ -80,15 +80,16 @@ Describe 'FGT Single VM' {
         }
         It "FGT: Ports listening" {
             Write-Host ("FortiGate public IP: " + $fgt)
-            Get-ChildItem -Path /home/runner/
-            Get-ChildItem -Path /home/runner/.ssh/
-            Write-Host ("SSH Check: ")
-            ls 
-            Write-Host ("SSH Check: ")
-            ls /home/runner/
-            Write-Host ("SSH Check: ")
-            ls /home/runner/.ssh/
-            Write-Host ("SSH Check: ")
+            $u = Get-ChildItem -Path /home/runner/
+            $v = Get-ChildItem -Path /home/runner/.ssh/
+            Write-Host ("SSH Check: " + $u)
+            Write-Host ("SSH Check: " + $v)
+            $t = $(ls) 
+            Write-Host ("SSH Check: " + $t)
+            $w = $(ls /home/runner/)
+            Write-Host ("SSH Check: " + $w)
+            $x = $(ls /home/runner/.ssh/)
+            Write-Host ("SSH Check: " + $x)
             ForEach( $port in $ports ) {
                 Write-Host ("Check port: $port" )
                 $portListening = (Test-Connection -TargetName $fgt -TCPPort $port -TimeoutSeconds 100)
