@@ -26,6 +26,13 @@ jobs:
     - name: "Checkout"
       uses: actions/checkout@v3.2.0
 
+    - name: Post result to Teams
+      uses: jvhoof/ms-teams-deploy-card@main #  or "./" if in a local set-up
+      if: always()
+      with:
+        github-token: ${{ github.token }}
+        webhook-uri: ${{ secrets.MS_TEAMS_WEBHOOK_URI }}
+
     - name: ARM TTK - Test ARM Templates
       shell: pwsh
       run: |
@@ -87,9 +94,3 @@ jobs:
 #        webhook_url: ${{ secrets.MS_TEAMS_WEBHOOK_URI }}
 #        needs: ${{ toJson(needs) }}
 #        job: ${{ toJson(job) }}
-    - name: Post result to Teams
-      uses: jvhoof/ms-teams-deploy-card@main #  or "./" if in a local set-up
-      if: always()
-      with:
-        github-token: ${{ github.token }}
-        webhook-uri: ${{ secrets.MS_TEAMS_WEBHOOK_URI }}
