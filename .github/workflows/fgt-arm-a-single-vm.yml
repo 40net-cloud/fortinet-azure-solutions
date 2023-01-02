@@ -9,8 +9,8 @@ on:
     branches:
       - main
     paths:
-    - 'FortiGate/A-Single-VM/*.json'
-    - 'FortiGate/A-Single-VM/**.tests.ps1'
+      - 'FortiGate/A-Single-VM/*.json'
+      - 'FortiGate/A-Single-VM/**.tests.ps1'
 
 jobs:
   ARM_A-Single-VM:
@@ -26,7 +26,7 @@ jobs:
     - name: "Checkout"
       uses: actions/checkout@v3.2.0
 
-   - name: ARM TTK - Test ARM Templates
+    - name: ARM TTK - Test ARM Templates
       shell: pwsh
       run: |
         Install-Module -Name Pester -RequiredVersion 4.10.1 -Force
