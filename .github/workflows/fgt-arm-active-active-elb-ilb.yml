@@ -43,7 +43,7 @@ jobs:
         creds: ${{secrets.AZURE_CREDENTIALS}}
         enable-AzPSSession: true
 
-    - name: Run Pester tests (pwsh)
+    - name: ARM Template - Custom Pester tests
       uses: azure/powershell@v1.2.0
       with:
         inlineScript: |
