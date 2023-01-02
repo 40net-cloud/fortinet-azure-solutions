@@ -14,7 +14,7 @@ on:
 
 jobs:
   ARM_A-Single-VM:
-#    name: 'ARM Template A-Single-VM'
+    name: 'ARM Template A-Single-VM'
     runs-on: ubuntu-latest
     env:
       ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
