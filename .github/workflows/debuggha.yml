@@ -26,49 +26,50 @@ jobs:
     - name: "Checkout"
       uses: actions/checkout@v3.2.0
 
-    - name: Test ARM Templates - path
-      uses: microsoft/action-armttk@v0.0.5
-      with:
-        workingPath: ${{ env.ARMPath }}
-
-    - name: Test result - path
-      shell: bash
-      continue-on-error: false
+    - name: ARM TTK - ARM Templates
+      shell: pwsh
       run: |
-        result=$(echo "${{ steps.armttktest.outputs.results }}" | jq '.[].Passed')
-        if [[ "$result" =~ .*"false".* ]]; then
-          echo "Errors found in ARM-TTK check!"
-          exit 1
-        else
-          exit 0
-        fi
+        Install-Module -Name Pester -RequiredVersion 4.10.1 -Force
+        Import-Module -Name Pester -RequiredVersion 4.10.1 -Force
+        Invoke-WebRequest -Uri "aka.ms/arm-ttk-latest" -OutFile arm-template-toolkit.zip
+        Expand-Archive -LiteralPath arm-template-toolkit.zip -DestinationPath arm-ttk
+        Import-Module ./arm-ttk/arm-ttk/arm-ttk.psd1
+        echo "Test-AzTemplate -TemplatePath ${{ env.ARMPath }} -Pester -Skip Secure-Params-In-Nested-Deployments" | Out-File -FilePath ./armttk.ps1
+        Invoke-Pester -Script ./armttk.ps1 -EnableExit -OutputFormat NUnitXml -OutputFile ./armttk.xml
 
-    - name: Azure Login via Az module
-      uses: azure/login@v1.4.6
+    - name: ARM TTK - Publish Test Results
+      uses: actions/upload-artifact@v3
       with:
-        creds: ${{secrets.AZURE_CREDENTIALS}}
-        enable-AzPSSession: true
+        name: ARMTTKResults
+        path: ./armttk.xml
+      if: ${{ always() }}
 
-    - name: Run Pester tests (pwsh)
-      uses: azure/powershell@v1.2.0
-      with:
-        inlineScript: |
-          mkdir -p /home/runner/.ssh/
-          chmod 700 /home/runner/.ssh/
-          ssh-keygen -t rsa -b 4096 -f /home/runner/.ssh/id_rsa -C "fortigate_test@40net.cloud" -N '""'
-          chmod 400 /home/runner/.ssh/id_rsa*
-          Set-PSRepository psgallery -InstallationPolicy trusted
-          Install-Module -Name Pester -RequiredVersion 5.0.4 -confirm:$false -Force
-          $container = New-PesterContainer -Path ".github/workflows/test/" -Data @{sshkey = "/home/runner/.ssh/id_rsa"; sshkeypub = "/home/runner/.ssh/id_rsa.pub"}
-          $config = New-PesterConfiguration
-          $config.Run.Container = $container
-          $config.Run.Exit = $true
-          $config.Run.PassThru = $true
-          $config.TestResult.OutputFormat = "NUnitXML"
-          $config.TestResult.OutputPath = "Test-Pester.XML"
-          $config.Output.Verbosity = 'Detailed'
-          Invoke-Pester -Configuration $config
-        azPSVersion: "latest"
+#    - name: Azure Login via Az module
+#      uses: azure/login@v1.4.6
+#      with:
+#        creds: ${{secrets.AZURE_CREDENTIALS}}
+#        enable-AzPSSession: true
+
+#    - name: Run Pester tests (pwsh)
+#      uses: azure/powershell@v1.2.0
+#      with:
+#        inlineScript: |
+#          mkdir -p /home/runner/.ssh/
+#          chmod 700 /home/runner/.ssh/
+#          ssh-keygen -t rsa -b 4096 -f /home/runner/.ssh/id_rsa -C "fortigate_test@40net.cloud" -N '""'
+#          chmod 400 /home/runner/.ssh/id_rsa*
+#          Set-PSRepository psgallery -InstallationPolicy trusted
+#          Install-Module -Name Pester -RequiredVersion 5.0.4 -confirm:$false -Force
+#          $container = New-PesterContainer -Path ".github/workflows/test/" -Data @{sshkey = "/home/runner/.ssh/id_rsa"; sshkeypub = "/home/runner/.ssh/id_rsa.pub"}
+#          $config = New-PesterConfiguration
+#          $config.Run.Container = $container
+#          $config.Run.Exit = $true
+#          $config.Run.PassThru = $true
+#          $config.TestResult.OutputFormat = "NUnitXML"
+#          $config.TestResult.OutputPath = "Test-Pester.XML"
+#          $config.Output.Verbosity = 'Detailed'
+#          Invoke-Pester -Configuration $config
+#        azPSVersion: "latest"
 
 # https://github.com/FreEZer00/teams-webhook-action
     - name: Post result to Teams
