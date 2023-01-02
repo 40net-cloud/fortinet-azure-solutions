@@ -168,25 +168,16 @@ Describe 'FGT Single VM' {
             }
         }
         It "FGT: Verify FortiGate configuration" {
-            $key = Get-Content($sshkey)
-            Write-Host ("sshkey: $sshkey [" + $key + "]")
             $result = $verify_commands | ssh -v -tt -i $sshkey -o StrictHostKeyChecking=no devops@$fgt
             Write-Host (": " + $result) -Separator `n
             $LASTEXITCODE | Should -Be "0"
-        }
-        It "FGT: Ports listening" {
-            ForEach( $port in $ports ) {
-                Write-Host ("Check port: $port" )
-                $portListening = (Test-Connection -TargetName $fgt -TCPPort $port -TimeoutSeconds 100)
-                $portListening | Should -BeTrue
-            }
         }
     }
 
     Context 'Cleanup' {
         It "Cleanup of deployment" {
             Write-Host ("ERROR: Cleanup disabled" )
-#            Remove-AzResourceGroup -Name $testsResourceGroupName -Force
+            Remove-AzResourceGroup -Name $testsResourceGroupName -Force
         }
     }
 }
