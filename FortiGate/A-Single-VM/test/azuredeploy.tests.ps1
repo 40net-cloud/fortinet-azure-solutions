@@ -168,8 +168,10 @@ Describe 'FGT Single VM' {
             }
         }
         It "FGT: Verify FortiGate A configuration" {
+            Write-Host ("sshkey: $sshkey" )
             $result = $verify_commands | ssh -tt -i $sshkey -o StrictHostKeyChecking=no devops@$fgt
             Write-Host (": " + $result) -Separator `n
+            exit $LASTEXITCODE
         }
     }
 
