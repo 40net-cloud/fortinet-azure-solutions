@@ -31,9 +31,8 @@ jobs:
       run: |
         Install-Module -Name Pester -RequiredVersion 4.10.1 -Force
         Import-Module -Name Pester -RequiredVersion 4.10.1 -Force
-        git clone "https://github.com/Azure/arm-ttk"
-#        Invoke-WebRequest -Uri "aka.ms/arm-ttk-latest" -OutFile arm-template-toolkit.zip
-#        Expand-Archive -LiteralPath arm-template-toolkit.zip -DestinationPath arm-ttk
+        Invoke-WebRequest -Uri "aka.ms/arm-ttk-latest" -OutFile arm-template-toolkit.zip
+        Expand-Archive -LiteralPath arm-template-toolkit.zip -DestinationPath arm-ttk
         Import-Module ./arm-ttk/arm-ttk/arm-ttk.psd1
         echo "Test-AzTemplate -TemplatePath ${{ env.ARMPath }} -Pester" | Out-File -FilePath ./armttk.ps1
         Invoke-Pester -Script ./armttk.ps1 -EnableExit -OutputFormat NUnitXml -OutputFile ./armttk.xml

@@ -21,7 +21,7 @@ jobs:
 
     steps:
     - name: "Checkout"
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3.2.0
 
     - name: Test ARM Templates - path
       id: armttktest
@@ -36,13 +36,13 @@ jobs:
         echo "${{ toJSON(fromJSON(steps.armttktest.outputs.results)) }}"
 
     - name: Azure Login via Az module
-      uses: azure/login@v1
+      uses: azure/login@v1.4.6
       with:
         creds: ${{secrets.AZURE_CREDENTIALS}}
         enable-AzPSSession: true
 
     - name: Run Pester tests (pwsh)
-      uses: azure/powershell@v1
+      uses: azure/powershell@v1.2.0
       with:
         inlineScript: |
           mkdir -p /home/runner/.ssh/
@@ -50,7 +50,7 @@ jobs:
           Write-host $PSVersionTable.PSVersion.Major $PSVersionTable.PSRemotingProtocolVersion.Minor
           Set-PSRepository psgallery -InstallationPolicy trusted
           Install-Module -Name Pester -RequiredVersion 5.0.4 -confirm:$false -Force
-          $container = New-PesterContainer -Path "${{ env.ARMPath }}" -Data @{sshkey = "/home/runnner/.ssh/id_rsa"; sshkeypub = "/home/runner/.ssh/id_rsa.pub"}
+          $container = New-PesterContainer -Path "${{ env.ARMPath }}" -Data @{sshkey = "/home/runner/.ssh/id_rsa"; sshkeypub = "/home/runner/.ssh/id_rsa.pub"}
           $config = New-PesterConfiguration
           $config.Run.Container = $container
           $config.Run.Exit = $true

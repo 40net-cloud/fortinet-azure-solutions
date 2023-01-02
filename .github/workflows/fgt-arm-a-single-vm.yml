@@ -34,7 +34,7 @@ jobs:
 
     - name: Test result - path
       shell: bash
-      continue-on-error: true
+      continue-on-error: false
       run: |
         echo "${{ toJSON(fromJSON(steps.armttktest.outputs.results)) }}"
         result=`echo "${{ steps.armttktest.outputs.results }}" | jq '.[].Passed'`

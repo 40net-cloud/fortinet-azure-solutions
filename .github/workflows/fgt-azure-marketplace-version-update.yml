@@ -16,16 +16,16 @@ jobs:
     name: Update FGT version list
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3.2.0
 
     - name: Azure Login via Az module
-      uses: azure/login@v1
+      uses: azure/login@v1.4.6
       with:
         creds: ${{secrets.AZURE_CREDENTIALS}}
         enable-AzPSSession: true
 
     - name: Verify FGT published version, update templates when new version found
-      uses: azure/powershell@v1
+      uses: azure/powershell@v1.2.0
       with:
         inlineScript: |
           $buildingBlocks = @("A-Single-VM", "Active-Active-ELB-ILB","Active-Passive-ELB-ILB","Active-Passive-SDN")
