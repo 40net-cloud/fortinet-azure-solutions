@@ -164,20 +164,28 @@ Describe 'FGT Single VM' {
             ForEach( $port in $ports ) {
                 Write-Host ("Check port: $port" )
                 $portListening = (Test-Connection -TargetName $fgt -TCPPort $port -TimeoutSeconds 100)
-                $portListening | Should -Be $true
+                $portListening | Should -BeTrue
             }
         }
-        It "FGT: Verify FortiGate A configuration" {
+        It "FGT: Verify FortiGate configuration" {
             Write-Host ("sshkey: $sshkey" )
             $result = $verify_commands | ssh -tt -i $sshkey -o StrictHostKeyChecking=no devops@$fgt
             Write-Host (": " + $result) -Separator `n
-            exit $LASTEXITCODE
+            $LASTEXITCODE | Should -Be "0"
+        }
+        It "FGT: Ports listening" {
+            ForEach( $port in $ports ) {
+                Write-Host ("Check port: $port" )
+                $portListening = (Test-Connection -TargetName $fgt -TCPPort $port -TimeoutSeconds 100)
+                $portListening | Should -BeTrue
+            }
         }
     }
 
-#    Context 'Cleanup' {
-#        It "Cleanup of deployment" {
+    Context 'Cleanup' {
+        It "Cleanup of deployment" {
+            Write-Host ("ERROR: Cleanup disabled" )
 #            Remove-AzResourceGroup -Name $testsResourceGroupName -Force
-#        }
-#    }
+        }
+    }
 }
