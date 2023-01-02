@@ -44,6 +44,15 @@ jobs:
         path: ./armttk.xml
       if: ${{ always() }}
 
+    - name: Microsoft Teams Notification
+      uses: skitionek/notify-microsoft-teams@master
+      if: always()
+      with:
+        webhook_url: ${{ secrets.MS_TEAMS_WEBHOOK_URI }}
+        needs: ${{ toJson(needs) }}
+        job: ${{ toJson(job) }}
+        steps: ${{ toJson(steps) }}
+
 #    - name: Azure Login via Az module
 #      uses: azure/login@v1.4.6
 #      with:
@@ -87,14 +96,3 @@ jobs:
 #        webhook_url: ${{ secrets.MS_TEAMS_WEBHOOK_URI }}
 #        needs: ${{ toJson(needs) }}
 #        job: ${{ toJson(job) }}
-
-      - name: Microsoft Teams Notification
-        uses: skitionek/notify-microsoft-teams@master
-        if: always()
-        with:
-          webhook_url: ${{ secrets.MS_TEAMS_WEBHOOK_URI }}
-          needs: ${{ toJson(needs) }}
-          job: ${{ toJson(job) }}
-          steps: ${{ toJson(steps) }}
-          dry_run: True
-
