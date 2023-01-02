@@ -68,8 +68,8 @@ Describe 'FGT Single VM' {
         It 'Creates the expected Azure resources' {
             $expectedResources = 'Microsoft.Resources/deployments',
                                  'Microsoft.Compute/availabilitySets',
-                                 'Microsoft.Network/routeTables',
                                  'Microsoft.Network/virtualNetworks',
+                                 'Microsoft.Network/routeTables',
                                  'Microsoft.Network/networkSecurityGroups',
                                  'Microsoft.Network/publicIPAddresses',
                                  'Microsoft.Network/networkInterfaces',
@@ -173,9 +173,9 @@ Describe 'FGT Single VM' {
         }
     }
 
-    Context 'Cleanup' {
-        It "Cleanup of deployment" {
-            Remove-AzResourceGroup -Name $testsResourceGroupName -Force
-        }
-    }
+#    Context 'Cleanup' {
+#        It "Cleanup of deployment" {
+#            Remove-AzResourceGroup -Name $testsResourceGroupName -Force
+#        }
+#    }
 }
