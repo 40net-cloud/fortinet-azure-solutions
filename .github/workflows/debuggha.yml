@@ -45,7 +45,7 @@ jobs:
       if: ${{ always() }}
 
     - name: Microsoft Teams Notification
-      uses: skitionek/notify-microsoft-teams@master
+      uses: jvhoof/notify-microsoft-teams@main
       if: always()
       with:
         webhook_url: ${{ secrets.MS_TEAMS_WEBHOOK_URI }}
