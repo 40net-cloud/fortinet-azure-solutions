@@ -5,12 +5,12 @@ env:
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - main
-    paths:
-    - 'FortiGate/A-Single-VM/*.json'
-    - 'FortiGate/A-Single-VM/**.tests.ps1'
+#  push:
+#    branches:
+#      - main
+#    paths:
+#    - 'FortiGate/A-Single-VM/*.json'
+#    - 'FortiGate/A-Single-VM/**.tests.ps1'
 
 jobs:
   ARM_A-Single-VM:
