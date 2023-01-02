@@ -148,16 +148,6 @@ Describe 'FGT A/A' {
         BeforeAll {
             $fgt = (Get-AzPublicIpAddress -Name $publicIP1Name -ResourceGroupName $testsResourceGroupName).IpAddress
             Write-Host ("FortiGate public IP: " + $fgt)
-            dir
-            dir /home/runner/
-            Write-Host ("SSH Check: ")
-            ls 
-            Write-Host ("SSH Check: ")
-            ls /home/runner/
-            Write-Host ("SSH Check: ")
-            ls /home/runner/.ssh/
-            Write-Host ("SSH Check: ")
-            chmod 400 $sshkey
             $verify_commands = @'
             config system console
             set output standard
