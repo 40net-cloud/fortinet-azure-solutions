@@ -35,7 +35,7 @@ jobs:
         Expand-Archive -LiteralPath arm-template-toolkit.zip -DestinationPath arm-ttk
         Import-Module ./arm-ttk/arm-ttk/arm-ttk.psd1
         echo "Test-AzTemplate -TemplatePath ${{ env.ARMPath }} -Pester" | Out-File -FilePath ./armttk.ps1
-        Invoke-Pester -Script ./armttk.ps1 -EnableExit -Output Detailed -OutputFormat NUnitXml -OutputFile ./armttk.xml
+        Invoke-Pester -Script ./armttk.ps1 -EnableExit -OutputFormat NUnitXml -OutputFile ./armttk.xml
 
     - name: ARM TTK - Publish Test Results
       uses: actions/upload-artifact@v3
