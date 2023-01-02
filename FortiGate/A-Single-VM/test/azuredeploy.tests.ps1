@@ -153,6 +153,7 @@ Describe 'FGT Single VM' {
             config system console
             set output standard
             end
+            get system status
             show system interface
             show router static
             diag debug cloudinit show
@@ -169,8 +170,9 @@ Describe 'FGT Single VM' {
         }
         It "FGT: Verify FortiGate configuration" {
             $result = $verify_commands | ssh -v -tt -i $sshkey -o StrictHostKeyChecking=no devops@$fgt
-            Write-Host (": " + $result) -Separator `n
             $LASTEXITCODE | Should -Be "0"
+            Write-Host ("FGT CLI info: " + $result) -Separator `n
+            $result | Should -Not -BeLike "*Command fail*"
         }
     }
 
