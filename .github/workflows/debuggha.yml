@@ -26,12 +26,12 @@ jobs:
     - name: "Checkout"
       uses: actions/checkout@v3.2.0
 
-    - name: ARM TTK - ARM Templates
+    - name: ARM TTK - Test ARM Templates
       shell: pwsh
       run: |
         Install-Module -Name Pester -RequiredVersion 4.10.1 -Force
         Import-Module -Name Pester -RequiredVersion 4.10.1 -Force
-        Invoke-WebRequest -Uri "https://github.com/Azure/arm-ttk/releases/download/20221215/arm-ttk.zip" -OutFile arm-template-toolkit.zip
+        Invoke-WebRequest -Uri "https://aka.ms/arm-ttk-latest" -OutFile arm-template-toolkit.zip
         Expand-Archive -LiteralPath arm-template-toolkit.zip -DestinationPath arm-ttk
         Import-Module ./arm-ttk/arm-ttk/arm-ttk.psd1
         echo "Test-AzTemplate -TemplatePath ${{ env.ARMPath }} -Pester" | Out-File -FilePath ./armttk.ps1
@@ -71,17 +71,25 @@ jobs:
 #          Invoke-Pester -Configuration $config
 #        azPSVersion: "latest"
 
+#    - name: Microsoft Teams Notifications DC
+#      uses: dragos-cojocari/ms-teams-notification@v1.0.2
+#      with:
+#        github-token: ${{ github.token }} # this will use the runner's token.
+#        ms-teams-webhook-uri: ${{ secrets.MS_TEAMS_WEBHOOK_URI }}
+#        notification-summary: [FGT] A Single VM
+#        notification-color: 17a2b8
+#        timezone: Europe/Paris
 # https://github.com/FreEZer00/teams-webhook-action
-    - name: Post result to Teams
-      uses: freezer00/teams-webhook-action@v1.0.0
-      if: always()
-      with:
-        webhook_url: ${{ secrets.MS_TEAMS_WEBHOOK_URI }}
-        needs: ${{ toJson(needs) }}
-        job: ${{ toJson(job) }}
 #    - name: Post result to Teams
-#      uses: toko-bifrost/ms-teams-deploy-card@master #  or "./" if in a local set-up
+#      uses: freezer00/teams-webhook-action@v1.0.0
 #      if: always()
 #      with:
-#        github-token: ${{ github.token }}
-#        webhook-uri: ${{ secrets.MS_TEAMS_WEBHOOK_URI }}
+#        webhook_url: ${{ secrets.MS_TEAMS_WEBHOOK_URI }}
+#        needs: ${{ toJson(needs) }}
+#        job: ${{ toJson(job) }}
+    - name: Post result to Teams
+      uses: jvhoof/ms-teams-deploy-card@main #  or "./" if in a local set-up
+      if: always()
+      with:
+        github-token: ${{ github.token }}
+        webhook-uri: ${{ secrets.MS_TEAMS_WEBHOOK_URI }}
