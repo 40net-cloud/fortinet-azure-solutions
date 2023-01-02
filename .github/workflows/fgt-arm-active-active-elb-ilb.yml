@@ -14,7 +14,7 @@ on:
 
 jobs:
   ARM_Active-Active-ELB-ILB:
-    name: 'ARM Template Active-Active-ELB-ILB'
+#    name: 'ARM Template Active-Active-ELB-ILB'
     runs-on: ubuntu-latest
     env:
       ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
@@ -26,17 +26,16 @@ jobs:
     - name: "Checkout"
       uses: actions/checkout@v3.2.0
 
-    - name: Test ARM Templates - path
-      id: armttktest
-      uses: aliencube/arm-ttk-actions@v0.3
-      with:
-        path: ${{ env.ARMPath }}
-
-    - name: Test result - path
-      shell: bash
-      continue-on-error: true
+    - name: ARM TTK - Test ARM Templates
+      shell: pwsh
       run: |
-        echo "${{ toJSON(fromJSON(steps.armttktest.outputs.results)) }}"
+        Install-Module -Name Pester -RequiredVersion 4.10.1 -Force
+        Import-Module -Name Pester -RequiredVersion 4.10.1 -Force
+        Invoke-WebRequest -Uri "https://aka.ms/arm-ttk-latest" -OutFile arm-template-toolkit.zip
+        Expand-Archive -LiteralPath arm-template-toolkit.zip -DestinationPath arm-ttk
+        Import-Module ./arm-ttk/arm-ttk/arm-ttk.psd1
+        echo "Test-AzTemplate -TemplatePath ${{ env.ARMPath }} -Pester" | Out-File -FilePath ./armttk.ps1
+        Invoke-Pester -Script ./armttk.ps1 -EnableExit -OutputFormat NUnitXml -OutputFile ./test-armttk.xml
 
     - name: Azure Login via Az module
       uses: azure/login@v1.4.6
@@ -44,22 +43,14 @@ jobs:
         creds: ${{secrets.AZURE_CREDENTIALS}}
         enable-AzPSSession: true
 
-#    - name: Generate SSH key
-#      shell: bash
-#      continue-on-error: true
-#      run: |
-#        ssh-keygen -t rsa -b 4096 -f .github/workflows/secrets/id_rsa -C "fortigate_test@40net.cloud" -N ""
-
     - name: Run Pester tests (pwsh)
       uses: azure/powershell@v1.2.0
       with:
         inlineScript: |
           mkdir -p /home/runner/.ssh/
-          ssh-keygen -t rsa -b 4096 -f /home/runner/.ssh/id_rsa -C "fortigate_test@40net.cloud" -N '""'
           chmod 700 /home/runner/.ssh/
-          chmod 400 /home/runner/.ssh/id_rsa 
-          chmod 400 /home/runner/.ssh/id_rsa.pub
-          Write-host $PSVersionTable.PSVersion.Major $PSVersionTable.PSRemotingProtocolVersion.Minor
+          ssh-keygen -t ed25519 -f /home/runner/.ssh/id_ed25519 -C "fortigate_test@40net.cloud" -N '""'
+          chmod 400 /home/runner/.ssh/id_rsa* 
           Set-PSRepository psgallery -InstallationPolicy trusted
           Install-Module -Name Pester -RequiredVersion 5.0.4 -confirm:$false -Force
           $container = New-PesterContainer -Path "${{ env.ARMPath }}" -Data @{sshkey = "/home/runner/.ssh/id_rsa"; sshkeypub = "/home/runner/.ssh/id_rsa.pub"}
@@ -68,15 +59,23 @@ jobs:
           $config.Run.Exit = $true
           $config.Run.PassThru = $true
           $config.TestResult.OutputFormat = "NUnitXML"
-          $config.TestResult.OutputPath = "Test-Pester.XML"
+          $config.TestResult.OutputPath = "test-custom.xml"
           $config.Output.Verbosity = 'Detailed'
           Invoke-Pester -Configuration $config
         azPSVersion: "latest"
 
-# https://github.com/FreEZer00/teams-webhook-action
-    - name: Post result to Teams
-      uses: freezer00/teams-webhook-action@v1.0.0
+    - name: Publish Test Results
+      uses: actions/upload-artifact@v3
+      with:
+        name: FGT-Active-Active-ELB-ILB-Test-Results
+        path: ./test-*.xml
+      if: ${{ always() }}
+
+    - name: Microsoft Teams Notification
+      uses: jvhoof/notify-microsoft-teams@main
+      if: always()
       with:
         webhook_url: ${{ secrets.MS_TEAMS_WEBHOOK_URI }}
         needs: ${{ toJson(needs) }}
         job: ${{ toJson(job) }}
+        steps: ${{ toJson(steps) }}

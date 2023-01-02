@@ -162,6 +162,7 @@ Describe 'FGT A/A' {
             config system console
             set output standard
             end
+            get system status
             show system interface
             show router static
             diag debug cloudinit show
@@ -178,11 +179,13 @@ Describe 'FGT A/A' {
         }
         It "FGT A: Verify configuration" {
             $result = $verify_commands | ssh -p 50030 -tt -i $sshkey -o StrictHostKeyChecking=no devops@$fgt
-            Write-Host ("Config: " + $result) -Separator `n
+            Write-Host ("FGT CLI info: " + $result) -Separator `n
+            $LASTEXITCODE | Should -Be "0"
         }
         It "FGT B: Verify configuration" {
             $result = $verify_commands | ssh -p 50031 -tt -i $sshkey -o StrictHostKeyChecking=no devops@$fgt
-            Write-Host ("Config: " + $result) -Separator `n
+            Write-Host ("FGT CLI info: " + $result) -Separator `n
+            $LASTEXITCODE | Should -Be "0"
         }
     }
 
