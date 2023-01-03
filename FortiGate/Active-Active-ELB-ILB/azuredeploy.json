@@ -531,72 +531,6 @@
       }
     },
     {
-      "type": "Microsoft.Network/loadBalancers",
-      "name": "[variables('internalLBName')]",
-      "apiVersion": "2022-05-01",
-      "location": "[parameters('location')]",
-      "tags": {
-        "provider": "[toUpper(parameters('fortinetTags').provider)]"
-      },
-      "sku": {
-        "name": "Standard"
-      },
-      "dependsOn": [
-        "[variables('vnetName')]"
-      ],
-      "properties": {
-        "frontendIPConfigurations": [
-          {
-            "name": "[variables('internalLBFEName')]",
-            "properties": {
-              "privateIPAddress": "[variables('sn2IPlb')]",
-              "privateIPAllocationMethod": "Static",
-              "subnet": {
-                "id": "[variables('subnet2Id')]"
-              }
-            }
-          }
-        ],
-        "backendAddressPools": [
-          {
-            "name": "[variables('internalLBBEName')]"
-          }
-        ],
-        "loadBalancingRules": [
-          {
-            "properties": {
-              "frontendIPConfiguration": {
-                "id": "[variables('internalLBFEId')]"
-              },
-              "backendAddressPool": {
-                "id": "[variables('internalLBBEId')]"
-              },
-              "probe": {
-                "id": "[variables('internalLBProbeId')]"
-              },
-              "protocol": "all",
-              "frontendPort": 0,
-              "backendPort": 0,
-              "enableFloatingIP": true,
-              "idleTimeoutInMinutes": 5
-            },
-            "name": "lbruleFEall"
-          }
-        ],
-        "probes": [
-          {
-            "properties": {
-              "protocol": "Tcp",
-              "port": 8008,
-              "intervalInSeconds": 5,
-              "numberOfProbes": 2
-            },
-            "name": "lbprobe"
-          }
-        ]
-      }
-    },
-    {
       "type": "Microsoft.Network/routeTables",
       "name": "[variables('routeTable3Name')]",
       "apiVersion": "2022-05-01",
@@ -618,9 +552,9 @@
       }
     },
     {
-      "apiVersion": "2022-05-01",
       "type": "Microsoft.Network/networkSecurityGroups",
       "name": "[variables('nsgName')]",
+      "apiVersion": "2022-05-01",
       "location": "[parameters('location')]",
       "tags": {
         "provider": "[toUpper(parameters('fortinetTags').provider)]"
@@ -796,6 +730,72 @@
               "backendPort": 443,
               "enableFloatingIP": false
             }
+          }
+        ],
+        "probes": [
+          {
+            "properties": {
+              "protocol": "Tcp",
+              "port": 8008,
+              "intervalInSeconds": 5,
+              "numberOfProbes": 2
+            },
+            "name": "lbprobe"
+          }
+        ]
+      }
+    },
+    {
+      "type": "Microsoft.Network/loadBalancers",
+      "name": "[variables('internalLBName')]",
+      "apiVersion": "2022-05-01",
+      "location": "[parameters('location')]",
+      "tags": {
+        "provider": "[toUpper(parameters('fortinetTags').provider)]"
+      },
+      "sku": {
+        "name": "Standard"
+      },
+      "dependsOn": [
+        "[variables('vnetName')]"
+      ],
+      "properties": {
+        "frontendIPConfigurations": [
+          {
+            "name": "[variables('internalLBFEName')]",
+            "properties": {
+              "privateIPAddress": "[variables('sn2IPlb')]",
+              "privateIPAllocationMethod": "Static",
+              "subnet": {
+                "id": "[variables('subnet2Id')]"
+              }
+            }
+          }
+        ],
+        "backendAddressPools": [
+          {
+            "name": "[variables('internalLBBEName')]"
+          }
+        ],
+        "loadBalancingRules": [
+          {
+            "properties": {
+              "frontendIPConfiguration": {
+                "id": "[variables('internalLBFEId')]"
+              },
+              "backendAddressPool": {
+                "id": "[variables('internalLBBEId')]"
+              },
+              "probe": {
+                "id": "[variables('internalLBProbeId')]"
+              },
+              "protocol": "all",
+              "frontendPort": 0,
+              "backendPort": 0,
+              "enableFloatingIP": true,
+              "idleTimeoutInMinutes": 5
+            },
+            "name": "lbruleFEall"
           }
         ],
         "probes": [
