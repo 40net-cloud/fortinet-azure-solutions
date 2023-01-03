@@ -162,7 +162,7 @@
   },
   "resources": [
     {
-      "apiVersion": "2020-10-01",
+      "apiVersion": "2021-04-01",
       "name": "pid-2dc4b447-552f-557f-b1cc-2faec6f9f133",
       "type": "Microsoft.Resources/deployments",
       "properties":{
@@ -177,7 +177,7 @@
     {
       "condition": "[equals(parameters('vnetNewOrExisting'), 'new')]",
       "type": "Microsoft.Network/virtualNetworks",
-      "apiVersion": "2020-11-01",
+      "apiVersion": "2022-05-01",
       "name": "[variables('vnetName')]",
       "location": "[parameters('location')]",
       "properties": {
@@ -197,7 +197,7 @@
       }
     },
     {
-      "apiVersion": "2020-11-01",
+      "apiVersion": "2022-05-01",
       "tags": {
         "provider": "[toUpper(parameters('FortinetTags').provider)]"
       },
@@ -238,7 +238,7 @@
       }
     },
     {
-      "apiVersion": "2020-11-01",
+      "apiVersion": "2022-05-01",
       "tags": {
         "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },

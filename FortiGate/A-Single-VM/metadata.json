@@ -4,6 +4,6 @@
     "itemDisplayName": "Deployment of a FortiGate-VM Single VM",
     "description": "This Azure template deploys a FortiGate-VM with the required network infrastructure and routing",
     "summary": "This Azure template deploys a FortiGate-VM with the required network infrastructure and routing",
-    "githubUsername": "40net-cloud",
+    "githubUsername": "fortinet",
     "dateUpdated":  "2023-01-02"
 }
