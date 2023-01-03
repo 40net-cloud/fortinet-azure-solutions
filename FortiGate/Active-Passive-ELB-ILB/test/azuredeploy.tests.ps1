@@ -69,13 +69,13 @@ Describe 'FGT A/P LB' {
         It 'Creates the expected Azure resources' {
             $expectedResources = 'Microsoft.Resources/deployments',
             'Microsoft.Compute/availabilitySets',
-            'Microsoft.Network/routeTables',
             'Microsoft.Network/virtualNetworks',
-            'Microsoft.Network/loadBalancers',
+            'Microsoft.Network/routeTables',
             'Microsoft.Network/networkSecurityGroups',
             'Microsoft.Network/publicIPAddresses',
             'Microsoft.Network/publicIPAddresses',
             'Microsoft.Network/publicIPAddresses',
+            'Microsoft.Network/loadBalancers',
             'Microsoft.Network/loadBalancers',
             'Microsoft.Network/networkInterfaces',
             'Microsoft.Network/networkInterfaces',
@@ -184,16 +184,16 @@ Describe 'FGT A/P LB' {
         }
         It "FGT A: Ports listening" {
             ForEach ( $port in $ports ) {
-                Write-Host ("Check port: $port" )
                 $portListening = (Test-Connection -TargetName $fgta -TCPPort $port -TimeoutSeconds 100)
                 $portListening | Should -Be $true
+                Write-Host ("Check port - $port : " + $portListening )
             }
         }
         It "FGT B: Ports listening" {
             ForEach ( $port in $ports ) {
-                Write-Host ("Check port: $port" )
                 $portListening = (Test-Connection -TargetName $fgtb -TCPPort $port -TimeoutSeconds 100)
                 $portListening | Should -Be $true
+                Write-Host ("Check port - $port : " + $portListening )
             }
         }
         It "FGT A: Verify configuration" {
