@@ -565,9 +565,9 @@
   },
   "resources": [
     {
-      "apiVersion": "2021-04-01",
       "name": "[concat(parameters('fortiGateNamePrefix'), '-fortinetdeployment-', uniquestring(resourceGroup().id))]",
       "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2021-04-01",
       "properties": {
         "mode": "Incremental",
         "template": {
@@ -600,6 +600,9 @@
       "apiVersion": "2022-05-01",
       "name": "[variables('vnetName')]",
       "location": "[parameters('location')]",
+      "tags": {
+        "provider": "[toUpper(parameters('fortinetTags').provider)]"
+      },
       "dependsOn": [
         "[variables('routeTableId')]"
       ],
@@ -650,10 +653,10 @@
       "type": "Microsoft.Network/routeTables",
       "name": "[variables('routeTableName')]",
       "apiVersion": "2022-05-01",
+      "location": "[parameters('location')]",
       "tags": {
         "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
-      "location": "[parameters('location')]",
       "properties": {
         "routes": [
           {
@@ -1384,14 +1387,6 @@
     "fortiGateBManagementPublicIP": {
       "type": "string",
       "value": "[if(equals(parameters('publicIP3NewOrExisting'), 'new'), reference(variables('publicIP3Id')).ipAddress, '')]"
-    },
-    "fortiGateACustomData": {
-      "type": "string",
-      "value": "[variables('fgaCustomData')]"
-    },
-    "fortiGateBCustomData": {
-      "type": "string",
-      "value": "[variables('fgbCustomData')]"
     }
   }
 }

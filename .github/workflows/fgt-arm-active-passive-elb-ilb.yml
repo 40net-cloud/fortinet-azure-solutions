@@ -13,7 +13,7 @@ on:
 
 jobs:
   ARM_Active-Passive-ELB-ILB:
-#    name: 'ARM Template Active-Passive-ELB-ILB'
+    name: 'ARM Template Active-Passive-ELB-ILB'
     runs-on: ubuntu-latest
     env:
       ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
