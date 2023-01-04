@@ -188,7 +188,7 @@ config router static
     set device port2
   next
   edit 5
-    set dst <b>172.16.110.0/24</b>
+    set dst <b>172.16.111.0/24</b>
     set gateway <b>172.16.130.17</b>
     set device port2
   next
