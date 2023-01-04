@@ -31,16 +31,6 @@ config router static
         set gateway ${fgt_internal_gw}
         set device port2
     next
-    edit 3
-        set dst 168.63.129.16 255.255.255.255
-        set device port2
-        set gateway ${fgt_internal_gw}
-    next
-    edit 4
-        set dst 168.63.129.16 255.255.255.255
-        set device port1
-        set gateway ${fgt_external_gw}
-    next
 end
 config system probe-response
     set http-probe-value OK

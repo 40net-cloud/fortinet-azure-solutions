@@ -1,6 +1,6 @@
 ##############################################################################################################
 #
-# FortiGate Active/Active Load Balanced pair of standalone FortiGate VMs for resilience and scale
+# FortiGate a standalone FortiGate VM
 # Terraform deployment template for Microsoft Azure
 #
 ##############################################################################################################
@@ -93,7 +93,6 @@ resource "azurerm_linux_virtual_machine" "fgtvm" {
   location                     = azurerm_resource_group.resourcegroup.location
   resource_group_name          = azurerm_resource_group.resourcegroup.name
   network_interface_ids        = [azurerm_network_interface.fgtifcext.id, azurerm_network_interface.fgtifcint.id]
-  primary_network_interface_id = azurerm_network_interface.fgtifcext.id
   size                         = var.fgt_vmsize
 
   identity {
