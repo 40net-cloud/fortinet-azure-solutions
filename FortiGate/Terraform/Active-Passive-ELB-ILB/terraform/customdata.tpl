@@ -10,7 +10,7 @@ Content-Disposition: attachment; filename="config"
 config system sdn-connector
 	edit AzureSDN
 		set type azure
-	end
+	next
 end
 config sys global
     set hostname "${fgt_vm_name}"
@@ -116,4 +116,17 @@ Content-Disposition: attachment; filename="${fgt_license_file}"
 ${file(fgt_license_file)}
 
 %{ endif }
+--===============0086047718136476635==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: attachment; filename="config2"
+
+config router static
+    edit 4
+        set dst 168.63.129.16 255.255.255.255
+        set device port1
+        set gateway ${fgt_external_gw}
+    next
+end
 --===============0086047718136476635==--
