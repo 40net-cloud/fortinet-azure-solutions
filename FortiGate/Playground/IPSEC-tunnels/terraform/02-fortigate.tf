@@ -163,6 +163,9 @@ resource "azurerm_linux_virtual_machine" "fgtvm" {
     vnet_network        = var.vnet
   }))
 
+  boot_diagnostics {
+  }
+
   tags = var.fortinet_tags
 }
 
