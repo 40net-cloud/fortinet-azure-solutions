@@ -113,50 +113,36 @@ resource "azurerm_network_interface_security_group_association" "lnxnsg" {
   network_security_group_id = azurerm_network_security_group.lnxnsg.id
 }
 
-resource "azurerm_virtual_machine" "lnxvm" {
-  name                         = "${var.PREFIX}-LNX-VM"
-  location                     = azurerm_resource_group.resourcegroup.location
-  resource_group_name          = azurerm_resource_group.resourcegroup.name
-  network_interface_ids        = [azurerm_network_interface.lnxifc1.id, azurerm_network_interface.lnxifc2.id]
-  primary_network_interface_id = azurerm_network_interface.lnxifc1.id
-  vm_size                      = var.lnx_vmsize
+resource "azurerm_linux_virtual_machine" "lnxvm" {
+  name                  = "${var.PREFIX}-LNX-VM"
+  location              = azurerm_resource_group.resourcegroup.location
+  resource_group_name   = azurerm_resource_group.resourcegroup.name
+  network_interface_ids = [azurerm_network_interface.lnxifc1.id, azurerm_network_interface.lnxifc2.id]
+  size                  = var.lnx_vmsize
 
   identity {
     type = "SystemAssigned"
   }
 
-  storage_image_reference {
+  source_image_reference {
     publisher = "Canonical"
     offer     = "0001-com-ubuntu-server-focal"
     sku       = "20_04-lts"
     version   = "latest"
   }
 
-  storage_os_disk {
-    name              = "${var.PREFIX}-LNX-OSDISK"
-    caching           = "ReadWrite"
-    create_option     = "FromImage"
-    managed_disk_type = "StandardSSD_LRS"
+  os_disk {
+    name                 = "${var.PREFIX}-LNX-OSDISK"
+    caching              = "ReadWrite"
+    storage_account_type = "StandardSSD_LRS"
   }
 
-  os_profile {
-    computer_name  = "${var.PREFIX}-LNX-A"
-    admin_username = var.USERNAME
-    admin_password = var.PASSWORD
-    custom_data    = data.template_file.lnx_custom_data.rendered
-  }
-
-  os_profile_linux_config {
-    disable_password_authentication = false
-  }
+  admin_username                  = var.USERNAME
+  admin_password                  = var.PASSWORD
+  disable_password_authentication = false
+  custom_data                     = base64encode(templatefile("${path.module}/customdata-lnx.tftpl", {}))
 
   tags = var.fortinet_tags
-}
-
-data "template_file" "lnx_custom_data" {
-  template = file("${path.module}/customdata-lnx.tpl")
-
-  vars = {}
 }
 
 data "azurerm_public_ip" "lnxpip" {
