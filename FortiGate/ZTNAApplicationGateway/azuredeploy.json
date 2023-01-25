@@ -509,7 +509,7 @@
       "type": "string",
       "value": "[concat('https://', reference('FGT-ZTNA-deployment').outputs.fortiGateFQDN.value, ':', parameters('ztnaHTTPSAccessPort'), '/')]"
     },
-    "ZTNAZTNALoginURL": {
+    "ZTNALoginURL": {
       "type": "string",
       "value": "[concat('https://', reference('FGT-ZTNA-deployment').outputs.fortiGateFQDN.value, ':', parameters('fortiGateAdminPort'), '/')]"
     }
