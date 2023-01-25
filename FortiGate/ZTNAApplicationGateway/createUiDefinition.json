@@ -627,7 +627,7 @@
                   "text": "Credentials for a user to access a ZTNA application using a local db",
                   "link": {
                     "label": "Learn more",
-                    "uri": "https://docs.fortinet.com/document/fortigate-public-cloud/7.2.0/azure-administration-guide/562841/instance-type-support"
+                    "uri": "https://docs.fortinet.com/document/fortigate/7.2.3/administration-guide/544195/ssl-vpn-with-local-user-password-policy"
                   }
                 }
               },
@@ -689,7 +689,7 @@
                   "text": "Application Server",
                   "link": {
                     "label": "Learn more",
-                    "uri": "https://docs.fortinet.com/document/fortigate-public-cloud/7.2.0/azure-administration-guide/562841/instance-type-support"
+                    "uri": "https://docs.fortinet.com/document/fortigate/7.2.3/administration-guide/194961/basic-ztna-configuration"
                   }
                 }
               },
