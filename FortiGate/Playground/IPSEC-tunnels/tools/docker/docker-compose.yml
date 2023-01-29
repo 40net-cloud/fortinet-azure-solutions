@@ -1,0 +1,16 @@
+version: '3'
+
+services:
+  smokeping:
+    image: linuxserver/smokeping
+    container_name: smokeping
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Stockholm
+    volumes:
+      - /share/smokeping/config:/config
+      - /share/smokeping/data:/data
+    ports:
+      - 80:80
+    restart: unless-stopped
