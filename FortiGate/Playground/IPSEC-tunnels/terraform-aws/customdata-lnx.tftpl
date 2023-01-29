@@ -1,0 +1,67 @@
+#cloud-config
+package_upgrade: true
+packages:
+  - nginx
+  - iperf3
+  - strongswan
+  - strongswan-pki
+  - libcharon-extra-plugins
+  - libcharon-extauth-plugins
+  - libstrongswan-extra-plugins
+  - exabgp
+  - python3-exabgp
+write_files:
+  - owner: root:root
+    path: /etc/systemd/system/rc-local.service
+    content: |
+      [Unit]
+      Description=/etc/rc.local Compatibility
+      ConditionPathExists=/etc/rc.local
+
+      [Service]
+      Type=forking
+      ExecStart=/etc/rc.local start
+      TimeoutSec=0
+      StandardOutput=tty
+      RemainAfterExit=yes
+      SysVStartPriority=99
+
+      [Install]
+      WantedBy=multi-user.target
+  - owner: root:root
+    path: /etc/rc.local
+    content: |
+      #!/bin/bash
+
+      cd /share/tools
+      mkdir -p /share/tools/build
+
+      echo "Generating configuration ..."
+      /usr/bin/python3 /share/tools/generate-config.py
+
+      echo "Enabling loopback AnyIP configuration ..."
+      chmod +x /share/tools/build/ifc.sh
+      /share/tools/build/ifc.sh
+
+      echo "ExaBGP pipe creation ..."
+      if [ ! -p /var/run/exabgp.in -o ! -p /var/run/exabgp.out ]; then
+        mkfifo /var/run/exabgp.{in,out}
+        chmod 600 /var/run/exabgp.{in,out}
+        chown exabgp:exabgp /var/run/exabgp.{in,out}
+      fi
+
+      echo "Restarting IPSEC daemon ..."
+      /usr/sbin/ipsec restart
+  - owner: root:root
+    path: /etc/ipsec.conf
+    content: |
+      include ipsec.d/tunnel*.conf
+runcmd:
+  - [ sh, -c, chmod a+x /etc/rc.local ]
+  - [ sh, -c, systemctl enable rc-local ]
+  - [ sh, -c, sysctl -w net.ipv4.ip_forward=1 ]
+  - [ sh, -c, mkdir -p /share ]
+  - [ sh, -c, "mkfifo /var/run/exabgp.{in,out}" ]
+  - [ sh, -c, "chmod 600 /var/run/exabgp.{in,out}" ]
+  - [ sh, -c, curl -L https://api.github.com/repos/40net-cloud/fortinet-azure-solutions/tarball | tar -C "/share" -xz --wildcards "*/FortiGate/Playground/IPSEC-tunnels/tools/*" --strip-components=4 ]
+final_message: "The system is finally up, after $UPTIME seconds"
