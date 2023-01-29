@@ -53,6 +53,12 @@ config system interface
         set ip ${fgt_internal_ipaddr}/${fgt_internal_mask}
         set description internal
     next
+    edit port4
+        set mode static
+        set ip 10.1.0.0/16
+        set gw 172.16.137.1
+        set description underlay
+    next
 end
 config firewall policy
     edit 1
