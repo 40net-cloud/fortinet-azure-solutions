@@ -33,21 +33,25 @@ write_files:
     content: |
       #!/bin/bash
 
-      cd /root/tools
-      mkdir -p /root/tools/build
+      cd /share/tools
+      mkdir -p /share/tools/build
 
-      echo "Generating dummy interfaces ..."
-      /usr/bin/python3 /root/tools/lnx-ifc.py
-      echo "Activating dummy interfaces ..."
-      /root/tools/build/ifc.sh
-      echo "Generating IPSEC config ..."
-      /usr/bin/python3 /root/tools/lnx-ipsec.py
+      echo "Generating configuration ..."
+      /usr/bin/python3 /share/tools/generate-config.py
+
+      echo "Enabling loopback AnyIP configuration ..."
+      chmod +x /share/tools/build/ifc.sh
+      /share/tools/build/ifc.sh
+
+      echo "ExaBGP pipe creation ..."
+      if [ ! -p /var/run/exabgp.in -o ! -p /var/run/exabgp.out ]; then
+        mkfifo /var/run/exabgp.{in,out}
+        chmod 600 /var/run/exabgp.{in,out}
+        chown exabgp:exabgp /var/run/exabgp.{in,out}
+      fi
+
       echo "Restarting IPSEC daemon ..."
       /usr/sbin/ipsec restart
-  - owner: root:root
-    path: /etc/ipsec.secrets
-    content: |
-      : PSK "fortinet"
   - owner: root:root
     path: /etc/ipsec.conf
     content: |
@@ -56,5 +60,8 @@ runcmd:
   - [ sh, -c, chmod a+x /etc/rc.local ]
   - [ sh, -c, systemctl enable rc-local ]
   - [ sh, -c, sysctl -w net.ipv4.ip_forward=1 ]
-  - [ sh, -c, curl -L https://api.github.com/repos/40net-cloud/fortinet-azure-solutions/tarball | tar -C "/root" -xz --wildcards "*/FortiGate/Playground/IPSEC-tunnels/tools/*" --strip-components=4 ]
+  - [ sh, -c, mkdir -p /share ]
+  - [ sh, -c, mkfifo /var/run/exabgp.{in,out} ]
+  - [ sh, -c, chmod 600 /var/run/exabgp.{in,out} ]
+  - [ sh, -c, curl -L https://api.github.com/repos/40net-cloud/fortinet-azure-solutions/tarball | tar -C "/share" -xz --wildcards "*/FortiGate/Playground/IPSEC-tunnels/tools/*" --strip-components=4 ]
 final_message: "The system is finally up, after $UPTIME seconds"

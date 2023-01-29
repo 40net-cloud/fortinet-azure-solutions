@@ -27,7 +27,7 @@ config router static
         set device port1
     next
     edit 2
-        set dst ${vnet_network}
+        set dst ${virtual_network}
         set gateway ${fgt_internal_gw}
         set device port2
     next
@@ -81,21 +81,6 @@ end
 %{ if fgt_license_flexvm != "" }
 exec vm-license ${fgt_license_flexvm}
 %{ endif }
-config vpn ipsec phase1-interface
-    edit "tester"
-        set type dynamic
-        set interface "port2"
-        set ike-version 2
-        set local-gw 172.16.137.11
-        set peertype any
-        set psksecret fortinet
-    next
-end
-config vpn ipsec phase2-interface
-    edit "tester"
-        set phase1name "tester"
-    next
-end
 
 %{ if fgt_license_file != "" }
 --===============0086047718136476635==
