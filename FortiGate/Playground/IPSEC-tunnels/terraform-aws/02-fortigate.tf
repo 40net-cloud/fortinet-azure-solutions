@@ -68,6 +68,7 @@ resource "aws_instance" "fgtvm" {
   availability_zone = local.az1
   key_name          = var.KEY_PAIR
   user_data = templatefile("${path.module}/../templates/customdata-fgt.tftpl", {
+    fgt_csp             = "aws"
     fgt_vm_name         = "${var.PREFIX}-fgt-vm"
     fgt_license_file    = var.FGT_BYOL_LICENSE_FILE
     fgt_license_flexvm  = var.FGT_BYOL_FLEXVM_LICENSE
@@ -83,7 +84,7 @@ resource "aws_instance" "fgtvm" {
     fgt_internal_ipaddr = var.fgt_ipaddress["3"]
     fgt_internal_mask   = var.subnetmask["3"]
     fgt_internal_gw     = var.gateway_ipaddress["3"]
-    virtual_network        = var.vpc
+    virtual_network     = var.vpc
   })
 
   root_block_device {

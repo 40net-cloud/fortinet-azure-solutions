@@ -10,7 +10,7 @@
 ##############################################################################################################
 
 output "template_file" {
-  value = templatefile("${path.module}/summary.tpl", {
+  value = templatefile("${path.module}/../templates/summary.tftpl", {
     location                    = var.LOCATION
     username                    = var.USERNAME
     lnx_public_ip_address       = data.azurerm_public_ip.lnxpip.ip_address

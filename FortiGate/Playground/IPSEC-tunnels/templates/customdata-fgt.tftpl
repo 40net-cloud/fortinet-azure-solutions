@@ -8,8 +8,8 @@ Content-Transfer-Encoding: 7bit
 Content-Disposition: attachment; filename="config"
 
 config system sdn-connector
-	edit AzureSDN
-		set type azure
+	edit "${fgt_csp}SDN"
+		set type ${fgt_csp}
 	next
 end
 config sys global
@@ -71,18 +71,43 @@ config firewall policy
         set service "ALL"
     next
 end
-config system admin
-    edit devops
-    set accprofile super_admin
-    set password ${fgt_password}
-end
-%{ if fgt_ssh_public_key != "" }
-config system admin
-    edit "${fgt_username}"
-        set ssh-public-key1 "${trimspace(file(fgt_ssh_public_key))}"
+config vpn ipsec phase1-interface
+    edit "VPN1"
+        set type dynamic
+        set interface "port2"
+        set ike-version 2
+        set keylife 28800
+        set peertype any
+        set net-device disable
+        set mode-cfg enable
+        set proposal aes256gcm-prfsha256
+        set localid "VPN1"
+        set dpd on-idle
+        set dhgrp 21
+        set nattraversal forced
+        set assign-ip disable
+        set psksecret fortinet
+        set dpd-retryinterval 60
     next
 end
+config vpn ipsec phase2-interface
+    edit "VPN1"
+        set phase1name "VPN1"
+        set proposal aes256gcm
+        set dhgrp 21
+        set keylifeseconds 3600
+    next
+end
+config system admin
+    edit "${fgt_username}"
+%{ if fgt_ssh_public_key != "" }
+        set ssh-public-key1 "${trimspace(file(fgt_ssh_public_key))}"
 %{ endif }
+%{ if fgt_password != "" }
+        set password ${ fgt_password }
+%{ endif }
+    next
+end
 %{ if fgt_license_flexvm != "" }
 --===============0086047718136476635==
 Content-Type: text/plain; charset="us-ascii"

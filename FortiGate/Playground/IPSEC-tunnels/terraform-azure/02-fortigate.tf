@@ -144,7 +144,8 @@ resource "azurerm_linux_virtual_machine" "fgtvm" {
   admin_username                  = var.USERNAME
   admin_password                  = var.PASSWORD
   disable_password_authentication = false
-  custom_data = base64encode(templatefile("${path.module}/customdata-fgt.tftpl", {
+  custom_data = base64encode(templatefile("${path.module}/../templates/customdata-fgt.tftpl", {
+    fgt_csp             = "azure"
     fgt_vm_name         = "${var.PREFIX}-FGT-VM"
     fgt_license_file    = var.FGT_BYOL_LICENSE_FILE
     fgt_license_flexvm  = var.FGT_BYOL_FLEXVM_LICENSE_FILE

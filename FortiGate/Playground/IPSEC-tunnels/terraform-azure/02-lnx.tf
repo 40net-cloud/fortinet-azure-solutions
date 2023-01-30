@@ -139,7 +139,7 @@ resource "azurerm_linux_virtual_machine" "lnxvm" {
   admin_username                  = var.USERNAME
   admin_password                  = var.PASSWORD
   disable_password_authentication = false
-  custom_data                     = base64encode(templatefile("${path.module}/customdata-lnx.tftpl", {}))
+  custom_data                     = base64encode(templatefile("${path.module}/../templates/customdata-lnx.tftpl", {}))
 
   tags = var.fortinet_tags
 }
@@ -216,7 +216,7 @@ resource "azurerm_linux_virtual_machine" "lnx2vm" {
   admin_username                  = var.USERNAME
   admin_password                  = var.PASSWORD
   disable_password_authentication = false
-  custom_data                     = base64encode(templatefile("${path.module}/customdata-lnx2.tftpl", {}))
+  custom_data                     = base64encode(templatefile("${path.module}/../templates/customdata-lnx2.tftpl", {}))
 
   tags = var.fortinet_tags
 }
