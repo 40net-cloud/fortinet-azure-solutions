@@ -55,7 +55,7 @@ resource "aws_instance" "lnxvm" {
   instance_type     = var.lnx_vmsize
   availability_zone = local.az1
   key_name          = var.KEY_PAIR
-  user_data = templatefile("${path.module}/customdata-lnx.tftpl", {})
+  user_data = templatefile("${path.module}/../templates/customdata-lnx.tftpl", {})
 
   root_block_device {
     volume_type = "gp2"
@@ -127,7 +127,7 @@ resource "aws_instance" "lnx2vm" {
   instance_type     = var.lnx_vmsize
   availability_zone = local.az1
   key_name          = var.KEY_PAIR
-  user_data = templatefile("${path.module}/customdata-lnx2.tftpl", {})
+  user_data = templatefile("${path.module}/../templates/customdata-lnx2.tftpl", {})
 
   root_block_device {
     volume_type = "gp2"

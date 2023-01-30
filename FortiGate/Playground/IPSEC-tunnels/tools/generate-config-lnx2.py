@@ -60,9 +60,9 @@ ip -4 route add {{ ip_network_underlay }} via {{ port3_gw }}
 # Generate Smokeping config
 #################################################################################
 print("Generate Smokeping config ...")
-f = open("build/Targets", "w")
+f = open("/share/smokeping/config/Targets", "w")
 
-tm = Template(template)
+tm = Template(template_smokeping)
 msg = tm.render(index_start=index_start, index_end=index_end, ip_int_overlay=ip_int_overlay, ipaddress=ipaddress)
 f.write(msg)
 

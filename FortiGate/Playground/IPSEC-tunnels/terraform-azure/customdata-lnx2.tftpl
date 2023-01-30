@@ -41,10 +41,10 @@ write_files:
       echo "Starting smokeping ..."
       cd /share/tools/docker && docker-compose up -d
 runcmd:
+  - [ sh, -c, mkdir -p /share ]
+  - [ sh, -c, curl -L https://api.github.com/repos/40net-cloud/fortinet-azure-solutions/tarball | tar -C "/share" -xz --wildcards "*/FortiGate/Playground/IPSEC-tunnels/tools/*" --strip-components=4 ]
   - [ sh, -c, chmod a+x /etc/rc.local ]
   - [ sh, -c, systemctl enable rc-local ]
   - [ sh, -c, systemctl start rc-local ]
   - [ sh, -c, sysctl -w net.ipv4.ip_forward=1 ]
-  - [ sh, -c, mkdir -p /share ]
-  - [ sh, -c, curl -L https://api.github.com/repos/40net-cloud/fortinet-azure-solutions/tarball | tar -C "/share" -xz --wildcards "*/FortiGate/Playground/IPSEC-tunnels/tools/*" --strip-components=4 ]
 final_message: "The system is finally up, after $UPTIME seconds"

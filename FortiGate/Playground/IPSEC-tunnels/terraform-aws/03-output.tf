@@ -30,7 +30,7 @@ data "aws_network_interface" "lnx2nicmgmt" {
 }
 
 output "template_file" {
-  value = templatefile("${path.module}/summary.tpl", {
+  value = templatefile("${path.module}/../templates/summary.tftpl", {
     region                      = var.REGION
     username                    = var.USERNAME
     lnx_public_ip_address       = aws_eip.lnxpip.public_ip

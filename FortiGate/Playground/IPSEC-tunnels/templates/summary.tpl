@@ -1,7 +1,7 @@
 ##############################################################################################################
 #
 # IPSEC Tunnels
-# Terraform deployment template for Microsoft Azure
+# Terraform deployment template
 #
 # The LNX VM is reachable via the public or private IP address
 # Management SSH on port 22

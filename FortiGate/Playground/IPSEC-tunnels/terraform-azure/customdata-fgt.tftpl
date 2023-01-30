@@ -28,7 +28,12 @@ config router static
     next
     edit 2
         set dst ${virtual_network}
-        set gateway ${fgt_internal_gw}
+        set gateway ${fgt_mgmt_gw}
+        set device port2
+    next
+    edit 3
+        set dst 10.1.0.0/16
+        set gateway ${fgt_external_gw}
         set device port2
     next
 end

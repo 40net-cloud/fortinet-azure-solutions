@@ -67,7 +67,7 @@ resource "aws_instance" "fgtvm" {
   instance_type     = var.fgt_vmsize
   availability_zone = local.az1
   key_name          = var.KEY_PAIR
-  user_data = templatefile("${path.module}/customdata-fgt.tftpl", {
+  user_data = templatefile("${path.module}/../templates/customdata-fgt.tftpl", {
     fgt_vm_name         = "${var.PREFIX}-fgt-vm"
     fgt_license_file    = var.FGT_BYOL_LICENSE_FILE
     fgt_license_flexvm  = var.FGT_BYOL_FLEXVM_LICENSE
