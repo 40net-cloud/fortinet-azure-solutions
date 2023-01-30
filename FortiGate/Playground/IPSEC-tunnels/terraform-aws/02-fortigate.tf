@@ -117,3 +117,15 @@ resource "aws_instance" "fgtvm" {
     Name = "${var.PREFIX}-fgt-vm"
   }
 }
+
+data "aws_network_interface" "fgtnicmgmt" {
+  id = aws_network_interface.fgtnicmgmt.id
+}
+
+data "aws_network_interface" "fgtnicext" {
+  id = aws_network_interface.fgtnicext.id
+}
+
+data "aws_network_interface" "fgtnicint" {
+  id = aws_network_interface.fgtnicint.id
+}

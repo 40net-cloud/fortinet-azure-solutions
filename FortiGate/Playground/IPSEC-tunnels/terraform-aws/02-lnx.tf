@@ -148,3 +148,11 @@ resource "aws_instance" "lnx2vm" {
     Name = "${var.PREFIX}-lnx2-vm"
   }
 }
+
+data "aws_network_interface" "lnxnicmgmt" {
+  id = aws_network_interface.lnxnicmgmt.id
+}
+
+data "aws_network_interface" "lnx2nicmgmt" {
+  id = aws_network_interface.lnx2nicmgmt.id
+}

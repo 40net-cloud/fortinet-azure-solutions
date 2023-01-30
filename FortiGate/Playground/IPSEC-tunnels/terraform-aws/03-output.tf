@@ -1,33 +1,13 @@
 ##############################################################################################################
 #
 # FortiTester VM
-# Terraform deployment template for Microsoft Azure
+# Terraform deployment template for AWS
 #
 ##############################################################################################################
 #
 # Output summary of deployment
 #
 ##############################################################################################################
-
-data "aws_network_interface" "fgtnicmgmt" {
-  id = aws_network_interface.fgtnicmgmt.id
-}
-
-data "aws_network_interface" "fgtnicext" {
-  id = aws_network_interface.fgtnicext.id
-}
-
-data "aws_network_interface" "fgtnicint" {
-  id = aws_network_interface.fgtnicint.id
-}
-
-data "aws_network_interface" "lnxnicmgmt" {
-  id = aws_network_interface.lnxnicmgmt.id
-}
-
-data "aws_network_interface" "lnx2nicmgmt" {
-  id = aws_network_interface.lnx2nicmgmt.id
-}
 
 output "template_file" {
   value = templatefile("${path.module}/../templates/summary.tftpl", {

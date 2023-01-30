@@ -20,18 +20,23 @@
 lnx_public_ip_address = ${lnx_public_ip_address}
 lnx_private_ip_address = ${lnx_private_ip_address}
 lnx_public_fqdn = ${lnx_public_fqdn}
+%{ if lnx_instance_id != "" }
 lnx_instance_id = ${lnx_instance_id}
+%{ endif }
 
 lnx2_public_ip_address = ${lnx2_public_ip_address}
 lnx2_private_ip_address = ${lnx2_private_ip_address}
 lnx2_public_fqdn = ${lnx2_public_fqdn}
+%{ if lnx2_instance_id != "" }
 lnx2_instance_id = ${lnx2_instance_id}
+%{ endif }
 
 fgt_public_ip_address = ${fgt_public_ip_address}
 fgt_private_ip_address_mgmt = ${fgt_private_ip_address_mgmt}
 fgt_private_ip_address_ext = ${fgt_private_ip_address_ext}
 fgt_private_ip_address_int = ${fgt_private_ip_address_int}
+%{ if fgt_instance_id != "" }
 fgt_instance_id = ${fgt_instance_id}
-
+%{ endif }
 
 ##############################################################################################################

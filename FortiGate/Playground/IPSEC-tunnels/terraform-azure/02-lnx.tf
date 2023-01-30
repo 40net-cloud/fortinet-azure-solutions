@@ -141,6 +141,11 @@ resource "azurerm_linux_virtual_machine" "lnxvm" {
   disable_password_authentication = false
   custom_data                     = base64encode(templatefile("${path.module}/../templates/customdata-lnx.tftpl", {}))
 
+  admin_ssh_key {
+    username   = var.USERNAME
+    public_key = file(var.FGT_SSH_PUBLIC_KEY_FILE)
+  }
+
   tags = var.fortinet_tags
 }
 
@@ -217,6 +222,11 @@ resource "azurerm_linux_virtual_machine" "lnx2vm" {
   admin_password                  = var.PASSWORD
   disable_password_authentication = false
   custom_data                     = base64encode(templatefile("${path.module}/../templates/customdata-lnx2.tftpl", {}))
+
+  admin_ssh_key {
+    username   = var.USERNAME
+    public_key = file(var.FGT_SSH_PUBLIC_KEY_FILE)
+  }
 
   tags = var.fortinet_tags
 }

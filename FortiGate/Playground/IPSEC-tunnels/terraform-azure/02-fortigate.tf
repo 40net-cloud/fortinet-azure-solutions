@@ -161,7 +161,7 @@ resource "azurerm_linux_virtual_machine" "fgtvm" {
     fgt_internal_ipaddr = var.fgt_ipaddress["3"]
     fgt_internal_mask   = var.subnetmask["3"]
     fgt_internal_gw     = var.gateway_ipaddress["3"]
-    virtual_network        = var.vnet
+    virtual_network     = var.vnet
   }))
 
   boot_diagnostics {
