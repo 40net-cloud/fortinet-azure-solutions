@@ -13,8 +13,9 @@ index_start = 1   # First IP in the IP network range to start counting
 index_end = 10  # Count needs to be less than the IP addresses available in the IP network
 vpn_b_gw = "172.16.137.1"
 vpn_b_ip_underlay = "172.16.137.10"
-vpn_b_ip_overlay = str(ipaddress.IPv4Network(ip_network_overlay)[-2]) # Reserve last IP in overlay network for FGT
-#vpn_b_ip_overlay = "10.3.255.254"
+# VPN interface IP on FGT needs to be outside out overlay network
+#vpn_b_ip_overlay = str(ipaddress.IPv4Network(ip_network_overlay)[-2]) # Reserve last IP in overlay network for FGT
+vpn_b_ip_overlay = "10.3.255.254"
 vpn_b_subnet = "172.16.138.0/24"
 vpn_config_name="VPN1"
 bgp_asn="65005"
