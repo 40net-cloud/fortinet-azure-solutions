@@ -148,15 +148,15 @@ variable "gateway_ipaddress" {
 }
 
 variable "lnx_vmsize" {
-  default = "Standard_D4s_v5"
+  default = "Standard_D4as_v5"
 }
 
 variable "lnx2_vmsize" {
-  default = "Standard_D2s_v5"
+  default = "Standard_D4as_v5"
 }
 
 variable "fgt_vmsize" {
-  default = "Standard_D8s_v5"
+  default = "Standard_D8as_v5"
 }
 
 variable "fortinet_tags" {
