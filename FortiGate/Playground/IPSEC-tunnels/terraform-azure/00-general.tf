@@ -164,7 +164,7 @@ variable "fortinet_tags" {
   default = {
     publisher : "Fortinet",
     template : "IPSEC-tunnels",
-    provider : "7EB3B02F-50E5-4A3E-8CB8-2E129258FTS"
+    provider : "7EB3B02F-50E5-4A3E-8CB8-2E129258IPSECTUNNELS"
   }
 }
 
