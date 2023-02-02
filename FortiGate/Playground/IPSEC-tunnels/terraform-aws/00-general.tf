@@ -30,7 +30,6 @@ variable "SECRET_KEY" {}
 
 //  Existing SSH Key on the AWS
 variable "KEY_PAIR" {
-  default = ""
 }
 
 ##############################################################################################################

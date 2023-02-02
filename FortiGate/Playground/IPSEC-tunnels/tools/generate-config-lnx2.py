@@ -12,6 +12,7 @@ vpn_psk = "fortinet"
 index_start = 1   # First IP in the IP network range to start counting
 index_end = 10  # Count needs to be less than the IP addresses available in the IP network
 port3_gw = "172.16.138.1"
+port3_ip = "172.16.138.20"
 vpn_b_ip = "172.16.137.10"
 vpn_b_subnet = "172.16.138.0/24"
 
@@ -22,7 +23,31 @@ end = index_end
 #################################################################################
 # Templates
 #################################################################################
-template_smokeping = """
+template_smokeping_probes = """
+*** Probes ***
+
++ FPing
+binary = /usr/sbin/fping
+
++ FPing6
+binary = /usr/sbin/fping
+protocol = 6
+
++ DNS
+binary = /usr/bin/dig
+lookup = google.com
+pings = 5
+step = 300
+
++ TCPPing
+binary = /usr/bin/tcpping
+forks = 10
+offset = random
+pings = 5
+port = 80
+step = 30
+"""
+template_smokeping_targets = """
 *** Targets ***
 
 probe = FPing
@@ -31,6 +56,14 @@ menu = Top
 title = Network Latency Grapher
 remark = Remark \
 	 Remark2
+
+++ FGT
+probe = TCPPing
+menu = BGP
+title = 172.16.138.20
+host = 172.16.138.20
+pings = 3
+port = 179
 
 + VPN
 menu = VPN
@@ -60,11 +93,20 @@ ip -4 route add {{ ip_network_overlay }} via {{ port3_gw }}
 #################################################################################
 # Generate Smokeping config
 #################################################################################
-print("Generate Smokeping config ...")
+print("Generate Smokeping targets config ...")
 f = open("/share/smokeping/config/Targets", "w")
 
-tm = Template(template_smokeping)
-msg = tm.render(index_start=index_start, index_end=index_end, ip_int_overlay=ip_int_overlay, ipaddress=ipaddress)
+tm = Template(template_smokeping_targets)
+msg = tm.render(index_start=index_start, index_end=index_end, ip_int_overlay=ip_int_overlay, ipaddress=ipaddress, port3_ip=port3_ip)
+f.write(msg)
+
+f.close()
+
+print("Generate Smokeping probes config ...")
+f = open("/share/smokeping/config/Probes", "w")
+
+tm = Template(template_smokeping_probes)
+msg = tm.render()
 f.write(msg)
 
 f.close()
