@@ -59,7 +59,7 @@ resource "aws_instance" "lnxvm" {
 
   root_block_device {
     volume_type = "gp2"
-    volume_size = "20"
+    volume_size = "50"
   }
 
   network_interface {
@@ -131,7 +131,7 @@ resource "aws_instance" "lnx2vm" {
 
   root_block_device {
     volume_type = "gp2"
-    volume_size = "20"
+    volume_size = "50"
   }
 
   network_interface {
