@@ -22,8 +22,7 @@ jobs:
 
     - uses: addnab/docker-run-action@v3
       with:
-        registry: ghcr.io
-        image: jvhoof/validiac:main
+        image: ghcr.io/jvhoof/validiac:main
         options: -v ${{ github.workspace }}:/iac
         run: |
           echo "Running Script"
