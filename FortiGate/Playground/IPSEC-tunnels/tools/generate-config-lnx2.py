@@ -57,7 +57,7 @@ title = Network Latency Grapher
 remark = Remark \
 	 Remark2
 
-++ FGT
++ FGT
 probe = TCPPing
 menu = BGP
 title = 172.16.138.20

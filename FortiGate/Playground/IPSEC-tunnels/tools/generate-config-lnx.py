@@ -148,7 +148,8 @@ neighbor {{ vpn_b_ip_overlay }} {                 # Remote neighbor to peer with
     peer-as {{ bgp_asn }};                     # Peer's AS
 }
 """
-template_exabgpcli = """exabgpcli {{ action }} route {{ route }} next-hop {{ vpn_a_ip_overlay }} as-path [ ] local-preference 150
+template_exabgpcli = """echo exabgpcli {{ action }} route {{ route }} next-hop {{ vpn_a_ip_overlay }} as-path [ ] local-preference 150
+exabgpcli {{ action }} route {{ route }} next-hop {{ vpn_a_ip_overlay }} as-path [ ] local-preference 150
 
 """
 
