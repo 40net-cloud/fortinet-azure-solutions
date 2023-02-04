@@ -25,6 +25,8 @@ jobs:
       run: |
            pwd
            ls -la
+           echo ${{ github.workspace }}
+           echo ${{ GITHUB_WORKSPACE }}
 
   step2:
     name: 'step2'
@@ -34,5 +36,11 @@ jobs:
       volumes:
         - ${{ github.workspace }}:/iac
     steps:
-      - name: ValidIaC secure check
-        run: ls -la /iac
+    - uses: actions/checkout@main
+    - name: ValidIaC secure check
+      run: |
+        ls -la /iac
+        (ls /.dockerenv && echo Found dockerenv) || (echo No dockerenv)
+    - name: Check for dockerenv file
+      run: 
+        
