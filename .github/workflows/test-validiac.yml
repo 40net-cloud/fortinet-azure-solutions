@@ -16,7 +16,7 @@ jobs:
     name: 'Terraform A-Single-VM'
     runs-on: ubuntu-latest
     container:
-      image: ghrc.io/jvhoof/validiac:main
+      image: ghcr.io/jvhoof/validiac:main
       volumes:
         - ${{ github.workspace }}:/iac
     steps:
