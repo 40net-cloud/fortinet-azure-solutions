@@ -20,11 +20,6 @@ jobs:
     - name: "Checkout"
       uses: actions/checkout@v3.2.0
 
-    - uses: addnab/docker-run-action@v3
-      with:
-        image: ghcr.io/jvhoof/validiac:main
-        options: -v ${{ github.workspace }}:/iac
-        shell: validiac
-        run: |
-          echo "Running Script"
-          secure /iac/${{ env.TFPath }}
+    - name: Run Docker
+      run: |
+           docker run --rm -v ${{ github.workspace }}:/iac validiac secure /iac/${{ env.TFPath }}
