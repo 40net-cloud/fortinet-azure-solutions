@@ -12,14 +12,13 @@ on:
     - 'FortiGate/Terraform/A-Single-VM/*.hcl'
 
 jobs:
-  terraform_single-vm:
+  container-test-job:
     name: 'Terraform A-Single-VM'
     runs-on: ubuntu-latest
-
+    container:
+      image: ghrc.io/jvhoof/validiac:main
+      volumes:
+        - ${{ github.workspace }}:/iac
     steps:
-    - name: "Checkout"
-      uses: actions/checkout@v3.2.0
-
-    - name: Run Docker
-      run: |
-           docker run --rm -v ${{ github.workspace }}:/iac ghrc.io/jvhoof/validiac:main secure /iac/${{ env.TFPath }}
+      - name: ValidIaC secure check
+        run: secure /iac/${{ env.TFPath }}
