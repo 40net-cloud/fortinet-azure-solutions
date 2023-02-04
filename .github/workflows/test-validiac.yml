@@ -23,7 +23,5 @@ jobs:
     - uses: actions/checkout@main
     - name: ValidIaC secure check
       run: |
-        /validiac/bin/validiac secure /iac/${{ env.TFPath }}
-        ls -la /iac/${{ env.TFPath }}
-        (ls /.dockerenv && echo Found dockerenv) || (echo No dockerenv)
+        /validiac/bin/validiac secure /iac/${{ env.TFPath }}/*.tf
         
