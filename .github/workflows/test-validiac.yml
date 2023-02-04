@@ -21,4 +21,4 @@ jobs:
         - ${{ github.workspace }}:/iac
     steps:
       - name: ValidIaC secure check
-        run: secure /iac/${{ env.TFPath }}
+        run: /validiac/bin/validiac secure /iac/${{ env.TFPath }}
