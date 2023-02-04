@@ -12,8 +12,22 @@ on:
     - 'FortiGate/Terraform/A-Single-VM/*.hcl'
 
 jobs:
-  container-test-job:
-    name: 'Terraform A-Single-VM'
+  step1:
+    name: 'step1'
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: "Checkout"
+      uses: actions/checkout@v3.2.0
+
+    - name: Test
+      shell: bash
+      run: |
+           pwd
+           ls -la
+
+  step2:
+    name: 'step2'
     runs-on: ubuntu-latest
     container:
       image: ghcr.io/jvhoof/validiac:main
