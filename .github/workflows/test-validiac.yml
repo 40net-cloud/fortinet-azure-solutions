@@ -21,12 +21,11 @@ jobs:
       uses: actions/checkout@v3.2.0
 
     - name: Test
-      shell: bash
       run: |
-           pwd
-           ls -la
-           echo ${{ github.workspace }}
-           echo ${{ GITHUB_WORKSPACE }}
+        pwd
+        ls -la
+        echo ${{ github.workspace }}
+        echo ${{ GITHUB_WORKSPACE }}
 
   step2:
     name: 'step2'
