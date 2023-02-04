@@ -41,6 +41,4 @@ jobs:
       run: |
         ls -la /iac
         (ls /.dockerenv && echo Found dockerenv) || (echo No dockerenv)
-    - name: Check for dockerenv file
-      run: 
         
