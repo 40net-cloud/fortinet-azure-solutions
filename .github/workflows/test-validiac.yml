@@ -25,7 +25,6 @@ jobs:
         pwd
         ls -la
         echo ${{ github.workspace }}
-        echo ${{ GITHUB_WORKSPACE }}
 
   step2:
     name: 'step2'
