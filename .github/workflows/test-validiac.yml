@@ -22,4 +22,4 @@ jobs:
 
     - name: Run Docker
       run: |
-           docker run --rm -v ${{ github.workspace }}:/iac ghrc.io:jvhoof/validiac secure /iac/${{ env.TFPath }}
+           docker run --rm -v ${{ github.workspace }}:/iac ghrc.io/jvhoof/validiac:main secure /iac/${{ env.TFPath }}
