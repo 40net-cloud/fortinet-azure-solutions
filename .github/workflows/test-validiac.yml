@@ -26,4 +26,4 @@ jobs:
         options: -v ${{ github.workspace }}:/iac
         run: |
           echo "Running Script"
-          validiac secure /iac/${{ env.TFPath }}
+          secure /iac/${{ env.TFPath }}
