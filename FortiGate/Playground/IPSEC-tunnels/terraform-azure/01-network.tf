@@ -66,7 +66,7 @@ resource "azurerm_subnet_route_table_association" "subnet2rt" {
 }
 
 resource "azurerm_route_table" "subnet3router" {
-  name                = "${var.PREFIX}-RT-EXT"
+  name                = "${var.PREFIX}-RT-INT"
   location            = var.LOCATION
   resource_group_name = azurerm_resource_group.resourcegroup.name
 
