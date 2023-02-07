@@ -52,11 +52,13 @@ config system interface
         set mode static
         set ip ${fgt_external_ipaddr}/${fgt_external_mask}
         set description external
+        set allowaccess ping 
     next
     edit port3
         set mode static
         set ip ${fgt_internal_ipaddr}/${fgt_internal_mask}
         set description internal
+        set allowaccess ping 
     next
 end
 config firewall policy

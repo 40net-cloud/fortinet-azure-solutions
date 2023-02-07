@@ -12,7 +12,7 @@ vpn_psk = "fortinet"
 index_start = 1   # First IP in the IP network range to start counting
 index_end = 10  # Count needs to be less than the IP addresses available in the IP network
 port3_gw = "172.16.138.1"
-port3_ip = "172.16.138.20"
+port3_ip = "172.16.138.10"
 vpn_b_ip = "172.16.137.10"
 vpn_b_subnet = "172.16.138.0/24"
 
@@ -60,8 +60,8 @@ remark = Remark \
 + FGT
 probe = TCPPing
 menu = BGP
-title = 172.16.138.20
-host = 172.16.138.20
+title = {{ port3_ip }}
+host = {{ port3_ip }}
 pings = 3
 port = 179
 
