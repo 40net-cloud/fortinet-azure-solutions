@@ -74,13 +74,13 @@ resource "azurerm_route_table" "subnet3router" {
     name                   = "underlay"
     address_prefix         = "10.1.0.0/16"
     next_hop_type          = "VirtualAppliance"
-    next_hop_in_ip_address = var.fgt_address["3"]
+    next_hop_in_ip_address = var.fgt_ipaddress["3"]
   }
   route {
     name                   = "overlay"
     address_prefix         = "10.2.0.0/16"
     next_hop_type          = "VirtualAppliance"
-    next_hop_in_ip_address = var.fgt_address["3"]
+    next_hop_in_ip_address = var.fgt_ipaddress["3"]
   }
 }
 
