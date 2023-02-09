@@ -49,7 +49,33 @@
     "instanceType": {
       "type": "string",
       "defaultValue": "Standard_F2s",
-      "allowedValues": [ "Standard_F1s", "Standard_F2s", "Standard_F4s", "Standard_F8s", "Standard_F16s", "Standard_F1", "Standard_F2", "Standard_F4", "Standard_F8", "Standard_F16", "Standard_F2s_v2", "Standard_F4s_v2", "Standard_F8s_v2", "Standard_F16s_v2", "Standard_F32s_v2", "Standard_DS1_v2", "Standard_DS2_v2", "Standard_DS3_v2", "Standard_DS4_v2", "Standard_DS5_v2", "Standard_D2s_v3", "Standard_D4s_v3", "Standard_D8s_v3", "Standard_D16s_v3", "Standard_D32s_v3"],
+      "allowedValues": [
+        "Standard_F1s",
+        "Standard_F2s",
+        "Standard_F4s",
+        "Standard_F8s",
+        "Standard_F16s",
+        "Standard_F1",
+        "Standard_F2",
+        "Standard_F4",
+        "Standard_F8",
+        "Standard_F16",
+        "Standard_F2s_v2",
+        "Standard_F4s_v2",
+        "Standard_F8s_v2",
+        "Standard_F16s_v2",
+        "Standard_F32s_v2",
+        "Standard_DS1_v2",
+        "Standard_DS2_v2",
+        "Standard_DS3_v2",
+        "Standard_DS4_v2",
+        "Standard_DS5_v2",
+        "Standard_D2s_v3",
+        "Standard_D4s_v3",
+        "Standard_D8s_v3",
+        "Standard_D16s_v3",
+        "Standard_D32s_v3"
+      ],
       "metadata": {
         "description": "Virtual Machine size selection - must be F4 or other instance that supports 4 NICs"
       }
@@ -200,22 +226,28 @@
         "template": "FWB-Active-Passive-ELB",
         "provider": "6EB3B02F-50E5-4A3E-8CB8-2E12925831FWBAP"
       }
+    },
+    "fortiGateImageVersion": {
+      "allowedValues": [
+        "6.1.0",
+        "6.3.17",
+        "7.0.0",
+        "7.0.3",
+        "7.2.0",
+        "latest"
+      ]
     }
   },
   "variables": {
     "imagePublisher": "fortinet",
     "imageOffer": "fortinet_fortiweb-vm_v5",
-
     "availabilitySetName": "[concat(parameters('fortiWebNamePrefix'),'-AvailabilitySet')]",
     "availabilitySetId": "[resourceId('Microsoft.Compute/availabilitySets', variables('availabilitySetName'))]",
-
     "vnetName": "[if(equals(parameters('vnetName'),''),concat(parameters('fortiWebNamePrefix'),'-VNET'),parameters('vnetName'))]",
     "subnet1Id": "[if(equals(parameters('vnetNewOrExisting'),'new'),resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet1Name')),resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet1Name')))]",
     "subnet2Id": "[if(equals(parameters('vnetNewOrExisting'),'new'),resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet2Name')),resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet2Name')))]",
-
     "fwbAVmName": "[concat(parameters('fortiWebNamePrefix'),'-FWB-A')]",
     "fwbBVmName": "[concat(parameters('fortiWebNamePrefix'),'-FWB-B')]",
-
     "fwbANic1Name": "[concat(variables('fwbAVmName'),'-Nic1')]",
     "fwbANic1Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('fwbANic1Name'))]",
     "fwbANic2Name": "[concat(variables('fwbAVmName'),'-Nic2')]",
@@ -224,13 +256,10 @@
     "fwbBNic1Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('fwbBNic1Name'))]",
     "fwbBNic2Name": "[concat(variables('fwbBVmName'),'-Nic2')]",
     "fwbBNic2Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('fwbBNic2Name'))]",
-
     "publicIPName": "[if(equals(parameters('publicIPName'),''),concat(parameters('fortiWebNamePrefix'),'-FWB-PIP'),parameters('publicIPName'))]",
     "publicIPId": "[if(equals(parameters('publicIPNewOrExisting'),'new'),resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPName')),resourceId(parameters('publicIPResourceGroup'),'Microsoft.Network/publicIPAddresses',variables('publicIPName')))]",
-
     "NSGName": "[concat(parameters('fortiWebNamePrefix'),'-',uniqueString(resourceGroup().id),'-NSG')]",
     "NSGId": "[resourceID('Microsoft.Network/networkSecurityGroups/',variables('NSGName'))]",
-
     "sn1IPArray": "[split(parameters('subnet1Prefix'),'.')]",
     "sn1IPArray2": "[string(int(variables('sn1IPArray')[2]))]",
     "sn1IPArray1": "[string(int(variables('sn1IPArray')[1]))]",
@@ -238,7 +267,6 @@
     "sn1IPStartAddress": "[split(parameters('subnet1StartAddress'),'.')]",
     "sn1IPfwbA": "[concat(variables('sn1IPArray0'),'.',variables('sn1IPArray1'),'.',variables('sn1IPArray2'),'.',int(variables('sn1IPStartAddress')[3]))]",
     "sn1IPfwbB": "[concat(variables('sn1IPArray0'),'.',variables('sn1IPArray1'),'.',variables('sn1IPArray2'),'.',add(int(variables('sn1IPStartAddress')[3]),1))]",
-
     "sn2IPArray": "[split(parameters('subnet2Prefix'),'.')]",
     "sn2IPArray2": "[string(int(variables('sn2IPArray')[2]))]",
     "sn2IPArray1": "[string(int(variables('sn2IPArray')[1]))]",
@@ -246,7 +274,6 @@
     "sn2IPStartAddress": "[split(parameters('subnet2StartAddress'),'.')]",
     "sn2IPfwbA": "[concat(variables('sn2IPArray0'),'.',variables('sn2IPArray1'),'.',variables('sn2IPArray2'),'.',add(int(variables('sn2IPStartAddress')[3]),1))]",
     "sn2IPfwbB": "[concat(variables('sn2IPArray0'),'.',variables('sn2IPArray1'),'.',variables('sn2IPArray2'),'.',add(int(variables('sn2IPStartAddress')[3]),2))]",
-
     "externalLBName_NatRule_FWBAdminPerm_fwbA": "[concat(variables('fwbAVmName'),'FWBAdminPerm')]",
     "externalLBId_NatRule_FWBAdminPerm_fwbA": "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'),variables('externalLBName_NatRule_FWBAdminPerm_fwbA'))]",
     "externalLBName_NatRule_SSH_fwbA": "[concat(variables('fwbAVmName'),'SSH')]",
@@ -278,13 +305,13 @@
       "apiVersion": "2020-10-01",
       "name": "pid-2e181e90-36f0-4061-9842-64c219116819-partnercenter",
       "type": "Microsoft.Resources/deployments",
-      "properties":{
-       "mode": "Incremental",
-       "template": {
-         "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
-         "contentVersion": "1.0.0.0",
-         "resources": []
-       }
+      "properties": {
+        "mode": "Incremental",
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "resources": []
+        }
       }
     },
     {
@@ -293,7 +320,7 @@
       "type": "Microsoft.Compute/availabilitySets",
       "name": "[variables('availabilitySetName')]",
       "tags": {
-       "provider": "[toUpper(parameters('fortinetTags').provider)]"
+        "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
       "location": "[parameters('location')]",
       "properties": {
@@ -301,7 +328,7 @@
         "platformUpdateDomainCount": 2
       },
       "sku": {
-        "name":  "Aligned"
+        "name": "Aligned"
       }
     },
     {
@@ -452,8 +479,7 @@
       },
       "name": "[variables('publicIPName')]",
       "location": "[parameters('location')]",
-      "sku":
-      {
+      "sku": {
         "name": "[parameters('publicIPSKU')]"
       },
       "properties": {
@@ -468,8 +494,7 @@
       "tags": {
         "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
-      "sku":
-      {
+      "sku": {
         "name": "[parameters('publicIPSKU')]"
       },
       "dependsOn": [
@@ -696,7 +721,7 @@
     {
       "apiVersion": "2020-11-01",
       "tags": {
-       "provider": "[toUpper(parameters('fortinetTags').provider)]"
+        "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[variables('fwbANic2Name')]",
@@ -723,7 +748,7 @@
     {
       "apiVersion": "2020-11-01",
       "tags": {
-       "provider": "[toUpper(parameters('fortinetTags').provider)]"
+        "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[variables('fwbBNic2Name')]",
@@ -753,7 +778,7 @@
       "name": "[variables('fwbAVmName')]",
       "location": "[parameters('location')]",
       "tags": {
-       "provider": "[toUpper(parameters('fortinetTags').provider)]"
+        "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
       "identity": {
         "type": "SystemAssigned"
@@ -820,7 +845,7 @@
       "name": "[variables('fwbBVmName')]",
       "location": "[parameters('location')]",
       "tags": {
-       "provider": "[toUpper(parameters('fortinetTags').provider)]"
+        "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
       "identity": {
         "type": "SystemAssigned"
@@ -882,4 +907,4 @@
       }
     }
   ]
-  }
+}
