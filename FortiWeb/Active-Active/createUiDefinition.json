@@ -545,7 +545,7 @@
               "domainNameLabel": "DNS name linked to this public IP"
             },
             "defaultValue": {
-              "publicIpAddressName": "FWBClusterPublicIP",
+              "publicIpAddressName": "[if(equals(basics('fortiGateNamePrefix'),''),'FWBPublicIP',concat(basics('fortiGateNamePrefix'),'-FWB-PIP'))]",
               "domainNameLabel": "mydomain"
             },
             "constraints": {
@@ -587,7 +587,7 @@
               "icon": "Error",
               "text": "The External Load Balancer Public IP is configured using Basic SKU. Please return to previous blade and use Standard type public IPs to support Azure Standard Load Balancers"
             },
-            "visible": "[not(or(equals(steps('publicip').loadbalancerpublicip.sku, 'Standard')),equals(steps('publicip').loadbalancerpublicip.newOrExistingOrNone, 'none'))]"
+            "visible": "[not(or(equals(steps('publicip').loadbalancerpublicip.sku, 'Standard'),equals(steps('publicip').loadbalancerpublicip.newOrExistingOrNone, 'none')))]"
           },
           {
             "name": "StandardIPConfirmation1",
