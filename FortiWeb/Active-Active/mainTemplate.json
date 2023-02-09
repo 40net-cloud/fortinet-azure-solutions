@@ -35,9 +35,11 @@
       "type": "string",
       "defaultValue": "latest",
       "allowedValues": [
+        "6.1.0",
         "6.3.17",
         "7.0.0",
         "7.0.3",
+        "7.2.0",
         "latest"
       ],
       "metadata": {
@@ -64,7 +66,6 @@
         "description": "Type a group id that identifies of HA cluster. Mininum is 0, Maximum is 63."
       }
     },
-
     "fortiWebAAdditionalCustomData": {
       "type": "string",
       "defaultValue": "",
@@ -79,11 +80,36 @@
         "description": "The ARM template provides a basic configuration. Additional configuration can be added here."
       }
     },
-
     "instanceType": {
       "type": "string",
       "defaultValue": "Standard_F2s",
-      "allowedValues": [ "Standard_F1s", "Standard_F2s", "Standard_F4s", "Standard_F8s", "Standard_F16s", "Standard_F1", "Standard_F2", "Standard_F4", "Standard_F8", "Standard_F16", "Standard_F2s_v2", "Standard_F4s_v2", "Standard_F8s_v2", "Standard_F16s_v2", "Standard_F32s_v2", "Standard_DS1_v2", "Standard_DS2_v2", "Standard_DS3_v2", "Standard_DS4_v2", "Standard_DS5_v2", "Standard_D2s_v3", "Standard_D4s_v3", "Standard_D8s_v3", "Standard_D16s_v3", "Standard_D32s_v3" ],
+      "allowedValues": [
+        "Standard_F1s",
+        "Standard_F2s",
+        "Standard_F4s",
+        "Standard_F8s",
+        "Standard_F16s",
+        "Standard_F1",
+        "Standard_F2",
+        "Standard_F4",
+        "Standard_F8",
+        "Standard_F16",
+        "Standard_F2s_v2",
+        "Standard_F4s_v2",
+        "Standard_F8s_v2",
+        "Standard_F16s_v2",
+        "Standard_F32s_v2",
+        "Standard_DS1_v2",
+        "Standard_DS2_v2",
+        "Standard_DS3_v2",
+        "Standard_DS4_v2",
+        "Standard_DS5_v2",
+        "Standard_D2s_v3",
+        "Standard_D4s_v3",
+        "Standard_D8s_v3",
+        "Standard_D16s_v3",
+        "Standard_D32s_v3"
+      ],
       "metadata": {
         "description": "Virtual Machine size selection - must be F4 or other instance that supports 4 NICs"
       }
@@ -293,19 +319,16 @@
   "variables": {
     "imagePublisher": "fortinet",
     "imageOffer": "fortinet_fortiweb-vm_v5",
-
     "availabilitySetName": "[concat(parameters('fortiWebNamePrefix'),'-AvailabilitySet')]",
     "availabilitySetId": {
       "id": "[resourceId('Microsoft.Compute/availabilitySets', variables('availabilitySetName'))]"
     },
-
     "vnetName": "[if(equals(parameters('vnetName'),''),concat(parameters('fortiWebNamePrefix'),'-VNET'),parameters('vnetName'))]",
     "subnet1Id": "[if(equals(parameters('vnetNewOrExisting'),'new'),resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet1Name')),resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet1Name')))]",
     "subnet1IdRef": {
       "id": "[variables('subnet1Id')]"
     },
     "subnet2Id": "[if(equals(parameters('vnetNewOrExisting'),'new'),resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet2Name')),resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet2Name')))]",
-
     "fwbGlobalDataBody": "[concat('config system settings\n set enable-file-upload enable\n end\nconfig system admin\nedit admin\nset password Q1w2e34567890--\nend\n')]",
     "fwbACustomDataBodyHA": "[concat('config system ha\n set mode active-active-high-volume\n set group-id ', parameters('fortiWebHaGroupId'), ' set group-name ', tolower(parameters('fortiWebNamePrefix')), ' set priority 1\n set tunnel-local ', variables('sn2IPfwbA'), ' set tunnel-peer ', variables('sn2IPfwbA'), 'set monitor port1 port2\nend\n')]",
     "fwbACustomDataBody": "[concat(variables('fwbGlobalDataBody'), variables('fwbACustomDataBodyHA'), parameters('fortiWebAAdditionalCustomData'), '\n')]",
@@ -330,7 +353,6 @@
       "FwbLicenseBYOL": "[parameters('fortiWebALicenseBYOL')]"
     },
     "fwbACustomData": "[base64(string(variables('fwbACustomDataCombined')))]",
-
     "fwbBCustomDataBodyHA": "[concat('config system ha\n set mode active-active-high-volume\n set group-id ', parameters('fortiWebHaGroupId'), ' set group-name ', tolower(parameters('fortiWebNamePrefix')), ' set priority 2\n set tunnel-local ', variables('sn2IPfwbB'), ' set tunnel-peer ', variables('sn2IPfwbA'), 'set monitor port1 port2\nend\n')]",
     "fwbBCustomDataBody": "[concat(variables('fwbGlobalDataBody'), variables('fwbBCustomDataBodyHA'), parameters('fortiWebBAdditionalCustomData'), '\n')]",
     "fwbbCustomDataCombined": {
@@ -354,10 +376,8 @@
       "FwbLicenseBYOL": "[parameters('fortiWebBLicenseBYOL')]"
     },
     "fwbBCustomData": "[base64(string(variables('fwbBCustomDataCombined')))]",
-
     "fwbAVmName": "[concat(parameters('fortiWebNamePrefix'),'-FWB-A')]",
     "fwbBVmName": "[concat(parameters('fortiWebNamePrefix'),'-FWB-B')]",
-
     "fwbANic1Name": "[concat(variables('fwbAVmName'),'-Nic1')]",
     "fwbANic1Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('fwbANic1Name'))]",
     "fwbANic2Name": "[concat(variables('fwbAVmName'),'-Nic2')]",
@@ -366,18 +386,14 @@
     "fwbBNic1Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('fwbBNic1Name'))]",
     "fwbBNic2Name": "[concat(variables('fwbBVmName'),'-Nic2')]",
     "fwbBNic2Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('fwbBNic2Name'))]",
-
     "serialConsoleStorageAccountName": "[concat('console', uniquestring(resourceGroup().id))]",
     "serialConsoleStorageAccountType": "Standard_LRS",
     "serialConsoleEnabled": "[if(equals(parameters('serialConsole'),'yes'),'true','false')]",
-
-
     "publicIPName": "[if(equals(parameters('publicIPName'),''),concat(parameters('fortiWebNamePrefix'),'-FWB-PIP'),parameters('publicIPName'))]",
     "publicIPId": "[if(equals(parameters('publicIPNewOrExistingOrNone'),'new'),resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPName')),resourceId(parameters('publicIPResourceGroup'),'Microsoft.Network/publicIPAddresses',variables('publicIPName')))]",
     "publicIPAddressId": {
       "id": "[variables('publicIPId')]"
     },
-
     "ilbProperties": {
       "properties": {
         "privateIPAddress": "[variables('sn1IPlb')]",
@@ -390,10 +406,8 @@
         "publicIPAddress": "[variables('publicIPaddressId')]"
       }
     },
-
     "NSGName": "[concat(parameters('fortiWebNamePrefix'),'-',uniqueString(resourceGroup().id),'-NSG')]",
     "NSGId": "[resourceID('Microsoft.Network/networkSecurityGroups/',variables('NSGName'))]",
-
     "sn1IPArray": "[split(parameters('subnet1Prefix'),'.')]",
     "sn1IPArray2": "[string(int(variables('sn1IPArray')[2]))]",
     "sn1IPArray1": "[string(int(variables('sn1IPArray')[1]))]",
@@ -402,7 +416,6 @@
     "sn1IPfwbA": "[concat(variables('sn1IPArray0'),'.',variables('sn1IPArray1'),'.',variables('sn1IPArray2'),'.',int(variables('sn1IPStartAddress')[3]))]",
     "sn1IPfwbB": "[concat(variables('sn1IPArray0'),'.',variables('sn1IPArray1'),'.',variables('sn1IPArray2'),'.',add(int(variables('sn1IPStartAddress')[3]),1))]",
     "sn1IPlb": "[concat(variables('sn1IPArray0'),'.',variables('sn1IPArray1'),'.',variables('sn1IPArray2'),'.',add(int(variables('sn1IPStartAddress')[3]),2))]",
-
     "sn2IPArray": "[split(parameters('subnet2Prefix'),'.')]",
     "sn2IPArray2": "[string(int(variables('sn2IPArray')[2]))]",
     "sn2IPArray1": "[string(int(variables('sn2IPArray')[1]))]",
@@ -410,7 +423,6 @@
     "sn2IPStartAddress": "[split(parameters('subnet2StartAddress'),'.')]",
     "sn2IPfwbA": "[concat(variables('sn2IPArray0'),'.',variables('sn2IPArray1'),'.',variables('sn2IPArray2'),'.',add(int(variables('sn2IPStartAddress')[3]),1))]",
     "sn2IPfwbB": "[concat(variables('sn2IPArray0'),'.',variables('sn2IPArray1'),'.',variables('sn2IPArray2'),'.',add(int(variables('sn2IPStartAddress')[3]),2))]",
-
     "externalLBName_NatRule_FWBAdminPerm_fwbA": "[concat(variables('fwbAVmName'),'FWBAdminPerm')]",
     "externalLBId_NatRule_FWBAdminPerm_fwbA": "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'),variables('externalLBName_NatRule_FWBAdminPerm_fwbA'))]",
     "externalLBName_NatRule_SSH_fwbA": "[concat(variables('fwbAVmName'),'SSH')]",
