@@ -40,11 +40,11 @@ jobs:
           $fwbMarketplaceVersionsUI | ConvertTo-Json | Out-File -Filepath "./fwbversionui.json"
 
           foreach ($buildingBlock in $buildingBlocks) {
-            Get-ChildItem -Path "./FortiWeb/${buildingBlock}/*.json"
-            Get-Content -Raw -Path "./FortiWeb/${buildingBlock}/azuredeploy.json" | jq --slurpfile content "./fwbversion.json" '.parameters.fortiGateImageVersion.allowedValues = $content[]' | Set-Content -Path "./FortiWeb/${buildingBlock}/azuredeploy.json"
-            $content = Get-Content "./FortiWeb/${buildingBlock}/azuredeploy.json" -Raw
+            Get-ChildItem -Path "./FortiWeb/"
+            Get-Content -Raw -Path "./FortiWeb/${buildingBlock}/mainTemplate.json" | jq --slurpfile content "./fwbversion.json" '.parameters.fortiGateImageVersion.allowedValues = $content[]' | Set-Content -Path "./FortiWeb/${buildingBlock}/mainTemplate.json"
+            $content = Get-Content "./FortiWeb/${buildingBlock}/mainTemplate.json" -Raw
             if (-Not $content -match '(?<=\r\n)\z') {
-              "" | Out-File -Append "./FortiWeb/${buildingBlock}/azuredeploy.json"
+              "" | Out-File -Append "./FortiWeb/${buildingBlock}/mainTemplate.json"
             }
             Get-Content -Raw -Path "./FortiWeb/${buildingBlock}/createUiDefinition.json" | jq --slurpfile content "./fwbversionui.json" '(.parameters.basics[] | select( .name == \"fortiGateImageVersion\") | .constraints.allowedValues) |= $content[]' | Set-Content -Path "./FortiWeb/${buildingBlock}/createUiDefinition.json"
             $content = Get-Content "./FortiWeb/${buildingBlock}/createUiDefinition.json" -Raw
