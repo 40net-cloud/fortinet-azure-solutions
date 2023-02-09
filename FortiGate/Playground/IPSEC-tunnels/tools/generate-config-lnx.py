@@ -93,8 +93,15 @@ config router bgp
     set graceful-restart enable
     config neighbor-group
         edit "branch-peers"
+            set advertisement-interval 1
+            set capability-graceful-restart enable
+            set link-down-failover enable
+            set next-hop-self enable
             set soft-reconfiguration enable
+            set connect-timer 5
             set remote-as 65005
+            set additional-path send
+            set route-reflector-client enable
         next
     end
     config neighbor-range
