@@ -40,6 +40,7 @@ jobs:
           $fwbMarketplaceVersionsUI | ConvertTo-Json | Out-File -Filepath "./fwbversionui.json"
 
           foreach ($buildingBlock in $buildingBlocks) {
+            Get-ChildItem -Path "./FortiWeb/${buildingBlock}/*.json"
             Get-Content -Raw -Path "./FortiWeb/${buildingBlock}/azuredeploy.json" | jq --slurpfile content "./fwbversion.json" '.parameters.fortiGateImageVersion.allowedValues = $content[]' | Set-Content -Path "./FortiWeb/${buildingBlock}/azuredeploy.json"
             $content = Get-Content "./FortiWeb/${buildingBlock}/azuredeploy.json" -Raw
             if (-Not $content -match '(?<=\r\n)\z') {
