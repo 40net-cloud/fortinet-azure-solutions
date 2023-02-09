@@ -101,6 +101,10 @@
           "required": false,
           "allowedValues": [
             {
+              "label": "6.1.0",
+              "value": "6.1.0"
+            },
+            {
               "label": "6.3.17",
               "value": "6.3.17"
             },
@@ -111,6 +115,10 @@
             {
               "label": "7.0.3",
               "value": "7.0.3"
+            },
+            {
+              "label": "7.2.0",
+              "value": "7.2.0"
             },
             {
               "label": "latest",
