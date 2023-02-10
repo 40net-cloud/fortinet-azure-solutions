@@ -381,7 +381,7 @@
                 "visible": "[equals(basics('fortiWebImageSKU'), 'fortinet_fw-vm')]"
               },
               {
-                "name": "fwbcontent",
+                "name": "fwbLicenseContent",
                 "type": "Microsoft.Common.FileUpload",
                 "label": "FortiWeb License",
                 "toolTip": "Upload the license file for the FortiWeb BYOL here.",
@@ -398,7 +398,7 @@
                 "visible": "[and(equals(basics('fortiWebImageSKU'), 'fortinet_fw-vm'),not(steps('instance').fwbLicense.fwbLicenseFlexVMCheck))]"
               },
               {
-                "name": "fwblicenseurl",
+                "name": "fwbLicenseURL",
                 "type": "Microsoft.Common.TextBox",
                 "label": "FortiWeb License URL",
                 "defaultValue": "",
@@ -739,8 +739,8 @@
       "availabilityOptions": "[steps('instance').availabilityOptions.availabilityOptions]",
       "existingAvailabilitySetName": "[steps('instance').availabilityOptions.availabilitySetSelector.name]",
       "availabilityZoneNumber": "[steps('instance').availabilityOptions.availabilityZoneSelector]",
-      "fortiWebLicenseBYOL": "[steps('instance').fwbLicense.fwbcontent]",
-      "fortiWebLicenseBYOLURL": "[steps('instance').fwbLicense.fwblicenseurl]",
+      "fortiWebLicenseBYOL": "[steps('instance').fwbLicense.fwbLicenseContent]",
+      "fortiWebLicenseBYOLURL": "[steps('instance').fwbLicense.fwbLicenseURL]",
       "fortiWebLicenseFlexVM": "[steps('instance').fwbLicense.fwbflexvm]",
       "publicIPNewOrExistingOrNone": "[steps('publicip').publicip.newOrExistingOrNone]",
       "publicIPName": "[steps('publicip').publicip.name]",
