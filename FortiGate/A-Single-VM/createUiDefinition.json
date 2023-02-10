@@ -556,7 +556,7 @@
               {
                 "name": "fgtflexvm",
                 "type": "Microsoft.Common.TextBox",
-                "label": "FortiGate A Flex-VM",
+                "label": "FortiGate Flex-VM",
                 "defaultValue": "",
                 "toolTip": "FortiGate Flex-VM license token",
                 "constraints": {
