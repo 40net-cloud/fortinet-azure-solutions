@@ -681,7 +681,7 @@
         },
         "diagnosticsProfile": {
           "bootDiagnostics": {
-            "enabled": "[variables('serialConsoleEnabled')]",
+            "enabled": "[variables('serialConsoleEnabled')]"
           }
         }
       }
