@@ -46,12 +46,12 @@ write_files:
       /share/tools/build/ifc.sh
 
       echo "ExaBGP pipe creation ..."
-      for i in {1..4}
+      for i in {1..10}
       do
         if [ ! -p /var/run/exabgp$i.in -o ! -p /var/run/exabgp$i.out ]; then
           mkfifo /var/run/exabgp$i.{in,out}
           chmod 600 /var/run/exabgp$i.{in,out}
-          chown exabgp:exabgp /var/run/exabgp$i.{in,out}
+          chown nobody:exabgp /var/run/exabgp$i.{in,out}
         fi
       done
 
