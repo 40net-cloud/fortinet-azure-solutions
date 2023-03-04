@@ -491,7 +491,7 @@
         }
       }
     }
-  ],
+  ],uri('https://',concat(
   "outputs": {
     "AdminUsername": {
       "type": "string",
@@ -503,11 +503,11 @@
     },
     "ZTNAApplicationLoginURL": {
       "type": "string",
-      "value": "[concat('https://', reference('FGT-ZTNA-deployment').outputs.fortiGateFQDN.value, ':', parameters('ztnaHTTPSAccessPort'), '/')]"
+      "value": "[uri('https://',concat(reference('FGT-ZTNA-deployment').outputs.fortiGateFQDN.value, ':', parameters('ztnaHTTPSAccessPort'), '/'))]"
     },
     "ZTNALoginURL": {
       "type": "string",
-      "value": "[concat('https://', reference('FGT-ZTNA-deployment').outputs.fortiGateFQDN.value, ':', parameters('fortiGateAdminPort'), '/')]"
+      "value": "[uri('https://',concat(reference('FGT-ZTNA-deployment').outputs.fortiGateFQDN.value, ':', parameters('fortiGateAdminPort'), '/'))]"
     }
   }
 }
