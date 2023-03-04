@@ -700,7 +700,13 @@
                 "defaultValue": "",
                 "toolTip": "Application Server accessible via ZTNA",
                 "constraints": {
-                  "required": true
+                  "required": true,
+                  "validations": [
+                    {
+                      "regex": "^[a-z0-9A-Z -.:\n]{1,100}$",
+                      "message": "Only 1-100 alphanumeric characters, hyphens, spaces, periods, and colons are allowed."
+                    }
+                  ]
                 },
                 "visible": true
               },
@@ -711,7 +717,13 @@
                 "defaultValue": "9443",
                 "toolTip": "ZTNA HTTPS Access Port",
                 "constraints": {
-                  "required": true
+                  "required": true,
+                  "validations": [
+                    {
+                      "regex": "^[0-9]{1,7}$",
+                      "message": "Only numeric characters are allowed."
+                    }
+                  ]
                 },
                 "visible": true
               }
@@ -830,7 +842,9 @@
               },
               {
                 "name": "fortimanagerserial",
-                "type": "Microsoft.Common.TextBox",
+                "type": "Microsoft.Common.
+                
+                ",
                 "label": "FortiManager Serial Number",
                 "defaultValue": "",
                 "toolTip": "Provide the serial number of the FortiManager",
@@ -899,7 +913,13 @@
                 "defaultValue": "8443",
                 "toolTip": "FortiGate HTTPS admin access port (e.g. 8443)",
                 "constraints": {
-                  "required": true
+                  "required": true,
+                  "validations": [
+                    {
+                      "regex": "^[0-9]{1,7}$",
+                      "message": "Only numeric characters are allowed."
+                    }
+                  ]
                 },
                 "visible": true
               }
