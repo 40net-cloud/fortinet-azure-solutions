@@ -105,7 +105,7 @@
             "value": "## TO BE DEFINED ##"
         },
         "location": {
-            "value": "[resourceGroup().location]"
+            "value": ""
         },
         "fortinetTags": {
             "value": {
