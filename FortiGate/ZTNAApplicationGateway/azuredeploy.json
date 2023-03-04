@@ -497,10 +497,6 @@
       "type": "string",
       "value": "[parameters('adminUsername')]"
     },
-    "AdminPassword": {
-      "type": "string",
-      "value": "[parameters('adminPassword')]"
-    },
     "ZTNAUsername": {
       "type": "string",
       "value": "[parameters('ZTNAUsername')]"
