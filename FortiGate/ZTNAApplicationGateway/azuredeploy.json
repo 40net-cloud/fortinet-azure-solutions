@@ -491,7 +491,7 @@
         }
       }
     }
-  ],uri('https://',concat(
+  ],
   "outputs": {
     "AdminUsername": {
       "type": "string",
