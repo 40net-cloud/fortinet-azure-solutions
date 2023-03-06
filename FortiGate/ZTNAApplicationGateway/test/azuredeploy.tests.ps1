@@ -15,7 +15,7 @@ param (
 $VerbosePreference = "Continue"
 
 BeforeAll {
-    $templateName = "A-Single-VM"
+    $templateName = "ZTNAApplicationGateway"
     $sourcePath = "$env:GITHUB_WORKSPACE\FortiGate\$templateName"
     $scriptPath = "$env:GITHUB_WORKSPACE\FortiGate\$templateName\test"
     $templateFileName = "azuredeploy.json"
