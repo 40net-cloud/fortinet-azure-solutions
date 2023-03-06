@@ -386,6 +386,7 @@
   },
   "variables": {
     "vnetName": "[if(equals(parameters('vnetName'),''),concat(parameters('fortiGateNamePrefix'),'-VNET'),parameters('vnetName'))]",
+    "vnetResourceGroup": "[if(equals(parameters('vnetNewOrExisting'),'new'),resourceGroup().name,parameters('vnetResourceGroup'))]",
     "customDataSystemGlobal": "[concat('config system global\nset admin-sport ', parameters('fortiGateAdminPort'), '\nend\n')]",
     "customDataDashboard": "config system admin\n edit admin\n config gui-dashboard\n edit 0\n set name \"FortiView ZTNA Servers\"\n set vdom root\n set layout-type standalone\n set csf disable\n config widget\n edit 1\n set type fortiview\n set width 1\n set height 1\n set csf-device all\n set fortiview-type ztnaServer\n set fortiview-sort-by bytes\n set fortiview-timeframe 5min\n set fortiview-visualization table\n next\n end\n next\n end\n next\n end\n config system settings\n set gui-implicit-policy disable\n set gui-dos-policy disable\n set gui-dynamic-routing disable\n set gui-threat-weight disable\n set gui-file-filter disable\n set gui-application-control disable\n set gui-endpoint-control disable\n set gui-vpn disable\n set gui-wireless-controller disable\n set gui-traffic-shaping disable\n set gui-webfilter disable\n set gui-dnsfilter disable\n set allow-subnet-overlap enable\n end\n", 
     "customDataFirewallAddress": "[concat('config firewall address\nedit webserver1\nset subnet ', parameters('backendWebServer'), ' 255.255.255.255\nnext\nend\n')]",
@@ -471,8 +472,8 @@
           "publicIp1AddressType": { "value": "[parameters('publicIp1AddressType')]" },
           "publicIp1SKU": { "value": "[parameters('publicIp1SKU')]" },
           "vnetNewOrExisting": { "value": "existing" },
-          "vnetName": { "value": "[parameters('vnetName')]" },
-          "vnetResourceGroup": { "value": "[parameters('vnetResourceGroup')]" },
+          "vnetName": { "value": "[variables('vnetName')]" },
+          "vnetResourceGroup": { "value": "[variables('vnetResourceGroup')]" },
           "vnetAddressPrefix": { "value": "[parameters('vnetAddressPrefix')]" },
           "subnet1Name": { "value": "[parameters('subnet1Name')]" },
           "subnet1Prefix": { "value": "[parameters('subnet1Prefix')]" },
