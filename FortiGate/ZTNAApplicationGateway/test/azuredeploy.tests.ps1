@@ -25,7 +25,7 @@ BeforeAll {
 
     # Basic Variables
     $testsRandom = Get-Random 10001
-    $testsPrefix = "FORTIQA"
+    $testsPrefix = "FORTIQA-$testsRandom"
     $testsResourceGroupName = "FORTIQA-$testsRandom-$templateName"
     $testsAdminUsername = "azureuser"
     $testsResourceGroupLocation = "westeurope"
