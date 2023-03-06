@@ -40,6 +40,9 @@ BeforeAll {
                  'fortiGateNamePrefix'=$testsPrefix
                  'fortiGateAdditionalCustomData'=$config
                  'publicIP1Name'=$publicIPName
+                 'backendWebServer'="1.1.1.1"
+                 'ztnaUsername'=$testsAdminUsername
+                 'ztnaPassword'=$testsResourceGroupName
                }
     $ports = @(443, 22)
 }
@@ -80,7 +83,7 @@ Describe 'FGT Single VM' {
                                           'backendWebServer',
                                           'emsCloud',
                                           'emsServerIP',
-                                          'emsServerCloud',
+                                          'emsServerPort',
                                           'fortiGateAdditionalCustomData',
                                           'fortiGateAdminPort',
                                           'fortiGateImageSKU',
