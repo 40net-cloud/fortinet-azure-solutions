@@ -842,9 +842,7 @@
               },
               {
                 "name": "fortimanagerserial",
-                "type": "Microsoft.Common.
-                
-                ",
+                "type": "Microsoft.Common.TextBox",
                 "label": "FortiManager Serial Number",
                 "defaultValue": "",
                 "toolTip": "Provide the serial number of the FortiManager",
