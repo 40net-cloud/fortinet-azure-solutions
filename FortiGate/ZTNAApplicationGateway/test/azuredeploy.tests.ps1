@@ -44,7 +44,7 @@ BeforeAll {
                  'ztnaUsername'=$testsAdminUsername
                  'ztnaPassword'=$testsResourceGroupName
                }
-    $ports = @(443, 22)
+    $ports = @(9443, 8443, 22)
 }
 
 Describe 'FGT Single VM' {
