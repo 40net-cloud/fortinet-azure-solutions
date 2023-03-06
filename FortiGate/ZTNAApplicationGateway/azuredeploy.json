@@ -504,11 +504,11 @@
     },
     "ZTNAApplicationLoginURL": {
       "type": "string",
-      "value": "[uri('https://',concat(reference('FGT-ZTNA-deployment').outputs.fortiGateFQDN.value, ':', parameters('ztnaHTTPSAccessPort'), '/'))]"
+      "value": "[uri(concat('https://',reference('FGT-ZTNA-deployment').outputs.fortiGateFQDN.value, ':', parameters('ztnaHTTPSAccessPort'), '/'),'')]"
     },
     "ZTNALoginURL": {
       "type": "string",
-      "value": "[uri('https://',concat(reference('FGT-ZTNA-deployment').outputs.fortiGateFQDN.value, ':', parameters('fortiGateAdminPort'), '/'))]"
+      "value": "[uri(concat('https://',reference('FGT-ZTNA-deployment').outputs.fortiGateFQDN.value, ':', parameters('fortiGateAdminPort'), '/'),'')]"
     }
   }
 }
