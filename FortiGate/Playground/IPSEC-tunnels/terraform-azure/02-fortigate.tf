@@ -111,6 +111,13 @@ resource "azurerm_network_interface_security_group_association" "fgtifcintnsg" {
   network_security_group_id = azurerm_network_security_group.fgtnsg.id
 }
 
+#data "azurerm_shared_image_version" "fortigate" {
+#  name                = "1.0.0"
+#  image_name          = "FortiGate"
+#  gallery_name        = "jvh01gallery"
+#  resource_group_name = "JVH01-RG"
+#}
+
 resource "azurerm_linux_virtual_machine" "fgtvm" {
   name                  = "${var.PREFIX}-FGT-VM"
   location              = azurerm_resource_group.resourcegroup.location
@@ -122,6 +129,7 @@ resource "azurerm_linux_virtual_machine" "fgtvm" {
     type = "SystemAssigned"
   }
 
+#  source_image_id = data.azurerm_shared_image_version.fortigate.id
   source_image_reference {
     publisher = "fortinet"
     offer     = "fortinet_fortigate-vm_v5"
