@@ -15,7 +15,10 @@ echo "
 # Stop on error
 set +e
 
-PREFIX="jvh02"
+##############################################################################################################
+# Update the below variable to your environment
+##############################################################################################################
+PREFIX="test"
 LOCATION="westeurope"
 # ARCHITECTURE: arm64 or x86
 ARCHITECTURE="arm64"
@@ -27,6 +30,9 @@ FORTIGATE_IMAGE_FILENAME="fortios.vhd"
 FORTIGATE_IMAGE_LOCATION="${FORTIGATE_IMAGE_DIRECTORY}/${FORTIGATE_IMAGE_FILENAME}"
 FORTIGATE_VERSION="7.2.4"
 
+##############################################################################################################
+# Static variables
+##############################################################################################################
 resource_group="${PREFIX}-rg"
 storage_account_name="${PREFIX}imagestorage"
 storage_container_name="vhds"
