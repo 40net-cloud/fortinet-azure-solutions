@@ -379,6 +379,14 @@
         "description": "Secondary FortiGate BYOL Flex-VM license token"
       }
     },
+
+    "customImageReference": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "By default, the deployment will use Azure Marketplace images. In specific cases, using BYOL custom FortiGate images can be deployed. This requires a reference "
+      }
+    },
     "location": {
       "type": "string",
       "defaultValue": "[resourceGroup().location]",
@@ -490,7 +498,21 @@
     ],
     "zone2": [
       "2"
-    ]
+    ],
+    "imageReferenceMarketplace": {
+      "publisher": "[variables('imagePublisher')]",
+      "offer": "[variables('imageOffer')]",
+      "sku": "[parameters('fortiGateImageSKU')]",
+      "version": "[parameters('FortigateImageVersion')]"
+    },
+    "imageReferenceCustomImage": {
+      "id": "[parameters('customImageReference')]"
+    },
+    "virtualMachinePlan": {
+      "name": "[parameters('fortiGateImageSKU')]",
+      "publisher": "[variables('imagePublisher')]",
+      "product": "[variables('imageOffer')]"
+    }
   },
   "resources": [
     {
@@ -1026,11 +1048,7 @@
         "type": "SystemAssigned"
       },
       "zones": "[if(variables('useAZ'), variables('zone1'), json('null'))]",
-      "plan": {
-        "name": "[parameters('fortiGateImageSKU')]",
-        "publisher": "[variables('imagePublisher')]",
-        "product": "[variables('imageOffer')]"
-      },
+      "plan": "[if(and(equals(parameters('fortiGateImageSKU'),'fortinet_fg-vm'),not(equals(parameters('customImageReference'),''))), json('null'), variables('virtualMachinePlan'))]",
       "dependsOn": [
         "[variables('fgaNic1Id')]",
         "[variables('fgaNic2Id')]"
@@ -1047,12 +1065,7 @@
           "customData": "[variables('fgaCustomData')]"
         },
         "storageProfile": {
-          "imageReference": {
-            "publisher": "[variables('imagePublisher')]",
-            "offer": "[variables('imageOffer')]",
-            "sku": "[parameters('fortiGateImageSKU')]",
-            "version": "[parameters('fortiGateImageVersion')]"
-          },
+          "imageReference": "[if(and(equals(parameters('fortiGateImageSKU'),'fortinet_fg-vm'),not(equals(parameters('customImageReference'),''))), variables('imageReferenceCustomImage'), variables('imageReferenceMarketplace'))]",
           "osDisk": {
             "createOption": "FromImage"
           },
@@ -1099,11 +1112,7 @@
         "type": "SystemAssigned"
       },
       "zones": "[if(variables('useAZ'), variables('zone2'), json('null'))]",
-      "plan": {
-        "name": "[parameters('fortiGateImageSKU')]",
-        "publisher": "[variables('imagePublisher')]",
-        "product": "[variables('imageOffer')]"
-      },
+      "plan": "[if(and(equals(parameters('fortiGateImageSKU'),'fortinet_fg-vm'),not(equals(parameters('customImageReference'),''))), json('null'), variables('virtualMachinePlan'))]",
       "dependsOn": [
         "[variables('fgbNic1Id')]",
         "[variables('fgbNic2Id')]"
@@ -1120,12 +1129,7 @@
           "customData": "[variables('fgbCustomData')]"
         },
         "storageProfile": {
-          "imageReference": {
-            "publisher": "[variables('imagePublisher')]",
-            "offer": "[variables('imageOffer')]",
-            "sku": "[parameters('fortiGateImageSKU')]",
-            "version": "[parameters('fortiGateImageVersion')]"
-          },
+          "imageReference": "[if(and(equals(parameters('fortiGateImageSKU'),'fortinet_fg-vm'),not(equals(parameters('customImageReference'),''))), variables('imageReferenceCustomImage'), variables('imageReferenceMarketplace'))]",
           "osDisk": {
             "createOption": "FromImage"
           },
