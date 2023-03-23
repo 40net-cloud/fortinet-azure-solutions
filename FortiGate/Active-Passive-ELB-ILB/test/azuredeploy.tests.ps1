@@ -96,6 +96,7 @@ Describe 'FGT A/P LB' {
             'adminPassword',
             'adminUsername',
             'availabilityOptions',
+            'customImageReference',
             'fortiGateAdditionalCustomData',
             'fortiGateImageSKU',
             'fortiGateImageVersion',

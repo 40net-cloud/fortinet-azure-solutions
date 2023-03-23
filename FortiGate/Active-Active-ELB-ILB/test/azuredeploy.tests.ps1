@@ -88,6 +88,7 @@ Describe 'FGT A/A' {
                                           'adminPassword',
                                           'adminUsername',
                                           'availabilityOptions',
+                                          'customImageReference',
                                           'fortiGateAdditionalCustomData',
                                           'fortiGateImageSKU',
                                           'fortiGateImageVersion',

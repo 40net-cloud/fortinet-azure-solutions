@@ -99,6 +99,7 @@ Describe 'FGT A/P SDN' {
                                           'adminPassword',
                                           'adminUsername',
                                           'availabilityOptions',
+                                          'customImageReference',
                                           'fortiGateAdditionalCustomData',
                                           'fortiGateImageSKU',
                                           'fortiGateImageVersion',
