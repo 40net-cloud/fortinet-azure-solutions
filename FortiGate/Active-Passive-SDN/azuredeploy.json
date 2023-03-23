@@ -504,6 +504,13 @@
         "description": "Secondary FortiGate BYOL Flex-VM license token"
       }
     },
+    "customImageReference": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "By default, the deployment will use Azure Marketplace images. In specific cases, using BYOL custom FortiGate images can be deployed. This requires a reference "
+      }
+    },
     "location": {
       "type": "string",
       "defaultValue": "[resourceGroup().location]",
