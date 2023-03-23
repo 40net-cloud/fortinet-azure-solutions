@@ -85,6 +85,7 @@ Describe 'FGT Single VM' {
                                           'adminUsername',
                                           'availabilityOptions',
                                           'availabilityZoneNumber',
+                                          'customImageReference',
                                           'existingAvailabilitySetName',
                                           'fortiGateAdditionalCustomData',
                                           'fortiGateImageSKU',
