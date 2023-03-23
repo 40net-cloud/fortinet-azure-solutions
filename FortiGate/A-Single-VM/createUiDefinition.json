@@ -1001,8 +1001,8 @@
                 "visible": true,
                 "options": {
                   "icon": "Info",
-                  "text": "When using BYOL it is possible to upload a specific FortiGate image to Azure provided by support. Additionally this allows you to upload and deploy an ARM64 image.",
-                  "uri": "https://github.com/fortinet/azure-templates/blob/main/FortiGate/A-Single-VM/doc/config-provisioning.md"
+                  "text": "For BYOL it is possible to upload a specific FortiGate image to Azure provided by support. Provide the resource ID of the required VM image version in the field below.",
+                  "uri": "https://docs.fortinet.com/document/fortigate-public-cloud/7.2.0/azure-administration-guide/392531/deploying-fortigate-vm-from-a-vhd-image-file"
                 }
               },
               {
@@ -1012,11 +1012,21 @@
                 "defaultValue": "",
                 "toolTip": "Azure Compute Gallery Image Version resource ID",
                 "constraints": {
-                  "required": false,
+                  "required": "[and(contains(steps('instance').instancetype.selection, 'p'),equals(basics('fortiGateImageSKU'),'fortinet_fg-vm'))]",
                   "regex": "^[\\w\\W\n\t]{0,10240}$",
                   "validationMessage": "All characters allowed, max 10240 characters."
                 },
                 "visible": "[equals(basics('fortiGateImageSKU'),'fortinet_fg-vm')]"
+              },
+              {
+                "name": "customvhdinfo2",
+                "type": "Microsoft.Common.InfoBox",
+                "visible": "[contains(steps('instance').instancetype.selection, 'p')]",
+                "options": {
+                  "icon": "Info",
+                  "text": "An ARM64 based instance type was selected. This requires a custom image using an Azure Compute Gallery.",
+                  "uri": "https://docs.fortinet.com/document/fortigate-public-cloud/7.2.0/azure-administration-guide/392531/deploying-fortigate-vm-from-a-vhd-image-file"
+                }
               }
             ]
           }
