@@ -611,7 +611,7 @@
       "fortiManagerLicenseBYOLA": "[steps('instance').fmgLicense.fmgAcontent]",
       "fortiManagerLicenseBYOLB": "[steps('instance').fmgLicense.fmgBcontent]",
       "fortiManagerSerialNumberA": "[steps('instance').fmgLicense.fmgAserial]",
-      "fortiManagerSerialNumberB": "[steps('instance').fmgLicense.fmgBseria]",
+      "fortiManagerSerialNumberB": "[steps('instance').fmgLicense.fmgBserial]",
       "publicIPNewOrExisting": "[steps('publicip').publicip.newOrExistingOrNone]",
       "publicIPName": "[steps('publicip').publicip.name]",
       "publicIPResourceGroup": "[steps('publicip').publicip.resourceGroup]",
