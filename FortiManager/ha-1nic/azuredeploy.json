@@ -320,14 +320,28 @@
       "type": "string",
       "defaultValue": "",
       "metadata": {
-        "description": "FortiManager BYOL license content"
+        "description": "Primary FortiManager BYOL license content"
       }
     },
     "fortiManagerLicenseBYOLB": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
-        "description": "FortiManager BYOL license content"
+        "description": "Secondary FortiManager BYOL license content"
+      }
+    },
+    "fortiManagerLicenseFlexVMA": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Primary FortiManager BYOL Flex-VM license token"
+      }
+    },
+    "fortiManagerLicenseFlexVMB": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Secondary FortiManager BYOL Flex-VM license token"
       }
     },
     "fortiManagerSerialNumberA": {
@@ -378,10 +392,12 @@
     "customDataHeader": "Content-Type: multipart/mixed; boundary=\"12345\"\nMIME-Version: 1.0\n\n--12345\nContent-Type: text/plain; charset=\"us-ascii\"\nMIME-Version: 1.0\nContent-Transfer-Encoding: 7bit\nContent-Disposition: attachment; filename=\"config\"\n\n",
     "fmgACustomDataBody": "[concat('config system global\n set admin-lockout-duration 120\n set hostname ', variables('fmgAVmName'), '\n end\n config system ha\n set mode a-p\n set group-id 10\n set group-name FMGAZURE\n set password ', parameters('adminPassword'), '\n config peer\n edit 1\n set ip', variables('sn1IPfmgA'),'\n set serial-number ', parameters('fortiManagerSerialNumberA'), '\n next\n end\n set preferred-role primary\n set vip 1.2.3.4\n set vip-interface port1\n end\n')]",
     "fmgBCustomDataBody": "[concat('config system global\n set admin-lockout-duration 120\n set hostname ', variables('fmgBVmName'), '\n end\n config system ha\n set mode a-p\n set group-id 10\n set group-name FMGAZURE\n set password ', parameters('adminPassword'), '\n config peer\n edit 1\n set ip', variables('sn1IPfmgB'),'\n set serial-number ', parameters('fortiManagerSerialNumberB'), '\n next\n end\n set preferred-role primary\n set vip 1.2.3.4\n set vip-interface port1\n end\n')]",
-    "customDataLicenseHeader": "--12345\nContent-Type: text/plain; charset=\"us-ascii\"\nMIME-Version: 1.0\nContent-Transfer-Encoding: 7bit\nContent-Disposition: attachment; filename=\"fgtlicense\"\n\n",
+    "customDataLicenseHeader": "--12345\nContent-Type: text/plain; charset=\"us-ascii\"\nMIME-Version: 1.0\nContent-Transfer-Encoding: 7bit\nContent-Disposition: attachment; filename=\"fmglicense\"\n\n",
     "customDataFooter": "\n--12345--\n",
-    "fmgAcustomDataCombined": "[concat(variables('customDataHeader'),variables('fmgACustomDataBody'),variables('customDataLicenseHeader'), parameters('fortiManagerLicenseBYOLA'), variables('customDataFooter'))]",
-    "fmgBcustomDataCombined": "[concat(variables('customDataHeader'),variables('fmgBCustomDataBody'),variables('customDataLicenseHeader'), parameters('fortiManagerLicenseBYOLB'), variables('customDataFooter'))]",
+    "fmgACustomDataFlexVM": "[if(equals(parameters('fortiManagerLicenseFlexVMA'),''),'',concat('LICENSE-TOKEN:',parameters('fortiManagerLicenseFlexVMA'), '\n'))]",
+    "fmgBCustomDataFlexVM": "[if(equals(parameters('fortiManagerLicenseFlexVMB'),''),'',concat('LICENSE-TOKEN:',parameters('fortiManagerLicenseFlexVMB'), '\n'))]",
+    "fmgAcustomDataCombined": "[concat(variables('customDataHeader'),variables('fmgACustomDataBody'),variables('customDataLicenseHeader'), variables('fmgACustomDataFlexVM'), parameters('fortiManagerLicenseBYOLA'), variables('customDataFooter'))]",
+    "fmgBcustomDataCombined": "[concat(variables('customDataHeader'),variables('fmgBCustomDataBody'),variables('customDataLicenseHeader'), variables('fmgBCustomDataFlexVM'), parameters('fortiManagerLicenseBYOLB'), variables('customDataFooter'))]",
     "fmgACustomData": "[base64(if(equals(parameters('fortiManagerLicenseBYOLA'),''),variables('fmgACustomDataBody'),variables('fmgACustomDataCombined')))]",
     "fmgBCustomData": "[base64(if(equals(parameters('fortiManagerLicenseBYOLB'),''),variables('fmgBCustomDataBody'),variables('fmgBCustomDataCombined')))]",
 
