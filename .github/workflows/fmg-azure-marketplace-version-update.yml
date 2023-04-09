@@ -32,8 +32,8 @@ jobs:
           $fmgMarketplaceVersions = @()
           $fmgMarketplaceVersionsUI = @()
 
-          $fortimanagerVersions = Get-AzVMImage -PublisherName "fortinet" -Location eastus -Offer "fortinet_fortimanager" -sku "fortinet-fortimanager"
-          $fmgMarketplaceVersions += $($fortimanagerVersions).Version
+          $fortiManagerVersions = Get-AzVMImage -PublisherName "fortinet" -Location eastus -Offer "fortinet-fortimanager" -sku "fortinet-fortimanager"
+          $fmgMarketplaceVersions += $($fortiManagerVersions).Version
           $fmgMarketplaceVersions += "latest"
           $fmgMarketplaceVersions | ConvertTo-Json | Out-File -Filepath "./fmgversion.json"
           $fmgMarketplaceVersions | ForEach-Object { $fmgMarketplaceVersionsUI += [pscustomobject]@{label=$_;value=$_} }
