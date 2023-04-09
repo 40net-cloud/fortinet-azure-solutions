@@ -611,7 +611,7 @@
               "domainNameLabel": "DNS name linked to this public IP"
             },
             "defaultValue": {
-              "publicIpAddressName": "[if(equals(basics('namePrefix'),''),'FMGBPublicIP',concat(basics('namePrefix'),'-FMG-PIP'))]",
+              "publicIpAddressName": "[if(equals(basics('namePrefix'),''),'FMGBPublicIP',concat(basics('namePrefix'),'-FMG-B-PIP'))]",
               "domainNameLabel": "mydomain"
             },
             "constraints": {
