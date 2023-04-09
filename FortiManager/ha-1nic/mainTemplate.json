@@ -31,6 +31,8 @@
       }
     },
     "imageVersion": {
+      "type": "string",
+      "defaultValue": "latest",
       "allowedValues": [
         "6.2.0",
         "6.2.1",
@@ -59,7 +61,10 @@
         "7.2.1",
         "7.2.2",
         "latest"
-      ]
+      ],
+      "metadata": {
+        "description": "FortiManager version"
+      }
     },
     "additionalCustomData": {
       "type": "string",

@@ -18,7 +18,11 @@ This Azure ARM template will automatically deploy a full working environment con
 - 1 VNETs containing a subnet for the FortiManager
 - Optional: 2 Basic/Standard public IPs
 
-![FortiGate-VM azure design](images/fmg-ha-1nic.png)
+![FortiManager HA azure design](images/fmg-ha.png)
+
+To enhance the availability of the solution VM can be installed in different Availability Zones instead of an Availability Set. If Availability Zones deployment is selected but the location does not support Availability Zones an Availability Set will be deployed. If Availability Zones deployment is selected and Availability Zones are available in the location, FortiManager A will be placed in Zone 1, FortiManager B will be placed in Zone 2.
+
+![FortiManager HA az design](images/fmg-ha-az.png)
 
 This Azure ARM template can also be extended or customized based on your requirements. Additional subnets besides the ones mentioned above are not automatically generated.
 
