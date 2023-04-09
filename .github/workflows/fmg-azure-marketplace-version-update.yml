@@ -32,7 +32,7 @@ jobs:
           $fmgMarketplaceVersions = @()
           $fmgMarketplaceVersionsUI = @()
 
-          $fortimanagerVersions = Get-AzVMImage -PublisherName "fortinet" -Location eastus -Offer "fortinet_fortimanager-vm_v5" -sku "fortinet_fg-vm"
+          $fortimanagerVersions = Get-AzVMImage -PublisherName "fortinet" -Location eastus -Offer "fortinet_fortimanager" -sku "fortinet-fortimanager"
           $fmgMarketplaceVersions += $($fortimanagerVersions).Version
           $fmgMarketplaceVersions += "latest"
           $fmgMarketplaceVersions | ConvertTo-Json | Out-File -Filepath "./fmgversion.json"
@@ -40,12 +40,12 @@ jobs:
           $fmgMarketplaceVersionsUI | ConvertTo-Json | Out-File -Filepath "./fmgversionui.json"
 
           foreach ($buildingBlock in $buildingBlocks) {
-            Get-Content -Raw -Path "./FortiGate/${buildingBlock}/azuredeploy.json" | jq --slurpfile content "./fmgversion.json" '.parameters.fortiGateImageVersion.allowedValues = $content[]' | Set-Content -Path "./FortiGate/${buildingBlock}/azuredeploy.json"
+            Get-Content -Raw -Path "./FortiGate/${buildingBlock}/azuredeploy.json" | jq --slurpfile content "./fmgversion.json" '.parameters.fortiManagerImageVersion.allowedValues = $content[]' | Set-Content -Path "./FortiGate/${buildingBlock}/azuredeploy.json"
             $content = Get-Content "./FortiGate/${buildingBlock}/azuredeploy.json" -Raw
             if (-Not $content -match '(?<=\r\n)\z') {
               "" | Out-File -Append "./FortiGate/${buildingBlock}/azuredeploy.json"
             }
-            Get-Content -Raw -Path "./FortiGate/${buildingBlock}/createUiDefinition.json" | jq --slurpfile content "./fmgversionui.json" '(.parameters.basics[] | select( .name == \"fortiGateImageVersion\") | .constraints.allowedValues) |= $content[]' | Set-Content -Path "./FortiGate/${buildingBlock}/createUiDefinition.json"
+            Get-Content -Raw -Path "./FortiGate/${buildingBlock}/createUiDefinition.json" | jq --slurpfile content "./fmgversionui.json" '(.parameters.basics[] | select( .name == \"fortiManagerImageVersion\") | .constraints.allowedValues) |= $content[]' | Set-Content -Path "./FortiGate/${buildingBlock}/createUiDefinition.json"
             $content = Get-Content "./FortiGate/${buildingBlock}/createUiDefinition.json" -Raw
             if (-Not $content -match '(?<=\r\n)\z') {
               "" | Out-File -Append "./FortiGate/${buildingBlock}/createUiDefinition.json"
