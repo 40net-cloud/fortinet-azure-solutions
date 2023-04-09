@@ -97,12 +97,108 @@
           "required": false,
           "allowedValues": [
             {
+              "label": "6.2.0",
+              "value": "6.2.0"
+            },
+            {
+              "label": "6.2.1",
+              "value": "6.2.1"
+            },
+            {
+              "label": "6.2.2",
+              "value": "6.2.2"
+            },
+            {
+              "label": "6.2.3",
+              "value": "6.2.3"
+            },
+            {
+              "label": "6.2.5",
+              "value": "6.2.5"
+            },
+            {
+              "label": "6.4.0",
+              "value": "6.4.0"
+            },
+            {
+              "label": "6.4.1",
+              "value": "6.4.1"
+            },
+            {
+              "label": "6.4.10",
+              "value": "6.4.10"
+            },
+            {
+              "label": "6.4.11",
+              "value": "6.4.11"
+            },
+            {
+              "label": "6.4.2",
+              "value": "6.4.2"
+            },
+            {
+              "label": "6.4.5",
+              "value": "6.4.5"
+            },
+            {
               "label": "6.4.6",
               "value": "6.4.6"
             },
             {
+              "label": "6.4.7",
+              "value": "6.4.7"
+            },
+            {
+              "label": "6.4.8",
+              "value": "6.4.8"
+            },
+            {
+              "label": "6.4.9",
+              "value": "6.4.9"
+            },
+            {
+              "label": "7.0.0",
+              "value": "7.0.0"
+            },
+            {
               "label": "7.0.1",
               "value": "7.0.1"
+            },
+            {
+              "label": "7.0.2",
+              "value": "7.0.2"
+            },
+            {
+              "label": "7.0.3",
+              "value": "7.0.3"
+            },
+            {
+              "label": "7.0.4",
+              "value": "7.0.4"
+            },
+            {
+              "label": "7.0.5",
+              "value": "7.0.5"
+            },
+            {
+              "label": "7.0.6",
+              "value": "7.0.6"
+            },
+            {
+              "label": "7.0.7",
+              "value": "7.0.7"
+            },
+            {
+              "label": "7.2.0",
+              "value": "7.2.0"
+            },
+            {
+              "label": "7.2.1",
+              "value": "7.2.1"
+            },
+            {
+              "label": "7.2.2",
+              "value": "7.2.2"
             },
             {
               "label": "latest",
@@ -204,10 +300,10 @@
                   "hideDiskTypeFilter": false
                 },
                 "osPlatform": "Linux",
-                  "imageReference": {
-                    "publisher": "fortinet",
-                    "offer": "fortinet-fortianalyzer",
-                    "sku": "fortinet-fortianalyzer"
+                "imageReference": {
+                  "publisher": "fortinet",
+                  "offer": "fortinet-fortianalyzer",
+                  "sku": "fortinet-fortianalyzer"
                 },
                 "count": 1,
                 "visible": true
