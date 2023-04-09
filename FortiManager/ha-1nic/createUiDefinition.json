@@ -71,9 +71,9 @@
         "visible": true
       },
       {
-        "name": "fortiGateImageSKU",
+        "name": "fortiManagerImageSKU",
         "type": "Microsoft.Common.DropDown",
-        "label": "FortiGate Image SKU",
+        "label": "FortiManager Image SKU",
         "defaultValue": "Bring Your Own License",
         "toolTip": "BYOL license model (where license is purchased separately)",
         "constraints": {
@@ -81,7 +81,7 @@
           "allowedValues": [
             {
               "label": "Bring Your Own License",
-              "value": "fortinet_fg-vm_payg_2022"
+              "value": "fortinet-fortimanager"
             }
           ]
         },
