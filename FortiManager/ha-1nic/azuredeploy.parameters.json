@@ -3,33 +3,57 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "adminUsername": {
-            "value": "## TO BE DEFINED ##"
+            "value": ""
         },
         "adminPassword": {
-            "value": "## TO BE DEFINED ##"
+            "value": ""
         },
         "namePrefix": {
-            "value": "## TO BE DEFINED ##"
+            "value": ""
         },
         "imageSku": {
-            "value": "fortinet-fortianalyzer"
+            "value": "fortinet-fortimanager"
         },
         "imageVersion": {
             "value": "latest"
         },
+        "additionalCustomData": {
+            "value": ""
+        },
         "instanceType": {
             "value": "Standard_D2s_v3"
         },
-        "publicIPNewOrExisting": {
+        "availabilityOptions": {
+            "value": "Availability Set"
+        },
+        "publicIP1NewOrExisting": {
             "value": "new"
         },
-        "publicIPName": {
-            "value": "FAZPublicIP"
+        "publicIP2NewOrExisting": {
+            "value": "new"
         },
-        "publicIPResourceGroup": {
+        "publicIP1Name": {
             "value": ""
         },
-        "publicIPAddressType": {
+        "publicIP1ResourceGroup": {
+            "value": ""
+        },
+        "publicIP2AddressSKU": {
+            "value": "Standard"
+        },
+        "publicIP2AddressType": {
+            "value": "Static"
+        },
+        "publicIP2Name": {
+            "value": ""
+        },
+        "publicIP2ResourceGroup": {
+            "value": ""
+        },
+        "publicIP1AddressSKU": {
+            "value": "Standard"
+        },
+        "publicIP1AddressType": {
             "value": "Static"
         },
         "vnetNewOrExisting": {
@@ -45,22 +69,49 @@
             "value": "172.16.136.0/22"
         },
         "subnet1Name": {
-            "value": "FortiAnalyzerSubnet"
+            "value": "FortiManagerSubnet"
         },
         "subnet1Prefix": {
             "value": "172.16.137.0/24"
         },
+        "subnet1StartAddress": {
+            "value": "172.16.137.4"
+        },
+        "diskType": {
+            "value": "Default"
+        },
         "dataDiskSize": {
             "value": "1024"
         },
+        "dataDiskCount": {
+            "value": 1
+        },
+        "fortiManagerLicenseBYOLA": {
+            "value": ""
+        },
+        "fortiManagerLicenseBYOLB": {
+            "value": ""
+        },
+        "fortiManagerLicenseFlexVMA": {
+            "value": ""
+        },
+        "fortiManagerLicenseFlexVMB": {
+            "value": ""
+        },
+        "fortiManagerSerialNumberA": {
+            "value": ""
+        },
+        "fortiManagerSerialNumberB": {
+            "value": ""
+        },
         "location": {
-            "value": "[resourceGroup().location]"
+            "value": ""
         },
         "fortinetTags": {
             "value": {
-                "publisher": "Fortinet",
-                "template": "FortiAnalyzer",
-                "provider": "6EB3B02F-50E5-4A3E-8CB8-2E1292583FAZ"
+              "publisher": "Fortinet",
+              "template": "FortiManager",
+              "provider": "6EB3B02F-50E5-4A3E-8CB8-2E1292583FMG"
             }
         }
     }

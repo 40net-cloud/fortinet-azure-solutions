@@ -71,6 +71,23 @@
         "visible": true
       },
       {
+        "name": "fortiGateImageSKU",
+        "type": "Microsoft.Common.DropDown",
+        "label": "FortiGate Image SKU",
+        "defaultValue": "Bring Your Own License",
+        "toolTip": "BYOL license model (where license is purchased separately)",
+        "constraints": {
+          "required": false,
+          "allowedValues": [
+            {
+              "label": "Bring Your Own License",
+              "value": "fortinet_fg-vm_payg_2022"
+            }
+          ]
+        },
+        "visible": true
+      },
+      {
         "name": "fortiManagerImageVersion",
         "type": "Microsoft.Common.DropDown",
         "label": "FortiManager Image Version",
@@ -372,7 +389,7 @@
                 }
               },
               {
-                "name": "fmgLicenseFlexVMCheck",
+                "name": "fortiFlexCheck",
                 "type": "Microsoft.Common.CheckBox",
                 "label": "My organisation is using the FortiFlex subscription service.",
                 "toolTip": "My organisation is using the FortiFlex subscription service.",
@@ -393,7 +410,7 @@
                   "openMode": "text",
                   "encoding": "UTF-8"
                 },
-                "visible": "[and(equals(basics('fortiManagerImageSKU'), 'fortinet-fortimanager'),not(steps('instance').fmgLicense.fmgLicenseFlexVMCheck))]"
+                "visible": "[and(equals(basics('fortiManagerImageSKU'), 'fortinet-fortimanager'),not(steps('instance').fmgLicense.fortiFlexCheck))]"
               },
               {
                 "name": "fmgBcontent",
@@ -410,7 +427,7 @@
                   "openMode": "text",
                   "encoding": "UTF-8"
                 },
-                "visible": "[and(equals(basics('fortiManagerImageSKU'), 'fortinet-fortimanager'),not(steps('instance').fmgLicense.fmgLicenseFlexVMCheck))]"
+                "visible": "[and(equals(basics('fortiManagerImageSKU'), 'fortinet-fortimanager'),not(steps('instance').fmgLicense.fortiFlexCheck))]"
               },
               {
                 "name": "fmgAflexvm",
@@ -423,7 +440,7 @@
                   "regex": "^[A-Za-z0-9-]{1,64}$",
                   "validationMessage": "Only alphanumeric characters and a dash are allowed, and the value must be 1 to 64 characters."
                 },
-                "visible": "[steps('instance').fmgLicense.fmgLicenseFlexVMCheck]"
+                "visible": "[and(equals(basics('fortiManagerImageSKU'), 'fortinet-fortimanager'),steps('instance').fmgLicense.fortiFlexCheck)]"
               },
               {
                 "name": "fmgBflexvm",
@@ -436,7 +453,7 @@
                   "regex": "^[A-Za-z0-9-]{1,64}$",
                   "validationMessage": "Only alphanumeric characters and a dash are allowed, and the value must be 1 to 64 characters."
                 },
-                "visible": "[steps('instance').fmgLicense.fmgLicenseFlexVMCheck]"
+                "visible": "[and(equals(basics('fortiManagerImageSKU'), 'fortinet-fortimanager'),steps('instance').fmgLicense.fortiFlexCheck)]"
               },
               {
                 "name": "fmgAserial",
