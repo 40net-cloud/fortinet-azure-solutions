@@ -75,7 +75,37 @@ In Microsoft Azure, the FortiManager manual HA failover is supported. Both units
 More information on FortiManager High Availability can be found in [the FortiManager documentation](https://docs.fortinet.com/document/fortimanager/7.2.2/administration-guide/568591/high-availability).
 
 ### Primary FortiManager configuration
+
+<pre>
+config system ha
+  set mode primary
+  set clusterid 10
+  set password xxx
+  config peer
+    edit 1
+      set serial-number <b>FortiManager B serial number</b> 
+      set ip <b>FortiManager B IP address</b> 
+    next
+  end
+end
+</pre>
+
 ### Secondary FortiManager configuration
+
+<pre>
+config system ha
+  set mode secondary
+  set clusterid 10
+  set password xxx
+  config peer
+    edit 1
+      set serial-number <b>FortiManager A serial number</b> 
+      set ip <b>FortiManager A IP address</b> 
+    next
+  end
+end
+</pre>
+
 ### FortiGate configuration
 
 
