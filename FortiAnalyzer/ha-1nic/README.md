@@ -55,7 +55,7 @@ After deployment, you will be shown the IP addresses of all deployed components.
 
 The Azure ARM template deployment deploys different resources and is required to have the access rights and quota in your Microsoft Azure subscription to deploy the resources.
 
-- The template will deploy Standard D4s VMs for this architecture. Other VM instances are supported as well with a recommended minimum of 2 vCPU and 4Gb of RAM. A list can be found [here](https://docs.fortinet.com/document/fortimanager-public-cloud/7.0.0/azure-administration-guide/351055/instance-type-support)
+- The template will deploy Standard D4as_v4 VMs for this architecture. Other VM instances are supported as well with a recommended minimum of 2 vCPU and 4Gb of RAM. A list can be found [here](https://docs.fortinet.com/document/fortianalyzer-public-cloud/7.2.0/azure-administration-guide/351055/instance-type-support)
 - A Network Security Group is installed that only opens TCP port 22, 443 and 514 for access to the FortiAnalyzer. Additional ports might be needed to support your use case and are documented [here](https://docs.fortinet.com/document/fortimanager/7.0.0/fortimanager-ports/465971/incoming-ports)
 - License for FortiAnalyzer
   - BYOL: A demo license can be made available via your Fortinet partner or on our website. These can be injected during deployment or added after deployment.
@@ -68,7 +68,7 @@ FortiAnalyzer high availability (HA) provided enhanded reliability of the soluti
 
 In Microsoft Azure, the FortiAnalyzer manual HA failover is supported. Both units have a private and optionally a public IP configured. The FortiGate need to be configured with either the both private or both public IPs depending on the which are reachable.
 
-More information on FortiAnalyzer High Availability can be found in [the FortiAnalyzer documentation](https://docs.fortinet.com/document/fortimanager/7.2.2/administration-guide/568591/high-availability).
+More information on FortiAnalyzer High Availability can be found in [the FortiAnalyzer documentation](https://docs.fortinet.com/document/fortimanager/7.2.2/administration-guide/568591/high-availability) as well as the specific Azure HA configuration steps [here]( https://docs.fortinet.com/document/fortianalyzer-public-cloud/7.2.0/azure-administration-guide/416866/configuring-fortianalyzer-ha).
 
 ### Primary FortiAnalyzer configuration
 
