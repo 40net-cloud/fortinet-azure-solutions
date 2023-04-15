@@ -83,8 +83,8 @@ config system ha
   set password xxx
   config peer
     edit 1
-      set serial-number <b>FortiManager B serial number</b> 
-      set ip <b>FortiManager B IP address</b> 
+      set serial-number <b>FortiManager B serial number</b>
+      set ip <b>FortiManager B IP address</b>
     next
   end
 end
@@ -99,8 +99,8 @@ config system ha
   set password xxx
   config peer
     edit 1
-      set serial-number <b>FortiManager A serial number</b> 
-      set ip <b>FortiManager A IP address</b> 
+      set serial-number <b>FortiManager A serial number</b>
+      set ip <b>FortiManager A IP address</b>
     next
   end
 end
@@ -108,6 +108,15 @@ end
 
 ### FortiGate configuration
 
+<pre>
+config system central-management
+  set type fortimanager
+  set fmg <b>FortiManager A IP address or FQDN</b>
+  set fmg <b>FortiManager B IP address or FQDN</b>
+  set serial-number <b>FortiManager A serial number</b>
+  set serial-number <b>FortiManager B serial number</b>
+end
+</pre>
 
 ## Support
 Fortinet-provided scripts in this and other GitHub projects do not fall under the regular Fortinet technical support scope and are not supported by FortiCare Support Services.
