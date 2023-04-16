@@ -45,10 +45,10 @@ jobs:
           $fmgMarketplaceVersionsUI | ConvertTo-Json | Out-File -Filepath "./fmgversionui.json"
 
           foreach ($buildingBlock in $buildingBlocks) {
-            Get-Content -Raw -Path "./FortiManager/${buildingBlock}/maintTemplate.json" | jq --slurpfile content "./fmgversion.json" '.parameters.fortiManagerImageVersion.allowedValues = $content[]' | Set-Content -Path "./FortiManager/${buildingBlock}/maintTemplate.json"
-            $content = Get-Content "./FortiManager/${buildingBlock}/maintTemplate.json" -Raw
+            Get-Content -Raw -Path "./FortiManager/${buildingBlock}/mainTemplate.json" | jq --slurpfile content "./fmgversion.json" '.parameters.fortiManagerImageVersion.allowedValues = $content[]' | Set-Content -Path "./FortiManager/${buildingBlock}/mainTemplate.json"
+            $content = Get-Content "./FortiManager/${buildingBlock}/mainTemplate.json" -Raw
             if (-Not $content -match '(?<=\r\n)\z') {
-              "" | Out-File -Append "./FortiManager/${buildingBlock}/maintTemplate.json"
+              "" | Out-File -Append "./FortiManager/${buildingBlock}/mainTemplate.json"
             }
             Get-Content -Raw -Path "./FortiManager/${buildingBlock}/createUiDefinition.json" | jq --slurpfile content "./fmgversionui.json" '(.parameters.basics[] | select( .name == \"fortiManagerImageVersion\") | .constraints.allowedValues) |= $content[]' | Set-Content -Path "./FortiManager/${buildingBlock}/createUiDefinition.json"
             $content = Get-Content "./FortiManager/${buildingBlock}/createUiDefinition.json" -Raw
