@@ -187,10 +187,10 @@
                   "hideDiskTypeFilter": false
                 },
                 "osPlatform": "Linux",
-                  "imageReference": {
-                    "publisher": "fortinet",
-                    "offer": "fortinet-fortianalyzer",
-                    "sku": "fortinet-fortianalyzer"
+                "imageReference": {
+                  "publisher": "fortinet",
+                  "offer": "fortinet-fortianalyzer",
+                  "sku": "fortinet-fortianalyzer"
                 },
                 "count": 1,
                 "visible": true
