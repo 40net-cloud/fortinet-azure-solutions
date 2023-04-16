@@ -80,7 +80,7 @@
         "Standard_D48as_v4",
         "Standard_D64as_v4",
         "Standard_D96as_v4"
-       ],
+      ],
       "metadata": {
         "description": "Virtual Machine size selection - must be F4 or other instance that supports 4 NICs"
       }
@@ -297,7 +297,12 @@
       "type": "string",
       "defaultValue": "Default",
       "allowedValues": [
-        "Standard_LRS", "Premium_LRS", "StandardSSD_LRS", "Premium_ZRS", "StandardSSD_ZRS", "Default"
+        "Standard_LRS",
+        "Premium_LRS",
+        "StandardSSD_LRS",
+        "Premium_ZRS",
+        "StandardSSD_ZRS",
+        "Default"
       ],
       "metadata": {
         "description": "Type of all of the disks, this determines the IOPS and redudancy"
@@ -373,23 +378,50 @@
         "template": "FortiAnalyzer",
         "provider": "6EB3B02F-50E5-4A3E-8CB8-2E1292583FAZ"
       }
+    },
+    "fortiManagerImageVersion": {
+      "allowedValues": [
+        "6.2.0",
+        "6.2.1",
+        "6.2.2",
+        "6.2.3",
+        "6.2.5",
+        "6.4.0",
+        "6.4.1",
+        "6.4.10",
+        "6.4.11",
+        "6.4.2",
+        "6.4.5",
+        "6.4.6",
+        "6.4.7",
+        "6.4.8",
+        "6.4.9",
+        "7.0.0",
+        "7.0.1",
+        "7.0.2",
+        "7.0.3",
+        "7.0.4",
+        "7.0.5",
+        "7.0.6",
+        "7.0.7",
+        "7.2.0",
+        "7.2.1",
+        "7.2.2",
+        "latest"
+      ]
     }
   },
   "variables": {
     "imagePublisher": "fortinet",
     "imageOffer": "fortinet-fortianalyzer",
-
     "availabilitySetName": "[concat(parameters('namePrefix'),'-AvailabilitySet')]",
     "availabilitySetId": {
       "id": "[resourceId('Microsoft.Compute/availabilitySets', variables('availabilitySetName'))]"
     },
-
     "vnetName": "[if(equals(parameters('vnetName'),''),concat(parameters('namePrefix'),'-VNET'),parameters('vnetName'))]",
     "subnet1Id": "[if(equals(parameters('vnetNewOrExisting'),'new'),resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'), parameters('subnet1Name')),resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet1Name')))]",
-
     "fazAVmName": "[concat(parameters('namePrefix'),'-FAZ-A')]",
     "fazBVmName": "[concat(parameters('namePrefix'),'-FAZ-B')]",
-
     "customDataHeader": "Content-Type: multipart/mixed; boundary=\"12345\"\nMIME-Version: 1.0\n\n--12345\nContent-Type: text/plain; charset=\"us-ascii\"\nMIME-Version: 1.0\nContent-Transfer-Encoding: 7bit\nContent-Disposition: attachment; filename=\"config\"\n\n",
     "fazACustomDataBody": "[concat('config system global\n set admin-lockout-duration 120\n set hostname ', variables('fazAVmName'), '\n end\n config system ha\n set mode a-p\n set group-id 10\n set group-name FAZAZURE\n set password ', parameters('adminPassword'), '\n config peer\n edit 1\n set ip', variables('sn1IPfazB'),'\n set serial-number ', parameters('fortiAnalyzerBSerialNumber'), '\n next\n end\n set preferred-role primary\n set vip 1.2.3.4\n set vip-interface port1\n end\n', parameters('additionalCustomData'), variables('fazACustomDataFlexVM'))]",
     "fazBCustomDataBody": "[concat('config system global\n set admin-lockout-duration 120\n set hostname ', variables('fazBVmName'), '\n end\n config system ha\n set mode a-p\n set group-id 10\n set group-name FAZAZURE\n set password ', parameters('adminPassword'), '\n config peer\n edit 1\n set ip', variables('sn1IPfazA'),'\n set serial-number ', parameters('fortiAnalyzerASerialNumber'), '\n next\n end\n set preferred-role primary\n set vip 1.2.3.4\n set vip-interface port1\n end\n', parameters('additionalCustomData'), variables('fazBCustomDataFlexVM'))]",
@@ -401,24 +433,26 @@
     "fazBcustomDataCombined": "[concat(variables('customDataHeader'),variables('fazBCustomDataBody'),variables('customDataLicenseHeader'), parameters('fortiAnalyzerLicenseBYOLB'), variables('customDataFooter'))]",
     "fazACustomData": "[base64(if(equals(parameters('fortiAnalyzerLicenseBYOLA'),''),variables('fazACustomDataBody'),variables('fazACustomDataCombined')))]",
     "fazBCustomData": "[base64(if(equals(parameters('fortiAnalyzerLicenseBYOLA'),''),variables('fazBCustomDataBody'),variables('fazBCustomDataCombined')))]",
-
     "fazANic1Name": "[concat(variables('fazAVmName'),'-Nic1')]",
     "fazANic1Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('fazANic1Name'))]",
     "fazBNic1Name": "[concat(variables('fazBVmName'),'-Nic1')]",
     "fazBNic1Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('fazBNic1Name'))]",
-
     "publicIPName": "[if(equals(parameters('publicIPName'),''),concat(parameters('namePrefix'),'-FAZ-PIP'),parameters('publicIPName'))]",
     "publicIPId": "[if(equals(parameters('publicIPNewOrExisting'),'new'),resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPName')),if(equals(parameters('publicIPNewOrExisting'),'existing'),resourceId(parameters('publicIPResourceGroup'),'Microsoft.Network/publicIPAddresses',variables('publicIPName')),''))]",
-    "publicIPAddressId": { "id": "[variables('publicIPId')]" },
+    "publicIPAddressId": {
+      "id": "[variables('publicIPId')]"
+    },
     "publicIP2Name": "[if(equals(parameters('publicIP2Name'),''),concat(parameters('namePrefix'),'-FAZ-A-MGMT-PIP'),parameters('publicIP2Name'))]",
     "publicIP2Id": "[if(equals(parameters('publicIP2NewOrExisting'),'new'),resourceId('Microsoft.Network/publicIPAddresses',variables('publicIP2Name')),resourceId(parameters('publicIP2ResourceGroup'),'Microsoft.Network/publicIPAddresses',variables('publicIP2Name')))]",
-    "publicIPAddress2Id": { "id": "[variables('publicIP2Id')]" },
+    "publicIPAddress2Id": {
+      "id": "[variables('publicIP2Id')]"
+    },
     "publicIP3Name": "[if(equals(parameters('publicIP3Name'),''),concat(parameters('namePrefix'),'-FAZ-B-MGMT-PIP'),parameters('publicIP3Name'))]",
     "publicIP3Id": "[if(equals(parameters('publicIP3NewOrExisting'),'new'),resourceId('Microsoft.Network/publicIPAddresses',variables ('publicIP3Name')),resourceId(parameters('publicIP3ResourceGroup'),'Microsoft.Network/publicIPAddresses',variables('publicIP3Name')))]",
-    "publicIPAddress3Id": { "id": "[variables('publicIP3Id')]" },
-
+    "publicIPAddress3Id": {
+      "id": "[variables('publicIP3Id')]"
+    },
     "NSGName": "[concat(parameters('namePrefix'),'-',uniqueString(resourceGroup().id),'-NSG')]",
-
     "sn1IPArray": "[split(parameters('subnet1Prefix'),'.')]",
     "sn1IPArray2ndString": "[string(variables('sn1IPArray')[3])]",
     "sn1IPArray2nd": "[split(variables('sn1IPArray2ndString'),'/')]",
@@ -431,23 +465,26 @@
     "sn1IPStartAddress": "[split(parameters('subnet1StartAddress'),'.')]",
     "sn1IPfazA": "[concat(variables('sn1IPArray0'),'.',variables('sn1IPArray1'),'.',variables('sn1IPArray2'),'.',int(variables('sn1IPStartAddress')[3]))]",
     "sn1IPfazB": "[concat(variables('sn1IPArray0'),'.',variables('sn1IPArray1'),'.',variables('sn1IPArray2'),'.',add(int(variables('sn1IPStartAddress')[3]),1))]",
-
     "useAZ": "[and(not(empty(pickZones('Microsoft.Compute', 'virtualMachines', parameters('location')))), equals(parameters('availabilityOptions'), 'Availability Zones'))]",
-    "zone1": ["1"],
-    "zone2": ["2"]
+    "zone1": [
+      "1"
+    ],
+    "zone2": [
+      "2"
+    ]
   },
   "resources": [
     {
       "apiVersion": "2021-04-01",
       "name": "pid-21c3b606-4b14-4eca-ad0d-1d8537ebd14e-partnercenter",
       "type": "Microsoft.Resources/deployments",
-      "properties":{
-       "mode": "Incremental",
-       "template": {
-         "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
-         "contentVersion": "1.0.0.0",
-         "resources": []
-       }
+      "properties": {
+        "mode": "Incremental",
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "resources": []
+        }
       }
     },
     {
@@ -464,7 +501,7 @@
         "platformUpdateDomainCount": 2
       },
       "sku": {
-        "name":  "Aligned"
+        "name": "Aligned"
       }
     },
     {
@@ -500,74 +537,74 @@
       "properties": {
         "securityRules": [
           {
-              "name": "AllowSSHInbound",
-              "properties": {
-                  "description": "Allow SSH In",
-                  "protocol": "Tcp",
-                  "sourcePortRange": "*",
-                  "destinationPortRange": "22",
-                  "sourceAddressPrefix": "*",
-                  "destinationAddressPrefix": "*",
-                  "access": "Allow",
-                  "priority": 100,
-                  "direction": "Inbound"
-              }
+            "name": "AllowSSHInbound",
+            "properties": {
+              "description": "Allow SSH In",
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "22",
+              "sourceAddressPrefix": "*",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 100,
+              "direction": "Inbound"
+            }
           },
           {
-              "name": "AllowHTTPInbound",
-              "properties": {
-                  "description": "Allow 80 In",
-                  "protocol": "Tcp",
-                  "sourcePortRange": "*",
-                  "destinationPortRange": "80",
-                  "sourceAddressPrefix": "*",
-                  "destinationAddressPrefix": "*",
-                  "access": "Allow",
-                  "priority": 110,
-                  "direction": "Inbound"
-              }
+            "name": "AllowHTTPInbound",
+            "properties": {
+              "description": "Allow 80 In",
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "80",
+              "sourceAddressPrefix": "*",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 110,
+              "direction": "Inbound"
+            }
           },
           {
-              "name": "AllowHTTPSInbound",
-              "properties": {
-                  "description": "Allow 443 In",
-                  "protocol": "Tcp",
-                  "sourcePortRange": "*",
-                  "destinationPortRange": "443",
-                  "sourceAddressPrefix": "*",
-                  "destinationAddressPrefix": "*",
-                  "access": "Allow",
-                  "priority": 120,
-                  "direction": "Inbound"
-              }
+            "name": "AllowHTTPSInbound",
+            "properties": {
+              "description": "Allow 443 In",
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "443",
+              "sourceAddressPrefix": "*",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 120,
+              "direction": "Inbound"
+            }
           },
           {
-              "name": "AllowDevRegInbound",
-              "properties": {
-                  "description": "Allow 541 in for device registration",
-                  "protocol": "Tcp",
-                  "sourcePortRange": "*",
-                  "destinationPortRange": "541",
-                  "sourceAddressPrefix": "*",
-                  "destinationAddressPrefix": "*",
-                  "access": "Allow",
-                  "priority": 130,
-                  "direction": "Inbound"
-              }
+            "name": "AllowDevRegInbound",
+            "properties": {
+              "description": "Allow 541 in for device registration",
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "541",
+              "sourceAddressPrefix": "*",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 130,
+              "direction": "Inbound"
+            }
           },
           {
-              "name": "AllowLogsInbound",
-              "properties": {
-                  "description": "Allow 514 in for inbound logging",
-                  "protocol": "Tcp",
-                  "sourcePortRange": "*",
-                  "destinationPortRange": "514",
-                  "sourceAddressPrefix": "*",
-                  "destinationAddressPrefix": "*",
-                  "access": "Allow",
-                  "priority": 140,
-                  "direction": "Inbound"
-              }
+            "name": "AllowLogsInbound",
+            "properties": {
+              "description": "Allow 514 in for inbound logging",
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "514",
+              "sourceAddressPrefix": "*",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 140,
+              "direction": "Inbound"
+            }
           },
           {
             "name": "AllowAllOutbound",
@@ -595,8 +632,7 @@
       },
       "name": "[variables('publicIPName')]",
       "location": "[parameters('location')]",
-      "sku":
-      {
+      "sku": {
         "name": "[parameters('publicIPAddressSKU')]"
       },
       "properties": {
@@ -702,7 +738,7 @@
       "name": "[variables('fazAVmName')]",
       "apiVersion": "2019-12-01",
       "tags": {
-       "provider": "[toUpper(parameters('fortinetTags').provider)]"
+        "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
       "identity": {
         "type": "SystemAssigned"
@@ -773,7 +809,7 @@
       "name": "[variables('fazBVmName')]",
       "apiVersion": "2019-12-01",
       "tags": {
-       "provider": "[toUpper(parameters('fortinetTags').provider)]"
+        "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
       "identity": {
         "type": "SystemAssigned"
