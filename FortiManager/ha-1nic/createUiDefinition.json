@@ -737,7 +737,7 @@
         "name": "advanced",
         "label": "Advanced",
         "subLabel": {
-          "preValidation": "Configure central management",
+          "preValidation": "Advanced options",
           "postValidation": "Done"
         },
         "elements": [
@@ -789,7 +789,7 @@
     ],
     "outputs": {
       "namePrefix": "[basics('namePrefix')]",
-      "imageSKU": "fortinet-fortianalyzer",
+      "imageSKU": "[basics('fortiManagerImageSKU')]",
       "imageVersion": "[basics('fortiManagerImageVersion')]",
       "adminUsername": "[basics('adminUsername')]",
       "adminPassword": "[basics('adminPassword')]",

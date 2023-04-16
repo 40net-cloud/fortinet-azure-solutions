@@ -96,7 +96,6 @@
         "description": "Deploy FortiGate VMs in an Availability Set or Availability Zones. If Availability Zones deployment is selected but the location does not support Availability Zones an Availability Set will be deployed. If Availability Zones deployment is selected and Availability Zones are available in the location, FortiGate A will be placed in Zone 1, FortiGate B will be placed in Zone 2"
       }
     },
-
     "publicIPNewOrExisting": {
       "type": "string",
       "defaultValue": "new",
