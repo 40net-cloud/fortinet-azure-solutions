@@ -45,10 +45,10 @@ jobs:
           $fazMarketplaceVersionsUI | ConvertTo-Json | Out-File -Filepath "./fazversionui.json"
 
           foreach ($buildingBlock in $buildingBlocks) {
-            Get-Content -Raw -Path "./FortiAnalyzer/${buildingBlock}/azuredeploy.json" | jq --slurpfile content "./fazversion.json" '.parameters.fortiManagerImageVersion.allowedValues = $content[]' | Set-Content -Path "./FortiAnalyzer/${buildingBlock}/azuredeploy.json"
-            $content = Get-Content "./FortiAnalyzer/${buildingBlock}/azuredeploy.json" -Raw
+            Get-Content -Raw -Path "./FortiAnalyzer/${buildingBlock}/maintTemplate.json" | jq --slurpfile content "./fazversion.json" '.parameters.fortiManagerImageVersion.allowedValues = $content[]' | Set-Content -Path "./FortiAnalyzer/${buildingBlock}/maintTemplate.json"
+            $content = Get-Content "./FortiAnalyzer/${buildingBlock}/maintTemplate.json" -Raw
             if (-Not $content -match '(?<=\r\n)\z') {
-              "" | Out-File -Append "./FortiAnalyzer/${buildingBlock}/azuredeploy.json"
+              "" | Out-File -Append "./FortiAnalyzer/${buildingBlock}/maintTemplate.json"
             }
             Get-Content -Raw -Path "./FortiAnalyzer/${buildingBlock}/createUiDefinition.json" | jq --slurpfile content "./fazversionui.json" '(.parameters.basics[] | select( .name == \"fortiManagerImageVersion\") | .constraints.allowedValues) |= $content[]' | Set-Content -Path "./FortiAnalyzer/${buildingBlock}/createUiDefinition.json"
             $content = Get-Content "./FortiAnalyzer/${buildingBlock}/createUiDefinition.json" -Raw
