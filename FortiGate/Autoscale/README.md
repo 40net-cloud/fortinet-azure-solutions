@@ -19,8 +19,8 @@ There are 5 variables needed to complete kickstart the deployment. The deploy.sh
   - INSTANCETYPE : This is the Azure instance type for each of the Fortigate VM that will be deployed. By default this is set to Standard_F4s.
   - USERNAME : The username used to login to the FortiGate GUI and SSH mangement UI.
   - PASSWORD : The password used for the FortiGate GUI and SSH management UI.
-  - CLIENT_ID : The service principal id used by the Azure Function to connect with the resources in Microsoft Azure. More info [here](https://docs.fortinet.com/vm/azure/fortigate/7.0/azure-administration-guide/7.0.0/948968/creating-an-azure-fabric-connector-using-service-principal)
-  - CLIENT_SECRET : The service principal secret used by the Azure Function to connect with the resources in Microsoft Azure. More info [here](https://docs.fortinet.com/vm/azure/fortigate/7.0/azure-administration-guide/7.0.0/948968/creating-an-azure-fabric-connector-using-service-principal)
+  - CLIENT_ID : The service principal id used by the Azure Function to connect with the resources in Microsoft Azure. More info [here](https://docs.fortinet.com/document/fortigate-public-cloud/7.2.0/azure-administration-guide/948968/azure-sdn-connector-service-principal-configuration-requirements)
+  - CLIENT_SECRET : The service principal secret used by the Azure Function to connect with the resources in Microsoft Azure. More info [here](https://docs.fortinet.com/document/fortigate-public-cloud/7.2.0/azure-administration-guide/948968/azure-sdn-connector-service-principal-configuration-requirements)
 
 ### Azure CLI
 To fast track the deployment, use the Azure Cloud Shell. The Azure Cloud Shell is an in-browser CLI that contains Terraform and other tools for deployment into Microsoft Azure. It is accessible via the Azure Portal or directly at [https://shell.azure.com/](https://shell.azure.com). You can copy and paste the below one-liner to get started with your deployment.
