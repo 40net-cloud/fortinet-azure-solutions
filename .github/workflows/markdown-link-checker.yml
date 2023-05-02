@@ -17,4 +17,5 @@ jobs:
     - name: Markdown link checker
       uses: ruzickap/action-my-markdown-link-checker@v1
       with:
+        config_file: markdown-link-checker-config.json
         verbose: true
