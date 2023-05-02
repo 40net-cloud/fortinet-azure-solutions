@@ -1,4 +1,4 @@
-name: 'Check Markdown links'
+name: 'Check markdown link'
 
 on: 
   workflow_dispatch:
@@ -16,5 +16,5 @@ jobs:
       uses: gaurav-nelson/github-action-markdown-link-check@v1
       with:
         use-quiet-mode: 'yes'
-        use-verbose-mode: 'yes'
+        use-verbose-mode: 'no'
         base-branch: main
