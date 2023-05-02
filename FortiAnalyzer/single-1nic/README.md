@@ -71,4 +71,4 @@ Fortinet-provided scripts in this and other GitHub projects do not fall under th
 For direct issues, please refer to the [Issues](https://github.com/fortinet/azure-templates/issues) tab of this GitHub project.
 
 ## License
-[License](LICENSE) © Fortinet Technologies. All rights reserved.
+[License](/../../blob/main/LICENSE) © Fortinet Technologies. All rights reserved.

@@ -43,4 +43,4 @@ After deployment, you will be shown the IP addresses of all deployed components.
 More documentation can be found [here](../../A-Single-VM/README.md).
 
 ## License
-[License](LICENSE) © Fortinet Technologies. All rights reserved.
+[License](/../../blob/main/LICENSE) © Fortinet Technologies. All rights reserved.

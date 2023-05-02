@@ -63,4 +63,4 @@ For other questions related to this project, contact [github@fortinet.com](mailt
 
 ## License
 
-[License](LICENSE) © Fortinet Technologies. All rights reserved.
+[License](/../../blob/main/LICENSE) © Fortinet Technologies. All rights reserved.
