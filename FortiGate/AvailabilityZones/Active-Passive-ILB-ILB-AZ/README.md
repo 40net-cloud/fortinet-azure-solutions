@@ -16,4 +16,4 @@ Azure Portal Wizard Template Deployment:
 
 ## License
 
-[License](/LICENSE) © Fortinet Technologies. All rights reserved.
+[License](/../../LICENSE) © Fortinet Technologies. All rights reserved.

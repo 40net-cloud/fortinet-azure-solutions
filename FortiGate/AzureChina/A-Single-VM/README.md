@@ -2,7 +2,7 @@
 
 ## Introduction
 
-The deployment of the FortGate-VM in the Azure China region is similar to the Azure Global regions. More information about the global region deployment can be found [here](/FortiGate/A-Single-VM/README.md).
+The deployment of the FortGate-VM in the Azure China region is similar to the Azure Global regions. More information about the global region deployment can be found [here](/../../FortiGate/A-Single-VM/README.md).
 
 ## Deployment
 

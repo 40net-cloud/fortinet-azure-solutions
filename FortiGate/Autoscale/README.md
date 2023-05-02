@@ -4,7 +4,7 @@
 
 ## Design
 
-Autoscaling is documented on the [Fortinet documenation site](https://docs.fortinet.com/vm/azure/fortigate/7.0/azure-administration-guide/7.0.0/161167/deploying-auto-scaling-on-azure). By default a hybird license setup (using both BYOL and PAYG) is created to take into account the total cost of ownership of this deployment. It is of course also possible to only use one of the license types.
+Autoscaling is documented on the [Fortinet documenation site](https://docs.fortinet.com/document/fortigate-public-cloud/7.2.0/azure-administration-guide/161167/deploying-autoscaling-on-azure). By default a hybird license setup (using both BYOL and PAYG) is created to take into account the total cost of ownership of this deployment. It is of course also possible to only use one of the license types.
 
 ![FortiGate Autoscale (hybrid licensing)](https://fortinetweb.s3.amazonaws.com/docs.fortinet.com/v2/resources/0489513b-b3c1-11e9-a989-00505692583a/images/665e0b1344961387f060f12cd394091e_fig-AzureAS-HybridLicensing.png)
 
