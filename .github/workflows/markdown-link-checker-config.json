@@ -2,7 +2,7 @@
     "replacementPatterns": [
       {
         "pattern": "^/../../",
-        "replacement": "/40net-cloud/fortinet-azure-solutions/"
+        "replacement": "https://github.com/40net-cloud/fortinet-azure-solutions/"
       }
     ],
     "timeout": "20s",
