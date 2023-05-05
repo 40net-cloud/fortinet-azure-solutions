@@ -65,8 +65,8 @@ The FortiGate-VM uses [Managed Identities](https://docs.microsoft.com/en-us/azur
 The FortiGate VMs need a specific configuration to operate in your environment. This configuration can be injected during provisioning or afterwards via the different management options including GUI, CLI, FortiManager or REST API.
 
 - [Default configuration using this template](doc/config-provisioning.md)
-- [High Availability probe](../Active-Passive-ELB-ILB/doc/config-ha.md)
-- [Cloud-init](../Active-Passive-ELB-ILB/doc/config-cloud-init.md)
+- [High Availability probe](../../Active-Passive-ELB-ILB/doc/config-ha.md)
+- [Cloud-init](../../Active-Passive-ELB-ILB/doc/config-cloud-init.md)
 - Inbound connections
 - Outbound connections
 - East-West connections
