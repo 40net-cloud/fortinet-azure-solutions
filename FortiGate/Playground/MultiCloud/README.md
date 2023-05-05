@@ -20,7 +20,7 @@ This Azure ARM template will automatically deploy a full working environment con
 - VNET peering between HUB and spoke networks
 - User Defined Routes (UDR) for the different protected subnets
 
-![VNET peering design](images/fgt-ha-vnet-peering.png)
+![VNET peering design](../../VNET-Peering/images/fgt-ha-vnet-peering.png)
 
 This Terraform template can also be extended or customized based on your requirements. Additional subnets besides the ones mentioned above are not automatically generated. By extending the Terraform templates additional subnets can be added. Additional subnets will require their own routing tables and VNET peering configuration.
 
@@ -37,7 +37,7 @@ For Microsoft Azure there is a fast track option by using the Azure Cloud Shell.
 
 `cd ~/clouddrive/ && wget -qO- https://github.com/fortinet/azure-templates/archive/master.tar.gz | tar zxf - && cd ~/clouddrive/azure-templates-master/FortiGate/Terraform/VNET-Peering/ && ./deploy.sh`
 
-![Azure Cloud Shell](images/azure-cloud-shell.png)
+![Azure Cloud Shell](../../A-Single-VM/images/azure-cloud-shell.png)
 
 After deployment you will be shown the IP address of all deployed components, this information is also stored in the output directory in the summary.out file. You can access both management GUI's using the public management IP's using HTTPS on port 443.
 

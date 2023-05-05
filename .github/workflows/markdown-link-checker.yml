@@ -19,3 +19,4 @@ jobs:
       with:
         config_file: .github/workflows/markdown-link-checker-config.json
         verbose: true
+        quiet: true

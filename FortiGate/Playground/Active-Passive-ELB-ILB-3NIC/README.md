@@ -2,7 +2,7 @@
 
 ## Introduction
 
-In FortiGate 7.0.x release it is now possible to deploy a FGCP cluster with only 3 NICs instead of four. The HA MGMT and HA SYNC are combined into 1 inteface. All other deployment information can be found [here](/FortiGate/Active-Passive-ELB-ILB/README.md).
+In FortiGate 7.0.x release it is now possible to deploy a FGCP cluster with only 3 NICs instead of four. The HA MGMT and HA SYNC are combined into 1 inteface. All other deployment information can be found [here](../../Active-Passive-ELB-ILB/README.md).
 
 Azure Portal Wizard Template Deployment:
 [![Deploy Azure Portal Button](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.svg?sanitize=true)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2F40net-cloud%2Ffortinet-azure-solutions%2Fmain%2FFortiGate%2FPlayground%2FActive-Passive-ELB-ILB-3NIC%2Fazuredeploy.json/createUIDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2F40net-cloud%2Ffortinet-azure-solutions%2Fmain%2FFortiGate%2FPlayground%2FActive-Passive-ELB-ILB-3NIC%2FcreateUiDefinition.json)
