@@ -308,7 +308,7 @@
                 },
                 "toolTip": {
                   "virtualNetwork": "Virtual Network for deployment of the FortiWeb VM solution",
-                  "subnets": "Requirement to have 4 subnets connected to the FortiWeb VM: external, internal"
+                  "subnets": "During deployment 2 subnets will be deployed: external, internal"
                 },
                 "defaultValue": {
                   "name": "FortiWeb-VNET",
