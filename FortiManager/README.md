@@ -2,8 +2,8 @@
 
 This directory includes a set of templates using ARM or Terraform to get you started in Azure with FortiManager.
 
-- [single](single/): Default deployment ARM template in a new or existing VNET with access from internet via a public IP
-- [single](ha/): Default deployment ARM template in a new or existing VNET with access from internet via a public IP
+- [single](single/): A single FortiManager VM
+- [ha](ha/): A active/passive FortiManager Cluster
 - [Terraform](Terraform/): Default deployment using Terraform
 
 ## Support

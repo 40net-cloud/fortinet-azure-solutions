@@ -3,7 +3,7 @@
 
 ## Introduction
 
-This deployment is similar to the [FortiManager Single 1 NIC](../single-1nic/README.md) deployment but it doesn't deploy any public IP. This is useful for deploy behind a FortiGate.
+This deployment is similar to the [FortiManager Single 1 NIC](../singlefmg-single.png/README.md) deployment but it doesn't deploy any public IP. This is useful for deploy behind a FortiGate.
 
 ## Design
 
@@ -15,7 +15,7 @@ This Azure ARM template will automatically deploy a full working environment con
 - 1 VNETs containing a subnet for the FortiManager
 - 1 Basic public IP
 
-![FortiGate-VM azure design](../../single-1nic/images/fmg-single.png)
+![FortiGate-VM azure design](../../singlefmg-single.png/images/fmg-single.png)
 
 The VM will have the fifth IP in the network range as his static IP. You can adapt the 'sn1IPfg1' variable in the ARM template to change this.
 
@@ -34,7 +34,7 @@ For the deployment Terraform is required. This multi-cloud deployment tool can b
 
 To fast track the deployment, use the Azure Cloud Shell. The Azure Cloud Shell is an in-browser CLI that contains Terraform and other tools for deployment into Microsoft Azure. It is accessible via the Azure Portal or directly at [https://shell.azure.com/](https://shell.azure.com). You can copy and paste the below one-liner to get started with your deployment.
 
-`cd ~/clouddrive/ && wget -qO- https://github.com/fortinet/azure-templates/archive/main.tar.gz | tar zxf - && cd ~/clouddrive/azure-templates-main/FortiManager/Terraform/single-1nic/ && ./deploy.sh`
+`cd ~/clouddrive/ && wget -qO- https://github.com/fortinet/azure-templates/archive/main.tar.gz | tar zxf - && cd ~/clouddrive/azure-templates-main/FortiManager/Terraform/singlefmg-single.png/ && ./deploy.sh`
 
 ![Azure Cloud Shell](images/azure-cloud-shell.png)
 
@@ -44,7 +44,7 @@ After deployment, you will be shown the IP addresses of all deployed components.
 
 ## Requirements and limitations
 
-More documentation can be found [the ARM template version](../../single-1nic/README.md).
+More documentation can be found [the ARM template version](../../singlefmg-single.png/README.md).
 
 ## Support
 
