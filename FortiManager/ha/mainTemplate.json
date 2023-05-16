@@ -669,7 +669,7 @@
     {
       "type": "Microsoft.Compute/virtualMachines",
       "name": "[variables('fmgAVmName')]",
-      "apiVersion": "2019-12-01",
+      "apiVersion": "2022-08-01",
       "tags": {
         "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
@@ -745,7 +745,7 @@
     {
       "type": "Microsoft.Compute/virtualMachines",
       "name": "[variables('fmgBVmName')]",
-      "apiVersion": "2019-12-01",
+      "apiVersion": "2022-08-01",
       "tags": {
         "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
