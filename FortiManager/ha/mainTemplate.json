@@ -266,6 +266,17 @@
         "description": "Subnet 1 start address, 1 consecutive private IPs are required"
       }
     },
+    "serialConsole": {
+      "type": "string",
+      "defaultValue": "yes",
+      "allowedValues": [
+        "yes",
+        "no"
+      ],
+      "metadata": {
+        "description": "Enable Serial Console"
+      }
+    },
     "diskType": {
       "type": "string",
       "defaultValue": "Default",
@@ -389,6 +400,7 @@
     "publicIPAddress2Id": {
       "id": "[variables('publicIP2Id')]"
     },
+    "serialConsoleEnabled": "[if(equals(parameters('serialConsole'),'yes'),'true','false')]",
     "NSGName": "[concat(parameters('namePrefix'),'-',uniqueString(resourceGroup().id),'-NSG')]",
     "sn1IPArray": "[split(parameters('subnet1Prefix'),'.')]",
     "sn1IPArray2ndString": "[string(variables('sn1IPArray')[3])]",
@@ -794,6 +806,11 @@
               "id": "[variables('fmgBNic1Id')]"
             }
           ]
+        },
+        "diagnosticsProfile": {
+          "bootDiagnostics": {
+            "enabled": "[variables('serialConsoleEnabled')]"
+          }
         }
       }
     }
