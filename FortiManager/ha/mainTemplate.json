@@ -734,6 +734,11 @@
               "id": "[variables('fmgANic1Id')]"
             }
           ]
+        },
+        "diagnosticsProfile": {
+          "bootDiagnostics": {
+            "enabled": "[variables('serialConsoleEnabled')]"
+          }
         }
       }
     },
