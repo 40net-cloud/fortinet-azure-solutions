@@ -33,7 +33,7 @@ jobs:
       uses: azure/powershell@v1.2.0
       with:
         inlineScript: |
-          $buildingBlocks = @("single-1nic", "ha-1nic")
+          $buildingBlocks = @("single", "ha")
           $fmgMarketplaceVersions = @()
           $fmgMarketplaceVersionsUI = @()
 
