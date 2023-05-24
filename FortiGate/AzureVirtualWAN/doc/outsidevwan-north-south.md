@@ -32,7 +32,7 @@ A full demo of the BGP peering between Azure Virtual WAN and the FortiGate-VM ca
 * Routing: The routing can be handled statically or dynamically both on the FortiGate and Azure level. To make the setup dynamically, BGP peering, needs to be enabled on the Virtual WAN Hub and comunnication needs to be established between the FortiGate-VM units and the Azure Routing Service.
 * NAT: Routing directly from the workload in a spoke to the FortiGate in a different spoke across the Virtual WAN Hub is not possible. The inbound traffic should use SNAT behind the FortiGate devices.
 * Licenses for Fortigate
-  - BYOL: VM, VM Subscription or Flex-VM licenses can be used on these units. A demo license can be made available via your Fortinet partner or on our website. Licenses need to be registered on the [Fortinet support site](http://support.fortinet.com). Download the .lic file after registration. Note, these files may not work until 60 minutes after it's initial creation.
+  - BYOL: VM, VM Subscription or FortiFlex licenses can be used on these units. A demo license can be made available via your Fortinet partner or on our website. Licenses need to be registered on the [Fortinet support site](http://support.fortinet.com). Download the .lic file after registration. Note, these files may not work until 60 minutes after it's initial creation.
   - PAYG or OnDemand: These licenses are automatically generated during the deployment of the FortiGate systems.
 
 ## Flows

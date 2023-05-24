@@ -409,7 +409,7 @@
       "type": "string",
       "defaultValue": "",
       "metadata": {
-        "description": "FortiGate BYOL Flex-VM license token"
+        "description": "FortiGate BYOL FortiFlex license token"
       }
     },
     "customImageReference": {

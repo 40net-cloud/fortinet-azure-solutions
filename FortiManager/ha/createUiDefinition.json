@@ -526,7 +526,7 @@
                 "visible": "[and(equals(basics('fortiManagerImageSKU'), 'fortinet-fortimanager'),not(steps('instance').fmgLicense.fortiFlexCheck))]"
               },
               {
-                "name": "fmgAflexvm",
+                "name": "fmgAfortiflex",
                 "type": "Microsoft.Common.TextBox",
                 "label": "FortiManager A FortiFlex",
                 "defaultValue": "",
@@ -539,7 +539,7 @@
                 "visible": "[and(equals(basics('fortiManagerImageSKU'), 'fortinet-fortimanager'),steps('instance').fmgLicense.fortiFlexCheck)]"
               },
               {
-                "name": "fmgBflexvm",
+                "name": "fmgBfortiflex",
                 "type": "Microsoft.Common.TextBox",
                 "label": "FortiManager B FortiFlex",
                 "defaultValue": "",
@@ -839,8 +839,8 @@
       "diskType": "[steps('instance').datadisk.diskType]",
       "fortiManagerLicenseBYOLA": "[steps('instance').fmgLicense.fmgAcontent]",
       "fortiManagerLicenseBYOLB": "[steps('instance').fmgLicense.fmgBcontent]",
-      "fortiManagerLicenseFlexVMA": "[steps('instance').fmgLicense.fmgAflexvm]",
-      "fortiManagerLicenseFlexVMB": "[steps('instance').fmgLicense.fmgBflexvm]",
+      "fortiManagerLicenseFlexVMA": "[steps('instance').fmgLicense.fmgAfortiflex]",
+      "fortiManagerLicenseFlexVMB": "[steps('instance').fmgLicense.fmgBfortiflex]",
       "fortiManagerSerialNumberA": "[steps('instance').fmgLicense.fmgAserial]",
       "fortiManagerSerialNumberB": "[steps('instance').fmgLicense.fmgBserial]",
       "publicIP1NewOrExisting": "[steps('publicip').publicip1.newOrExistingOrNone]",

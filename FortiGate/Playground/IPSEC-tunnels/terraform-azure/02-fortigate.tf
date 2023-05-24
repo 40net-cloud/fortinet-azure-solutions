@@ -156,7 +156,7 @@ resource "azurerm_linux_virtual_machine" "fgtvm" {
     fgt_csp             = "azure"
     fgt_vm_name         = "${var.PREFIX}-FGT-VM"
     fgt_license_file    = var.FGT_BYOL_LICENSE_FILE
-    fgt_license_flexvm  = var.FGT_BYOL_FLEXVM_LICENSE_FILE
+    fgt_license_fortiflex  = var.FGT_BYOL_FORTIFLEX_LICENSE_TOKEN
     fgt_username        = var.USERNAME
     fgt_password        = var.PASSWORD
     fgt_ssh_public_key  = var.FGT_SSH_PUBLIC_KEY_FILE

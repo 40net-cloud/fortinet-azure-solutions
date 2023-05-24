@@ -363,14 +363,14 @@
       "type": "string",
       "defaultValue": "",
       "metadata": {
-        "description": "Primary FortiManager BYOL Flex-VM license token"
+        "description": "Primary FortiManager BYOL FortiFlex license token"
       }
     },
     "fortiAnalyzerLicenseFlexVMB": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
-        "description": "Secondary FortiManager BYOL Flex-VM license token"
+        "description": "Secondary FortiManager BYOL FortiFlex license token"
       }
     },
     "fortiAnalyzerASerialNumber": {

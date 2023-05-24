@@ -354,7 +354,7 @@ data "template_file" "fgt_a_custom_data" {
   vars = {
     fgt_vm_name         = "${var.PREFIX}-A-VM-FGT"
     fgt_license_file    = var.FGT_BYOL_LICENSE_FILE_A
-    fgt_license_flexvm  = var.FGT_BYOL_FLEXVM_LICENSE_FILE_A
+    fgt_license_fortiflex  = var.FGT_BYOL_FORTIFLEX_LICENSE_TOKEN_A
     fgt_username        = var.USERNAME
     fgt_ssh_public_key  = var.FGT_SSH_PUBLIC_KEY_FILE
     fgt_config_ha       = var.FGT_CONFIG_HA
@@ -572,7 +572,7 @@ data "template_file" "fgt_b_custom_data" {
   vars = {
     fgt_vm_name         = "${var.PREFIX}-B-VM-FGT"
     fgt_license_file    = var.FGT_BYOL_LICENSE_FILE_B
-    fgt_license_flexvm  = var.FGT_BYOL_FLEXVM_LICENSE_FILE_B
+    fgt_license_fortiflex  = var.FGT_BYOL_FORTIFLEX_LICENSE_TOKEN_B
     fgt_username        = var.USERNAME
     fgt_ssh_public_key  = var.FGT_SSH_PUBLIC_KEY_FILE
     fgt_config_ha       = var.FGT_CONFIG_HA

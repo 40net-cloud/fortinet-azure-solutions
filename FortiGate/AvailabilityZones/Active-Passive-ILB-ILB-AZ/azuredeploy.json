@@ -271,14 +271,14 @@
       "type": "string",
       "defaultValue": "",
       "metadata": {
-        "description": "Primary FortiGate BYOL Flex-VM license token"
+        "description": "Primary FortiGate BYOL FortiFlex license token"
       }
     },
     "fortiGateLicenseFlexVMB": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
-        "description": "Secondary FortiGate BYOL Flex-VM license token"
+        "description": "Secondary FortiGate BYOL FortiFlex license token"
       }
     },
     "location": {

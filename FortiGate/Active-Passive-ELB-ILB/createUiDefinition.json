@@ -460,8 +460,8 @@
               {
                 "name": "fgtLicenseFlexVMCheck",
                 "type": "Microsoft.Common.CheckBox",
-                "label": "My organisation is using the Flex-VM subscription service.",
-                "toolTip": "My organisation is using the Flex-VM subscription service.",
+                "label": "My organisation is using the FortiFlex subscription service.",
+                "toolTip": "My organisation is using the FortiFlex subscription service.",
                 "visible": "[equals(basics('fortiGateImageSKU'), 'fortinet_fg-vm')]"
               },
               {
@@ -499,11 +499,11 @@
                 "visible": "[and(equals(basics('fortiGateImageSKU'), 'fortinet_fg-vm'),not(steps('instance').fgtLicense.fgtLicenseFlexVMCheck))]"
               },
               {
-                "name": "fgtAflexvm",
+                "name": "fgtAfortiflex",
                 "type": "Microsoft.Common.TextBox",
-                "label": "FortiGate A Flex-VM",
+                "label": "FortiGate A FortiFlex",
                 "defaultValue": "",
-                "toolTip": "FortiGate A Flex-VM license token",
+                "toolTip": "FortiGate A FortiFlex license token",
                 "constraints": {
                   "required": false,
                   "regex": "^[A-Za-z0-9-]{1,64}$",
@@ -512,11 +512,11 @@
                 "visible": "[steps('instance').fgtLicense.fgtLicenseFlexVMCheck]"
               },
               {
-                "name": "fgtBflexvm",
+                "name": "fgtBfortiflex",
                 "type": "Microsoft.Common.TextBox",
-                "label": "FortiGate B Flex-VM",
+                "label": "FortiGate B FortiFlex",
                 "defaultValue": "",
-                "toolTip": "FortiGate B Flex-VM license token",
+                "toolTip": "FortiGate B FortiFlex license token",
                 "constraints": {
                   "required": false,
                   "regex": "^[A-Za-z0-9-]{1,64}$",
@@ -1095,8 +1095,8 @@
       "availabilityOptions": "[steps('instance').availabilityOptions.availabilityOptions]",
       "fortiGateLicenseBYOLA": "[steps('instance').fgtLicense.fgtAcontent]",
       "fortiGateLicenseBYOLB": "[steps('instance').fgtLicense.fgtBcontent]",
-      "fortiGateLicenseFlexVMA": "[steps('instance').fgtLicense.fgtAflexvm]",
-      "fortiGateLicenseFlexVMB": "[steps('instance').fgtLicense.fgtBflexvm]",
+      "fortiGateLicenseFlexVMA": "[steps('instance').fgtLicense.fgtAfortiflex]",
+      "fortiGateLicenseFlexVMB": "[steps('instance').fgtLicense.fgtBfortiflex]",
       "acceleratedNetworking": "[steps('networking').acceleratednetworksection.acceleratednetworking]",
       "publicIP1NewOrExisting": "[steps('publicip').loadbalancerpublicip.newOrExistingOrNone]",
       "publicIP2NewOrExisting": "[steps('publicip').fgtamgmtpublicip.newOrExistingOrNone]",

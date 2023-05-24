@@ -433,7 +433,7 @@
                 "visible": "[and(equals(basics('fortiAnalyzerImageSKU'), 'fortinet-fortianalyzer'),not(steps('instance').fazLicense.fortiFlexCheck))]"
               },
               {
-                "name": "fazAflexvm",
+                "name": "fazAfortiflex",
                 "type": "Microsoft.Common.TextBox",
                 "label": "FortiAnalyzer A FortiFlex",
                 "defaultValue": "",
@@ -446,7 +446,7 @@
                 "visible": "[and(equals(basics('fortiAnalyzerImageSKU'), 'fortinet-fortianalyzer'),steps('instance').fazLicense.fortiFlexCheck)]"
               },
               {
-                "name": "fazBflexvm",
+                "name": "fazBfortiflex",
                 "type": "Microsoft.Common.TextBox",
                 "label": "FortiAnalyzer B FortiFlex",
                 "defaultValue": "",
@@ -682,8 +682,8 @@
       "diskType": "[steps('instance').datadisk.diskType]",
       "fortiAnalyzerLicenseBYOLA": "[steps('instance').fazLicense.fazAcontent]",
       "fortiAnalyzerLicenseBYOLB": "[steps('instance').fazLicense.fazBcontent]",
-      "fortiAnalyzerLicenseFlexVMA": "[steps('instance').fazLicense.fazAflexvm]",
-      "fortiAnalyzerLicenseFlexVMB": "[steps('instance').fazLicense.fazBflexvm]",
+      "fortiAnalyzerLicenseFlexVMA": "[steps('instance').fazLicense.fazAfortiflex]",
+      "fortiAnalyzerLicenseFlexVMB": "[steps('instance').fazLicense.fazBfortiflex]",
       "fortiAnalyzerSerialNumberA": "[steps('instance').fazLicense.fazAserial]",
       "fortiAnalyzerSerialNumberB": "[steps('instance').fazLicense.fazBserial]",
       "publicIPNewOrExisting": "[steps('publicip').publicip.newOrExistingOrNone]",
