@@ -500,6 +500,7 @@
     "zone2": [
       "2"
     ],
+    "zones": [ "1", "2", "3" ],
     "imageReferenceMarketplace": {
       "publisher": "[variables('imagePublisher')]",
       "offer": "[variables('imageOffer')]",
@@ -824,7 +825,8 @@
               "privateIPAllocationMethod": "Static",
               "subnet": {
                 "id": "[variables('subnet2Id')]"
-              }
+              },
+              "zones": "[if(variables('useAZ'), variables('zones'), json('null'))]"
             }
           }
         ],
