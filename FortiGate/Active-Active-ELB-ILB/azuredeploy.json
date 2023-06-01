@@ -825,9 +825,9 @@
               "privateIPAllocationMethod": "Static",
               "subnet": {
                 "id": "[variables('subnet2Id')]"
-              },
-              "zones": "[if(variables('useAZ'), variables('zones'), json('null'))]"
-            }
+              }
+            },
+            "zones": "[if(variables('useAZ'), variables('zones'), json('null'))]"
           }
         ],
         "backendAddressPools": [
