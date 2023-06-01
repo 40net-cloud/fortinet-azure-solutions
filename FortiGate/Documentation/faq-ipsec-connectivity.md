@@ -46,21 +46,21 @@ The example below shows local-id type and value set to fqdn. The localid-type an
 * For FortiGate A/P LB sandwich, ensure that UDP500 and UDP4500 Load balancing rules are functionnal
   1. In Azure, go to the Azure external load balancer, click on Insights and verify that the primary FortiGate is marked as healthy (answering health probes). The other FortiGate is secondary so should be marked as unhealthy
 
-      ![lbinsights](images/LB-Insights-ap.png)
+      ![lbinsights](images/faq-ipsec-tr-lb-Insights-ap.png)
 
   2. Check on the FortiGate if udp 500 and udp 4500 are reaching the FortiGate from the on-premise device. Use the command ```diagnose sniffer packet any 'port 500 or port 4500' 4 0 a ```  or the following command if you want to only capture traffic coming from your peer. Replace x.x.x.x with the actual peer ip ```diagnose sniffer packet any '(port 500 or port 4500) and host x.x.x.x' 4 0 a ```
 
-      ![tcpdump](images/ipsec-tcpdump.png)
+      ![tcpdump](images/faq-ipsec-tr-ipsec-tcpdump.png)
 
   3. If the tcpdump does not show any packet. Please check your NSG rules.
-        ![nsg](images/nsg.png)
+        ![nsg](images/faq-ipsec-tr-nsg.png)
 
 ### <ins>FortiGate</ins>
 * To check log relating to vpn events on the FortiGate go to Log & Report, Events and then clickk on VPN events
-      ![vpnevents](images/vpnevents.png)
+      ![vpnevents](images/faq-ipsec-tr-vpnevents.png)
 
 * Click on the error message to view further details
-      ![vpnevents2](images/vpnevents2.png)
+      ![vpnevents2](images/faq-ipsec-tr-vpnevents2.png)
 
 * For advanced troubleshooting, use the commands below
 
