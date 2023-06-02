@@ -85,6 +85,7 @@ The FortiGate VMs need a specific configuration to match the deployed environmen
 
 - [Default configuration using this template](doc/config-provisioning.md)
 - [Availability Zone](doc/config-availability-zone.md)
+- [Upload VHD](../Documentation/faq-upload-vhd.md)
 
 ### Fabric Connector
 

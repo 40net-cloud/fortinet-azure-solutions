@@ -84,6 +84,7 @@ The FortiGate VMs need a specific configuration to operate in your environment. 
 
 - [Default configuration using this template](doc/config-provisioning.md)
 - [Failover configuration](doc/config-failover.md)
+- [Upload VHD](../Documentation/faq-upload-vhd.md)
 
 ### Fabric Connector
 

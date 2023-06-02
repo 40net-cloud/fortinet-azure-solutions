@@ -94,6 +94,7 @@ The FortiGate VMs need a specific configuration to match the deployed environmen
   - [NAT considerations: 1-to-1 and 1-to-many](doc/config-outbound-nat-considerations.md)
 - [East-West connections](doc/config-east-west-connections.md)
 - [IPSEC Connectivity](../Documentation/faq-ipsec-connectivity.md)
+- [Upload VHD](../Documentation/faq-upload-vhd.md)
 
 ### Fabric Connector
 
