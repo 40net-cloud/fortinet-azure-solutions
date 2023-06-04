@@ -500,7 +500,11 @@
     "zone2": [
       "2"
     ],
-    "zones": [ "1", "2", "3" ],
+    "zones": [
+      "1",
+      "2",
+      "3"
+    ],
     "imageReferenceMarketplace": {
       "publisher": "[variables('imagePublisher')]",
       "offer": "[variables('imageOffer')]",
