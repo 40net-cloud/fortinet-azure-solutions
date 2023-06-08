@@ -302,7 +302,7 @@
         "description": "FortiGate BYOL license content"
       }
     },
-    "fortiGateLicenseFlexVM": {
+    "fortiGateLicenseFortiFlex": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
@@ -483,7 +483,7 @@
           "fortiManagerIP": { "value": "[parameters('fortiManagerIP')]" },
           "fortiManagerSerial": { "value": "[parameters('fortiManagerSerial')]" },
           "fortiGateLicenseBYOL": { "value": "[parameters('fortiGateLicenseBYOL')]" },
-          "fortiGateLicenseFlexVM": { "value": "[parameters('fortiGateLicenseFlexVM')]" },
+          "fortiGateLicenseFortiFlex": { "value": "[parameters('fortiGateLicenseFortiFlex')]" },
           "location": { "value": "[parameters('location')]" },
           "fortinetTags": { "value": "[parameters('fortinetTags')]" }
         }
