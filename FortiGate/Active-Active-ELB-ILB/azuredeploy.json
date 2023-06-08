@@ -367,14 +367,14 @@
         "description": "Secondary FortiGate BYOL license content"
       }
     },
-    "fortiGateLicenseFlexVMA": {
+    "fortiGateLicenseFortiFlexA": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
         "description": "Primary FortiGate BYOL FortiFlex license token"
       }
     },
-    "fortiGateLicenseFlexVMB": {
+    "fortiGateLicenseFortiFlexB": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
@@ -422,12 +422,12 @@
     "fgbCustomDataBody": "[concat('config system sdn-connector\nedit AzureSDN\nset type azure\nnext\nend\nconfig router static\n edit 1\n set gateway ', variables('sn1GatewayIP'), '\n set device port1\n next\n edit 2\n set dst ', parameters('vnetAddressPrefix'), '\n set gateway ', variables('sn2GatewayIP'), '\n set device port2\n next\n edit 3\nset dst 168.63.129.16 255.255.255.255\nset device port2\n set gateway ', variables ('sn2GatewayIP'), '\n next\nedit 4\nset dst 168.63.129.16 255.255.255.255\nset device port1\n set gateway ', variables ('sn1GatewayIP'), '\n next\n end\n config system probe-response\n set mode http-probe\n end\n config system interface\n edit port1\n set mode static\n set ip ', variables('sn1IPfgb'), '/', variables('sn1CIDRmask'), '\n set description external\n set allowaccess ping ssh https probe-response\n next\n edit port2\n set mode static\n set ip ', variables('sn2IPfgb'), '/', variables('sn2CIDRmask'), '\n set description internal\n set allowaccess ping ssh https probe-response\n next\n end\n', variables('fmgCustomData'), parameters('fortiGateAdditionalCustomData'), '\n')]",
     "customDataLicenseHeader": "--12345\nContent-Type: text/plain; charset=\"us-ascii\"\nMIME-Version: 1.0\nContent-Transfer-Encoding: 7bit\nContent-Disposition: attachment; filename=\"license\"\n\n",
     "customDataFooter": "\n--12345--\n",
-    "fgaCustomDataFlexVM": "[if(equals(parameters('fortiGateLicenseFlexVMA'),''),'',concat('LICENSE-TOKEN:',parameters('fortiGateLicenseFlexVMA'), '\n'))]",
-    "fgbCustomDataFlexVM": "[if(equals(parameters('fortiGateLicenseFlexVMB'),''),'',concat('LICENSE-TOKEN:',parameters('fortiGateLicenseFlexVMB'), '\n'))]",
-    "fgaCustomDataCombined": "[concat(variables('customDataHeader'),variables('fgaCustomDataBody'),variables('customDataLicenseHeader'), variables('fgaCustomDataFlexVM'), parameters('fortiGateLicenseBYOLA'), variables('customDataFooter'))]",
-    "fgbCustomDataCombined": "[concat(variables('customDataHeader'),variables('fgbCustomDataBody'),variables('customDataLicenseHeader'), variables('fgbCustomDataFlexVM'), parameters('fortiGateLicenseBYOLB'), variables('customDataFooter'))]",
-    "fgaCustomData": "[base64(if(and(equals(parameters('fortiGateLicenseBYOLA'),''),equals(parameters('fortiGateLicenseFlexVMA'),'')),variables('fgaCustomDataBody'),variables('fgaCustomDataCombined')))]",
-    "fgbCustomData": "[base64(if(and(equals(parameters('fortiGateLicenseBYOLB'),''),equals(parameters('fortiGateLicenseFlexVMB'),'')),variables('fgbCustomDataBody'),variables('fgbCustomDataCombined')))]",
+    "fgaCustomDataFortiFlex": "[if(equals(parameters('fortiGateLicenseFortiFlexA'),''),'',concat('LICENSE-TOKEN:',parameters('fortiGateLicenseFortiFlexA'), '\n'))]",
+    "fgbCustomDataFortiFlex": "[if(equals(parameters('fortiGateLicenseFortiFlexB'),''),'',concat('LICENSE-TOKEN:',parameters('fortiGateLicenseFortiFlexB'), '\n'))]",
+    "fgaCustomDataCombined": "[concat(variables('customDataHeader'),variables('fgaCustomDataBody'),variables('customDataLicenseHeader'), variables('fgaCustomDataFortiFlex'), parameters('fortiGateLicenseBYOLA'), variables('customDataFooter'))]",
+    "fgbCustomDataCombined": "[concat(variables('customDataHeader'),variables('fgbCustomDataBody'),variables('customDataLicenseHeader'), variables('fgbCustomDataFortiFlex'), parameters('fortiGateLicenseBYOLB'), variables('customDataFooter'))]",
+    "fgaCustomData": "[base64(if(and(equals(parameters('fortiGateLicenseBYOLA'),''),equals(parameters('fortiGateLicenseFortiFlexA'),'')),variables('fgaCustomDataBody'),variables('fgaCustomDataCombined')))]",
+    "fgbCustomData": "[base64(if(and(equals(parameters('fortiGateLicenseBYOLB'),''),equals(parameters('fortiGateLicenseFortiFlexB'),'')),variables('fgbCustomDataBody'),variables('fgbCustomDataCombined')))]",
     "routeTable3Name": "[concat(parameters('fortiGateNamePrefix'),'-RouteTable-',parameters('subnet3Name'))]",
     "routeTable3Id": "[resourceId('Microsoft.Network/routeTables',variables('routeTable3Name'))]",
     "fgaNic1Name": "[concat(variables('fgaVmName'),'-Nic1')]",
