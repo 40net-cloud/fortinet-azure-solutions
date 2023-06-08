@@ -92,10 +92,10 @@
         "fortiManagerLicenseBYOLB": {
             "value": ""
         },
-        "fortiManagerLicenseFlexVMA": {
+        "fortiManagerLicenseFortiFlexA": {
             "value": ""
         },
-        "fortiManagerLicenseFlexVMB": {
+        "fortiManagerLicenseFortiFlexB": {
             "value": ""
         },
         "fortiManagerSerialNumberA": {
