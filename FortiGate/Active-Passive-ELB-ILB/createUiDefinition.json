@@ -458,7 +458,7 @@
                 }
               },
               {
-                "name": "fgtLicenseFlexVMCheck",
+                "name": "fgtLicenseFortiFlexCheck",
                 "type": "Microsoft.Common.CheckBox",
                 "label": "My organisation is using the FortiFlex subscription service.",
                 "toolTip": "My organisation is using the FortiFlex subscription service.",
@@ -479,7 +479,7 @@
                   "openMode": "text",
                   "encoding": "UTF-8"
                 },
-                "visible": "[and(equals(basics('fortiGateImageSKU'), 'fortinet_fg-vm'),not(steps('instance').fgtLicense.fgtLicenseFlexVMCheck))]"
+                "visible": "[and(equals(basics('fortiGateImageSKU'), 'fortinet_fg-vm'),not(steps('instance').fgtLicense.fgtLicenseFortiFlexCheck))]"
               },
               {
                 "name": "fgtBcontent",
@@ -496,7 +496,7 @@
                   "openMode": "text",
                   "encoding": "UTF-8"
                 },
-                "visible": "[and(equals(basics('fortiGateImageSKU'), 'fortinet_fg-vm'),not(steps('instance').fgtLicense.fgtLicenseFlexVMCheck))]"
+                "visible": "[and(equals(basics('fortiGateImageSKU'), 'fortinet_fg-vm'),not(steps('instance').fgtLicense.fgtLicenseFortiFlexCheck))]"
               },
               {
                 "name": "fgtAfortiflex",
@@ -509,7 +509,7 @@
                   "regex": "^[A-Za-z0-9-]{1,64}$",
                   "validationMessage": "Only alphanumeric characters and a dash are allowed, and the value must be 1 to 64 characters."
                 },
-                "visible": "[steps('instance').fgtLicense.fgtLicenseFlexVMCheck]"
+                "visible": "[and(equals(basics('fortiGateImageSKU'), 'fortinet_fg-vm'),steps('instance').fgtLicense.fgtLicenseFortiFlexCheck)]"
               },
               {
                 "name": "fgtBfortiflex",
@@ -522,7 +522,7 @@
                   "regex": "^[A-Za-z0-9-]{1,64}$",
                   "validationMessage": "Only alphanumeric characters and a dash are allowed, and the value must be 1 to 64 characters."
                 },
-                "visible": "[steps('instance').fgtLicense.fgtLicenseFlexVMCheck]"
+                "visible": "[and(equals(basics('fortiGateImageSKU'), 'fortinet_fg-vm'),steps('instance').fgtLicense.fgtLicenseFortiFlexCheck)]"
               },
               {
                 "name": "fgtLicensePAYGInfo",
@@ -1095,8 +1095,8 @@
       "availabilityOptions": "[steps('instance').availabilityOptions.availabilityOptions]",
       "fortiGateLicenseBYOLA": "[steps('instance').fgtLicense.fgtAcontent]",
       "fortiGateLicenseBYOLB": "[steps('instance').fgtLicense.fgtBcontent]",
-      "fortiGateLicenseFlexVMA": "[steps('instance').fgtLicense.fgtAfortiflex]",
-      "fortiGateLicenseFlexVMB": "[steps('instance').fgtLicense.fgtBfortiflex]",
+      "fortiGateLicenseFortiFlexA": "[steps('instance').fgtLicense.fgtAfortiflex]",
+      "fortiGateLicenseFortiFlexB": "[steps('instance').fgtLicense.fgtBfortiflex]",
       "acceleratedNetworking": "[steps('networking').acceleratednetworksection.acceleratednetworking]",
       "publicIP1NewOrExisting": "[steps('publicip').loadbalancerpublicip.newOrExistingOrNone]",
       "publicIP2NewOrExisting": "[steps('publicip').fgtamgmtpublicip.newOrExistingOrNone]",
