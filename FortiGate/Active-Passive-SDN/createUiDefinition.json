@@ -835,7 +835,7 @@
           {
             "name": "BasicVsStandardIPConfirmation",
             "type": "Microsoft.Common.CheckBox",
-            "label": "Verify that deployment might fail as the SKUs for the public IPs are different.",
+            "label": "Deployment might fail with different public IP SKUs.",
             "toolTip": "Select this box if you are ok with the different public IP SKUs",
             "visible": "[and(not(and(equals(steps('publicip').externalpublicip.sku, 'Basic'),equals(steps('publicip').fgtamgmtpublicip.sku, 'Basic'),equals(steps('publicip').fgtbmgmtpublicip.sku, 'Basic'))),not(and(equals(steps('publicip').externalpublicip.sku, 'Standard'),equals(steps('publicip').fgtamgmtpublicip.sku, 'Standard'),equals(steps('publicip').fgtbmgmtpublicip.sku, 'Standard'))))]",
             "constraints": {
