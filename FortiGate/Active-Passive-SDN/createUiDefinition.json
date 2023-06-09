@@ -4,7 +4,6 @@
   "version": "0.1.2-preview",
   "parameters": {
     "config": {
-      "isWizard": true,
       "basics": {
         "resourceGroup": {
           "allowExisting": true
@@ -916,6 +915,16 @@
               "uri": "https://docs.microsoft.com/en-us/azure/virtual-network/ip-services/public-ip-addresses"
             },
             "visible": "[and(equals(steps('instance').availabilityOptions.availabilityOptions,'Availability Set'),equals(steps('publicip').fgtbmgmtpublicip.sku, 'Basic'))]"
+          },
+          {
+            "name": "BasicVsStandardIPConfirmation",
+            "type": "Microsoft.Common.CheckBox",
+            "label": "Verify that deployment might fail as the SKUs for the public IPs are different.",
+            "toolTip": "Select this box if you are ok with the different public IP SKUs",
+            "visible": "[and(not(and(equals(steps('publicip').externalpublicip.sku, 'Basic'),equals(steps('publicip').fgtamgmtpublicip.sku, 'Basic'),equals(steps('publicip').fgtbmgmtpublicip.sku, 'Basic'))),not(and(equals(steps('publicip').externalpublicip.sku, 'Standard'),equals(steps('publicip').fgtamgmtpublicip.sku, 'Standard'),equals(steps('publicip').fgtbmgmtpublicip.sku, 'Standard'))))]",
+            "constraints": {
+              "required": "[and(not(and(equals(steps('publicip').externalpublicip.sku, 'Basic'),equals(steps('publicip').fgtamgmtpublicip.sku, 'Basic'),equals(steps('publicip').fgtbmgmtpublicip.sku, 'Basic'))),not(and(equals(steps('publicip').externalpublicip.sku, 'Standard'),equals(steps('publicip').fgtamgmtpublicip.sku, 'Standard'),equals(steps('publicip').fgtbmgmtpublicip.sku, 'Standard'))))]"
+            }
           }
         ]
       },
