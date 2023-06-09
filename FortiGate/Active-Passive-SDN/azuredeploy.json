@@ -842,7 +842,7 @@
       },
       "zones": "[variables('pipZones')]",
       "properties": {
-        "publicIPAllocationMethod": "[if(equals(parameters('publicIP2AddressSku'),'Basic'),parameters('publicIP2AddressType'),'Static')]",
+        "publicIPAllocationMethod": "[if(equals(parameters('publicIP2AddressSku'),'Basic'),parameters('publicIP2AddressType'),'Static')]"
       }
     },
     {
@@ -859,7 +859,7 @@
       },
       "zones": "[variables('pipZones')]",
       "properties": {
-        "publicIPAllocationMethod": "[if(equals(parameters('publicIP3AddressSku'),'Basic'),parameters('publicIP3AddressType'),'Static')]",
+        "publicIPAllocationMethod": "[if(equals(parameters('publicIP3AddressSku'),'Basic'),parameters('publicIP3AddressType'),'Static')]"
       }
     },
     {
