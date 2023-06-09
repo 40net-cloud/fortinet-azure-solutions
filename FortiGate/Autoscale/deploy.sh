@@ -11,7 +11,7 @@ echo "
 # Stop on error
 set +e
 
-RELEASE_VERSION="3.5.0"
+RELEASE_VERSION="3.5.2"
 
 DOWNLOAD_LINK="https://github.com/fortinet/fortigate-autoscale-azure/releases/download/$RELEASE_VERSION/fortigate-autoscale-azure.zip"
 DOWNLOAD_DIRECTORY="download"
