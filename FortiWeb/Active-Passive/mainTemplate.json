@@ -306,13 +306,13 @@
     },
     {
       "condition": "[not(variables('useAZ'))]",
-      "apiVersion": "2021-07-01",
       "type": "Microsoft.Compute/availabilitySets",
       "name": "[variables('availabilitySetName')]",
+      "apiVersion": "2022-08-01",
+      "location": "[parameters('location')]",
       "tags": {
         "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
-      "location": "[parameters('location')]",
       "properties": {
         "platformFaultDomainCount": 2,
         "platformUpdateDomainCount": 2
@@ -763,9 +763,9 @@
       }
     },
     {
-      "apiVersion": "2021-07-01",
       "type": "Microsoft.Compute/virtualMachines",
       "name": "[variables('fwbAVmName')]",
+      "apiVersion": "2022-08-01",
       "location": "[parameters('location')]",
       "tags": {
         "provider": "[toUpper(parameters('fortinetTags').provider)]"
@@ -830,9 +830,9 @@
       }
     },
     {
-      "apiVersion": "2021-07-01",
       "type": "Microsoft.Compute/virtualMachines",
       "name": "[variables('fwbBVmName')]",
+      "apiVersion": "2022-08-01",
       "location": "[parameters('location')]",
       "tags": {
         "provider": "[toUpper(parameters('fortinetTags').provider)]"
