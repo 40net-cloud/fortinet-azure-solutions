@@ -308,7 +308,7 @@
                 },
                 "toolTip": {
                   "virtualNetwork": "Virtual Network for deployment of the FortiWeb VM solution",
-                  "subnets": "During deployment 2 subnets will be deployed: external, internal"
+                  "subnets": "2 subnet will be deployed: external and internal"
                 },
                 "defaultValue": {
                   "name": "FortiWeb-VNET",
