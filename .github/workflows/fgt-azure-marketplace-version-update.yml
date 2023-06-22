@@ -28,7 +28,7 @@ jobs:
       uses: azure/powershell@v1.2.0
       with:
         inlineScript: |
-          $buildingBlocks = @("A-Single-VM", "Active-Active-ELB-ILB","Active-Passive-ELB-ILB","Active-Passive-SDN")
+          $buildingBlocks = @("A-Single-VM", "Active-Active-ELB-ILB","Active-Passive-ELB-ILB","Active-Passive-SDN","AzureApplicationGateway/scenario1","AzureApplicationGateway/scenario2","AzureApplicationGateway/scenario3","AzureGatewayLoadBalancer","AzureRouteServer/Active-Passive","ZTNAApplicationGateway")
           $fgtMarketplaceVersions = @()
           $fgtMarketplaceVersionsUI = @()
 
