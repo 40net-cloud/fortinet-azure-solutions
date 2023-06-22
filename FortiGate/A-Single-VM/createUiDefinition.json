@@ -105,7 +105,7 @@
         "name": "fortiGateImageVersion",
         "type": "Microsoft.Common.DropDown",
         "label": "Fortigate Image Version",
-        "defaultValue": "latest",
+        "defaultValue": "7.2.5",
         "toolTip": "Only 6.x has the A/P HA feature currently",
         "constraints": {
           "required": false,
