@@ -717,6 +717,14 @@
               "nextHopType": "VirtualAppliance",
               "nextHopIPAddress": "[variables('sn2IPlb')]"
             }
+          },
+          {
+            "name": "toVNET",
+            "properties": {
+              "addressPrefix": "[parameters('vnetAddressPrefix')]",
+              "nextHopType": "VirtualAppliance",
+              "nextHopIPAddress": "[variables('sn2IPlb')]"
+            }
           }
         ]
       }
