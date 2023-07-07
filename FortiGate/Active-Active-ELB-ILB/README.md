@@ -87,6 +87,7 @@ The FortiGate VMs need a specific configuration to match the deployed environmen
 
 - [Default configuration using this template](doc/config-provisioning.md)
 - [Inbound connections](doc/config-inbound-connections.md)
+- [Outbound connections](doc/config-outbound-connections.md)
 - [Availability Zone](doc/config-availability-zone.md)
 - [Upload VHD](../Documentation/faq-upload-vhd.md)
 
