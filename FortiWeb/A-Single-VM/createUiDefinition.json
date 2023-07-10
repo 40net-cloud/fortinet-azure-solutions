@@ -121,6 +121,10 @@
               "value": "7.2.0"
             },
             {
+              "label": "7.2.3",
+              "value": "7.2.3"
+            },
+            {
               "label": "latest",
               "value": "latest"
             }
