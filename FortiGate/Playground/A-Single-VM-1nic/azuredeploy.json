@@ -177,7 +177,7 @@
     {
       "condition": "[equals(parameters('vnetNewOrExisting'), 'new')]",
       "type": "Microsoft.Network/virtualNetworks",
-      "apiVersion": "2022-05-01",
+      "apiVersion": "2022-01-01",
       "name": "[variables('vnetName')]",
       "location": "[parameters('location')]",
       "properties": {
@@ -197,7 +197,7 @@
       }
     },
     {
-      "apiVersion": "2022-05-01",
+      "apiVersion": "2022-01-01",
       "tags": {
         "provider": "[toUpper(parameters('FortinetTags').provider)]"
       },
@@ -238,7 +238,7 @@
       }
     },
     {
-      "apiVersion": "2022-05-01",
+      "apiVersion": "2022-01-01",
       "tags": {
         "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
@@ -272,7 +272,7 @@
     {
       "type": "Microsoft.Compute/virtualMachines",
       "name": "[variables('fgaVmName')]",
-      "apiVersion": "2022-08-01",
+      "apiVersion": "2022-03-01",
       "tags": {
        "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },

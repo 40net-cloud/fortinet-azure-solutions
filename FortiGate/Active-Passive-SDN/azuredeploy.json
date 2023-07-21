@@ -681,7 +681,7 @@
       "condition": "[not(variables('useAZ'))]",
       "type": "Microsoft.Compute/availabilitySets",
       "name": "[variables('availabilitySetName')]",
-      "apiVersion": "2022-08-01",
+      "apiVersion": "2022-03-01",
       "location": "[parameters('location')]",
       "tags": {
         "provider": "[toUpper(parameters('fortinetTags').provider)]"
@@ -698,7 +698,7 @@
       "condition": "[equals(parameters('vnetNewOrExisting'), 'new')]",
       "type": "Microsoft.Network/virtualNetworks",
       "name": "[variables('vnetName')]",
-      "apiVersion": "2022-05-01",
+      "apiVersion": "2022-01-01",
       "location": "[parameters('location')]",
       "tags": {
         "provider": "[toUpper(parameters('fortinetTags').provider)]"
@@ -752,7 +752,7 @@
     {
       "type": "Microsoft.Network/routeTables",
       "name": "[variables('routeTableName')]",
-      "apiVersion": "2022-05-01",
+      "apiVersion": "2022-01-01",
       "location": "[parameters('location')]",
       "tags": {
         "provider": "[toUpper(parameters('fortinetTags').provider)]"
@@ -773,7 +773,7 @@
     {
       "type": "Microsoft.Network/networkSecurityGroups",
       "name": "[variables('NSGName')]",
-      "apiVersion": "2022-05-01",
+      "apiVersion": "2022-01-01",
       "location": "[parameters('location')]",
       "tags": {
         "provider": "[toUpper(parameters('fortinetTags').provider)]"
@@ -815,7 +815,7 @@
       "condition": "[equals(parameters('publicIP1NewOrExisting'), 'new')]",
       "type": "Microsoft.Network/publicIPAddresses",
       "name": "[variables('publicIP1Name')]",
-      "apiVersion": "2022-05-01",
+      "apiVersion": "2022-01-01",
       "location": "[parameters('location')]",
       "tags": {
         "provider": "[toUpper(parameters('fortinetTags').provider)]"
@@ -835,7 +835,7 @@
       "condition": "[equals(parameters('publicIP2NewOrExisting'), 'new')]",
       "type": "Microsoft.Network/publicIPAddresses",
       "name": "[variables('publicIP2Name')]",
-      "apiVersion": "2022-05-01",
+      "apiVersion": "2022-01-01",
       "location": "[parameters('location')]",
       "tags": {
         "provider": "[toUpper(parameters('fortinetTags').provider)]"
@@ -852,7 +852,7 @@
       "condition": "[equals(parameters('publicIP3NewOrExisting'), 'new')]",
       "type": "Microsoft.Network/publicIPAddresses",
       "name": "[variables('publicIP3Name')]",
-      "apiVersion": "2022-05-01",
+      "apiVersion": "2022-01-01",
       "location": "[parameters('location')]",
       "tags": {
         "provider": "[toUpper(parameters('fortinetTags').provider)]"
@@ -868,7 +868,7 @@
     {
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[variables('fgaNic1Name')]",
-      "apiVersion": "2022-05-01",
+      "apiVersion": "2022-01-01",
       "location": "[parameters('location')]",
       "tags": {
         "provider": "[toUpper(parameters('fortinetTags').provider)]"
@@ -901,7 +901,7 @@
     {
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[variables('fgbNic1Name')]",
-      "apiVersion": "2022-05-01",
+      "apiVersion": "2022-01-01",
       "location": "[parameters('location')]",
       "tags": {
         "provider": "[toUpper(parameters('fortinetTags').provider)]"
@@ -934,7 +934,7 @@
     {
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[variables('fgaNic2Name')]",
-      "apiVersion": "2022-05-01",
+      "apiVersion": "2022-01-01",
       "location": "[parameters('location')]",
       "tags": {
         "provider": "[toUpper(parameters('fortinetTags').provider)]"
@@ -966,7 +966,7 @@
     {
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[variables('fgbNic2Name')]",
-      "apiVersion": "2022-05-01",
+      "apiVersion": "2022-01-01",
       "location": "[parameters('location')]",
       "tags": {
         "provider": "[toUpper(parameters('fortinetTags').provider)]"
@@ -999,7 +999,7 @@
     {
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[variables('fgaNic3Name')]",
-      "apiVersion": "2022-05-01",
+      "apiVersion": "2022-01-01",
       "location": "[parameters('location')]",
       "tags": {
         "provider": "[toUpper(parameters('fortinetTags').provider)]"
@@ -1031,7 +1031,7 @@
     {
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[variables('fgbNic3Name')]",
-      "apiVersion": "2022-05-01",
+      "apiVersion": "2022-01-01",
       "location": "[parameters('location')]",
       "tags": {
         "provider": "[toUpper(parameters('fortinetTags').provider)]"
@@ -1064,7 +1064,7 @@
     {
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[variables('fgaNic4Name')]",
-      "apiVersion": "2022-05-01",
+      "apiVersion": "2022-01-01",
       "location": "[parameters('location')]",
       "tags": {
         "provider": "[toUpper(parameters('fortinetTags').provider)]"
@@ -1097,7 +1097,7 @@
     {
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[variables('fgbNic4Name')]",
-      "apiVersion": "2022-05-01",
+      "apiVersion": "2022-01-01",
       "location": "[parameters('location')]",
       "tags": {
         "provider": "[toUpper(parameters('fortinetTags').provider)]"
@@ -1131,7 +1131,7 @@
     {
       "type": "Microsoft.Compute/virtualMachines",
       "name": "[variables('fgaVmName')]",
-      "apiVersion": "2022-08-01",
+      "apiVersion": "2022-03-01",
       "location": "[parameters('location')]",
       "tags": {
         "provider": "[toUpper(parameters('fortinetTags').provider)]"
@@ -1209,7 +1209,7 @@
     {
       "type": "Microsoft.Compute/virtualMachines",
       "name": "[variables('fgbVmName')]",
-      "apiVersion": "2022-08-01",
+      "apiVersion": "2022-03-01",
       "location": "[parameters('location')]",
       "tags": {
         "provider": "[toUpper(parameters('fortinetTags').provider)]"

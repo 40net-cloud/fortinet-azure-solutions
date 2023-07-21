@@ -498,7 +498,7 @@
       }
     },
     {
-      "apiVersion": "2022-08-01",
+      "apiVersion": "2022-03-01",
       "type": "Microsoft.Compute/availabilitySets",
       "condition": "[not(variables('useAZ'))]",
       "name": "[variables('availabilitySetName')]",
@@ -517,7 +517,7 @@
     {
       "condition": "[equals(parameters('vnetNewOrExisting'), 'new')]",
       "type": "Microsoft.Network/virtualNetworks",
-      "apiVersion": "2022-05-01",
+      "apiVersion": "2022-01-01",
       "name": "[variables('vnetName')]",
       "location": "[parameters('location')]",
       "properties": {
@@ -543,7 +543,7 @@
       }
     },
     {
-      "apiVersion": "2022-05-01",
+      "apiVersion": "2022-01-01",
       "type": "Microsoft.Network/loadBalancers",
       "name": "[variables('providerLBName')]",
       "location": "[parameters('location')]",
@@ -624,7 +624,7 @@
       }
     },
     {
-      "apiVersion": "2022-05-01",
+      "apiVersion": "2022-01-01",
       "type": "Microsoft.Network/networkSecurityGroups",
       "name": "[variables('nsgName')]",
       "location": "[parameters('location')]",
@@ -680,7 +680,7 @@
     },
     {
       "condition": "[equals(parameters('publicIP1NewOrExisting'), 'new')]",
-      "apiVersion": "2022-05-01",
+      "apiVersion": "2022-01-01",
       "type": "Microsoft.Network/publicIPAddresses",
       "name": "[variables('publicIP1Name')]",
       "location": "[parameters('location')]",
@@ -699,7 +699,7 @@
     },
     {
       "condition": "[equals(parameters('publicIP2NewOrExisting'), 'new')]",
-      "apiVersion": "2022-05-01",
+      "apiVersion": "2022-01-01",
       "type": "Microsoft.Network/publicIPAddresses",
       "name": "[variables('publicIP2Name')]",
       "location": "[parameters('location')]",
@@ -717,7 +717,7 @@
       }
     },
     {
-      "apiVersion": "2022-05-01",
+      "apiVersion": "2022-01-01",
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[variables('fgaNic1Name')]",
       "location": "[parameters('location')]",
@@ -750,7 +750,7 @@
       }
     },
     {
-      "apiVersion": "2022-05-01",
+      "apiVersion": "2022-01-01",
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[variables('fgbNic1Name')]",
       "location": "[parameters('location')]",
@@ -784,7 +784,7 @@
       }
     },
     {
-      "apiVersion": "2022-05-01",
+      "apiVersion": "2022-01-01",
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[variables('fgaNic2Name')]",
       "location": "[parameters('location')]",
@@ -815,7 +815,7 @@
       }
     },
     {
-      "apiVersion": "2022-05-01",
+      "apiVersion": "2022-01-01",
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[variables('fgbNic2Name')]",
       "location": "[parameters('location')]",
@@ -847,7 +847,7 @@
       }
     },
     {
-      "apiVersion": "2022-08-01",
+      "apiVersion": "2022-03-01",
       "type": "Microsoft.Compute/virtualMachines",
       "name": "[variables('fgaVmName')]",
       "location": "[parameters('location')]",
@@ -921,7 +921,7 @@
       }
     },
     {
-      "apiVersion": "2022-08-01",
+      "apiVersion": "2022-03-01",
       "type": "Microsoft.Compute/virtualMachines",
       "name": "[variables('fgbVmName')]",
       "location": "[parameters('location')]",
