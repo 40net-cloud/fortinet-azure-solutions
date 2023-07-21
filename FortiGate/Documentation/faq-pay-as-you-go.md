@@ -4,8 +4,6 @@ FortiGate on Microsoft Azure supports the PAYG as well as the BYOL model. PAYG a
 
 The PAYG license includes the UTM bundle. Please refer [https://www.fortinet.com/content/dam/fortinet/assets/data-sheets/FortiGate_VM_Azure.pdf](https://www.fortinet.com/content/dam/fortinet/assets/data-sheets/FortiGate_VM_Azure.pdf) for the details. 
 
-[Azure Marketplace listing](https://azuremarketplace.microsoft.com/en-us/marketplace/apps/fortinet.fortinet-fortigate?tab=overview)
-
 Pricing requires 4 components:
 - Azure compute
 - Azure storage 
@@ -13,6 +11,8 @@ Pricing requires 4 components:
 - FortiGate PAYG license
 
 Microsoft provides a [calculator](https://azure.microsoft.com/en-gb/pricing/calculator/) to determine your Microsoft Azure costs: [https://azure.microsoft.com/en-gb/pricing/calculator/](https://azure.microsoft.com/en-gb/pricing/calculator/)
+
+More information can be found on the FortiGate [Azure Marketplace listing](https://azuremarketplace.microsoft.com/en-us/marketplace/apps/fortinet.fortinet-fortigate?tab=overview).
 
 ## Pay as you go vs Bring your own license
 
