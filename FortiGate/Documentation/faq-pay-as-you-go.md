@@ -45,7 +45,7 @@ There are 2 locations to verify you are running PAYG.
 
 - Login via Web UI or CLI on the FortiGate VM and verify the serial number. The serial number will start with 'FGTAZR'. In the CLI use the command 'get system status'. In the Web UI, the serial number can be found on the dashboard.
 
-![Web UI serial number](images/faq-payg-web-u.png)
+![Web UI serial number](images/faq-payg-web-ui.png)
 
 - Access to the Web UI or CLI can be limited, or it is required to verify that PAYG was uses during deployment, it is possible to retrieve this. Locate the FortiGate VM OsDisk in the Azure Portal and select export template. In de generated tempalte a field creationData will list the original disk image that was referenced. If PAYG was used this will be shown in the sku part of the reference.
 
