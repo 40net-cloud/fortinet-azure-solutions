@@ -79,7 +79,7 @@ The ARM template deploys different resources and it is required to have the acce
   - BYOL
 `az vm image terms accept --publisher fortinet --offer fortinet_fortigate-vm_v5 --plan fortinet_fg-vm`
   - PAYG
-`az vm image terms accept --publisher fortinet --offer fortinet_fortigate-vm_v5 --plan fortinet_fg-vm_payg_2022`
+`az vm image terms accept --publisher fortinet --offer fortinet_fortigate-vm_v5 --plan fortinet_fg-vm_payg_2023`
 
 ## Configuration
 
