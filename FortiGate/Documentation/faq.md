@@ -4,6 +4,8 @@
 
 Yes, this is now possible according to Microsoft. The IP can't be associated with any resource. More information can be found [here](https://docs.microsoft.com/en-us/azure/virtual-network/virtual-network-public-ip-address-upgrade)
 
+On September 30, 2025, Basic SKU public IPs will be retired. For more information, see the [official announcement](https://azure.microsoft.com/updates/upgrade-to-standard-sku-public-ip-addresses-in-azure-by-30-september-2025-basic-sku-will-be-retired/)
+
 ## How do I setup an IPSEC VPN tunnel from my on-premises firewall to the FortiGate VM in Microsoft Azure?
 
 A dedicated page including troubleshooting steps can be found [here](faq-ipsec-connectivity.md)

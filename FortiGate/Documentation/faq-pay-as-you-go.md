@@ -6,6 +6,14 @@ The PAYG license includes the UTM bundle. Please refer [https://www.fortinet.com
 
 [Azure Marketplace listing](https://azuremarketplace.microsoft.com/en-us/marketplace/apps/fortinet.fortinet-fortigate?tab=overview)
 
+Pricing requires 4 components:
+- Azure compute
+- Azure storage 
+- Bandwidth charges
+- FortiGate PAYG license
+
+Microsoft provides a [calculator](https://azure.microsoft.com/en-gb/pricing/calculator/) to determine your Microsoft Azure costs: [https://azure.microsoft.com/en-gb/pricing/calculator/](https://azure.microsoft.com/en-gb/pricing/calculator/)
+
 ## Pay as you go vs Bring your own license
 
 Pay as you go advantages:
