@@ -1,23 +1,23 @@
 # FAQ
 
-Q: Some templates use a basic sku public IP address and some templates use a standard public IP address. Is it possible to convert from a basic to a standard SKU public IP address?
+## Some templates use a basic sku public IP address and some templates use a standard public IP address. Is it possible to convert from a basic to a standard SKU public IP address?
 
-A: Yes, this is now possible according to Microsoft. The IP can't be associated with any resource. More information can be found [here](https://docs.microsoft.com/en-us/azure/virtual-network/virtual-network-public-ip-address-upgrade)
+Yes, this is now possible according to Microsoft. The IP can't be associated with any resource. More information can be found [here](https://docs.microsoft.com/en-us/azure/virtual-network/virtual-network-public-ip-address-upgrade)
 
-Q: How do I setup an IPSEC VPN tunnel from my on-premises firewall to the FortiGate VM in Microsoft Azure?
+## How do I setup an IPSEC VPN tunnel from my on-premises firewall to the FortiGate VM in Microsoft Azure?
 
-A: A dedicated page including troubleshooting steps can be found [here](faq-ipsec-connectivity.md)
+A dedicated page including troubleshooting steps can be found [here](faq-ipsec-connectivity.md)
 
-Q: We can't deploy directly from the Azure Marketplace or received a custom build VHD image from Fortinet. Can we still use these templates?
+## We can't deploy directly from the Azure Marketplace or received a custom build VHD image from Fortinet. Can we still use these templates?
 
-A: Yes, the templates have an option to receive a Azure Compute Gallery resource ID to location where you upload your specific version. More information can be found [here](faq-upload-vhd.md).
+Yes, the templates have an option to receive a Azure Compute Gallery resource ID to location where you upload your specific version. More information can be found [here](faq-upload-vhd.md).
 
-Q: What is Accelerated Networking?
+## What is Accelerated Networking?
 
-A: Accelerated Networking enables SR-IOV (Single Root I/O Virtualization) 
+Accelerated Networking enables SR-IOV (Single Root I/O Virtualization) 
 
 https://learn.microsoft.com/en-us/azure/virtual-network/accelerated-networking-overview
 
-Q: How can I figure our what license I'm using on the FortiGate VM (PAYG vs BYOL)
+## How can I figure our what license I'm using on the FortiGate VM (PAYG vs BYOL)
 
-A: A dedicated page be found [here](faq-pay-as-you-go.md)
+A dedicated page be found [here](faq-pay-as-you-go.md)
