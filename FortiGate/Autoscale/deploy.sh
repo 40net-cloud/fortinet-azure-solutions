@@ -26,7 +26,7 @@ fi
 echo ""
 echo "--> Download FortiGate Autoscale package from github ..."
 echo ""
-wget --quiet -O "${DOWNLOAD_DIRECTORY}/${DOWNLOAD_FILENAME}" "${DOWNLOAD_LINK}"
+curl -L -o "${DOWNLOAD_DIRECTORY}/${DOWNLOAD_FILENAME}" "${DOWNLOAD_LINK}"
 if [ -f "$DOWNLOAD_DIRECTORY/$DOWNLOAD_FILENAME" ]; then
     echo "--> Preparing and extracting package ..."
     mkdir -p "$DOWNLOAD_DIRECTORY/$RELEASE_VERSION"
@@ -40,24 +40,6 @@ fi
 
 templatefilename="$DOWNLOAD_DIRECTORY/$RELEASE_VERSION/templates/deploy_fortigate_autoscale.hybrid_licensing.json"
 parameterfilename="$DOWNLOAD_DIRECTORY/$RELEASE_VERSION/templates/deploy_fortigate_autoscale.hybrid_licensing.params.json"
-if [ "2.0.5" == "$RELEASE_VERSION" ]; then
-    echo ""
-    echo "--> Patching deployment template with additional variables ..."
-    echo ""
-    patch $templatefilename <<EOF
-1920a1921,1924
->                             "name": "FUNCTIONS_WORKER_RUNTIME",
->                             "value": "node"
->                         },
->                         {
-1993c1997
-<                             "name": "WEBSITE_RUN_FROM_ZIP",
----
->                             "name": "WEBSITE_RUN_FROM_PACKAGE",
-EOF
-    echo ""
-fi
-
 if [ -z "$DEPLOY_LOCATION" ]; then
     # Input location
     echo ""
@@ -119,12 +101,12 @@ if [ -z "$DEPLOY_PASSWORD" ]; then
 else
     passwd="$DEPLOY_PASSWORD"
     echo "--> Using password found in env variable DEPLOY_PASSWORD ..."
-    echo ""
 fi
+echo ""
 
 if [ -z "$DEPLOY_APP_ID" ]; then
     # Input Service Principal Client ID
-    echo -n "Enter service principal app id: "
+    echo -n "Enter service principal APP ID: "
     stty_orig=$(stty -g) # save original terminal setting.
     read appid           # read the prefix
     stty $stty_orig      # restore terminal setting.
@@ -134,21 +116,21 @@ fi
 echo "--> Using App ID '$appid' for all resources ..."
 echo ""
 
-if [ -z "$DEPLOY_OBJECT_ID" ]; then
+if [ -z "$DEPLOY_CLIENT_ID" ]; then
     # Input Service Principal Client ID
-    echo -n "Enter service principal object id: "
+    echo -n "Enter service principal OBJECT ID: "
     stty_orig=$(stty -g) # save original terminal setting.
-    read objectid        # read the prefix
+    read clientid        # read the prefix
     stty $stty_orig      # restore terminal setting.
 else
-    objectid="$DEPLOY_OBJECT_ID"
+    clientid="$DEPLOY_CLIENT_ID"
 fi
-echo "--> Using Object ID '$objectid' for all resources ..."
+echo "--> Using Object ID '$clientid' for all resources ..."
 echo ""
 
 if [ -z "$DEPLOY_APP_SECRET" ]; then
     # Input Service Principal Client ID
-    echo -n "Enter service principal client secret: "
+    echo -n "Enter service principal CLIENT SECRET: "
     stty_orig=$(stty -g) # save original terminal setting.
     read appsecret       # read the prefix
     stty $stty_orig      # restore terminal setting.
@@ -169,7 +151,7 @@ az deployment group validate --resource-group "$rg" \
     --template-file $templatefilename \
     --parameters $parameterfilename \
     --parameters ResourceNamePrefix="$prefix" ServicePrincipalAppID="$appid" ServicePrincipalAppSecret="$appsecret" \
-    ServicePrincipalObjectID="$objectid" FortiAnalyzerIntegrationOptions="no" \
+    ServicePrincipalObjectID="$clientid" FortiAnalyzerIntegrationOptions="no" \
     FortiGatePSKSecret="$passwd" AdminUsername="$username" AdminPassword="$passwd" \
     InstanceType="$instancetype" AccessRestrictionIPRange="0.0.0.0/0"
 result=$?
@@ -186,7 +168,7 @@ az deployment group create --resource-group "$rg" \
     --template-file $templatefilename \
     --parameters $parameterfilename \
     --parameters ResourceNamePrefix="$prefix" ServicePrincipalAppID="$appid" ServicePrincipalAppSecret="$appsecret" \
-    ServicePrincipalObjectID="$objectid" FortiAnalyzerIntegrationOptions="no" \
+    ServicePrincipalObjectID="$clientid" FortiAnalyzerIntegrationOptions="no" \
     FortiGatePSKSecret="$passwd" AdminUsername="$username" AdminPassword="$passwd" \
     InstanceType="$instancetype" AccessRestrictionIPRange="0.0.0.0/0"
 result=$?
