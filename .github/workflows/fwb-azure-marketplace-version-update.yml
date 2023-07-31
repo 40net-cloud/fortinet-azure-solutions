@@ -64,7 +64,7 @@ jobs:
         committer: GitHub <noreply@github.com>
         author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
         signoff: false
-        branch: fgt-vm-update-version
+        branch: fwb-vm-update-version
         delete-branch: true
         title: '[FWB] Azure Marketplace FWB Version update'
         body: |
