@@ -21,7 +21,7 @@ resource "azurerm_network_interface" "lnxaifc" {
 
   ip_configuration {
     name                          = "interface1"
-    subnet_id                     = azurerm_subnet.subnet2b.id
+    subnet_id                     = azurerm_subnet.subnet2a.id
     private_ip_address_allocation = "Dynamic"
     public_ip_address_id          = azurerm_public_ip.lnxapip.id
   }

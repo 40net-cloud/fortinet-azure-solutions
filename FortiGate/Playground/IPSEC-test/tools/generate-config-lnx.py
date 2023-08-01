@@ -12,14 +12,9 @@ index_start = 1   # First IP in the IP network range to start counting
 index_end = 8  # Count needs to be less than the IP addresses available in the IP network
 vpn_a_ip_underlay = ipaddress.ip_network("172.16.136.0/25").network_address
 vpn_b_ip_underlay = ipaddress.ip_network("172.16.137.0/25").network_address
-# VPN interface IP on FGT needs to be outside out overlay network
-#vpn_b_ip_overlay = str(ipaddress.IPv4Network(ip_network_overlay)[-2]) # Reserve last IP in overlay network for FGT
 vpn_a_subnet = "172.16.136.128/25"
 vpn_b_subnet = "172.16.137.128/25"
 vpn_config_name="VPN"
-
-#ip_int_underlay = int(ipaddress.ip_network(ip_network_underlay).network_address)
-#ip_int_overlay = int(ipaddress.ip_network(ip_network_overlay).network_address)
 
 #################################################################################
 # Templates
@@ -42,7 +37,7 @@ end
 config vpn ipsec phase2-interface
     edit "{{ vpn_config_name }}{{n}}"
         set phase1name "{{ vpn_config_name }}{{n}}"
-        set proposal aes256
+        set proposal aes128-sha1
         set keepalive enable
         set keylifeseconds 3600
         set auto-negotiate enable
@@ -85,8 +80,8 @@ end
 # Generate FortiGate A VPN config
 #################################################################################
 print("Generate FortiGate A VPN config ...")
-#f = open("/share/tools/build/fgt-a.conf", "w")
-f = open("fgt-a.conf", "w")
+f = open("/share/tools/build/fgt-a.conf", "w")
+#f = open("fgt-a.conf", "w")
 
 tm = Template(template_fgt)
 msg = tm.render(index_end=index_end, vpn_config_name=vpn_config_name, \
