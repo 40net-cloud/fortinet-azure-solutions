@@ -12,6 +12,53 @@ resource "azurerm_public_ip" "fgtapip" {
   domain_name_label   = format("%s-%s", lower(var.PREFIX), "a-fgt-pip")
 }
 
+/* Optional ILB
+resource "azurerm_lb" "fgtailb" {
+  name                = "${local.fgt_a_prefix}-InternalLoadBalancer"
+  location            = var.LOCATION
+  resource_group_name = azurerm_resource_group.resourcegroup.name
+  sku                 = "Standard"
+
+  frontend_ip_configuration {
+    name                          = "${local.fgt_a_prefix}-ILB-PIP"
+    subnet_id                     = azurerm_subnet.subnet2a.id
+    private_ip_address            = cidrhost(var.subnet_fgt_internal["a"], -2)
+    private_ip_address_allocation = "Static"
+  }
+}
+
+resource "azurerm_lb_backend_address_pool" "fgtailbbackend" {
+  loadbalancer_id = azurerm_lb.fgtailb.id
+  name            = "BackEndPool"
+}
+
+resource "azurerm_lb_probe" "fgtailbprobe" {
+  loadbalancer_id     = azurerm_lb.fgtailb.id
+  name                = "lbprobe"
+  port                = 8008
+  interval_in_seconds = 5
+  number_of_probes    = 2
+  protocol            = "Tcp"
+}
+
+resource "azurerm_lb_rule" "lb_haports_rule" {
+  loadbalancer_id                = azurerm_lb.fgtailb.id
+  name                           = "lb_haports_rule"
+  protocol                       = "All"
+  frontend_port                  = 0
+  backend_port                   = 0
+  frontend_ip_configuration_name = "${local.fgt_a_prefix}-ILB-PIP"
+  probe_id                       = azurerm_lb_probe.fgtailbprobe.id
+  backend_address_pool_ids       = [azurerm_lb_backend_address_pool.fgtailbbackend.id]
+}
+
+resource "azurerm_network_interface_backend_address_pool_association" "fgtaifcint2ilbbackendpool" {
+  network_interface_id    = azurerm_network_interface.fgtaifcint.id
+  ip_configuration_name   = "interface1"
+  backend_address_pool_id = azurerm_lb_backend_address_pool.fgtailbbackend.id
+}
+*/
+
 resource "azurerm_network_interface" "fgtaifcext" {
   name                          = "${local.fgt_a_prefix}-IFC-EXT"
   location                      = azurerm_resource_group.resourcegroup.location
@@ -112,7 +159,7 @@ resource "azurerm_linux_virtual_machine" "fgtavm" {
   boot_diagnostics {
   }
 
-  tags = var.fortinet_tags
+  tags = var.TAGS
 
   lifecycle {
     ignore_changes = [custom_data]

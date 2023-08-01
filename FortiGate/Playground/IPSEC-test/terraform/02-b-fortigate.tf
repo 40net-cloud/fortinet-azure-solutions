@@ -12,6 +12,45 @@ resource "azurerm_public_ip" "fgtbpip" {
   domain_name_label   = format("%s-%s", lower(var.PREFIX), "b-fgt-pip")
 }
 
+resource "azurerm_lb" "fgtbilb" {
+  name                = "${local.fgt_a_prefix}-InternalLoadBalancer"
+  location            = var.LOCATION
+  resource_group_name = azurerm_resource_group.resourcegroup.name
+  sku                 = "Standard"
+
+  frontend_ip_configuration {
+    name                          = "${local.fgt_a_prefix}-ILB-PIP"
+    subnet_id                     = azurerm_subnet.subnet2a.id
+    private_ip_address            = cidrhost(var.subnet_fgt_internal["a"], -2)
+    private_ip_address_allocation = "Static"
+  }
+}
+
+resource "azurerm_lb_backend_address_pool" "fgtbilbbackend" {
+  loadbalancer_id = azurerm_lb.fgtbilb.id
+  name            = "BackEndPool"
+}
+
+resource "azurerm_lb_probe" "fgtbilbprobe" {
+  loadbalancer_id     = azurerm_lb.fgtbilb.id
+  name                = "lbprobe"
+  port                = 8008
+  interval_in_seconds = 5
+  number_of_probes    = 2
+  protocol            = "Tcp"
+}
+
+resource "azurerm_lb_rule" "lb_haports_rule" {
+  loadbalancer_id                = azurerm_lb.fgtbilb.id
+  name                           = "lb_haports_rule"
+  protocol                       = "All"
+  frontend_port                  = 0
+  backend_port                   = 0
+  frontend_ip_configuration_name = "${local.fgt_a_prefix}-ILB-PIP"
+  probe_id                       = azurerm_lb_probe.fgtbilbprobe.id
+  backend_address_pool_ids       = [azurerm_lb_backend_address_pool.fgtbilbbackend.id]
+}
+
 resource "azurerm_network_interface" "fgtbifcext" {
   name                          = "${local.fgt_b_prefix}-IFC-EXT"
   location                      = azurerm_resource_group.resourcegroup.location
@@ -113,7 +152,7 @@ resource "azurerm_linux_virtual_machine" "fgtbvm" {
   boot_diagnostics {
   }
 
-  tags = var.fortinet_tags
+  tags = var.TAGS
 
   lifecycle {
     ignore_changes = [custom_data]

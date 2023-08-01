@@ -9,7 +9,7 @@ import glob, os
 #################################################################################
 vpn_psk = "fortinet"
 index_start = 1   # First IP in the IP network range to start counting
-index_end = 8  # Count needs to be less than the IP addresses available in the IP network
+index_end = 16  # Count needs to be less than the IP addresses available in the IP network
 vpn_a_ip_underlay = ipaddress.ip_network("172.16.136.0/25").network_address
 vpn_b_ip_underlay = ipaddress.ip_network("172.16.137.0/25").network_address
 vpn_a_subnet = "172.16.136.128/25"
@@ -80,8 +80,8 @@ end
 # Generate FortiGate A VPN config
 #################################################################################
 print("Generate FortiGate A VPN config ...")
-f = open("/share/tools/build/fgt-a.conf", "w")
-#f = open("fgt-a.conf", "w")
+#f = open("/share/tools/build/fgt-a.conf", "w")
+f = open("fgt-a.conf", "w")
 
 tm = Template(template_fgt)
 msg = tm.render(index_end=index_end, vpn_config_name=vpn_config_name, \

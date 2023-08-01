@@ -55,6 +55,10 @@ variable "FGT_SSH_PUBLIC_KEY_FILE" {
   default = ""
 }
 
+variable "LNX_SSH_PUBLIC_KEY_FILE" {
+  default = ""
+}
+
 variable "ACCELERATED_NETWORKING" {
   type        = string
   description = "(Optional) Enable/Disable accelerated networking (default: true)"
@@ -66,8 +70,9 @@ variable "TAGS" {
   description = "A map of tags added to the deployed resources"
 
   default = {
-    environment = "IPSEC-test"
-    vendor      = "Fortinet"
+    "environment" = "IPSEC-test"
+    "publisher"   = "Fortinet"
+    "40NET-OWNER" = "jvanhoof@fortinet-us.com"
   }
 }
 
@@ -124,20 +129,15 @@ variable "subnet_fgt_internal" {
 ##############################################################################################################
 
 variable "fgt_vmsize" {
-  default = "Standard_D4s_v5"
+  default = "Standard_D16s_v4"
 }
 
 variable "lnx_vmsize" {
-  default = "Standard_D4s_v5"
+  default = "Standard_D4s_v4"
 }
 
-variable "fortinet_tags" {
-  type = map(string)
-  default = {
-    publisher : "Fortinet",
-    template : "IPSEC-test",
-    provider : "7EB3B02F-50E5-4A3E-8CB8-2E129258IPSECTUNNELS"
-  }
+variable "lnx_count" {
+  default = 2
 }
 
 ##############################################################################################################

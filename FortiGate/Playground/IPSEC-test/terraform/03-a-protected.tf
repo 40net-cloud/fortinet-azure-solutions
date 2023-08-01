@@ -5,15 +5,17 @@
 ##############################################################################################################
 
 resource "azurerm_public_ip" "lnxapip" {
-  name                = "${var.PREFIX}-LNX-A-PIP"
+  count               = var.lnx_count
+  name                = "${var.PREFIX}-LNX-A-${count.index}-PIP"
   location            = var.LOCATION
   resource_group_name = azurerm_resource_group.resourcegroup.name
   allocation_method   = "Static"
-  domain_name_label   = format("%s-%s", lower(var.PREFIX), "a-lnx-pip")
+  domain_name_label   = format("%s-%s-%s", lower(var.PREFIX), "a-lnx-pip", count.index)
 }
 
 resource "azurerm_network_interface" "lnxaifc" {
-  name                          = "${var.PREFIX}-LNX-A-IFC"
+  count                         = var.lnx_count
+  name                          = "${var.PREFIX}-LNX-A-${count.index}-IFC"
   location                      = azurerm_resource_group.resourcegroup.location
   resource_group_name           = azurerm_resource_group.resourcegroup.name
   enable_ip_forwarding          = false
@@ -23,15 +25,16 @@ resource "azurerm_network_interface" "lnxaifc" {
     name                          = "interface1"
     subnet_id                     = azurerm_subnet.subnet2a.id
     private_ip_address_allocation = "Dynamic"
-    public_ip_address_id          = azurerm_public_ip.lnxapip.id
+    public_ip_address_id          = azurerm_public_ip.lnxapip[count.index].id
   }
 }
 
 resource "azurerm_linux_virtual_machine" "lnxavm" {
-  name                  = "${var.PREFIX}-LNX-A-VM"
+  count                 = var.lnx_count
+  name                  = "${var.PREFIX}-LNX-A-${count.index}-VM"
   location              = azurerm_resource_group.resourcegroup.location
   resource_group_name   = azurerm_resource_group.resourcegroup.name
-  network_interface_ids = [azurerm_network_interface.lnxaifc.id]
+  network_interface_ids = [azurerm_network_interface.lnxaifc[count.index].id]
   size                  = var.lnx_vmsize
 
   source_image_reference {
@@ -41,17 +44,22 @@ resource "azurerm_linux_virtual_machine" "lnxavm" {
     version   = "latest"
   }
 
+  admin_ssh_key {
+    username   = var.USERNAME
+    public_key = file(var.LNX_SSH_PUBLIC_KEY_FILE)
+  }
+
   os_disk {
-    name                 = "${var.PREFIX}-LNX-A-OSDISK"
+    name                 = "${var.PREFIX}-LNX-A-${count.index}-OSDISK"
     caching              = "ReadWrite"
     storage_account_type = "StandardSSD_LRS"
   }
 
-  computer_name                   = "${var.PREFIX}-LNX-A-VM"
+  computer_name                   = "${var.PREFIX}-LNX-A-${count.index}-VM"
   admin_username                  = var.USERNAME
   admin_password                  = var.PASSWORD
   disable_password_authentication = false
-  custom_data                     = base64encode(templatefile("${path.module}/../templates/customdata-lnx.tftpl",{}))
+  custom_data                     = base64encode(templatefile("${path.module}/../templates/customdata-lnx.tftpl", {}))
 
   boot_diagnostics {
   }
@@ -60,14 +68,15 @@ resource "azurerm_linux_virtual_machine" "lnxavm" {
 }
 
 data "azurerm_public_ip" "lnxapip" {
-  name                = azurerm_public_ip.lnxapip.name
+  count               = var.lnx_count
+  name                = azurerm_public_ip.lnxapip[count.index].name
   resource_group_name = azurerm_resource_group.resourcegroup.name
 }
 
 output "lnx_a_public_ip_address" {
-  value = data.azurerm_public_ip.lnxapip.ip_address
+  value = data.azurerm_public_ip.lnxapip.*.ip_address
 }
 
 output "lnx_a_private_ip_address" {
-  value = azurerm_network_interface.lnxaifc.private_ip_address
+  value = azurerm_network_interface.lnxaifc.*.private_ip_address
 }
