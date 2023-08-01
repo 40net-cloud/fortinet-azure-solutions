@@ -6,7 +6,7 @@
 
 output "deployment_summary" {
   value = templatefile(
-    "${path.module}/summary.tpl",
+    "${path.module}/../templates/summary.tftpl",
     {
       location                     = "${var.LOCATION}"
       fgt_a_private_ip_address_ext = "${azurerm_network_interface.fgtaifcext.private_ip_address}"

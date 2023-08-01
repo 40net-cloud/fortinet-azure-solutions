@@ -21,17 +21,30 @@ variable "PASSWORD" {}
 # FortiGate license type
 ##############################################################################################################
 
-variable "IMAGESKU" {
+variable "FGT_IMAGE_SKU" {
   description = "Azure Marketplace Image SKU hourly (PAYG) or byol (Bring your own license)"
   default     = "fortinet_fg-vm"
 }
 
-variable "FGT_LICENSE_FILE_A" {
+variable "FGT_VERSION" {
+  description = "FortiGate version by default the 'latest' available version in the Azure Marketplace is selected"
+  default     = "7.2.5"
+}
+
+variable "FGT_BYOL_LICENSE_FILE_A" {
+  default = "../licenses/FGV16VTM23000047.lic"
+}
+
+variable "FGT_BYOL_FORTIFLEX_LICENSE_TOKEN_A" {
   default = ""
 }
 
-variable "FGT_LICENSE_FILE_B" {
+variable "FGT_BYOL_LICENSE_FILE_B" {
   default = ""
+}
+
+variable "FGT_BYOL_FORTIFLEX_LICENSE_TOKEN_B" {
+  default = "../licenses/FGV16VTM23000048.lic"
 }
 
 ##############################################################################################################
@@ -42,12 +55,7 @@ variable "FGT_SSH_PUBLIC_KEY_FILE" {
   default = ""
 }
 
-variable "BOOT_DIAGNOSTICS" {
-  description = "(Optional) Enable or Disable boot diagnostics (default: true)"
-  default     = "true"
-}
-
-variable "ENABLE_ACCELERATED_NETWORKING" {
+variable "ACCELERATED_NETWORKING" {
   type        = string
   description = "(Optional) Enable/Disable accelerated networking (default: true)"
   default     = "true"
@@ -64,18 +72,20 @@ variable "TAGS" {
 }
 
 ##############################################################################################################
-# Microsoft Azure Storage Account for storage of Terraform state file
-##############################################################################################################
-
-terraform {
-  required_version = ">= 0.11"
-}
-
-##############################################################################################################
 # Deployment in Microsoft Azure
 ##############################################################################################################
+terraform {
+  required_version = ">= 0.12"
+  required_providers {
+    azurerm = {
+      source  = "hashicorp/azurerm"
+      version = ">=2.0.0"
+    }
+  }
+}
 
 provider "azurerm" {
+  features {}
 }
 
 ##############################################################################################################
@@ -83,13 +93,10 @@ provider "azurerm" {
 ##############################################################################################################
 
 variable "vnet" {
-  type        = map(string)
+  type        = string
   description = ""
 
-  default = {
-    "a" = "172.16.136.0/22"
-    "b" = "172.16.140.0/22"
-  }
+  default = "172.16.136.0/22"
 }
 
 variable "subnet_fgt_external" {
@@ -97,8 +104,8 @@ variable "subnet_fgt_external" {
   description = ""
 
   default = {
-    "a" = "172.16.136.0/24"
-    "b" = "172.16.140.0/24"
+    "a" = "172.16.136.0/25"
+    "b" = "172.16.137.0/25"
   }
 }
 
@@ -107,88 +114,8 @@ variable "subnet_fgt_internal" {
   description = ""
 
   default = {
-    "a" = "172.16.137.0/24"
-    "b" = "172.16.141.0/24"
-  }
-}
-
-variable "subnet_protected" {
-  type        = map(string)
-  description = ""
-
-  default = {
-    "a" = "172.16.138.0/24"
-    "b" = "172.16.142.0/24"
-  }
-}
-
-variable "fgt_external_ipaddress" {
-  type        = map(string)
-  description = ""
-
-  default = {
-    "a" = "172.16.136.5"
-    "b" = "172.16.140.5"
-  }
-}
-
-variable "fgt_external_subnetmask" {
-  type        = map(string)
-  description = ""
-
-  default = {
-    "a" = "24"
-    "b" = "24"
-  }
-}
-
-variable "fgt_external_gateway" {
-  type        = map(string)
-  description = ""
-
-  default = {
-    "a" = "172.16.136.1"
-    "b" = "172.16.140.1"
-  }
-}
-
-variable "fgt_internal_ipaddress" {
-  type        = map(string)
-  description = ""
-
-  default = {
-    "a" = "172.16.137.5"
-    "b" = "172.16.141.5"
-  }
-}
-
-variable "fgt_internal_subnetmask" {
-  type        = map(string)
-  description = ""
-
-  default = {
-    "a" = "24"
-    "b" = "24"
-  }
-}
-
-variable "fgt_internal_gateway" {
-  type        = map(string)
-  description = ""
-
-  default = {
-    "a" = "172.16.137.1"
-    "b" = "172.16.141.1"
-  }
-}
-
-variable "backend_srv_ipaddress" {
-  type        = map(string)
-  description = ""
-
-  default = {
-    "a" = "172.16.138.5"
-    "b" = "172.16.142.5"
+    "a" = "172.16.136.128/25"
+    "b" = "172.16.137.128/25"
   }
 }
 
@@ -197,26 +124,28 @@ variable "backend_srv_ipaddress" {
 ##############################################################################################################
 
 variable "fgt_vmsize" {
-  default = "Standard_F4s"
+  default = "Standard_D4s_v5"
 }
 
 variable "lnx_vmsize" {
-  default = "Standard_D4s_v3"
+  default = "Standard_D4s_v5"
+}
+
+variable "fortinet_tags" {
+  type = map(string)
+  default = {
+    publisher : "Fortinet",
+    template : "IPSEC-test",
+    provider : "7EB3B02F-50E5-4A3E-8CB8-2E129258IPSECTUNNELS"
+  }
 }
 
 ##############################################################################################################
 # Resource Groups
 ##############################################################################################################
 
-resource "azurerm_resource_group" "resourcegroupa" {
-  name     = "${var.PREFIX}-A-RG"
-  location = var.LOCATION
-
-  tags = var.TAGS
-}
-
-resource "azurerm_resource_group" "resourcegroupb" {
-  name     = "${var.PREFIX}-B-RG"
+resource "azurerm_resource_group" "resourcegroup" {
+  name     = "${var.PREFIX}-RG"
   location = var.LOCATION
 
   tags = var.TAGS
@@ -231,28 +160,6 @@ resource "random_id" "saname" {
   byte_length = 6
 }
 
-resource "azurerm_storage_account" "sadiaga" {
-  count                    = var.BOOT_DIAGNOSTICS == "true" ? 1 : 0
-  name                     = "${lower(var.PREFIX)}a${lower(random_id.saname.hex)}"
-  resource_group_name      = azurerm_resource_group.resourcegroupa.name
-  location                 = var.LOCATION
-  account_tier             = "Standard"
-  account_replication_type = "LRS"
-
-  tags = var.TAGS
-}
-
-resource "azurerm_storage_account" "sadiagb" {
-  count                    = var.BOOT_DIAGNOSTICS == "true" ? 1 : 0
-  name                     = "${lower(var.PREFIX)}b${lower(random_id.saname.hex)}"
-  resource_group_name      = azurerm_resource_group.resourcegroupb.name
-  location                 = var.LOCATION
-  account_tier             = "Standard"
-  account_replication_type = "LRS"
-
-  tags = var.TAGS
-}
-
 ##############################################################################################################
 # Generate IPSEC PSK key for VPN tunnel between FGT A and B
 ##############################################################################################################
@@ -261,4 +168,14 @@ resource "random_string" "ipsec_psk" {
   length  = 16
   special = true
 }
+##############################################################################################################
+
+locals {
+  fgt_external_ipcount = 32
+  fgt_a_prefix         = "${var.PREFIX}-FGT-A"
+  fgt_a_vm_name        = "${local.fgt_a_prefix}-VM"
+  fgt_b_prefix         = "${var.PREFIX}-FGT-B"
+  fgt_b_vm_name        = "${local.fgt_b_prefix}-VM"
+}
+
 ##############################################################################################################

@@ -1,0 +1,42 @@
+#cloud-config
+package_upgrade: true
+packages:
+  - iperf3
+  - nginx
+  - nmap
+write_files:
+  - owner: root:root
+    path: /etc/systemd/system/rc-local.service
+    content: |
+      [Unit]
+      Description=/etc/rc.local Compatibility
+      ConditionPathExists=/etc/rc.local
+
+      [Service]
+      Type=forking
+      ExecStart=/etc/rc.local start
+      TimeoutSec=0
+      StandardOutput=tty
+      RemainAfterExit=yes
+      SysVStartPriority=99
+
+      [Install]
+      WantedBy=multi-user.target
+  - owner: root:root
+    path: /etc/rc.local
+    content: |
+      #!/bin/bash
+
+      cd /share/tools
+      mkdir -p /share/tools/build
+
+      echo "Generating configuration ..."
+      /usr/bin/python3 /share/tools/generate-config-lnx.py
+
+runcmd:
+  - [ sh, -c, mkdir -p /share ]
+  - [ sh, -c, curl -L https://api.github.com/repos/40net-cloud/fortinet-azure-solutions/tarball | tar -C "/share" -xz --wildcards "*/FortiGate/Playground/IPSEC-test/tools/*" --strip-components=4 ]
+  - [ sh, -c, chmod a+x /etc/rc.local ]
+  - [ sh, -c, systemctl enable rc-local ]
+  - [ sh, -c, systemctl start rc-local ]
+final_message: "The system is finally up, after $UPTIME seconds"
