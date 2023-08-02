@@ -1024,6 +1024,18 @@
     }
   ],
   "outputs": {
+    "fgacustomdata": {
+      "type": "string",
+      "value": "[variables('fgaCustomData')]"
+    },
+    "fgbcustomdata": {
+      "type": "string",
+      "value": "[variables('fgbCustomData')]"
+    },
+    "fgccustomdata": {
+      "type": "string",
+      "value": "[variables('fgcCustomData')]"
+    },
     "fortiGatePublicIP": {
       "type": "string",
       "value": "[if(equals(parameters('publicIP1NewOrExisting'), 'new'), reference(variables('publicIP1Id')).ipAddress, '')]"
