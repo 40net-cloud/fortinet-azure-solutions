@@ -1,0 +1,866 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/0.1.2-preview/CreateUIDefinition.MultiVm.json#",
+  "handler": "Microsoft.Azure.CreateUIDef",
+  "version": "0.1.2-preview",
+  "parameters": {
+    "config": {
+      "basics": {
+        "resourceGroup": {
+          "allowExisting": true
+        }
+      }
+    },
+    "resourceTypes": [
+      "microsoft.resources/resourcegroups"
+    ],
+    "basics": [
+      {
+        "name": "instancetypeinfo",
+        "type": "Microsoft.Common.InfoBox",
+        "visible": true,
+        "options": {
+          "icon": "Info",
+          "text": "FortiProxy Deployment Type - Single VM",
+          "uri": "https://github.com/fortinet/azure-templates/tree/main/FortiProxy/A-Single-VM"
+        }
+      },
+      {
+        "name": "adminUsername",
+        "type": "Microsoft.Common.TextBox",
+        "label": "FortiProxy administrative username",
+        "defaultValue": "",
+        "toolTip": "Username for the FortiProxy virtual appliance. Most not be root, administrator or admin",
+        "constraints": {
+          "required": true,
+          "validations": [
+            {
+              "regex": "^[a-z0-9A-Z]{1,30}$",
+              "message": "Only alphanumeric characters are allowed, and the value must be 1-30 characters long"
+            },
+            {
+              "isValid": "[not(contains(toLower(basics('adminUsername')),'root'))]",
+              "message": "Usernames must not include reserved words"
+            },
+            {
+              "isValid": "[not(contains(toLower(basics('adminUsername')),'admin'))]",
+              "message": "Usernames must not include reserved words"
+            }
+          ]
+        },
+        "visible": true
+      },
+      {
+        "name": "adminPassword",
+        "type": "Microsoft.Common.PasswordBox",
+        "label": {
+          "password": "FortiProxy password",
+          "confirmPassword": "Confirm password"
+        },
+        "toolTip": "Password for the Virtual Machine",
+        "constraints": {
+          "required": true,
+          "regex": "^(?:(?=.*[a-z])(?:(?=.*[A-Z])(?=.*[\\d\\W])|(?=.*\\W)(?=.*\\d))|(?=.*\\W)(?=.*[A-Z])(?=.*\\d)).{12,}$",
+          "validationMessage": "The password must be between 12 characters or longer, and contain characters from at least 3 of the following groups: uppercase characters, lowercase characters, numbers, and special characters excluding '\\' or '-'."
+        },
+        "options": {
+          "hideConfirmation": false
+        },
+        "visible": true
+      },
+      {
+        "name": "fortiProxyNamePrefix",
+        "type": "Microsoft.Common.TextBox",
+        "label": "Fortigate Name Prefix",
+        "defaultValue": "",
+        "toolTip": "Naming prefix for all deployed resources",
+        "constraints": {
+          "required": true,
+          "regex": "^[A-Za-z0-9-]{1,15}$",
+          "validationMessage": "Only alphanumeric characters are allowed, and the value must be 1 to 15 characters."
+        },
+        "visible": true
+      },
+      {
+        "name": "fortiProxyImageSKU",
+        "type": "Microsoft.Common.DropDown",
+        "label": "Fortigate Image SKU",
+        "defaultValue": "Bring Your Own License",
+        "toolTip": "Identifies whether to to use PAYG (on demand licensing) or BYOL license model (where license is purchased separately)",
+        "constraints": {
+          "required": false,
+          "allowedValues": [
+            {
+              "label": "Bring Your Own License",
+              "value": "fpx-vm-byol"
+            }
+          ]
+        },
+        "visible": true
+      },
+      {
+        "name": "fortiProxyImageVersion",
+        "type": "Microsoft.Common.DropDown",
+        "label": "Fortigate Image Version",
+        "defaultValue": "latest",
+        "toolTip": "Only 6.x has the A/P HA feature currently",
+        "constraints": {
+          "required": false,
+          "allowedValues": [
+            {
+              "label": "7.0.4",
+              "value": "7.0.4"
+            },
+            {
+              "label": "7.0.8",
+              "value": "7.0.8"
+            },
+            {
+              "label": "latest",
+              "value": "latest"
+            }
+          ]
+        },
+        "visible": true
+      }
+    ],
+    "steps": [
+      {
+        "name": "instance",
+        "label": "Instance",
+        "subLabel": {
+          "preValidation": "Select instance type",
+          "postValidation": "Done"
+        },
+        "elements": [
+          {
+            "name": "instancetype",
+            "type": "Microsoft.Common.Section",
+            "label": "Instance Type",
+            "elements": [
+              {
+                "name": "info",
+                "type": "Microsoft.Common.TextBlock",
+                "visible": true,
+                "options": {
+                  "text": "For this FortiProxy deployment, it is recommended to use the general purpose or compute optimized virtual machines. A selection of supported instances sizes is listed in our documentation.",
+                  "link": {
+                    "label": "Learn more",
+                    "uri": "https://docs.fortinet.com/document/fortigate-public-cloud/7.2.0/azure-administration-guide/562841/instance-type-support"
+                  }
+                }
+              },
+              {
+                "name": "selection",
+                "type": "Microsoft.Compute.SizeSelector",
+                "label": "Size",
+                "toolTip": "Select the instance size of your FortiProxy VM solution. Minimum 4 NICs are required.",
+                "recommendedSizes": [
+                  "Standard_F2s",
+                  "Standard_F4s",
+                  "Standard_F8s",
+                  "Standard_F16s",
+                  "Standard_F2",
+                  "Standard_F4",
+                  "Standard_F8",
+                  "Standard_F16",
+                  "Standard_F2s_v2",
+                  "Standard_F4s_v2",
+                  "Standard_F8s_v2",
+                  "Standard_F16s_v2",
+                  "Standard_F32s_v2",
+                  "Standard_DS1_v2",
+                  "Standard_DS2_v2",
+                  "Standard_DS3_v2",
+                  "Standard_DS4_v2",
+                  "Standard_DS5_v2",
+                  "Standard_D2s_v3",
+                  "Standard_D4s_v3",
+                  "Standard_D8s_v3",
+                  "Standard_D16s_v3",
+                  "Standard_D32s_v3",
+                  "Standard_D2_v4",
+                  "Standard_D4_v4",
+                  "Standard_D8_v4",
+                  "Standard_D16_v4",
+                  "Standard_D32_v4",
+                  "Standard_D2s_v4",
+                  "Standard_D4s_v4",
+                  "Standard_D8s_v4",
+                  "Standard_D16s_v4",
+                  "Standard_D32s_v4",
+                  "Standard_D2a_v4",
+                  "Standard_D4a_v4",
+                  "Standard_D8a_v4",
+                  "Standard_D16a_v4",
+                  "Standard_D32a_v4",
+                  "Standard_D2as_v4",
+                  "Standard_D4as_v4",
+                  "Standard_D8as_v4",
+                  "Standard_D16as_v4",
+                  "Standard_D32as_v4",
+                  "Standard_D2_v5",
+                  "Standard_D4_v5",
+                  "Standard_D8_v5",
+                  "Standard_D16_v5",
+                  "Standard_D32_v5",
+                  "Standard_D2s_v5",
+                  "Standard_D4s_v5",
+                  "Standard_D8s_v5",
+                  "Standard_D16s_v5",
+                  "Standard_D32s_v5",
+                  "Standard_D2as_v5",
+                  "Standard_D4as_v5",
+                  "Standard_D8as_v5",
+                  "Standard_D16as_v5",
+                  "Standard_D32as_v5",
+                  "Standard_D2ads_v5",
+                  "Standard_D4ads_v5",
+                  "Standard_D8ads_v5",
+                  "Standard_D16ads_v5",
+                  "Standard_D32ads_v5"
+                ],
+                "constraints": {
+                  "allowedValues": [
+                    "Standard_F2s",
+                    "Standard_F4s",
+                    "Standard_F8s",
+                    "Standard_F16s",
+                    "Standard_F2",
+                    "Standard_F4",
+                    "Standard_F8",
+                    "Standard_F16",
+                    "Standard_F2s_v2",
+                    "Standard_F4s_v2",
+                    "Standard_F8s_v2",
+                    "Standard_F16s_v2",
+                    "Standard_F32s_v2",
+                    "Standard_DS1_v2",
+                    "Standard_DS2_v2",
+                    "Standard_DS3_v2",
+                    "Standard_DS4_v2",
+                    "Standard_DS5_v2",
+                    "Standard_D2s_v3",
+                    "Standard_D4s_v3",
+                    "Standard_D8s_v3",
+                    "Standard_D16s_v3",
+                    "Standard_D32s_v3",
+                    "Standard_D2_v4",
+                    "Standard_D4_v4",
+                    "Standard_D8_v4",
+                    "Standard_D16_v4",
+                    "Standard_D32_v4",
+                    "Standard_D2s_v4",
+                    "Standard_D4s_v4",
+                    "Standard_D8s_v4",
+                    "Standard_D16s_v4",
+                    "Standard_D32s_v4",
+                    "Standard_D2a_v4",
+                    "Standard_D4a_v4",
+                    "Standard_D8a_v4",
+                    "Standard_D16a_v4",
+                    "Standard_D32a_v4",
+                    "Standard_D2as_v4",
+                    "Standard_D4as_v4",
+                    "Standard_D8as_v4",
+                    "Standard_D16as_v4",
+                    "Standard_D32as_v4",
+                    "Standard_D2_v5",
+                    "Standard_D4_v5",
+                    "Standard_D8_v5",
+                    "Standard_D16_v5",
+                    "Standard_D32_v5",
+                    "Standard_D2s_v5",
+                    "Standard_D4s_v5",
+                    "Standard_D8s_v5",
+                    "Standard_D16s_v5",
+                    "Standard_D32s_v5",
+                    "Standard_D2as_v5",
+                    "Standard_D4as_v5",
+                    "Standard_D8as_v5",
+                    "Standard_D16as_v5",
+                    "Standard_D32as_v5",
+                    "Standard_D2ads_v5",
+                    "Standard_D4ads_v5",
+                    "Standard_D8ads_v5",
+                    "Standard_D16ads_v5",
+                    "Standard_D32ads_v5"
+                  ]
+                },
+                "options": {
+                  "hideDiskTypeFilter": false
+                },
+                "osPlatform": "Linux",
+                "imageReference": {
+                  "publisher": "Fortinet",
+                  "offer": "fortinet-fortiproxy",
+                  "sku": "[basics('fortiProxyImageSKU')]"
+                },
+                "count": 1,
+                "visible": true
+              }
+            ]
+          },
+          {
+            "name": "availabilityOptions",
+            "type": "Microsoft.Common.Section",
+            "label": "Availability Options",
+            "elements": [
+              {
+                "name": "availabilityOptionsHeader",
+                "type": "Microsoft.Common.TextBlock",
+                "visible": true,
+                "options": {
+                  "text": "Deploy FortiProxy VMs in an availability set or availability zone.",
+                  "link": {
+                    "label": "Learn more",
+                    "uri": "https://github.com/fortinet/azure-templates/tree/main/FortiProxy#sla"
+                  }
+                }
+              },
+              {
+                "name": "availabilityOptions",
+                "type": "Microsoft.Common.DropDown",
+                "label": "Availability Option",
+                "defaultValue": "No infrastructure redundancy required",
+                "toolTip": "Deploy FortiProxy VMs in a new or existing availability set or or a specific availability zone.",
+                "constraints": {
+                  "required": false,
+                  "allowedValues": [
+                    {
+                      "label": "No infrastructure redundancy required",
+                      "value": "None"
+                    },
+                    {
+                      "label": "Availability set",
+                      "value": "Availability set"
+                    },
+                    {
+                      "label": "Availability zone",
+                      "value": "Availability zone"
+                    }
+                  ]
+                },
+                "visible": true
+              },
+              {
+                "name": "availabilitySetNew",
+                "type": "Microsoft.Common.CheckBox",
+                "label": "Create a new availability set?",
+                "toolTip": "Check this box if you want to create a new availability set and add the FortiProxy VM to it.",
+                "visible": "[equals(steps('instance').availabilityOptions.availabilityOptions,'Availability set')]"
+              },
+              {
+                "name": "availabilitySetSelector",
+                "type": "Microsoft.Solutions.ResourceSelector",
+                "label": "Select the availability set for your FortiProxy",
+                "toolTip": "Select your existing availability set you want to add this FortiProxy VM to",
+                "resourceType": "Microsoft.Compute/availabilitySets",
+                "options": {
+                  "filter": {
+                    "subscription": "onBasics",
+                    "location": "onBasics"
+                  }
+                },
+                "visible": "[and(not(steps('instance').availabilityOptions.availabilitySetNew),equals(steps('instance').availabilityOptions.availabilityOptions,'Availability set'))]"
+              },
+              {
+                "name": "availabilitySetInfo",
+                "type": "Microsoft.Common.InfoBox",
+                "options": {
+                  "icon": "Info",
+                  "text": "The FortiProxy VM and availability set are required to exist in the same resource group."
+                },
+                "visible": "[and(not(steps('instance').availabilityOptions.availabilitySetNew),equals(steps('instance').availabilityOptions.availabilityOptions,'Availability set'))]"
+              },
+              {
+                "name": "availabilityZoneSelector",
+                "type": "Microsoft.Common.DropDown",
+                "label": "Select the availability zone for your FortiProxy VM",
+                "toolTip": "Select the availability zone for your FortiProxy VM",
+                "defaultValue": "Zone 2",
+                "constraints": {
+                  "allowedValues": [
+                    {
+                      "label": "Zone 1",
+                      "value": "1"
+                    },
+                    {
+                      "label": "Zone 2",
+                      "value": "2"
+                    },
+                    {
+                      "label": "Zone 3",
+                      "value": "3"
+                    }
+                  ]
+                },
+                "visible": "[equals(steps('instance').availabilityOptions.availabilityOptions,'Availability zone')]"
+              },
+              {
+                "name": "availabilityOptionsFooter",
+                "type": "Microsoft.Common.InfoBox",
+                "visible": true,
+                "options": {
+                  "icon": "Info",
+                  "text": "If availability zone deployment is selected but the location does not support availability zone an availability set will be deployed. If availability zone deployment is selected and availability zone are available in the location, FortiProxy A will be placed in Zone 1, FortiProxy B will be placed in Zone 2",
+                  "uri": "https://docs.microsoft.com/en-us/azure/availability-zones/az-overview"
+                }
+              }
+            ]
+          },
+          {
+            "name": "fpxLicense",
+            "type": "Microsoft.Common.Section",
+            "label": "FortiProxy License",
+            "elements": [
+              {
+                "name": "fpxLicenseBYOLInfo",
+                "type": "Microsoft.Common.TextBlock",
+                "visible": "[equals(basics('fortiProxyImageSKU'), 'fpx-vm-byol')]",
+                "options": {
+                  "text": "Bring Your Own License license only. The license file(s) retrieved from support.fortinet.com can be uploaded here or uploaded after deployment."
+                }
+              },
+              {
+                "name": "fpxcontent",
+                "type": "Microsoft.Common.FileUpload",
+                "label": "FortiProxy License",
+                "toolTip": "Upload the license file for the FortiProxy BYOL here.",
+                "constraints": {
+                  "required": false,
+                  "accept": ".lic,.txt"
+                },
+                "options": {
+                  "multiple": false,
+                  "uploadMode": "file",
+                  "openMode": "text",
+                  "encoding": "UTF-8"
+                },
+                "visible": "[equals(basics('fortiProxyImageSKU'), 'fpx-vm-byol')]"
+              }
+            ]
+          },
+          {
+            "name": "virtualmachinename",
+            "type": "Microsoft.Common.Section",
+            "label": "Virtual Machine Name",
+            "elements": [
+              {
+                "name": "fpxvmname",
+                "type": "Microsoft.Common.TextBox",
+                "label": "Name of the FortiProxy VM",
+                "defaultValue": "[if(equals(basics('fortiProxyNamePrefix'),''),'FortiProxy-VM',concat(basics('fortiProxyNamePrefix'),'-FPX'))]",
+                "toolTip": "Provide the name of the FortiProxy VM. This is not required as a field.",
+                "constraints": {
+                  "required": false,
+                  "regex": "^[A-Za-z0-9-]{1,64}$",
+                  "validationMessage": "Only alphanumeric characters and a dash are allowed, and the value must be 1 to 64 characters."
+                },
+                "visible": true
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "networking",
+        "label": "Networking",
+        "subLabel": {
+          "preValidation": "Configure internal networking",
+          "postValidation": "Done"
+        },
+        "elements": [
+          {
+            "name": "virtualnetworksection",
+            "type": "Microsoft.Common.Section",
+            "label": "Configure Internal Networking",
+            "elements": [
+              {
+                "name": "virtualnetworktext",
+                "type": "Microsoft.Common.TextBlock",
+                "visible": true,
+                "options": {
+                  "text": "Create a new or select an existing virtual network with the required subnets."
+                }
+              },
+              {
+                "name": "virtualnetwork",
+                "type": "Microsoft.Network.VirtualNetworkCombo",
+                "label": {
+                  "virtualNetwork": "Virtual Network for deployment of the FortiProxy VM solution",
+                  "subnets": "Subnets"
+                },
+                "toolTip": {
+                  "virtualNetwork": "Virtual Network for deployment of the FortiProxy VM solution",
+                  "subnets": "Standard deployment is to have an external and internal subnet"
+                },
+                "defaultValue": {
+                  "name": "[if(equals(basics('fortiProxyNamePrefix'),''),'FortiProxy-VNET',concat(basics('fortiProxyNamePrefix'),'-VNET'))]",
+                  "addressPrefixSize": "/24"
+                },
+                "constraints": {
+                  "minAddressPrefixSize": "/29"
+                },
+                "options": {
+                  "hideExisting": false
+                },
+                "subnets": {
+                  "subnet1": {
+                    "label": "FortiProxy Subnet",
+                    "defaultValue": {
+                      "name": "ProtectedSubnet",
+                      "addressPrefixSize": "/26"
+                    },
+                    "constraints": {
+                      "minAddressPrefixSize": "/29",
+                      "minAddressCount": 1,
+                      "requireContiguousAddresses": true
+                    }
+                  }
+                },
+                "visible": true
+              },
+              {
+                "name": "virtualnetworkinfo",
+                "type": "Microsoft.Common.InfoBox",
+                "visible": true,
+                "options": {
+                  "icon": "Info",
+                  "text": "The external subnet will have a public IP attached to the FortiProxy network interface. The internal subnet is a transit subnet containing only the FortiProxy interfaces for traffic to and from the internal networks. Internal systems should be installed in a protected subnet with user defined route configuration.",
+                  "uri": "https://github.com/fortinet/azure-templates/tree/main/FortiProxy/A-Single-VM"
+                }
+              }
+            ]
+          },
+          {
+            "name": "acceleratednetworksection",
+            "type": "Microsoft.Common.Section",
+            "label": "Accelerated networking",
+            "elements": [
+              {
+                "name": "acceleratednetworkingtext",
+                "type": "Microsoft.Common.TextBlock",
+                "visible": true,
+                "options": {
+                  "text": "Enables SR-IOV support allowing direct acces from the NIC in the Azure infrastructure to the FortiProxy VM.",
+                  "link": {
+                    "label": "Learn more",
+                    "uri": "https://docs.fortinet.com/document/fortigate-public-cloud/7.2.0/azure-administration-guide/651644/enabling-accelerated-networking-on-the-fortigate-vm"
+                  }
+                }
+              },
+              {
+                "name": "acceleratednetworking",
+                "type": "Microsoft.Common.OptionsGroup",
+                "label": "Accelerated Networking",
+                "defaultValue": "Enabled",
+                "toolTip": "Accelerated Networking enables direct connection between the VM and network card. Only available on 2 CPU F/Fs and 4 CPU D/Dsv2, D/Dsv3, E/Esv3, Fsv2, Lsv2, Ms/Mms and Ms/Mmsv2",
+                "constraints": {
+                  "required": false,
+                  "allowedValues": [
+                    {
+                      "label": "Enabled",
+                      "value": "true"
+                    },
+                    {
+                      "label": "Disabled",
+                      "value": "false"
+                    }
+                  ]
+                },
+                "visible": true
+              },
+              {
+                "name": "acceleratednetworkinginfo",
+                "type": "Microsoft.Common.InfoBox",
+                "visible": true,
+                "options": {
+                  "icon": "Info",
+                  "text": "Accelerated Networking is supported on most general purpose and compute-optimized instance sizes with 2 or more vCPUs. On instances that support hyperthreading, Accelerated Networking is supported on VM instances with 4 or more vCPUs. Deployment with the accelerated networking feature enabled on a host that doesn't support it will result in a failure to connect to it. The accelerated networking can be disabled after deployment from the Azure Portal or Azure CLI.",
+                  "uri": "https://docs.microsoft.com/en-us/azure/virtual-machines/sizes"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "publicip",
+        "label": "Public IP",
+        "subLabel": {
+          "preValidation": "Configure public networking",
+          "postValidation": "Done"
+        },
+        "elements": [
+          {
+            "name": "publiciptext",
+            "type": "Microsoft.Common.TextBlock",
+            "visible": true,
+            "options": {
+              "text": "The public IP will be used for public services hosted on the FortiProxy such as IPSEC termination, management of the FortiProxy from external or services behind the Fortigate such as a webserver."
+            }
+          },
+          {
+            "name": "publicip",
+            "type": "Microsoft.Network.PublicIpAddressCombo",
+            "label": {
+              "publicIpAddress": "Public IP address",
+              "domainNameLabel": "Domain name label"
+            },
+            "toolTip": {
+              "publicIpAddress": "Public IP attached to FortiProxy VM",
+              "domainNameLabel": "DNS name linked to this public IP"
+            },
+            "defaultValue": {
+              "publicIpAddressName": "[if(equals(basics('fortiProxyNamePrefix'),''),'FPXPublicIP',concat(basics('fortiProxyNamePrefix'),'-FPX-PIP'))]",
+              "domainNameLabel": "mydomain"
+            },
+            "constraints": {
+              "required": {
+                "domainNameLabel": false
+              }
+            },
+            "options": {
+              "hideNone": false,
+              "hideDomainNameLabel": true
+            },
+            "visible": true
+          },
+          {
+            "name": "standardsku",
+            "type": "Microsoft.Common.InfoBox",
+            "visible": true,
+            "options": {
+              "icon": "Info",
+              "text": "This deployment can use standard or basic SKU public IP's. Moving to a Active/Passive or Active/Active setup requires the use of a standard SKU public IP. Microsoft Azure offers a migration path from a basic to standard SKU public IP.",
+              "uri": "https://docs.microsoft.com/en-us/azure/virtual-network/virtual-network-public-ip-address-upgrade?tabs=option-upgrade-cli%2Coption-migrate-powershell"
+            }
+          }
+        ]
+      },
+      {
+        "name": "advanced",
+        "label": "Advanced",
+        "subLabel": {
+          "preValidation": "Configure central management",
+          "postValidation": "Done"
+        },
+        "elements": [
+          {
+            "name": "fortimanager",
+            "type": "Microsoft.Common.Section",
+            "label": "FortiManager",
+            "elements": [
+              {
+                "name": "fortimanagertext",
+                "type": "Microsoft.Common.TextBlock",
+                "visible": true,
+                "options": {
+                  "text": "Connect to FortiManager"
+                }
+              },
+              {
+                "name": "enabled",
+                "type": "Microsoft.Common.OptionsGroup",
+                "label": "Connect to FortiManager",
+                "defaultValue": "no",
+                "toolTip": "FortiManager needs to be reachable from port 1 or port 2 of the FortiProxy",
+                "constraints": {
+                  "allowedValues": [
+                    {
+                      "label": "yes",
+                      "value": "yes"
+                    },
+                    {
+                      "label": "no",
+                      "value": "no"
+                    }
+                  ],
+                  "required": true
+                },
+                "visible": true
+              },
+              {
+                "name": "fortimanagerip",
+                "type": "Microsoft.Common.TextBox",
+                "label": "FortiManager IP address",
+                "defaultValue": "",
+                "toolTip": "Provide up to 10 IP addresses or DNS name of the FortiManager reachable over port TCP/541",
+                "constraints": {
+                  "required": false,
+                  "regex": "^[A-Za-z0-9 .-]{1,128}$",
+                  "validationMessage": "Only alphanumeric characters and dots, dashs and spaces are allowed, and the value must be 1 to 512 characters."
+                },
+                "visible": true
+              },
+              {
+                "name": "fortimanagerserial",
+                "type": "Microsoft.Common.TextBox",
+                "label": "FortiManager Serial Number",
+                "defaultValue": "",
+                "toolTip": "Provide the serial number of the FortiManager",
+                "constraints": {
+                  "required": false,
+                  "regex": "^[A-Za-z0-9-]{1,64}$",
+                  "validationMessage": "Only alphanumeric characters and a dash are allowed, and the value must be 1 to 64 characters."
+                },
+                "visible": true
+              }
+            ],
+            "visible": true
+          },
+          {
+            "name": "customdata",
+            "type": "Microsoft.Common.Section",
+            "label": "Custom Data",
+            "elements": [
+              {
+                "name": "customdatatext",
+                "type": "Microsoft.Common.TextBlock",
+                "visible": true,
+                "options": {
+                  "text": "Pass a configuration file into the virtual machine while it is being provisioned. This is additional to the configuration for this architecture."
+                }
+              },
+              {
+                "name": "config",
+                "type": "Microsoft.Common.TextBox",
+                "label": "Custom Data",
+                "toolTip": "Custom Data",
+                "placeholder": "Add you required additional configuration here.",
+                "multiLine": true,
+                "constraints": {
+                  "required": false,
+                  "validations": [
+                    {
+                      "regex": "^[\\w\\W\n\t]{0,10240}$",
+                      "message": "All characters allowed, max 10240 characters."
+                    }
+                  ]
+                },
+                "visible": true
+              },
+              {
+                "name": "standardsku",
+                "type": "Microsoft.Common.InfoBox",
+                "visible": true,
+                "options": {
+                  "icon": "Info",
+                  "text": "The default configuration already included in this deployment can be found on our github page. ",
+                  "uri": "https://github.com/fortinet/azure-templates/blob/main/FortiProxy/A-Single-VM/doc/config-provisioning.md"
+                }
+              }
+            ]
+          },
+          {
+            "name": "serialconsole",
+            "type": "Microsoft.Common.Section",
+            "label": "Serial Console",
+            "elements": [
+              {
+                "name": "enabled",
+                "type": "Microsoft.Common.OptionsGroup",
+                "label": "Enable Serial Console",
+                "defaultValue": "yes",
+                "toolTip": "Enables the serial console and creates a required storage account.",
+                "constraints": {
+                  "allowedValues": [
+                    {
+                      "label": "yes",
+                      "value": "yes"
+                    },
+                    {
+                      "label": "no",
+                      "value": "no"
+                    }
+                  ],
+                  "required": true
+                },
+                "visible": true
+              }
+            ]
+          },
+          {
+            "name": "customvhd",
+            "type": "Microsoft.Common.Section",
+            "label": "Custom VHD",
+            "elements": [
+              {
+                "name": "customvhdinfo",
+                "type": "Microsoft.Common.InfoBox",
+                "visible": true,
+                "options": {
+                  "icon": "Info",
+                  "text": "For BYOL it is possible to upload a specific FortiProxy image to Azure provided by support. Provide the resource ID of the required VM image version in the field below.",
+                  "uri": "https://docs.fortinet.com/document/fortigate-public-cloud/7.2.0/azure-administration-guide/392531/deploying-fortigate-vm-from-a-vhd-image-file"
+                }
+              },
+              {
+                "name": "resourceid",
+                "type": "Microsoft.Common.TextBox",
+                "label": "Azure Compute Gallery Image Version resource ID",
+                "defaultValue": "",
+                "toolTip": "Azure Compute Gallery Image Version resource ID",
+                "constraints": {
+                  "required": "[and(contains(steps('instance').instancetype.selection, 'p'),equals(basics('fortiProxyImageSKU'),'fpx-vm-byol'))]",
+                  "regex": "^[\\w\\W\n\t]{0,10240}$",
+                  "validationMessage": "All characters allowed, max 10240 characters."
+                },
+                "visible": "[equals(basics('fortiProxyImageSKU'),'fpx-vm-byol')]"
+              },
+              {
+                "name": "customvhdinfo2",
+                "type": "Microsoft.Common.InfoBox",
+                "visible": "[contains(steps('instance').instancetype.selection, 'p')]",
+                "options": {
+                  "icon": "Info",
+                  "text": "An ARM64 based instance type was selected. This requires a custom image using an Azure Compute Gallery.",
+                  "uri": "https://docs.fortinet.com/document/fortigate-public-cloud/7.2.0/azure-administration-guide/392531/deploying-fortigate-vm-from-a-vhd-image-file"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "outputs": {
+      "fortiProxyNamePrefix": "[basics('fortiProxyNamePrefix')]",
+      "fortiProxyImageSKU": "[basics('fortiProxyImageSKU')]",
+      "fortiProxyImageVersion": "[basics('fortiProxyImageVersion')]",
+      "fortiProxyName": "[steps('instance').virtualmachinename.fpxvmname]",
+      "adminUsername": "[basics('adminUsername')]",
+      "adminPassword": "[basics('adminPassword')]",
+      "location": "[location()]",
+      "instanceType": "[steps('instance').instancetype.selection]",
+      "availabilityOptions": "[steps('instance').availabilityOptions.availabilityOptions]",
+      "existingAvailabilitySetName": "[steps('instance').availabilityOptions.availabilitySetSelector.name]",
+      "availabilityZoneNumber": "[steps('instance').availabilityOptions.availabilityZoneSelector]",
+      "fortiProxyLicenseBYOL": "[steps('instance').fpxLicense.fpxcontent]",
+      "fortiProxyLicenseFortiFlex": "[steps('instance').fpxLicense.fpxfortiflex]",
+      "acceleratedNetworking": "[steps('networking').acceleratednetworksection.acceleratednetworking]",
+      "publicIP1NewOrExisting": "[steps('publicip').publicip.newOrExistingOrNone]",
+      "publicIP1Name": "[steps('publicip').publicip.name]",
+      "publicIP1ResourceGroup": "[steps('publicip').publicip.resourceGroup]",
+      "publicIP1AddressType": "[steps('publicip').publicip.publicIPAllocationMethod]",
+      "publicIP1SKU": "[steps('publicip').publicip.sku]",
+      "vnetNewOrExisting": "[steps('networking').virtualnetworksection.virtualnetwork.newOrExisting]",
+      "vnetName": "[steps('networking').virtualnetworksection.virtualnetwork.name]",
+      "vnetResourceGroup": "[steps('networking').virtualnetworksection.virtualnetwork.resourceGroup]",
+      "vnetAddressPrefix": "[steps('networking').virtualnetworksection.virtualnetwork.addressPrefix]",
+      "subnet1Name": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet1.name]",
+      "subnet1Prefix": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet1.addressPrefix]",
+      "subnet1StartAddress": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet1.startAddress]",
+      "subnet2Name": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet2.name]",
+      "subnet2Prefix": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet2.addressPrefix]",
+      "subnet2StartAddress": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet2.startAddress]",
+      "subnet3Name": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet3.name]",
+      "subnet3Prefix": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet3.addressPrefix]",
+      "serialConsole": "[steps('advanced').serialconsole.enabled]",
+      "fortiManager": "[steps('advanced').fortimanager.enabled]",
+      "fortiManagerIP": "[steps('advanced').fortimanager.fortimanagerip]",
+      "fortiManagerSerial": "[steps('advanced').fortimanager.fortimanagerserial]",
+      "fortiProxyAdditionalCustomData": "[steps('advanced').customdata.config]",
+      "customImageReference": "[steps('advanced').customvhd.resourceid]"
+    }
+  }
+}
