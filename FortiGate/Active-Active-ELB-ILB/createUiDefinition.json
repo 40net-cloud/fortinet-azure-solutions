@@ -81,6 +81,19 @@
         "visible": true
       },
       {
+        "name": "fortiGateCount",
+        "type": "Microsoft.Common.TextBox",
+        "label": "Number of FortiGate",
+        "defaultValue": "2",
+        "toolTip": "Number of FortiGate VM instances to deploy",
+        "constraints": {
+          "required": true,
+          "regex": "^[0-9-]{1,15}$",
+          "validationMessage": "Only alphanumeric characters are allowed, and the value must be 1 to 15 characters."
+        },
+        "visible": true
+      },
+      {
         "name": "fortiGateImageSKU",
         "type": "Microsoft.Common.DropDown",
         "label": "FortiGate Image SKU",
@@ -526,7 +539,7 @@
                 "type": "Microsoft.Common.TextBlock",
                 "visible": "[equals(basics('fortiGateImageSKU'), 'fortinet_fg-vm')]",
                 "options": {
-                  "text": "Bring Your Own License was selected in the basics blade. The license file(s) retrieved from support.fortinet.com can be uploaded here or uploaded after deployment."
+                  "text": "Bring Your Own License was selected in the basics blade. The license file(s) retrieved from support.fortinet.com can be uploaded here or uploaded after deployment. License files or FortiFlex license for the first three FortiGate VM systems can be provided via this deployment. Additional licenses need to be uplaoded localy on these systems after deployment or a custom template need to created."
                 }
               },
               {
@@ -540,7 +553,7 @@
                 "name": "fgtAcontent",
                 "type": "Microsoft.Common.FileUpload",
                 "label": "FortiGate A License",
-                "toolTip": "Upload the license file for the primary FortiGate BYOL here.",
+                "toolTip": "Upload the license file for the first FortiGate VM BYOL here.",
                 "constraints": {
                   "required": false,
                   "accept": ".lic,.txt"
@@ -557,7 +570,24 @@
                 "name": "fgtBcontent",
                 "type": "Microsoft.Common.FileUpload",
                 "label": "FortiGate B License",
-                "toolTip": "Upload the license file for the secondary FortiGate BYOL here.",
+                "toolTip": "Upload the license file for the second FortiGate VM BYOL here.",
+                "constraints": {
+                  "required": false,
+                  "accept": ".lic,.txt"
+                },
+                "options": {
+                  "multiple": false,
+                  "uploadMode": "file",
+                  "openMode": "text",
+                  "encoding": "UTF-8"
+                },
+                "visible": "[and(equals(basics('fortiGateImageSKU'), 'fortinet_fg-vm'),not(steps('instance').fgtLicense.fgtLicenseFortiFlexCheck))]"
+              },
+              {
+                "name": "fgtCcontent",
+                "type": "Microsoft.Common.FileUpload",
+                "label": "FortiGate C License",
+                "toolTip": "Upload the license file for the third FortiGate VM BYOL here.",
                 "constraints": {
                   "required": false,
                   "accept": ".lic,.txt"
@@ -588,7 +618,20 @@
                 "type": "Microsoft.Common.TextBox",
                 "label": "FortiGate B FortiFlex",
                 "defaultValue": "",
-                "toolTip": "FortiGate B FortiFlex license token",
+                "toolTip": "FortiGate VM B FortiFlex license token",
+                "constraints": {
+                  "required": false,
+                  "regex": "^[A-Za-z0-9-]{1,64}$",
+                  "validationMessage": "Only alphanumeric characters and a dash are allowed, and the value must be 1 to 64 characters."
+                },
+                "visible": "[and(equals(basics('fortiGateImageSKU'), 'fortinet_fg-vm'),steps('instance').fgtLicense.fgtLicenseFortiFlexCheck)]"
+              },
+              {
+                "name": "fgtCfortiflex",
+                "type": "Microsoft.Common.TextBox",
+                "label": "FortiGate C FortiFlex",
+                "defaultValue": "",
+                "toolTip": "FortiGate VM C FortiFlex license token",
                 "constraints": {
                   "required": false,
                   "regex": "^[A-Za-z0-9-]{1,64}$",
@@ -774,6 +817,44 @@
           "postValidation": "Done"
         },
         "elements": [
+          {
+            "name": "externalLoadBalancer",
+            "type": "Microsoft.Common.Section",
+            "label": "External Load Balancer",
+            "elements": [
+              {
+                "name": "enabled",
+                "type": "Microsoft.Common.OptionsGroup",
+                "label": "Deploy ELB with external subnet",
+                "defaultValue": "yes",
+                "toolTip": "Deploys an external load balancer and external interface for each FortiGate VM",
+                "constraints": {
+                  "allowedValues": [
+                    {
+                      "label": "yes",
+                      "value": "yes"
+                    },
+                    {
+                      "label": "no",
+                      "value": "no"
+                    }
+                  ],
+                  "required": true
+                },
+                "visible": true
+              },
+              {
+                "name": "standardsku",
+                "type": "Microsoft.Common.InfoBox",
+                "visible": true,
+                "options": {
+                  "icon": "Info",
+                  "text": "If no ",
+                  "uri": "https://docs.microsoft.com/en-us/troubleshoot/azure/virtual-machines/serial-console-overview"
+                }
+              }
+            ]
+          },
           {
             "name": "publiciptext",
             "type": "Microsoft.Common.TextBlock",
@@ -1046,6 +1127,7 @@
     ],
     "outputs": {
       "fortiGateNamePrefix": "[basics('fortiGateNamePrefix')]",
+      "fortiGateCount": "[basics('fortiGateCount')]", 
       "fortiGateImageSKU": "[basics('fortiGateImageSKU')]",
       "fortiGateImageVersion": "[basics('fortiGateImageVersion')]",
       "adminUsername": "[basics('adminUsername')]",
@@ -1055,9 +1137,12 @@
       "availabilityOptions": "[steps('instance').availabilityOptions.availabilityOptions]",
       "fortiGateLicenseBYOLA": "[steps('instance').fgtLicense.fgtAcontent]",
       "fortiGateLicenseBYOLB": "[steps('instance').fgtLicense.fgtBcontent]",
+      "fortiGateLicenseBYOLC": "[steps('instance').fgtLicense.fgtCcontent]",
       "fortiGateLicenseFortiFlexA": "[steps('instance').fgtLicense.fgtAfortiflex]",
       "fortiGateLicenseFortiFlexB": "[steps('instance').fgtLicense.fgtBfortiflex]",
+      "fortiGateLicenseFortiFlexC": "[steps('instance').fgtLicense.fgtCfortiflex]",
       "acceleratedNetworking": "[steps('networking').acceleratednetworksection.acceleratednetworking]",
+      "externalLoadBalancer": "[steps('publicip').externalLoadBalancer.enabled]",
       "publicIP1NewOrExisting": "[steps('publicip').loadbalancerpublicip.newOrExistingOrNone]",
       "publicIP1Name": "[steps('publicip').loadbalancerpublicip.name]",
       "publicIP1ResourceGroup": "[steps('publicip').loadbalancerpublicip.resourceGroup]",
