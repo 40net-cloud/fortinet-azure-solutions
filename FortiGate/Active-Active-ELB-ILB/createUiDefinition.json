@@ -832,11 +832,11 @@
                   "allowedValues": [
                     {
                       "label": "yes",
-                      "value": "yes"
+                      "value": "true"
                     },
                     {
                       "label": "no",
-                      "value": "no"
+                      "value": "false"
                     }
                   ],
                   "required": true
@@ -1142,7 +1142,7 @@
       "fortiGateLicenseFortiFlexB": "[steps('instance').fgtLicense.fgtBfortiflex]",
       "fortiGateLicenseFortiFlexC": "[steps('instance').fgtLicense.fgtCfortiflex]",
       "acceleratedNetworking": "[steps('networking').acceleratednetworksection.acceleratednetworking]",
-      "externalLoadBalancer": "[steps('publicip').externalLoadBalancer.enabled]",
+      "externalLoadBalancer": "[bool(steps('publicip').externalLoadBalancer.enabled)]",
       "publicIP1NewOrExisting": "[steps('publicip').loadbalancerpublicip.newOrExistingOrNone]",
       "publicIP1Name": "[steps('publicip').loadbalancerpublicip.name]",
       "publicIP1ResourceGroup": "[steps('publicip').loadbalancerpublicip.resourceGroup]",
