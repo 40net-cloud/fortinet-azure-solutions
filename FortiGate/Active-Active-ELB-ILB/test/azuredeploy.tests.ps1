@@ -34,7 +34,7 @@ BeforeAll {
     $config += Get-Content $sshkeypub
     $config += "`" `n set password $testsResourceGroupName `n next `n end"
     $publicIP1Name = "$testsPrefix-FGT-PIP"
-    $fortiGateCount = "3"
+    $fortiGateCount = 3
     $params = @{ 'adminUsername'=$testsAdminUsername
                  'adminPassword'=$testsResourceGroupName
                  'fortiGateNamePrefix'=$testsPrefix
@@ -114,7 +114,6 @@ Describe 'FGT A/A' {
                                           'serialConsole',
                                           'subnet1Name',
                                           'subnet1Prefix',
-                                          'subnet1StartAddress',
                                           'subnet2Name',
                                           'subnet2Prefix',
                                           'subnet2StartAddress',
