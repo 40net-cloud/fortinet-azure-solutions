@@ -343,7 +343,7 @@
                   "subnets": "Standard deployment is to have an "
                 },
                 "defaultValue": {
-                  "name": "Fortinet-VNET",
+                  "name": "[if(equals(basics('namePrefix'),''),'FortiProxy-VNET',concat(basics('namePrefix'),'-VNET'))]",
                   "addressPrefixSize": "/24"
                 },
                 "constraints": {
