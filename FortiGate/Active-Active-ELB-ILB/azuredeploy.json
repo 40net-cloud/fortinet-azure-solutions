@@ -985,7 +985,8 @@
         "osProfile": {
           "computerName": "[concat(variables('fgVmName'),'-',copyIndex(1))]",
           "adminUsername": "[parameters('adminUsername')]",
-          "adminPassword": "[parameters('adminPassword')]"
+          "adminPassword": "[parameters('adminPassword')]",
+          "customData": "[if(equals(copyIndex(1),'1'),variables('fgaCustomData'),if(equals(copyIndex(1),'2'),variables('fgbCustomData'),if(equals(copyIndex(1),'3'),variables('fgcCustomData'),variables('customDataBody'))))]"
         },
         "storageProfile": {
           "imageReference": "[if(and(equals(parameters('fortiGateImageSKU'),'fortinet_fg-vm'),not(equals(parameters('customImageReference'),''))), variables('imageReferenceCustomImage'), variables('imageReferenceMarketplace'))]",
