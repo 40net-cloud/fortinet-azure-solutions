@@ -62,9 +62,6 @@
         "subnet1Prefix": {
             "value": "172.16.136.0/26"
         },
-        "subnet1StartAddress": {
-            "value": "172.16.136.4"
-        },
         "subnet2Name": {
             "value": "InternalSubnet"
         },
