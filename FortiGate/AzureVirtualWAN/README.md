@@ -134,7 +134,7 @@ More information can be found [here](doc/to-vpn-gateway.md)
 
 ## Links
 
-* [Fortinet: Azure Virtual WAN deployment guide](https://docs.fortinet.com/document/fortigate-public-cloud/7.2.2/azure-vwan-sd-wan-deployment-guide/12818/deployment-overview)
+* [Fortinet: Azure Virtual WAN deployment guide](https://docs.fortinet.com/document/fortigate-public-cloud/7.4.0/azure-vwan-sd-wan-ngfw-deployment-guide/12818/deployment-overview)
 * [Microsoft: Azure Virtual WAN NVA in Virtual WAN Hub](https://learn.microsoft.com/en-us/azure/virtual-wan/about-nva-hub)
 * [Microsoft: Azure Virtual WAN FAQ](https://learn.microsoft.com/en-us/azure/virtual-wan/virtual-wan-faq)
 * [Microsoft: Azure Virtual WAN BGP peering](https://learn.microsoft.com/en-us/azure/virtual-wan/create-bgp-peering-hub-portal)

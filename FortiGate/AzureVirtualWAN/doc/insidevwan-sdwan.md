@@ -19,7 +19,7 @@ Setup consist of:
 
 ## Deployment
 
-The integration of the FortiGate inside of the Virtual WAN Hub requires FortiManager to manage the FortiGate instances and the SD-WAN configuration. The deployment process is detailed in the documentation [here](https://docs.fortinet.com/document/fortigate-public-cloud/7.2.2/azure-vwan-sd-wan-deployment-guide/311594/deployment-procedures).
+The integration of the FortiGate inside of the Virtual WAN Hub requires FortiManager to manage the FortiGate instances and the SD-WAN configuration. The deployment process is detailed in the documentation [here](https://docs.fortinet.com/document/fortigate-public-cloud/7.4.0/azure-vwan-sd-wan-ngfw-deployment-guide/311594/deployment-procedures).
 
 ## Requirements and limitations
 
