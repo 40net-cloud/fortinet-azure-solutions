@@ -38,7 +38,7 @@
         "acceleratedNetworking": {
             "value": "false"
         },
-        "publicIP1NewOrExisting": {
+        "publicIP1NewOrExistingOrNone": {
             "value": "new"
         },
         "publicIP1Name": {
