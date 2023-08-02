@@ -34,11 +34,13 @@ BeforeAll {
     $config += Get-Content $sshkeypub
     $config += "`" `n set password $testsResourceGroupName `n next `n end"
     $publicIP1Name = "$testsPrefix-FGT-PIP"
+    $fortiGateCount = "3"
     $params = @{ 'adminUsername'=$testsAdminUsername
                  'adminPassword'=$testsResourceGroupName
                  'fortiGateNamePrefix'=$testsPrefix
                  'fortiGateAdditionalCustomData'=$config
                  'publicIP1Name'=$publicIP1Name
+                 'fortiGateCount'=$fortiGateCount
                }
     $ports = @(40030, 50030, 40031, 50031)
 }
@@ -72,12 +74,11 @@ Describe 'FGT A/A' {
                                  'Microsoft.Network/networkSecurityGroups',
                                  'Microsoft.Network/publicIPAddresses',
                                  'Microsoft.Network/loadBalancers',
+                                 'Microsoft.Network/loadBalancers/inboundNatRules',
+                                 'Microsoft.Network/loadBalancers/inboundNatRules',
                                  'Microsoft.Network/loadBalancers',
                                  'Microsoft.Network/networkInterfaces',
                                  'Microsoft.Network/networkInterfaces',
-                                 'Microsoft.Network/networkInterfaces',
-                                 'Microsoft.Network/networkInterfaces',
-                                 'Microsoft.Compute/virtualMachines',
                                  'Microsoft.Compute/virtualMachines'
             $templateResources = (get-content $templateFileLocation | ConvertFrom-Json -ErrorAction SilentlyContinue).Resources.type
             $templateResources | Should -Be $expectedResources
@@ -89,13 +90,17 @@ Describe 'FGT A/A' {
                                           'adminUsername',
                                           'availabilityOptions',
                                           'customImageReference',
+                                          'externalLoadBalancer',
                                           'fortiGateAdditionalCustomData',
+                                          'fortiGateCount',
                                           'fortiGateImageSKU',
                                           'fortiGateImageVersion',
                                           'fortiGateLicenseBYOLA',
                                           'fortiGateLicenseBYOLB',
+                                          'fortiGateLicenseBYOLC',
                                           'fortiGateLicenseFortiFlexA',
                                           'fortiGateLicenseFortiFlexB',
+                                          'fortiGateLicenseFortiFlexC',
                                           'fortiGateNamePrefix',
                                           'fortiManager',
                                           'fortiManagerIP',
