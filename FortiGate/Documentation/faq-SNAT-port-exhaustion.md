@@ -47,7 +47,7 @@ Azure Load Balancer allocates fixed amounts of SNAT ports to each virtual machin
 
 A NAT gateway makes available SNAT ports accessible to every instance in a subnet. This dynamic allocation allows VM instances to use the number of SNAT ports each need from the available pool of ports for new connections. The dynamic allocation reduces the risk of SNAT exhaustion.
 
-![NAT GW](images/faq-net-gw.png)
+![NAT GW](images/faq-nat-gw.png)
 
 A NAT gateway selects ports at random from the available pool of ports. If there aren't available ports, SNAT ports are reused as long as there's no existing connection to the same destination public IP and port. This port selection and reuse behavior of a NAT gateway makes it less likely to experience connection timeouts.
 
