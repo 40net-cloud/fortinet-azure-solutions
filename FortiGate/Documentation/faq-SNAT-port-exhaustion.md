@@ -53,4 +53,8 @@ A NAT gateway selects ports at random from the available pool of ports. If there
 
 NAT Gateway should be associated with External (Port1) subnet of the FortiGates VMs.
 
+![NAT GW with ELB](images/faq-nat-gw-lb.png)
+
+NAT Gateway supersedes any outbound configuration from a load-balancing rule or outbound rules on the load balancer. VM instances in the backend pool use the NAT gateway to send outbound traffic and receive return traffic. Inbound originated traffic passes through the load balancer for all VM instances within the load balancer’s backend pool. VM and the virtual machine scale set from subnet B can only egress and receive response traffic through the NAT gateway. No inbound originated traffic can be received.
+
 More information about NAT Gateway can be fund [here](https://learn.microsoft.com/en-us/azure/load-balancer/troubleshoot-outbound-connection#use-a-nat-gateway-for-outbound-connectivity-to-the-internet) and [here](https://learn.microsoft.com/en-us/azure/nat-gateway/nat-gateway-design#a-nat-gateway-and-vm-with-a-standard-public-load-balancer)
