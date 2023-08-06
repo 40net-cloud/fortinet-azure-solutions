@@ -1127,7 +1127,7 @@
     ],
     "outputs": {
       "fortiGateNamePrefix": "[basics('fortiGateNamePrefix')]",
-      "fortiGateCount": "[basics('fortiGateCount')]", 
+      "fortiGateCount": "[basics('fortiGateCount')]",
       "fortiGateImageSKU": "[basics('fortiGateImageSKU')]",
       "fortiGateImageVersion": "[basics('fortiGateImageVersion')]",
       "adminUsername": "[basics('adminUsername')]",

@@ -904,7 +904,6 @@
                   "id": "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'), concat(variables('fgVmName'),'-', copyIndex(1),'-MGMT-HTTPS'))]"
                 }
               ]
-
             }
           }
         ],
