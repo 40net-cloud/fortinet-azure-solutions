@@ -17,6 +17,6 @@ jobs:
     - name: Markdown link checker
       uses: gaurav-nelson/github-action-markdown-link-check@v1
       with:
-        config_file: .github/workflows/markdown-link-checker-config.json
-        verbose: true
-        quiet: true
+        config-file: .github/workflows/markdown-link-checker-config.json
+        use-verbose-mode: 'yes'
+        use-quiet-mode: 'yes'
