@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-# FAQ - Troubleshoot common outbound connectivity issues with Azure Load Balancer, SNAT port exhaustion 
-=======
 ## FAQ - Troubleshoot common outbound connectivity issues with Azure Load Balancer, SNAT port exhaustion 
->>>>>>> 88309d1dbe2c9bf302252f69ecfe1a5372629377
 
 FortiGates VM require to have outbound connectivity to the internet. The frontend IPs of a public load balancer we use in AP or AA HA templates can be used to provide outbound connectivity to the internet for backend FortiGate instances. This configuration uses source network address translation (SNAT) to translate virtual machine's private IP into the load balancer's public IP address. SNAT maps the IP address of the backend to the public IP address of your load balancer.
 
