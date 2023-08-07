@@ -440,8 +440,8 @@
     "fgVmName": "[concat(parameters('fortiGateNamePrefix'),'-FGT')]",
     "fmgCustomData": "[if(equals(parameters('fortiManager'),'yes'),concat('\nconfig system central-management\nset type fortimanager\n set fmg ',parameters('fortiManagerIP'),'\nset serial-number ', parameters('fortiManagerSerial'), '\nend\n config system interface\n edit port1\n append allowaccess fgfm\n end\n config system interface\n edit port2\n append allowaccess fgfm\n end\n'),'')]",
     "customDataHeader": "Content-Type: multipart/mixed; boundary=\"12345\"\nMIME-Version: 1.0\n\n--12345\nContent-Type: text/plain; charset=\"us-ascii\"\nMIME-Version: 1.0\nContent-Transfer-Encoding: 7bit\nContent-Disposition: attachment; filename=\"config\"\n\n",
-    "customDataInterface2NIC": "[if(parameters('externalLoadBalancer'),concat('config system interface\n edit port1\n set mode dynamic\n set description external\n set allowaccess ping ssh https probe-response\n next\n edit port2\n set mode dynamic\n set description internal\n set allowaccess ping ssh https probe-response\n next\n end\n'),'')]",
-    "customDataInterface1NIC": "[if(not(parameters('externalLoadBalancer')),concat('config system interface\n edit port1\n set mode dynamic\n set description internal\n set allowaccess ping ssh https probe-response\n next\n end\n'),'')]",
+    "customDataInterface2NIC": "[if(parameters('externalLoadBalancer'),concat('config system interface\n edit port1\n set mode dhcp\n set description external\n set allowaccess ping ssh https probe-response\n next\n edit port2\n set mode dhcp\n set description internal\n set allowaccess ping ssh https probe-response\n next\n end\n'),'')]",
+    "customDataInterface1NIC": "[if(not(parameters('externalLoadBalancer')),concat('config system interface\n edit port1\n set mode dhcp\n set description internal\n set allowaccess ping ssh https probe-response\n next\n end\n'),'')]",
     "customDataBody": "[concat('config system sdn-connector\nedit AzureSDN\nset type azure\nnext\nend\nconfig router static\n edit 1\n set dst ', parameters('vnetAddressPrefix'), '\n set gateway ', variables('sn2GatewayIP'), '\n set device port2\n next\n edit 3\nset dst 168.63.129.16 255.255.255.255\nset device port2\n set gateway ', variables ('sn2GatewayIP'), '\n next\nedit 4\nset dst 168.63.129.16 255.255.255.255\nset device port1\n set gateway ', variables ('sn1GatewayIP'), '\n next\n end\n config system probe-response\n set mode http-probe\n end\n', if(parameters('externalLoadBalancer'), variables('customDataInterface2NIC'), variables('customDataInterface1NIC')), variables('fmgCustomData'), parameters('fortiGateAdditionalCustomData'), '\n')]",
     "customDataLicenseHeader": "--12345\nContent-Type: text/plain; charset=\"us-ascii\"\nMIME-Version: 1.0\nContent-Transfer-Encoding: 7bit\nContent-Disposition: attachment; filename=\"license\"\n\n",
     "customDataFooter": "\n--12345--\n",
@@ -904,7 +904,6 @@
                   "id": "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'), concat(variables('fgVmName'),'-', copyIndex(1),'-MGMT-HTTPS'))]"
                 }
               ]
-
             }
           }
         ],
@@ -985,7 +984,8 @@
         "osProfile": {
           "computerName": "[concat(variables('fgVmName'),'-',copyIndex(1))]",
           "adminUsername": "[parameters('adminUsername')]",
-          "adminPassword": "[parameters('adminPassword')]"
+          "adminPassword": "[parameters('adminPassword')]",
+          "customData": "[if(equals(copyIndex(1),'1'),variables('fgaCustomData'),if(equals(copyIndex(1),'2'),variables('fgbCustomData'),if(equals(copyIndex(1),'3'),variables('fgcCustomData'),base64(variables('customDataBody')))))]"
         },
         "storageProfile": {
           "imageReference": "[if(and(equals(parameters('fortiGateImageSKU'),'fortinet_fg-vm'),not(equals(parameters('customImageReference'),''))), variables('imageReferenceCustomImage'), variables('imageReferenceMarketplace'))]",
@@ -1023,18 +1023,6 @@
     }
   ],
   "outputs": {
-    "fgacustomdata": {
-      "type": "string",
-      "value": "[variables('fgaCustomData')]"
-    },
-    "fgbcustomdata": {
-      "type": "string",
-      "value": "[variables('fgbCustomData')]"
-    },
-    "fgccustomdata": {
-      "type": "string",
-      "value": "[variables('fgcCustomData')]"
-    },
     "fortiGatePublicIP": {
       "type": "string",
       "value": "[if(equals(parameters('publicIP1NewOrExisting'), 'new'), reference(variables('publicIP1Id')).ipAddress, '')]"
