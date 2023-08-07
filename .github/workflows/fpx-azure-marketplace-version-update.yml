@@ -37,7 +37,7 @@ jobs:
           $fazMarketplaceVersions = @()
           $fazMarketplaceVersionsUI = @()
 
-          $fortiManagerVersions = Get-AzVMImage -PublisherName "fortinet" -Location eastus -Offer "fortinet-fortianalyzer" -sku "fortinet-fortianalyzer"
+          $fortiManagerVersions = Get-AzVMImage -PublisherName "fortinet" -Location eastus -Offer "fortinet-fortiproxy" -sku "fpx-vm-byol"
           $fazMarketplaceVersions += $($fortiManagerVersions).Version
           $fazMarketplaceVersions += "latest"
           $fazMarketplaceVersions | ConvertTo-Json | Out-File -Filepath "./fazversion.json"
