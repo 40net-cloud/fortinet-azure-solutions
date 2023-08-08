@@ -22,7 +22,7 @@ Details can be fund [here](https://learn.microsoft.com/en-us/azure/load-balancer
 
 In order to overcome potential SNAT port exhaustion you can:
 
-## Create outbound Load Balancer rule
+## 1. Create outbound Load Balancer rule
 
 Outbound rules allow you to explicitly define SNAT(source network address translation) for a public standard load balancer. This configuration allows you to use the public IP(s) of your load balancer to provide outbound internet connectivity for your backend instances.
 
@@ -36,12 +36,12 @@ In the example shown below we allocate 31992 (Load balancer gives SNAT ports in 
 
 More details about Outbound rules can be fund [here](https://learn.microsoft.com/en-us/azure/load-balancer/outbound-rules).
 
-## Configure an individual public IP on FortiGate VM
+## 2. Configure an individual public IP on FortiGate VM
 If a public IP is assigned to a VM, all ports provided by the public IP are available to the VM. Unlike with a load balancer or a NAT gateway, the ports are only accessible to the single VM associated with the IP address.
 
 Example of such configuration is shown [here](https://github.com/40net-cloud/fortinet-azure-solutions/blob/main/FortiGate/Active-Passive-ELB-ILB/doc/config-outbound-nat-considerations.md).
 
-## Use a NAT gateway for outbound connectivity to the Internet
+## 3. Use a NAT gateway for outbound connectivity to the Internet
 
 Azure NAT Gateway is a highly resilient and scalable Azure service that provides outbound connectivity to the internet from your virtual network. A NAT gateway’s unique method of consuming SNAT ports helps resolve common SNAT exhaustion and connection issues. 
 
