@@ -30,7 +30,7 @@ Outbound rules will only be followed if the backend VM doesn't have an instance-
 
 Each public IP address contributes up to 64,000 ephemeral ports. The number of VMs in the backend pool determines the number of ports distributed to each VM. One VM in the backend pool has access to the maximum of 64,000 ports. For two VMs, a maximum of 32,000 SNAT ports can be given with an outbound rule (2x 32,000 = 64,000).
 
-In the example shown below we allocate 31992 ports per FortiGate instance instead of 1024 ports which would be allocated by default without outbound rule configured.
+In the example shown below we allocate 31992 (Load balancer gives SNAT ports in multiples of 8. If you provide a value not divisible by 8, the configuration operation is rejected) ports per FortiGate instance instead of 1024 ports which would be allocated by default without outbound rule configured.
 
 ![Outbound Rule](images/faq-outbound-rule.png)
 
