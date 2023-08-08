@@ -33,11 +33,11 @@ jobs:
       uses: azure/powershell@v1.2.0
       with:
         inlineScript: |
-          $buildingBlocks = @("single-1nic", "ha-1nic")
+          $buildingBlocks = @("A-Single-VM")
           $fazMarketplaceVersions = @()
           $fazMarketplaceVersionsUI = @()
 
-          $fortiManagerVersions = Get-AzVMImage -PublisherName "fortinet" -Location eastus -Offer "fortinet-fortianalyzer" -sku "fortinet-fortianalyzer"
+          $fortiManagerVersions = Get-AzVMImage -PublisherName "fortinet" -Location eastus -Offer "fortinet-fortiproxy" -sku "fpx-vm-byol"
           $fazMarketplaceVersions += $($fortiManagerVersions).Version
           $fazMarketplaceVersions += "latest"
           $fazMarketplaceVersions | ConvertTo-Json | Out-File -Filepath "./fazversion.json"
