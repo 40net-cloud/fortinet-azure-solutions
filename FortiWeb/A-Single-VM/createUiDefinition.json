@@ -117,8 +117,20 @@
               "value": "7.0.3"
             },
             {
+              "label": "7.0.8",
+              "value": "7.0.8"
+            },
+            {
               "label": "7.2.0",
               "value": "7.2.0"
+            },
+            {
+              "label": "7.2.3",
+              "value": "7.2.3"
+            },
+            {
+              "label": "7.2.4",
+              "value": "7.2.4"
             },
             {
               "label": "latest",
@@ -477,7 +489,7 @@
                 },
                 "toolTip": {
                   "virtualNetwork": "Virtual Network for deployment of the FortiWeb VM solution",
-                  "subnets": "Standard deployment is to have an "
+                  "subnets": "During deployment 2 subnets will be deployed: external, internal"
                 },
                 "defaultValue": {
                   "name": "[if(equals(basics('fortiWebNamePrefix'),''),'FortiWeb-VNET',concat(basics('fortiWebNamePrefix'),'-VNET'))]",

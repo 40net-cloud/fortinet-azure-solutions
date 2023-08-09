@@ -20,7 +20,7 @@ This Azure ARM template will automatically deploy a full working environment con
 - VNET peering between HUB and spoke networks
 - User Defined Routes (UDR) for the different protected subnets
 
-![VNET peering design](images/fgt-ha-vnet-peering.png)
+![VNET peering design](../../VNET-Peering/images/fgt-ha-vnet-peering.png)
 
 This Terraform template can also be extended or customized based on your requirements. Additional subnets besides the ones mentioned above are not automatically generated. By extending the Terraform templates additional subnets can be added. Additional subnets will require their own routing tables and VNET peering configuration.
 
@@ -37,7 +37,7 @@ For Microsoft Azure there is a fast track option by using the Azure Cloud Shell.
 
 `cd ~/clouddrive/ && wget -qO- https://github.com/fortinet/azure-templates/archive/master.tar.gz | tar zxf - && cd ~/clouddrive/azure-templates-master/FortiGate/Terraform/VNET-Peering/ && ./deploy.sh`
 
-![Azure Cloud Shell](images/azure-cloud-shell.png)
+![Azure Cloud Shell](../../A-Single-VM/images/azure-cloud-shell.png)
 
 After deployment you will be shown the IP address of all deployed components, this information is also stored in the output directory in the summary.out file. You can access both management GUI's using the public management IP's using HTTPS on port 443.
 
@@ -55,7 +55,7 @@ The Terrafom template deploys different resources and is required to have the ac
   - PAYG or OnDemand: These licenses are automatically generated during the deployment of the FortiGate systems.
 
 ### Fabric Connector
-The FortiGate-VM uses [Managed Identities](https://docs.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/) for the SDN Fabric Connector. A SDN Fabric Connector is created automatically during deployment. After deployment, it is required apply the 'Reader' role to the Azure Subscription you want to resolve Azure Resources from. More information can be found on the [Fortinet Documentation Libary](https://docs.fortinet.com/vm/azure/fortigate/7.0/azure-administration-guide/7.0.0/236610/creating-a-fabric-connector-using-a-managed-identity).
+The FortiGate-VM uses [Managed Identities](https://docs.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/) for the SDN Fabric Connector. A SDN Fabric Connector is created automatically during deployment. After deployment, it is required apply the 'Reader' role to the Azure Subscription you want to resolve Azure Resources from. More information can be found on the [Fortinet Documentation Libary](https://docs.fortinet.com/document/fortigate-public-cloud/7.2.0/azure-administration-guide/236610/configuring-an-sdn-connector-using-a-managed-identity).
 
 ## Support
 Fortinet-provided scripts in this and other GitHub projects do not fall under the regular Fortinet technical support scope and are not supported by FortiCare Support Services.
@@ -63,4 +63,4 @@ For direct issues, please refer to the [Issues](https://github.com/fortinet/azur
 For other questions related to this project, contact [github@fortinet.com](mailto:github@fortinet.com).
 
 ## License
-[License](LICENSE) © Fortinet Technologies. All rights reserved.
+[License](/../../blob/main/LICENSE) © Fortinet Technologies. All rights reserved.

@@ -64,7 +64,7 @@ variable "FGT_BYOL_LICENSE_FILE" {
   default = ""
 }
 
-variable "FGT_BYOL_FLEXVM_LICENSE_FILE" {
+variable "FGT_BYOL_FORTIFLEX_LICENSE_TOKEN" {
   default = ""
 }
 

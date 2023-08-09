@@ -28,7 +28,7 @@ jobs:
       uses: azure/powershell@v1.2.0
       with:
         inlineScript: |
-          $buildingBlocks = @("A-Single-VM", "Active-Active-ELB-ILB","Active-Passive-ELB-ILB","Active-Passive-SDN")
+          $buildingBlocks = @("A-Single-VM", "Active-Active-ELB-ILB","Active-Passive-ELB-ILB","Active-Passive-SDN","AzureApplicationGateway/scenario1","AzureApplicationGateway/scenario2","AzureApplicationGateway/scenario3","AzureGatewayLoadBalancer","AzureRouteServer/Active-Passive","ZTNAApplicationGateway")
           $fgtMarketplaceVersions = @()
           $fgtMarketplaceVersionsUI = @()
 
@@ -40,15 +40,26 @@ jobs:
           $fgtMarketplaceVersionsUI | ConvertTo-Json | Out-File -Filepath "./fgtversionui.json"
 
           foreach ($buildingBlock in $buildingBlocks) {
-            Get-Content -Raw -Path "./FortiGate/${buildingBlock}/azuredeploy.json" | jq --slurpfile content "./fgtversion.json" '.parameters.fortiGateImageVersion.allowedValues = $content[]' | Set-Content -Path "./FortiGate/${buildingBlock}/azuredeploy.json"
-            $content = Get-Content "./FortiGate/${buildingBlock}/azuredeploy.json" -Raw
-            if (-Not $content -match '(?<=\r\n)\z') {
-              "" | Out-File -Append "./FortiGate/${buildingBlock}/azuredeploy.json"
+            if (Test-Path -Path "./FortiGate/${buildingBlock}/mainTemplate.json" -PathType Leaf) {
+              Get-Content -Raw -Path "./FortiGate/${buildingBlock}/mainTemplate.json" | jq --slurpfile content "./fgtversion.json" '.parameters.fortiGateImageVersion.allowedValues = $content[]' | Set-Content -Path "./FortiGate/${buildingBlock}/mainTemplate.json"
+              $content = Get-Content "./FortiGate/${buildingBlock}/mainTemplate.json" -Raw
+              if (-Not $content -match '(?<=\r\n)\z') {
+                "" | Out-File -Append "./FortiGate/${buildingBlock}/mainTemplate.json"
+              }
             }
-            Get-Content -Raw -Path "./FortiGate/${buildingBlock}/createUiDefinition.json" | jq --slurpfile content "./fgtversionui.json" '(.parameters.basics[] | select( .name == \"fortiGateImageVersion\") | .constraints.allowedValues) |= $content[]' | Set-Content -Path "./FortiGate/${buildingBlock}/createUiDefinition.json"
-            $content = Get-Content "./FortiGate/${buildingBlock}/createUiDefinition.json" -Raw
-            if (-Not $content -match '(?<=\r\n)\z') {
-              "" | Out-File -Append "./FortiGate/${buildingBlock}/createUiDefinition.json"
+            if (Test-Path -Path "./FortiGate/${buildingBlock}/azuredeploy.json" -PathType Leaf) {
+              Get-Content -Raw -Path "./FortiGate/${buildingBlock}/azuredeploy.json" | jq --slurpfile content "./fgtversion.json" '.parameters.fortiGateImageVersion.allowedValues = $content[]' | Set-Content -Path "./FortiGate/${buildingBlock}/azuredeploy.json"
+              $content = Get-Content "./FortiGate/${buildingBlock}/azuredeploy.json" -Raw
+              if (-Not $content -match '(?<=\r\n)\z') {
+                "" | Out-File -Append "./FortiGate/${buildingBlock}/azuredeploy.json"
+              }
+            }
+            if (Test-Path -Path "./FortiGate/${buildingBlock}/createUiDefinition.json" -PathType Leaf) {
+              Get-Content -Raw -Path "./FortiGate/${buildingBlock}/createUiDefinition.json" | jq --slurpfile content "./fgtversionui.json" '(.parameters.basics[] | select( .name == \"fortiGateImageVersion\") | .constraints.allowedValues) |= $content[]' | Set-Content -Path "./FortiGate/${buildingBlock}/createUiDefinition.json"
+              $content = Get-Content "./FortiGate/${buildingBlock}/createUiDefinition.json" -Raw
+              if (-Not $content -match '(?<=\r\n)\z') {
+                "" | Out-File -Append "./FortiGate/${buildingBlock}/createUiDefinition.json"
+              }
             }
           }
           Remove-Item "./fgtversion.json"
@@ -57,7 +68,7 @@ jobs:
 
     - name: Create Pull Request
       id: cpr
-      uses: peter-evans/create-pull-request@v3
+      uses: peter-evans/create-pull-request@v5
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
         commit-message: Update report

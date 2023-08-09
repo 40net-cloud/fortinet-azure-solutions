@@ -91,7 +91,7 @@ az group create --location "$location" --name "$rg"
 # Template validation
 echo "--> Validation deployment in $rg resource group ..."
 az deployment group validate --resource-group "$rg" \
-                           --template-file azuredeploy.json \
+                           --template-file mainTemplate.json \
                            --parameters adminUsername="$username" adminPassword="$passwd" namePrefix="$prefix"
 result=$?
 if [ $result != 0 ];
@@ -103,7 +103,7 @@ fi
 # Template deployment
 echo "--> Deployment of $rg resources ..."
 az deployment group create --confirm-with-what-if --resource-group "$rg" \
-                           --template-file azuredeploy.json \
+                           --template-file mainTemplate.json \
                            --parameters adminUsername="$username" adminPassword="$passwd" namePrefix="$prefix"
 result=$?
 if [[ $result != 0 ]];

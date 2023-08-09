@@ -12,4 +12,4 @@ For direct issues, please refer to the [Issues](https://github.com/fortinet/azur
 
 ## License
 
-[License](LICENSE) © Fortinet Technologies. All rights reserved.
+[License](/../../blob/main/LICENSE) © Fortinet Technologies. All rights reserved.

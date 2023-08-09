@@ -89,7 +89,7 @@
         "fortiGateLicenseBYOL": {
             "value": ""
         },
-        "fortiGateLicenseFlexVM": {
+        "fortiGateLicenseFortiFlex": {
             "value": ""
         },
         "fortiGateAdminPort": {
@@ -105,12 +105,12 @@
             "value": "## TO BE DEFINED ##"
         },
         "location": {
-            "value": "[resourceGroup().location]"
+            "value": ""
         },
         "fortinetTags": {
             "value": {
-                "publisher": "Fortinet ZTNA demo",
-                "provider": "6EB3B02F-50E5-4A3E-8CB8-2E12925831VM"
+                "publisher": "ZTNA Application Gateway demo",
+                "provider": "6EB3B02F-50E5-4A3E-8CB8-2E12925831ZTNA"
             }
         }
     }

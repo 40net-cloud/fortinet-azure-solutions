@@ -8,6 +8,9 @@
         "adminPassword": {
             "value": "## TO BE DEFINED ##"
         },
+        "fortiGateCount": {
+            "value": "## TO BE DEFINED ##"
+        },
         "fortiGateNamePrefix": {
             "value": "## TO BE DEFINED ##"
         },
@@ -15,13 +18,16 @@
             "value": "fortinet_fg-vm"
         },
         "fortiGateImageVersion": {
-            "value": "latest"
+            "value": "7.2.5"
         },
         "fortiGateAdditionalCustomData": {
             "value": ""
         },
         "instanceType": {
             "value": "Standard_F2s"
+        },
+        "externalLoadBalancer": {
+            "value": true
         },
         "availabilityOptions": {
             "value": "Availability Set"
@@ -56,9 +62,6 @@
         "subnet1Prefix": {
             "value": "172.16.136.0/26"
         },
-        "subnet1StartAddress": {
-            "value": "172.16.136.4"
-        },
         "subnet2Name": {
             "value": "InternalSubnet"
         },
@@ -92,10 +95,19 @@
         "fortiGateLicenseBYOLB": {
             "value": ""
         },
-        "fortiGateLicenseFlexVMA": {
+        "fortiGateLicenseBYOLC": {
             "value": ""
         },
-        "fortiGateLicenseFlexVMB": {
+        "fortiGateLicenseFortiFlexA": {
+            "value": ""
+        },
+        "fortiGateLicenseFortiFlexB": {
+            "value": ""
+        },
+        "fortiGateLicenseFortiFlexC": {
+            "value": ""
+        },
+        "customImageReference": {
             "value": ""
         },
         "location": {

@@ -1,0 +1,865 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/0.1.2-preview/CreateUIDefinition.MultiVm.json#",
+  "handler": "Microsoft.Azure.CreateUIDef",
+  "version": "0.1.2-preview",
+  "parameters": {
+    "config": {
+      "basics": {
+        "resourceGroup": {
+          "allowExisting": true
+        }
+      }
+    },
+    "resourceTypes": [
+      "microsoft.resources/resourcegroups"
+    ],
+    "basics": [
+      {
+        "name": "adminUsername",
+        "type": "Microsoft.Common.TextBox",
+        "label": "FortiManager administrative username",
+        "defaultValue": "",
+        "toolTip": "Username for the FortiManager virtual appliance. Most not be root, administrator or admin",
+        "constraints": {
+          "required": true,
+          "validations": [
+            {
+              "regex": "^[a-z0-9A-Z]{1,30}$",
+              "message": "Only alphanumeric characters are allowed, and the value must be 1-30 characters long"
+            },
+            {
+              "isValid": "[not(contains(toLower(basics('adminUsername')),'root'))]",
+              "message": "Usernames must not include reserved words"
+            },
+            {
+              "isValid": "[not(contains(toLower(basics('adminUsername')),'admin'))]",
+              "message": "Usernames must not include reserved words"
+            }
+          ]
+        },
+        "visible": true
+      },
+      {
+        "name": "adminPassword",
+        "type": "Microsoft.Common.PasswordBox",
+        "label": {
+          "password": "FortiManager password",
+          "confirmPassword": "Confirm password"
+        },
+        "toolTip": "Password for the Virtual Machine",
+        "constraints": {
+          "required": true,
+          "regex": "^(?:(?=.*[a-z])(?:(?=.*[A-Z])(?=.*[\\d\\W])|(?=.*\\W)(?=.*\\d))|(?=.*\\W)(?=.*[A-Z])(?=.*\\d)).{12,}$",
+          "validationMessage": "The password must be between 12 characters or longer, and contain characters from at least 3 of the following groups: uppercase characters, lowercase characters, numbers, and special characters excluding '\\' or '-'."
+        },
+        "options": {
+          "hideConfirmation": false
+        },
+        "visible": true
+      },
+      {
+        "name": "namePrefix",
+        "type": "Microsoft.Common.TextBox",
+        "label": "FortiManager Name Prefix",
+        "defaultValue": "",
+        "toolTip": "Naming prefix for all deployed resources",
+        "constraints": {
+          "required": true,
+          "regex": "^[A-Za-z0-9-]{1,15}$",
+          "validationMessage": "Only alphanumeric characters are allowed, and the value must be 1 to 15 characters."
+        },
+        "visible": true
+      },
+      {
+        "name": "fortiManagerImageSKU",
+        "type": "Microsoft.Common.DropDown",
+        "label": "FortiManager Image SKU",
+        "defaultValue": "Bring Your Own License",
+        "toolTip": "BYOL license model (where license is purchased separately)",
+        "constraints": {
+          "required": false,
+          "allowedValues": [
+            {
+              "label": "Bring Your Own License",
+              "value": "fortinet-fortimanager"
+            }
+          ]
+        },
+        "visible": true
+      },
+      {
+        "name": "fortiManagerImageVersion",
+        "type": "Microsoft.Common.DropDown",
+        "label": "FortiManager Image Version",
+        "defaultValue": "latest",
+        "toolTip": "Only 6.x has the A/P HA feature currently",
+        "constraints": {
+          "required": false,
+          "allowedValues": [
+            {
+              "label": "6.2.0",
+              "value": "6.2.0"
+            },
+            {
+              "label": "6.2.1",
+              "value": "6.2.1"
+            },
+            {
+              "label": "6.2.2",
+              "value": "6.2.2"
+            },
+            {
+              "label": "6.2.3",
+              "value": "6.2.3"
+            },
+            {
+              "label": "6.2.5",
+              "value": "6.2.5"
+            },
+            {
+              "label": "6.4.0",
+              "value": "6.4.0"
+            },
+            {
+              "label": "6.4.1",
+              "value": "6.4.1"
+            },
+            {
+              "label": "6.4.10",
+              "value": "6.4.10"
+            },
+            {
+              "label": "6.4.11",
+              "value": "6.4.11"
+            },
+            {
+              "label": "6.4.2",
+              "value": "6.4.2"
+            },
+            {
+              "label": "6.4.5",
+              "value": "6.4.5"
+            },
+            {
+              "label": "6.4.6",
+              "value": "6.4.6"
+            },
+            {
+              "label": "6.4.7",
+              "value": "6.4.7"
+            },
+            {
+              "label": "6.4.8",
+              "value": "6.4.8"
+            },
+            {
+              "label": "6.4.9",
+              "value": "6.4.9"
+            },
+            {
+              "label": "7.0.0",
+              "value": "7.0.0"
+            },
+            {
+              "label": "7.0.1",
+              "value": "7.0.1"
+            },
+            {
+              "label": "7.0.2",
+              "value": "7.0.2"
+            },
+            {
+              "label": "7.0.3",
+              "value": "7.0.3"
+            },
+            {
+              "label": "7.0.4",
+              "value": "7.0.4"
+            },
+            {
+              "label": "7.0.5",
+              "value": "7.0.5"
+            },
+            {
+              "label": "7.0.6",
+              "value": "7.0.6"
+            },
+            {
+              "label": "7.0.7",
+              "value": "7.0.7"
+            },
+            {
+              "label": "7.2.0",
+              "value": "7.2.0"
+            },
+            {
+              "label": "7.2.1",
+              "value": "7.2.1"
+            },
+            {
+              "label": "7.2.2",
+              "value": "7.2.2"
+            },
+            {
+              "label": "latest",
+              "value": "latest"
+            }
+          ]
+        },
+        "visible": true
+      }
+    ],
+    "steps": [
+      {
+        "name": "instance",
+        "label": "Instance",
+        "subLabel": {
+          "preValidation": "Select instance type",
+          "postValidation": "Done"
+        },
+        "elements": [
+          {
+            "name": "instancetype",
+            "type": "Microsoft.Common.Section",
+            "label": "Instance Type",
+            "elements": [
+              {
+                "name": "instancetypeinfo",
+                "type": "Microsoft.Common.TextBlock",
+                "visible": true,
+                "options": {
+                  "text": "For this FortiManager deployment, it is recommended to use general purpose virtual machines. A selection of supported instances sizes is listed in our documentation.",
+                  "link": {
+                    "label": "Learn more",
+                    "uri": "https://docs.fortinet.com/document/fortianalyzer-public-cloud/7.2.0/azure-administration-guide/351055"
+                  }
+                }
+              },
+              {
+                "name": "selection",
+                "type": "Microsoft.Compute.SizeSelector",
+                "label": "Size",
+                "toolTip": "Select the instance size of your FortiManager VM solution. Minimum 4 NICs are required.",
+                "recommendedSizes": [
+                  "Standard_D2s_v3",
+                  "Standard_D2_v2",
+                  "Standard_D3_v2",
+                  "Standard_D4_v2",
+                  "Standard_D5_v2",
+                  "Standard_DS2_v2",
+                  "Standard_DS3_v2",
+                  "Standard_DS4_v2",
+                  "Standard_DS5_v2",
+                  "Standard_D2_v3",
+                  "Standard_D4_v3",
+                  "Standard_D8_v3",
+                  "Standard_D16_v3",
+                  "Standard_D2s_v3",
+                  "Standard_D4s_v3",
+                  "Standard_D8s_v3",
+                  "Standard_D16s_v3",
+                  "Standard_D2a_v4",
+                  "Standard_D4a_v4",
+                  "Standard_D8a_v4",
+                  "Standard_D16a_v4",
+                  "Standard_D2as_v4",
+                  "Standard_D4as_v4",
+                  "Standard_D8as_v4",
+                  "Standard_D16as_v4"
+                ],
+                "constraints": {
+                  "allowedValues": [
+                    "Standard_DS2_v2",
+                    "Standard_D2_v2",
+                    "Standard_D3_v2",
+                    "Standard_D4_v2",
+                    "Standard_D5_v2",
+                    "Standard_DS2_v2",
+                    "Standard_DS3_v2",
+                    "Standard_DS4_v2",
+                    "Standard_DS5_v2",
+                    "Standard_D2_v3",
+                    "Standard_D4_v3",
+                    "Standard_D8_v3",
+                    "Standard_D16_v3",
+                    "Standard_D2s_v3",
+                    "Standard_D4s_v3",
+                    "Standard_D8s_v3",
+                    "Standard_D16s_v3",
+                    "Standard_D2a_v4",
+                    "Standard_D4a_v4",
+                    "Standard_D8a_v4",
+                    "Standard_D16a_v4",
+                    "Standard_D2as_v4",
+                    "Standard_D4as_v4",
+                    "Standard_D8as_v4",
+                    "Standard_D16as_v4"
+                  ]
+                },
+                "options": {
+                  "hideDiskTypeFilter": false
+                },
+                "osPlatform": "Linux",
+                "imageReference": {
+                  "publisher": "fortinet",
+                  "offer": "fortinet-fortianalyzer",
+                  "sku": "fortinet-fortianalyzer"
+                },
+                "count": 1,
+                "visible": true
+              }
+            ]
+          },
+          {
+            "name": "availabilityOptions",
+            "type": "Microsoft.Common.Section",
+            "label": "Availability Options",
+            "elements": [
+              {
+                "name": "availabilityOptionsHeader",
+                "type": "Microsoft.Common.TextBlock",
+                "visible": true,
+                "options": {
+                  "text": "Deploy FortiGate VMs in an Availability Set or Availability Zones.",
+                  "link": {
+                    "label": "Learn more",
+                    "uri": "https://github.com/fortinet/azure-templates/tree/main/FortiGate#sla"
+                  }
+                }
+              },
+              {
+                "name": "availabilityOptions",
+                "type": "Microsoft.Common.DropDown",
+                "label": "Availability Option",
+                "defaultValue": "Availability Set",
+                "toolTip": "Deploy FortiGate VMs in an Availability Set or Availability Zones.",
+                "constraints": {
+                  "required": false,
+                  "allowedValues": [
+                    {
+                      "label": "Availability Set",
+                      "value": "Availability Set"
+                    },
+                    {
+                      "label": "Availability Zones",
+                      "value": "Availability Zones"
+                    }
+                  ]
+                },
+                "visible": true
+              },
+              {
+                "name": "availabilityOptionsFooter",
+                "type": "Microsoft.Common.InfoBox",
+                "visible": true,
+                "options": {
+                  "icon": "Info",
+                  "text": "If Availability Zones deployment is selected but the location does not support Availability Zones an Availability Set will be deployed. If Availability Zones deployment is selected and Availability Zones are available in the location, FortiGate A will be placed in Zone 1, FortiGate B will be placed in Zone 2",
+                  "uri": "https://docs.microsoft.com/en-us/azure/availability-zones/az-overview"
+                }
+              }
+            ]
+          },
+          {
+            "name": "datadisk",
+            "type": "Microsoft.Common.Section",
+            "label": "Data Disk",
+            "elements": [
+              {
+                "name": "vmDataDiskCount",
+                "type": "Microsoft.Common.TextBox",
+                "label": "Number of managed disks per data node",
+                "defaultValue": "1",
+                "toolTip": "Number of disks to attach to the FortiManager.",
+                "constraints": {
+                  "required": true,
+                  "regex": "^([0-9]|1[0-5])$",
+                  "validationMessage": "Value must be numeric and greater than or equal to 0"
+                }
+              },
+              {
+                "name": "vmDataDiskSize",
+                "type": "Microsoft.Common.DropDown",
+                "label": "Size of each managed disk",
+                "visible": "[greater(steps('instance').datadisk.vmDataDiskCount, 0)]",
+                "defaultValue": "1TiB",
+                "toolTip": "The size of each data disk to attach to the FortiManager",
+                "constraints": {
+                  "allowedValues": [
+                    {
+                      "label": "32GiB",
+                      "value": "32"
+                    },
+                    {
+                      "label": "64GiB",
+                      "value": "64"
+                    },
+                    {
+                      "label": "128GiB",
+                      "value": "128"
+                    },
+                    {
+                      "label": "256GiB",
+                      "value": "256"
+                    },
+                    {
+                      "label": "512GiB",
+                      "value": "512"
+                    },
+                    {
+                      "label": "1TiB",
+                      "value": "1024"
+                    },
+                    {
+                      "label": "2TiB",
+                      "value": "2048"
+                    },
+                    {
+                      "label": "4TiB",
+                      "value": "4096"
+                    },
+                    {
+                      "label": "8TiB",
+                      "value": "8192"
+                    },
+                    {
+                      "label": "16TiB",
+                      "value": "16384"
+                    },
+                    {
+                      "label": "32TiB",
+                      "value": "32768"
+                    }
+                  ]
+                }
+              },
+              {
+                "name": "diskType",
+                "type": "Microsoft.Common.DropDown",
+                "label": "Type of managed disks",
+                "visible": "[greater(steps('instance').datadisk.vmDataDiskCount, 0)]",
+                "defaultValue": "Default disks for instance type",
+                "toolTip": "The storage type of managed disks. The default will be Premium disks for VMs that support Premium disks and Standard disks for those that do not.",
+                "constraints": {
+                  "allowedValues": [
+                    {
+                      "label": "Default disks for instance type",
+                      "value": "Default"
+                    },
+                    {
+                      "label": "Standard SSD disks - LRS",
+                      "value": "StandardSSD_LRS"
+                    },
+                    {
+                      "label": "Standard SSD disks - ZRS",
+                      "value": "StandardSSD_ZRS"
+                    },
+                    {
+                      "label": "Premium SSD disks - LRS",
+                      "value": "Premium_LRS"
+                    },
+                    {
+                      "label": "Premium SSD disks - ZRS",
+                      "value": "Premium_ZRS"
+                    },
+                    {
+                      "label": "Standard HDD disks - LRS",
+                      "value": "Standard_LRS"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "name": "fmgLicense",
+            "type": "Microsoft.Common.Section",
+            "label": "FortiManager License",
+            "elements": [
+              {
+                "name": "fmgLicenseBYOLInfo",
+                "type": "Microsoft.Common.TextBlock",
+                "visible": "[equals(basics('fortiManagerImageSKU'), 'fortinet-fortimanager')]",
+                "options": {
+                  "text": "Bring Your Own License was selected in the basics blade. The license file(s) retrieved from support.fortinet.com can be uploaded here or uploaded after deployment."
+                }
+              },
+              {
+                "name": "fortiFlexCheck",
+                "type": "Microsoft.Common.CheckBox",
+                "label": "My organisation is using the FortiFlex subscription service.",
+                "toolTip": "My organisation is using the FortiFlex subscription service.",
+                "visible": "[equals(basics('fortiManagerImageSKU'), 'fortinet-fortimanager')]"
+              },
+              {
+                "name": "fmgAcontent",
+                "type": "Microsoft.Common.FileUpload",
+                "label": "FortiManager A License",
+                "toolTip": "Upload the license file for the primary FortiManager BYOL here.",
+                "constraints": {
+                  "required": false,
+                  "accept": ".lic,.txt"
+                },
+                "options": {
+                  "multiple": false,
+                  "uploadMode": "file",
+                  "openMode": "text",
+                  "encoding": "UTF-8"
+                },
+                "visible": "[and(equals(basics('fortiManagerImageSKU'), 'fortinet-fortimanager'),not(steps('instance').fmgLicense.fortiFlexCheck))]"
+              },
+              {
+                "name": "fmgBcontent",
+                "type": "Microsoft.Common.FileUpload",
+                "label": "FortiManager B License",
+                "toolTip": "Upload the license file for the secondary FortiManager BYOL here.",
+                "constraints": {
+                  "required": false,
+                  "accept": ".lic,.txt"
+                },
+                "options": {
+                  "multiple": false,
+                  "uploadMode": "file",
+                  "openMode": "text",
+                  "encoding": "UTF-8"
+                },
+                "visible": "[and(equals(basics('fortiManagerImageSKU'), 'fortinet-fortimanager'),not(steps('instance').fmgLicense.fortiFlexCheck))]"
+              },
+              {
+                "name": "fmgAfortiflex",
+                "type": "Microsoft.Common.TextBox",
+                "label": "FortiManager A FortiFlex",
+                "defaultValue": "",
+                "toolTip": "FortiManager A FortiFlex",
+                "constraints": {
+                  "required": false,
+                  "regex": "^[A-Za-z0-9-]{1,64}$",
+                  "validationMessage": "Only alphanumeric characters and a dash are allowed, and the value must be 1 to 64 characters."
+                },
+                "visible": "[and(equals(basics('fortiManagerImageSKU'), 'fortinet-fortimanager'),steps('instance').fmgLicense.fortiFlexCheck)]"
+              },
+              {
+                "name": "fmgBfortiflex",
+                "type": "Microsoft.Common.TextBox",
+                "label": "FortiManager B FortiFlex",
+                "defaultValue": "",
+                "toolTip": "FortiManager B FortiFlex",
+                "constraints": {
+                  "required": false,
+                  "regex": "^[A-Za-z0-9-]{1,64}$",
+                  "validationMessage": "Only alphanumeric characters and a dash are allowed, and the value must be 1 to 64 characters."
+                },
+                "visible": "[and(equals(basics('fortiManagerImageSKU'), 'fortinet-fortimanager'),steps('instance').fmgLicense.fortiFlexCheck)]"
+              },
+              {
+                "name": "fmgAserial",
+                "type": "Microsoft.Common.TextBox",
+                "label": "FortiManager A Serial Number",
+                "defaultValue": "",
+                "toolTip": "FortiManager A Serial Number",
+                "constraints": {
+                  "required": false,
+                  "regex": "^[A-Za-z0-9-]{1,64}$",
+                  "validationMessage": "Only alphanumeric characters and a dash are allowed, and the value must be 1 to 64 characters."
+                },
+                "visible": "true"
+              },
+              {
+                "name": "fmgBserial",
+                "type": "Microsoft.Common.TextBox",
+                "label": "FortiManager B Serial Number",
+                "defaultValue": "",
+                "toolTip": "FortiManager B Serial Number",
+                "constraints": {
+                  "required": false,
+                  "regex": "^[A-Za-z0-9-]{1,64}$",
+                  "validationMessage": "Only alphanumeric characters and a dash are allowed, and the value must be 1 to 64 characters."
+                },
+                "visible": "true"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "networking",
+        "label": "Networking",
+        "subLabel": {
+          "preValidation": "Configure internal networking",
+          "postValidation": "Done"
+        },
+        "elements": [
+          {
+            "name": "virtualnetworksection",
+            "type": "Microsoft.Common.Section",
+            "label": "Configure Internal Networking",
+            "elements": [
+              {
+                "name": "virtualnetworktext",
+                "type": "Microsoft.Common.TextBlock",
+                "visible": true,
+                "options": {
+                  "text": "Create a new or select an existing virtual network with the required subnets."
+                }
+              },
+              {
+                "name": "virtualnetwork",
+                "type": "Microsoft.Network.VirtualNetworkCombo",
+                "label": {
+                  "virtualNetwork": "Virtual network",
+                  "subnets": "Subnets"
+                },
+                "toolTip": {
+                  "virtualNetwork": "Virtual Network for deployment of the FortiManager VM solution",
+                  "subnets": "Standard deployment is to have an "
+                },
+                "defaultValue": {
+                  "name": "[if(equals(basics('namePrefix'),''),'FortiManager-VNET',concat(basics('namePrefix'),'-VNET'))]",
+                  "addressPrefixSize": "/24"
+                },
+                "constraints": {
+                  "minAddressPrefixSize": "/29"
+                },
+                "options": {
+                  "hideExisting": false
+                },
+                "subnets": {
+                  "subnet1": {
+                    "label": "FortiManager Subnet",
+                    "defaultValue": {
+                      "name": "ProtectedSubnet",
+                      "addressPrefixSize": "/26"
+                    },
+                    "constraints": {
+                      "minAddressPrefixSize": "/29",
+                      "minAddressCount": 1,
+                      "requireContiguousAddresses": true
+                    }
+                  }
+                },
+                "visible": true
+              },
+              {
+                "name": "virtualnetworkinfo",
+                "type": "Microsoft.Common.InfoBox",
+                "visible": true,
+                "options": {
+                  "icon": "Info",
+                  "text": "More information about the deployment can be found here.",
+                  "uri": "https://github.com/fortinet/azure-templates/tree/main/FortiManager/singlefmg-single.png"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "publicip",
+        "label": "Public IP",
+        "subLabel": {
+          "preValidation": "Configure public networking",
+          "postValidation": "Done"
+        },
+        "elements": [
+          {
+            "name": "publiciptext",
+            "type": "Microsoft.Common.TextBlock",
+            "visible": true,
+            "options": {
+              "text": "The public IP will be used for connect to the FortiManager. The public IP is optional. Selecting none will result in a FortiManager that is not accessible from the public internet. Other means like VPN connection or Experess Route are needed to connect to the unit in that case."
+            }
+          },
+          {
+            "name": "publicip1",
+            "type": "Microsoft.Network.PublicIpAddressCombo",
+            "label": {
+              "publicIpAddress": "FortiManager A Public IP",
+              "domainNameLabel": "Domain name label"
+            },
+            "toolTip": {
+              "publicIpAddress": "Public IP A attached to FortiManager A",
+              "domainNameLabel": "DNS name linked to this public IP"
+            },
+            "defaultValue": {
+              "publicIpAddressName": "[if(equals(basics('namePrefix'),''),'FMGAPublicIP',concat(basics('namePrefix'),'-FMG-A-PIP'))]",
+              "domainNameLabel": "mydomain"
+            },
+            "constraints": {
+              "required": {
+                "domainNameLabel": false
+              }
+            },
+            "options": {
+              "hideNone": false,
+              "hideDomainNameLabel": true
+            },
+            "visible": true
+          },
+          {
+            "name": "publicip2",
+            "type": "Microsoft.Network.PublicIpAddressCombo",
+            "label": {
+              "publicIpAddress": "FortiManager B Public IP",
+              "domainNameLabel": "Domain name label"
+            },
+            "toolTip": {
+              "publicIpAddress": "Public IP attached to FortiManager B",
+              "domainNameLabel": "DNS name linked to this public IP"
+            },
+            "defaultValue": {
+              "publicIpAddressName": "[if(equals(basics('namePrefix'),''),'FMGBPublicIP',concat(basics('namePrefix'),'-FMG-B-PIP'))]",
+              "domainNameLabel": "mydomain"
+            },
+            "constraints": {
+              "required": {
+                "domainNameLabel": false
+              }
+            },
+            "options": {
+              "hideNone": false,
+              "hideDomainNameLabel": true
+            },
+            "visible": true
+          },
+          {
+            "name": "standardsku",
+            "type": "Microsoft.Common.InfoBox",
+            "visible": true,
+            "options": {
+              "icon": "Info",
+              "text": "This deployment can use standard or basic SKU public IP's. Microsoft Azure offers a migration path from a basic to standard SKU public IP.",
+              "uri": "https://docs.microsoft.com/en-us/azure/virtual-network/virtual-network-public-ip-address-upgrade?tabs=option-upgrade-cli%2Coption-migrate-powershell"
+            }
+          }
+        ]
+      },
+      {
+        "name": "advanced",
+        "label": "Advanced",
+        "subLabel": {
+          "preValidation": "Advanced options",
+          "postValidation": "Done"
+        },
+        "elements": [
+          {
+            "name": "customdata",
+            "type": "Microsoft.Common.Section",
+            "label": "Custom Data",
+            "elements": [
+              {
+                "name": "customdatatext",
+                "type": "Microsoft.Common.TextBlock",
+                "visible": true,
+                "options": {
+                  "text": "Pass a configuration file into the virtual machine while it is being provisioned. This is additional to the configuration for this architecture."
+                }
+              },
+              {
+                "name": "config",
+                "type": "Microsoft.Common.TextBox",
+                "label": "Custom Data",
+                "toolTip": "Custom Data",
+                "placeholder": "Add you required additional configuration here.",
+                "multiLine": true,
+                "constraints": {
+                  "required": false,
+                  "validations": [
+                    {
+                      "regex": "^[\\w\\W\n\t]{0,10240}$",
+                      "message": "All characters allowed, max 10240 characters."
+                    }
+                  ]
+                },
+                "visible": true
+              },
+              {
+                "name": "standardsku",
+                "type": "Microsoft.Common.InfoBox",
+                "visible": true,
+                "options": {
+                  "icon": "Info",
+                  "text": "The default configuration already included in this deployment can be found on our github page. ",
+                  "uri": "https://github.com/fortinet/azure-templates/blob/main/FortiManager/singlefmg-single.png/doc/config-provisioning.md"
+                }
+              }
+            ]
+          },
+          {
+            "name": "serialconsole",
+            "type": "Microsoft.Common.Section",
+            "label": "Serial Console",
+            "elements": [
+              {
+                "name": "enabled",
+                "type": "Microsoft.Common.OptionsGroup",
+                "label": "Enable Serial Console",
+                "defaultValue": "yes",
+                "toolTip": "Enables the serial console and creates a required storage account.",
+                "constraints": {
+                  "allowedValues": [
+                    {
+                      "label": "yes",
+                      "value": "yes"
+                    },
+                    {
+                      "label": "no",
+                      "value": "no"
+                    }
+                  ],
+                  "required": true
+                },
+                "visible": true
+              },
+              {
+                "name": "standardsku",
+                "type": "Microsoft.Common.InfoBox",
+                "visible": true,
+                "options": {
+                  "icon": "Info",
+                  "text": "This requires a storage account which willl be created during deployment.",
+                  "uri": "https://docs.microsoft.com/en-us/troubleshoot/azure/virtual-machines/serial-console-overview"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "outputs": {
+      "namePrefix": "[basics('namePrefix')]",
+      "imageSKU": "[basics('fortiManagerImageSKU')]",
+      "imageVersion": "[basics('fortiManagerImageVersion')]",
+      "adminUsername": "[basics('adminUsername')]",
+      "adminPassword": "[basics('adminPassword')]",
+      "location": "[location()]",
+      "instanceType": "[steps('instance').instancetype.selection]",
+      "availabilityOptions": "[steps('instance').availabilityOptions.availabilityOptions]",
+      "dataDiskCount": "[steps('instance').datadisk.vmDataDiskCount]",
+      "dataDiskSize": "[steps('instance').datadisk.vmDataDiskSize]",
+      "diskType": "[steps('instance').datadisk.diskType]",
+      "fortiManagerLicenseBYOLA": "[steps('instance').fmgLicense.fmgAcontent]",
+      "fortiManagerLicenseBYOLB": "[steps('instance').fmgLicense.fmgBcontent]",
+      "fortiManagerLicenseFortiFlexA": "[steps('instance').fmgLicense.fmgAfortiflex]",
+      "fortiManagerLicenseFortiFlexB": "[steps('instance').fmgLicense.fmgBfortiflex]",
+      "fortiManagerSerialNumberA": "[steps('instance').fmgLicense.fmgAserial]",
+      "fortiManagerSerialNumberB": "[steps('instance').fmgLicense.fmgBserial]",
+      "publicIP1NewOrExisting": "[steps('publicip').publicip1.newOrExistingOrNone]",
+      "publicIP1Name": "[steps('publicip').publicip1.name]",
+      "publicIP1ResourceGroup": "[steps('publicip').publicip1.resourceGroup]",
+      "publicIPAddress1Type": "[steps('publicip').publicip1.publicIPAllocationMethod]",
+      "publicIP2NewOrExisting": "[steps('publicip').publicip2.newOrExistingOrNone]",
+      "publicIP2Name": "[steps('publicip').publicip2.name]",
+      "publicIP2ResourceGroup": "[steps('publicip').publicip2.resourceGroup]",
+      "publicIPAddress2Type": "[steps('publicip').publicip2.publicIPAllocationMethod]",
+      "vnetNewOrExisting": "[steps('networking').virtualnetworksection.virtualnetwork.newOrExisting]",
+      "vnetName": "[steps('networking').virtualnetworksection.virtualnetwork.name]",
+      "vnetResourceGroup": "[steps('networking').virtualnetworksection.virtualnetwork.resourceGroup]",
+      "vnetAddressPrefix": "[steps('networking').virtualnetworksection.virtualnetwork.addressPrefix]",
+      "subnet1Name": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet1.name]",
+      "subnet1Prefix": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet1.addressPrefix]",
+      "subnet1StartAddress": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet1.startAddress]",
+      "serialConsole": "[steps('advanced').serialconsole.enabled]",
+      "additionalCustomData": "[steps('advanced').customdata.config]"
+    }
+  }
+}

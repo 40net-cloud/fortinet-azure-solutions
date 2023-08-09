@@ -1,0 +1,118 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "adminUsername": {
+            "value": ""
+        },
+        "adminPassword": {
+            "value": ""
+        },
+        "namePrefix": {
+            "value": ""
+        },
+        "imageSku": {
+            "value": "fortinet-fortimanager"
+        },
+        "imageVersion": {
+            "value": "latest"
+        },
+        "additionalCustomData": {
+            "value": ""
+        },
+        "instanceType": {
+            "value": "Standard_D2s_v3"
+        },
+        "availabilityOptions": {
+            "value": "Availability Set"
+        },
+        "publicIP1NewOrExisting": {
+            "value": "new"
+        },
+        "publicIP2NewOrExisting": {
+            "value": "new"
+        },
+        "publicIP1Name": {
+            "value": ""
+        },
+        "publicIP1ResourceGroup": {
+            "value": ""
+        },
+        "publicIP2AddressSKU": {
+            "value": "Standard"
+        },
+        "publicIP2AddressType": {
+            "value": "Static"
+        },
+        "publicIP2Name": {
+            "value": ""
+        },
+        "publicIP2ResourceGroup": {
+            "value": ""
+        },
+        "publicIP1AddressSKU": {
+            "value": "Standard"
+        },
+        "publicIP1AddressType": {
+            "value": "Static"
+        },
+        "vnetNewOrExisting": {
+            "value": "new"
+        },
+        "vnetName": {
+            "value": ""
+        },
+        "vnetResourceGroup": {
+            "value": ""
+        },
+        "vnetAddressPrefix": {
+            "value": "172.16.136.0/22"
+        },
+        "subnet1Name": {
+            "value": "FortiManagerSubnet"
+        },
+        "subnet1Prefix": {
+            "value": "172.16.137.0/24"
+        },
+        "subnet1StartAddress": {
+            "value": "172.16.137.4"
+        },
+        "diskType": {
+            "value": "Default"
+        },
+        "dataDiskSize": {
+            "value": "1024"
+        },
+        "dataDiskCount": {
+            "value": 1
+        },
+        "fortiManagerLicenseBYOLA": {
+            "value": ""
+        },
+        "fortiManagerLicenseBYOLB": {
+            "value": ""
+        },
+        "fortiManagerLicenseFortiFlexA": {
+            "value": ""
+        },
+        "fortiManagerLicenseFortiFlexB": {
+            "value": ""
+        },
+        "fortiManagerSerialNumberA": {
+            "value": ""
+        },
+        "fortiManagerSerialNumberB": {
+            "value": ""
+        },
+        "location": {
+            "value": ""
+        },
+        "fortinetTags": {
+            "value": {
+              "publisher": "Fortinet",
+              "template": "FortiManager",
+              "provider": "6EB3B02F-50E5-4A3E-8CB8-2E1292583FMG"
+            }
+        }
+    }
+}

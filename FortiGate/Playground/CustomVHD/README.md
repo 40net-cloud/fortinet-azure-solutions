@@ -40,7 +40,7 @@ In the Azure Portal you can deploy the template either by clicking the buttons b
 ![Azure Portal 2](images/azure-portal-1.png)
 - Copy in the contents of the 'azuredeploy.json' file into the editor
 ![Azure Portal 3](images/azure-portal-1.png)
-- Complete the required variables. THe VHD uri is created using the 'Add-AzVhd' command as explained in the [Requirements and limitations](#requirements-and-limiations)
+- Complete the required variables. The VHD uri is created using the 'Add-AzVhd' command as explained in the [Requirements and limitations](#requirements-and-limitations)
 ![Azure Portal 4](images/azure-portal-1.png)
 
 ### Azure CLI and Azure Cloud Shell

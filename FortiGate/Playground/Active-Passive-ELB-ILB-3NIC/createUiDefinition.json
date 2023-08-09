@@ -95,7 +95,7 @@
             },
             {
               "label": "Pay As You Go",
-              "value": "fortinet_fg-vm_payg_2022"
+              "value": "fortinet_fg-vm_payg_2023"
             }
           ]
         },
@@ -582,7 +582,7 @@
                 "toolTip": "Provide the IP address or DNS name of the FortiManager reachable over port TCP/541",
                 "constraints": {
                   "required": false,
-                  "regex": "^[A-Za-z0-9.]{1,64}$",
+                  "regex": "^[A-Za-z0-9.-]{1,64}$",
                   "validationMessage": "Only alphanumeric characters and dots are allowed, and the value must be 1 to 64 characters."
                 },
                 "visible": true
@@ -741,19 +741,19 @@
                 "visible": "[not(equals(basics('fortiGateImageSKU'), 'fortinet_fg-vm'))]"
               },
               {
-                "name": "licenseflexvmtext",
+                "name": "licensefortiflextext",
                 "type": "Microsoft.Common.TextBlock",
                 "visible": true,
                 "options": {
-                  "text": "When your organisation is subscribed to Flex-VM you can provide the licenses token here."
+                  "text": "When your organisation is subscribed to FortiFlex you can provide the licenses token here."
                 }
               },
               {
-                "name": "licenseaflexvmtoken",
+                "name": "licenseafortiflextoken",
                 "type": "Microsoft.Common.TextBox",
-                "label": "FortiGate A Flex-VM",
+                "label": "FortiGate A FortiFlex",
                 "defaultValue": "",
-                "toolTip": "FortiGate A Flex-VM license token",
+                "toolTip": "FortiGate A FortiFlex license token",
                 "constraints": {
                   "required": false,
                   "regex": "^[A-Za-z0-9-]{1,64}$",
@@ -762,11 +762,11 @@
                 "visible": true
               },
               {
-                "name": "licensebflexvmtoken",
+                "name": "licensebfortiflextoken",
                 "type": "Microsoft.Common.TextBox",
-                "label": "FortiGate B Flex-VM",
+                "label": "FortiGate B FortiFlex",
                 "defaultValue": "",
-                "toolTip": "FortiGate B Flex-VM license token",
+                "toolTip": "FortiGate B FortiFlex license token",
                 "constraints": {
                   "required": false,
                   "regex": "^[A-Za-z0-9-]{1,64}$",
@@ -823,8 +823,8 @@
       "fortiGateAdditionalCustomData": "[steps('advanced').customdata.config]",
       "fortiGateLicenseBYOLA": "[steps('advanced').fgtlicense.licenseacontent]",
       "fortiGateLicenseBYOLB": "[steps('advanced').fgtlicense.licensebcontent]",
-      "fortiGateLicenseFlexVMA": "[steps('advanced').fgtlicense.licenseaflexvmtoken]",
-      "fortiGateLicenseFlexVMB": "[steps('advanced').fgtlicense.licensebflexvmtoken]"
+      "fortiGateLicenseFortiFlexA": "[steps('advanced').fgtlicense.licenseafortiflextoken]",
+      "fortiGateLicenseFortiFlexB": "[steps('advanced').fgtlicense.licensebfortiflextoken]"
     }
   }
 }

@@ -1,0 +1,81 @@
+name: '[FGT] ARM - ZTNAApplicationGateway'
+
+env:
+  ARMPath: FortiGate/ZTNAApplicationGateway/
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - 'FortiGate/ZTNAApplicationGateway/*.json'
+      - 'FortiGate/ZTNAApplicationGateway/**.tests.ps1'
+
+jobs:
+  ARM_ZTNAApplicationGateway:
+    name: 'ARM Template ZTNAApplicationGateway'
+    runs-on: ubuntu-latest
+    env:
+      ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+      ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+      ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+
+    steps:
+    - name: "Checkout"
+      uses: actions/checkout@v3.2.0
+
+    - name: ARM TTK - Test ARM Templates
+      shell: pwsh
+      run: |
+        Install-Module -Name Pester -RequiredVersion 4.10.1 -Force
+        Import-Module -Name Pester -RequiredVersion 4.10.1 -Force
+        Invoke-WebRequest -Uri "https://aka.ms/arm-ttk-latest" -OutFile arm-template-toolkit.zip
+        Expand-Archive -LiteralPath arm-template-toolkit.zip -DestinationPath arm-ttk
+        Import-Module ./arm-ttk/arm-ttk/arm-ttk.psd1
+        echo "Test-AzTemplate -TemplatePath ${{ env.ARMPath }} -Pester" | Out-File -FilePath ./armttk.ps1
+        Invoke-Pester -Script ./armttk.ps1 -EnableExit -OutputFormat NUnitXml -OutputFile ./test-armttk.xml
+
+    - name: Azure Login via Az module
+      uses: azure/login@v1.4.6
+      with:
+        creds: ${{secrets.AZURE_CREDENTIALS}}
+        enable-AzPSSession: true
+
+    - name: ARM Template - Custom Pester tests
+      uses: azure/powershell@v1.2.0
+      with:
+        inlineScript: |
+          mkdir -p /home/runner/.ssh/
+          chmod 700 /home/runner/.ssh/
+          ssh-keygen -t ed25519 -f /home/runner/.ssh/id_ed25519 -C "fortigate_test@40net.cloud" -N '""'
+          chmod 400 /home/runner/.ssh/id_ed25519*
+          Set-PSRepository psgallery -InstallationPolicy trusted
+          Install-Module -Name Pester -RequiredVersion 5.0.4 -confirm:$false -Force
+          $container = New-PesterContainer -Path "${{ env.ARMPath }}" -Data @{sshkey = "/home/runner/.ssh/id_ed25519"; sshkeypub = "/home/runner/.ssh/id_ed25519.pub"}
+          $config = New-PesterConfiguration
+          $config.Run.Container = $container
+          $config.Run.Exit = $true
+          $config.Run.PassThru = $true
+          $config.TestResult.OutputFormat = "NUnitXML"
+          $config.TestResult.OutputPath = "test-custom.xml"
+          $config.Output.Verbosity = 'Detailed'
+          Invoke-Pester -Configuration $config
+        azPSVersion: "latest"
+
+    - name: Publish Test Results
+      uses: actions/upload-artifact@v3
+      with:
+        name: FGT-ZTNAApplicationGateway-Test-Results
+        path: ./test-*.xml
+      if: ${{ always() }}
+
+    - name: Microsoft Teams Notification
+      uses: jvhoof/notify-microsoft-teams@main
+      if: always()
+      with:
+        webhook_url: ${{ secrets.MS_TEAMS_WEBHOOK_URI }}
+        needs: ${{ toJson(needs) }}
+        job: ${{ toJson(job) }}
+        steps: ${{ toJson(steps) }}

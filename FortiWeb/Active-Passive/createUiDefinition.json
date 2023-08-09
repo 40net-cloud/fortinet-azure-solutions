@@ -127,8 +127,20 @@
               "value": "7.0.3"
             },
             {
+              "label": "7.0.8",
+              "value": "7.0.8"
+            },
+            {
               "label": "7.2.0",
               "value": "7.2.0"
+            },
+            {
+              "label": "7.2.3",
+              "value": "7.2.3"
+            },
+            {
+              "label": "7.2.4",
+              "value": "7.2.4"
             },
             {
               "label": "latest",
@@ -308,7 +320,7 @@
                 },
                 "toolTip": {
                   "virtualNetwork": "Virtual Network for deployment of the FortiWeb VM solution",
-                  "subnets": "Requirement to have 4 subnets connected to the FortiWeb VM: external, internal"
+                  "subnets": "2 subnet will be deployed: external and internal"
                 },
                 "defaultValue": {
                   "name": "FortiWeb-VNET",

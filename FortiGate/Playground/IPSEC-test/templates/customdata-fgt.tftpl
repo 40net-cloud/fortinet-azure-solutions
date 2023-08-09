@@ -1,0 +1,77 @@
+Content-Type: multipart/mixed; boundary="===============0086047718136476635=="
+MIME-Version: 1.0
+
+--===============0086047718136476635==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: attachment; filename="config"
+
+config system sdn-connector
+	edit AzureSDN
+		set type azure
+	end
+end
+config sys global
+    set admintimeout 120
+    set hostname "${fgt_vm_name}"
+    set timezone 26
+    set gui-theme mariner
+    set ipsec-soft-dec-async enable
+end
+config system interface
+    edit port1
+        set mode static
+        set ip ${fgt_external_ipaddress} ${fgt_external_mask}
+        set description external
+        set allowaccess ping https ssh ftm
+        set secondary-IP enable
+        config secondaryip
+        %{ for i in range(1, fgt_external_ipcount + 1) ~}
+            edit ${i}
+                set ip ${cidrhost(fgt_external_network, i + 4)} ${fgt_external_mask}
+            next
+        %{ endfor ~}
+        end
+    next
+    edit port2
+        set mode static
+        set ip ${fgt_internal_ipaddress}/${fgt_internal_mask}
+        set description internal
+    next
+end
+%{ if fgt_ssh_public_key != "" }
+config system admin
+    edit "${fgt_username}"
+        set ssh-public-key1 "${trimspace(file(fgt_ssh_public_key))}"
+    next
+end
+%{ endif }
+config router static
+    edit 1
+        set gateway ${fgt_external_gateway}
+        set device port1
+    next
+end
+
+%{ if fgt_license_fortiflex != "" }
+--===============0086047718136476635==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: attachment; filename="license"
+
+LICENSE-TOKEN:${fgt_license_fortiflex}
+
+%{ endif }
+%{ if fgt_license_file != "" }
+--===============0086047718136476635==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: attachment; filename="${fgt_license_file}"
+
+${file(fgt_license_file)}
+
+%{ endif }
+--===============0086047718136476635==--

@@ -89,7 +89,7 @@ resource "azurerm_network_interface_security_group_association" "fgtifcintnsg" {
 }
 
 resource "azurerm_linux_virtual_machine" "fgtvm" {
-  name                         = "${var.PREFIX}-FGT-VM"
+  name                         = "${var.PREFIX}-FGT"
   location                     = azurerm_resource_group.resourcegroup.location
   resource_group_name          = azurerm_resource_group.resourcegroup.name
   network_interface_ids        = [azurerm_network_interface.fgtifcext.id, azurerm_network_interface.fgtifcint.id]
@@ -113,7 +113,7 @@ resource "azurerm_linux_virtual_machine" "fgtvm" {
   }
 
   os_disk {
-    name                 = "${var.PREFIX}-FGT-A-OSDISK"
+    name                 = "${var.PREFIX}-FGT-OSDISK"
     caching              = "ReadWrite"
     storage_account_type = "Standard_LRS"
   }
@@ -124,7 +124,7 @@ resource "azurerm_linux_virtual_machine" "fgtvm" {
   custom_data = base64encode(templatefile("${path.module}/customdata.tpl", {
     fgt_vm_name         = "${var.PREFIX}-FGT"
     fgt_license_file    = var.FGT_BYOL_LICENSE_FILE
-    fgt_license_flexvm  = var.FGT_BYOL_FLEXVM_LICENSE_FILE
+    fgt_license_fortiflex  = var.FGT_BYOL_FORTIFLEX_LICENSE_TOKEN
     fgt_username        = var.USERNAME
     fgt_ssh_public_key  = var.FGT_SSH_PUBLIC_KEY_FILE
     fgt_external_ipaddr = var.fgt_ipaddress["1"]
@@ -144,7 +144,7 @@ resource "azurerm_linux_virtual_machine" "fgtvm" {
 }
 
 resource "azurerm_managed_disk" "fgtvm-datadisk" {
-  name                 = "${var.PREFIX}-FGT-VM-DATADISK"
+  name                 = "${var.PREFIX}-FGT-DATADISK"
   location             = azurerm_resource_group.resourcegroup.location
   resource_group_name  = azurerm_resource_group.resourcegroup.name
   storage_account_type = "Standard_LRS"

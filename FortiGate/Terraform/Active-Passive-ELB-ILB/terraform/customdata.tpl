@@ -96,14 +96,14 @@ config system ha
     set unicast-hb-peerip ${fgt_ha_peerip}
 end
 %{ endif }
-%{ if fgt_license_flexvm != "" }
+%{ if fgt_license_fortiflex != "" }
 --===============0086047718136476635==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 Content-Disposition: attachment; filename="license"
 
-LICENSE-TOKEN:${fgt_license_flexvm}
+LICENSE-TOKEN:${fgt_license_fortiflex}
 
 %{ endif }
 %{ if fgt_license_file != "" }
@@ -116,17 +116,4 @@ Content-Disposition: attachment; filename="${fgt_license_file}"
 ${file(fgt_license_file)}
 
 %{ endif }
---===============0086047718136476635==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: attachment; filename="config2"
-
-config router static
-    edit 4
-        set dst 168.63.129.16 255.255.255.255
-        set device port1
-        set gateway ${fgt_external_gw}
-    next
-end
 --===============0086047718136476635==--

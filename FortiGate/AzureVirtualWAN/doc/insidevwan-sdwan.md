@@ -19,7 +19,7 @@ Setup consist of:
 
 ## Deployment
 
-The integration of the FortiGate inside of the Virtual WAN Hub requires FortiManager to manage the FortiGate instances and the SD-WAN configuration. The deployment process is detailed in the documentation [here](https://docs.fortinet.com/document/fortigate-public-cloud/7.2.2/azure-vwan-sd-wan-deployment-guide/311594/deployment-procedures).
+The integration of the FortiGate inside of the Virtual WAN Hub requires FortiManager to manage the FortiGate instances and the SD-WAN configuration. The deployment process is detailed in the documentation [here](https://docs.fortinet.com/document/fortigate-public-cloud/7.4.0/azure-vwan-sd-wan-ngfw-deployment-guide/311594/deployment-procedures).
 
 ## Requirements and limitations
 
@@ -28,7 +28,7 @@ The integration of the FortiGate inside of the Virtual WAN Hub requires FortiMan
 * Routing: During the deployment the FortiGate-VMs are coupled to the Azure Routing Service inside the Virtual WAN Hub using BGP. This allows the FortiGate-VMs to inject routes to them for all the remote sites. The gateway the networks is always the ForitGate-VM ip address on the port2.
 * The FortiManager needs to be routable and accessible from the FortiGate instances. During the deployment the IP address or dns name of the FortiManager is provided and the FortiGate will try to connect to the FortiManager. Either the FortiManager is accessible via a public IP address and the default route is used. Alternatively, the FortiManager can be reach internal either in a spoke, another hub or on-premises if an IPSEC tunnel or ExpressRoute is terminated on the the Virtual WAN Hub.
 * Licenses for Fortigate
-  - BYOL: VM, VM Subscription or Flex-VM licenses can be used on these units. A demo license can be made available via your Fortinet partner or on our website. Licenses need to be registered on the [Fortinet support site](http://support.fortinet.com). Download the .lic file after registration. Note, these files may not work until 60 minutes after it's initial creation.
+  - BYOL: VM, VM Subscription or FortiFlex licenses can be used on these units. A demo license can be made available via your Fortinet partner or on our website. Licenses need to be registered on the [Fortinet support site](http://support.fortinet.com). Download the .lic file after registration. Note, these files may not work until 60 minutes after it's initial creation.
   - PAYG or OnDemand is not supported for the integrated FortiGate-VMs installed inside the Virtual WAN Hub.
 
 ## Flows

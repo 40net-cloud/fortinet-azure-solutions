@@ -81,8 +81,8 @@ Secondly, a firewall policy rule needs to be created to allow the packets to tra
 - Source: Restrict which IP can connect to the service here or set this to all
 - Destination:  The VIP created in step one
 - Service: The destination port on the internal server
-- NAT: Source NAT is not needed for an Active/Passive setup. For an Active/Active setup it is recommended so the packet is returning to the firewall that maintains the state of the session
+- NAT: Source NAT is not needed for an Active/Passive setup. For an Active/Active setup it is recommended so the packet is returning to the firewall that maintains the state of the session. Alternatively, the FGSP protocol can be used to sync the state and have assymetric traffic across 2 active FortiGate VMs
 
 <p align="center">
-  <img width="500px" src="../images/inbound-fgt-policy.png" alt="fortigate policy">
+  <img width="500px" src="../images/inbound-fgt-policy-nat.png" alt="fortigate policy">
 </p>

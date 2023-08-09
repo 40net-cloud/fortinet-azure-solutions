@@ -1,0 +1,17 @@
+{
+  "ignorePatterns": [
+    {
+      "pattern": "^https://portal.local.azurestack.external"
+    }
+  ],
+  "replacementPatterns": [
+    {
+      "pattern": "^/../../",
+      "replacement": "https://github.com/40net-cloud/fortinet-azure-solutions/"
+    }
+  ],
+  "timeout": "20s",
+  "retryOn429": true,
+  "retryCount": 5,
+  "fallbackRetryDelay": "30s"
+}

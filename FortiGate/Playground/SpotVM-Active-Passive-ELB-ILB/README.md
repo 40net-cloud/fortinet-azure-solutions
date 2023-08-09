@@ -2,9 +2,9 @@
 
 # Introduction
 
-This template deploys the [Active/Passive HA FortiGate deployment](../Active-Passive-ELB-ILB) using Spot VMs. Using Spot VMs allows you to take advantage of our unused capacity at a significant cost savings. At any point in time when Azure needs the capacity back, the Azure infrastructure will evict Spot VMs. This is great for demo or tests that are not cricital to the customer.
+This template deploys the [Active/Passive HA FortiGate deployment](../../Active-Passive-ELB-ILB) using Spot VMs. Using Spot VMs allows you to take advantage of our unused capacity at a significant cost savings. At any point in time when Azure needs the capacity back, the Azure infrastructure will evict Spot VMs. This is great for demo or tests that are not cricital to the customer.
 
-For more information about the deployment review the documentation [here](../Active-Passive-ELB-ILB)
+For more information about the deployment review the documentation [here](../../Active-Passive-ELB-ILB)
 
 # How to deploy
 

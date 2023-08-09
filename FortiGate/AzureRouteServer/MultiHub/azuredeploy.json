@@ -32,7 +32,7 @@
       "defaultValue": "fortinet_fg-vm",
       "allowedValues": [
         "fortinet_fg-vm",
-        "fortinet_fg-vm_payg_2022"
+        "fortinet_fg-vm_payg_2023"
       ],
       "metadata": {
         "description": "Identifies whether to to use PAYG (on demand licensing) or BYOL license model (where license is purchased separately)"
@@ -632,7 +632,7 @@
     {
       "condition": "[equals(parameters('hubAVnetNewOrExisting'), 'new')]",
       "type": "Microsoft.Network/virtualNetworks",
-      "apiVersion": "2022-05-01",
+      "apiVersion": "2022-01-01",
       "name": "[variables('hubAVnetName')]",
       "location": "[parameters('hubALocation')]",
       "properties": {
@@ -681,7 +681,7 @@
     {
       "condition": "[equals(parameters('hubAVnetNewOrExistingSpoke1'), 'new')]",
       "type": "Microsoft.Network/virtualNetworks",
-      "apiVersion": "2022-05-01",
+      "apiVersion": "2022-01-01",
       "name": "[variables('hubAVnetNameSpoke1')]",
       "location": "[parameters('hubALocation')]",
       "properties": {
@@ -701,7 +701,7 @@
       },
       "resources": [
         {
-          "apiVersion": "2022-05-01",
+          "apiVersion": "2022-01-01",
           "type": "virtualNetworkPeerings",
           "name": "[variables('spoke1toHubAPeeringName')]",
           "location": "[parameters('hubALocation')]",
@@ -725,7 +725,7 @@
     {
       "condition": "[equals(parameters('hubBVnetNewOrExisting'), 'new')]",
       "type": "Microsoft.Network/virtualNetworks",
-      "apiVersion": "2022-05-01",
+      "apiVersion": "2022-01-01",
       "name": "[variables('hubBVnetName')]",
       "location": "[parameters('hubBLocation')]",
       "properties": {
@@ -772,7 +772,7 @@
     {
       "condition": "[equals(parameters('hubBVnetNewOrExistingSpoke1'), 'new')]",
       "type": "Microsoft.Network/virtualNetworks",
-      "apiVersion": "2022-05-01",
+      "apiVersion": "2022-01-01",
       "name": "[variables('hubBVnetNameSpoke1')]",
       "location": "[parameters('hubBLocation')]",
       "properties": {
@@ -792,7 +792,7 @@
       },
       "resources": [
         {
-          "apiVersion": "2022-05-01",
+          "apiVersion": "2022-01-01",
           "type": "virtualNetworkPeerings",
           "name": "[variables('spoke1toHubBPeeringName')]",
           "location": "[parameters('hubBLocation')]",
@@ -947,7 +947,7 @@
               "apiVersion": "2019-09-01",
               "name": "[concat(variables('hubAVnetName'),'/',parameters('hubASubnet1Name'))]",
               "properties": {
-                "addressPrefix": "[reference(resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworks/subnets', variables('hubAVnetName'), parameters('hubASubnet1Name')), '2022-05-01').addressPrefix]",
+                "addressPrefix": "[reference(resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworks/subnets', variables('hubAVnetName'), parameters('hubASubnet1Name')), '2022-01-01').addressPrefix]",
                 "routeTable": {
                   "id": "[variables('hubARouteTableFGTId')]"
                 }
@@ -961,7 +961,7 @@
                 "[parameters('hubASubnet1Name')]"
               ],
               "properties": {
-                "addressPrefix": "[reference(resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworks/subnets', variables('hubAVnetName'), parameters('hubASubnet2Name')), '2022-05-01').addressPrefix]",
+                "addressPrefix": "[reference(resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworks/subnets', variables('hubAVnetName'), parameters('hubASubnet2Name')), '2022-01-01').addressPrefix]",
                 "routeTable": {
                   "id": "[variables('hubARouteTableFGTId')]"
                 }
@@ -975,7 +975,7 @@
                 "[parameters('hubASubnet2Name')]"
               ],
               "properties": {
-                "addressPrefix": "[reference(resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworks/subnets', variables('hubAVnetName'), parameters('hubASubnet3Name')), '2022-05-01').addressPrefix]",
+                "addressPrefix": "[reference(resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworks/subnets', variables('hubAVnetName'), parameters('hubASubnet3Name')), '2022-01-01').addressPrefix]",
                 "routeTable": {
                   "id": "[variables('hubARouteTableFGTId')]"
                 }
@@ -989,7 +989,7 @@
                 "[parameters('hubASubnet3Name')]"
               ],
               "properties": {
-                "addressPrefix": "[reference(resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworks/subnets', variables('hubAVnetName'), parameters('hubASubnet4Name')), '2022-05-01').addressPrefix]",
+                "addressPrefix": "[reference(resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworks/subnets', variables('hubAVnetName'), parameters('hubASubnet4Name')), '2022-01-01').addressPrefix]",
                 "routeTable": {
                   "id": "[variables('hubARouteTableFGTId')]"
                 }
@@ -997,7 +997,7 @@
             },
             {
               "condition": "[equals(parameters('hubAVnetNewOrExisting'), 'new')]",
-              "apiVersion": "2022-05-01",
+              "apiVersion": "2022-01-01",
               "type": "Microsoft.Network/virtualNetworks/virtualNetworkPeerings",
               "name": "[concat(variables('hubAVnetName'),'/',variables('hubAtoSpoke1PeeringName'))]",
               "location": "[parameters('hubALocation')]",
@@ -1013,7 +1013,7 @@
               }
             },
             {
-              "apiVersion": "2022-05-01",
+              "apiVersion": "2022-01-01",
               "type": "Microsoft.Network/virtualNetworks/virtualNetworkPeerings",
               "name": "[concat(variables('hubAVnetName'),'/',variables('hubAtohubBPeeringName'))]",
               "location": "[parameters('hubBLocation')]",
@@ -1050,7 +1050,7 @@
               "apiVersion": "2019-09-01",
               "name": "[concat(variables('hubBVnetName'),'/',parameters('hubBSubnet1Name'))]",
               "properties": {
-                "addressPrefix": "[reference(resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworks/subnets', variables('hubBVnetName'), parameters('hubBSubnet1Name')), '2022-05-01').addressPrefix]",
+                "addressPrefix": "[reference(resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworks/subnets', variables('hubBVnetName'), parameters('hubBSubnet1Name')), '2022-01-01').addressPrefix]",
                 "routeTable": {
                   "id": "[variables('hubBRouteTableFGTId')]"
                 }
@@ -1064,7 +1064,7 @@
                 "[parameters('hubBSubnet1Name')]"
               ],
               "properties": {
-                "addressPrefix": "[reference(resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworks/subnets', variables('hubBVnetName'), parameters('hubBSubnet2Name')), '2022-05-01').addressPrefix]",
+                "addressPrefix": "[reference(resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworks/subnets', variables('hubBVnetName'), parameters('hubBSubnet2Name')), '2022-01-01').addressPrefix]",
                 "routeTable": {
                   "id": "[variables('hubBRouteTableFGTId')]"
                 }
@@ -1078,7 +1078,7 @@
                 "[parameters('hubBSubnet2Name')]"
               ],
               "properties": {
-                "addressPrefix": "[reference(resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworks/subnets', variables('hubBVnetName'), parameters('hubBSubnet3Name')), '2022-05-01').addressPrefix]",
+                "addressPrefix": "[reference(resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworks/subnets', variables('hubBVnetName'), parameters('hubBSubnet3Name')), '2022-01-01').addressPrefix]",
                 "routeTable": {
                   "id": "[variables('hubBRouteTableFGTId')]"
                 }
@@ -1092,14 +1092,14 @@
                 "[parameters('hubBSubnet3Name')]"
               ],
               "properties": {
-                "addressPrefix": "[reference(resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworks/subnets', variables('hubBVnetName'), parameters('hubBSubnet4Name')), '2022-05-01').addressPrefix]",
+                "addressPrefix": "[reference(resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworks/subnets', variables('hubBVnetName'), parameters('hubBSubnet4Name')), '2022-01-01').addressPrefix]",
                 "routeTable": {
                   "id": "[variables('hubBRouteTableFGTId')]"
                 }
               }
             },
             {
-              "apiVersion": "2022-05-01",
+              "apiVersion": "2022-01-01",
               "type": "Microsoft.Network/virtualNetworks/virtualNetworkPeerings",
               "name": "[concat(variables('hubBVnetName'),'/',variables('hubBtoSpoke1PeeringName'))]",
               "location": "[parameters('hubBLocation')]",
@@ -1115,7 +1115,7 @@
               }
             },
             {
-              "apiVersion": "2022-05-01",
+              "apiVersion": "2022-01-01",
               "type": "Microsoft.Network/virtualNetworks/virtualNetworkPeerings",
               "name": "[concat(variables('hubBVnetName'),'/',variables('hubBtohubAPeeringName'))]",
               "location": "[parameters('hubBLocation')]",

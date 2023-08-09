@@ -2,7 +2,7 @@
 
 ## Introduction
 
-The deployment of the FortGate-VM in the Azure China region is similar to the Azure Global regions. More information about the global region deployment can be found [here](/FortiGate/A-Single-VM/README.md).
+The deployment of the FortGate-VM in the Azure China region is similar to the Azure Global regions. More information about the global region deployment can be found [here](/../../blob/main/FortiGate/A-Single-VM/README.md).
 
 ## Deployment
 
@@ -24,4 +24,4 @@ For direct issues, please refer to the [Issues](https://github.com/40net-cloud/f
 
 ## License
 
-[License](LICENSE) © Fortinet Technologies. All rights reserved.
+[License](/../../blob/main/LICENSE) © Fortinet Technologies. All rights reserved.

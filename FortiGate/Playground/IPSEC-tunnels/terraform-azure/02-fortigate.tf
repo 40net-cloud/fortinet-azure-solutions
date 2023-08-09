@@ -111,6 +111,13 @@ resource "azurerm_network_interface_security_group_association" "fgtifcintnsg" {
   network_security_group_id = azurerm_network_security_group.fgtnsg.id
 }
 
+#data "azurerm_shared_image_version" "fortigate" {
+#  name                = "1.0.0"
+#  image_name          = "FortiGate"
+#  gallery_name        = "jvh01gallery"
+#  resource_group_name = "JVH01-RG"
+#}
+
 resource "azurerm_linux_virtual_machine" "fgtvm" {
   name                  = "${var.PREFIX}-FGT-VM"
   location              = azurerm_resource_group.resourcegroup.location
@@ -122,6 +129,7 @@ resource "azurerm_linux_virtual_machine" "fgtvm" {
     type = "SystemAssigned"
   }
 
+  #  source_image_id = data.azurerm_shared_image_version.fortigate.id
   source_image_reference {
     publisher = "fortinet"
     offer     = "fortinet_fortigate-vm_v5"
@@ -145,29 +153,33 @@ resource "azurerm_linux_virtual_machine" "fgtvm" {
   admin_password                  = var.PASSWORD
   disable_password_authentication = false
   custom_data = base64encode(templatefile("${path.module}/../templates/customdata-fgt.tftpl", {
-    fgt_csp             = "azure"
-    fgt_vm_name         = "${var.PREFIX}-FGT-VM"
-    fgt_license_file    = var.FGT_BYOL_LICENSE_FILE
-    fgt_license_flexvm  = var.FGT_BYOL_FLEXVM_LICENSE_FILE
-    fgt_username        = var.USERNAME
-    fgt_password        = var.PASSWORD
-    fgt_ssh_public_key  = var.FGT_SSH_PUBLIC_KEY_FILE
-    fgt_mgmt_ipaddr     = var.fgt_ipaddress["1"]
-    fgt_mgmt_mask       = var.subnetmask["1"]
-    fgt_mgmt_gw         = var.gateway_ipaddress["1"]
-    fgt_external_ipaddr = var.fgt_ipaddress["2"]
-    fgt_external_mask   = var.subnetmask["2"]
-    fgt_external_gw     = var.gateway_ipaddress["2"]
-    fgt_internal_ipaddr = var.fgt_ipaddress["3"]
-    fgt_internal_mask   = var.subnetmask["3"]
-    fgt_internal_gw     = var.gateway_ipaddress["3"]
-    virtual_network     = var.vnet
+    fgt_csp               = "azure"
+    fgt_vm_name           = "${var.PREFIX}-FGT-VM"
+    fgt_license_file      = var.FGT_BYOL_LICENSE_FILE_A
+    fgt_license_fortiflex = var.FGT_BYOL_FORTIFLEX_LICENSE_TOKEN_A
+    fgt_username          = var.USERNAME
+    fgt_password          = var.PASSWORD
+    fgt_ssh_public_key    = var.FGT_SSH_PUBLIC_KEY_FILE
+    fgt_mgmt_ipaddr       = var.fgt_ipaddress["1"]
+    fgt_mgmt_mask         = var.subnetmask["1"]
+    fgt_mgmt_gw           = var.gateway_ipaddress["1"]
+    fgt_external_ipaddr   = var.fgt_ipaddress["2"]
+    fgt_external_mask     = var.subnetmask["2"]
+    fgt_external_gw       = var.gateway_ipaddress["2"]
+    fgt_internal_ipaddr   = var.fgt_ipaddress["3"]
+    fgt_internal_mask     = var.subnetmask["3"]
+    fgt_internal_gw       = var.gateway_ipaddress["3"]
+    virtual_network       = var.vnet
   }))
 
   boot_diagnostics {
   }
 
   tags = var.fortinet_tags
+
+  lifecycle {
+    ignore_changes = [custom_data]
+  }
 }
 
 data "azurerm_public_ip" "fgtpip" {

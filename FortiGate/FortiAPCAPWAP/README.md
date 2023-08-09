@@ -87,9 +87,9 @@ After this initial configuration the FortiAP needs to be configured to connect t
 
 Once the FortiAP is able to connect to the FortiGate, the FortiAP needs to be [authorized by the FortiGate](https://docs.fortinet.com/document/fortiap/7.2.1/fortiwifi-and-fortiap-configuration-guide/827468/discovery-and-authorization-of-aps). 
 
-![FortiGate how to authorize a FortiAP](images/lb-authorize1.png)
-![FortiGate how to authorize a FortiAP](images/lb-authorize2.png)
-![FortiGate how to authorize a FortiAP](images/lb-authorize3.png)
+![FortiGate how to authorize a FortiAP](images/fgt-authorize1.png)
+![FortiGate how to authorize a FortiAP](images/fgt-authorize2.png)
+![FortiGate how to authorize a FortiAP](images/fgt-authorize3.png)
 
 Once the FortiAP is connect and all lights are greeen a last remaining action point is a Firewall Policy. Below a very simple initial policy that will get you kickstarted to increase visiblity and control of these access points.
 
@@ -124,4 +124,4 @@ For direct issues, please refer to the [Issues](https://github.com/40net-cloud/f
 
 ## License
 
-[License](LICENSE) © Fortinet Technologies. All rights reserved.
+[License](/../../blob/main/LICENSE) © Fortinet Technologies. All rights reserved.

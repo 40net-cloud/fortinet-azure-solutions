@@ -27,7 +27,7 @@
       {
         "name": "adminUsername",
         "type": "Microsoft.Common.TextBox",
-        "label": "FortiGate administrative username",
+        "label": "ZTNA Gateway Administrative Username",
         "defaultValue": "",
         "toolTip": "Username for the ZTNA Application Gateway virtual appliance. Most not be root, administrator or admin",
         "constraints": {
@@ -53,8 +53,8 @@
         "name": "adminPassword",
         "type": "Microsoft.Common.PasswordBox",
         "label": {
-          "password": "FortiGate password",
-          "confirmPassword": "Confirm password"
+          "password": "ZTNA Gateway Password",
+          "confirmPassword": "Confirm Password"
         },
         "toolTip": "Password for the Virtual Machine",
         "constraints": {
@@ -70,7 +70,7 @@
       {
         "name": "fortiGateNamePrefix",
         "type": "Microsoft.Common.TextBox",
-        "label": "Fortigate Name Prefix",
+        "label": "ZTNA Gateway Name Prefix",
         "defaultValue": "",
         "toolTip": "Naming prefix for all deployed resources",
         "constraints": {
@@ -83,7 +83,7 @@
       {
         "name": "fortiGateImageSKU",
         "type": "Microsoft.Common.DropDown",
-        "label": "Fortigate Image SKU",
+        "label": "ZTNA Gateway (FortiGate) Image SKU",
         "defaultValue": "Bring Your Own License",
         "toolTip": "Identifies whether to to use PAYG (on demand licensing) or BYOL license model (where license is purchased separately)",
         "constraints": {
@@ -92,10 +92,6 @@
             {
               "label": "Bring Your Own License",
               "value": "fortinet_fg-vm"
-            },
-            {
-              "label": "Pay As You Go",
-              "value": "fortinet_fg-vm_payg_2022"
             }
           ]
         },
@@ -104,19 +100,151 @@
       {
         "name": "fortiGateImageVersion",
         "type": "Microsoft.Common.DropDown",
-        "label": "Fortigate Image Version",
-        "defaultValue": "latest",
+        "label": "ZTNA Gateway (FortiGate) Image Version",
+        "defaultValue": "7.2.4",
         "toolTip": "Only 6.x has the A/P HA feature currently",
         "constraints": {
           "required": false,
           "allowedValues": [
             {
+              "label": "6.2.0",
+              "value": "6.2.0"
+            },
+            {
+              "label": "6.2.2",
+              "value": "6.2.2"
+            },
+            {
+              "label": "6.2.4",
+              "value": "6.2.4"
+            },
+            {
+              "label": "6.2.5",
+              "value": "6.2.5"
+            },
+            {
+              "label": "6.4.0",
+              "value": "6.4.0"
+            },
+            {
+              "label": "6.4.10",
+              "value": "6.4.10"
+            },
+            {
+              "label": "6.4.11",
+              "value": "6.4.11"
+            },
+            {
+              "label": "6.4.12",
+              "value": "6.4.12"
+            },
+            {
+              "label": "6.4.13",
+              "value": "6.4.13"
+            },
+            {
+              "label": "6.4.2",
+              "value": "6.4.2"
+            },
+            {
+              "label": "6.4.3",
+              "value": "6.4.3"
+            },
+            {
+              "label": "6.4.5",
+              "value": "6.4.5"
+            },
+            {
+              "label": "6.4.6",
+              "value": "6.4.6"
+            },
+            {
+              "label": "6.4.7",
+              "value": "6.4.7"
+            },
+            {
+              "label": "6.4.8",
+              "value": "6.4.8"
+            },
+            {
+              "label": "6.4.9",
+              "value": "6.4.9"
+            },
+            {
+              "label": "7.0.0",
+              "value": "7.0.0"
+            },
+            {
+              "label": "7.0.1",
+              "value": "7.0.1"
+            },
+            {
+              "label": "7.0.10",
+              "value": "7.0.10"
+            },
+            {
+              "label": "7.0.11",
+              "value": "7.0.11"
+            },
+            {
+              "label": "7.0.12",
+              "value": "7.0.12"
+            },
+            {
+              "label": "7.0.2",
+              "value": "7.0.2"
+            },
+            {
+              "label": "7.0.3",
+              "value": "7.0.3"
+            },
+            {
+              "label": "7.0.4",
+              "value": "7.0.4"
+            },
+            {
+              "label": "7.0.5",
+              "value": "7.0.5"
+            },
+            {
+              "label": "7.0.6",
+              "value": "7.0.6"
+            },
+            {
               "label": "7.0.8",
               "value": "7.0.8"
             },
             {
+              "label": "7.0.9",
+              "value": "7.0.9"
+            },
+            {
+              "label": "7.2.0",
+              "value": "7.2.0"
+            },
+            {
+              "label": "7.2.1",
+              "value": "7.2.1"
+            },
+            {
               "label": "7.2.2",
               "value": "7.2.2"
+            },
+            {
+              "label": "7.2.3",
+              "value": "7.2.3"
+            },
+            {
+              "label": "7.2.4",
+              "value": "7.2.4"
+            },
+            {
+              "label": "7.2.5",
+              "value": "7.2.5"
+            },
+            {
+              "label": "7.4.0",
+              "value": "7.4.0"
             },
             {
               "label": "latest",
@@ -132,7 +260,7 @@
         "name": "instance",
         "label": "Instance",
         "subLabel": {
-          "preValidation": "Select instance type",
+          "preValidation": "Select Instance Type",
           "postValidation": "Done"
         },
         "elements": [
@@ -307,7 +435,7 @@
           {
             "name": "fgtLicense",
             "type": "Microsoft.Common.Section",
-            "label": "FortiGate License",
+            "label": "ZTNA Gateway (FortiGate) License",
             "elements": [
               {
                 "name": "fgtLicenseBYOLInfo",
@@ -318,10 +446,10 @@
                 }
               },
               {
-                "name": "fgtLicenseFlexVMCheck",
+                "name": "fgtLicenseFortiFlexCheck",
                 "type": "Microsoft.Common.CheckBox",
-                "label": "My organisation is using the Flex-VM subscription service.",
-                "toolTip": "Select this box to enter a Flex-VM token",
+                "label": "My organisation is using the FortiFlex subscription service.",
+                "toolTip": "Select this box to enter a FortiFlex token",
                 "visible": "[equals(basics('fortiGateImageSKU'), 'fortinet_fg-vm')]"
               },
               {
@@ -339,20 +467,20 @@
                   "openMode": "text",
                   "encoding": "UTF-8"
                 },
-                "visible": "[and(equals(basics('fortiGateImageSKU'), 'fortinet_fg-vm'),not(steps('instance').fgtLicense.fgtLicenseFlexVMCheck))]"
+                "visible": "[and(equals(basics('fortiGateImageSKU'), 'fortinet_fg-vm'),not(steps('instance').fgtLicense.fgtLicenseFortiFlexCheck))]"
               },
               {
-                "name": "fgtflexvm",
+                "name": "fgtfortiflex",
                 "type": "Microsoft.Common.TextBox",
-                "label": "FortiGate Flex-VM License",
+                "label": "FortiGate FortiFlex License",
                 "defaultValue": "",
-                "toolTip": "FortiGate Flex-VM license token",
+                "toolTip": "FortiGate FortiFlex license token",
                 "constraints": {
                   "required": false,
                   "regex": "^[A-Za-z0-9-]{1,64}$",
                   "validationMessage": "Only alphanumeric characters and a dash are allowed, and the value must be 1 to 64 characters."
                 },
-                "visible": "[steps('instance').fgtLicense.fgtLicenseFlexVMCheck]"
+                "visible": "[steps('instance').fgtLicense.fgtLicenseFortiFlexCheck]"
               },
               {
                 "name": "fgtLicensePAYGInfo",
@@ -402,7 +530,7 @@
         "name": "networking",
         "label": "Networking",
         "subLabel": {
-          "preValidation": "Configure internal networking",
+          "preValidation": "Configure Internal Networking",
           "postValidation": "Done"
         },
         "elements": [
@@ -423,7 +551,7 @@
                 "name": "virtualnetwork",
                 "type": "Microsoft.Network.VirtualNetworkCombo",
                 "label": {
-                  "virtualNetwork": "Virtual network",
+                  "virtualNetwork": "Virtual Network",
                   "subnets": "Subnets"
                 },
                 "toolTip": {
@@ -454,7 +582,7 @@
                     }
                   },
                   "subnet2": {
-                    "label": "Internal subnet",
+                    "label": "Internal Subnet",
                     "defaultValue": {
                       "name": "InternalSubnet",
                       "addressPrefixSize": "/26"
@@ -483,7 +611,7 @@
           {
             "name": "acceleratednetworksection",
             "type": "Microsoft.Common.Section",
-            "label": "Accelerated networking",
+            "label": "Accelerated Networking",
             "elements": [
               {
                 "name": "acceleratednetworkingtext",
@@ -536,7 +664,7 @@
         "name": "ztna",
         "label": "ZTNA",
         "subLabel": {
-          "preValidation": "Configure ZTNA parameters",
+          "preValidation": "Configure ZTNA Parameters",
           "postValidation": "Done"
         },
         "elements": [
@@ -561,7 +689,7 @@
                 "name": "enabled",
                 "type": "Microsoft.Common.OptionsGroup",
                 "label": "FortiClient Cloud",
-                "defaultValue": "yes",
+                "defaultValue": "no",
                 "toolTip": "FortiClient Cloud is a cloud-based SaaS EMS hosted by Fortinet",
                 "constraints": {
                   "allowedValues": [
@@ -700,7 +828,13 @@
                 "defaultValue": "",
                 "toolTip": "Application Server accessible via ZTNA",
                 "constraints": {
-                  "required": true
+                  "required": true,
+                  "validations": [
+                    {
+                      "regex": "^[a-z0-9A-Z -.:\n]{1,100}$",
+                      "message": "Only 1-100 alphanumeric characters, hyphens, spaces, periods, and colons are allowed."
+                    }
+                  ]
                 },
                 "visible": true
               },
@@ -711,7 +845,13 @@
                 "defaultValue": "9443",
                 "toolTip": "ZTNA HTTPS Access Port",
                 "constraints": {
-                  "required": true
+                  "required": true,
+                  "validations": [
+                    {
+                      "regex": "^[0-9]{1,7}$",
+                      "message": "Only numeric characters are allowed."
+                    }
+                  ]
                 },
                 "visible": true
               }
@@ -823,7 +963,7 @@
                 "toolTip": "Provide the IP address or DNS name of the FortiManager reachable over port TCP/541",
                 "constraints": {
                   "required": false,
-                  "regex": "^[A-Za-z0-9.]{1,64}$",
+                  "regex": "^[A-Za-z0-9.-]{1,64}$",
                   "validationMessage": "Only alphanumeric characters and dots are allowed, and the value must be 1 to 64 characters."
                 },
                 "visible": true
@@ -899,7 +1039,13 @@
                 "defaultValue": "8443",
                 "toolTip": "FortiGate HTTPS admin access port (e.g. 8443)",
                 "constraints": {
-                  "required": true
+                  "required": true,
+                  "validations": [
+                    {
+                      "regex": "^[0-9]{1,7}$",
+                      "message": "Only numeric characters are allowed."
+                    }
+                  ]
                 },
                 "visible": true
               }
@@ -956,7 +1102,7 @@
       "location": "[location()]",
       "instanceType": "[steps('instance').instancetype.selection]",
       "fortiGateLicenseBYOL": "[steps('instance').fgtLicense.fgtcontent]",
-      "fortiGateLicenseFlexVM": "[steps('instance').fgtLicense.fgtflexvm]",
+      "fortiGateLicenseFortiFlex": "[steps('instance').fgtLicense.fgtfortiflex]",
       "acceleratedNetworking": "[steps('networking').acceleratednetworksection.acceleratednetworking]",
       "publicIP1NewOrExisting": "[steps('publicip').publicip.newOrExistingOrNone]",
       "publicIP1Name": "[steps('publicip').publicip.name]",

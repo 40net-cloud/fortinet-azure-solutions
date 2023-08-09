@@ -4,7 +4,7 @@
 
 ## Design
 
-Autoscaling is documented on the [Fortinet documenation site](https://docs.fortinet.com/vm/azure/fortigate/7.0/azure-administration-guide/7.0.0/161167/deploying-auto-scaling-on-azure). By default a hybird license setup (using both BYOL and PAYG) is created to take into account the total cost of ownership of this deployment. It is of course also possible to only use one of the license types.
+Autoscaling is documented on the [Fortinet documenation site](https://docs.fortinet.com/document/fortigate-public-cloud/7.2.0/azure-administration-guide/161167/deploying-autoscaling-on-azure). By default a hybird license setup (using both BYOL and PAYG) is created to take into account the total cost of ownership of this deployment. It is of course also possible to only use one of the license types.
 
 ![FortiGate Autoscale (hybrid licensing)](https://fortinetweb.s3.amazonaws.com/docs.fortinet.com/v2/resources/0489513b-b3c1-11e9-a989-00505692583a/images/665e0b1344961387f060f12cd394091e_fig-AzureAS-HybridLicensing.png)
 
@@ -19,8 +19,8 @@ There are 5 variables needed to complete kickstart the deployment. The deploy.sh
   - INSTANCETYPE : This is the Azure instance type for each of the Fortigate VM that will be deployed. By default this is set to Standard_F4s.
   - USERNAME : The username used to login to the FortiGate GUI and SSH mangement UI.
   - PASSWORD : The password used for the FortiGate GUI and SSH management UI.
-  - CLIENT_ID : The service principal id used by the Azure Function to connect with the resources in Microsoft Azure. More info [here](https://docs.fortinet.com/vm/azure/fortigate/7.0/azure-administration-guide/7.0.0/948968/creating-an-azure-fabric-connector-using-service-principal)
-  - CLIENT_SECRET : The service principal secret used by the Azure Function to connect with the resources in Microsoft Azure. More info [here](https://docs.fortinet.com/vm/azure/fortigate/7.0/azure-administration-guide/7.0.0/948968/creating-an-azure-fabric-connector-using-service-principal)
+  - CLIENT_ID : The service principal id used by the Azure Function to connect with the resources in Microsoft Azure. More info [here](https://docs.fortinet.com/document/fortigate-public-cloud/7.2.0/azure-administration-guide/948968/azure-sdn-connector-service-principal-configuration-requirements)
+  - CLIENT_SECRET : The service principal secret used by the Azure Function to connect with the resources in Microsoft Azure. More info [here](https://docs.fortinet.com/document/fortigate-public-cloud/7.2.0/azure-administration-guide/948968/azure-sdn-connector-service-principal-configuration-requirements)
 
 ### Azure CLI
 To fast track the deployment, use the Azure Cloud Shell. The Azure Cloud Shell is an in-browser CLI that contains Terraform and other tools for deployment into Microsoft Azure. It is accessible via the Azure Portal or directly at [https://shell.azure.com/](https://shell.azure.com). You can copy and paste the below one-liner to get started with your deployment.
@@ -47,4 +47,4 @@ Fortinet-provided scripts in this and other GitHub projects do not fall under th
 For direct issues, please refer to the [Issues](https://github.com/jvhoof/fortinet-azure-solutions/issues) tab of this GitHub project.
 
 ## License
-[License](LICENSE) © Fortinet Technologies. All rights reserved.
+[License](/../../blob/main/LICENSE) © Fortinet Technologies. All rights reserved.
