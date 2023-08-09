@@ -1,6 +1,6 @@
 # Active/Active loadbalanced pair of standalone FortiGates in 1 NIC configuration to protect internal networks
 
-More information about this deployment can be found into the standard ARM template which can be found [here](/FortiGate/Playground%2FActive-Active-Internal-1NIC/README.md).
+More information about this deployment can be found into the standard ARM template which can be found [here](../../Active-Active-ELB-ILB/README.md).
 
 # Azure Portal
 
