@@ -15,7 +15,7 @@ This Azure ARM template will automatically deploy a full working environment con
 - 1 VNETs containing a subnet for the FortiManager
 - Optional: 2 Basic/Standard public IPs
 
-![FortiGate-VM azure design](../../single/images/fmg-ha.png)
+![FortiGate-VM azure design](../../ha/images/fmg-ha.png)
 
 ## Deployment
 

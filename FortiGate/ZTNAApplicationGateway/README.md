@@ -39,13 +39,13 @@ Custom Deployment:
 
 ## Requirements and limitations
 
-More information can be found [here](/FortiGate/A-Single-VM/README.md).
+More information can be found [here](../A-Single-VM/README.md).
 
 ## FortiGate configuration
 
 The FortiGate VMs need a specific configuration to match the deployed environment. This configuration can be injected during provisioning or afterwards via the different options including GUI, CLI, FortiManager or REST API.
 
-This template used the default A Single VM ARM template. This tempalte already configures different aspects of the FortiGate during deployment. This configuration can be found [here](/FortiGate/A-Single-VM/doc/config-provisioning.md). Aditionaly, the below config is injected during provisioning with the correct values in bold replaced for your environment.
+This template used the default A Single VM ARM template. This tempalte already configures different aspects of the FortiGate during deployment. This configuration can be found [here](../A-Single-VM/doc/config-provisioning.md). Aditionaly, the below config is injected during provisioning with the correct values in bold replaced for your environment.
 
 <pre><code>
 config firewall address
