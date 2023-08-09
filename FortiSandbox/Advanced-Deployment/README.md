@@ -2,17 +2,14 @@
 
 ## Introduction
 
-This ARM template deploys  FortiSandbox Vms accompanied by the required infrastructure in Advanced mode. The Subnet 1 and Subnet 2 can be used deploy the device under test and to transfer traffic between the 2 FTS interfaces.
+This ARM template deploys FortiSandbox VMs accompanied by the required infrastructure in Advanced mode. The subnet 1 and subnet 2 can be used deploy the device under test and to transfer traffic between the 2 FTS interfaces.
 
 ## Design
 
 This Azure ARM template will automatically deploy a full working environment containing the following components.
 
-- FortiSandbox Vms
-- 1 VNETs containing a management subnet, custom Windows subnet and HA sync subnet
-
-
-![FortiSandbox-VM azure design](images/fts-standalone.png)
+- FortiSandbox VMs
+- 1 VNET containing a management subnet, custom Windows subnet and HA sync subnet
 
 ## Deployment: Azure Portal
 

@@ -1,9 +1,9 @@
-# FortiManager
+# FortiManager High Availability
 *Terraform deployment template for Microsoft Azure*
 
 ## Introduction
 
-This deployment is similar to the [FortiManager Single 1 NIC](../single/README.md) deployment but it doesn't deploy any public IP. This is useful for deploy behind a FortiGate.
+This deployment is a Terraform version of the [FortiManager HA](../../ha/README.md).
 
 ## Design
 
@@ -11,15 +11,11 @@ In Microsoft Azure, this single FortiManager-VM setup a basic setup to start exp
 
 This Azure ARM template will automatically deploy a full working environment containing the following components.
 
-- 1 FortiManager VM with a 1Tb data disk for log storage
+- 2 FortiManager VM with a 1Tb data disk for log storage
 - 1 VNETs containing a subnet for the FortiManager
-- 1 Basic public IP
+- Optional: 2 Basic/Standard public IPs
 
-![FortiGate-VM azure design](../../single/images/fmg-single.png)
-
-The VM will have the fifth IP in the network range as his static IP. You can adapt the 'sn1IPfg1' variable in the ARM template to change this.
-
-This Azure ARM template can also be extended or customized based on your requirements. Additional subnets besides the ones mentioned above are not automatically generated.
+![FortiGate-VM azure design](../../single/images/fmg-ha.png)
 
 ## Deployment
 
@@ -36,7 +32,7 @@ To fast track the deployment, use the Azure Cloud Shell. The Azure Cloud Shell i
 
 `cd ~/clouddrive/ && wget -qO- https://github.com/fortinet/azure-templates/archive/main.tar.gz | tar zxf - && cd ~/clouddrive/azure-templates-main/FortiManager/Terraform/singlefmg-single.png/ && ./deploy.sh`
 
-![Azure Cloud Shell](images/azure-cloud-shell.png)
+![Azure Cloud Shell](/../../blob/main/FortiGate/Documentation/images/azure-cloud-shell.png)
 
 After deployment, you will be shown the IP addresses of all deployed components. You can access using the private IP assigned to the FortiManager on port 443.
 
@@ -44,7 +40,7 @@ After deployment, you will be shown the IP addresses of all deployed components.
 
 ## Requirements and limitations
 
-More documentation can be found [the ARM template version](../../singlefmg-single.png/README.md).
+More documentation can be found [the ARM template version](../../ha/README.md).
 
 ## Support
 
