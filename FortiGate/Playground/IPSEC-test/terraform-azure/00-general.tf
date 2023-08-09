@@ -32,7 +32,7 @@ variable "FGT_VERSION" {
 }
 
 variable "FGT_BYOL_LICENSE_FILE_A" {
-  default = "../licenses/FGV16VTM23000047.lic"
+  default = ""
 }
 
 variable "FGT_BYOL_FORTIFLEX_LICENSE_TOKEN_A" {
@@ -44,7 +44,7 @@ variable "FGT_BYOL_LICENSE_FILE_B" {
 }
 
 variable "FGT_BYOL_FORTIFLEX_LICENSE_TOKEN_B" {
-  default = "../licenses/FGV16VTM23000048.lic"
+  default = ""
 }
 
 ##############################################################################################################
@@ -52,10 +52,6 @@ variable "FGT_BYOL_FORTIFLEX_LICENSE_TOKEN_B" {
 ##############################################################################################################
 
 variable "FGT_SSH_PUBLIC_KEY_FILE" {
-  default = ""
-}
-
-variable "LNX_SSH_PUBLIC_KEY_FILE" {
   default = ""
 }
 
@@ -84,7 +80,7 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = ">=2.0.0"
+      version = ">=2.12.0"
     }
   }
 }

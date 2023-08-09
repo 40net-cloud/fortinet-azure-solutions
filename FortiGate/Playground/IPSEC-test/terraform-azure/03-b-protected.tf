@@ -46,7 +46,7 @@ resource "azurerm_linux_virtual_machine" "lnxbvm" {
 
   admin_ssh_key {
     username   = var.USERNAME
-    public_key = file(var.LNX_SSH_PUBLIC_KEY_FILE)
+    public_key = file(var.FGT_SSH_PUBLIC_KEY_FILE)
   }
 
   os_disk {
