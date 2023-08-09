@@ -128,7 +128,7 @@ SUMMARY="summary.out"
 echo ""
 echo "==> Starting Terraform deployment"
 echo ""
-cd terraform/
+cd terraform-azure/
 
 echo ""
 echo "==> Terraform init"

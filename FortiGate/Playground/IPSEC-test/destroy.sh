@@ -13,7 +13,7 @@ set -e
 
 STATE="terraform.tfstate"
 
-cd terraform/
+cd terraform-azure/
 echo ""
 echo "==> Starting Terraform deployment"
 echo ""
