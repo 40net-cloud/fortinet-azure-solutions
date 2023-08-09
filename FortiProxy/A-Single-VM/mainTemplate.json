@@ -330,6 +330,16 @@
         "publisher": "Fortinet",
         "provider": "6EB3B02F-50E5-4A3E-8CB8-2E1292583FPX"
       }
+    },
+    "imageVersion": {
+      "allowedValues": [
+        "2.0.9",
+        "7.0.11",
+        "7.0.4",
+        "7.0.8",
+        "7.2.5",
+        "latest"
+      ]
     }
   },
   "variables": {
