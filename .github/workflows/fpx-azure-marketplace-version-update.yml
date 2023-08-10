@@ -45,7 +45,7 @@ jobs:
           $fpxMarketplaceVersionsUI | ConvertTo-Json | Out-File -Filepath "./fpxversionui.json"
 
           foreach ($buildingBlock in $buildingBlocks) {
-            Get-Content -Raw -Path "./FortiProxy/${buildingBlock}/mainTemplate.json" | jq --slurpfile content "./fpxversion.json" '.parameters.fpxImageVersion.allowedValues = $content[]' | Set-Content -Path "./FortiProxy/${buildingBlock}/mainTemplate.json"
+            Get-Content -Raw -Path "./FortiProxy/${buildingBlock}/mainTemplate.json" | jq --slurpfile content "./fpxversion.json" '.parameters.fortiProxyImageVersion.allowedValues = $content[]' | Set-Content -Path "./FortiProxy/${buildingBlock}/mainTemplate.json"
             $content = Get-Content "./FortiProxy/${buildingBlock}/mainTemplate.json" -Raw
             if (-Not $content -match '(?<=\r\n)\z') {
               "" | Out-File -Append "./FortiProxy/${buildingBlock}/mainTemplate.json"
