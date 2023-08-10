@@ -16,8 +16,8 @@ $VerbosePreference = "Continue"
 
 BeforeAll {
     $templateName = "A-Single-VM"
-    $sourcePath = "$env:GITHUB_WORKSPACE\FortiWeb\$templateName"
-    $scriptPath = "$env:GITHUB_WORKSPACE\FortiWeb\$templateName\test"
+    $sourcePath = "$env:GITHUB_WORKSPACE\FortiProxy\$templateName"
+    $scriptPath = "$env:GITHUB_WORKSPACE\FortiProxy\$templateName\test"
     $templateFileName = "mainTemplate.json"
     $templateFileLocation = "$sourcePath\$templateFileName"
     $templateParameterFileName = "mainTemplate.parameters.json"
@@ -31,7 +31,7 @@ BeforeAll {
     $testsResourceGroupLocation = "westeurope"
 
     # ARM Template Variables
-    $publicIPName = "$testsPrefix-FWB-PIP"
+    $publicIPName = "$testsPrefix-FPX-PIP"
     $params = @{ 'adminUsername'=$testsAdminUsername
                     'adminPassword'=$testsResourceGroupName
                     'fortiProxyNamePrefix'=$testsPrefix
@@ -40,7 +40,7 @@ BeforeAll {
     $ports = @(8443, 22)
 }
 
-Describe 'FWB Single VM' {
+Describe 'FPX Single VM' {
     Context 'Validation' {
         It 'Has a JSON template' {
             $templateFileLocation | Should -Exist
@@ -78,6 +78,7 @@ Describe 'FWB Single VM' {
                                             'adminUsername',
                                             'availabilityOptions',
                                             'availabilityZoneNumber',
+                                            'customImageReference',
                                             'existingAvailabilitySetName',
                                             'fortiManager',
                                             'fortiManagerIP',
@@ -87,6 +88,7 @@ Describe 'FWB Single VM' {
                                             'fortiProxyImageSKU',
                                             'fortiProxyImageVersion',
                                             'fortiProxyLicenseBYOL',
+                                            'fortiProxyName',
                                             'fortiProxyNamePrefix',
                                             'instanceType',
                                             'location',
@@ -133,13 +135,13 @@ Describe 'FWB Single VM' {
     Context 'Deployment test' {
 
         BeforeAll {
-            $FWB = (Get-AzPublicIpAddress -Name $publicIPName -ResourceGroupName $testsResourceGroupName).IpAddress
-            Write-Host ("FortiWeb public IP: " + $FWB)
+            $FPX = (Get-AzPublicIpAddress -Name $publicIPName -ResourceGroupName $testsResourceGroupName).IpAddress
+            Write-Host ("FortiProxy public IP: " + $FPX)
         }
-        It "FWB: Ports listening" {
+        It "FPX: Ports listening" {
             ForEach( $port in $ports ) {
                 Write-Host ("Check port: $port" )
-                $portListening = (Test-Connection -TargetName $FWB -TCPPort $port -TimeoutSeconds 100)
+                $portListening = (Test-Connection -TargetName $FPX -TCPPort $port -TimeoutSeconds 100)
                 $portListening | Should -Be $true
             }
         }
