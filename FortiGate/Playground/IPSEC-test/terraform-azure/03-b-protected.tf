@@ -10,7 +10,7 @@ resource "azurerm_public_ip" "lnxbpip" {
   location            = var.LOCATION
   resource_group_name = azurerm_resource_group.resourcegroup.name
   allocation_method   = "Static"
-  domain_name_label   = format("%s-%s-%s", lower(var.PREFIX), "a-lnx-pip", count.index)
+  domain_name_label   = format("%s-%s-%s", lower(var.PREFIX), "b-lnx-pip", count.index)
 }
 
 resource "azurerm_network_interface" "lnxbifc" {
@@ -23,7 +23,7 @@ resource "azurerm_network_interface" "lnxbifc" {
 
   ip_configuration {
     name                          = "interface1"
-    subnet_id                     = azurerm_subnet.subnet2b.id
+    subnet_id                     = azurerm_subnet.subnet3b.id
     private_ip_address_allocation = "Dynamic"
     public_ip_address_id          = azurerm_public_ip.lnxbpip[count.index].id
   }

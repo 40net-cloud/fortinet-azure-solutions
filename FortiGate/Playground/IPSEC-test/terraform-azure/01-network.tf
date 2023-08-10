@@ -25,6 +25,13 @@ resource "azurerm_subnet" "subnet2a" {
   address_prefixes       = [var.subnet_fgt_internal["a"]]
 }
 
+resource "azurerm_subnet" "subnet3a" {
+  name                 = "${var.PREFIX}-SUBNET-PROTECTED-A"
+  resource_group_name  = azurerm_resource_group.resourcegroup.name
+  virtual_network_name = azurerm_virtual_network.vnet.name
+  address_prefixes       = [var.subnet_protected["a"]]
+}
+
 resource "azurerm_subnet" "subnet1b" {
   name                 = "${var.PREFIX}-SUBNET-FGT-EXTERNAL-B"
   resource_group_name  = azurerm_resource_group.resourcegroup.name
@@ -37,6 +44,13 @@ resource "azurerm_subnet" "subnet2b" {
   resource_group_name  = azurerm_resource_group.resourcegroup.name
   virtual_network_name = azurerm_virtual_network.vnet.name
   address_prefixes       = [var.subnet_fgt_internal["b"]]
+}
+
+resource "azurerm_subnet" "subnet3b" {
+  name                 = "${var.PREFIX}-SUBNET-PROTECTED-B"
+  resource_group_name  = azurerm_resource_group.resourcegroup.name
+  virtual_network_name = azurerm_virtual_network.vnet.name
+  address_prefixes       = [var.subnet_protected["b"]]
 }
 
 resource "azurerm_network_security_group" "fgtnsg" {
@@ -131,6 +145,50 @@ resource "azurerm_route_table" "subnet2brouter" {
 resource "azurerm_subnet_route_table_association" "subnet2brt" {
   subnet_id      = azurerm_subnet.subnet2b.id
   route_table_id = azurerm_route_table.subnet2brouter.id
+
+  lifecycle {
+    ignore_changes = [route_table_id]
+  }
+}
+
+resource "azurerm_route_table" "subnet3arouter" {
+  name                = "${var.PREFIX}-RT-PROTECTED-A"
+  location            = var.LOCATION
+  resource_group_name = azurerm_resource_group.resourcegroup.name
+
+  route {
+    name                   = "subnet3b"
+    address_prefix         = var.subnet_protected["b"]
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = cidrhost(var.subnet_fgt_external["a"], "4")
+  }
+}
+
+resource "azurerm_subnet_route_table_association" "subnet3art" {
+  subnet_id      = azurerm_subnet.subnet3a.id
+  route_table_id = azurerm_route_table.subnet3arouter.id
+
+  lifecycle {
+    ignore_changes = [route_table_id]
+  }
+}
+
+resource "azurerm_route_table" "subnet3brouter" {
+  name                = "${var.PREFIX}-RT-PROTECTED-B"
+  location            = var.LOCATION
+  resource_group_name = azurerm_resource_group.resourcegroup.name
+
+  route {
+    name                   = "subnet3a"
+    address_prefix         = var.subnet_protected["a"]
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = cidrhost(var.subnet_fgt_external["b"], "4")
+  }
+}
+
+resource "azurerm_subnet_route_table_association" "subnet3brt" {
+  subnet_id      = azurerm_subnet.subnet3b.id
+  route_table_id = azurerm_route_table.subnet3brouter.id
 
   lifecycle {
     ignore_changes = [route_table_id]

@@ -10,18 +10,19 @@ resource "azurerm_public_ip" "fgtbpip" {
   resource_group_name = azurerm_resource_group.resourcegroup.name
   allocation_method   = "Static"
   domain_name_label   = format("%s-%s", lower(var.PREFIX), "b-fgt-pip")
+  sku                 = "Standard"
 }
 
 resource "azurerm_lb" "fgtbilb" {
-  name                = "${local.fgt_a_prefix}-InternalLoadBalancer"
+  name                = "${local.fgt_b_prefix}-InternalLoadBalancer"
   location            = var.LOCATION
   resource_group_name = azurerm_resource_group.resourcegroup.name
   sku                 = "Standard"
 
   frontend_ip_configuration {
-    name                          = "${local.fgt_a_prefix}-ILB-PIP"
-    subnet_id                     = azurerm_subnet.subnet2a.id
-    private_ip_address            = cidrhost(var.subnet_fgt_internal["a"], -2)
+    name                          = "${local.fgt_b_prefix}-ILB-PIP"
+    subnet_id                     = azurerm_subnet.subnet2b.id
+    private_ip_address            = cidrhost(var.subnet_fgt_internal["b"], -2)
     private_ip_address_allocation = "Static"
   }
 }
@@ -40,13 +41,13 @@ resource "azurerm_lb_probe" "fgtbilbprobe" {
   protocol            = "Tcp"
 }
 
-resource "azurerm_lb_rule" "lb_haports_rule" {
+resource "azurerm_lb_rule" "fgtblb_haports_rule" {
   loadbalancer_id                = azurerm_lb.fgtbilb.id
   name                           = "lb_haports_rule"
   protocol                       = "All"
   frontend_port                  = 0
   backend_port                   = 0
-  frontend_ip_configuration_name = "${local.fgt_a_prefix}-ILB-PIP"
+  frontend_ip_configuration_name = "${local.fgt_b_prefix}-ILB-PIP"
   probe_id                       = azurerm_lb_probe.fgtbilbprobe.id
   backend_address_pool_ids       = [azurerm_lb_backend_address_pool.fgtbilbbackend.id]
 }
@@ -64,7 +65,7 @@ resource "azurerm_network_interface" "fgtbifcext" {
     private_ip_address_allocation = "Static"
     private_ip_address            = cidrhost(var.subnet_fgt_external["b"], "4")
     primary                       = true
-    public_ip_address_id          = azurerm_public_ip.fgtbpip.id 
+    public_ip_address_id          = azurerm_public_ip.fgtbpip.id
   }
   dynamic "ip_configuration" {
     for_each = range(2, "${local.fgt_external_ipcount + 1}")
@@ -94,7 +95,7 @@ resource "azurerm_network_interface" "fgtbifcint" {
 }
 
 resource "azurerm_linux_virtual_machine" "fgtbvm" {
-  name                  = "${local.fgt_b_vm_name}"
+  name                  = local.fgt_b_vm_name
   location              = azurerm_resource_group.resourcegroup.location
   resource_group_name   = azurerm_resource_group.resourcegroup.name
   network_interface_ids = [azurerm_network_interface.fgtbifcext.id, azurerm_network_interface.fgtbifcint.id]

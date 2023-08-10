@@ -105,8 +105,8 @@ variable "subnet_fgt_external" {
   description = ""
 
   default = {
-    "a" = "172.16.136.0/25"
-    "b" = "172.16.137.0/25"
+    "a" = "172.16.136.0/26"
+    "b" = "172.16.137.0/26"
   }
 }
 
@@ -115,8 +115,18 @@ variable "subnet_fgt_internal" {
   description = ""
 
   default = {
-    "a" = "172.16.136.128/25"
-    "b" = "172.16.137.128/25"
+    "a" = "172.16.136.64/26"
+    "b" = "172.16.137.64/26"
+  }
+}
+
+variable "subnet_protected" {
+  type        = map(string)
+  description = ""
+
+  default = {
+    "a" = "172.16.136.128/26"
+    "b" = "172.16.137.128/26"
   }
 }
 
