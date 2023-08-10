@@ -18,7 +18,7 @@ This ARM template deploys  FortiSandbox Vms accompanied by the required infrastr
 
 ![FortiSandbox-VM azure design](images/FSA-AdvanceDeployment.png)
 
-To enhance the availability of the solution VM can be installed in different Availability Zones instead of an Availability Set. If Availability Zones deployment is selected but the location does not support Availability Zones an Availability Set will be deployed. If Availability Zones deployment is selected and Availability Zones are available in the location, FortiGate A will be placed in Zone 1, FortiGate B will be placed in Zone 2.
+To enhance the availability of the solution VM can be installed in different Availability Zones instead of an Availability Set. If Availability Zones deployment is selected but the location does not support Availability Zones an Availability Set will be deployed. If Availability Zones deployment is selected and Availability Zones are available in the location, Fortisandbox 1 will be placed in Zone 1, Fortisandbox 2 will be placed in Zone 2.
 
 ![FortiSandbox-VM azure design with AZ](images/FSA-AdvanceDeployment-AZ.png)
 
