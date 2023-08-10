@@ -45,12 +45,12 @@ jobs:
           $fpxMarketplaceVersionsUI | ConvertTo-Json | Out-File -Filepath "./fpxversionui.json"
 
           foreach ($buildingBlock in $buildingBlocks) {
-            Get-Content -Raw -Path "./FortiProxy/${buildingBlock}/mainTemplate.json" | jq --slurpfile content "./fpxversion.json" '.parameters.imageVersion.allowedValues = $content[]' | Set-Content -Path "./FortiProxy/${buildingBlock}/mainTemplate.json"
+            Get-Content -Raw -Path "./FortiProxy/${buildingBlock}/mainTemplate.json" | jq --slurpfile content "./fpxversion.json" '.parameters.fpxImageVersion.allowedValues = $content[]' | Set-Content -Path "./FortiProxy/${buildingBlock}/mainTemplate.json"
             $content = Get-Content "./FortiProxy/${buildingBlock}/mainTemplate.json" -Raw
             if (-Not $content -match '(?<=\r\n)\z') {
               "" | Out-File -Append "./FortiProxy/${buildingBlock}/mainTemplate.json"
             }
-            Get-Content -Raw -Path "./FortiProxy/${buildingBlock}/createUiDefinition.json" | jq --slurpfile content "./fpxversionui.json" '(.parameters.basics[] | select( .name == \"imageVersion\") | .constraints.allowedValues) |= $content[]' | Set-Content -Path "./FortiProxy/${buildingBlock}/createUiDefinition.json"
+            Get-Content -Raw -Path "./FortiProxy/${buildingBlock}/createUiDefinition.json" | jq --slurpfile content "./fpxversionui.json" '(.parameters.basics[] | select( .name == \"fpxImageVersion\") | .constraints.allowedValues) |= $content[]' | Set-Content -Path "./FortiProxy/${buildingBlock}/createUiDefinition.json"
             $content = Get-Content "./FortiProxy/${buildingBlock}/createUiDefinition.json" -Raw
             if (-Not $content -match '(?<=\r\n)\z') {
               "" | Out-File -Append "./FortiProxy/${buildingBlock}/createUiDefinition.json"
