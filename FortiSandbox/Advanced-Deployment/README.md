@@ -39,4 +39,4 @@ For direct issues, please refer to the [Issues](https://github.com/40net-cloud/f
 
 ## License
 
-[License](LICENSE) © Fortinet Technologies. All rights reserved.
+[License](/../../blob/main/LICENSE) © Fortinet Technologies. All rights reserved.
