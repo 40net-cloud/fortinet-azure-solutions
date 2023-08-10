@@ -34,7 +34,7 @@
         "fpx-vm-byol"
       ],
       "metadata": {
-        "description": "Identifies whether to to use PAYG (on demand licensing) or BYOL license model (where license is purchased separately"
+        "description": "Identifies to use BYOL license model (the license is purchased separately)"
       }
     },
     "fortiProxyImageVersion": {
@@ -45,10 +45,7 @@
         "7.0.4",
         "7.0.8",
         "latest"
-      ],
-      "metadata": {
-        "description": "Select the image version"
-      }
+      ]
     },
     "fortiProxyAdditionalCustomData": {
       "type": "string",
@@ -330,16 +327,6 @@
         "publisher": "Fortinet",
         "provider": "6EB3B02F-50E5-4A3E-8CB8-2E1292583FPX"
       }
-    },
-    "imageVersion": {
-      "allowedValues": [
-        "2.0.9",
-        "7.0.11",
-        "7.0.4",
-        "7.0.8",
-        "7.2.5",
-        "latest"
-      ]
     }
   },
   "variables": {
@@ -371,8 +358,8 @@
     "publicIP1AddressId": {
       "id": "[variables('publicIP1Id')]"
     },
-    "NSGName": "[concat(parameters('fortiProxyNamePrefix'),'-NSG')]",
-    "NSGId": "[resourceID('Microsoft.Network/networkSecurityGroups/',variables('NSGName'))]",
+    "nsgName": "[concat(parameters('fortiProxyNamePrefix'),'-NSG')]",
+    "NSGId": "[resourceID('Microsoft.Network/networkSecurityGroups/',variables('nsgName'))]",
     "sn1IPArray": "[split(parameters('subnet1Prefix'),'.')]",
     "sn1IPArray2ndString": "[string(variables('sn1IPArray')[3])]",
     "sn1IPArray2nd": "[split(variables('sn1IPArray2ndString'),'/')]",
@@ -454,7 +441,7 @@
     },
     {
       "type": "Microsoft.Network/networkSecurityGroups",
-      "name": "[variables('NSGName')]",
+      "name": "[variables('nsgName')]",
       "apiVersion": "2022-01-01",
       "location": "[parameters('location')]",
       "tags": {
