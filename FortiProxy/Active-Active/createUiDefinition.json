@@ -550,7 +550,7 @@
                 },
                 "defaultValue": {
                   "name": "[if(equals(basics('fortiProxyNamePrefix'),''),'FortiProxy-VNET',concat(basics('fortiProxyNamePrefix'),'-VNET'))]",
-                  "addressPrefixSize": "/24"
+                  "addressPrefixSize": "/22"
                 },
                 "constraints": {
                   "minAddressPrefixSize": "/29"
