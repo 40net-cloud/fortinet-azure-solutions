@@ -1,0 +1,1042 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "adminUsername": {
+      "type": "string",
+      "metadata": {
+        "description": "Username for the FortiProxy VM"
+      }
+    },
+    "adminPassword": {
+      "type": "securestring",
+      "metadata": {
+        "description": "Password for the FortiProxy VM"
+      }
+    },
+    "fortiProxyCount": {
+      "type": "int",
+      "metadata": {
+        "description": "Number of FortiProxy VM instances to deploy"
+      }
+    },
+    "fortiProxyNamePrefix": {
+      "type": "string",
+      "metadata": {
+        "description": "Naming prefix for all deployed resources. The FortiProxy VMs will have the suffix '-FPX-A' and '-FPX-B'. For example if the prefix is 'ACME-01' the FortiProxys will be named 'ACME-01-FPX-A' and 'ACME-01-FPX-B'"
+      }
+    },
+    "fortiProxyImageSKU": {
+      "type": "string",
+      "defaultValue": "fpx-vm-byol",
+      "allowedValues": [
+        "fpx-vm-byol"
+      ],
+      "metadata": {
+        "description": "Identifies to use BYOL license model (the licenses are purchased separately)"
+      }
+    },
+    "fortiProxyImageVersion": {
+      "type": "string",
+      "defaultValue": "latest",
+      "allowedValues": [
+        "2.0.9",
+        "7.0.11",
+        "7.0.4",
+        "7.0.8",
+        "7.2.5",
+        "latest"
+      ],
+      "metadata": {
+        "description": "Select the image version"
+      }
+    },
+    "fortiProxyAdditionalCustomData": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "The ARM template provides a basic configuration. Additional configuration can be added here."
+      }
+    },
+    "instanceType": {
+      "type": "string",
+      "defaultValue": "Standard_F2s",
+      "allowedValues": [
+        "Standard_F2s",
+        "Standard_F4s",
+        "Standard_F8s",
+        "Standard_F16s",
+        "Standard_F2",
+        "Standard_F4",
+        "Standard_F8",
+        "Standard_F16",
+        "Standard_F2s_v2",
+        "Standard_F4s_v2",
+        "Standard_F8s_v2",
+        "Standard_F16s_v2",
+        "Standard_F32s_v2",
+        "Standard_DS1_v2",
+        "Standard_DS2_v2",
+        "Standard_DS3_v2",
+        "Standard_DS4_v2",
+        "Standard_DS5_v2",
+        "Standard_D2s_v3",
+        "Standard_D4s_v3",
+        "Standard_D8s_v3",
+        "Standard_D16s_v3",
+        "Standard_D32s_v3",
+        "Standard_D2_v4",
+        "Standard_D4_v4",
+        "Standard_D8_v4",
+        "Standard_D16_v4",
+        "Standard_D32_v4",
+        "Standard_D2s_v4",
+        "Standard_D4s_v4",
+        "Standard_D8s_v4",
+        "Standard_D16s_v4",
+        "Standard_D32s_v4",
+        "Standard_D2a_v4",
+        "Standard_D4a_v4",
+        "Standard_D8a_v4",
+        "Standard_D16a_v4",
+        "Standard_D32a_v4",
+        "Standard_D2as_v4",
+        "Standard_D4as_v4",
+        "Standard_D8as_v4",
+        "Standard_D16as_v4",
+        "Standard_D32as_v4",
+        "Standard_D2_v5",
+        "Standard_D4_v5",
+        "Standard_D8_v5",
+        "Standard_D16_v5",
+        "Standard_D32_v5",
+        "Standard_D2s_v5",
+        "Standard_D4s_v5",
+        "Standard_D8s_v5",
+        "Standard_D16s_v5",
+        "Standard_D32s_v5",
+        "Standard_D2as_v5",
+        "Standard_D4as_v5",
+        "Standard_D8as_v5",
+        "Standard_D16as_v5",
+        "Standard_D32as_v5",
+        "Standard_D2ads_v5",
+        "Standard_D4ads_v5",
+        "Standard_D8ads_v5",
+        "Standard_D16ads_v5",
+        "Standard_D32ads_v5"
+      ],
+      "metadata": {
+        "description": "Virtual Machine size selection"
+      }
+    },
+    "externalLoadBalancer": {
+      "type": "bool",
+      "defaultValue": true,
+      "metadata": {
+        "description": "Install an external load balancer and subnet or not."
+      }
+    },
+    "availabilityOptions": {
+      "type": "string",
+      "allowedValues": [
+        "Availability Set",
+        "Availability Zones"
+      ],
+      "defaultValue": "Availability Set",
+      "metadata": {
+        "description": "Deploy FortiProxy VMs in an Availability Set or Availability Zones. If Availability Zones deployment is selected but the location does not support Availability Zones an Availability Set will be deployed. If Availability Zones deployment is selected and Availability Zones are available in the location, FortiProxy A will be placed in Zone 1, FortiProxy B will be placed in Zone 2"
+      }
+    },
+    "acceleratedNetworking": {
+      "type": "string",
+      "defaultValue": "true",
+      "allowedValues": [
+        "false",
+        "true"
+      ],
+      "metadata": {
+        "description": "Accelerated Networking enables direct connection between the VM and network card. Only available on 2 CPU F/Fs and 4 CPU D/Dsv2, D/Dsv3, E/Esv3, Fsv2, Lsv2, Ms/Mms and Ms/Mmsv2"
+      }
+    },
+    "publicIP1NewOrExisting": {
+      "type": "string",
+      "defaultValue": "new",
+      "allowedValues": [
+        "new",
+        "existing"
+      ],
+      "metadata": {
+        "description": "Public IP for the Load Balancer for inbound and outbound data of the FortiProxy VMs"
+      }
+    },
+    "publicIP1Name": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Name of Public IP address, if no name is provided the default name will be the Resource Group Name as the Prefix and '-FPX-PIP' as the suffix"
+      }
+    },
+    "publicIP1ResourceGroup": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Public IP Resource Group, this value is required if an existing Public IP is selected"
+      }
+    },
+    "vnetNewOrExisting": {
+      "type": "string",
+      "defaultValue": "new",
+      "allowedValues": [
+        "new",
+        "existing"
+      ],
+      "metadata": {
+        "description": "Identify whether to use a new or existing vnet"
+      }
+    },
+    "vnetName": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Name of the Azure virtual network, required if utilizing and existing VNET. If no name is provided the default name will be the Resource Group Name as the Prefix and '-VNET' as the suffix"
+      }
+    },
+    "vnetResourceGroup": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Resource Group containing the existing virtual network, leave blank if a new VNET is being utilized"
+      }
+    },
+    "vnetAddressPrefix": {
+      "type": "string",
+      "defaultValue": "172.16.136.0/22",
+      "metadata": {
+        "description": "Virtual Network Address prefix"
+      }
+    },
+    "subnet1Name": {
+      "type": "string",
+      "defaultValue": "FPXSubnet",
+      "metadata": {
+        "description": "Subnet 1 Name"
+      }
+    },
+    "subnet1Prefix": {
+      "type": "string",
+      "defaultValue": "172.16.136.0/26",
+      "metadata": {
+        "description": "Subnet 1 Prefix"
+      }
+    },
+    "subnet1StartAddress": {
+      "type": "string",
+      "defaultValue": "172.16.136.4",
+      "metadata": {
+        "description": "Subnet 1 start address, 1 or more consecutive private IPs are required"
+      }
+    },
+    "subnet2Name": {
+      "type": "string",
+      "defaultValue": "FPXHASubnet",
+      "metadata": {
+        "description": "Subnet 2 Name"
+      }
+    },
+    "subnet2Prefix": {
+      "type": "string",
+      "defaultValue": "172.16.136.64/26",
+      "metadata": {
+        "description": "Subnet 2 Prefix"
+      }
+    },
+    "subnet2StartAddress": {
+      "type": "string",
+      "defaultValue": "172.16.136.68",
+      "metadata": {
+        "description": "Subnet 2 start address, 1 or more consecutive private IPs are required"
+      }
+    },
+    "serialConsole": {
+      "type": "string",
+      "defaultValue": "yes",
+      "allowedValues": [
+        "yes",
+        "no"
+      ],
+      "metadata": {
+        "description": "Enable Serial Console"
+      }
+    },
+    "fortiManager": {
+      "type": "string",
+      "defaultValue": "no",
+      "allowedValues": [
+        "yes",
+        "no"
+      ],
+      "metadata": {
+        "description": "Connect to FortiManager"
+      }
+    },
+    "fortiManagerIP": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "FortiManager IP or DNS name to connect to on port TCP/541"
+      }
+    },
+    "fortiManagerSerial": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "FortiManager serial number to add the deployed FortiProxy into the FortiManager"
+      }
+    },
+    "fortiProxyLicenseBYOL1": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "FortiProxy 1 BYOL license content"
+      }
+    },
+    "fortiProxyLicenseBYOL2": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "FortiProxy 2 BYOL license content"
+      }
+    },
+    "fortiProxyLicenseBYOL3": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "FortiProxy 3 BYOL license content"
+      }
+    },
+    "fortiProxyLicenseBYOL4": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "FortiProxy 4 BYOL license content"
+      }
+    },
+    "fortiProxyLicenseBYOL5": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "FortiProxy 5 BYOL license content"
+      }
+    },
+    "fortiProxyLicenseBYOL6": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "FortiProxy 6 BYOL license content"
+      }
+    },
+    "fortiProxyLicenseBYOL7": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "FortiProxy 7 BYOL license content"
+      }
+    },
+    "fortiProxyLicenseBYOL8": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "FortiProxy 8 BYOL license content"
+      }
+    },
+    "customImageReference": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "By default, the deployment will use Azure Marketplace images. In specific cases, using BYOL custom FortiProxy images can be deployed. This requires a reference "
+      }
+    },
+    "location": {
+      "type": "string",
+      "defaultValue": "[resourceGroup().location]",
+      "metadata": {
+        "description": "Location for all resources."
+      }
+    },
+    "fortinetTags": {
+      "type": "object",
+      "defaultValue": {
+        "publisher": "Fortinet",
+        "template": "FortiProxy-Active-Active-ELB-or-ILB",
+        "provider": "6EB3B02F-50E5-4A3E-8CB8-2E12925831FPXAA"
+      }
+    }
+  },
+  "variables": {
+    "imagePublisher": "fortinet",
+    "imageOffer": "fortinet-fortiproxy",
+    "availabilitySetName": "[concat(parameters('fortiProxyNamePrefix'),'-AvailabilitySet')]",
+    "availabilitySetId": {
+      "id": "[resourceId('Microsoft.Compute/availabilitySets', variables('availabilitySetName'))]"
+    },
+    "vnetName": "[if(equals(parameters('vnetName'),''),concat(parameters('fortiProxyNamePrefix'),'-VNET'),parameters('vnetName'))]",
+    "subnet1Id": "[if(equals(parameters('vnetNewOrExisting'),'new'),resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet1Name')),resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet1Name')))]",
+    "subnet2Id": "[if(equals(parameters('vnetNewOrExisting'),'new'),resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet2Name')),resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet2Name')))]",
+    "fgVmName": "[concat(parameters('fortiProxyNamePrefix'),'-FPX')]",
+    "fmgCustomData": "[if(equals(parameters('fortiManager'),'yes'),concat('\nconfig system central-management\nset type fortimanager\n set fmg ',parameters('fortiManagerIP'),'\nset serial-number ', parameters('fortiManagerSerial'), '\nend\n config system interface\n edit port1\n append allowaccess fgfm\n end\n config system interface\n edit port2\n append allowaccess fgfm\n end\n'),'')]",
+    "customDataHeader": "Content-Type: multipart/mixed; boundary=\"12345\"\nMIME-Version: 1.0\n\n--12345\nContent-Type: text/plain; charset=\"us-ascii\"\nMIME-Version: 1.0\nContent-Transfer-Encoding: 7bit\nContent-Disposition: attachment; filename=\"config\"\n\n",
+    "customDataBodyShared": "[concat('config system sdn-connector\nedit AzureSDN\nset type azure\nnext\nend\nconfig router static\nedit 1\nset dst 0.0.0.0/0\nset device port1\nset gateway ', variables('sn1GatewayIP'), '\nnext\nend', variables('fmgCustomData'), parameters('fortiProxyAdditionalCustomData'), '\n')]",
+    "customDataLicenseHeader": "--12345\nContent-Type: text/plain; charset=\"us-ascii\"\nMIME-Version: 1.0\nContent-Transfer-Encoding: 7bit\nContent-Disposition: attachment; filename=\"license\"\n\n",
+    "customDataFooter": "\n--12345--\n",
+    "serialConsoleEnabled": "[if(equals(parameters('serialConsole'),'yes'),'true','false')]",
+    "publicIP1Name": "[if(equals(parameters('publicIP1Name'),''),concat(parameters('fortiProxyNamePrefix'),'-FPX-PIP'),parameters('publicIP1Name'))]",
+    "publicIP1Id": "[if(equals(parameters('publicIP1NewOrExisting'),'new'),resourceId('Microsoft.Network/publicIPAddresses',variables('publicIP1Name')),resourceId(parameters('publicIP1ResourceGroup'),'Microsoft.Network/publicIPAddresses',variables('publicIP1Name')))]",
+    "nsgName": "[concat(parameters('fortiProxyNamePrefix'),'-NSG-Allow-All')]",
+    "nsgId": "[resourceId('Microsoft.Network/networkSecurityGroups/',variables('nsgName'))]",
+    "sn1SubnetMask": "[last(split(parameters('subnet1Prefix'),'/'))]",
+    "sn1Address": "[first(split(parameters('subnet1Prefix'),'/'))]",
+    "sn1Octets4": "[split(variables('sn1Address'),'.')]",
+    "sn1IPStartAddress": "[split(parameters('subnet1StartAddress'),'.')]",
+    "sn1GatewayIP": "[concat(variables('sn1Octets4')[0],'.',variables('sn1Octets4')[1],'.',variables('sn1Octets4')[2],'.',add(int(variables('sn1Octets4')[3]),1))]",
+    "sn2SubnetMask": "[last(split(parameters('subnet2Prefix'),'/'))]",
+    "sn2Address": "[first(split(parameters('subnet2Prefix'),'/'))]",
+    "sn2Octets4": "[split(variables('sn2Address'),'.')]",
+    "sn2IPStartAddress": "[split(parameters('subnet2StartAddress'),'.')]",
+    "sn1IPlb": "[concat(variables('sn1Octets4')[0],'.',variables('sn1Octets4')[1],'.',variables('sn1Octets4')[2],'.',int(variables('sn1IPStartAddress')[3]))]",
+    "sn1IP": [
+      "[concat(variables('sn1Octets4')[0],'.',variables('sn1Octets4')[1],'.',variables('sn1Octets4')[2],'.',add(int(variables('sn1IPStartAddress')[3]),1))]",
+      "[concat(variables('sn1Octets4')[0],'.',variables('sn1Octets4')[1],'.',variables('sn1Octets4')[2],'.',add(int(variables('sn1IPStartAddress')[3]),2))]",
+      "[concat(variables('sn1Octets4')[0],'.',variables('sn1Octets4')[1],'.',variables('sn1Octets4')[2],'.',add(int(variables('sn1IPStartAddress')[3]),3))]",
+      "[concat(variables('sn1Octets4')[0],'.',variables('sn1Octets4')[1],'.',variables('sn1Octets4')[2],'.',add(int(variables('sn1IPStartAddress')[3]),4))]",
+      "[concat(variables('sn1Octets4')[0],'.',variables('sn1Octets4')[1],'.',variables('sn1Octets4')[2],'.',add(int(variables('sn1IPStartAddress')[3]),5))]",
+      "[concat(variables('sn1Octets4')[0],'.',variables('sn1Octets4')[1],'.',variables('sn1Octets4')[2],'.',add(int(variables('sn1IPStartAddress')[3]),6))]",
+      "[concat(variables('sn1Octets4')[0],'.',variables('sn1Octets4')[1],'.',variables('sn1Octets4')[2],'.',add(int(variables('sn1IPStartAddress')[3]),7))]",
+      "[concat(variables('sn1Octets4')[0],'.',variables('sn1Octets4')[1],'.',variables('sn1Octets4')[2],'.',add(int(variables('sn1IPStartAddress')[3]),8))]"
+    ],
+    "sn2IP": [
+      "[concat(variables('sn2Octets4')[0],'.',variables('sn2Octets4')[1],'.',variables('sn2Octets4')[2],'.',int(variables('sn2IPStartAddress')[3]))]",
+      "[concat(variables('sn2Octets4')[0],'.',variables('sn2Octets4')[1],'.',variables('sn2Octets4')[2],'.',add(int(variables('sn2IPStartAddress')[3]),1))]",
+      "[concat(variables('sn2Octets4')[0],'.',variables('sn2Octets4')[1],'.',variables('sn2Octets4')[2],'.',add(int(variables('sn2IPStartAddress')[3]),2))]",
+      "[concat(variables('sn2Octets4')[0],'.',variables('sn2Octets4')[1],'.',variables('sn2Octets4')[2],'.',add(int(variables('sn2IPStartAddress')[3]),3))]",
+      "[concat(variables('sn2Octets4')[0],'.',variables('sn2Octets4')[1],'.',variables('sn2Octets4')[2],'.',add(int(variables('sn2IPStartAddress')[3]),4))]",
+      "[concat(variables('sn2Octets4')[0],'.',variables('sn2Octets4')[1],'.',variables('sn2Octets4')[2],'.',add(int(variables('sn2IPStartAddress')[3]),5))]",
+      "[concat(variables('sn2Octets4')[0],'.',variables('sn2Octets4')[1],'.',variables('sn2Octets4')[2],'.',add(int(variables('sn2IPStartAddress')[3]),6))]",
+      "[concat(variables('sn2Octets4')[0],'.',variables('sn2Octets4')[1],'.',variables('sn2Octets4')[2],'.',add(int(variables('sn2IPStartAddress')[3]),7))]"
+    ],
+    "interfaceCustomData": [
+      "[concat('config system interface\n edit port1\n set ip ',variables('sn1IP')[0],'/',variables('sn1SubnetMask'),'\nset mode static\n set description proxy\n set allowaccess ping ssh https probe-response\n next\n edit port2\nset ip ',variables('sn2IP')[0],'/',variables('sn2SubnetMask'),'\nset mode static\nset description hasync\nnext\nend\n')]",
+      "[concat('config system interface\n edit port1\n set ip ',variables('sn1IP')[1],'/',variables('sn1SubnetMask'),'\nset mode static\n set description proxy\n set allowaccess ping ssh https probe-response\n next\n edit port2\nset ip ',variables('sn2IP')[1],'/',variables('sn2SubnetMask'),'\nset mode static\nset description hasync\nnext\nend\n')]",
+      "[concat('config system interface\n edit port1\n set ip ',variables('sn1IP')[2],'/',variables('sn1SubnetMask'),'\nset mode static\n set description proxy\n set allowaccess ping ssh https probe-response\n next\n edit port2\nset ip ',variables('sn2IP')[2],'/',variables('sn2SubnetMask'),'\nset mode static\nset description hasync\nnext\nend\n')]",
+      "[concat('config system interface\n edit port1\n set ip ',variables('sn1IP')[3],'/',variables('sn1SubnetMask'),'\nset mode static\n set description proxy\n set allowaccess ping ssh https probe-response\n next\n edit port2\nset ip ',variables('sn2IP')[3],'/',variables('sn2SubnetMask'),'\nset mode static\nset description hasync\nnext\nend\n')]",
+      "[concat('config system interface\n edit port1\n set ip ',variables('sn1IP')[4],'/',variables('sn1SubnetMask'),'\nset mode static\n set description proxy\n set allowaccess ping ssh https probe-response\n next\n edit port2\nset ip ',variables('sn2IP')[4],'/',variables('sn2SubnetMask'),'\nset mode static\nset description hasync\nnext\nend\n')]",
+      "[concat('config system interface\n edit port1\n set ip ',variables('sn1IP')[5],'/',variables('sn1SubnetMask'),'\nset mode static\n set description proxy\n set allowaccess ping ssh https probe-response\n next\n edit port2\nset ip ',variables('sn2IP')[5],'/',variables('sn2SubnetMask'),'\nset mode static\nset description hasync\nnext\nend\n')]",
+      "[concat('config system interface\n edit port1\n set ip ',variables('sn1IP')[6],'/',variables('sn1SubnetMask'),'\nset mode static\n set description proxy\n set allowaccess ping ssh https probe-response\n next\n edit port2\nset ip ',variables('sn2IP')[6],'/',variables('sn2SubnetMask'),'\nset mode static\nset description hasync\nnext\nend\n')]",
+      "[concat('config system interface\n edit port1\n set ip ',variables('sn1IP')[7],'/',variables('sn1SubnetMask'),'\nset mode static\n set description proxy\n set allowaccess ping ssh https probe-response\n next\n edit port2\nset ip ',variables('sn2IP')[7],'/',variables('sn2SubnetMask'),'\nset mode static\nset description hasync\nnext\nend\n')]"
+    ],
+    "haPeerCustomData": [
+      "[concat('config unicast-peers\nedit 1\nset peer-ip ',variables('sn2IP')[1],'\nnext\nedit 2\nset peer-ip ',variables('sn2IP')[2],'\nnext\nedit 3\nset peer-ip ',variables('sn2IP')[3],'\nnext\nedit 4\nset peer-ip ',variables('sn2IP')[4],'\nnext\nedit 5\nset peer-ip ',variables('sn2IP')[5],'\nnext\nedit 6\nset peer-ip ',variables('sn2IP')[6],'\nnext\nedit 7\nset peer-ip ',variables('sn2IP')[7],'\nnext\nend\n')]",
+      "[concat('config unicast-peers\nedit 1\nset peer-ip ',variables('sn2IP')[0],'\nnext\nedit 2\nset peer-ip ',variables('sn2IP')[2],'\nnext\nedit 3\nset peer-ip ',variables('sn2IP')[3],'\nnext\nedit 4\nset peer-ip ',variables('sn2IP')[4],'\nnext\nedit 5\nset peer-ip ',variables('sn2IP')[5],'\nnext\nedit 6\nset peer-ip ',variables('sn2IP')[6],'\nnext\nedit 7\nset peer-ip ',variables('sn2IP')[7],'\nnext\nend\n')]",
+      "[concat('config unicast-peers\nedit 1\nset peer-ip ',variables('sn2IP')[0],'\nnext\nedit 2\nset peer-ip ',variables('sn2IP')[1],'\nnext\nedit 3\nset peer-ip ',variables('sn2IP')[2],'\nnext\nedit 4\nset peer-ip ',variables('sn2IP')[4],'\nnext\nedit 5\nset peer-ip ',variables('sn2IP')[5],'\nnext\nedit 6\nset peer-ip ',variables('sn2IP')[6],'\nnext\nedit 7\nset peer-ip ',variables('sn2IP')[7],'\nnext\nend\n')]",
+      "[concat('config unicast-peers\nedit 1\nset peer-ip ',variables('sn2IP')[0],'\nnext\nedit 2\nset peer-ip ',variables('sn2IP')[1],'\nnext\nedit 3\nset peer-ip ',variables('sn2IP')[2],'\nnext\nedit 4\nset peer-ip ',variables('sn2IP')[3],'\nnext\nedit 5\nset peer-ip ',variables('sn2IP')[5],'\nnext\nedit 6\nset peer-ip ',variables('sn2IP')[6],'\nnext\nedit 7\nset peer-ip ',variables('sn2IP')[7],'\nnext\nend\n')]",
+      "[concat('config unicast-peers\nedit 1\nset peer-ip ',variables('sn2IP')[0],'\nnext\nedit 2\nset peer-ip ',variables('sn2IP')[1],'\nnext\nedit 3\nset peer-ip ',variables('sn2IP')[2],'\nnext\nedit 4\nset peer-ip ',variables('sn2IP')[3],'\nnext\nedit 5\nset peer-ip ',variables('sn2IP')[4],'\nnext\nedit 6\nset peer-ip ',variables('sn2IP')[6],'\nnext\nedit 7\nset peer-ip ',variables('sn2IP')[7],'\nnext\nend\n')]",
+      "[concat('config unicast-peers\nedit 1\nset peer-ip ',variables('sn2IP')[0],'\nnext\nedit 2\nset peer-ip ',variables('sn2IP')[1],'\nnext\nedit 3\nset peer-ip ',variables('sn2IP')[2],'\nnext\nedit 4\nset peer-ip ',variables('sn2IP')[3],'\nnext\nedit 5\nset peer-ip ',variables('sn2IP')[4],'\nnext\nedit 6\nset peer-ip ',variables('sn2IP')[6],'\nnext\nedit 7\nset peer-ip ',variables('sn2IP')[7],'\nnext\nend\n')]",
+      "[concat('config unicast-peers\nedit 1\nset peer-ip ',variables('sn2IP')[0],'\nnext\nedit 2\nset peer-ip ',variables('sn2IP')[1],'\nnext\nedit 3\nset peer-ip ',variables('sn2IP')[2],'\nnext\nedit 4\nset peer-ip ',variables('sn2IP')[3],'\nnext\nedit 5\nset peer-ip ',variables('sn2IP')[4],'\nnext\nedit 6\nset peer-ip ',variables('sn2IP')[5],'\nnext\nedit 7\nset peer-ip ',variables('sn2IP')[7],'\nnext\nend\n')]",
+      "[concat('config unicast-peers\nedit 1\nset peer-ip ',variables('sn2IP')[0],'\nnext\nedit 2\nset peer-ip ',variables('sn2IP')[1],'\nnext\nedit 3\nset peer-ip ',variables('sn2IP')[3],'\nnext\nedit 4\nset peer-ip ',variables('sn2IP')[3],'\nnext\nedit 5\nset peer-ip ',variables('sn2IP')[4],'\nnext\nedit 6\nset peer-ip ',variables('sn2IP')[5],'\nnext\nedit 7\nset peer-ip ',variables('sn2IP')[6],'\nnext\nend\n')]"
+    ],
+    "haCustomData": [
+      "[concat('config system ha\nset group-name fpx-cluster\nset mode config-sync-only\nset password ', parameters('adminPassword'), '\nset hbdev port2 0\nset override disable\nset priority 255\nset monitor port1\nset unicast-status enable\n', variables('haPeerCustomData')[0],'\nend\n')]",
+      "[concat('config system ha\nset group-name fpx-cluster\nset mode config-sync-only\nset password ', parameters('adminPassword'), '\nset hbdev port2 0\nset override disable\nset priority 1\nset monitor port1\nset unicast-status enable\n', variables('haPeerCustomData')[1],'\nend\n')]",
+      "[concat('config system ha\nset group-name fpx-cluster\nset mode config-sync-only\nset password ', parameters('adminPassword'), '\nset hbdev port2 0\nset override disable\nset priority 1\nset monitor port1\nset unicast-status enable\n', variables('haPeerCustomData')[2],'\nend\n')]",
+      "[concat('config system ha\nset group-name fpx-cluster\nset mode config-sync-only\nset password ', parameters('adminPassword'), '\nset hbdev port2 0\nset override disable\nset priority 1\nset monitor port1\nset unicast-status enable\n', variables('haPeerCustomData')[3],'\nend\n')]",
+      "[concat('config system ha\nset group-name fpx-cluster\nset mode config-sync-only\nset password ', parameters('adminPassword'), '\nset hbdev port2 0\nset override disable\nset priority 1\nset monitor port1\nset unicast-status enable\n', variables('haPeerCustomData')[4],'\nend\n')]",
+      "[concat('config system ha\nset group-name fpx-cluster\nset mode config-sync-only\nset password ', parameters('adminPassword'), '\nset hbdev port2 0\nset override disable\nset priority 1\nset monitor port1\nset unicast-status enable\n', variables('haPeerCustomData')[5],'\nend\n')]",
+      "[concat('config system ha\nset group-name fpx-cluster\nset mode config-sync-only\nset password ', parameters('adminPassword'), '\nset hbdev port2 0\nset override disable\nset priority 1\nset monitor port1\nset unicast-status enable\n', variables('haPeerCustomData')[6],'\nend\n')]",
+      "[concat('config system ha\nset group-name fpx-cluster\nset mode config-sync-only\nset password ', parameters('adminPassword'), '\nset hbdev port2 0\nset override disable\nset priority 1\nset monitor port1\nset unicast-status enable\n', variables('haPeerCustomData')[7],'\nend\n')]"
+    ],
+    "customDataBody": [
+      "[concat(variables('interfaceCustomData')[0],variables('customDataBodyShared'),variables('haCustomData')[0])]",
+      "[concat(variables('interfaceCustomData')[1],variables('customDataBodyShared'),variables('haCustomData')[1])]",
+      "[concat(variables('interfaceCustomData')[2],variables('customDataBodyShared'),variables('haCustomData')[2])]",
+      "[concat(variables('interfaceCustomData')[3],variables('customDataBodyShared'),variables('haCustomData')[3])]",
+      "[concat(variables('interfaceCustomData')[4],variables('customDataBodyShared'),variables('haCustomData')[4])]",
+      "[concat(variables('interfaceCustomData')[5],variables('customDataBodyShared'),variables('haCustomData')[5])]",
+      "[concat(variables('interfaceCustomData')[6],variables('customDataBodyShared'),variables('haCustomData')[6])]",
+      "[concat(variables('interfaceCustomData')[7],variables('customDataBodyShared'),variables('haCustomData')[7])]"
+    ],
+    "customDataCombined": [
+      "[concat(variables('customDataHeader'),variables('customDataBody')[0],variables('customDataLicenseHeader'), parameters('fortiProxyLicenseBYOL1'), variables('customDataFooter'))]",
+      "[concat(variables('customDataHeader'),variables('customDataBody')[1],variables('customDataLicenseHeader'), parameters('fortiProxyLicenseBYOL2'), variables('customDataFooter'))]",
+      "[concat(variables('customDataHeader'),variables('customDataBody')[2],variables('customDataLicenseHeader'), parameters('fortiProxyLicenseBYOL3'), variables('customDataFooter'))]",
+      "[concat(variables('customDataHeader'),variables('customDataBody')[3],variables('customDataLicenseHeader'), parameters('fortiProxyLicenseBYOL4'), variables('customDataFooter'))]",
+      "[concat(variables('customDataHeader'),variables('customDataBody')[4],variables('customDataLicenseHeader'), parameters('fortiProxyLicenseBYOL5'), variables('customDataFooter'))]",
+      "[concat(variables('customDataHeader'),variables('customDataBody')[5],variables('customDataLicenseHeader'), parameters('fortiProxyLicenseBYOL6'), variables('customDataFooter'))]",
+      "[concat(variables('customDataHeader'),variables('customDataBody')[6],variables('customDataLicenseHeader'), parameters('fortiProxyLicenseBYOL7'), variables('customDataFooter'))]",
+      "[concat(variables('customDataHeader'),variables('customDataBody')[7],variables('customDataLicenseHeader'), parameters('fortiProxyLicenseBYOL8'), variables('customDataFooter'))]"
+    ],
+    "customData": [
+      "[base64(if(equals(parameters('fortiProxyLicenseBYOL1'),''),variables('customDataBody')[0],variables('customDataCombined')[0]))]",
+      "[base64(if(equals(parameters('fortiProxyLicenseBYOL2'),''),variables('customDataBody')[1],variables('customDataCombined')[1]))]",
+      "[base64(if(equals(parameters('fortiProxyLicenseBYOL3'),''),variables('customDataBody')[2],variables('customDataCombined')[2]))]",
+      "[base64(if(equals(parameters('fortiProxyLicenseBYOL4'),''),variables('customDataBody')[3],variables('customDataCombined')[3]))]",
+      "[base64(if(equals(parameters('fortiProxyLicenseBYOL5'),''),variables('customDataBody')[4],variables('customDataCombined')[4]))]",
+      "[base64(if(equals(parameters('fortiProxyLicenseBYOL6'),''),variables('customDataBody')[5],variables('customDataCombined')[5]))]",
+      "[base64(if(equals(parameters('fortiProxyLicenseBYOL7'),''),variables('customDataBody')[6],variables('customDataCombined')[6]))]",
+      "[base64(if(equals(parameters('fortiProxyLicenseBYOL8'),''),variables('customDataBody')[7],variables('customDataCombined')[7]))]"
+    ],
+    "internalLBName": "[concat(parameters('fortiProxyNamePrefix'),'-InternalLoadBalancer')]",
+    "internalLBId": "[resourceId('Microsoft.Network/loadBalancers',variables('internalLBName'))]",
+    "internalLBFEName": "[concat(parameters('fortiProxyNamePrefix'),'-ILB-',parameters('subnet1Name'),'-FrontEnd')]",
+    "internalLBFEId": "[resourceId('Microsoft.Network/loadBalancers/frontendIPConfigurations',variables('internalLBName'),variables('internalLBFEName'))]",
+    "internalLBBEName": "[concat(parameters('fortiProxyNamePrefix'),'-ILB-',parameters('subnet1Name'),'-BackEnd')]",
+    "internalLBBEId": "[resourceId('Microsoft.Network/loadBalancers/backendAddressPools',variables('internalLBName'),variables('internalLBBEName'))]",
+    "internalLBProbeName": "lbprobe",
+    "internalLBProbeId": "[resourceId('Microsoft.Network/loadBalancers/probes',variables('internalLBName'),variables('internalLBProbeName'))]",
+    "externalLBName": "[concat(parameters('fortiProxyNamePrefix'),'-ExternalLoadBalancer')]",
+    "externalLBId": "[resourceId('Microsoft.Network/loadBalancers',variables('externalLBName'))]",
+    "externalLBFEName": "[concat(parameters('fortiProxyNamePrefix'),'-ELB-',parameters('subnet1Name'),'-FrontEnd')]",
+    "externalLBFEId": "[resourceId('Microsoft.Network/loadBalancers/frontendIPConfigurations',variables('externalLBName'),variables('externalLBFEName'))]",
+    "externalLBBEName": "[concat(parameters('fortiProxyNamePrefix'),'-ELB-',parameters('subnet1Name'),'-BackEnd')]",
+    "externalLBBEId": "[resourceId('Microsoft.Network/loadBalancers/backendAddressPools',variables('externalLBName'),variables('externalLBBEName'))]",
+    "externalLBProbeName": "lbprobe",
+    "externalLBProbeId": "[resourceId('Microsoft.Network/loadBalancers/probes',variables('externalLBName'),variables('externalLBProbeName'))]",
+    "useAZ": "[and(not(empty(pickZones('Microsoft.Compute', 'virtualMachines', parameters('location')))), equals(parameters('availabilityOptions'), 'Availability Zones'))]",
+    "pipZones": "[if(variables('useAZ'), pickZones('Microsoft.Network', 'publicIPAddresses', parameters('location'), 3), json('null'))]",
+    "imageReferenceMarketplace": {
+      "publisher": "[variables('imagePublisher')]",
+      "offer": "[variables('imageOffer')]",
+      "sku": "[parameters('fortiProxyImageSKU')]",
+      "version": "[parameters('fortiProxyImageVersion')]"
+    },
+    "imageReferenceCustomImage": {
+      "id": "[parameters('customImageReference')]"
+    },
+    "virtualMachinePlan": {
+      "name": "[parameters('fortiProxyImageSKU')]",
+      "publisher": "[variables('imagePublisher')]",
+      "product": "[variables('imageOffer')]"
+    }
+  },
+  "resources": [
+    {
+      "apiVersion": "2021-04-01",
+      "name": "[concat(parameters('fortiProxyNamePrefix'), '-fortinetdeployment-', uniquestring(resourceGroup().id))]",
+      "type": "Microsoft.Resources/deployments",
+      "properties": {
+        "mode": "Incremental",
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "resources": []
+        }
+      }
+    },
+    {
+      "condition": "[not(variables('useAZ'))]",
+      "type": "Microsoft.Compute/availabilitySets",
+      "name": "[variables('availabilitySetName')]",
+      "apiVersion": "2022-03-01",
+      "location": "[parameters('location')]",
+      "tags": {
+        "provider": "[toUpper(parameters('fortinetTags').provider)]"
+      },
+      "properties": {
+        "platformFaultDomainCount": 2,
+        "platformUpdateDomainCount": 2
+      },
+      "sku": {
+        "name": "Aligned"
+      }
+    },
+    {
+      "condition": "[equals(parameters('vnetNewOrExisting'), 'new')]",
+      "name": "[variables('vnetName')]",
+      "type": "Microsoft.Network/virtualNetworks",
+      "apiVersion": "2022-01-01",
+      "location": "[parameters('location')]",
+      "properties": {
+        "addressSpace": {
+          "addressPrefixes": [
+            "[parameters('vnetAddressPrefix')]"
+          ]
+        },
+        "subnets": [
+          {
+            "name": "[parameters('subnet1Name')]",
+            "properties": {
+              "addressPrefix": "[parameters('subnet1Prefix')]"
+            }
+          },
+          {
+            "name": "[parameters('subnet2Name')]",
+            "properties": {
+              "addressPrefix": "[parameters('subnet2Prefix')]"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "type": "Microsoft.Network/networkSecurityGroups",
+      "name": "[variables('nsgName')]",
+      "apiVersion": "2022-01-01",
+      "location": "[parameters('location')]",
+      "tags": {
+        "provider": "[toUpper(parameters('fortinetTags').provider)]"
+      },
+      "properties": {
+        "securityRules": [
+          {
+            "name": "AllowSSHInbound",
+            "properties": {
+              "description": "Allow SSH In",
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "22",
+              "sourceAddressPrefix": "*",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 100,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "AllowHTTPInbound",
+            "properties": {
+              "description": "Allow 80 In",
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "80",
+              "sourceAddressPrefix": "*",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 110,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "AllowHTTPSInbound",
+            "properties": {
+              "description": "Allow 443 In",
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "443",
+              "sourceAddressPrefix": "*",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 120,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "AllowProxyInbound",
+            "properties": {
+              "description": "Allow 8080 In",
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "8080",
+              "sourceAddressPrefix": "*",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 130,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "AllowAllOutbound",
+            "properties": {
+              "description": "Allow all out",
+              "protocol": "*",
+              "sourcePortRange": "*",
+              "destinationPortRange": "*",
+              "sourceAddressPrefix": "*",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 105,
+              "direction": "Outbound"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "condition": "[and(equals(parameters('publicIP1NewOrExisting'), 'new'),parameters('externalLoadBalancer'))]",
+      "type": "Microsoft.Network/publicIPAddresses",
+      "name": "[variables('publicIP1Name')]",
+      "apiVersion": "2022-01-01",
+      "location": "[parameters('location')]",
+      "tags": {
+        "provider": "[toUpper(parameters('fortinetTags').provider)]"
+      },
+      "sku": {
+        "name": "Standard"
+      },
+      "zones": "[variables('pipZones')]",
+      "properties": {
+        "publicIPAllocationMethod": "static",
+        "dnsSettings": {
+          "domainNameLabel": "[concat(toLower(parameters('fortiProxyNamePrefix')), '-', uniquestring(resourceGroup().id))]"
+        }
+      }
+    },
+    {
+      "condition": "[parameters('externalLoadBalancer')]",
+      "type": "Microsoft.Network/loadBalancers",
+      "name": "[variables('externalLBName')]",
+      "apiVersion": "2022-01-01",
+      "location": "[parameters('location')]",
+      "tags": {
+        "provider": "[toUpper(parameters('fortinetTags').provider)]"
+      },
+      "sku": {
+        "name": "Standard"
+      },
+      "dependsOn": [
+        "[variables('publicIP1Name')]"
+      ],
+      "properties": {
+        "frontendIPConfigurations": [
+          {
+            "name": "[variables('externalLBFEName')]",
+            "properties": {
+              "publicIPAddress": {
+                "id": "[variables('publicIP1Id')]"
+              }
+            }
+          }
+        ],
+        "backendAddressPools": [
+          {
+            "name": "[variables('externalLBBEName')]"
+          }
+        ],
+        "loadBalancingRules": [
+          {
+            "properties": {
+              "frontendIPConfiguration": {
+                "id": "[variables('externalLBFEId')]"
+              },
+              "backendAddressPool": {
+                "id": "[variables('externalLBBEId')]"
+              },
+              "probe": {
+                "id": "[variables('externalLBProbeId')]"
+              },
+              "protocol": "Tcp",
+              "frontendPort": 80,
+              "backendPort": 80,
+              "enableFloatingIP": true,
+              "idleTimeoutInMinutes": 5
+            },
+            "name": "ExternalLBRule-FE-http"
+          },
+          {
+            "properties": {
+              "frontendIPConfiguration": {
+                "id": "[variables('externalLBFEId')]"
+              },
+              "backendAddressPool": {
+                "id": "[variables('externalLBBEId')]"
+              },
+              "probe": {
+                "id": "[variables('externalLBProbeId')]"
+              },
+              "protocol": "Udp",
+              "frontendPort": 10551,
+              "backendPort": 10551,
+              "enableFloatingIP": true,
+              "idleTimeoutInMinutes": 5
+            },
+            "name": "ExternalLBRule-FE-udp10551"
+          }
+        ],
+        "probes": [
+          {
+            "properties": {
+              "protocol": "Tcp",
+              "port": 8008,
+              "intervalInSeconds": 5,
+              "numberOfProbes": 2
+            },
+            "name": "lbprobe"
+          }
+        ]
+      }
+    },
+    {
+      "condition": "[parameters('externalLoadBalancer')]",
+      "type": "Microsoft.Network/loadBalancers/inboundNatRules",
+      "name": "[concat(variables('externalLBName'), '/', variables('fgVmName'), '-', copyIndex(1), '-MGMT-SSH')]",
+      "apiVersion": "2022-01-01",
+      "location": "[parameters('location')]",
+      "dependsOn": [
+        "[variables('externalLBId')]"
+      ],
+      "copy": {
+        "name": "inboundNatRulesSSH",
+        "count": "[parameters('fortiProxyCount')]"
+      },
+      "properties": {
+        "frontendIPConfiguration": {
+          "id": "[variables('externalLBFEId')]"
+        },
+        "protocol": "Tcp",
+        "frontendPort": "[copyIndex(50030)]",
+        "backendPort": 22,
+        "enableFloatingIP": false
+      }
+    },
+    {
+      "condition": "[parameters('externalLoadBalancer')]",
+      "type": "Microsoft.Network/loadBalancers/inboundNatRules",
+      "name": "[concat(variables('externalLBName'), '/', variables('fgVmName'), '-', copyIndex(1), '-MGMT-HTTPS')]",
+      "apiVersion": "2022-01-01",
+      "location": "[parameters('location')]",
+      "dependsOn": [
+        "[variables('externalLBId')]"
+      ],
+      "copy": {
+        "name": "inboundNatRulesHTTPS",
+        "count": "[parameters('fortiProxyCount')]"
+      },
+      "properties": {
+        "frontendIPConfiguration": {
+          "id": "[variables('externalLBFEId')]"
+        },
+        "protocol": "Tcp",
+        "frontendPort": "[copyIndex(40030)]",
+        "backendPort": 443,
+        "enableFloatingIP": false
+      }
+    },
+    {
+      "condition": "[not(parameters('externalLoadBalancer'))]",
+      "type": "Microsoft.Network/loadBalancers",
+      "name": "[variables('internalLBName')]",
+      "apiVersion": "2022-01-01",
+      "location": "[parameters('location')]",
+      "tags": {
+        "provider": "[toUpper(parameters('fortinetTags').provider)]"
+      },
+      "sku": {
+        "name": "Standard"
+      },
+      "dependsOn": [
+        "[variables('vnetName')]"
+      ],
+      "properties": {
+        "frontendIPConfigurations": [
+          {
+            "name": "[variables('internalLBFEName')]",
+            "properties": {
+              "privateIPAddress": "[variables('sn1IPlb')]",
+              "privateIPAllocationMethod": "Static",
+              "subnet": {
+                "id": "[variables('subnet1Id')]"
+              }
+            },
+            "zones": "[if(variables('useAZ'), variables('pipZones'), json('null'))]"
+          }
+        ],
+        "backendAddressPools": [
+          {
+            "name": "[variables('internalLBBEName')]"
+          }
+        ],
+        "loadBalancingRules": [
+          {
+            "properties": {
+              "frontendIPConfiguration": {
+                "id": "[variables('internalLBFEId')]"
+              },
+              "backendAddressPool": {
+                "id": "[variables('internalLBBEId')]"
+              },
+              "probe": {
+                "id": "[variables('internalLBProbeId')]"
+              },
+              "protocol": "all",
+              "frontendPort": 0,
+              "backendPort": 0,
+              "enableFloatingIP": true,
+              "idleTimeoutInMinutes": 5
+            },
+            "name": "lbruleFEall"
+          }
+        ],
+        "probes": [
+          {
+            "properties": {
+              "protocol": "Tcp",
+              "port": 8008,
+              "intervalInSeconds": 5,
+              "numberOfProbes": 2
+            },
+            "name": "lbprobe"
+          }
+        ]
+      }
+    },
+    {
+      "type": "Microsoft.Network/networkInterfaces",
+      "name": "[concat(variables('fgVmName'),'-',copyIndex(1),'-Nic',if(not(parameters('externalLoadBalancer')), 2, 1))]",
+      "apiVersion": "2022-01-01",
+      "copy": {
+        "name": "nodeCopy",
+        "count": "[parameters('fortiProxyCount')]"
+      },
+      "tags": {
+        "provider": "[toUpper(parameters('fortinetTags').provider)]"
+      },
+      "location": "[parameters('location')]",
+      "dependsOn": [
+        "[variables('vnetName')]",
+        "[variables('NSGId')]",
+        "[variables('internalLBId')]",
+        "[variables('externalLBId')]",
+        "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'), concat(variables('fgVmName'),'-', copyIndex(1),'-MGMT-SSH'))]",
+        "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'), concat(variables('fgVmName'),'-', copyIndex(1),'-MGMT-HTTPS'))]"
+      ],
+      "properties": {
+        "ipConfigurations": [
+          {
+            "name": "ipconfig1",
+            "properties": {
+              "privateIPAddress": "[concat(variables('sn1Octets4')[0],'.',variables('sn1Octets4')[1],'.',variables('sn1Octets4')[2],'.',add(int(variables('sn1IPStartAddress')[3]),copyIndex(1)))]",
+              "privateIPAllocationMethod": "Static",
+              "subnet": {
+                "id": "[variables('subnet1Id')]"
+              },
+              "loadBalancerBackendAddressPools": [
+                {
+                  "id": "[if(parameters('externalLoadBalancer'),variables('externalLBBEId'),variables('internalLBBEId'))]"
+                }
+              ],
+              "loadBalancerInboundNatRules": [
+                {
+                  "id": "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'), concat(variables('fgVmName'),'-', copyIndex(1),'-MGMT-SSH'))]"
+                },
+                {
+                  "id": "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'), concat(variables('fgVmName'),'-', copyIndex(1),'-MGMT-HTTPS'))]"
+                }
+              ]
+            }
+          }
+        ],
+        "enableIPForwarding": false,
+        "enableAcceleratedNetworking": "[parameters('acceleratedNetworking')]",
+        "networkSecurityGroup": {
+          "id": "[variables('nsgId')]"
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Network/networkInterfaces",
+      "name": "[concat(variables('fgVmName'),'-',copyIndex(1),'-Nic',if(not(parameters('externalLoadBalancer')), 1, 2))]",
+      "apiVersion": "2022-01-01",
+      "copy": {
+        "name": "nodeCopy",
+        "count": "[parameters('fortiProxyCount')]"
+      },
+      "tags": {
+        "provider": "[toUpper(parameters('fortinetTags').provider)]"
+      },
+      "location": "[parameters('location')]",
+      "dependsOn": [
+        "[variables('vnetName')]"
+      ],
+      "properties": {
+        "ipConfigurations": [
+          {
+            "name": "ipconfig1",
+            "properties": {
+              "privateIPAddress": "[concat(variables('sn2Octets4')[0],'.',variables('sn2Octets4')[1],'.',variables('sn2Octets4')[2],'.',add(int(variables('sn2IPStartAddress')[3]),copyIndex()))]",
+              "privateIPAllocationMethod": "Static",
+              "subnet": {
+                "id": "[variables('subnet2Id')]"
+              }
+            }
+          }
+        ],
+        "enableIPForwarding": false,
+        "enableAcceleratedNetworking": "[parameters('acceleratedNetworking')]"
+      }
+    },
+    {
+      "type": "Microsoft.Compute/virtualMachines",
+      "name": "[concat(variables('fgVmName'),'-',copyIndex(1))]",
+      "apiVersion": "2022-03-01",
+      "copy": {
+        "name": "nodeCopy",
+        "count": "[parameters('fortiProxyCount')]"
+      },
+      "tags": {
+        "provider": "[toUpper(parameters('fortinetTags').provider)]"
+      },
+      "location": "[parameters('location')]",
+      "dependsOn": [
+        "[concat(variables('fgVmName'),'-',copyIndex(1),'-Nic1')]",
+        "[concat(variables('fgVmName'),'-',copyIndex(1),'-Nic2')]"
+      ],
+      "identity": {
+        "type": "SystemAssigned"
+      },
+      "zones": "[if(variables('useAZ'), string(add(1, mod(copyIndex(), 3))), json('null'))]",
+      "plan": "[if(and(equals(parameters('fortiProxyImageSKU'),'fortinet_fg-vm'),not(equals(parameters('customImageReference'),''))), json('null'), variables('virtualMachinePlan'))]",
+      "properties": {
+        "hardwareProfile": {
+          "vmSize": "[parameters('instanceType')]"
+        },
+        "availabilitySet": "[if(not(variables('useAZ')), variables('availabilitySetId'), json('null'))]",
+        "osProfile": {
+          "computerName": "[concat(variables('fgVmName'),'-',copyIndex(1))]",
+          "adminUsername": "[parameters('adminUsername')]",
+          "adminPassword": "[parameters('adminPassword')]",
+          "customData": "[variables('customData')[copyIndex()]]"
+        },
+        "storageProfile": {
+          "imageReference": "[if(and(equals(parameters('fortiProxyImageSKU'),'fortinet_fg-vm'),not(equals(parameters('customImageReference'),''))), variables('imageReferenceCustomImage'), variables('imageReferenceMarketplace'))]",
+          "osDisk": {
+            "createOption": "FromImage"
+          },
+          "dataDisks": [
+            {
+              "diskSizeGB": 30,
+              "lun": 0,
+              "createOption": "Empty"
+            }
+          ]
+        },
+        "networkProfile": {
+          "copy": [
+            {
+              "name": "networkInterfaces",
+              "count": "[if(parameters('externalLoadBalancer'), 2, 1)]",
+              "input": {
+                "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(variables('fgVmName'),'-',copyIndex(1),'-Nic',copyIndex('networkInterfaces',1)))]",
+                "properties": {
+                  "primary": "[if(equals(copyIndex('networkInterfaces',1),1), 'true', 'false')]"
+                }
+              }
+            }
+          ]
+        },
+        "diagnosticsProfile": {
+          "bootDiagnostics": {
+            "enabled": "[variables('serialConsoleEnabled')]"
+          }
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "fortiProxyPublicIP": {
+      "type": "string",
+      "value": "[if(equals(parameters('publicIP1NewOrExisting'), 'new'), reference(variables('publicIP1Id')).ipAddress, '')]"
+    },
+    "fortiProxyFQDN": {
+      "type": "string",
+      "value": "[if(equals(parameters('publicIP1NewOrExisting'), 'new'), reference(variables('publicIP1Id')).dnsSettings.fqdn, '' )]"
+    }
+  }
+}
