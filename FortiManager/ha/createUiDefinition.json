@@ -646,7 +646,7 @@
                 "options": {
                   "icon": "Info",
                   "text": "More information about the deployment can be found here.",
-                  "uri": "https://github.com/fortinet/azure-templates/tree/main/FortiManager/singlefmg-single.png"
+                  "uri": "https://github.com/fortinet/azure-templates/tree/main/FortiManager/single"
                 }
               }
             ]
@@ -779,7 +779,7 @@
                 "options": {
                   "icon": "Info",
                   "text": "The default configuration already included in this deployment can be found on our github page. ",
-                  "uri": "https://github.com/fortinet/azure-templates/blob/main/FortiManager/singlefmg-single.png/doc/config-provisioning.md"
+                  "uri": "https://github.com/fortinet/azure-templates/blob/main/FortiManager/single/doc/config-provisioning.md"
                 }
               }
             ]

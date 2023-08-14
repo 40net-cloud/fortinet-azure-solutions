@@ -10,8 +10,8 @@ steps:
   displayName: 'Custom tests:'
   inputs:
     azureSubscription: 'AzureSubscription'
-    ScriptPath: 'FortiManager/singlefmg-single.png/test/invokePester.ps1'
-    ScriptArguments: '-templatename FortiManager/singlefmg-single.png'
+    ScriptPath: 'FortiManager/single/test/invokePester.ps1'
+    ScriptArguments: '-templatename FortiManager/single'
     azurePowerShellVersion: LatestVersion
 
 - task: PublishTestResults@2
@@ -36,6 +36,6 @@ trigger:
     - dev
   paths:
     exclude:
-    - FortiManager/singlefmg-single.png/*.md
+    - FortiManager/single/*.md
     include:
-    - FortiManager/singlefmg-single.png/*
+    - FortiManager/single/*

@@ -25,7 +25,7 @@ Function random-password ($length = 15) {
 }
 
 # Basic Variables
-$templateName = "singlefmg-single.png"
+$templateName = "single"
 $sourcePath = "$env:BUILD_SOURCESDIRECTORY\FortiManager\$templateName"
 $scriptPath = "$env:BUILD_SOURCESDIRECTORY\FortiManager\$templateName\test"
 $templateFileName = "azuredeploy.json"
