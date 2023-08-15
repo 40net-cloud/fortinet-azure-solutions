@@ -982,7 +982,7 @@
       "identity": {
         "type": "SystemAssigned"
       },
-      "zones": "[if(variables('useAZ'), string(add(1, mod(copyIndex(), 3))), json('null'))]",
+      "zones": "[if(variables('useAZ'), array(add(1, mod(copyIndex(), length(variables('pipZones'))))), json('null'))]",
       "plan": "[if(and(equals(parameters('fortiProxyImageSKU'),'fortinet-fortiproxy'),not(equals(parameters('customImageReference'),''))), json('null'), variables('virtualMachinePlan'))]",
       "properties": {
         "hardwareProfile": {
