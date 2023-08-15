@@ -17,9 +17,9 @@ BeforeAll {
     $templateName = "A-Single-VM"
     $sourcePath = "$env:GITHUB_WORKSPACE\FortiProxy\$templateName"
     $scriptPath = "$env:GITHUB_WORKSPACE\FortiProxy\$templateName\test"
-    $templateFileName = "azuredeploy.json"
+    $templateFileName = "mailTemplate.json"
     $templateFileLocation = "$sourcePath\$templateFileName"
-    $templateParameterFileName = "azuredeploy.parameters.json"
+    $templateParameterFileName = "mainTemplate.parameters.json"
     $templateParameterFileLocation = "$sourcePath\$templateParameterFileName"
 
     # Basic Variables
