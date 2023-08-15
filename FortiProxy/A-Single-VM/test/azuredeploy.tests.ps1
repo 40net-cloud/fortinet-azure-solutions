@@ -1,4 +1,3 @@
-#Requires -Modules Pester
 <#
 .SYNOPSIS
     Tests a specific ARM template
@@ -18,9 +17,9 @@ BeforeAll {
     $templateName = "A-Single-VM"
     $sourcePath = "$env:GITHUB_WORKSPACE\FortiProxy\$templateName"
     $scriptPath = "$env:GITHUB_WORKSPACE\FortiProxy\$templateName\test"
-    $templateFileName = "mainTemplate.json"
+    $templateFileName = "azuredeploy.json"
     $templateFileLocation = "$sourcePath\$templateFileName"
-    $templateParameterFileName = "mainTemplate.parameters.json"
+    $templateParameterFileName = "azuredeploy.parameters.json"
     $templateParameterFileLocation = "$sourcePath\$templateParameterFileName"
 
     # Basic Variables
@@ -31,12 +30,16 @@ BeforeAll {
     $testsResourceGroupLocation = "westeurope"
 
     # ARM Template Variables
-    $publicIP1Name = "$testsPrefix-FPX-PIP"
+    $config = "config system global `n set gui-theme mariner `n end `n config system admin `n edit devops `n set accprofile super_admin `n set ssh-public-key1 `""
+    $config += Get-Content $sshkeypub
+    $config += "`" `n set password $testsResourceGroupName `n next `n end"
+    $publicIPName = "$testsPrefix-FPX-PIP"
     $params = @{ 'adminUsername'=$testsAdminUsername
-                    'adminPassword'=$testsResourceGroupName
-                    'fortiProxyNamePrefix'=$testsPrefix
-                    'publicIP1Name'=$publicIP1Name
-                }
+                 'adminPassword'=$testsResourceGroupName
+                 'fortiGateNamePrefix'=$testsPrefix
+                 'fortiGateAdditionalCustomData'=$config
+                 'publicIP1Name'=$publicIPName
+               }
     $ports = @(443, 22)
 }
 
@@ -136,20 +139,38 @@ Describe 'FPX Single VM' {
     Context 'Deployment test' {
 
         BeforeAll {
-            $FPX = (Get-AzPublicIpAddress -Name $publicIP1Name -ResourceGroupName $testsResourceGroupName).IpAddress
-            Write-Host ("FortiProxy public IP: " + $FPX)
+            $fgt = (Get-AzPublicIpAddress -Name $publicIPName -ResourceGroupName $testsResourceGroupName).IpAddress
+            Write-Host ("FortiProxy public IP: " + $fgt)
+            $verify_commands = @'
+            config system console
+            set output standard
+            end
+            get system status
+            show system interface
+            show router static
+            diag debug cloudinit show
+            exit
+'@
+            $OFS = "`n"
         }
         It "FPX: Ports listening" {
             ForEach( $port in $ports ) {
                 Write-Host ("Check port: $port" )
-                $portListening = (Test-Connection -TargetName $FPX -TCPPort $port -TimeoutSeconds 100)
-                $portListening | Should -Be $true
+                $portListening = (Test-Connection -TargetName $fgt -TCPPort $port -TimeoutSeconds 100)
+                $portListening | Should -BeTrue
             }
+        }
+        It "FPX: Verify FortiProxy configuration" {
+            $result = $verify_commands | ssh -v -tt -i $sshkey -o StrictHostKeyChecking=no devops@$fgt
+            $LASTEXITCODE | Should -Be "0"
+            Write-Host ("FPX CLI info: " + $result) -Separator `n
+            $result | Should -Not -BeLike "*Command fail*"
         }
     }
 
     Context 'Cleanup' {
         It "Cleanup of deployment" {
+            Write-Host ("ERROR: Cleanup disabled" )
             Remove-AzResourceGroup -Name $testsResourceGroupName -Force
         }
     }
