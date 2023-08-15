@@ -31,11 +31,11 @@ BeforeAll {
     $testsResourceGroupLocation = "westeurope"
 
     # ARM Template Variables
-    $publicIPName = "$testsPrefix-FPX-PIP"
+    $publicIP1Name = "$testsPrefix-FPX-PIP"
     $params = @{ 'adminUsername'=$testsAdminUsername
                     'adminPassword'=$testsResourceGroupName
                     'fortiProxyNamePrefix'=$testsPrefix
-                    'publicIPName'=$publicIPName
+                    'publicIP1Name'=$publicIP1Name
                 }
     $ports = @(8443, 22)
 }
@@ -53,6 +53,7 @@ Describe 'FPX Single VM' {
         It 'Converts from JSON and has the expected properties' {
             $expectedProperties = '$schema',
             'contentVersion',
+            'outputs',
             'parameters',
             'resources',
             'variables'
