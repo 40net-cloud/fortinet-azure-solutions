@@ -88,8 +88,8 @@
         "toolTip": "Number of FortiProxy VM instances to deploy",
         "constraints": {
           "required": true,
-          "regex": "^[0-9-]{1,15}$",
-          "validationMessage": "Only alphanumeric characters are allowed, and the value must be 1 to 15 characters."
+          "regex": "^[1-8]{1}$",
+          "validationMessage": "A maximum of 8 VMs are supported in an Active-Active setup."
         },
         "visible": true
       },
@@ -685,13 +685,12 @@
                 "visible": true
               },
               {
-                "name": "standardsku",
+                "name": "info",
                 "type": "Microsoft.Common.InfoBox",
                 "visible": true,
                 "options": {
                   "icon": "Info",
-                  "text": "If no ",
-                  "uri": "https://docs.microsoft.com/en-us/troubleshoot/azure/virtual-machines/serial-console-overview"
+                  "text": "If no is selected an internal load balancer with an internal private IP is installed. The FortiProxy still required access to internet for license validation and retrieve proxied content."
                 }
               }
             ]
