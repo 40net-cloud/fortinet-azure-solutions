@@ -8,11 +8,11 @@
         "adminPassword": {
             "value": "## TO BE DEFINED ##"
         },
-        "fortiProxyNamePrefix": {
+        "fortiProxyCount": {
             "value": "## TO BE DEFINED ##"
         },
-        "fortiProxyName": {
-            "value": ""
+        "fortiProxyNamePrefix": {
+            "value": "## TO BE DEFINED ##"
         },
         "fortiProxyImageSKU": {
             "value": "fpx-vm-byol"
@@ -26,19 +26,16 @@
         "instanceType": {
             "value": "Standard_F2s"
         },
+        "externalLoadBalancer": {
+            "value": true
+        },
         "availabilityOptions": {
-            "value": "None"
-        },
-        "existingAvailabilitySetName": {
-            "value": ""
-        },
-        "availabilityZoneNumber": {
-            "value": ""
+            "value": "Availability Set"
         },
         "acceleratedNetworking": {
-            "value": "false"
+            "value": "true"
         },
-        "publicIP1NewOrExistingOrNone": {
+        "publicIP1NewOrExisting": {
             "value": "new"
         },
         "publicIP1Name": {
@@ -46,12 +43,6 @@
         },
         "publicIP1ResourceGroup": {
             "value": ""
-        },
-        "publicIP1AddressType": {
-            "value": "Static"
-        },
-        "publicIP1SKU": {
-            "value": "Standard"
         },
         "vnetNewOrExisting": {
             "value": "new"
@@ -74,6 +65,15 @@
         "subnet1StartAddress": {
             "value": "172.16.136.4"
         },
+        "subnet2Name": {
+            "value": "FPXHASubnet"
+        },
+        "subnet2Prefix": {
+            "value": "172.16.136.64/26"
+        },
+        "subnet2StartAddress": {
+            "value": "172.16.136.68"
+        },
         "serialConsole": {
             "value": "yes"
         },
@@ -86,7 +86,28 @@
         "fortiManagerSerial": {
             "value": ""
         },
-        "fortiProxyLicenseBYOL": {
+        "fortiProxyLicenseBYOL1": {
+            "value": ""
+        },
+        "fortiProxyLicenseBYOL2": {
+            "value": ""
+        },
+        "fortiProxyLicenseBYOL3": {
+            "value": ""
+        },
+        "fortiProxyLicenseBYOL4": {
+            "value": ""
+        },
+        "fortiProxyLicenseBYOL5": {
+            "value": ""
+        },
+        "fortiProxyLicenseBYOL6": {
+            "value": ""
+        },
+        "fortiProxyLicenseBYOL7": {
+            "value": ""
+        },
+        "fortiProxyLicenseBYOL8": {
             "value": ""
         },
         "customImageReference": {
@@ -98,7 +119,8 @@
         "fortinetTags": {
             "value": {
                 "publisher": "Fortinet",
-                "provider": "6EB3B02F-50E5-4A3E-8CB8-2E1292583FPX"
+                "template": "FortiProxy-Active-Active-ELB-or-ILB",
+                "provider": "6EB3B02F-50E5-4A3E-8CB8-2E12925831FPXAA"
             }
         }
     }
