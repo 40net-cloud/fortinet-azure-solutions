@@ -37,7 +37,7 @@ BeforeAll {
                     'fortiProxyNamePrefix'=$testsPrefix
                     'publicIP1Name'=$publicIP1Name
                 }
-    $ports = @(8443, 22)
+    $ports = @(443, 22)
 }
 
 Describe 'FPX Single VM' {
@@ -136,7 +136,7 @@ Describe 'FPX Single VM' {
     Context 'Deployment test' {
 
         BeforeAll {
-            $FPX = (Get-AzPublicIpAddress -Name $publicIPName -ResourceGroupName $testsResourceGroupName).IpAddress
+            $FPX = (Get-AzPublicIpAddress -Name $publicIP1Name -ResourceGroupName $testsResourceGroupName).IpAddress
             Write-Host ("FortiProxy public IP: " + $FPX)
         }
         It "FPX: Ports listening" {
