@@ -1,6 +1,9 @@
 # FortiProxy - Active/Active with External or Internal Load Balancer
 
-![FortiProxy-VM azure design](images/fpx-single-vm.png)
+![FortiProxy-VM azure design](images/fpx-aa.png)
+
+Availability Zone
+![FortiProxy-VM azure design](images/fpx-aa-az.png)
 
 ### Azure Portal
 
