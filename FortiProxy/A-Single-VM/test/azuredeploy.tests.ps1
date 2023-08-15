@@ -36,8 +36,8 @@ BeforeAll {
     $publicIPName = "$testsPrefix-FPX-PIP"
     $params = @{ 'adminUsername'=$testsAdminUsername
                  'adminPassword'=$testsResourceGroupName
-                 'fortiGateNamePrefix'=$testsPrefix
-                 'fortiGateAdditionalCustomData'=$config
+                 'fortiProxyNamePrefix'=$testsPrefix
+                 'fortiProxyAdditionalCustomData'=$config
                  'publicIP1Name'=$publicIPName
                }
     $ports = @(443, 22)
