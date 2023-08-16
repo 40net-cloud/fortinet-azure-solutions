@@ -33,7 +33,7 @@ jobs:
       uses: azure/powershell@v1.2.0
       with:
         inlineScript: |
-          $buildingBlocks = @("A-Single-VM")
+          $buildingBlocks = @("A-Single-VM", "Active-Active")
           $fpxMarketplaceVersions = @()
           $fpxMarketplaceVersionsUI = @()
 
