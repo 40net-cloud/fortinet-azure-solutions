@@ -70,7 +70,7 @@
       {
         "name": "fortiProxyNamePrefix",
         "type": "Microsoft.Common.TextBox",
-        "label": "Fortigate Name Prefix",
+        "label": "FortiProxy Name Prefix",
         "defaultValue": "",
         "toolTip": "Naming prefix for all deployed resources",
         "constraints": {
@@ -83,7 +83,7 @@
       {
         "name": "fortiProxyImageSKU",
         "type": "Microsoft.Common.DropDown",
-        "label": "Fortigate Image SKU",
+        "label": "FortiProxy Image SKU",
         "defaultValue": "Bring Your Own License",
         "toolTip": "Identifies to use BYOL license model (the licenses are purchased separately)",
         "constraints": {
@@ -100,7 +100,7 @@
       {
         "name": "fortiProxyImageVersion",
         "type": "Microsoft.Common.DropDown",
-        "label": "Fortigate Image Version",
+        "label": "FortiProxy Image Version",
         "defaultValue": "latest",
         "toolTip": "Only 6.x has the A/P HA feature currently",
         "constraints": {
@@ -597,7 +597,7 @@
             "type": "Microsoft.Common.TextBlock",
             "visible": true,
             "options": {
-              "text": "The public IP will be used for public services hosted on the FortiProxy such as IPSEC termination, management of the FortiProxy from external or services behind the Fortigate such as a webserver."
+              "text": "The public IP will be used for public services hosted on the FortiProxy such as IPSEC termination, management of the FortiProxy from external or services behind the FortiProxy such as a webserver."
             }
           },
           {
