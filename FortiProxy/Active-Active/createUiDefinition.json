@@ -88,7 +88,7 @@
         "toolTip": "Number of FortiProxy VM instances to deploy",
         "constraints": {
           "required": true,
-          "regex": "^[1-8]{1}$",
+          "regex": "^[1-8]{1,1}$",
           "validationMessage": "A maximum of 8 VMs are supported in an Active-Active setup."
         },
         "visible": true
