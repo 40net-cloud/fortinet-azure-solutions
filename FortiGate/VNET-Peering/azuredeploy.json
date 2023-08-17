@@ -91,7 +91,7 @@
         "existing"
       ],
       "metadata": {
-        "description": "Choose between an existing or new public IP for the Active Fortigate"
+        "description": "Choose between an existing or new public IP for the Active FortiGate"
       }
     },
     "publicIP3NewOrExisting": {
@@ -102,7 +102,7 @@
         "existing"
       ],
       "metadata": {
-        "description": "Choose between an existing or new public IP for the Passive Fortigate"
+        "description": "Choose between an existing or new public IP for the Passive FortiGate"
       }
     },
     "publicIPName": {
@@ -1438,7 +1438,7 @@
             "publisher": "[variables('imagePublisher')]",
             "offer": "[variables('imageOffer')]",
             "sku": "[parameters('fortiGateImageSKU')]",
-            "version": "[parameters('FortigateImageVersion')]"
+            "version": "[parameters('FortiGateImageVersion')]"
           },
           "osDisk": {
             "createOption": "FromImage"
@@ -1521,7 +1521,7 @@
             "publisher": "[variables('imagePublisher')]",
             "offer": "[variables('imageOffer')]",
             "sku": "[parameters('fortiGateImageSKU')]",
-            "version": "[parameters('FortigateImageVersion')]"
+            "version": "[parameters('FortiGateImageVersion')]"
           },
           "osDisk": {
             "createOption": "FromImage"

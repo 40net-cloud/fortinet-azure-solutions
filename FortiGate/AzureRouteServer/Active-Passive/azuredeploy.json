@@ -1314,7 +1314,7 @@
             "publisher": "[variables('imagePublisher')]",
             "offer": "[variables('imageOffer')]",
             "sku": "[parameters('fortiGateImageSKU')]",
-            "version": "[parameters('FortigateImageVersion')]"
+            "version": "[parameters('FortiGateImageVersion')]"
           },
           "osDisk": {
             "createOption": "FromImage"
@@ -1397,7 +1397,7 @@
             "publisher": "[variables('imagePublisher')]",
             "offer": "[variables('imageOffer')]",
             "sku": "[parameters('fortiGateImageSKU')]",
-            "version": "[parameters('FortigateImageVersion')]"
+            "version": "[parameters('FortiGateImageVersion')]"
           },
           "osDisk": {
             "createOption": "FromImage"

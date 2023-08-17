@@ -1,4 +1,4 @@
-# Fortigate NGFW for Microsoft Azure Virtual WAN
+# FortiGate NGFW for Microsoft Azure Virtual WAN
 
 ## Introduction
 
@@ -64,7 +64,7 @@ More information can be found [here](doc/insidevwan-sdwan.md)
 
 In this scenario, the ingress traffic flows are handled by a FortiGate-VM cluster outside of the Virtual WAN Hub. The Public IPs assigned to the FortiGate instances inside the Virtual WAN Hub only provide access for management using FortiManager and IPSEC VPN tunnels. To provide any additional access to your workload a separate FortiGate cluster can be installed in a spoke VNET, dubbed "Cloud Security Services Hub", handling all the inbound traffic using an External Azure Load Balancer. 
 
-To exchange routes dynamically, you can configure an Virtual WAN Hub to connect with Fortigate-VMs in your Cloud Security Services Hub using BGP Peering.
+To exchange routes dynamically, you can configure an Virtual WAN Hub to connect with FortiGate-VMs in your Cloud Security Services Hub using BGP Peering.
 
 * [Microsoft: Azure Virtual WAN BGP peering](https://learn.microsoft.com/en-us/azure/virtual-wan/create-bgp-peering-hub-portal)
 * [Microsoft: Virtual WAN Hub routing](https://learn.microsoft.com/en-us/azure/virtual-wan/about-virtual-hub-routing).
@@ -80,7 +80,7 @@ More information can be found [here](doc/outsidevwan-north-south.md)
 
 In this scenario, the VPN connections from the on-premises location are terminated on the FortiGate-VM cluster outside of the Virtual WAN Hub. This scenario is for customers that don't want to change the currently deployed Hub, have another firewall solution but want to add Fortinet SD-WAN or are migrating. 
 
-To exchange routes dynamically, you can configure an Virtual WAN Hub  to connect with Fortigate-VMs in your Cloud Security Services Hub using BGP Peering.
+To exchange routes dynamically, you can configure an Virtual WAN Hub  to connect with FortiGate-VMs in your Cloud Security Services Hub using BGP Peering.
 
 * [Microsoft: Azure Virtual WAN BGP peering](https://learn.microsoft.com/en-us/azure/virtual-wan/create-bgp-peering-hub-portal)
 * [Microsoft: Virtual WAN Hub routing](https://learn.microsoft.com/en-us/azure/virtual-wan/about-virtual-hub-routing).
@@ -113,7 +113,7 @@ This scenario consist of a combination of different scenario's:
 
 As a result this is very scalable architecture which fits the needs of large Enterprise customers requiring high performance.
 
-In this architecture you can configure an Virtual WAN Hub router to peer with Fortigates in your Cloud Security Services Hub & SDWAN/VPN Services Hub  using BGP Peering described [here](https://learn.microsoft.com/en-us/azure/virtual-wan/create-bgp-peering-hub-portal)
+In this architecture you can configure an Virtual WAN Hub router to peer with FortiGates in your Cloud Security Services Hub & SDWAN/VPN Services Hub  using BGP Peering described [here](https://learn.microsoft.com/en-us/azure/virtual-wan/create-bgp-peering-hub-portal)
 
 ### FortiGate connectivity to the VPN Gateway inside of Virtual WAN Hub
 

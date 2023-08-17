@@ -1,4 +1,4 @@
-# Fortigate VNET Peering in [${location}]
+# FortiGate VNET Peering in [${location}]
 
 elb_ipaddress = ${elb_ipaddress}
 fgt_a_private_ip_address_ext = ${fgt_a_private_ip_address_ext}

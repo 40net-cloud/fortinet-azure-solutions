@@ -58,7 +58,7 @@ More information about SD-WAN can be found here :
 
 The drawing in [flow](#flow) section is used in the configuration screenshots with LAN on-premise 172.16.248.0/24 and IP address of Express Route Router 172.16.251.254 which provides Express Route access.
 
-You can use the VPN wizard to create a VPN tunnel between on-premise Fortigate and AP HA Cluster of Fortigates in Azure where 40.114.187.146 is Public IP address of Azure external Load Balancer.
+You can use the VPN wizard to create a VPN tunnel between on-premise FortiGate and AP HA Cluster of FortiGates in Azure where 40.114.187.146 is Public IP address of Azure external Load Balancer.
 
 <p align="center">
   <img src="../images/SDWAN-EX-IPSEC/on-prem-vpn.png" alt="inbound flow">
@@ -139,7 +139,7 @@ If you are using different address space for performance SLA monitoring via VPN 
 
 ### Configuration of Azure FortiGate
 
-You can use the VPN wizard to create a VPN tunnel between Azure AP HA Cluster Fortigate and  Fortigate on-premise where 46.162.118.160 is Public IP address of on-premise Fortigate.
+You can use the VPN wizard to create a VPN tunnel between Azure AP HA Cluster FortiGate and  FortiGate on-premise where 46.162.118.160 is Public IP address of on-premise FortiGate.
 
 <p align="center">
   <img src="../images/SDWAN-EX-IPSEC/azure-sd-wan-vpn.png" alt="inbound flow">
@@ -153,7 +153,7 @@ In order to separate traffic coming from Express Route interface from local LAN 
   <img src="../images/SDWAN-EX-IPSEC/azure-sd-wan-lb-ip.png" alt="inbound flow">
 </p>
 
-You need also to introduce new Backend Pool consisting of private IP address of Azure Fortigate A and Fortiage B interfaces located in External subnet. In our example it is 172.16.136.5 & 172.16.136.6
+You need also to introduce new Backend Pool consisting of private IP address of Azure FortiGate A and Fortiage B interfaces located in External subnet. In our example it is 172.16.136.5 & 172.16.136.6
 
 <p align="center">
   <img src="../images/SDWAN-EX-IPSEC/azure-sd-wan-lb-bp.png" alt="inbound flow">
@@ -165,7 +165,7 @@ As next step you need to configure Load Balancing rule which using 'HA Ports set
   <img src="../images/SDWAN-EX-IPSEC/azure-sd-wan-lb-rule.png" alt="inbound flow">
 </p>
 
-Where Frontend IP address is previously configured 172.16.136.4 and Backend Pool is the one consisting of 172.16.136.5 & 172.16.136.6 IP addresses of Fortigate's NICs in external subnet.
+Where Frontend IP address is previously configured 172.16.136.4 and Backend Pool is the one consisting of 172.16.136.5 & 172.16.136.6 IP addresses of FortiGate's NICs in external subnet.
 
 You also need to create Route Table which will be associated with Express Route VPN Gateway subnet and will point to Azure LAN network 172.16.137.0/24 (or also to additional spoke networks which are connected via Vnet peering) via additonally created Frontend IP of Azure Internal Load Balancer 172.16.136.4.
 
@@ -177,7 +177,7 @@ You also need to create Route Table which will be associated with Express Route 
   <img src="../images/SDWAN-EX-IPSEC/azure-sd-wan-route-associate.png" alt="inbound flow">
 </p>
 
-You need also to create static route on Azure Fortigate pointing that local on-premise LAN network is available via Azure default Gateway 172.16.136.1 located in external subnet. Thanks to this entry Azure will automatically route correctly the traffic to Express Route VPN Gateway and via Express Route circuit to on-premise.
+You need also to create static route on Azure FortiGate pointing that local on-premise LAN network is available via Azure default Gateway 172.16.136.1 located in external subnet. Thanks to this entry Azure will automatically route correctly the traffic to Express Route VPN Gateway and via Express Route circuit to on-premise.
 
 You can configure this while adding SD-WAN Member interface and providing 172.16.136.1 as Gateway.
 

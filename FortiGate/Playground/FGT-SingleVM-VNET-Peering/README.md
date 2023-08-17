@@ -51,7 +51,7 @@ After deployment, you will be shown the IP addresses of all deployed components.
 The Azure ARM template deployment deploys different resources and is required to have the access rights and quota in your Microsoft Azure subscription to deploy the resources.
 
 - The template will deploy Standard F4s VMs to deploy the required active/passive setup
-- Licenses for Fortigate
+- Licenses for FortiGate
   - BYOL: A demo license can be made available via your Fortinet partner or on our website. These can be injected during deployment or added after deployment.
   - PAYG or OnDemand: These licenses are automatically generated during the deployment of the FortiGate systems.
 

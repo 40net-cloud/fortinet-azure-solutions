@@ -2,7 +2,7 @@
 echo "
 ##############################################################################################################
 #
-# Deployment of a Fortigate using a custom VHD from support.fortinet.com
+# Deployment of a FortiGate using a custom VHD from support.fortinet.com
 #
 ##############################################################################################################
 

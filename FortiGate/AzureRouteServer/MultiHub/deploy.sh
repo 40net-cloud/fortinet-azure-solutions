@@ -3,7 +3,7 @@ echo "
 ##############################################################################################################
 #
 # FortiGate Azure deployment using ARM Template
-# Multi HUB - Fortigate Active/Passive cluster with Azure Route Server
+# Multi HUB - FortiGate Active/Passive cluster with Azure Route Server
 #
 ##############################################################################################################
 
@@ -134,7 +134,7 @@ echo "
 ##############################################################################################################
 #
 # FortiGate Azure deployment using ARM Template
-# Fortigate Active/Passive cluster with Azure Route Server
+# FortiGate Active/Passive cluster with Azure Route Server
 #
 # The FortiGate systems is reachable via the management public IP addresses of the firewall
 # on HTTPS/443 and SSH/22.

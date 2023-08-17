@@ -3,7 +3,7 @@ echo "
 ##############################################################################################################
 #
 # FortiGate Azure deployment using ARM Template
-# Fortigate Active/Passive cluster with External + Internal Load Balancer
+# FortiGate Active/Passive cluster with External + Internal Load Balancer
 # with 2 internal load balancers
 #
 ##############################################################################################################
@@ -115,7 +115,7 @@ echo "
 ##############################################################################################################
 #
 # FortiGate Azure deployment using ARM Template
-# Fortigate Active/Passive cluster with External + Internal Load Balancer
+# FortiGate Active/Passive cluster with External + Internal Load Balancer
 #
 # The FortiGate systems is reachable via the management public IP addresses of the firewall
 # on HTTPS/443 and SSH/22.

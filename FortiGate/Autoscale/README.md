@@ -16,7 +16,7 @@ There are 5 variables needed to complete kickstart the deployment. The deploy.sh
 
   - PREFIX : This prefix will be added to each of the resources created by the templates for easy of use, manageability and visibility.
   - LOCATION : This is the Azure region where the deployment will be deployed
-  - INSTANCETYPE : This is the Azure instance type for each of the Fortigate VM that will be deployed. By default this is set to Standard_F4s.
+  - INSTANCETYPE : This is the Azure instance type for each of the FortiGate VM that will be deployed. By default this is set to Standard_F4s.
   - USERNAME : The username used to login to the FortiGate GUI and SSH mangement UI.
   - PASSWORD : The password used for the FortiGate GUI and SSH management UI.
   - CLIENT_ID : The service principal id used by the Azure Function to connect with the resources in Microsoft Azure. More info [here](https://docs.fortinet.com/document/fortigate-public-cloud/7.2.0/azure-administration-guide/948968/azure-sdn-connector-service-principal-configuration-requirements)
@@ -38,7 +38,7 @@ After deployment, you will be shown the IP addresses of all deployed components.
 The Azure ARM template deployment deploys different resources and is required to have the access rights and quota in your Microsoft Azure subscription to deploy the resources.
 
 - The template will deploy Standard F4s VMs
-- Licenses for Fortigate
+- Licenses for FortiGate
   - BYOL: A demo license can be made available via your Fortinet partner or on our website. These can be injected during deployment or added after deployment.
   - PAYG or OnDemand: These licenses are automatically generated during the deployment of the FortiGate systems.
 

@@ -58,7 +58,7 @@
       {
         "name": "fortiGateNamePrefix",
         "type": "Microsoft.Common.TextBox",
-        "label": "Fortigate Name Prefix",
+        "label": "FortiGate Name Prefix",
         "defaultValue": "",
         "toolTip": "Naming prefix for all deployed resources",
         "constraints": {
@@ -71,7 +71,7 @@
       {
         "name": "fortiGateImageSKU",
         "type": "Microsoft.Common.DropDown",
-        "label": "Fortigate Image SKU",
+        "label": "FortiGate Image SKU",
         "defaultValue": "Bring Your Own License",
         "toolTip": "Identifies whether to to use PAYG (on demand licensing) or BYOL license model (where license is purchased separately)",
         "constraints": {
@@ -92,7 +92,7 @@
       {
         "name": "fortiGateImageVersion",
         "type": "Microsoft.Common.DropDown",
-        "label": "Fortigate Image Version",
+        "label": "FortiGate Image Version",
         "defaultValue": "latest",
         "toolTip": "Only 6.x has the A/P HA feature currently",
         "constraints": {
@@ -489,7 +489,7 @@
             "type": "Microsoft.Common.TextBlock",
             "visible": true,
             "options": {
-              "text": "The Load Balancer public IP will be used for public services hosted on the FortiGate such as IPSEC termination or services behind the Fortigate such as a webserver. The FortiGate Management public IPs are used for management of the virtual machines. They are also used for the Fabric connector to retrieve information from the Azure platform."
+              "text": "The Load Balancer public IP will be used for public services hosted on the FortiGate such as IPSEC termination or services behind the FortiGate such as a webserver. The FortiGate Management public IPs are used for management of the virtual machines. They are also used for the Fabric connector to retrieve information from the Azure platform."
             }
           },
           {

@@ -14,7 +14,7 @@ For this architecture is this public IP used for ingress, egress as well as mana
 
 In this architecture, the HA management interfaces receive a directly attached public IP on each of the FortiGate-VMs. There are 2 use cases for these public IPs:
 
-- Remote management of the Fortigate-VM units
+- Remote management of the FortiGate-VM units
 - SDN connector to talk with the Azure API to retrieve dynamic objects information (public, private and SaaS ip ranges) as well as HA failover when no Load Balancers are used.
 
 There are multiple options to secure this access and/or comply with the Azure Policy:
@@ -32,7 +32,7 @@ A new backed pool needs to be configure based on ip address referencing the Nic4
 
 ![AzureLBFrontendIP](images/faq-publicip-pip.png)
 
-On the Fortigate-VM, the interface needs to allow the probe response similar to the port 1 and port 2 configuration.
+On the FortiGate-VM, the interface needs to allow the probe response similar to the port 1 and port 2 configuration.
 
 <pre><code>
 config system interface

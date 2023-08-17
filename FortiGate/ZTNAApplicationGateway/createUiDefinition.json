@@ -872,7 +872,7 @@
             "type": "Microsoft.Common.TextBlock",
             "visible": true,
             "options": {
-              "text": "The public IP will be used for public services hosted on the ZTNA Application Gateway such as ZTNA tunnels, management of the ZTNA Application Gateway from external or services behind the Fortigate such as a webserver."
+              "text": "The public IP will be used for public services hosted on the ZTNA Application Gateway such as ZTNA tunnels, management of the ZTNA Application Gateway from external or services behind the FortiGate such as a webserver."
             }
           },
           {

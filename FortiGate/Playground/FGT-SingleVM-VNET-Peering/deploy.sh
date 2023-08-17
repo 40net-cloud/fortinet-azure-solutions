@@ -2,7 +2,7 @@
 echo "
 ##############################################################################################################
 #
-# Deployment of a Fortigate VNET peering setup with a Single FGT VM
+# Deployment of a FortiGate VNET peering setup with a Single FGT VM
 #
 ##############################################################################################################
 

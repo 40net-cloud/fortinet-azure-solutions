@@ -1,5 +1,5 @@
 
-## On-premise Fortigate
+## On-premise FortiGate
 
 ```
 roz (phase1-interface) # 
@@ -124,7 +124,7 @@ config system interface
 end
 ```
 
-## Azure Fortigate
+## Azure FortiGate
 ```
 config vpn ipsec phase1-interface
     edit "VPN-2-Joeri-BG"
