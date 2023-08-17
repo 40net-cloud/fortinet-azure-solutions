@@ -10,7 +10,6 @@ on:
 env:
   PUBLISHER: Fortinet
   PRODUCT: FortiProxy
-  PRODUCT: fortiproxy
   PRODUCTSHORT: FPX
   PRODUCTOFFER: fortinet-fortiproxy
   PRODUCTSKU: fpx-vm-byol
