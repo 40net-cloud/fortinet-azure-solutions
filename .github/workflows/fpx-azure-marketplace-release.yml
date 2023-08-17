@@ -10,6 +10,7 @@ on:
 env:
   PUBLISHER: fortinet
   PRODUCT: FortiProxy
+  PRODUCTL: fortiproxy
   PRODUCTSHORT: FPX
   PRODUCTOFFER: fortinet-fortiproxy
   PRODUCTSKU: fpx-vm-byol
@@ -56,15 +57,15 @@ jobs:
               $content | ConvertTo-Json -depth 100 | Out-File "${dest}/createUiDefinition.json"
               "" | Out-File -Append "${dest}/createUiDefinition.json"
             }
-            Compress-Archive -Path "./releases/*" -DestinationPath "./releases/fortiproxy-azure-templates.zip"
+            Compress-Archive -Path "./releases/*" -DestinationPath "./releases/${env:PRODUCTL}-azure-templates.zip"
           azPSVersion: "latest"
 
       - name: upload-templates-zip
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{secrets.GITHUB_TOKEN}}
-          file: "./releases/fortiproxy-azure-templates.zip"
-          asset_name: "fortiproxy-azure-templates.zip"
+          file: "./releases/${{env.PRODUCTL}}-azure-templates.zip"
+          asset_name: "${{env.PRODUCTL}}-azure-templates.zip"
           tag: ${{github.ref}}
           overwrite: true
-          body: "FortiProxy Azure Marketplace Release"
+          body: "${{env.PRODUCT}} Azure Marketplace Release"
