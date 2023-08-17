@@ -107,12 +107,32 @@
           "required": false,
           "allowedValues": [
             {
+              "label": "2.0.9",
+              "value": "2.0.9"
+            },
+            {
+              "label": "7.0.11",
+              "value": "7.0.11"
+            },
+            {
+              "label": "7.0.12",
+              "value": "7.0.12"
+            },
+            {
               "label": "7.0.4",
               "value": "7.0.4"
             },
             {
               "label": "7.0.8",
               "value": "7.0.8"
+            },
+            {
+              "label": "7.2.5",
+              "value": "7.2.5"
+            },
+            {
+              "label": "7.2.6",
+              "value": "7.2.6"
             },
             {
               "label": "latest",
