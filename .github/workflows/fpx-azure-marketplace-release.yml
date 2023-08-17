@@ -46,13 +46,13 @@ jobs:
               [void](New-Item -Path "${dest}" -Type Directory)
 
               $content = Get-Content -Raw -Path "./${env:PRODUCT}/${buildingBlock}/mainTemplate.json" | ConvertFrom-Json
-              $content.parameters.fortiGateImageVersion.allowedValues = $marketplaceVersions
+              $content.parameters.fortiProxyImageVersion.allowedValues = $marketplaceVersions
               $content.resources.Where({$_.type -eq 'Microsoft.Resources/deployments'})[0].name = "pid-776b2227-2743-485a-b385-e9dfd42bfe75-partnercenter"
               $content | ConvertTo-Json -depth 100 | Out-File "${dest}/mainTemplate.json"
               "" | Out-File -Append "${dest}/mainTemplate.json"
 
               $content = Get-Content -Raw -Path "./${env:PRODUCT}/${buildingBlock}/createUiDefinition.json" | ConvertFrom-Json
-              $content.parameters.basics.Where({$_.Name.equals("fortiGateImageVersion")}).constraints.allowedValues = $marketplaceVersionsUI
+              $content.parameters.basics.Where({$_.Name.equals("fortiProxyImageVersion")}).constraints.allowedValues = $marketplaceVersionsUI
               $content | ConvertTo-Json -depth 100 | Out-File "${dest}/createUiDefinition.json"
               "" | Out-File -Append "${dest}/createUiDefinition.json"
             }
