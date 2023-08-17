@@ -1,0 +1,71 @@
+name: "[FGT] Azure Marketplace release"
+
+on:
+  push:
+    tags:
+      - "FPX-*"
+
+  workflow_dispatch:
+
+env:
+  PUBLISHER: Fortinet
+  PRODUCT: FortiProxy
+  PRODUCT: fortiproxy
+  PRODUCTSHORT: FPX
+  PRODUCTOFFER: fortinet-fortiproxy
+  PRODUCTSKU: fpx-vm-byol
+
+jobs:
+  build:
+    name: Getting all data ready for publishing
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Azure Login via Az module
+        uses: azure/login@v1.4.6
+        with:
+          creds: ${{secrets.AZURE_CREDENTIALS}}
+          enable-AzPSSession: true
+
+      - name: Package and convert templates
+        uses: azure/powershell@v1.2.0
+        with:
+          inlineScript: |
+            $buildingBlocks = @("A-Single-VM", "Active-Active")
+            $marketplaceVersions = @()
+            $marketplaceVersionsUI = @()
+
+            $versions = Get-AzVMImage -PublisherName "${env:PUBLISHER}" -Location eastus -Offer "${env:PRODUCTOFFER}" -sku "${env:PRODUCTSKU}"
+            $marketplaceVersions += $($versions | Where-Object {$_.Version.StartsWith("6")} | Sort-Object -Unique -Property Version | Select-Object -Last 2).Version
+            $marketplaceVersions += $($versions | Where-Object {$_.Version.StartsWith("7")} | Sort-Object -Unique -Property Version | Select-Object -Last 2).Version
+            $marketplaceVersions += "latest"
+            $marketplaceVersions | ForEach-Object { $marketplaceVersionsUI += [pscustomobject]@{label=$_;value=$_} }
+
+            foreach ($buildingBlock in $buildingBlocks) {
+              $dest = "./releases/${buildingBlock}/"
+              [void](New-Item -Path "${dest}" -Type Directory)
+
+              $content = Get-Content -Raw -Path "./${env:PRODUCT}/${buildingBlock}/azuredeploy.json" | ConvertFrom-Json
+              $content.parameters.fortiGateImageVersion.allowedValues = $marketplaceVersions
+              $content.resources.Where({$_.type -eq 'Microsoft.Resources/deployments'})[0].name = "pid-776b2227-2743-485a-b385-e9dfd42bfe75-partnercenter"
+              $content | ConvertTo-Json -depth 100 | Out-File "${dest}/mainTemplate.json"
+              "" | Out-File -Append "${dest}/mainTemplate.json"
+
+              $content = Get-Content -Raw -Path "./${env:PRODUCT}/${buildingBlock}/createUiDefinition.json" | ConvertFrom-Json
+              $content.parameters.basics.Where({$_.Name.equals("fortiGateImageVersion")}).constraints.allowedValues = $marketplaceVersionsUI
+              $content | ConvertTo-Json -depth 100 | Out-File "${dest}/createUiDefinition.json"
+              "" | Out-File -Append "${dest}/createUiDefinition.json"
+            }
+            Compress-Archive -Path "./releases/*" -DestinationPath "./releases/${env:PRODUCT}.ToLower()-azure-templates.zip"
+          azPSVersion: "latest"
+
+      - name: upload-templates-zip
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{secrets.GITHUB_TOKEN}}
+          file: ./releases/${env:PRODUCT}.ToLower()-azure-templates.zip
+          asset_name: ${env:PRODUCT}.ToLower()-azure-templates.zip
+          tag: ${{github.ref}}
+          overwrite: true
+          body: "${env:PRODUCT} Azure Marketplace Release"
