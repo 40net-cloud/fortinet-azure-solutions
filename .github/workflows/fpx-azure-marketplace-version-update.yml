@@ -9,10 +9,10 @@ on:
   push:
     branches: [ dev ]
     paths:
-      - '${env:PRODUCT}/**'
+      - 'FortiProxy/**'
 
 env:
-  PRODUCT: ${env:PRODUCT}
+  PRODUCT: FortiProxy
   PRODUCTSHORT: FPX
   PRODUCTOFFER: fortinet-fortiproxy
   PRODUCTSKU: fpx-vm-byol
