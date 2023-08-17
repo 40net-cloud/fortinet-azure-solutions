@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 env:
-  PUBLISHER: Fortinet
+  PUBLISHER: fortinet
   PRODUCT: FortiProxy
   PRODUCTSHORT: FPX
   PRODUCTOFFER: fortinet-fortiproxy
@@ -45,7 +45,7 @@ jobs:
               $dest = "./releases/${buildingBlock}/"
               [void](New-Item -Path "${dest}" -Type Directory)
 
-              $content = Get-Content -Raw -Path "./${env:PRODUCT}/${buildingBlock}/azuredeploy.json" | ConvertFrom-Json
+              $content = Get-Content -Raw -Path "./${env:PRODUCT}/${buildingBlock}/mainTemplate.json" | ConvertFrom-Json
               $content.parameters.fortiGateImageVersion.allowedValues = $marketplaceVersions
               $content.resources.Where({$_.type -eq 'Microsoft.Resources/deployments'})[0].name = "pid-776b2227-2743-485a-b385-e9dfd42bfe75-partnercenter"
               $content | ConvertTo-Json -depth 100 | Out-File "${dest}/mainTemplate.json"
