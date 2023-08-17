@@ -56,15 +56,15 @@ jobs:
               $content | ConvertTo-Json -depth 100 | Out-File "${dest}/createUiDefinition.json"
               "" | Out-File -Append "${dest}/createUiDefinition.json"
             }
-            Compress-Archive -Path "./releases/*" -DestinationPath "./releases/${env:PRODUCT}.ToLower()-azure-templates.zip"
+            Compress-Archive -Path "./releases/*" -DestinationPath "./releases/fortiproxy-azure-templates.zip"
           azPSVersion: "latest"
 
       - name: upload-templates-zip
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{secrets.GITHUB_TOKEN}}
-          file: ./releases/${env:PRODUCT}.ToLower()-azure-templates.zip
-          asset_name: ${env:PRODUCT}.ToLower()-azure-templates.zip
+          file: "./releases/fortiproxy-azure-templates.zip"
+          asset_name: "fortiproxy-azure-templates.zip"
           tag: ${{github.ref}}
           overwrite: true
-          body: "${env:PRODUCT} Azure Marketplace Release"
+          body: "FortiProxy Azure Marketplace Release"
