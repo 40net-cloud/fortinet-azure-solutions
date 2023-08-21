@@ -37,8 +37,8 @@ jobs:
             $marketplaceVersionsUI = @()
 
             $versions = Get-AzVMImage -PublisherName "${env:PUBLISHER}" -Location eastus -Offer "${env:PRODUCTOFFER}" -sku "${env:PRODUCTSKU}"
-            $marketplaceVersions += $($versions | Where-Object {$_.Version.StartsWith("6")} | Sort-Object -Unique -Property Version | Select-Object -Last 2).Version
-            $marketplaceVersions += $($versions | Where-Object {$_.Version.StartsWith("7")} | Sort-Object -Unique -Property Version | Select-Object -Last 2).Version
+            $marketplaceVersions += $($versions | Where-Object {$_.Version.StartsWith("7.0")} | Sort-Object -Unique -Property Version | Select-Object -Last 2).Version
+            $marketplaceVersions += $($versions | Where-Object {$_.Version.StartsWith("7.2")} | Sort-Object -Unique -Property Version | Select-Object -Last 2).Version
             $marketplaceVersions += "latest"
             $marketplaceVersions | ForEach-Object { $marketplaceVersionsUI += [pscustomobject]@{label=$_;value=$_} }
 
