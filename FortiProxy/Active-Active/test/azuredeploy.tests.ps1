@@ -60,6 +60,7 @@ Describe 'FPX A/A' {
             'contentVersion',
             'outputs',
             'parameters',
+            'functions',
             'resources',
             'variables'
             $templateProperties = (get-content $templateFileLocation | ConvertFrom-Json -ErrorAction SilentlyContinue) | Get-Member -MemberType NoteProperty | % Name
