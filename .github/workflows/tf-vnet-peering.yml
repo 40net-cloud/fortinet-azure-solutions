@@ -5,10 +5,12 @@ env:
 
 on:
   push:
+    branches:
+      - main
     paths:
-    - 'FortiGate/Terraform/VNET-Peering/**.tf'
-    - 'FortiGate/Terraform/VNET-Peering/**.tpl'
-    - 'FortiGate/Terraform/VNET-Peering/**.hcl'
+      - 'FortiGate/Terraform/VNET-Peering/**.tf'
+      - 'FortiGate/Terraform/VNET-Peering/**.tpl'
+      - 'FortiGate/Terraform/VNET-Peering/**.hcl'
 
 jobs:
   terraform_VNETP:

@@ -6,11 +6,6 @@ on:
   schedule:
     - cron:  '00 22 * * 0'
 
-  push:
-    branches: [ dev ]
-    paths:
-      - 'FortiManager/**'
-
 env:
   PRODUCT: FortiManager
   PRODUCTSHORT: FMG

@@ -8,8 +8,8 @@ on:
     branches:
       - main
     paths:
-    - 'FortiGate/Active-Passive-SDN/*.json'
-    - 'FortiGate/Active-Passive-SDN/**.tests.ps1'
+      - 'FortiGate/Active-Passive-SDN/*.json'
+      - 'FortiGate/Active-Passive-SDN/**.tests.ps1'
 
 jobs:
   ARM_Active-Passive-SDN:

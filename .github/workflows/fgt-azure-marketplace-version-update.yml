@@ -6,11 +6,6 @@ on:
   schedule:
     - cron:  '00 22 * * 0'
 
-  push:
-    branches: [ dev ]
-    paths:
-      - 'FortiGate/**'
-
 jobs:
   ARM-FGT-Version-Update:
     name: Update FGT version list

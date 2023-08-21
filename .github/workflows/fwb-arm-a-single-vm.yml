@@ -5,9 +5,11 @@ env:
 
 on:
   push:
+    branches:
+      - main
     paths:
-    - 'FortiWeb/A-Single-VM/**.json'
-    - 'FortiWeb/A-Single-VM/**.tests.ps1'
+      - 'FortiWeb/A-Single-VM/**.json'
+      - 'FortiWeb/A-Single-VM/**.tests.ps1'
 
 jobs:
   ARM_A-Single-VM:

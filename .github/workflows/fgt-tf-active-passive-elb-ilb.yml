@@ -5,10 +5,12 @@ env:
 
 on:
   push:
+    branches:
+      - main
     paths:
-    - 'FortiGate/Terraform/Active-Passive-ELB-ILB/*.tf'
-    - 'FortiGate/Terraform/Active-Passive-ELB-ILB/*.tpl'
-    - 'FortiGate/Terraform/Active-Passive-ELB-ILB/*.hcl'
+      - 'FortiGate/Terraform/Active-Passive-ELB-ILB/*.tf'
+      - 'FortiGate/Terraform/Active-Passive-ELB-ILB/*.tpl'
+      - 'FortiGate/Terraform/Active-Passive-ELB-ILB/*.hcl'
 
 jobs:
   terraform_AP:

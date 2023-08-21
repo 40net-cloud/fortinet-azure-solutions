@@ -5,9 +5,11 @@ env:
 
 on:
   push:
+    branches:
+      - main
     paths:
-    - 'FortiTester/TestCenter/*.json'
-    - 'FortiTester/TestCenter/**.tests.ps1'
+      - 'FortiTester/TestCenter/*.json'
+      - 'FortiTester/TestCenter/**.tests.ps1'
 
 jobs:
   ARM_TestCenter:

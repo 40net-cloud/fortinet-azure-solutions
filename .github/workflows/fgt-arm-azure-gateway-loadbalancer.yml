@@ -8,8 +8,8 @@ on:
     branches:
       - main
     paths:
-    - 'FortiGate/AzureGatewayLoadBalancer/*.json'
-    - 'FortiGate/AzureGatewayLoadBalancer/**.tests.ps1'
+      - 'FortiGate/AzureGatewayLoadBalancer/*.json'
+      - 'FortiGate/AzureGatewayLoadBalancer/**.tests.ps1'
 
 jobs:
   ARM_AzureGatewayLoadBalancer:
