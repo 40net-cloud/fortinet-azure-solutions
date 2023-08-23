@@ -407,6 +407,7 @@
     "sn2IPStartAddress": "[split(parameters('subnet2StartAddress'),'.')]",
     "sn1IPlb": "[concat(variables('sn1Octets4')[0],'.',variables('sn1Octets4')[1],'.',variables('sn1Octets4')[2],'.',int(variables('sn1IPStartAddress')[3]))]",
     "sn1IP": [
+      "[concat(variables('sn1Octets4')[0],'.',variables('sn1Octets4')[1],'.',variables('sn1Octets4')[2],'.',int(variables('sn1IPStartAddress')[3]))]",
       "[concat(variables('sn1Octets4')[0],'.',variables('sn1Octets4')[1],'.',variables('sn1Octets4')[2],'.',add(int(variables('sn1IPStartAddress')[3]),1))]",
       "[concat(variables('sn1Octets4')[0],'.',variables('sn1Octets4')[1],'.',variables('sn1Octets4')[2],'.',add(int(variables('sn1IPStartAddress')[3]),2))]",
       "[concat(variables('sn1Octets4')[0],'.',variables('sn1Octets4')[1],'.',variables('sn1Octets4')[2],'.',add(int(variables('sn1IPStartAddress')[3]),3))]",
@@ -859,7 +860,7 @@
           {
             "name": "[variables('internalLBFEName')]",
             "properties": {
-              "privateIPAddress": "[variables('sn1IPlb')]",
+              "privateIPAddress": "[variables('sn1IP')[0]]",
               "privateIPAllocationMethod": "Static",
               "subnet": {
                 "id": "[variables('subnet1Id')]"
@@ -932,7 +933,7 @@
           {
             "name": "ipconfig1",
             "properties": {
-              "privateIPAddress": "[concat(variables('sn1Octets4')[0],'.',variables('sn1Octets4')[1],'.',variables('sn1Octets4')[2],'.',add(int(variables('sn1IPStartAddress')[3]),copyIndex(1)))]",
+              "privateIPAddress": "[variables('sn1IP')[copyIndex(1)]]",
               "privateIPAllocationMethod": "Static",
               "subnet": {
                 "id": "[variables('subnet1Id')]"
@@ -980,7 +981,7 @@
           {
             "name": "ipconfig1",
             "properties": {
-              "privateIPAddress": "[concat(variables('sn2Octets4')[0],'.',variables('sn2Octets4')[1],'.',variables('sn2Octets4')[2],'.',add(int(variables('sn2IPStartAddress')[3]),copyIndex()))]",
+              "privateIPAddress": "[variables('sn2IP')[copyIndex(1)]]",
               "privateIPAllocationMethod": "Static",
               "subnet": {
                 "id": "[variables('subnet2Id')]"
