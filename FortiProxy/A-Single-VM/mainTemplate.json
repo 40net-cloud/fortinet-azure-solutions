@@ -644,10 +644,6 @@
     "fortiProxyConfig": {
       "type": "string",
       "value": "[if(equals(parameters('fortiProxyLicenseBYOL'),''),variables('customDataBody'),variables('customDataCombined'))]"
-    },
-    "parseCidr": {
-      "type": "Object",
-      "value": "[variables('sn1CidrObject')]"
     }
   }
 }
