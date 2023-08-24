@@ -868,7 +868,7 @@
       "vnetAddressPrefix": "[steps('networking').virtualnetworksection.virtualnetwork.addressPrefix]",
       "subnet1Name": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet1.name]",
       "subnet1Prefix": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet1.addressPrefix]",
-      "subnet1StartAddress": "[concat( substring( steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet1.startAddress, 0, add( int( lastIndexOf( steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet1.startAddress, '.')), 1)),string( add( int( substring( steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet1.startAddress, add( lastIndexOf( steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet1.startAddress, '.'),1), length(steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet1.startAddress))), 4)))]",
+      "subnet1StartAddress": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet1.startAddress]",
       "serialConsole": "[steps('advanced').serialconsole.enabled]",
       "fortiManager": "[steps('advanced').fortimanager.enabled]",
       "fortiManagerIP": "[steps('advanced').fortimanager.fortimanagerip]",
