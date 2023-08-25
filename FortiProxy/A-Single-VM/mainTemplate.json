@@ -344,89 +344,51 @@
   "variables": {
     "imagePublisher": "fortinet",
     "imageOffer": "fortinet-fortiproxy",
-
-    // If no availability set name is provided, the FortiProxy will be placed in a new availability set. Else, it will be placed in the existing availability set.
-    // An Availability Set name is created in the event that Avialability Zones are not available in the location.
     "availabilitySetName": "[if(equals(parameters('existingAvailabilitySetName'),''), concat(parameters('fortiProxyNamePrefix'), '-avail-fpx'), parameters('existingAvailabilitySetName'))]",
-
     "availabilitySetId": {
       "id": "[resourceId('Microsoft.Compute/availabilitySets', variables('availabilitySetName'))]"
     },
-
-    // Has Availability set been selected?
     "useAS": "[equals(parameters('availabilityOptions'), 'Availability set')]",
-
-    // Has Availability zone been selected?
     "useAZ": "[and(not(empty(pickZones('Microsoft.Compute', 'virtualMachines', parameters('location')))), equals(parameters('availabilityOptions'), 'Availability zone'))]",
-
-    // If Availability Zone is selected ensure a zonal public IP is supported in the location.
     "pipZones": "[if(variables('useAZ'), pickZones('Microsoft.Network', 'publicIPAddresses', parameters('location'), 3), json('null'))]",
-
-    // If no Availability Zone number is provided, the FortiProxy will be placed in Zone 1. Else, it will be placed in the specified Availability Zone.
     "zone1": "[if(equals(parameters('availabilityZoneNumber'),''),pickZones('Microsoft.Compute', 'virtualMachines', parameters('location')),array(parameters('availabilityZoneNumber')))]",
-
-    // FortiProxy VM name
     "fpxVmName": "[if(equals(parameters('fortiProxyName'),''),concat(parameters('fortiProxyNamePrefix'),'-vm-fpx', parameters('fortiProxyNameSuffix')),parameters('fortiProxyName'))]",
-
-    // VNET Name
     "vnetName": "[if(equals(parameters('vnetName'),''),concat(parameters('fortiProxyNamePrefix'),'-vnet'),parameters('vnetName'))]",
     "subnet1Id": "[if(equals(parameters('vnetNewOrExisting'),'new'),resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet1Name')),resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet1Name')))]",
-
-    // Subnet 1 CIDR Object, attribute firstUsable is used to set the default gateway, attribute cidr is used to set the subnet mask
     "sn1CidrObject": "[parseCidr(parameters('subnet1Prefix'))]",
     "sn1IPfpx": "[concat(split(parameters('subnet1Prefix'),'.')[0],'.',split(parameters('subnet1Prefix'),'.')[1],'.',split(parameters('subnet1Prefix'),'.')[2],'.',int(split(parameters('subnet1StartAddress'),'.')[3]))]",
-
-    // Interfaces 
     "fpxNic1Name": "[concat(variables('fpxVmName'),'-nic-1')]",
     "fpxNic1Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('fpxNic1Name'))]",
-
-    // Public IP 1
     "publicIP1Name": "[if(equals(parameters('publicIP1Name'),''),concat(parameters('fortiProxyNamePrefix'),'-pip-fpx'),parameters('publicIP1Name'))]",
     "publicIP1Id": "[if(equals(parameters('publicIP1NewOrExistingOrNone'),'new'),resourceId('Microsoft.Network/publicIPAddresses',variables('publicIP1Name')),resourceId(parameters('publicIP1ResourceGroup'),'Microsoft.Network/publicIPAddresses',variables('publicIP1Name')))]",
-
     "publicIP1AddressId": {
       "id": "[variables('publicIP1Id')]"
     },
-
-    // Connect to FortiManager configuration
     "fmgCustomData": "[if(equals(parameters('fortiManager'),'yes'),concat('\nconfig system central-management\nset type fortimanager\n set fmg ',parameters('fortiManagerIP'),'\nset serial-number ', parameters('fortiManagerSerial'), '\nend\n config system interface\n edit port1\n append allowaccess fgfm\n end\n config system interface\n edit port2\n append allowaccess fgfm\n end\n'),'')]",
-
-    // Configuration data header when licenses are provided
     "customDataHeader": "Content-Type: multipart/mixed; boundary=\"12345\"\nMIME-Version: 1.0\n\n--12345\nContent-Type: text/plain; charset=\"us-ascii\"\nMIME-Version: 1.0\nContent-Transfer-Encoding: 7bit\nContent-Disposition: attachment; filename=\"config\"\n\n",
-
-    // Configuration data body
     "customDataBody": "[concat('config system global\nset hostname ', variables('fpxVmName'), '\nend\nconfig system sdn-connector\nedit AzureSDN\nset type azure\nnext\nend\nconfig router static\nedit 1\nset gateway ', variables('sn1CidrObject').firstUsable, '\nset device port1\nnext\nend\nconfig system interface\nedit port1\nset mode static\nset ip ', variables('sn1IPfpx'), '/', variables('sn1CidrObject').cidr, '\nset description external\nset allowaccess ping ssh https\nnext\nend\n', variables('fmgCustomData'), parameters('fortiProxyAdditionalCustomData'), '\n')]",
     "customDataLicenseHeader": "--12345\nContent-Type: text/plain; charset=\"us-ascii\"\nMIME-Version: 1.0\nContent-Transfer-Encoding: 7bit\nContent-Disposition: attachment; filename=\"license\"\n\n",
     "customDataFooter": "\n--12345--\n",
     "customDataCombined": "[concat(variables('customDataHeader'),variables('customDataBody'),variables('customDataLicenseHeader'), parameters('fortiProxyLicenseBYOL'), variables('customDataFooter'))]",
     "fpxCustomData": "[base64(if(equals(parameters('fortiProxyLicenseBYOL'),''),variables('customDataBody'),variables('customDataCombined')))]",
-
-    // Serial Console enabled?
     "serialConsoleEnabled": "[if(equals(parameters('serialConsole'),'yes'),'true','false')]",
-
     "imageReferenceMarketplace": {
       "publisher": "[variables('imagePublisher')]",
       "offer": "[variables('imageOffer')]",
       "sku": "[parameters('fortiProxyImageSKU')]",
       "version": "[parameters('fortiProxyImageVersion')]"
     },
-
     "imageReferenceCustomImage": {
       "id": "[parameters('customImageReference')]"
     },
-
     "virtualMachinePlan": {
       "name": "[parameters('fortiProxyImageSKU')]",
       "publisher": "[variables('imagePublisher')]",
       "product": "[variables('imageOffer')]"
     },
-
-    // NSG
     "nsgName": "[concat(parameters('fortiProxyNamePrefix'),'-nsg')]",
     "nsgId": "[resourceID('Microsoft.Network/networkSecurityGroups/',variables('nsgName'))]",
-
     "nsgRules": [
-      /* name, description, protocol, sourcePortRange, destinationPortRange, sourceAddressPrefix, destinationAddressPrefix, access, priority, direction */
       [ "nsgrule-ssh-in", "Allow SSH In", "Tcp", "*", "22", "*", "*", "Allow", 100, "Inbound" ],
       [ "nsgrule-http-in", "Allow HTTP In", "Tcp", "*", "80", "*", "*", "Allow", "110", "Inbound" ],
       [ "nsgrule-https-in", "Allow HTTPS In", "Tcp", "*", "443", "*", "*", "Allow", "120", "Inbound" ],
