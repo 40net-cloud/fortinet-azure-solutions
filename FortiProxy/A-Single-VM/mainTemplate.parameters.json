@@ -11,6 +11,9 @@
         "fortiProxyNamePrefix": {
             "value": "## TO BE DEFINED ##"
         },
+        "fortiProxyNameSuffix": {
+            "value": "## TO BE DEFINED ##"
+        },
         "fortiProxyName": {
             "value": ""
         },
@@ -66,7 +69,7 @@
             "value": "172.16.136.0/22"
         },
         "subnet1Name": {
-            "value": "FPXSubnet"
+            "value": "snet-fpx"
         },
         "subnet1Prefix": {
             "value": "172.16.136.0/26"
