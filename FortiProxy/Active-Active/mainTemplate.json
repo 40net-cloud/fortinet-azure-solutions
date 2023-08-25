@@ -522,8 +522,8 @@
   },
   "functions": [
     {
-     "namespace": "ha",
-     "members": {
+      "namespace": "ha",
+      "members": {
         "unicastpeers": {
           "parameters": [
             {
