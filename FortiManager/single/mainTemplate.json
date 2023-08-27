@@ -134,7 +134,6 @@
         "description": "Name of existing Availability Set in case you want to replace or add a FortiGate to an existing cluster."
       }
     },
-
     "publicIPNewOrExisting": {
       "type": "string",
       "defaultValue": "new",
