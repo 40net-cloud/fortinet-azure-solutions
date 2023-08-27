@@ -34,7 +34,6 @@
         "description": "Custom naming for the deployed FortiProxy VM. This will override the automatic generation based on the prefix and suffix for the FortiProxy name."
       }
     },
-
     "fortiProxyImageSKU": {
       "type": "string",
       "defaultValue": "fpx-vm-byol",
@@ -389,12 +388,78 @@
     "nsgName": "[concat(parameters('fortiProxyNamePrefix'),'-nsg')]",
     "nsgId": "[resourceID('Microsoft.Network/networkSecurityGroups/',variables('nsgName'))]",
     "nsgRules": [
-      [ "nsgrule-ssh-in", "Allow SSH In", "Tcp", "*", "22", "*", "*", "Allow", 100, "Inbound" ],
-      [ "nsgrule-http-in", "Allow HTTP In", "Tcp", "*", "80", "*", "*", "Allow", "110", "Inbound" ],
-      [ "nsgrule-https-in", "Allow HTTPS In", "Tcp", "*", "443", "*", "*", "Allow", "120", "Inbound" ],
-      [ "nsgrule-fpx-in", "Allow Proxy (8080) In", "Tcp", "*", "8080", "*", "*", "Allow", "130", "Inbound" ],
-      [ "nsgrule-fmg-in", "Allow FortiManager (541) In", "Tcp", "*", "541", "*", "*", "Allow", "140", "Inbound" ],
-      [ "nsgrule-all-out", "Allow All Out", "*", "*", "*", "*", "*", "Allow", "105", "Outbound" ]
+      [
+        "nsgrule-ssh-in",
+        "Allow SSH In",
+        "Tcp",
+        "*",
+        "22",
+        "*",
+        "*",
+        "Allow",
+        100,
+        "Inbound"
+      ],
+      [
+        "nsgrule-http-in",
+        "Allow HTTP In",
+        "Tcp",
+        "*",
+        "80",
+        "*",
+        "*",
+        "Allow",
+        "110",
+        "Inbound"
+      ],
+      [
+        "nsgrule-https-in",
+        "Allow HTTPS In",
+        "Tcp",
+        "*",
+        "443",
+        "*",
+        "*",
+        "Allow",
+        "120",
+        "Inbound"
+      ],
+      [
+        "nsgrule-fpx-in",
+        "Allow Proxy (8080) In",
+        "Tcp",
+        "*",
+        "8080",
+        "*",
+        "*",
+        "Allow",
+        "130",
+        "Inbound"
+      ],
+      [
+        "nsgrule-fmg-in",
+        "Allow FortiManager (541) In",
+        "Tcp",
+        "*",
+        "541",
+        "*",
+        "*",
+        "Allow",
+        "140",
+        "Inbound"
+      ],
+      [
+        "nsgrule-all-out",
+        "Allow All Out",
+        "*",
+        "*",
+        "*",
+        "*",
+        "*",
+        "Allow",
+        "105",
+        "Outbound"
+      ]
     ]
   },
   "resources": [
