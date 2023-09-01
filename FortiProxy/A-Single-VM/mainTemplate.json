@@ -57,7 +57,10 @@
         "7.2.5",
         "7.2.6",
         "latest"
-      ]
+      ],
+      "metadata": {
+        "description": "Select the image version"
+      }
     },
     "fortiProxyAdditionalCustomData": {
       "type": "string",
@@ -184,7 +187,7 @@
         "none"
       ],
       "metadata": {
-        "description": "Choose between an existing or new public IP address to be linked to the external interface of the FortiProxy VM."
+        "description": "Choose between an existing or new public IP address to be linked to the external interface of the FortiProxy VM. It is also possible to select none and no public IP will be created and attached to the FortiProxy."
       }
     },
     "publicIP1Name": {
@@ -257,7 +260,7 @@
     },
     "subnet1Name": {
       "type": "string",
-      "defaultValue": "FPXSubnet",
+      "defaultValue": "fpxsubnet",
       "metadata": {
         "description": "Subnet Name."
       }
@@ -344,7 +347,7 @@
   "variables": {
     "imagePublisher": "fortinet",
     "imageOffer": "fortinet-fortiproxy",
-    "availabilitySetName": "[if(equals(parameters('existingAvailabilitySetName'),''), concat(parameters('fortiProxyNamePrefix'), '-avail-fpx'), parameters('existingAvailabilitySetName'))]",
+    "availabilitySetName": "[if(equals(parameters('existingAvailabilitySetName'),''), concat(parameters('fortiProxyNamePrefix'), '-availabilityset', parameters('fortiProxyNameSuffix')), parameters('existingAvailabilitySetName'))]",
     "availabilitySetId": {
       "id": "[resourceId('Microsoft.Compute/availabilitySets', variables('availabilitySetName'))]"
     },
@@ -352,14 +355,14 @@
     "useAZ": "[and(not(empty(pickZones('Microsoft.Compute', 'virtualMachines', parameters('location')))), equals(parameters('availabilityOptions'), 'Availability zone'))]",
     "pipZones": "[if(variables('useAZ'), pickZones('Microsoft.Network', 'publicIPAddresses', parameters('location'), 3), json('null'))]",
     "zone1": "[if(equals(parameters('availabilityZoneNumber'),''),pickZones('Microsoft.Compute', 'virtualMachines', parameters('location')),array(parameters('availabilityZoneNumber')))]",
-    "fpxVmName": "[if(equals(parameters('fortiProxyName'),''),concat(parameters('fortiProxyNamePrefix'),'-vm-fpx', parameters('fortiProxyNameSuffix')),parameters('fortiProxyName'))]",
-    "vnetName": "[if(equals(parameters('vnetName'),''),concat(parameters('fortiProxyNamePrefix'),'-vnet'),parameters('vnetName'))]",
+    "fpxVmName": "[if(equals(parameters('fortiProxyName'),''),concat(parameters('fortiProxyNamePrefix'),'-fpx-vm', parameters('fortiProxyNameSuffix')),parameters('fortiProxyName'))]",
+    "vnetName": "[if(equals(parameters('vnetName'),''),concat(parameters('fortiProxyNamePrefix'), '-vnet', parameters('fortiProxyNameSuffix')),parameters('vnetName'))]",
     "subnet1Id": "[if(equals(parameters('vnetNewOrExisting'),'new'),resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet1Name')),resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet1Name')))]",
     "sn1CidrObject": "[parseCidr(parameters('subnet1Prefix'))]",
     "sn1IPfpx": "[concat(split(parameters('subnet1Prefix'),'.')[0],'.',split(parameters('subnet1Prefix'),'.')[1],'.',split(parameters('subnet1Prefix'),'.')[2],'.',int(split(parameters('subnet1StartAddress'),'.')[3]))]",
-    "fpxNic1Name": "[concat(variables('fpxVmName'),'-nic-1')]",
+    "fpxNic1Name": "[concat(parameters('fortiProxyNamePrefix'), '-fpx-nic-1', parameters('fortiProxyNameSuffix'))]",
     "fpxNic1Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('fpxNic1Name'))]",
-    "publicIP1Name": "[if(equals(parameters('publicIP1Name'),''),concat(parameters('fortiProxyNamePrefix'),'-pip-fpx'),parameters('publicIP1Name'))]",
+    "publicIP1Name": "[if(equals(parameters('publicIP1Name'),''),concat(parameters('fortiProxyNamePrefix'),'-fpx-pip'),parameters('publicIP1Name'))]",
     "publicIP1Id": "[if(equals(parameters('publicIP1NewOrExistingOrNone'),'new'),resourceId('Microsoft.Network/publicIPAddresses',variables('publicIP1Name')),resourceId(parameters('publicIP1ResourceGroup'),'Microsoft.Network/publicIPAddresses',variables('publicIP1Name')))]",
     "publicIP1AddressId": {
       "id": "[variables('publicIP1Id')]"
@@ -564,12 +567,12 @@
         "storageProfile": {
           "imageReference": "[if(and(equals(parameters('fortiProxyImageSKU'),'fortinet-fortiproxy'),not(equals(parameters('customImageReference'),''))), variables('imageReferenceCustomImage'), variables('imageReferenceMarketplace'))]",
           "osDisk": {
-            "name": "[concat(toLower(variables('fpxVmName')), '-osdisk')]",
+            "name": "[toLower(concat(variables('fpxVmName'), '-osdisk'))]",
             "createOption": "FromImage"
           },
           "dataDisks": [
             {
-              "name": "[concat(toLower(variables('fpxVmName')), '-disk')]",
+              "name": "[toLower(concat(variables('fpxVmName'), '-disk'))]",
               "diskSizeGB": 30,
               "lun": 0,
               "createOption": "Empty"
