@@ -402,31 +402,31 @@
     "sn2Octets4": "[split(variables('sn2CidrObject').firstUsable,'.')]",
     "sn2IPStartAddress": "[split(parameters('subnet2StartAddress'),'.')]",
     "copy": [
-        {
-          "name": "sn1IP",
-          "count": "[length(range(1, 9))]",
-          "input": "[cidrHost(parameters('subnet1Prefix'), range(sub(int(variables('sn1IPStartAddress')[3]),int(variables('sn1Octets4')[3])), 9)[copyIndex('sn1IP')])]"
-        },
-        {
-          "name": "sn2IP",
-          "count": "[length(range(1, 9))]",
-          "input": "[cidrHost(parameters('subnet2Prefix'), range(sub(int(variables('sn2IPStartAddress')[3]),int(variables('sn2Octets4')[3])), 9)[copyIndex('sn2IP')])]"
-        },
-        {
-          "name": "interfaceCustomData",
-          "count": "[length(range(1, 8))]",
-          "input": "[concat('config system interface\n edit port1\n set ip ',variables('sn1IP')[copyIndex('interfaceCustomData',1)],'/',variables('sn1CidrObject').cidr,'\nset mode static\n set description proxy\n set allowaccess ping ssh https probe-response\n next\n edit port2\nset ip ',variables('sn2IP')[copyIndex('interfaceCustomData',1)],'/',variables('sn2CidrObject').cidr,'\nset mode static\nset description hasync\nnext\nend\n')]"
-        },
-        {
-          "name": "haPeerCustomData",
-          "count": "[length(range(1, 8))]",
-          "input": "[concat('config unicast-peers\n', ha.unicastpeers(variables('sn2IP'),parameters('fortiProxyCount'),copyIndex('haPeerCustomData',1)), '\nend\n')]"
-        },
-        {
-          "name": "haCustomData",
-          "count": "[length(range(1, 8))]",
-          "input": "[concat('config system ha\nset group-name fpx-cluster\nset mode config-sync-only\nset password ', parameters('adminPassword'), '\nset hbdev port2 0\nset override disable\nset priority 255\nset monitor port1\nset unicast-status enable\n', variables('haPeerCustomData')[copyIndex('haCustomData',1)],'\nend\n')]"
-        }
+      {
+        "name": "sn1IP",
+        "count": "[length(range(1, 9))]",
+        "input": "[cidrHost(parameters('subnet1Prefix'), range(sub(int(variables('sn1IPStartAddress')[3]),int(variables('sn1Octets4')[3])), 9)[copyIndex('sn1IP')])]"
+      },
+      {
+        "name": "sn2IP",
+        "count": "[length(range(1, 9))]",
+        "input": "[cidrHost(parameters('subnet2Prefix'), range(sub(int(variables('sn2IPStartAddress')[3]),int(variables('sn2Octets4')[3])), 9)[copyIndex('sn2IP')])]"
+      },
+      {
+        "name": "interfaceCustomData",
+        "count": "[length(range(1, 8))]",
+        "input": "[concat('config system interface\n edit port1\n set ip ',variables('sn1IP')[copyIndex('interfaceCustomData',1)],'/',variables('sn1CidrObject').cidr,'\nset mode static\n set description proxy\n set allowaccess ping ssh https probe-response\n next\n edit port2\nset ip ',variables('sn2IP')[copyIndex('interfaceCustomData',1)],'/',variables('sn2CidrObject').cidr,'\nset mode static\nset description hasync\nnext\nend\n')]"
+      },
+      {
+        "name": "haPeerCustomData",
+        "count": "[length(range(1, 8))]",
+        "input": "[concat('config unicast-peers\n', ha.unicastpeers(variables('sn2IP'),parameters('fortiProxyCount'),copyIndex('haPeerCustomData',1)), '\nend\n')]"
+      },
+      {
+        "name": "haCustomData",
+        "count": "[length(range(1, 8))]",
+        "input": "[concat('config system ha\nset group-name fpx-cluster\nset mode config-sync-only\nset password ', parameters('adminPassword'), '\nset hbdev port2 0\nset override disable\nset priority 255\nset monitor port1\nset unicast-status enable\n', variables('haPeerCustomData')[copyIndex('haCustomData',1)],'\nend\n')]"
+      }
     ],
     "customDataBody": [
       "[concat(variables('interfaceCustomData')[0],variables('customDataBodyShared'),variables('haCustomData')[0])]",
@@ -493,12 +493,78 @@
     "nsgName": "[concat(parameters('fortiProxyNamePrefix'),'-nsg')]",
     "nsgId": "[resourceID('Microsoft.Network/networkSecurityGroups/',variables('nsgName'))]",
     "nsgRules": [
-      [ "nsgrule-ssh-in", "Allow SSH In", "Tcp", "*", "22", "*", "*", "Allow", 100, "Inbound" ],
-      [ "nsgrule-http-in", "Allow HTTP In", "Tcp", "*", "80", "*", "*", "Allow", "110", "Inbound" ],
-      [ "nsgrule-https-in", "Allow HTTPS In", "Tcp", "*", "443", "*", "*", "Allow", "120", "Inbound" ],
-      [ "nsgrule-fpx-in", "Allow Proxy (8080) In", "Tcp", "*", "8080", "*", "*", "Allow", "130", "Inbound" ],
-      [ "nsgrule-fmg-in", "Allow FortiManager (541) In", "Tcp", "*", "541", "*", "*", "Allow", "140", "Inbound" ],
-      [ "nsgrule-all-out", "Allow All Out", "*", "*", "*", "*", "*", "Allow", "105", "Outbound" ]
+      [
+        "nsgrule-ssh-in",
+        "Allow SSH In",
+        "Tcp",
+        "*",
+        "22",
+        "*",
+        "*",
+        "Allow",
+        100,
+        "Inbound"
+      ],
+      [
+        "nsgrule-http-in",
+        "Allow HTTP In",
+        "Tcp",
+        "*",
+        "80",
+        "*",
+        "*",
+        "Allow",
+        "110",
+        "Inbound"
+      ],
+      [
+        "nsgrule-https-in",
+        "Allow HTTPS In",
+        "Tcp",
+        "*",
+        "443",
+        "*",
+        "*",
+        "Allow",
+        "120",
+        "Inbound"
+      ],
+      [
+        "nsgrule-fpx-in",
+        "Allow Proxy (8080) In",
+        "Tcp",
+        "*",
+        "8080",
+        "*",
+        "*",
+        "Allow",
+        "130",
+        "Inbound"
+      ],
+      [
+        "nsgrule-fmg-in",
+        "Allow FortiManager (541) In",
+        "Tcp",
+        "*",
+        "541",
+        "*",
+        "*",
+        "Allow",
+        "140",
+        "Inbound"
+      ],
+      [
+        "nsgrule-all-out",
+        "Allow All Out",
+        "*",
+        "*",
+        "*",
+        "*",
+        "*",
+        "Allow",
+        "105",
+        "Outbound"
+      ]
     ]
   },
   "functions": [
