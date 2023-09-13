@@ -19,7 +19,7 @@ This Azure ARM template will automatically deploy a full working environment con
 - Optional: 1 Basic public IP
 
 <p align="center">
-  <img src="images/faz-single-1nic-small.png" alt="FortiAnalyzer-VM azure design"/>
+  <img src="images/faz-single-small.png" alt="FortiAnalyzer-VM azure design"/>
 </p>
 
 This Azure ARM template can also be extended or customized based on your requirements. Additional subnets besides the ones mentioned above are not automatically generated.
@@ -27,7 +27,7 @@ This Azure ARM template can also be extended or customized based on your require
 The FortiAnalyzer can also be deployed without a public IP on the network interface. Select 'None' as the public IP.
 
 <p align="center">
-  <img src="images/faz-single-1nic-private-small.png" alt="FortiAnalyzer-VM azure design"/>
+  <img src="images/faz-single-private-small.png" alt="FortiAnalyzer-VM azure design"/>
 </p>
 
 ## Deployment
@@ -41,17 +41,17 @@ For the deployment, you can use the Azure Portal, Azure CLI, Powershell or Azure
 
 ### Azure Portal
 
-[![Deploy To Azure](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.svg?sanitize=true)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Ffortinet%2Fazure-templates%2Fmain%2FFortiAnalyzer%2Fsingle-1nic%2FmainTemplate.json)
-[![Visualize](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/visualizebutton.svg?sanitize=true)](http://armviz.io/#/?load=https%3A%2F%2Fraw.githubusercontent.com%2Ffortinet%2Fazure-templates$2Fmain%2FFortiAnalyzer%2Fsingle-1nic%2FmainTemplate.json)
+[![Deploy To Azure](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.svg?sanitize=true)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Ffortinet%2Fazure-templates%2Fmain%2FFortiAnalyzer%2Fsingle%2FmainTemplate.json)
+[![Visualize](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/visualizebutton.svg?sanitize=true)](http://armviz.io/#/?load=https%3A%2F%2Fraw.githubusercontent.com%2Ffortinet%2Fazure-templates$2Fmain%2FFortiAnalyzer%2Fsingle%2FmainTemplate.json)
 
 Azure Portal Wizard:
-[![Azure Portal Wizard](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.svg?sanitize=true)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Ffortinet%2Fazure-templates%2Fmain%2FFortiAnalyzer%2Fsingle-1nic%2FmainTemplate.json/createUIDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2Ffortinet%2Fazure-templates%2Fmain%2FFortiAnalyzer%2Fsingle-1nic%2FcreateUiDefinition.json)
+[![Azure Portal Wizard](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.svg?sanitize=true)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Ffortinet%2Fazure-templates%2Fmain%2FFortiAnalyzer%2Fsingle%2FmainTemplate.json/createUIDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2Ffortinet%2Fazure-templates%2Fmain%2FFortiAnalyzer%2Fsingle%2FcreateUiDefinition.json)
 
 
 ### Azure CLI
 To fast track the deployment, use the Azure Cloud Shell. The Azure Cloud Shell is an in-browser CLI that contains Terraform and other tools for deployment into Microsoft Azure. It is accessible via the Azure Portal or directly at [https://shell.azure.com/](https://shell.azure.com). You can copy and paste the below one-liner to get started with your deployment.
 
-`cd ~/clouddrive/ && wget -qO- https://github.com/fortinet/azure-templates/archive/main.tar.gz | tar zxf - && cd ~/clouddrive/azure-templates-main/FortiAnalyzer/single-1nic/ && ./deploy.sh`
+`cd ~/clouddrive/ && wget -qO- https://github.com/fortinet/azure-templates/archive/main.tar.gz | tar zxf - && cd ~/clouddrive/azure-templates-main/FortiAnalyzer/single/ && ./deploy.sh`
 
 ![Azure Cloud Shell](images/azure-cloud-shell.png)
 

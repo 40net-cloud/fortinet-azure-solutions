@@ -108,6 +108,32 @@
         "description": "Virtual Machine size selection - must be F4 or other instance that supports 4 NICs"
       }
     },
+    "availabilityOptions": {
+      "type": "string",
+      "allowedValues": [
+        "None",
+        "Availability set",
+        "Availability zone"
+      ],
+      "defaultValue": "None",
+      "metadata": {
+        "description": "Deploy FortiGate VM in an Availability Set or Availability Zones. If Availability Zones deployment is selected but the location does not support Availability Zones an Availability Set will be deployed. If Availability Zones deployment is selected and Availability Zones are available in the location, FortiGate A will be placed in Zone 1, FortiGate B will be placed in Zone 2"
+      }
+    },
+    "existingAvailabilitySetName": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Name of existing Availability Set in case you want to replace or add a FortiGate to an existing cluster."
+      }
+    },
+    "availabilityZoneNumber": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Name of existing Availability Set in case you want to replace or add a FortiGate to an existing cluster."
+      }
+    },
     "publicIPNewOrExisting": {
       "type": "string",
       "defaultValue": "new",
@@ -117,7 +143,7 @@
         "none"
       ],
       "metadata": {
-        "description": "Choose between an existing, new or non public IP for the FortiAnalyzer VM"
+        "description": "Choose between an existing, new or no public IP for the FortiAnalyzer VM"
       }
     },
     "publicIPName": {
@@ -198,6 +224,17 @@
         "description": "Subnet 1 start address, 1 consecutive private IPs are required"
       }
     },
+    "serialConsole": {
+      "type": "string",
+      "defaultValue": "yes",
+      "allowedValues": [
+        "yes",
+        "no"
+      ],
+      "metadata": {
+        "description": "Enable Serial Console"
+      }
+    },
     "diskType": {
       "type": "string",
       "defaultValue": "Default",
@@ -251,6 +288,17 @@
     }
   },
   "variables": {
+    "imagePublisher": "fortinet",
+    "imageOffer": "fortinet_fortigate-vm_v5",
+    "availabilitySetName": "[if(equals(parameters('existingAvailabilitySetName'),''),concat(parameters('namePrefix'),'-AvailabilitySet'),parameters('existingAvailabilitySetName'))]",
+    "availabilitySetId": {
+      "id": "[resourceId('Microsoft.Compute/availabilitySets', variables('availabilitySetName'))]"
+    },
+    "useAS": "[equals(parameters('availabilityOptions'), 'Availability set')]",
+    "useAZ": "[and(not(empty(pickZones('Microsoft.Compute', 'virtualMachines', parameters('location')))), equals(parameters('availabilityOptions'), 'Availability zone'))]",
+    "pipZones": "[if(variables('useAZ'), pickZones('Microsoft.Network', 'publicIPAddresses', parameters('location'), 3), json('null'))]",
+    "zone1": "[if(equals(parameters('availabilityZoneNumber'),''),pickZones('Microsoft.Compute', 'virtualMachines', parameters('location')),array(parameters('availabilityZoneNumber')))]",
+
     "vnetName": "[if(equals(parameters('vnetName'),''),concat(parameters('namePrefix'),'-VNET'),parameters('vnetName'))]",
     "subnet1Id": "[if(equals(parameters('vnetNewOrExisting'),'new'),resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'), parameters('subnet1Name')),resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet1Name')))]",
     "fazVmName": "[concat(parameters('namePrefix'),'-FAZ-A')]",
@@ -267,6 +315,7 @@
     "publicIPAddressId": {
       "id": "[variables('publicIPId')]"
     },
+    "serialConsoleEnabled": "[if(equals(parameters('serialConsole'),'yes'),'true','false')]",
     "NSGName": "[concat(parameters('namePrefix'),'-',uniqueString(resourceGroup().id),'-NSG')]",
     "sn1IPArray": "[split(parameters('subnet1Prefix'),'.')]",
     "sn1IPArray2ndString": "[string(variables('sn1IPArray')[3])]",
@@ -292,6 +341,23 @@
           "contentVersion": "1.0.0.0",
           "resources": []
         }
+      }
+    },
+    {
+      "condition": "[and(variables('useAS'),equals(parameters('existingAvailabilitySetName'),''))]",
+      "type": "Microsoft.Compute/availabilitySets",
+      "name": "[variables('availabilitySetName')]",
+      "apiVersion": "2022-03-01",
+      "location": "[parameters('location')]",
+      "tags": {
+        "provider": "[toUpper(parameters('fortinetTags').provider)]"
+      },
+      "properties": {
+        "platformFaultDomainCount": 2,
+        "platformUpdateDomainCount": 2
+      },
+      "sku": {
+        "name": "Aligned"
       }
     },
     {
@@ -402,15 +468,16 @@
     {
       "condition": "[equals(parameters('publicIPNewOrExisting'), 'new')]",
       "type": "Microsoft.Network/publicIPAddresses",
+      "name": "[variables('publicIPName')]",
       "apiVersion": "2022-01-01",
+      "location": "[parameters('location')]",
       "tags": {
         "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
-      "name": "[variables('publicIPName')]",
-      "location": "[parameters('location')]",
       "sku": {
         "name": "Basic"
       },
+      "zones": "[variables('pipZones')]",
       "properties": {
         "publicIPAllocationMethod": "[parameters('publicIPAddressType')]"
       }
@@ -453,14 +520,15 @@
       "tags": {
         "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
+      "location": "[parameters('location')]",
       "identity": {
         "type": "SystemAssigned"
       },
-      "location": "[parameters('location')]",
+      "zones": "[if(variables('useAZ'), variables('zone1'), json('null'))]",
       "plan": {
         "name": "[parameters('imageSku')]",
-        "publisher": "fortinet",
-        "product": "fortinet-fortianalyzer"
+        "publisher": "[variables('imagePublisher')]",
+        "product": "[variables('imageOffer')]"
       },
       "dependsOn": [
         "[variables('fazNic1Name')]"
@@ -469,6 +537,7 @@
         "hardwareProfile": {
           "vmSize": "[parameters('instanceType')]"
         },
+        "availabilitySet": "[if(variables('useAS'), variables('availabilitySetId'), json('null'))]",
         "osProfile": {
           "computerName": "[variables('fazVmName')]",
           "adminUsername": "[parameters('adminUsername')]",
@@ -477,8 +546,8 @@
         },
         "storageProfile": {
           "imageReference": {
-            "publisher": "fortinet",
-            "offer": "fortinet-fortianalyzer",
+            "publisher": "[variables('imagePublisher')]",
+            "offer": "[variables('imageOffer')]",
             "sku": "[parameters('imageSku')]",
             "version": "[parameters('imageVersion')]"
           },
@@ -513,6 +582,11 @@
               "id": "[variables('fazNic1Id')]"
             }
           ]
+        },
+        "diagnosticsProfile": {
+          "bootDiagnostics": {
+            "enabled": "[variables('serialConsoleEnabled')]"
+          }
         }
       }
     }
