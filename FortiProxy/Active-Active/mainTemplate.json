@@ -404,59 +404,44 @@
     "copy": [
         {
           "name": "sn1IP",
-          "count": "[length(range(1, 9))]",
+          "count": 9,
           "input": "[cidrHost(parameters('subnet1Prefix'), range(sub(int(variables('sn1IPStartAddress')[3]),int(variables('sn1Octets4')[3])), 9)[copyIndex('sn1IP')])]"
         },
         {
           "name": "sn2IP",
-          "count": "[length(range(1, 9))]",
+          "count": 9,
           "input": "[cidrHost(parameters('subnet2Prefix'), range(sub(int(variables('sn2IPStartAddress')[3]),int(variables('sn2Octets4')[3])), 9)[copyIndex('sn2IP')])]"
         },
         {
           "name": "interfaceCustomData",
-          "count": "[length(range(1, 8))]",
+          "count": 8,
           "input": "[concat('config system interface\n edit port1\n set ip ',variables('sn1IP')[copyIndex('interfaceCustomData',1)],'/',variables('sn1CidrObject').cidr,'\nset mode static\n set description proxy\n set allowaccess ping ssh https probe-response\n next\n edit port2\nset ip ',variables('sn2IP')[copyIndex('interfaceCustomData',1)],'/',variables('sn2CidrObject').cidr,'\nset mode static\nset description hasync\nnext\nend\n')]"
         },
         {
           "name": "haPeerCustomData",
-          "count": "[length(range(1, 8))]",
+          "count": 8,
           "input": "[concat('config unicast-peers\n', ha.unicastpeers(variables('sn2IP'),parameters('fortiProxyCount'),copyIndex('haPeerCustomData',1)), '\nend\n')]"
         },
         {
           "name": "haCustomData",
+          "count": 8,
+          "input": "[concat('config system ha\nset group-name fpx-cluster\nset mode config-sync-only\nset password ', parameters('adminPassword'), '\nset hbdev port2 0\nset override disable\nset priority 255\nset monitor port1\nset unicast-status enable\n', variables('haPeerCustomData')[copyIndex('haCustomData')],'\nend\n')]"
+        },
+        {
+          "name": "customDataBody",
           "count": "[length(range(1, 8))]",
-          "input": "[concat('config system ha\nset group-name fpx-cluster\nset mode config-sync-only\nset password ', parameters('adminPassword'), '\nset hbdev port2 0\nset override disable\nset priority 255\nset monitor port1\nset unicast-status enable\n', variables('haPeerCustomData')[copyIndex('haCustomData',1)],'\nend\n')]"
+          "input": "[concat(variables('interfaceCustomData')[copyIndex('customDataBody')],variables('customDataBodyShared'),variables('haCustomData')[copyIndex('customDataBody')])]"
+        },
+        {
+          "name": "customDataCombined",
+          "count": "[length(range(1, 8))]",
+          "input": "[concat(variables('customDataHeader'),variables('customDataBody')[copyIndex('customDataCombined')],variables('customDataLicenseHeader'), parameters('fortiProxyLicenseBYOL1'), variables('customDataFooter'))]"
+        },
+        {
+          "name": "customData",
+          "count": "[length(range(1, 8))]",
+          "input": "[base64(if(equals(parameters('fortiProxyLicenseBYOL1'),''),variables('customDataBody')[copyIndex('customData')],variables('customDataCombined')[copyIndex('customData')]))]"
         }
-    ],
-    "customDataBody": [
-      "[concat(variables('interfaceCustomData')[0],variables('customDataBodyShared'),variables('haCustomData')[0])]",
-      "[concat(variables('interfaceCustomData')[1],variables('customDataBodyShared'),variables('haCustomData')[1])]",
-      "[concat(variables('interfaceCustomData')[2],variables('customDataBodyShared'),variables('haCustomData')[2])]",
-      "[concat(variables('interfaceCustomData')[3],variables('customDataBodyShared'),variables('haCustomData')[3])]",
-      "[concat(variables('interfaceCustomData')[4],variables('customDataBodyShared'),variables('haCustomData')[4])]",
-      "[concat(variables('interfaceCustomData')[5],variables('customDataBodyShared'),variables('haCustomData')[5])]",
-      "[concat(variables('interfaceCustomData')[6],variables('customDataBodyShared'),variables('haCustomData')[6])]",
-      "[concat(variables('interfaceCustomData')[7],variables('customDataBodyShared'),variables('haCustomData')[7])]"
-    ],
-    "customDataCombined": [
-      "[concat(variables('customDataHeader'),variables('customDataBody')[0],variables('customDataLicenseHeader'), parameters('fortiProxyLicenseBYOL1'), variables('customDataFooter'))]",
-      "[concat(variables('customDataHeader'),variables('customDataBody')[1],variables('customDataLicenseHeader'), parameters('fortiProxyLicenseBYOL2'), variables('customDataFooter'))]",
-      "[concat(variables('customDataHeader'),variables('customDataBody')[2],variables('customDataLicenseHeader'), parameters('fortiProxyLicenseBYOL3'), variables('customDataFooter'))]",
-      "[concat(variables('customDataHeader'),variables('customDataBody')[3],variables('customDataLicenseHeader'), parameters('fortiProxyLicenseBYOL4'), variables('customDataFooter'))]",
-      "[concat(variables('customDataHeader'),variables('customDataBody')[4],variables('customDataLicenseHeader'), parameters('fortiProxyLicenseBYOL5'), variables('customDataFooter'))]",
-      "[concat(variables('customDataHeader'),variables('customDataBody')[5],variables('customDataLicenseHeader'), parameters('fortiProxyLicenseBYOL6'), variables('customDataFooter'))]",
-      "[concat(variables('customDataHeader'),variables('customDataBody')[6],variables('customDataLicenseHeader'), parameters('fortiProxyLicenseBYOL7'), variables('customDataFooter'))]",
-      "[concat(variables('customDataHeader'),variables('customDataBody')[7],variables('customDataLicenseHeader'), parameters('fortiProxyLicenseBYOL8'), variables('customDataFooter'))]"
-    ],
-    "customData": [
-      "[base64(if(equals(parameters('fortiProxyLicenseBYOL1'),''),variables('customDataBody')[0],variables('customDataCombined')[0]))]",
-      "[base64(if(equals(parameters('fortiProxyLicenseBYOL2'),''),variables('customDataBody')[1],variables('customDataCombined')[1]))]",
-      "[base64(if(equals(parameters('fortiProxyLicenseBYOL3'),''),variables('customDataBody')[2],variables('customDataCombined')[2]))]",
-      "[base64(if(equals(parameters('fortiProxyLicenseBYOL4'),''),variables('customDataBody')[3],variables('customDataCombined')[3]))]",
-      "[base64(if(equals(parameters('fortiProxyLicenseBYOL5'),''),variables('customDataBody')[4],variables('customDataCombined')[4]))]",
-      "[base64(if(equals(parameters('fortiProxyLicenseBYOL6'),''),variables('customDataBody')[5],variables('customDataCombined')[5]))]",
-      "[base64(if(equals(parameters('fortiProxyLicenseBYOL7'),''),variables('customDataBody')[6],variables('customDataCombined')[6]))]",
-      "[base64(if(equals(parameters('fortiProxyLicenseBYOL8'),''),variables('customDataBody')[7],variables('customDataCombined')[7]))]"
     ],
     "internalLBName": "[concat(parameters('fortiProxyNamePrefix'),'-internalloadbalancer')]",
     "internalLBId": "[resourceId('Microsoft.Network/loadBalancers',variables('internalLBName'))]",
@@ -490,6 +475,40 @@
       "publisher": "[variables('imagePublisher')]",
       "product": "[variables('imageOffer')]"
     },
+    "loadBalancerInboundNatRules": [
+      [ 
+        { "id": "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'), concat(variables('fpxVmName'),'-1-mgmt-ssh'))]" },
+        { "id": "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'), concat(variables('fpxVmName'),'-1-mgmt-ssh'))]" }
+      ],
+      [
+        { "id": "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'), concat(variables('fpxVmName'),'-2-mgmt-ssh'))]" },
+        { "id": "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'), concat(variables('fpxVmName'),'-2-mgmt-ssh'))]" }
+      ],
+      [
+        { "id": "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'), concat(variables('fpxVmName'),'-3-mgmt-ssh'))]" },
+        { "id": "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'), concat(variables('fpxVmName'),'-3-mgmt-ssh'))]" }
+      ],
+      [
+        { "id": "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'), concat(variables('fpxVmName'),'-4-mgmt-ssh'))]" },
+        { "id": "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'), concat(variables('fpxVmName'),'-4-mgmt-ssh'))]" }
+      ],
+      [
+        { "id": "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'), concat(variables('fpxVmName'),'-5-mgmt-ssh'))]" },
+        { "id": "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'), concat(variables('fpxVmName'),'-5-mgmt-ssh'))]" }
+      ],
+      [
+        { "id": "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'), concat(variables('fpxVmName'),'-6-mgmt-ssh'))]" },
+        { "id": "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'), concat(variables('fpxVmName'),'-6-mgmt-ssh'))]" }
+      ],
+      [
+        { "id": "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'), concat(variables('fpxVmName'),'-7-mgmt-ssh'))]" },
+        { "id": "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'), concat(variables('fpxVmName'),'-7-mgmt-ssh'))]" }
+      ],
+      [
+        { "id": "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'), concat(variables('fpxVmName'),'-8-mgmt-ssh'))]" },
+        { "id": "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'), concat(variables('fpxVmName'),'-8-mgmt-ssh'))]" }
+      ]
+    ],
     "nsgName": "[concat(parameters('fortiProxyNamePrefix'),'-nsg')]",
     "nsgId": "[resourceID('Microsoft.Network/networkSecurityGroups/',variables('nsgName'))]",
     "nsgRules": [
@@ -599,19 +618,19 @@
         "copy": [
           {
             "name": "securityRules",
-            "count": "[length(variables('nsgrules'))]",
+            "count": "[length(variables('nsgRules'))]",
             "input": {
-              "name": "[variables('nsgrules')[copyIndex('securityRules')][0]]",
+              "name": "[variables('nsgRules')[copyIndex('securityRules')][0]]",
               "properties": {
-                "description": "[variables('nsgrules')[copyIndex('securityRules')][1]]",
-                "protocol": "[variables('nsgrules')[copyIndex('securityRules')][2]]",
-                "sourcePortRange": "[variables('nsgrules')[copyIndex('securityRules')][3]]",
-                "destinationPortRange": "[variables('nsgrules')[copyIndex('securityRules')][4]]",
-                "sourceAddressPrefix": "[variables('nsgrules')[copyIndex('securityRules')][5]]",
-                "destinationAddressPrefix": "[variables('nsgrules')[copyIndex('securityRules')][6]]",
-                "access": "[variables('nsgrules')[copyIndex('securityRules')][7]]",
-                "priority": "[variables('nsgrules')[copyIndex('securityRules')][8]]",
-                "direction": "[variables('nsgrules')[copyIndex('securityRules')][9]]"
+                "description": "[variables('nsgRules')[copyIndex('securityRules')][1]]",
+                "protocol": "[variables('nsgRules')[copyIndex('securityRules')][2]]",
+                "sourcePortRange": "[variables('nsgRules')[copyIndex('securityRules')][3]]",
+                "destinationPortRange": "[variables('nsgRules')[copyIndex('securityRules')][4]]",
+                "sourceAddressPrefix": "[variables('nsgRules')[copyIndex('securityRules')][5]]",
+                "destinationAddressPrefix": "[variables('nsgRules')[copyIndex('securityRules')][6]]",
+                "access": "[variables('nsgRules')[copyIndex('securityRules')][7]]",
+                "priority": "[variables('nsgRules')[copyIndex('securityRules')][8]]",
+                "direction": "[variables('nsgRules')[copyIndex('securityRules')][9]]"
               }
             }
           }
@@ -682,38 +701,19 @@
                 "id": "[variables('externalLBProbeId')]"
               },
               "protocol": "Tcp",
-              "frontendPort": 80,
-              "backendPort": 80,
+              "frontendPort": 8080,
+              "backendPort": 8080,
               "enableFloatingIP": true,
               "idleTimeoutInMinutes": 5
             },
-            "name": "ExternalLBRule-FE-http"
-          },
-          {
-            "properties": {
-              "frontendIPConfiguration": {
-                "id": "[variables('externalLBFEId')]"
-              },
-              "backendAddressPool": {
-                "id": "[variables('externalLBBEId')]"
-              },
-              "probe": {
-                "id": "[variables('externalLBProbeId')]"
-              },
-              "protocol": "Udp",
-              "frontendPort": 10551,
-              "backendPort": 10551,
-              "enableFloatingIP": true,
-              "idleTimeoutInMinutes": 5
-            },
-            "name": "ExternalLBRule-FE-udp10551"
+            "name": "externallbrule-fe-proxy"
           }
         ],
         "probes": [
           {
             "properties": {
               "protocol": "Tcp",
-              "port": 8008,
+              "port": 8080,
               "intervalInSeconds": 5,
               "numberOfProbes": 2
             },
@@ -871,14 +871,7 @@
                   "id": "[if(parameters('externalLoadBalancer'),variables('externalLBBEId'),variables('internalLBBEId'))]"
                 }
               ],
-              "loadBalancerInboundNatRules": [
-                {
-                  "id": "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'), concat(variables('fpxVmName'),'-', copyIndex(1),'-mgmt-ssh'))]"
-                },
-                {
-                  "id": "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'), concat(variables('fpxVmName'),'-', copyIndex(1),'-mgmt-https'))]"
-                }
-              ]
+              "loadBalancerInboundNatRules": "[if(parameters('externalLoadBalancer'), variables('loadBalancerInboundNatRules')[copyIndex()], json('null'))]"
             }
           }
         ],
@@ -993,11 +986,11 @@
   "outputs": {
     "fortiProxyPublicIP": {
       "type": "string",
-      "value": "[if(equals(parameters('publicIP1NewOrExisting'), 'new'), reference(variables('publicIP1Id')).ipAddress, '')]"
+      "value": "[if(and(equals(parameters('publicIP1NewOrExisting'), 'new'),parameters('externalLoadBalancer')), reference(variables('publicIP1Id')).ipAddress, '')]"
     },
     "fortiProxyFQDN": {
       "type": "string",
-      "value": "[if(equals(parameters('publicIP1NewOrExisting'), 'new'), reference(variables('publicIP1Id')).dnsSettings.fqdn, '' )]"
+      "value": "[if(and(equals(parameters('publicIP1NewOrExisting'), 'new'),parameters('externalLoadBalancer')), reference(variables('publicIP1Id')).dnsSettings.fqdn, '' )]"
     }
   }
 }
