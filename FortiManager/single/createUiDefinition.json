@@ -60,7 +60,7 @@
       {
         "name": "namePrefix",
         "type": "Microsoft.Common.TextBox",
-        "label": "FortiAnalyser Name Prefix",
+        "label": "FortiManager Name Prefix",
         "defaultValue": "",
         "toolTip": "Naming prefix for all deployed resources",
         "constraints": {
@@ -285,7 +285,7 @@
                 "osPlatform": "Linux",
                 "imageReference": {
                   "publisher": "fortinet",
-                  "offer": "fortinet-fortinalyzer",
+                  "offer": "fortinet-fortimanager",
                   "sku": "fortinet-fortimanager"
                 },
                 "count": 1,
@@ -414,7 +414,7 @@
                 "type": "Microsoft.Common.TextBlock",
                 "visible": true,
                 "options": {
-                  "text": "Deploy FortiGate VMs in an availability set or availability zone.",
+                  "text": "Deploy FortiManager VMs in an availability set or availability zone.",
                   "link": {
                     "label": "Learn more",
                     "uri": "https://github.com/fortinet/azure-templates/tree/main/FortiGate#sla"
@@ -426,7 +426,7 @@
                 "type": "Microsoft.Common.DropDown",
                 "label": "Availability Option",
                 "defaultValue": "No infrastructure redundancy required",
-                "toolTip": "Deploy FortiGate VMs in a new or existing availability set or or a specific availability zone.",
+                "toolTip": "Deploy FortiManager VMs in a new or existing availability set or or a specific availability zone.",
                 "constraints": {
                   "required": false,
                   "allowedValues": [
@@ -450,14 +450,14 @@
                 "name": "availabilitySetNew",
                 "type": "Microsoft.Common.CheckBox",
                 "label": "Create a new availability set?",
-                "toolTip": "Check this box if you want to create a new availability set and add the FortiGate VM to it.",
+                "toolTip": "Check this box if you want to create a new availability set and add the FortiManager VM to it.",
                 "visible": "[equals(steps('instance').availabilityOptions.availabilityOptions,'Availability set')]"
               },
               {
                 "name": "availabilitySetSelector",
                 "type": "Microsoft.Solutions.ResourceSelector",
-                "label": "Select the availability set for your FortiGate",
-                "toolTip": "Select your existing availability set you want to add this FortiGate VM to",
+                "label": "Select the availability set for your FortiManager",
+                "toolTip": "Select your existing availability set you want to add this FortiManager VM to",
                 "resourceType": "Microsoft.Compute/availabilitySets",
                 "options": {
                   "filter": {
@@ -472,15 +472,15 @@
                 "type": "Microsoft.Common.InfoBox",
                 "options": {
                   "icon": "Info",
-                  "text": "The FortiGate VM and availability set are required to exist in the same resource group."
+                  "text": "The FortiManager VM and availability set are required to exist in the same resource group."
                 },
                 "visible": "[and(not(steps('instance').availabilityOptions.availabilitySetNew),equals(steps('instance').availabilityOptions.availabilityOptions,'Availability set'))]"
               },
               {
                 "name": "availabilityZoneSelector",
                 "type": "Microsoft.Common.DropDown",
-                "label": "Select the availability zone for your FortiGate VM",
-                "toolTip": "Select the availability zone for your FortiGate VM",
+                "label": "Select the availability zone for your FortiManager VM",
+                "toolTip": "Select the availability zone for your FortiManager VM",
                 "defaultValue": "Zone 2",
                 "constraints": {
                   "allowedValues": [
@@ -506,7 +506,7 @@
                 "visible": true,
                 "options": {
                   "icon": "Info",
-                  "text": "If availability zone deployment is selected but the location does not support availability zone an availability set will be deployed. If availability zone deployment is selected and availability zone are available in the location, FortiGate A will be placed in Zone 1, FortiGate B will be placed in Zone 2",
+                  "text": "If availability zone deployment is selected but the location does not support availability zone an availability set will be deployed. If availability zone deployment is selected and availability zone are available in the location, FortiManager A will be placed in Zone 1, FortiManager B will be placed in Zone 2",
                   "uri": "https://docs.microsoft.com/en-us/azure/availability-zones/az-overview"
                 }
               }
@@ -639,7 +639,7 @@
                   "subnets": "Standard deployment is to have an "
                 },
                 "defaultValue": {
-                  "name": "Fortinet-VNET",
+                  "name": "[if(equals(basics('namePrefix'),''),'FortiManager-VNET',concat(basics('namePrefix'),'-VNET'))]",
                   "addressPrefixSize": "/24"
                 },
                 "constraints": {
@@ -793,7 +793,7 @@
                 "type": "Microsoft.Common.OptionsGroup",
                 "label": "Enable Serial Console",
                 "defaultValue": "yes",
-                "toolTip": "Enables the serial console and creates a required storage account.",
+                "toolTip": "Enables the serial console.",
                 "constraints": {
                   "allowedValues": [
                     {
@@ -808,16 +808,6 @@
                   "required": true
                 },
                 "visible": true
-              },
-              {
-                "name": "standardsku",
-                "type": "Microsoft.Common.InfoBox",
-                "visible": true,
-                "options": {
-                  "icon": "Info",
-                  "text": "This requires a storage account which willl be created during deployment.",
-                  "uri": "https://docs.microsoft.com/en-us/troubleshoot/azure/virtual-machines/serial-console-overview"
-                }
               }
             ]
           }
@@ -838,8 +828,8 @@
       "availabilityOptions": "[steps('instance').availabilityOptions.availabilityOptions]",
       "existingAvailabilitySetName": "[steps('instance').availabilityOptions.availabilitySetSelector.name]",
       "availabilityZoneNumber": "[steps('instance').availabilityOptions.availabilityZoneSelector]",
-      "fortiGateLicenseBYOL": "[steps('instance').fgtLicense.fgtcontent]",
-      "fortiGateLicenseFortiFlex": "[steps('instance').fgtLicense.fgtfortiflex]",
+      "fortiManagerLicenseBYOL": "[steps('instance').fmgLicense.fmgcontent]",
+      "fortiManagerLicenseFortiFlex": "[steps('instance').fmgLicense.fmgfortiflex]",
       "publicIPNewOrExisting": "[steps('publicip').publicip.newOrExistingOrNone]",
       "publicIPName": "[steps('publicip').publicip.name]",
       "publicIPResourceGroup": "[steps('publicip').publicip.resourceGroup]",
@@ -852,8 +842,7 @@
       "subnet1Prefix": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet1.addressPrefix]",
       "subnet1StartAddress": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet1.startAddress]",
       "serialConsole": "[steps('advanced').serialconsole.enabled]",
-      "additionalCustomData": "[steps('advanced').customdata.config]",
-      "fortiManagerLicenseBYOL": "[steps('advanced').fazlicense.licensecontent]"
+      "additionalCustomData": "[steps('advanced').customdata.config]"
     }
   }
 }
