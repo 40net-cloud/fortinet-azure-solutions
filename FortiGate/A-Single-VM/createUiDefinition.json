@@ -992,7 +992,7 @@
                 "type": "Microsoft.Common.OptionsGroup",
                 "label": "Enable Serial Console",
                 "defaultValue": "yes",
-                "toolTip": "Enables the serial console and creates a required storage account.",
+                "toolTip": "Enables the serial console.",
                 "constraints": {
                   "allowedValues": [
                     {
