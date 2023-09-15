@@ -401,6 +401,7 @@
     "sn2CidrObject": "[parseCidr(parameters('subnet2Prefix'))]",
     "sn2Octets4": "[split(variables('sn2CidrObject').firstUsable,'.')]",
     "sn2IPStartAddress": "[split(parameters('subnet2StartAddress'),'.')]",
+    "license": "[createArray(parameters('fortiProxyLicenseBYOL1'), parameters('fortiProxyLicenseBYOL2'), parameters('fortiProxyLicenseBYOL3'), parameters('fortiProxyLicenseBYOL4'), parameters('fortiProxyLicenseBYOL5'), parameters('fortiProxyLicenseBYOL6'), parameters('fortiProxyLicenseBYOL7'), parameters('fortiProxyLicenseBYOL8'))]", 
     "copy": [
         {
           "name": "sn1IP",
@@ -435,12 +436,12 @@
         {
           "name": "customDataCombined",
           "count": "[length(range(1, 8))]",
-          "input": "[concat(variables('customDataHeader'),variables('customDataBody')[copyIndex('customDataCombined')],variables('customDataLicenseHeader'), parameters('fortiProxyLicenseBYOL1'), variables('customDataFooter'))]"
+          "input": "[concat(variables('customDataHeader'),variables('customDataBody')[copyIndex('customDataCombined')],variables('customDataLicenseHeader'), variables('license')[copyIndex('customDataCombined')], variables('customDataFooter'))]"
         },
         {
           "name": "customData",
           "count": "[length(range(1, 8))]",
-          "input": "[base64(if(equals(parameters('fortiProxyLicenseBYOL1'),''),variables('customDataBody')[copyIndex('customData')],variables('customDataCombined')[copyIndex('customData')]))]"
+          "input": "[base64(if(equals(variables('license')[copyIndex('customData')],''),variables('customDataBody')[copyIndex('customData')],variables('customDataCombined')[copyIndex('customData')]))]"
         }
     ],
     "internalLBName": "[concat(parameters('fortiProxyNamePrefix'),'-internalloadbalancer')]",
