@@ -161,12 +161,13 @@
         "description": "Accelerated Networking enables direct connection between the VM and network card. Only available on 2 CPU F/Fs and 4 CPU D/Dsv2, D/Dsv3, E/Esv3, Fsv2, Lsv2, Ms/Mms and Ms/Mmsv2"
       }
     },
-    "publicIP1NewOrExisting": {
+    "publicIP1NewOrExistingOrNone": {
       "type": "string",
       "defaultValue": "new",
       "allowedValues": [
         "new",
-        "existing"
+        "existing",
+        "none"
       ],
       "metadata": {
         "description": "Public IP for the Load Balancer for inbound and outbound data of the FortiProxy VMs"
@@ -393,7 +394,7 @@
     "customDataFooter": "\n--12345--\n",
     "serialConsoleEnabled": "[if(equals(parameters('serialConsole'),'yes'),'true','false')]",
     "publicIP1Name": "[if(equals(parameters('publicIP1Name'),''),concat(parameters('fortiProxyNamePrefix'),'-fpx-pip'),parameters('publicIP1Name'))]",
-    "publicIP1Id": "[if(equals(parameters('publicIP1NewOrExisting'),'new'),resourceId('Microsoft.Network/publicIPAddresses',variables('publicIP1Name')),resourceId(parameters('publicIP1ResourceGroup'),'Microsoft.Network/publicIPAddresses',variables('publicIP1Name')))]",
+    "publicIP1Id": "[if(equals(parameters('publicIP1NewOrExistingOrNone'),'new'),resourceId('Microsoft.Network/publicIPAddresses',variables('publicIP1Name')),resourceId(parameters('publicIP1ResourceGroup'),'Microsoft.Network/publicIPAddresses',variables('publicIP1Name')))]",
     "sn1CidrObject": "[parseCidr(parameters('subnet1Prefix'))]",
     "sn1Octets4": "[split(variables('sn1CidrObject').firstUsable,'.')]",
     "sn1IPStartAddress": "[split(parameters('subnet1StartAddress'),'.')]",
@@ -705,7 +706,7 @@
       }
     },
     {
-      "condition": "[and(equals(parameters('publicIP1NewOrExisting'), 'new'),parameters('externalLoadBalancer'))]",
+      "condition": "[and(equals(parameters('publicIP1NewOrExistingOrNone'), 'new'),parameters('externalLoadBalancer'))]",
       "type": "Microsoft.Network/publicIPAddresses",
       "name": "[variables('publicIP1Name')]",
       "apiVersion": "2022-01-01",
@@ -1053,11 +1054,11 @@
   "outputs": {
     "fortiProxyPublicIP": {
       "type": "string",
-      "value": "[if(and(equals(parameters('publicIP1NewOrExisting'), 'new'),parameters('externalLoadBalancer')), reference(variables('publicIP1Id')).ipAddress, '')]"
+      "value": "[if(and(equals(parameters('publicIP1NewOrExistingOrNone'), 'new'),parameters('externalLoadBalancer')), reference(variables('publicIP1Id')).ipAddress, '')]"
     },
     "fortiProxyFQDN": {
       "type": "string",
-      "value": "[if(and(equals(parameters('publicIP1NewOrExisting'), 'new'),parameters('externalLoadBalancer')), reference(variables('publicIP1Id')).dnsSettings.fqdn, '' )]"
+      "value": "[if(and(equals(parameters('publicIP1NewOrExistingOrNone'), 'new'),parameters('externalLoadBalancer')), reference(variables('publicIP1Id')).dnsSettings.fqdn, '' )]"
     }
   }
 }

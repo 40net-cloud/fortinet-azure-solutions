@@ -111,7 +111,7 @@ Describe 'FPX A/A' {
                                           'instanceType',
                                           'location',
                                           'publicIP1Name',
-                                          'publicIP1NewOrExisting',
+                                          'publicIP1NewOrExistingOrNone',
                                           'publicIP1ResourceGroup',
                                           'serialConsole',
                                           'subnet1Name',

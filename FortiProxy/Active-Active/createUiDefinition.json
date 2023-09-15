@@ -747,7 +747,7 @@
               "hideNone": false,
               "hideDomainNameLabel": true
             },
-            "visible": true
+            "visible": "[steps('publicip').externalLoadBalancer.enabled]"
           },
           {
             "name": "standardsku",
@@ -777,7 +777,7 @@
               "icon": "Error",
               "text": "The External Load Balancer Public IP is configured using Basic SKU. Please return to previous blade and use Standard type public IPs to support Azure Standard Load Balancers"
             },
-            "visible": "[not(equals(steps('publicip').loadbalancerpublicip.sku, 'Standard'))]"
+            "visible": "[and(steps('publicip').externalLoadBalancer.enabled,not(equals(steps('publicip').loadbalancerpublicip.sku, 'Standard')))]"
           },
           {
             "name": "StandardIPConfirmation1",
@@ -786,7 +786,7 @@
               "icon": "Info",
               "text": "The External Load Balancer Public IP is Standard SKU. Proceed."
             },
-            "visible": "[equals(steps('publicip').loadbalancerpublicip.sku, 'Standard')]"
+            "visible": "[and(steps('publicip').externalLoadBalancer.enabled,equals(steps('publicip').loadbalancerpublicip.sku, 'Standard'))]"
           }
         ]
       },
@@ -997,7 +997,7 @@
       "externalLoadBalancer": "[bool(steps('publicip').externalLoadBalancer.enabled)]",
       "availabilityOptions": "[steps('instance').availabilityOptions.availabilityOptions]",
       "acceleratedNetworking": "[steps('networking').acceleratednetworksection.acceleratednetworking]",
-      "publicIP1NewOrExisting": "[steps('publicip').loadbalancerpublicip.newOrExistingOrNone]",
+      "publicIP1NewOrExistingOrNone": "[steps('publicip').loadbalancerpublicip.newOrExistingOrNone]",
       "publicIP1Name": "[steps('publicip').loadbalancerpublicip.name]",
       "publicIP1ResourceGroup": "[steps('publicip').loadbalancerpublicip.resourceGroup]",
       "vnetNewOrExisting": "[steps('networking').virtualnetworksection.virtualnetwork.newOrExisting]",
