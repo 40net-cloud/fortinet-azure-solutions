@@ -515,7 +515,7 @@
                   "subnets": "Standard deployment is to have an external and internal subnet"
                 },
                 "defaultValue": {
-                  "name": "[if(equals(basics('fortiProxyNamePrefix'),''),'FortiProxy-VNET',concat(basics('fortiProxyNamePrefix'),'-VNET'))]",
+                  "name": "[if(equals(basics('fortiProxyNamePrefix'),''),'fortiproxy-vnet',concat(basics('fortiProxyNamePrefix'),'-vnet'))]",
                   "addressPrefixSize": "/24"
                 },
                 "constraints": {

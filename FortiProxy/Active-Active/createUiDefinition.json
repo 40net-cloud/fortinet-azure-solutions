@@ -569,7 +569,7 @@
                   "subnets": "Standard deployment is to have external and internal subnets."
                 },
                 "defaultValue": {
-                  "name": "[if(equals(basics('fortiProxyNamePrefix'),''),'FortiProxy-VNET',concat(basics('fortiProxyNamePrefix'),'-VNET'))]",
+                  "name": "[if(equals(basics('fortiProxyNamePrefix'),''),'fortiproxy-vnet',concat(basics('fortiProxyNamePrefix'),'-vnet'))]",
                   "addressPrefixSize": "/22"
                 },
                 "constraints": {
@@ -744,7 +744,7 @@
               }
             },
             "options": {
-              "hideNone": true,
+              "hideNone": false,
               "hideDomainNameLabel": true
             },
             "visible": true
