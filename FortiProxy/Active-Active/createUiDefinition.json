@@ -72,7 +72,7 @@
         "type": "Microsoft.Common.TextBox",
         "label": "FortiProxy Name Prefix",
         "defaultValue": "",
-        "toolTip": "Naming prefix for all deployed resources. The FortiProxy VMs will have the suffix '-FPX-A' and '-FPX-B'. For example if the prefix is 'ACME-01' the FortiProxys will be named 'ACME-01-FPX-A' and 'ACME-01-FPX-B'",
+        "toolTip": "Naming prefix for all deployed resources. The FortiProxy VMs will have the suffix '-fpx-a' and '-fpx-b'. For example if the prefix is 'acme-01' the FortiProxys will be named 'acme-01-fpx-a' and 'acme-01-fpx-b'",
         "constraints": {
           "required": true,
           "regex": "^[A-Za-z0-9-]{1,15}$",
@@ -582,7 +582,7 @@
                   "subnet1": {
                     "label": "FortiProxy Subnet",
                     "defaultValue": {
-                      "name": "FPXSubnet",
+                      "name": "fpxsubnet",
                       "addressPrefixSize": "/28"
                     },
                     "constraints": {
@@ -594,7 +594,7 @@
                   "subnet2": {
                     "label": "High Availability subnet",
                     "defaultValue": {
-                      "name": "HASubnet",
+                      "name": "fpxhasubnet",
                       "addressPrefixSize": "/28"
                     },
                     "constraints": {
@@ -735,7 +735,7 @@
               "domainNameLabel": "DNS name linked to this public IP"
             },
             "defaultValue": {
-              "publicIpAddressName": "[if(equals(basics('fortiProxyNamePrefix'),''),'FPXPublicIP',concat(basics('fortiProxyNamePrefix'),'-FPX-PIP'))]",
+              "publicIpAddressName": "[if(equals(basics('fortiProxyNamePrefix'),''),'fpxPublicIP',concat(basics('fortiProxyNamePrefix'),'-fpx-pip'))]",
               "domainNameLabel": "mydomain"
             },
             "constraints": {

@@ -469,7 +469,7 @@
                 "name": "fpxvmname",
                 "type": "Microsoft.Common.TextBox",
                 "label": "Name of the FortiProxy VM",
-                "defaultValue": "[if(equals(basics('fortiProxyNamePrefix'),''),'FortiProxy-VM',concat(basics('fortiProxyNamePrefix'),'-FPX'))]",
+                "defaultValue": "[if(equals(basics('fortiProxyNamePrefix'),''),'FortiProxy-VM',concat(basics('fortiProxyNamePrefix'),'-fpx'))]",
                 "toolTip": "Provide the name of the FortiProxy VM. This is not required as a field.",
                 "constraints": {
                   "required": false,
@@ -528,7 +528,7 @@
                   "subnet1": {
                     "label": "FortiProxy Subnet",
                     "defaultValue": {
-                      "name": "FPXSubnet",
+                      "name": "fpxSubnet",
                       "addressPrefixSize": "/26"
                     },
                     "constraints": {
@@ -632,7 +632,7 @@
               "domainNameLabel": "DNS name linked to this public IP"
             },
             "defaultValue": {
-              "publicIpAddressName": "[if(equals(basics('fortiProxyNamePrefix'),''),'FPXPublicIP',concat(basics('fortiProxyNamePrefix'),'-FPX-PIP'))]",
+              "publicIpAddressName": "[if(equals(basics('fortiProxyNamePrefix'),''),'fpxpublicip',concat(basics('fortiProxyNamePrefix'),'-fpx-pip'))]",
               "domainNameLabel": "mydomain"
             },
             "constraints": {
