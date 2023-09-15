@@ -20,13 +20,6 @@
         "description": "Naming prefix for all deployed resources. The FortiProxy VM will have the suffix '-fpx'. For example if the prefix is 'acme-01' the FortiProxy will be named 'acme-01-vm-fpx'"
       }
     },
-    "fortiProxyNameSuffix": {
-      "type": "string",
-      "defaultValue": "",
-      "metadata": {
-        "description": "Custom suffix for the deployed FortiProxy VM. The FortiProxy VM will have the suffix '-fpx' plus this suffix if specified. For example, if the suffix is '-01' and the prefix id acme-01 the FortiProxy will be named 'acme-01-vm-fpx-01' "
-      }
-    },
     "fortiProxyName": {
       "type": "string",
       "defaultValue": "",
@@ -346,7 +339,7 @@
   "variables": {
     "imagePublisher": "fortinet",
     "imageOffer": "fortinet-fortiproxy",
-    "availabilitySetName": "[if(equals(parameters('existingAvailabilitySetName'),''), concat(parameters('fortiProxyNamePrefix'), '-availabilityset', parameters('fortiProxyNameSuffix')), parameters('existingAvailabilitySetName'))]",
+    "availabilitySetName": "[if(equals(parameters('existingAvailabilitySetName'),''), concat(parameters('fortiProxyNamePrefix'), '-availabilityset'), parameters('existingAvailabilitySetName'))]",
     "availabilitySetId": {
       "id": "[resourceId('Microsoft.Compute/availabilitySets', variables('availabilitySetName'))]"
     },
@@ -354,12 +347,12 @@
     "useAZ": "[and(not(empty(pickZones('Microsoft.Compute', 'virtualMachines', parameters('location')))), equals(parameters('availabilityOptions'), 'Availability zone'))]",
     "pipZones": "[if(variables('useAZ'), pickZones('Microsoft.Network', 'publicIPAddresses', parameters('location'), 3), json('null'))]",
     "zone1": "[if(equals(parameters('availabilityZoneNumber'),''),pickZones('Microsoft.Compute', 'virtualMachines', parameters('location')),array(parameters('availabilityZoneNumber')))]",
-    "fpxVmName": "[if(equals(parameters('fortiProxyName'),''),concat(parameters('fortiProxyNamePrefix'),'-fpx-vm', parameters('fortiProxyNameSuffix')),parameters('fortiProxyName'))]",
-    "vnetName": "[if(equals(parameters('vnetName'),''),concat(parameters('fortiProxyNamePrefix'), '-vnet', parameters('fortiProxyNameSuffix')),parameters('vnetName'))]",
+    "fpxVmName": "[if(equals(parameters('fortiProxyName'),''),concat(parameters('fortiProxyNamePrefix'),'-fpx-vm'),parameters('fortiProxyName'))]",
+    "vnetName": "[if(equals(parameters('vnetName'),''),concat(parameters('fortiProxyNamePrefix'), '-vnet'),parameters('vnetName'))]",
     "subnet1Id": "[if(equals(parameters('vnetNewOrExisting'),'new'),resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet1Name')),resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet1Name')))]",
     "sn1CidrObject": "[parseCidr(parameters('subnet1Prefix'))]",
     "sn1IPfpx": "[concat(split(parameters('subnet1Prefix'),'.')[0],'.',split(parameters('subnet1Prefix'),'.')[1],'.',split(parameters('subnet1Prefix'),'.')[2],'.',int(split(parameters('subnet1StartAddress'),'.')[3]))]",
-    "fpxNic1Name": "[concat(parameters('fortiProxyNamePrefix'), '-fpx-nic-1', parameters('fortiProxyNameSuffix'))]",
+    "fpxNic1Name": "[concat(parameters('fortiProxyNamePrefix'), '-fpx-nic-1')]",
     "fpxNic1Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('fpxNic1Name'))]",
     "publicIP1Name": "[if(equals(parameters('publicIP1Name'),''),concat(parameters('fortiProxyNamePrefix'),'-fpx-pip'),parameters('publicIP1Name'))]",
     "publicIP1Id": "[if(equals(parameters('publicIP1NewOrExistingOrNone'),'new'),resourceId('Microsoft.Network/publicIPAddresses',variables('publicIP1Name')),resourceId(parameters('publicIP1ResourceGroup'),'Microsoft.Network/publicIPAddresses',variables('publicIP1Name')))]",
