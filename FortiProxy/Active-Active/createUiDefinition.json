@@ -718,10 +718,10 @@
           {
             "name": "publiciptext",
             "type": "Microsoft.Common.TextBlock",
-            "visible": true,
             "options": {
               "text": "The Load Balancer public IP will be used for public services hosted on the FortiProxy."
-            }
+            },
+            "visible": "[equals(steps('publicip').externalLoadBalancer.enabled,'true')]"
           },
           {
             "name": "loadbalancerpublicip",
@@ -747,17 +747,17 @@
               "hideNone": false,
               "hideDomainNameLabel": true
             },
-            "visible": "[steps('publicip').externalLoadBalancer.enabled]"
+            "visible": "[equals(steps('publicip').externalLoadBalancer.enabled,'true')]"
           },
           {
             "name": "standardsku",
             "type": "Microsoft.Common.InfoBox",
-            "visible": true,
             "options": {
               "icon": "Info",
               "text": "This deployment uses a Standard SKU Azure Load Balancer and requires a Standard SKU public IP. Microsoft Azure offers a migration path from a basic to standard SKU public IP.",
               "uri": "https://docs.microsoft.com/en-us/azure/virtual-network/virtual-network-public-ip-address-upgrade?tabs=option-upgrade-cli%2Coption-migrate-powershell"
-            }
+            },
+            "visible": "[equals(steps('publicip').externalLoadBalancer.enabled,'true')]"
           }
         ]
       },
@@ -777,7 +777,7 @@
               "icon": "Error",
               "text": "The External Load Balancer Public IP is configured using Basic SKU. Please return to previous blade and use Standard type public IPs to support Azure Standard Load Balancers"
             },
-            "visible": "[and(steps('publicip').externalLoadBalancer.enabled,not(equals(steps('publicip').loadbalancerpublicip.sku, 'Standard')))]"
+            "visible": "[and(equals(steps('publicip').externalLoadBalancer.enabled,'true'),not(equals(steps('publicip').loadbalancerpublicip.sku, 'Standard')))]"
           },
           {
             "name": "StandardIPConfirmation1",
@@ -786,7 +786,16 @@
               "icon": "Info",
               "text": "The External Load Balancer Public IP is Standard SKU. Proceed."
             },
-            "visible": "[and(steps('publicip').externalLoadBalancer.enabled,equals(steps('publicip').loadbalancerpublicip.sku, 'Standard'))]"
+            "visible": "[and(equals(steps('publicip').externalLoadBalancer.enabled,'true'),equals(steps('publicip').loadbalancerpublicip.sku, 'Standard'))]"
+          },
+          {
+            "name": "InternalLoadBalancerWarning1",
+            "type": "Microsoft.Common.InfoBox",
+            "options": {
+              "icon": "Info",
+              "text": "The Internal Load Balancer will be deployed. No Public IP will be used. Proceed."
+            },
+            "visible": "[equals(steps('publicip').externalLoadBalancer.enabled,'false')]"
           }
         ]
       },
