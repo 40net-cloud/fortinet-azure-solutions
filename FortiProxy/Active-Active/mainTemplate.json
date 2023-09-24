@@ -479,36 +479,68 @@
     },
     "loadBalancerInboundNatRules": [
       [
-        { "id": "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'), concat(variables('fpxVmName'),'-1-mgmt-https'))]" },
-        { "id": "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'), concat(variables('fpxVmName'),'-1-mgmt-ssh'))]" }
+        {
+          "id": "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'), concat(variables('fpxVmName'),'-1-mgmt-https'))]"
+        },
+        {
+          "id": "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'), concat(variables('fpxVmName'),'-1-mgmt-ssh'))]"
+        }
       ],
       [
-        { "id": "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'), concat(variables('fpxVmName'),'-2-mgmt-https'))]" },
-        { "id": "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'), concat(variables('fpxVmName'),'-2-mgmt-ssh'))]" }
+        {
+          "id": "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'), concat(variables('fpxVmName'),'-2-mgmt-https'))]"
+        },
+        {
+          "id": "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'), concat(variables('fpxVmName'),'-2-mgmt-ssh'))]"
+        }
       ],
       [
-        { "id": "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'), concat(variables('fpxVmName'),'-3-mgmt-https'))]" },
-        { "id": "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'), concat(variables('fpxVmName'),'-3-mgmt-ssh'))]" }
+        {
+          "id": "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'), concat(variables('fpxVmName'),'-3-mgmt-https'))]"
+        },
+        {
+          "id": "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'), concat(variables('fpxVmName'),'-3-mgmt-ssh'))]"
+        }
       ],
       [
-        { "id": "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'), concat(variables('fpxVmName'),'-4-mgmt-https'))]" },
-        { "id": "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'), concat(variables('fpxVmName'),'-4-mgmt-ssh'))]" }
+        {
+          "id": "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'), concat(variables('fpxVmName'),'-4-mgmt-https'))]"
+        },
+        {
+          "id": "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'), concat(variables('fpxVmName'),'-4-mgmt-ssh'))]"
+        }
       ],
       [
-        { "id": "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'), concat(variables('fpxVmName'),'-5-mgmt-https'))]" },
-        { "id": "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'), concat(variables('fpxVmName'),'-5-mgmt-ssh'))]" }
+        {
+          "id": "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'), concat(variables('fpxVmName'),'-5-mgmt-https'))]"
+        },
+        {
+          "id": "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'), concat(variables('fpxVmName'),'-5-mgmt-ssh'))]"
+        }
       ],
       [
-        { "id": "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'), concat(variables('fpxVmName'),'-6-mgmt-https'))]" },
-        { "id": "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'), concat(variables('fpxVmName'),'-6-mgmt-ssh'))]" }
+        {
+          "id": "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'), concat(variables('fpxVmName'),'-6-mgmt-https'))]"
+        },
+        {
+          "id": "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'), concat(variables('fpxVmName'),'-6-mgmt-ssh'))]"
+        }
       ],
       [
-        { "id": "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'), concat(variables('fpxVmName'),'-7-mgmt-https'))]" },
-        { "id": "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'), concat(variables('fpxVmName'),'-7-mgmt-ssh'))]" }
+        {
+          "id": "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'), concat(variables('fpxVmName'),'-7-mgmt-https'))]"
+        },
+        {
+          "id": "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'), concat(variables('fpxVmName'),'-7-mgmt-ssh'))]"
+        }
       ],
       [
-        { "id": "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'), concat(variables('fpxVmName'),'-8-mgmt-https'))]" },
-        { "id": "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'), concat(variables('fpxVmName'),'-8-mgmt-ssh'))]" }
+        {
+          "id": "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'), concat(variables('fpxVmName'),'-8-mgmt-https'))]"
+        },
+        {
+          "id": "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'), concat(variables('fpxVmName'),'-8-mgmt-ssh'))]"
+        }
       ]
     ],
     "nsgName": "[concat(parameters('fortiProxyNamePrefix'),'-nsg')]",
