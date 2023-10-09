@@ -226,6 +226,7 @@
         "description": "Subnet 1 Name"
       }
     },
+	
     "subnet1Prefix": {
       "type": "string",
       "defaultValue": "172.16.136.0/26",
@@ -374,7 +375,23 @@
         "template": "FortiProxy-Active-Active-ELB-or-ILB",
         "provider": "6EB3B02F-50E5-4A3E-8CB8-2E12925831FPXAA"
       }
-    }
+    },
+	
+	
+	
+	"internetConnectivity": {
+      "type": "string",
+      "defaultValue": "NAT Outbound",
+	   "allowedValues": [
+        "NAT Outbound",
+        "Attached Public IP Address"
+		],
+      "metadata": {
+        "description": "choose how you want to get internet connectivity when you use internal loadbalancer"
+      }
+	}
+	
+	
   },
   "variables": {
     "imagePublisher": "fortinet",
@@ -395,7 +412,13 @@
     "serialConsoleEnabled": "[if(equals(parameters('serialConsole'),'yes'),'true','false')]",
     "publicIP1Name": "[if(equals(parameters('publicIP1Name'),''),concat(parameters('fortiProxyNamePrefix'),'-fpx-pip'),parameters('publicIP1Name'))]",
     "publicIP1Id": "[if(equals(parameters('publicIP1NewOrExistingOrNone'),'new'),resourceId('Microsoft.Network/publicIPAddresses',variables('publicIP1Name')),resourceId(parameters('publicIP1ResourceGroup'),'Microsoft.Network/publicIPAddresses',variables('publicIP1Name')))]",
-    "sn1CidrObject": "[parseCidr(parameters('subnet1Prefix'))]",
+    
+	
+	
+	
+	
+	
+	"sn1CidrObject": "[parseCidr(parameters('subnet1Prefix'))]",
     "sn1Octets4": "[split(variables('sn1CidrObject').firstUsable,'.')]",
     "sn1IPStartAddress": "[split(parameters('subnet1StartAddress'),'.')]",
     "sn1GatewayIP": "[variables('sn1CidrObject').firstUsable]",
@@ -414,6 +437,35 @@
         "count": 9,
         "input": "[cidrHost(parameters('subnet2Prefix'), range(sub(int(variables('sn2IPStartAddress')[3]),int(variables('sn2Octets4')[3])), 9)[copyIndex('sn2IP')])]"
       },
+	  {
+        "name": "attachedpipName",
+        "count": 8,
+        "input": "[if(equals(parameters('publicIP1Name'),''),concat(parameters('fortiProxyNamePrefix'),'-fpx-pip',copyIndex('attachedpipName')),concat(parameters('publicIP1Name'),copyIndex('attachedpipName')))]"
+      },
+	  
+	  
+	  {
+        "name": "attachedpipId",
+        "count": 8,
+        "input": "[if(equals(parameters('publicIP1NewOrExistingOrNone'),'new'),resourceId('Microsoft.Network/publicIPAddresses',variables('attachedpipName')[copyIndex('attachedpipId')]),resourceId(parameters('publicIP1ResourceGroup'),'Microsoft.Network/publicIPAddresses',variables('attachedpipName')[copyIndex('attachedpipId')]))]"
+      },
+	  
+	  {
+        "name": "attachedpipaddressId",
+        "count": 8,
+        "input": {
+			"id": "[variables('attachedpipId')[copyIndex('attachedpipaddressId')]]"
+		}
+      },
+	  
+	  
+	  
+	  
+	  
+	 
+	  
+	  
+	  
       {
         "name": "interfaceCustomData",
         "count": 8,
@@ -461,7 +513,13 @@
     "externalLBBEId": "[resourceId('Microsoft.Network/loadBalancers/backendAddressPools',variables('externalLBName'),variables('externalLBBEName'))]",
     "externalLBProbeName": "lbprobe",
     "externalLBProbeId": "[resourceId('Microsoft.Network/loadBalancers/probes',variables('externalLBName'),variables('externalLBProbeName'))]",
-    "useAZ": "[and(not(empty(pickZones('Microsoft.Compute', 'virtualMachines', parameters('location')))), equals(parameters('availabilityOptions'), 'Availability Zones'))]",
+    
+	"natGWName": "[concat(parameters('fortiProxyNamePrefix'),'-natgateway')]",
+    "natGWId": "[resourceId('Microsoft.Network/natGateways',variables('natGWName'))]",
+    
+	
+	
+	"useAZ": "[and(not(empty(pickZones('Microsoft.Compute', 'virtualMachines', parameters('location')))), equals(parameters('availabilityOptions'), 'Availability Zones'))]",
     "pipZones": "[if(variables('useAZ'), pickZones('Microsoft.Network', 'publicIPAddresses', parameters('location'), 3), json('null'))]",
     "imageReferenceMarketplace": {
       "publisher": "[variables('imagePublisher')]",
@@ -661,8 +719,14 @@
         "subnets": [
           {
             "name": "[parameters('subnet1Name')]",
+			
             "properties": {
               "addressPrefix": "[parameters('subnet1Prefix')]"
+			  
+			  
+			  
+			 
+			  
             }
           },
           {
@@ -671,9 +735,45 @@
               "addressPrefix": "[parameters('subnet2Prefix')]"
             }
           }
+		 
+		  
+		  
+		  
+		  
         ]
       }
+	  
+	  
     },
+	
+	
+	{
+            "condition": "[and(not(parameters('externalLoadBalancer')),equals(parameters('internetConnectivity'),'NAT Outbound'))]",
+			"type": "Microsoft.Network/virtualNetworks/subnets",
+            "apiVersion": "2022-01-01",
+            "name": "[concat(variables('vnetName'),'/', parameters('subnet1Name'))]",
+            "dependsOn": [
+               "[variables('vnetName')]",
+			   "[resourceId('Microsoft.Network/natGateways', variables('natGWName'))]"
+            ],
+            "properties": {
+                "addressPrefix": "[parameters('subnet1Prefix')]",
+				 "natGateway": {
+                "id": "[resourceId('Microsoft.Network/natGateways', variables('natGWName'))]"
+				
+              }
+                
+            }
+        },
+	
+	
+	
+	
+	
+	
+	
+	
+	
     {
       "type": "Microsoft.Network/networkSecurityGroups",
       "name": "[variables('nsgName')]",
@@ -706,7 +806,9 @@
       }
     },
     {
-      "condition": "[and(equals(parameters('publicIP1NewOrExistingOrNone'), 'new'),parameters('externalLoadBalancer'))]",
+      
+	  
+	  "condition": "[not(equals(parameters('internetConnectivity'),'Attached Public IP Address'))]",
       "type": "Microsoft.Network/publicIPAddresses",
       "name": "[variables('publicIP1Name')]",
       "apiVersion": "2022-01-01",
@@ -725,7 +827,43 @@
         }
       }
     },
-    {
+    
+	
+	
+	
+	{
+      "condition": "[and(not(parameters('externalLoadBalancer')),equals(parameters('internetConnectivity'),'Attached Public IP Address'))]",
+	  "type": "Microsoft.Network/publicIPAddresses",
+      "name": "[concat(variables('publicIP1Name'),copyIndex(1))]",
+      "apiVersion": "2022-01-01",
+	  "location": "[parameters('location')]",
+	  "tags": {
+        "provider": "[toUpper(parameters('fortinetTags').provider)]"
+      },
+	  "sku": {
+        "name": "Standard"
+      },
+      "copy": {
+        "name": "nodeCopy",
+        "count": "[parameters('fortiProxyCount')]"
+      },
+      "zones": "[variables('pipZones')]",
+	  "properties": {
+        "publicIPAllocationMethod": "static",
+        "dnsSettings": {
+          "domainNameLabel": "[concat(toLower(parameters('fortiProxyNamePrefix')), '-',copyIndex(1),uniquestring(resourceGroup().id))]"
+        }
+      }
+      
+      
+    },
+	
+	
+	
+	
+	
+	
+	{
       "condition": "[parameters('externalLoadBalancer')]",
       "type": "Microsoft.Network/loadBalancers",
       "name": "[variables('externalLBName')]",
@@ -904,9 +1042,60 @@
         ]
       }
     },
-    {
+    
+	
+	
+	
+	
+	
+	
+	{
+      "condition": "[and(not(parameters('externalLoadBalancer')),equals(parameters('internetConnectivity'),'NAT Outbound'))]",
+      "type": "Microsoft.Network/natGateways",
+      "name": "[variables('natGWName')]",
+      "apiVersion": "2022-01-01",
+      "location": "[parameters('location')]",
+      "tags": {
+        "provider": "[toUpper(parameters('fortinetTags').provider)]"
+      },
+      "sku": {
+        "name": "Standard"
+      },
+      "dependsOn": [
+       
+		"[variables('publicIP1Name')]"
+		
+		
+      ],
+      "properties": {
+		  "idleTimeoutInMinutes": 4,
+		  "publicIpAddresses": [
+			{
+                "id": "[variables('publicIP1Id')]"
+			}
+		]
+       
+      }
+    },
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	{
       "type": "Microsoft.Network/networkInterfaces",
-      "name": "[concat(variables('fpxVmName'),'-',copyIndex(1),'-nic',if(not(parameters('externalLoadBalancer')), 2, 1))]",
+      "name": "[concat(variables('fpxVmName'),'-',copyIndex(1),'-nic1')]",
       "apiVersion": "2022-01-01",
       "copy": {
         "name": "nodeCopy",
@@ -920,6 +1109,7 @@
         "[variables('vnetName')]",
         "[variables('NSGId')]",
         "[variables('internalLBId')]",
+		"[variables('attachedpipId')[copyIndex(1)]]",
         "[variables('externalLBId')]",
         "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'), concat(variables('fpxVmName'),'-', copyIndex(1),'-mgmt-ssh'))]",
         "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'), concat(variables('fpxVmName'),'-', copyIndex(1),'-mgmt-https'))]"
@@ -931,7 +1121,10 @@
             "properties": {
               "privateIPAddress": "[variables('sn1IP')[copyIndex(1)]]",
               "privateIPAllocationMethod": "Static",
-              "subnet": {
+              
+			  "publicIPAddress": "[if(and(not(equals(parameters('publicIP1NewOrExistingOrNone'), 'none')),equals(parameters('internetConnectivity'),'Attached Public IP Address')), variables('attachedpipaddressId')[copyIndex(1)] , json('null'))]",
+			  
+			  "subnet": {
                 "id": "[variables('subnet1Id')]"
               },
               "loadBalancerBackendAddressPools": [
@@ -952,7 +1145,7 @@
     },
     {
       "type": "Microsoft.Network/networkInterfaces",
-      "name": "[concat(variables('fpxVmName'),'-',copyIndex(1),'-nic',if(not(parameters('externalLoadBalancer')), 1, 2))]",
+      "name": "[concat(variables('fpxVmName'),'-',copyIndex(1),'-nic2')]",
       "apiVersion": "2022-01-01",
       "copy": {
         "name": "nodeCopy",
