@@ -29,13 +29,16 @@
         "externalLoadBalancer": {
             "value": true
         },
+        "outboundConnectivity": {
+            "value": "per-node-standard-sku-pip"
+        },
         "availabilityOptions": {
             "value": "Availability Set"
         },
         "acceleratedNetworking": {
             "value": "true"
         },
-        "publicIP1NewOrExisting": {
+        "publicIP1NewOrExistingOrNone": {
             "value": "new"
         },
         "publicIP1Name": {
@@ -57,7 +60,7 @@
             "value": "172.16.136.0/22"
         },
         "subnet1Name": {
-            "value": "FPXSubnet"
+            "value": "fpxsubnet"
         },
         "subnet1Prefix": {
             "value": "172.16.136.0/26"
@@ -66,7 +69,7 @@
             "value": "172.16.136.4"
         },
         "subnet2Name": {
-            "value": "FPXHASubnet"
+            "value": "fpxhasubnet"
         },
         "subnet2Prefix": {
             "value": "172.16.136.64/26"
@@ -118,9 +121,9 @@
         },
         "fortinetTags": {
             "value": {
-                "publisher": "Fortinet",
-                "template": "FortiProxy-Active-Active-ELB-or-ILB",
-                "provider": "6EB3B02F-50E5-4A3E-8CB8-2E12925831FPXAA"
+              "publisher": "Fortinet",
+              "template": "FortiProxy-Active-Active-ELB-or-ILB",
+              "provider": "6EB3B02F-50E5-4A3E-8CB8-2E12925831FPXAA"
             }
         }
     }

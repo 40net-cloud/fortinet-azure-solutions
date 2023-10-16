@@ -139,6 +139,18 @@
         "description": "Install an external load balancer and subnet or not."
       }
     },
+    "outboundConnectivity": {
+      "type": "string",
+      "defaultValue": "per-node-standard-sku-pip",
+      "allowedValues": [
+        "per-node-standard-sku-pip",
+        "deploy-nat-gateway",
+        "external-nat-device"
+      ],
+      "metadata": {
+        "description": "choose how you want to get internet connectivity when you use internal loadbalancer"
+      }
+    },
     "availabilityOptions": {
       "type": "string",
       "allowedValues": [
@@ -374,17 +386,6 @@
         "publisher": "Fortinet",
         "template": "FortiProxy-Active-Active-ELB-or-ILB",
         "provider": "6EB3B02F-50E5-4A3E-8CB8-2E12925831FPXAA"
-      }
-    },
-    "internetConnectivity": {
-      "type": "string",
-      "defaultValue": "NAT Outbound",
-      "allowedValues": [
-        "NAT Outbound",
-        "Attached Public IP Address"
-      ],
-      "metadata": {
-        "description": "choose how you want to get internet connectivity when you use internal loadbalancer"
       }
     }
   },
@@ -692,14 +693,8 @@
         "subnets": [
           {
             "name": "[parameters('subnet1Name')]",
-
             "properties": {
               "addressPrefix": "[parameters('subnet1Prefix')]"
-
-
-
-
-
             }
           },
           {
@@ -712,7 +707,7 @@
       }
     },
     {
-      "condition": "[and(not(parameters('externalLoadBalancer')),equals(parameters('internetConnectivity'),'NAT Outbound'))]",
+      "condition": "[and(not(parameters('externalLoadBalancer')),equals(parameters('outboundConnectivity'),'deploy-nat-gateway'))]",
       "type": "Microsoft.Network/virtualNetworks/subnets",
       "apiVersion": "2022-01-01",
       "name": "[concat(variables('vnetName'),'/', parameters('subnet1Name'))]",
@@ -724,9 +719,7 @@
         "addressPrefix": "[parameters('subnet1Prefix')]",
         "natGateway": {
           "id": "[resourceId('Microsoft.Network/natGateways', variables('natGWName'))]"
-
         }
-
       }
     },
     {
@@ -761,7 +754,7 @@
       }
     },
     {
-      "condition": "[not(equals(parameters('internetConnectivity'),'Attached Public IP Address'))]",
+      "condition": "[not(equals(parameters('outboundConnectivity'),'per-node-standard-sku-pip'))]",
       "type": "Microsoft.Network/publicIPAddresses",
       "name": "[variables('publicIP1Name')]",
       "apiVersion": "2022-01-01",
@@ -781,7 +774,7 @@
       }
     },
     {
-      "condition": "[and(not(parameters('externalLoadBalancer')),equals(parameters('internetConnectivity'),'Attached Public IP Address'))]",
+      "condition": "[and(not(parameters('externalLoadBalancer')),equals(parameters('outboundConnectivity'),'per-node-standard-sku-pip'))]",
       "type": "Microsoft.Network/publicIPAddresses",
       "name": "[concat(variables('publicIP1Name'),copyIndex(1))]",
       "apiVersion": "2022-01-01",
@@ -984,7 +977,7 @@
       }
     },
     {
-      "condition": "[and(not(parameters('externalLoadBalancer')),equals(parameters('internetConnectivity'),'NAT Outbound'))]",
+      "condition": "[and(not(parameters('externalLoadBalancer')),equals(parameters('outboundConnectivity'),'deploy-nat-gateway'))]",
       "type": "Microsoft.Network/natGateways",
       "name": "[variables('natGWName')]",
       "apiVersion": "2022-01-01",
@@ -1036,7 +1029,7 @@
               "privateIPAddress": "[variables('sn1IP')[copyIndex(1)]]",
               "privateIPAllocationMethod": "Static",
 
-              "publicIPAddress": "[if(and(not(equals(parameters('publicIP1NewOrExistingOrNone'), 'none')),equals(parameters('internetConnectivity'),'Attached Public IP Address')), variables('attachedpipaddressId')[copyIndex(1)] , json('null'))]",
+              "publicIPAddress": "[if(and(not(equals(parameters('publicIP1NewOrExistingOrNone'), 'none')),equals(parameters('outboundConnectivity'),'per-node-standard-sku-pip')), variables('attachedpipaddressId')[copyIndex(1)] , json('null'))]",
 
               "subnet": {
                 "id": "[variables('subnet1Id')]"

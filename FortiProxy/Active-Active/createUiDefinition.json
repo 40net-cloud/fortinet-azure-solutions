@@ -775,18 +775,22 @@
                 "name": "internetaccessOptions",
                 "type": "Microsoft.Common.DropDown",
                 "label": "Internet Access Options",
-                "defaultValue": [ "NAT Outbound" ],
+                "defaultValue": [ "per-node-standard-sku-pip" ],
                 "toolTip": "Deploy NAT Gateway or attach Public IP address for each FortiProxy.",
                 "constraints": {
                   "required": false,
                   "allowedValues": [
                     {
-                      "label": "NAT Outbound",
-                      "value": "NAT Outbound"
+                      "label": "Per node standard SKU Public IP address",
+                      "value": "per-node-standard-sku-pip"
                     },
                     {
-                      "label": "Attached Public IP Address",
-                      "value": "Attached Public IP Address"
+                      "label": "Deploy NAT Gateway",
+                      "value": "deploy-nat-gateway"
+                    },
+                    {
+                      "label": "External NAT device (e.g. FortiGate)",
+                      "value": "external-nat-device"
                     }
                   ]
                 },
@@ -798,7 +802,7 @@
                 "options": {
                   "text": "NAT Gateway public IP will be used for license validation and retrieve proxied content."
                 },
-                "visible": "[equals(steps('publicip').internalLoadBalancer.internetaccessOptions,'NAT Outbound')]"
+                "visible": "[equals(steps('publicip').internalLoadBalancer.internetaccessOptions,'deploy-nat-gateway')]"
               },
               {
                 "name": "publiciptext",
@@ -806,7 +810,7 @@
                 "options": {
                   "text": " Public IP address will be attached to NIC1 in each Fortiproxy for license validation and retrieve proxied content."
                 },
-                "visible": "[equals(steps('publicip').internalLoadBalancer.internetaccessOptions,'Attached Public IP Address')]"
+                "visible": "[equals(steps('publicip').internalLoadBalancer.internetaccessOptions,'per-node-standard-sku-pip')]"
               }
             ]
           }
@@ -846,7 +850,7 @@
               "icon": "Info",
               "text": "NAT Gateway Public IP is Standard SKU. Proceed."
             },
-            "visible": "[and(equals(steps('publicip').internalLoadBalancer.internetaccessOptions,'NAT Outbound'),equals(steps('publicip').publicip4internet.sku, 'Standard'))]"
+            "visible": "[and(equals(steps('publicip').internalLoadBalancer.internetaccessOptions,'deploy-nat-gateway'),equals(steps('publicip').publicip4internet.sku, 'Standard'))]"
           },
           {
             "name": "StandardIPConfirmation3",
@@ -855,7 +859,7 @@
               "icon": "Info",
               "text": "The attached public IP address to each Fortiproxy unit is standard. Proceed."
             },
-            "visible": "[and(equals(steps('publicip').internalLoadBalancer.internetaccessOptions,'Attached Public IP Address'),equals(steps('publicip').publicip4internet.sku, 'Standard'))]"
+            "visible": "[and(equals(steps('publicip').internalLoadBalancer.internetaccessOptions,'per-node-standard-sku-pip'),equals(steps('publicip').publicip4internet.sku, 'Standard'))]"
           },
           {
             "name": "StandardIPConfirmation4",
@@ -864,7 +868,7 @@
               "icon": "Info",
               "text": "The Internal Load Balancer will be deployed. Fortiproxy units will get internet access through NAT Gatway. Proceed."
             },
-            "visible": "[equals(steps('publicip').internalLoadBalancer.internetaccessOptions,'NAT Outbound')]"
+            "visible": "[equals(steps('publicip').internalLoadBalancer.internetaccessOptions,'deploy-nat-gateway')]"
           }
         ]
       },
