@@ -25,7 +25,7 @@
       "defaultValue": "fortinet_fw-vm",
       "allowedValues": [
         "fortinet_fw-vm",
-        "fortinet_fw-vm_payg_v2"
+        "fortinet_fw-vm_payg_v3"
       ],
       "metadata": {
         "description": "Identifies whether to to use PAYG (on demand licensing) or BYOL license model (where license is purchased separately)"
@@ -35,13 +35,8 @@
       "type": "string",
       "defaultValue": "latest",
       "allowedValues": [
-        "6.1.0",
         "6.3.17",
-        "7.0.0",
         "7.0.3",
-        "7.0.8",
-        "7.2.0",
-        "7.2.3",
         "7.2.4",
         "7.4.0",
         "latest"
@@ -59,7 +54,7 @@
     },
     "instanceType": {
       "type": "string",
-      "defaultValue": "Standard_F2s_v2",
+      "defaultValue": "Standard_F2s",
       "allowedValues": [
         "Standard_F1s",
         "Standard_F2s",
@@ -85,47 +80,7 @@
         "Standard_D4s_v3",
         "Standard_D8s_v3",
         "Standard_D16s_v3",
-        "Standard_D32s_v3",
-        "Standard_D2_v4",
-        "Standard_D4_v4",
-        "Standard_D8_v4",
-        "Standard_D16_v4",
-        "Standard_D32_v4",
-        "Standard_D2s_v4",
-        "Standard_D4s_v4",
-        "Standard_D8s_v4",
-        "Standard_D16s_v4",
-        "Standard_D32s_v4",
-        "Standard_D2a_v4",
-        "Standard_D4a_v4",
-        "Standard_D8a_v4",
-        "Standard_D16a_v4",
-        "Standard_D32a_v4",
-        "Standard_D2as_v4",
-        "Standard_D4as_v4",
-        "Standard_D8as_v4",
-        "Standard_D16as_v4",
-        "Standard_D32as_v4",
-        "Standard_D2_v5",
-        "Standard_D4_v5",
-        "Standard_D8_v5",
-        "Standard_D16_v5",
-        "Standard_D32_v5",
-        "Standard_D2s_v5",
-        "Standard_D4s_v5",
-        "Standard_D8s_v5",
-        "Standard_D16s_v5",
-        "Standard_D32s_v5",
-        "Standard_D2as_v5",
-        "Standard_D4as_v5",
-        "Standard_D8as_v5",
-        "Standard_D16as_v5",
-        "Standard_D32as_v5",
-        "Standard_D2ads_v5",
-        "Standard_D4ads_v5",
-        "Standard_D8ads_v5",
-        "Standard_D16ads_v5",
-        "Standard_D32ads_v5"
+        "Standard_D32s_v3"
       ],
       "metadata": {
         "description": "Virtual Machine size selection - must be F4 or other instance that supports 4 NICs"
