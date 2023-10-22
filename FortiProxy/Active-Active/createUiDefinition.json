@@ -10,7 +10,9 @@
         }
       }
     },
-    "resourceTypes": [ "microsoft.resources/resourcegroups" ],
+    "resourceTypes": [
+      "microsoft.resources/resourcegroups"
+    ],
     "basics": [
       {
         "name": "instancetypeinfo",
@@ -775,7 +777,9 @@
                 "name": "internetaccessOptions",
                 "type": "Microsoft.Common.DropDown",
                 "label": "Internet Access Options",
-                "defaultValue": [ "per-node-standard-sku-pip" ],
+                "defaultValue": [
+                  "per-node-standard-sku-pip"
+                ],
                 "toolTip": "Deploy NAT Gateway or attach Public IP address for each FortiProxy.",
                 "constraints": {
                   "required": false,

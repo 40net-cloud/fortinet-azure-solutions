@@ -238,7 +238,6 @@
         "description": "Subnet 1 Name"
       }
     },
-
     "subnet1Prefix": {
       "type": "string",
       "defaultValue": "172.16.136.0/26",
@@ -511,36 +510,68 @@
     },
     "loadBalancerInboundNatRules": [
       [
-        { "id": "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'), concat(variables('fpxVmName'),'-1-mgmt-https'))]" },
-        { "id": "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'), concat(variables('fpxVmName'),'-1-mgmt-ssh'))]" }
+        {
+          "id": "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'), concat(variables('fpxVmName'),'-1-mgmt-https'))]"
+        },
+        {
+          "id": "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'), concat(variables('fpxVmName'),'-1-mgmt-ssh'))]"
+        }
       ],
       [
-        { "id": "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'), concat(variables('fpxVmName'),'-2-mgmt-https'))]" },
-        { "id": "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'), concat(variables('fpxVmName'),'-2-mgmt-ssh'))]" }
+        {
+          "id": "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'), concat(variables('fpxVmName'),'-2-mgmt-https'))]"
+        },
+        {
+          "id": "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'), concat(variables('fpxVmName'),'-2-mgmt-ssh'))]"
+        }
       ],
       [
-        { "id": "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'), concat(variables('fpxVmName'),'-3-mgmt-https'))]" },
-        { "id": "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'), concat(variables('fpxVmName'),'-3-mgmt-ssh'))]" }
+        {
+          "id": "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'), concat(variables('fpxVmName'),'-3-mgmt-https'))]"
+        },
+        {
+          "id": "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'), concat(variables('fpxVmName'),'-3-mgmt-ssh'))]"
+        }
       ],
       [
-        { "id": "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'), concat(variables('fpxVmName'),'-4-mgmt-https'))]" },
-        { "id": "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'), concat(variables('fpxVmName'),'-4-mgmt-ssh'))]" }
+        {
+          "id": "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'), concat(variables('fpxVmName'),'-4-mgmt-https'))]"
+        },
+        {
+          "id": "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'), concat(variables('fpxVmName'),'-4-mgmt-ssh'))]"
+        }
       ],
       [
-        { "id": "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'), concat(variables('fpxVmName'),'-5-mgmt-https'))]" },
-        { "id": "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'), concat(variables('fpxVmName'),'-5-mgmt-ssh'))]" }
+        {
+          "id": "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'), concat(variables('fpxVmName'),'-5-mgmt-https'))]"
+        },
+        {
+          "id": "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'), concat(variables('fpxVmName'),'-5-mgmt-ssh'))]"
+        }
       ],
       [
-        { "id": "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'), concat(variables('fpxVmName'),'-6-mgmt-https'))]" },
-        { "id": "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'), concat(variables('fpxVmName'),'-6-mgmt-ssh'))]" }
+        {
+          "id": "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'), concat(variables('fpxVmName'),'-6-mgmt-https'))]"
+        },
+        {
+          "id": "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'), concat(variables('fpxVmName'),'-6-mgmt-ssh'))]"
+        }
       ],
       [
-        { "id": "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'), concat(variables('fpxVmName'),'-7-mgmt-https'))]" },
-        { "id": "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'), concat(variables('fpxVmName'),'-7-mgmt-ssh'))]" }
+        {
+          "id": "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'), concat(variables('fpxVmName'),'-7-mgmt-https'))]"
+        },
+        {
+          "id": "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'), concat(variables('fpxVmName'),'-7-mgmt-ssh'))]"
+        }
       ],
       [
-        { "id": "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'), concat(variables('fpxVmName'),'-8-mgmt-https'))]" },
-        { "id": "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'), concat(variables('fpxVmName'),'-8-mgmt-ssh'))]" }
+        {
+          "id": "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'), concat(variables('fpxVmName'),'-8-mgmt-https'))]"
+        },
+        {
+          "id": "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'), concat(variables('fpxVmName'),'-8-mgmt-ssh'))]"
+        }
       ]
     ],
     "nsgName": "[concat(parameters('fortiProxyNamePrefix'),'-nsg')]",
@@ -1028,9 +1059,7 @@
             "properties": {
               "privateIPAddress": "[variables('sn1IP')[copyIndex(1)]]",
               "privateIPAllocationMethod": "Static",
-
               "publicIPAddress": "[if(and(not(equals(parameters('publicIP1NewOrExistingOrNone'), 'none')),equals(parameters('outboundConnectivity'),'per-node-standard-sku-pip')), variables('attachedpipaddressId')[copyIndex(1)] , json('null'))]",
-
               "subnet": {
                 "id": "[variables('subnet1Id')]"
               },
