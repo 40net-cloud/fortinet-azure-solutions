@@ -141,7 +141,7 @@
     },
     "outboundConnectivity": {
       "type": "string",
-      "defaultValue": "per-node-standard-sku-pip",
+      "defaultValue": "external-nat-device",
       "allowedValues": [
         "per-node-standard-sku-pip",
         "deploy-nat-gateway",
@@ -755,7 +755,7 @@
       }
     },
     {
-      "condition": "[not(equals(parameters('outboundConnectivity'),'per-node-standard-sku-pip'))]",
+      "condition": "[or(parameters('externalLoadBalancer'),not(equals(parameters('outboundConnectivity'),'deploy-nat-gateway')))]",
       "type": "Microsoft.Network/publicIPAddresses",
       "name": "[variables('publicIP1Name')]",
       "apiVersion": "2022-01-01",
@@ -773,7 +773,7 @@
       }
     },
     {
-      "condition": "[and(not(parameters('externalLoadBalancer')),equals(parameters('outboundConnectivity'),'per-node-standard-sku-pip'))]",
+      "condition": "[equals(parameters('outboundConnectivity'),'per-node-standard-sku-pip')]",
       "type": "Microsoft.Network/publicIPAddresses",
       "name": "[concat(variables('publicIP1Name'),copyIndex(1))]",
       "apiVersion": "2022-01-01",
@@ -800,7 +800,7 @@
       "name": "[variables('externalLBName')]",
       "apiVersion": "2022-01-01",
       "location": "[parameters('location')]",
-      "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Network/publicIPAddresses'), parameters('tagsByResource')['Microsoft.Network/publicIPAddresses'], json('{}')) ]",
+      "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Network/loadBalancers'), parameters('tagsByResource')['Microsoft.Network/loadBalancers'], json('{}')) ]",
       "sku": {
         "name": "Standard"
       },
@@ -1017,9 +1017,7 @@
             "properties": {
               "privateIPAddress": "[variables('sn1IP')[copyIndex(1)]]",
               "privateIPAllocationMethod": "Static",
-
               "publicIPAddress": "[if(and(not(equals(parameters('publicIP1NewOrExistingOrNone'), 'none')),equals(parameters('outboundConnectivity'),'per-node-standard-sku-pip')), variables('attachedpipaddressId')[copyIndex(1)] , json('null'))]",
-
               "subnet": {
                 "id": "[variables('subnet1Id')]"
               },
