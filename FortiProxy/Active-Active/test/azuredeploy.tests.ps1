@@ -124,6 +124,7 @@ Describe 'FPX A/A' {
                                           'subnet2Name',
                                           'subnet2Prefix',
                                           'subnet2StartAddress',
+                                          'tagsByResource',
                                           'vnetAddressPrefix',
                                           'vnetName',
                                           'vnetNewOrExisting',
