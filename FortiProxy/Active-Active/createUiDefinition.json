@@ -10,7 +10,9 @@
         }
       }
     },
-    "resourceTypes": [ "microsoft.resources/resourcegroups" ],
+    "resourceTypes": [
+      "microsoft.resources/resourcegroups"
+    ],
     "basics": [
       {
         "name": "instancetypeinfo",
@@ -1074,70 +1076,72 @@
                 }
               }
             ]
-          },
+          }
+        ]
+      },
+      {
+        "name": "tags",
+        "label": "Tags",
+        "elements": [
           {
-            "name": "tags",
-            "label": "Tags",
-            "elements": [
-              {
-                "name": "tagsByResource",
-                "type": "Microsoft.Common.TagsByResource",
-                "toolTip": "Add tags to Azure Resources",
-                "resources": [
-                  "Microsoft.Network/networkSecurityGroups",
-                  "Microsoft.Network/publicIPAddresses",
-                  "Microsoft.Network/loadBalancers",
-                  "Microsoft.Network/natGateways",
-                  "Microsoft.Network/networkInterfaces",
-                  "Microsoft.Compute/virtualMachines"
-                ]
-              }
+            "name": "tagsByResource",
+            "type": "Microsoft.Common.TagsByResource",
+            "toolTip": "Add tags to Azure Resources",
+            "resources": [
+              "Microsoft.Network/networkSecurityGroups",
+              "Microsoft.Network/publicIPAddresses",
+              "Microsoft.Network/loadBalancers",
+              "Microsoft.Network/natGateways",
+              "Microsoft.Network/networkInterfaces",
+              "Microsoft.Compute/virtualMachines"
             ]
           }
         ]
       }
-    ],
-    "outputs": {
-      "adminUsername": "[basics('adminUsername')]",
-      "adminPassword": "[basics('adminPassword')]",
-      "fortiProxyCount": "[basics('fortiProxyCount')]",
-      "fortiProxyNamePrefix": "[basics('fortiProxyNamePrefix')]",
-      "fortiProxyImageSKU": "[basics('fortiProxyImageSKU')]",
-      "fortiProxyImageVersion": "[basics('fortiProxyImageVersion')]",
-      "fortiProxyAdditionalCustomData": "[steps('advanced').customdata.config]",
-      "instanceType": "[steps('instance').instancetype.selection]",
-      "externalLoadBalancer": "[bool(steps('publicip').externalLoadBalancer.enabled)]",
-      "outboundConnectivity": "[steps('publicip').internalLoadBalancer.outboundConnectivityOptions]",
-      "availabilityOptions": "[steps('instance').availabilityOptions.availabilityOptions]",
-      "acceleratedNetworking": "[steps('networking').acceleratednetworksection.acceleratednetworking]",
-      "publicIP1NewOrExistingOrNone": "[steps('publicip').publicip4internet.newOrExistingOrNone]",
-      "publicIP1Name": "[steps('publicip').publicip4internet.name]",
-      "publicIP1ResourceGroup": "[steps('publicip').publicip4internet.resourceGroup]",
-      "vnetNewOrExisting": "[steps('networking').virtualnetworksection.virtualnetwork.newOrExisting]",
-      "vnetName": "[steps('networking').virtualnetworksection.virtualnetwork.name]",
-      "vnetResourceGroup": "[steps('networking').virtualnetworksection.virtualnetwork.resourceGroup]",
-      "vnetAddressPrefix": "[steps('networking').virtualnetworksection.virtualnetwork.addressPrefix]",
-      "subnet1Name": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet1.name]",
-      "subnet1Prefix": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet1.addressPrefix]",
-      "subnet1StartAddress": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet1.startAddress]",
-      "subnet2Name": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet2.name]",
-      "subnet2Prefix": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet2.addressPrefix]",
-      "subnet2StartAddress": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet2.startAddress]",
-      "serialConsole": "[steps('advanced').serialconsole.enabled]",
-      "fortiManager": "[steps('advanced').fortimanager.enabled]",
-      "fortiManagerIP": "[steps('advanced').fortimanager.fortimanagerip]",
-      "fortiManagerSerial": "[steps('advanced').fortimanager.fortimanagerserial]",
-      "fortiProxyLicenseBYOL1": "[steps('instance').fpxLicense.fpx1content]",
-      "fortiProxyLicenseBYOL2": "[steps('instance').fpxLicense.fpx2content]",
-      "fortiProxyLicenseBYOL3": "[steps('instance').fpxLicense.fpx3content]",
-      "fortiProxyLicenseBYOL4": "[steps('instance').fpxLicense.fpx4content]",
-      "fortiProxyLicenseBYOL5": "[steps('instance').fpxLicense.fpx5content]",
-      "fortiProxyLicenseBYOL6": "[steps('instance').fpxLicense.fpx6content]",
-      "fortiProxyLicenseBYOL7": "[steps('instance').fpxLicense.fpx7content]",
-      "fortiProxyLicenseBYOL8": "[steps('instance').fpxLicense.fpx8content]",
-      "customImageReference": "[steps('advanced').customvhd.resourceid]",
-      "tagsByResource": "[steps('tags').tagsByResource]",
-      "location": "[location()]"
-    }
+    ]
   }
+],
+"outputs": {
+  "adminUsername": "[basics('adminUsername')]",
+  "adminPassword": "[basics('adminPassword')]",
+  "fortiProxyCount": "[basics('fortiProxyCount')]",
+  "fortiProxyNamePrefix": "[basics('fortiProxyNamePrefix')]",
+  "fortiProxyImageSKU": "[basics('fortiProxyImageSKU')]",
+  "fortiProxyImageVersion": "[basics('fortiProxyImageVersion')]",
+  "fortiProxyAdditionalCustomData": "[steps('advanced').customdata.config]",
+  "instanceType": "[steps('instance').instancetype.selection]",
+  "externalLoadBalancer": "[bool(steps('publicip').externalLoadBalancer.enabled)]",
+  "outboundConnectivity": "[steps('publicip').internalLoadBalancer.outboundConnectivityOptions]",
+  "availabilityOptions": "[steps('instance').availabilityOptions.availabilityOptions]",
+  "acceleratedNetworking": "[steps('networking').acceleratednetworksection.acceleratednetworking]",
+  "publicIP1NewOrExistingOrNone": "[steps('publicip').publicip4internet.newOrExistingOrNone]",
+  "publicIP1Name": "[steps('publicip').publicip4internet.name]",
+  "publicIP1ResourceGroup": "[steps('publicip').publicip4internet.resourceGroup]",
+  "vnetNewOrExisting": "[steps('networking').virtualnetworksection.virtualnetwork.newOrExisting]",
+  "vnetName": "[steps('networking').virtualnetworksection.virtualnetwork.name]",
+  "vnetResourceGroup": "[steps('networking').virtualnetworksection.virtualnetwork.resourceGroup]",
+  "vnetAddressPrefix": "[steps('networking').virtualnetworksection.virtualnetwork.addressPrefix]",
+  "subnet1Name": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet1.name]",
+  "subnet1Prefix": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet1.addressPrefix]",
+  "subnet1StartAddress": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet1.startAddress]",
+  "subnet2Name": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet2.name]",
+  "subnet2Prefix": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet2.addressPrefix]",
+  "subnet2StartAddress": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet2.startAddress]",
+  "serialConsole": "[steps('advanced').serialconsole.enabled]",
+  "fortiManager": "[steps('advanced').fortimanager.enabled]",
+  "fortiManagerIP": "[steps('advanced').fortimanager.fortimanagerip]",
+  "fortiManagerSerial": "[steps('advanced').fortimanager.fortimanagerserial]",
+  "fortiProxyLicenseBYOL1": "[steps('instance').fpxLicense.fpx1content]",
+  "fortiProxyLicenseBYOL2": "[steps('instance').fpxLicense.fpx2content]",
+  "fortiProxyLicenseBYOL3": "[steps('instance').fpxLicense.fpx3content]",
+  "fortiProxyLicenseBYOL4": "[steps('instance').fpxLicense.fpx4content]",
+  "fortiProxyLicenseBYOL5": "[steps('instance').fpxLicense.fpx5content]",
+  "fortiProxyLicenseBYOL6": "[steps('instance').fpxLicense.fpx6content]",
+  "fortiProxyLicenseBYOL7": "[steps('instance').fpxLicense.fpx7content]",
+  "fortiProxyLicenseBYOL8": "[steps('instance').fpxLicense.fpx8content]",
+  "customImageReference": "[steps('advanced').customvhd.resourceid]",
+  "tagsByResource": "[steps('tags').tagsByResource]",
+  "location": "[location()]"
+}
+}
 }
