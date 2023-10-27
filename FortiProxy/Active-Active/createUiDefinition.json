@@ -764,18 +764,18 @@
             "visible": "[equals(steps('publicip').externalLoadBalancer.enabled,'false')]",
             "elements": [
               {
-                "name": "internetaccesstext",
+                "name": "outboundconnectivitytext",
                 "type": "Microsoft.Common.TextBlock",
                 "options": {
-                  "text": "The FortiProxy can access internet using one of the following methods."
+                  "text": "Outbound connectivity needs to be configured in Microsoft Azure when using a Standard SKU Load Balancer. Different methods are available to provide the FortiProxy outbound connectivity."
                 },
                 "visible": "[equals(steps('publicip').externalLoadBalancer.enabled,'false')]"
               },
               {
-                "name": "internetaccessOptions",
+                "name": "outboundConnectivityOptions",
                 "type": "Microsoft.Common.DropDown",
                 "label": "Internet Access Options",
-                "defaultValue": [ "per-node-standard-sku-pip" ],
+                "defaultValue": "Per node standard SKU Public IP address",
                 "toolTip": "Deploy NAT Gateway or attach Public IP address for each FortiProxy.",
                 "constraints": {
                   "required": false,
@@ -797,20 +797,31 @@
                 "visible": "[equals(steps('publicip').externalLoadBalancer.enabled,'false')]"
               },
               {
-                "name": "publiciptext",
-                "type": "Microsoft.Common.TextBlock",
+                "name": "deploynatgatewaytext",
+                "type": "Microsoft.Common.InfoBox",
                 "options": {
+                  "icon": "Info",
                   "text": "NAT Gateway public IP will be used for license validation and retrieve proxied content."
                 },
-                "visible": "[equals(steps('publicip').internalLoadBalancer.internetaccessOptions,'deploy-nat-gateway')]"
+                "visible": "[equals(steps('publicip').internalLoadBalancer.outboundConnectivityOptions,'deploy-nat-gateway')]"
               },
               {
-                "name": "publiciptext",
-                "type": "Microsoft.Common.TextBlock",
+                "name": "pernodestandardskupiptext",
+                "type": "Microsoft.Common.InfoBox",
                 "options": {
-                  "text": " Public IP address will be attached to NIC1 in each Fortiproxy for license validation and retrieve proxied content."
+                  "icon": "Info",
+                  "text": "A Public IP address will be attached to port1 on each Fortiproxy for license validation and to retrieve proxied content."
                 },
-                "visible": "[equals(steps('publicip').internalLoadBalancer.internetaccessOptions,'per-node-standard-sku-pip')]"
+                "visible": "[equals(steps('publicip').internalLoadBalancer.outboundConnectivityOptions,'per-node-standard-sku-pip')]"
+              },
+              {
+                "name": "externalnatdevicetext",
+                "type": "Microsoft.Common.InfoBox",
+                "options": {
+                  "icon": "Info",
+                  "text": "The FortiProxy will use the existing infrastructure and NAT capabilities of the VNET for outbound access, e.g. FortiGate"
+                },
+                "visible": "[equals(steps('publicip').internalLoadBalancer.outboundConnectivityOptions,'external-nat-device')]"
               }
             ]
           }
@@ -850,7 +861,7 @@
               "icon": "Info",
               "text": "NAT Gateway Public IP is Standard SKU. Proceed."
             },
-            "visible": "[and(equals(steps('publicip').internalLoadBalancer.internetaccessOptions,'deploy-nat-gateway'),equals(steps('publicip').publicip4internet.sku, 'Standard'))]"
+            "visible": "[and(equals(steps('publicip').internalLoadBalancer.outboundConnectivityOptions,'deploy-nat-gateway'),equals(steps('publicip').publicip4internet.sku, 'Standard'))]"
           },
           {
             "name": "StandardIPConfirmation3",
@@ -859,7 +870,7 @@
               "icon": "Info",
               "text": "The attached public IP address to each Fortiproxy unit is standard. Proceed."
             },
-            "visible": "[and(equals(steps('publicip').internalLoadBalancer.internetaccessOptions,'per-node-standard-sku-pip'),equals(steps('publicip').publicip4internet.sku, 'Standard'))]"
+            "visible": "[and(equals(steps('publicip').internalLoadBalancer.outboundConnectivityOptions,'per-node-standard-sku-pip'),equals(steps('publicip').publicip4internet.sku, 'Standard'))]"
           },
           {
             "name": "StandardIPConfirmation4",
@@ -868,7 +879,7 @@
               "icon": "Info",
               "text": "The Internal Load Balancer will be deployed. Fortiproxy units will get internet access through NAT Gatway. Proceed."
             },
-            "visible": "[equals(steps('publicip').internalLoadBalancer.internetaccessOptions,'deploy-nat-gateway')]"
+            "visible": "[equals(steps('publicip').internalLoadBalancer.outboundConnectivityOptions,'deploy-nat-gateway')]"
           }
         ]
       },
@@ -1063,6 +1074,25 @@
                 }
               }
             ]
+          },
+          {
+            "name": "tags",
+            "label": "Tags",
+            "elements": [
+              {
+                "name": "tagsByResource",
+                "type": "Microsoft.Common.TagsByResource",
+                "toolTip": "Add tags to Azure Resources",
+                "resources": [
+                  "Microsoft.Network/networkSecurityGroups",
+                  "Microsoft.Network/publicIPAddresses",
+                  "Microsoft.Network/loadBalancers",
+                  "Microsoft.Network/natGateways",
+                  "Microsoft.Network/networkInterfaces",
+                  "Microsoft.Compute/virtualMachines"
+                ]
+              }
+            ]
           }
         ]
       }
@@ -1077,6 +1107,7 @@
       "fortiProxyAdditionalCustomData": "[steps('advanced').customdata.config]",
       "instanceType": "[steps('instance').instancetype.selection]",
       "externalLoadBalancer": "[bool(steps('publicip').externalLoadBalancer.enabled)]",
+      "outboundConnectivity": "[steps('publicip').internalLoadBalancer.outboundConnectivityOptions]",
       "availabilityOptions": "[steps('instance').availabilityOptions.availabilityOptions]",
       "acceleratedNetworking": "[steps('networking').acceleratednetworksection.acceleratednetworking]",
       "publicIP1NewOrExistingOrNone": "[steps('publicip').publicip4internet.newOrExistingOrNone]",
@@ -1105,7 +1136,7 @@
       "fortiProxyLicenseBYOL7": "[steps('instance').fpxLicense.fpx7content]",
       "fortiProxyLicenseBYOL8": "[steps('instance').fpxLicense.fpx8content]",
       "customImageReference": "[steps('advanced').customvhd.resourceid]",
-      "internetConnectivity": "[steps('publicip').internalLoadBalancer.internetaccessOptions]",
+      "tagsByResource": "[steps('tags').tagsByResource]",
       "location": "[location()]"
     }
   }

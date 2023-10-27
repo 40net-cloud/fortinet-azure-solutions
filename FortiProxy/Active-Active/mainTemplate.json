@@ -182,7 +182,7 @@
         "none"
       ],
       "metadata": {
-        "description": "Public IP for the Load Balancer for inbound and outbound data of the FortiProxy VMs"
+        "description": "Public IP address for the Load Balancer for inbound and outbound data of the FortiProxy VMs"
       }
     },
     "publicIP1Name": {
@@ -379,6 +379,10 @@
       "metadata": {
         "description": "Location for all resources."
       }
+    },
+    "tagsByResource": {
+      "type": "object",
+      "defaultValue": {}
     },
     "fortinetTags": {
       "type": "object",
@@ -684,6 +688,7 @@
       "type": "Microsoft.Network/virtualNetworks",
       "apiVersion": "2022-01-01",
       "location": "[parameters('location')]",
+      "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Network/virtualNetworks'), parameters('tagsByResource')['Microsoft.Network/virtualNetworks'], json('{}')) ]",
       "properties": {
         "addressSpace": {
           "addressPrefixes": [
@@ -727,9 +732,7 @@
       "name": "[variables('nsgName')]",
       "apiVersion": "2022-01-01",
       "location": "[parameters('location')]",
-      "tags": {
-        "provider": "[toUpper(parameters('fortinetTags').provider)]"
-      },
+      "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Network/networkSecurityGroups'), parameters('tagsByResource')['Microsoft.Network/networkSecurityGroups'], json('{}')) ]",
       "properties": {
         "copy": [
           {
@@ -759,9 +762,7 @@
       "name": "[variables('publicIP1Name')]",
       "apiVersion": "2022-01-01",
       "location": "[parameters('location')]",
-      "tags": {
-        "provider": "[toUpper(parameters('fortinetTags').provider)]"
-      },
+      "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Network/publicIPAddresses'), parameters('tagsByResource')['Microsoft.Network/publicIPAddresses'], json('{}')) ]",
       "sku": {
         "name": "Standard"
       },
@@ -779,9 +780,7 @@
       "name": "[concat(variables('publicIP1Name'),copyIndex(1))]",
       "apiVersion": "2022-01-01",
       "location": "[parameters('location')]",
-      "tags": {
-        "provider": "[toUpper(parameters('fortinetTags').provider)]"
-      },
+      "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Network/publicIPAddresses'), parameters('tagsByResource')['Microsoft.Network/publicIPAddresses'], json('{}')) ]",
       "sku": {
         "name": "Standard"
       },
@@ -803,9 +802,7 @@
       "name": "[variables('externalLBName')]",
       "apiVersion": "2022-01-01",
       "location": "[parameters('location')]",
-      "tags": {
-        "provider": "[toUpper(parameters('fortinetTags').provider)]"
-      },
+      "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Network/publicIPAddresses'), parameters('tagsByResource')['Microsoft.Network/publicIPAddresses'], json('{}')) ]",
       "sku": {
         "name": "Standard"
       },
@@ -914,9 +911,7 @@
       "name": "[variables('internalLBName')]",
       "apiVersion": "2022-01-01",
       "location": "[parameters('location')]",
-      "tags": {
-        "provider": "[toUpper(parameters('fortinetTags').provider)]"
-      },
+      "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Network/loadBalancers'), parameters('tagsByResource')['Microsoft.Network/loadBalancers'], json('{}')) ]",
       "sku": {
         "name": "Standard"
       },
@@ -954,13 +949,13 @@
               "probe": {
                 "id": "[variables('internalLBProbeId')]"
               },
-              "protocol": "all",
-              "frontendPort": 0,
-              "backendPort": 0,
+              "protocol": "Tcp",
+              "frontendPort": 8080,
+              "backendPort": 8080,
               "enableFloatingIP": true,
               "idleTimeoutInMinutes": 5
             },
-            "name": "lbruleFEall"
+            "name": "internallbrule-fe-proxy"
           }
         ],
         "probes": [
@@ -982,9 +977,7 @@
       "name": "[variables('natGWName')]",
       "apiVersion": "2022-01-01",
       "location": "[parameters('location')]",
-      "tags": {
-        "provider": "[toUpper(parameters('fortinetTags').provider)]"
-      },
+      "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Network/natGateways'), parameters('tagsByResource')['Microsoft.Network/natGateways'], json('{}')) ]",
       "sku": {
         "name": "Standard"
       },
@@ -1008,9 +1001,7 @@
         "name": "nodeCopy",
         "count": "[parameters('fortiProxyCount')]"
       },
-      "tags": {
-        "provider": "[toUpper(parameters('fortinetTags').provider)]"
-      },
+      "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Network/networkInterfaces'), parameters('tagsByResource')['Microsoft.Network/networkInterfaces'], json('{}')) ]",
       "location": "[parameters('location')]",
       "dependsOn": [
         "[variables('vnetName')]",
@@ -1058,9 +1049,7 @@
         "name": "nodeCopy",
         "count": "[parameters('fortiProxyCount')]"
       },
-      "tags": {
-        "provider": "[toUpper(parameters('fortinetTags').provider)]"
-      },
+      "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Network/networkInterfaces'), parameters('tagsByResource')['Microsoft.Network/networkInterfaces'], json('{}')) ]",
       "location": "[parameters('location')]",
       "dependsOn": [
         "[variables('vnetName')]"
@@ -1090,9 +1079,7 @@
         "name": "nodeCopy",
         "count": "[parameters('fortiProxyCount')]"
       },
-      "tags": {
-        "provider": "[toUpper(parameters('fortinetTags').provider)]"
-      },
+      "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Compute/virtualMachines'), parameters('tagsByResource')['Microsoft.Compute/virtualMachines'], json('{}')) ]",
       "location": "[parameters('location')]",
       "dependsOn": [
         "[concat(variables('fpxVmName'),'-',copyIndex(1),'-nic1')]",
