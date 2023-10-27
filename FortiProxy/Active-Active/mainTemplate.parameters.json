@@ -9,7 +9,7 @@
             "value": "## TO BE DEFINED ##"
         },
         "fortiProxyCount": {
-            "value": "## TO BE DEFINED ##"
+            "value": 2
         },
         "fortiProxyNamePrefix": {
             "value": "## TO BE DEFINED ##"
@@ -118,6 +118,9 @@
         },
         "location": {
             "value": ""
+        },
+        "tagsByResource": {
+            "value": {}
         },
         "fortinetTags": {
             "value": {
