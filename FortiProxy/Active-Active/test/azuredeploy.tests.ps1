@@ -33,7 +33,7 @@ BeforeAll {
     $config = "config system global `n set gui-theme mariner `n end `n config system admin `n edit devops `n set accprofile super_admin `n set ssh-public-key1 `""
     $config += Get-Content $sshkeypub
     $config += "`" `n set password $testsResourceGroupName `n next `n end"
-    $publicIP1Name = "$testsPrefix-FPX-PIP"
+    $publicIP1Name = "$testsPrefix-fpx-pip"
     $fortiProxyCount = 3
     $params = @{ 'adminUsername'=$testsAdminUsername
                  'adminPassword'=$testsResourceGroupName
@@ -113,6 +113,7 @@ Describe 'FPX A/A' {
                                           'fortinetTags',
                                           'instanceType',
                                           'location',
+                                          'outboundConnectivity',
                                           'publicIP1Name',
                                           'publicIP1NewOrExistingOrNone',
                                           'publicIP1ResourceGroup',
