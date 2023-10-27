@@ -238,7 +238,6 @@
         "description": "Subnet 1 Name"
       }
     },
-
     "subnet1Prefix": {
       "type": "string",
       "defaultValue": "172.16.136.0/26",
