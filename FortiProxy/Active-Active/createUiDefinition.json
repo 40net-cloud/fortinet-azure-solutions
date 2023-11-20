@@ -1088,6 +1088,7 @@
             "type": "Microsoft.Common.TagsByResource",
             "toolTip": "Add tags to Azure Resources",
             "resources": [
+              "Microsoft.Compute/availabilitySets",
               "Microsoft.Network/networkSecurityGroups",
               "Microsoft.Network/publicIPAddresses",
               "Microsoft.Network/loadBalancers",

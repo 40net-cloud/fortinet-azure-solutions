@@ -701,9 +701,7 @@
       "name": "[variables('availabilitySetName')]",
       "apiVersion": "2022-03-01",
       "location": "[parameters('location')]",
-      "tags": {
-        "provider": "[toUpper(parameters('fortinetTags').provider)]"
-      },
+      "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Compute/availabilitySets'), parameters('tagsByResource')['Microsoft.Compute/availabilitySets'], json('{}')) ]",
       "properties": {
         "platformFaultDomainCount": 2,
         "platformUpdateDomainCount": 2
@@ -1107,7 +1105,7 @@
         "name": "nodeCopy",
         "count": "[parameters('fortiProxyCount')]"
       },
-      "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Compute/virtualMachines'), parameters('tagsByResource')['Microsoft.Compute/virtualMachines'], json('{}')) ]",
+      "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Compute/virtualMachines'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Compute/virtualMachines']), parameters('fortinetTags')) ]",
       "location": "[parameters('location')]",
       "dependsOn": [
         "[concat(variables('fpxVmName'),'-',copyIndex(1),'-nic1')]",
