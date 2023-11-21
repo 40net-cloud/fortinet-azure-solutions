@@ -1102,6 +1102,27 @@
             ]
           }
         ]
+      },
+      {
+        "name": "tags",
+        "label": "Tags",
+        "elements": [
+          {
+            "name": "tagsByResource",
+            "type": "Microsoft.Common.TagsByResource",
+            "toolTip": "Add tags to Azure Resources",
+            "resources": [
+              "Microsoft.Compute/availabilitySets",
+              "Microsoft.Network/networkSecurityGroups",
+              "Microsoft.Network/loadBalancers",
+              "Microsoft.Network/publicIPAddresses",
+              "Microsoft.Network/networkInterfaces",
+              "Microsoft.Compute/virtualMachines",
+              "Microsoft.Network/virtualNetworks",
+              "Microsoft.Network/routeTables"
+            ]
+          }
+        ]
       }
     ],
     "outputs": {
@@ -1150,7 +1171,8 @@
       "fortiManagerIP": "[steps('advanced').fortimanager.fortimanagerip]",
       "fortiManagerSerial": "[steps('advanced').fortimanager.fortimanagerserial]",
       "fortiGateAdditionalCustomData": "[steps('advanced').customdata.config]",
-      "customImageReference": "[steps('advanced').customvhd.resourceid]"
+      "customImageReference": "[steps('advanced').customvhd.resourceid]",
+      "tagsByResource": "[steps('tags').tagsByResource]"
     }
   }
 }
