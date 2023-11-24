@@ -144,6 +144,7 @@ Describe 'FGT A/P SDN' {
                                           'subnet4StartAddress',
                                           'subnet5Name',
                                           'subnet5Prefix',
+                                          'tagsByResource',
                                           'vnetAddressPrefix',
                                           'vnetName',
                                           'vnetNewOrExisting',

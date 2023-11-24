@@ -959,7 +959,7 @@
                 "toolTip": "Provide up to 10 IP addresses or DNS names of the FortiManager reachable over port TCP/541",
                 "constraints": {
                   "required": false,
-                  "regex": "^[A-Za-z0-9.- ]{1,64}$",
+                  "regex": "^[A-Za-z0-9 .-]{1,128}$",
                   "validationMessage": "Only alphanumeric characters and dots, dashs and spaces are allowed, and the value must be 1 to 512 characters."
                 },
                 "visible": true

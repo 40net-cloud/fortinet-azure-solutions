@@ -114,6 +114,7 @@ Describe 'FGT Single VM' {
                                           'subnet2StartAddress',
                                           'subnet3Name',
                                           'subnet3Prefix',
+                                          'tagsByResource',
                                           'vnetAddressPrefix',
                                           'vnetName',
                                           'vnetNewOrExisting',

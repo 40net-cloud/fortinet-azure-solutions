@@ -135,6 +135,7 @@ Describe 'FGT A/P LB' {
             'subnet4StartAddress',
             'subnet5Name',
             'subnet5Prefix',
+            'tagsByResource',
             'vnetAddressPrefix',
             'vnetName',
             'vnetNewOrExisting',

@@ -137,6 +137,9 @@
     "location": {
       "value": ""
     },
+    "tagsByResource": {
+      "value": ""
+    },
     "fortinetTags": {
       "value": {
         "publisher": "Fortinet",

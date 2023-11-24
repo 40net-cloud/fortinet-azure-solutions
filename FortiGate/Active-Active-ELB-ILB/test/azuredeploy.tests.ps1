@@ -119,6 +119,7 @@ Describe 'FGT A/A' {
                                           'subnet2StartAddress',
                                           'subnet3Name',
                                           'subnet3Prefix',
+                                          'tagsByResource',
                                           'vnetAddressPrefix',
                                           'vnetName',
                                           'vnetNewOrExisting',
