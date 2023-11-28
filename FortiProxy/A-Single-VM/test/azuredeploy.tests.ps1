@@ -105,6 +105,7 @@ Describe 'FPX Single VM' {
                                             'subnet1Name',
                                             'subnet1Prefix',
                                             'subnet1StartAddress',
+											'tagsByResource',
                                             'vnetAddressPrefix',
                                             'vnetName',
                                             'vnetNewOrExisting',
