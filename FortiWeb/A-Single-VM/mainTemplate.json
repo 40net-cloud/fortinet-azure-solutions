@@ -308,20 +308,6 @@
         "description": "FortiWeb BYOL license content"
       }
     },
-    "fortiWebLicenseBYOLURL": {
-      "type": "string",
-      "defaultValue": "",
-      "metadata": {
-        "description": "FortiWeb BYOL license URL location (the license file is stored on a Azure Storage Account or other location reachable during deployment)"
-      }
-    },
-    "fortiWebLicenseFlexVM": {
-      "type": "string",
-      "defaultValue": "",
-      "metadata": {
-        "description": "FortiWeb BYOL FlexVM license token"
-      }
-    },
     "location": {
       "type": "string",
       "defaultValue": "[resourceGroup().location]",
@@ -349,14 +335,14 @@
     "zone1": "[if(equals(parameters('availabilityZoneNumber'),''),pickZones('Microsoft.Compute', 'virtualMachines', parameters('location')),array(parameters('availabilityZoneNumber')))]",
     "vnetName": "[if(equals(parameters('vnetName'),''),concat(parameters('fortiWebNamePrefix'),'-VNET'),parameters('vnetName'))]",
     "subnet1Id": "[if(equals(parameters('vnetNewOrExisting'),'new'),resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet1Name')),resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet1Name')))]",
-    "subnet2Id": "[if(equals(parameters('vnetNewOrExisting'),'new'),resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet2Name')),resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet2Name')))]",
-    "customDataCloudInit": "\"cloud-initd\": \"enable\"",
-    "customDataUsrCLI": "[concat(',\"usr-cli\": \"config system global\n set admintimeout 480\n end \n', parameters('fortiWebAdditionalCustomData'), '\"')]",
-    "customDataBOYL": "[if(equals(parameters('fortiWebLicenseBYOL'),''),'',concat(',\"usr-license\":\"',parameters('fortiWebLicenseBYOL'), '\"'))]",
-    "customDataBOYLURL": "[if(equals(parameters('fortiWebLicenseBYOLURL'),''),'',concat(',\"usr-license-uri\":\"',parameters('fortiWebLicenseBYOLURL'), '\"'))]",
-    "customDataFlexVM": "[if(equals(parameters('fortiWebLicenseFlexVM'),''),'',concat(',\"flex_token\":\"',parameters('fortiWebLicenseFlexVM'), '\"'))]",
-    "customDataCombined": "[concat('{', variables('customDataCloudInit'), variables('customDataUsrCLI'), variables('customDataBOYL'), variables('customDataBOYLURL'), variables('customDataFlexVM'), '}')]",
-    "fwbCustomData": "[base64(string(variables('customDataCombined')))]",
+    "subnet2Id": "[if(equals(parameters('vnetNewOrExisting'),'new'),resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet2Name')),resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet2Name')))]",    
+	"customDataCombined": {
+      "cloud-initd": "enable",
+      "usr-cli": "[parameters('fortiWebAdditionalCustomData')]",
+	  "HaAzureInit": "enable",
+      "FwbLicenseBYOL": "[parameters('fortiWebLicenseBYOL')]"
+    },
+	"fwbCustomData": "[base64(string(variables('customDataCombined')))]",
     "fwbVmName": "[concat(parameters('fortiWebNamePrefix'),'-FWB')]",
     "fwbNic1Name": "[concat(variables('fwbVmName'),'-Nic1')]",
     "fwbNic1Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('fwbNic1Name'))]",
@@ -687,5 +673,15 @@
         }
       }
     }
-  ]
+  ],
+  "outputs": {
+    "fortiGatePublicIP": {
+      "type": "string",
+      "value": "[if(equals(parameters('publicIPNewOrExistingOrNone'), 'new'), reference(variables('publicIPId')).ipAddress, '')]"
+    },
+    "fwbCustomData": {
+      "type": "string",
+      "value": "[variables('fwbCustomData')]"
+    }
+  }
 }
