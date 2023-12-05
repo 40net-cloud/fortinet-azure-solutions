@@ -308,6 +308,13 @@
         "description": "FortiWeb BYOL license content"
       }
     },
+	"fortiWebLicenseFlexVM": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "FortiWeb BYOL FlexVM license token"
+      }
+    },
     "location": {
       "type": "string",
       "defaultValue": "[resourceGroup().location]",
@@ -340,7 +347,8 @@
       "cloud-initd": "enable",
       "usr-cli": "[parameters('fortiWebAdditionalCustomData')]",
 	  "HaAzureInit": "enable",
-      "FwbLicenseBYOL": "[parameters('fortiWebLicenseBYOL')]"
+      "FwbLicenseBYOL": "[parameters('fortiWebLicenseBYOL')]",
+	  "flex_token":  "[parameters('fortiWebLicenseFlexVM')]"
     },
 	"fwbCustomData": "[base64(string(variables('customDataCombined')))]",
     "fwbVmName": "[concat(parameters('fortiWebNamePrefix'),'-FWB')]",

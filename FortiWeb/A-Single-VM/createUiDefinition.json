@@ -390,6 +390,13 @@
                 }
               },
               {
+                "name": "fwbLicenseFlexVMCheck",
+                "type": "Microsoft.Common.CheckBox",
+                "label": "My organisation is using the Flex-VM subscription service.",
+                "toolTip": "Select this box to enter a Flex-VM token",
+                "visible": "[equals(basics('fortiWebImageSKU'), 'fortinet_fw-vm')]"
+              },
+              {
                 "name": "fwbLicenseContent",
                 "type": "Microsoft.Common.FileUpload",
                 "label": "FortiWeb License",
@@ -404,7 +411,20 @@
                   "openMode": "text",
                   "encoding": "UTF-8"
                 },
-                "visible": true
+                "visible": "[and(equals(basics('fortiWebImageSKU'), 'fortinet_fw-vm'),not(steps('instance').fwbLicense.fwbLicenseFlexVMCheck))]"
+              },
+              {
+                "name": "fwbflexvm",
+                "type": "Microsoft.Common.TextBox",
+                "label": "FortiWeb Flex-VM",
+                "defaultValue": "",
+                "toolTip": "FortiWeb Flex-VM license token",
+                "constraints": {
+                  "required": false,
+                  "regex": "^[A-Za-z0-9-]{1,64}$",
+                  "validationMessage": "Only alphanumeric characters and a dash are allowed, and the value must be 1 to 64 characters."
+                },
+                "visible": "[steps('instance').fwbLicense.fwbLicenseFlexVMCheck]"
               },
               {
                 "name": "fwbLicensePAYGInfo",
@@ -723,6 +743,7 @@
       "existingAvailabilitySetName": "[steps('instance').availabilityOptions.availabilitySetSelector.name]",
       "availabilityZoneNumber": "[steps('instance').availabilityOptions.availabilityZoneSelector]",
       "fortiWebLicenseBYOL": "[steps('instance').fwbLicense.fwbLicenseContent]",
+      "fortiWebLicenseFlexVM": "[steps('instance').fwbLicense.fwbflexvm]",
       "publicIPNewOrExistingOrNone": "[steps('publicip').publicip.newOrExistingOrNone]",
       "publicIPName": "[steps('publicip').publicip.name]",
       "publicIPResourceGroup": "[steps('publicip').publicip.resourceGroup]",
