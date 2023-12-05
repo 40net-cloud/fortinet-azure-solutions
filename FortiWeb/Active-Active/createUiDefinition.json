@@ -341,6 +341,13 @@
                   "text": "When using BYOL, you can upload the license file retrieved from support.fortinet.com here."
                 }
               },
+			  {
+                "name": "fwbLicenseFlexVMCheck",
+                "type": "Microsoft.Common.CheckBox",
+                "label": "My organisation is using the Flex-VM subscription service.",
+                "toolTip": "Select this box to enter a Flex-VM token",
+                "visible": "[equals(basics('fortiWebImageSKU'), 'fortinet_fw-vm')]"
+              },
               {
                 "name": "licenseacontent",
                 "type": "Microsoft.Common.FileUpload",
@@ -356,7 +363,7 @@
                   "openMode": "text",
                   "encoding": "UTF-8"
                 },
-                "visible": true
+                "visible": "[and(equals(basics('fortiWebImageSKU'), 'fortinet_fw-vm'),not(steps('instance').fwbLicense.fwbLicenseFlexVMCheck))]"
               },
               {
                 "name": "licensebcontent",
@@ -373,7 +380,33 @@
                   "openMode": "text",
                   "encoding": "UTF-8"
                 },
-                "visible": true
+                "visible": "[and(equals(basics('fortiWebImageSKU'), 'fortinet_fw-vm'),not(steps('instance').fwbLicense.fwbLicenseFlexVMCheck))]"
+              },
+			  {
+                "name": "fwbAflexvm",
+                "type": "Microsoft.Common.TextBox",
+                "label": "FortiWebA Flex-VM",
+                "defaultValue": "",
+                "toolTip": "FortiWebA Flex-VM license token",
+                "constraints": {
+                  "required": false,
+                  "regex": "^[A-Za-z0-9-]{1,64}$",
+                  "validationMessage": "Only alphanumeric characters and a dash are allowed, and the value must be 1 to 64 characters."
+                },
+                "visible": "[steps('instance').fwbLicense.fwbLicenseFlexVMCheck]"
+              },
+			  {
+                "name": "fwbBflexvm",
+                "type": "Microsoft.Common.TextBox",
+                "label": "FortiWebB Flex-VM",
+                "defaultValue": "",
+                "toolTip": "FortiWebB Flex-VM license token",
+                "constraints": {
+                  "required": false,
+                  "regex": "^[A-Za-z0-9-]{1,64}$",
+                  "validationMessage": "Only alphanumeric characters and a dash are allowed, and the value must be 1 to 64 characters."
+                },
+                "visible": "[steps('instance').fwbLicense.fwbLicenseFlexVMCheck]"
               },
               {
                 "name": "fwbLicensePAYGInfo",
@@ -701,6 +734,8 @@
       "availabilityOptions": "[steps('instance').availabilityOptions.availabilityOptions]",
       "fortiWebALicenseBYOL": "[steps('instance').fwbLicense.licenseacontent]",
       "fortiWebBLicenseBYOL": "[steps('instance').fwbLicense.licensebcontent]",
+	  "fortiWebALicenseFlexVM": "[steps('instance').fwbLicense.fwbAflexvm]",
+	  "fortiWebBLicenseFlexVM": "[steps('instance').fwbLicense.fwbBflexvm]",
       "publicIPNewOrExisting": "[steps('publicip').loadbalancerpublicip.newOrExistingOrNone]",
       "publicIPName": "[steps('publicip').loadbalancerpublicip.name]",
       "publicIPResourceGroup": "[steps('publicip').loadbalancerpublicip.resourceGroup]",
