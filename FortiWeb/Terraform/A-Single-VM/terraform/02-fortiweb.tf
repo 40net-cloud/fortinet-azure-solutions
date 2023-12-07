@@ -125,15 +125,15 @@ resource "azurerm_linux_virtual_machine" "fwbvm" {
     fwb_vm_name           = "${var.PREFIX}-FWB"
     fwb_license_file      = var.FWB_BYOL_LICENSE_FILE
     fwb_license_fortiflex = var.FWB_BYOL_FORTIFLEX_LICENSE_TOKEN
-    fwb_username          = var.USERNAME
-    fwb_ssh_public_key    = var.FWB_SSH_PUBLIC_KEY_FILE
-    fwb_external_ipaddr   = var.fwb_ipaddress["1"]
-    fwb_external_mask     = var.subnetmask["1"]
-    fwb_external_gw       = var.gateway_ipaddress["1"]
-    fwb_internal_ipaddr   = var.fwb_ipaddress["2"]
-    fwb_internal_mask     = var.subnetmask["2"]
-    fwb_internal_gw       = var.gateway_ipaddress["2"]
-    vnet_network          = var.vnet
+#    fwb_username          = var.USERNAME
+#    fwb_ssh_public_key    = var.FWB_SSH_PUBLIC_KEY_FILE
+#    fwb_external_ipaddr   = var.fwb_ipaddress["1"]
+#    fwb_external_mask     = var.subnetmask["1"]
+#    fwb_external_gw       = var.gateway_ipaddress["1"]
+#    fwb_internal_ipaddr   = var.fwb_ipaddress["2"]
+#    fwb_internal_mask     = var.subnetmask["2"]
+#    fwb_internal_gw       = var.gateway_ipaddress["2"]
+#    vnet_network          = var.vnet
   }))
 
   boot_diagnostics {
