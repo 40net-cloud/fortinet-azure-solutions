@@ -12,7 +12,7 @@
 # Deployment location: ${location}
 # Username: ${username}
 #
-# Management Fortiweb: https://${fwb_ipaddress}/
+# Management Fortiweb: https://${fwb_ipaddress}:8443/
 #
 ##############################################################################################################
 
