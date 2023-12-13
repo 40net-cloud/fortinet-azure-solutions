@@ -43,11 +43,11 @@ variable "FWB_BYOL_LICENSE_FILE_B" {
 }
 
 variable "FWB_BYOL_FORTIFLEX_LICENSE_TOKEN_A" {
-  default = "F313BA2C0CB326FC6E90"
+  default = ""
 }
 
 variable "FWB_BYOL_FORTIFLEX_LICENSE_TOKEN_B" {
-  default = "6F978A57AF1A04FC02BE"
+  default = ""
 }
 
 variable "FWB_SSH_PUBLIC_KEY_FILE" {
