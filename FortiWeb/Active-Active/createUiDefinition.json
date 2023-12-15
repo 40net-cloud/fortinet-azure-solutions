@@ -416,7 +416,7 @@
                   "text": "Pay as you go licenses was selected in the basics blade. The licenses uploaded here will not be used.",
                   "uri": "https://docs.fortinet.com/document/fortigate-public-cloud/7.2.0/azure-administration-guide/533394/creating-a-support-account"
                 },
-                "visible": "[not(equals(basics('fortiGateImageSKU'), 'fortinet_fw-vm'))]"
+                "visible": "[not(equals(basics('fortiWebImageSKU'), 'fortinet_fw-vm'))]"
               },
               {
                 "name": "fwbLicenseMigrateInfo",
@@ -594,7 +594,7 @@
               "domainNameLabel": "DNS name linked to this public IP"
             },
             "defaultValue": {
-              "publicIpAddressName": "[if(equals(basics('fortiGateNamePrefix'),''),'fwb-pip',concat(basics('fortiGateNamePrefix'),'-fwb-pip'))]",
+              "publicIpAddressName": "[if(equals(basics('fortiWebNamePrefix'),''),'fwb-pip',concat(basics('fortiWebNamePrefix'),'-fwb-pip'))]",
               "domainNameLabel": "mydomain"
             },
             "constraints": {
