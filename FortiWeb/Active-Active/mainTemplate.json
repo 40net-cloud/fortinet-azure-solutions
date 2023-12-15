@@ -126,7 +126,7 @@
       ],
       "defaultValue": "Availability Set",
       "metadata": {
-        "description": "Deploy FortiGate VMs in an Availability Set or Availability Zones. If Availability Zones deployment is selected but the location does not support Availability Zones an Availability Set will be deployed. If Availability Zones deployment is selected and Availability Zones are available in the location, FortiGate A will be placed in Zone 1, FortiGate B will be placed in Zone 2"
+        "description": "Deploy FortiWeb VMs in an Availability Set or Availability Zones. If Availability Zones deployment is selected but the location does not support Availability Zones an Availability Set will be deployed. If Availability Zones deployment is selected and Availability Zones are available in the location, FortiWeb A will be placed in Zone 1, FortiWeb B will be placed in Zone 2"
       }
     },
     "acceleratedNetworking": {
@@ -154,7 +154,7 @@
     },
     "publicIPName": {
       "type": "string",
-      "defaultValue": "FWBAPClusterPublicIP",
+      "defaultValue": "fwb-pip",
       "metadata": {
         "description": "Name of Public IP address element."
       }
@@ -354,10 +354,10 @@
       "usr-cli": "[variables('fwbACustomDataBody')]",
       "HaAzureInit": "enable",      
       "HaResourceGroupName": "[resourceGroup().name]",
-      "HaSubscriptionId": "[parameters('HASubscriptionId')]",
-      "HaTenantId": "[parameters('HATenantId')]",
-      "HaApplicationId": "[parameters('HAAppId')]",
-      "HaApplicationPassword": "[parameters('HAAppSecret')]",
+      "HaSubscriptionId": "[parameters('haSubscriptionId')]",
+      "HaTenantId": "[parameters('haTenantId')]",
+      "HaApplicationId": "[parameters('haAppId')]",
+      "HaApplicationPassword": "[parameters('haAppSecret')]",
       "HaLoadblancerName": "[variables('externalLBName')]",
       "HaInstanceCount": "2",
       "HaInstanceId": "1",
@@ -378,10 +378,10 @@
       "usr-cli": "[variables('fwbBCustomDataBody')]",
       "HaAzureInit": "enable",
       "HaResourceGroupName": "[resourceGroup().name]",
-      "HaSubscriptionId": "[parameters('HASubscriptionId')]",
-      "HaTenantId": "[parameters('HATenantId')]",
-      "HaApplicationId": "[parameters('HAAppId')]",
-      "HaApplicationPassword": "[parameters('HAAppSecret')]",
+      "HaSubscriptionId": "[parameters('haSubscriptionId')]",
+      "HaTenantId": "[parameters('haTenantId')]",
+      "HaApplicationId": "[parameters('haAppId')]",
+      "HaApplicationPassword": "[parameters('haAppSecret')]",
       "HaLoadblancerName": "[variables('externalLBName')]",
       "HaInstanceCount": "2",
       "HaInstanceId": "2",
@@ -395,15 +395,15 @@
       "flex_token": "[parameters('fortiWebBLicenseFlexVM')]"
     },
     "fwbBCustomData": "[base64(string(variables('fwbBCustomDataCombined')))]",
-    "fwbAVmName": "[concat(parameters('fortiWebNamePrefix'),'-FWB-A')]",
-    "fwbBVmName": "[concat(parameters('fortiWebNamePrefix'),'-FWB-B')]",
-    "fwbANic1Name": "[concat(variables('fwbAVmName'),'-Nic1')]",
+    "fwbAVmName": "[concat(parameters('fortiWebNamePrefix'),'-fwb-a')]",
+    "fwbBVmName": "[concat(parameters('fortiWebNamePrefix'),'-fwb-b')]",
+    "fwbANic1Name": "[concat(variables('fwbAVmName'),'-nic1')]",
     "fwbANic1Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('fwbANic1Name'))]",
-    "fwbANic2Name": "[concat(variables('fwbAVmName'),'-Nic2')]",
+    "fwbANic2Name": "[concat(variables('fwbAVmName'),'-nic2')]",
     "fwbANic2Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('fwbANic2Name'))]",
-    "fwbBNic1Name": "[concat(variables('fwbBVmName'),'-Nic1')]",
+    "fwbBNic1Name": "[concat(variables('fwbBVmName'),'-nic1')]",
     "fwbBNic1Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('fwbBNic1Name'))]",
-    "fwbBNic2Name": "[concat(variables('fwbBVmName'),'-Nic2')]",
+    "fwbBNic2Name": "[concat(variables('fwbBVmName'),'-nic2')]",
     "fwbBNic2Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('fwbBNic2Name'))]",
     "serialConsoleStorageAccountName": "[concat('console', uniquestring(resourceGroup().id))]",
     "serialConsoleStorageAccountType": "Standard_LRS",
@@ -442,19 +442,19 @@
     "sn2IPStartAddress": "[split(parameters('subnet2StartAddress'),'.')]",
     "sn2IPfwbA": "[concat(variables('sn2IPArray0'),'.',variables('sn2IPArray1'),'.',variables('sn2IPArray2'),'.',add(int(variables('sn2IPStartAddress')[3]),1))]",
     "sn2IPfwbB": "[concat(variables('sn2IPArray0'),'.',variables('sn2IPArray1'),'.',variables('sn2IPArray2'),'.',add(int(variables('sn2IPStartAddress')[3]),2))]",
-    "externalLBName_NatRule_FWBAdminPerm_fwbA": "[concat(variables('fwbAVmName'),'FWBAdminPerm')]",
+    "externalLBName_NatRule_FWBAdminPerm_fwbA": "[concat(variables('fwbAVmName'),'fwbadminperm')]",
     "externalLBId_NatRule_FWBAdminPerm_fwbA": "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'),variables('externalLBName_NatRule_FWBAdminPerm_fwbA'))]",
-    "externalLBName_NatRule_SSH_fwbA": "[concat(variables('fwbAVmName'),'SSH')]",
+    "externalLBName_NatRule_SSH_fwbA": "[concat(variables('fwbAVmName'),'ssh')]",
     "externalLBId_NatRule_SSH_fwbA": "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'),variables('externalLBName_NatRule_SSH_fwbA'))]",
-    "externalLBName_NatRule_FWBAdminPerm_fwbB": "[concat(variables('fwbBVmName'),'FWBAdminPerm')]",
+    "externalLBName_NatRule_FWBAdminPerm_fwbB": "[concat(variables('fwbBVmName'),'fwbadminperm')]",
     "externalLBId_NatRule_FWBAdminPerm_fwbB": "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'),variables('externalLBName_NatRule_FWBAdminPerm_fwbB'))]",
-    "externalLBName_NatRule_SSH_fwbB": "[concat(variables('fwbBVmName'),'SSH')]",
+    "externalLBName_NatRule_SSH_fwbB": "[concat(variables('fwbBVmName'),'ssh')]",
     "externalLBId_NatRule_SSH_fwbB": "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'),variables('externalLBName_NatRule_SSH_fwbB'))]",
-    "externalLBName": "[concat(parameters('fortiWebNamePrefix'),'-LoadBalancer')]",
+    "externalLBName": "[concat(parameters('fortiWebNamePrefix'),'-loadbalancer')]",
     "externalLBId": "[resourceId('Microsoft.Network/loadBalancers',variables('externalLBName'))]",
-    "externalLBFEName": "[concat(parameters('fortiWebNamePrefix'),'-LB-',parameters('subnet1Name'),'-FrontEnd')]",
+    "externalLBFEName": "[concat(parameters('fortiWebNamePrefix'),'-lb-',parameters('subnet1Name'),'-frontend')]",
     "externalLBFEId": "[resourceID('Microsoft.Network/loadBalancers/frontendIPConfigurations/',variables('externalLBName'),variables('externalLBFEName'))]",
-    "externalLBBEName": "[concat(parameters('fortiWebNamePrefix'),'-LB-',parameters('subnet1Name'),'-BackEnd')]",
+    "externalLBBEName": "[concat(parameters('fortiWebNamePrefix'),'-lb-',parameters('subnet1Name'),'-backend')]",
     "externalLBBEId": "[resourceID('Microsoft.Network/loadBalancers/backendAddressPools/',variables('externalLBName'),variables('externalLBBEName'))]",
     "externalLBProbeName": "heatlhProbeHttp",
     "externalLBProbeId": "[resourceId('Microsoft.Network/loadBalancers/probes/',variables('externalLBName'),variables('externalLBProbeName'))]",
@@ -480,17 +480,6 @@
           "contentVersion": "1.0.0.0",
           "resources": []
         }
-      }
-    },
-    {
-      "condition": "[equals(parameters('serialConsole'), 'yes')]",
-      "type": "Microsoft.Storage/storageAccounts",
-      "name": "[variables('serialConsoleStorageAccountName')]",
-      "apiVersion": "2021-02-01",
-      "location": "[parameters('location')]",
-      "kind": "Storage",
-      "sku": {
-        "name": "[variables('serialConsoleStorageAccountType')]"
       }
     },
     {
@@ -1020,8 +1009,7 @@
         },
         "diagnosticsProfile": {
           "bootDiagnostics": {
-            "enabled": "[variables('serialConsoleEnabled')]",
-            "storageUri": "[if(equals(parameters('serialConsole'), 'yes'), reference(variables('serialConsoleStorageAccountName'), '2021-08-01').primaryEndpoints['blob'], json('null'))]"
+            "enabled": "[variables('serialConsoleEnabled')]"
           }
         }
       }
@@ -1094,15 +1082,14 @@
         },
         "diagnosticsProfile": {
           "bootDiagnostics": {
-            "enabled": "[variables('serialConsoleEnabled')]",
-            "storageUri": "[if(equals(parameters('serialConsole'), 'yes'), reference(variables('serialConsoleStorageAccountName'), '2021-08-01').primaryEndpoints['blob'], json('null'))]"
+            "enabled": "[variables('serialConsoleEnabled')]"
           }
         }
       }
     }
   ],
   "outputs": {
-    "fortiGatePublicIP": {
+    "fortiWebPublicIP": {
       "type": "string",
       "value": "[if(equals(parameters('publicIPNewOrExistingOrNone'), 'new'), reference(variables('publicIPId')).ipAddress, '')]"
     },
