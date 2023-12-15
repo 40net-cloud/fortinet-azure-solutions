@@ -594,7 +594,7 @@
               "domainNameLabel": "DNS name linked to this public IP"
             },
             "defaultValue": {
-              "publicIpAddressName": "[if(equals(basics('fortiGateNamePrefix'),''),'FWBPublicIP',concat(basics('fortiGateNamePrefix'),'-FWB-PIP'))]",
+              "publicIpAddressName": "[if(equals(basics('fortiGateNamePrefix'),''),'fwb-pip',concat(basics('fortiGateNamePrefix'),'-fwb-pip'))]",
               "domainNameLabel": "mydomain"
             },
             "constraints": {
