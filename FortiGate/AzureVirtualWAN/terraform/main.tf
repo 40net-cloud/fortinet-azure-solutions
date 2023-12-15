@@ -159,7 +159,7 @@ resource "azurerm_linux_virtual_machine" "spoke2lnxvm" {
 ##############################################################################################################
 
 resource "azurerm_virtual_wan" "vwan" {
-  name                = "${var.PREFIX}-vwan"
+  name                = "${var.PREFIX}-virtualwan"
   resource_group_name = azurerm_resource_group.resourcegroup.name
   location            = azurerm_resource_group.resourcegroup.location
 
@@ -167,7 +167,7 @@ resource "azurerm_virtual_wan" "vwan" {
 }
 
 resource "azurerm_virtual_hub" "vhub" {
-  name                = "${var.PREFIX}-vwan-hub"
+  name                = "${var.PREFIX}-virtualwan-hub"
   resource_group_name = azurerm_resource_group.resourcegroup.name
   location            = azurerm_resource_group.resourcegroup.location
   virtual_wan_id      = azurerm_virtual_wan.vwan.id

@@ -67,7 +67,7 @@ variable "tags" {
   description = "A map of tags added to the deployed resources"
 
   default = {
-    "environment"  = "VWAN-fgt"
+    "environment"  = "VirtualWAN-FortiGate"
     "publisher"    = "Fortinet"
     "FTNT-CREATOR" = "jvanhoof@fortinet-us.com"
   }
