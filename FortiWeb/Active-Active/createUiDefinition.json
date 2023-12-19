@@ -342,10 +342,10 @@
                 }
               },
               {
-                "name": "fwbLicenseFlexVMCheck",
+                "name": "fwbLicenseFortiFlexCheck",
                 "type": "Microsoft.Common.CheckBox",
-                "label": "My organisation is using the Flex-VM subscription service.",
-                "toolTip": "Select this box to enter a Flex-VM token",
+                "label": "My organisation is using the FortiFlex subscription service.",
+                "toolTip": "Select this box to enter a FortiFlex token",
                 "visible": "[equals(basics('fortiWebImageSKU'), 'fortinet_fw-vm')]"
               },
               {
@@ -363,7 +363,7 @@
                   "openMode": "text",
                   "encoding": "UTF-8"
                 },
-                "visible": "[and(equals(basics('fortiWebImageSKU'), 'fortinet_fw-vm'),not(steps('instance').fwbLicense.fwbLicenseFlexVMCheck))]"
+                "visible": "[and(equals(basics('fortiWebImageSKU'), 'fortinet_fw-vm'),not(steps('instance').fwbLicense.fwbLicenseFortiFlexCheck))]"
               },
               {
                 "name": "licensebcontent",
@@ -380,33 +380,33 @@
                   "openMode": "text",
                   "encoding": "UTF-8"
                 },
-                "visible": "[and(equals(basics('fortiWebImageSKU'), 'fortinet_fw-vm'),not(steps('instance').fwbLicense.fwbLicenseFlexVMCheck))]"
+                "visible": "[and(equals(basics('fortiWebImageSKU'), 'fortinet_fw-vm'),not(steps('instance').fwbLicense.fwbLicenseFortiFlexCheck))]"
               },
               {
-                "name": "fwbAflexvm",
+                "name": "fwbAfortiflex",
                 "type": "Microsoft.Common.TextBox",
-                "label": "FortiWebA Flex-VM",
+                "label": "FortiWebA FortiFlex",
                 "defaultValue": "",
-                "toolTip": "FortiWebA Flex-VM license token",
+                "toolTip": "FortiWebA FortiFlex license token",
                 "constraints": {
                   "required": false,
                   "regex": "^[A-Za-z0-9-]{1,64}$",
                   "validationMessage": "Only alphanumeric characters and a dash are allowed, and the value must be 1 to 64 characters."
                 },
-                "visible": "[steps('instance').fwbLicense.fwbLicenseFlexVMCheck]"
+                "visible": "[steps('instance').fwbLicense.fwbLicenseFortiFlexCheck]"
               },
               {
-                "name": "fwbBflexvm",
+                "name": "fwbBfortiflex",
                 "type": "Microsoft.Common.TextBox",
-                "label": "FortiWebB Flex-VM",
+                "label": "FortiWebB FortiFlex",
                 "defaultValue": "",
-                "toolTip": "FortiWebB Flex-VM license token",
+                "toolTip": "FortiWebB FortiFlex license token",
                 "constraints": {
                   "required": false,
                   "regex": "^[A-Za-z0-9-]{1,64}$",
                   "validationMessage": "Only alphanumeric characters and a dash are allowed, and the value must be 1 to 64 characters."
                 },
-                "visible": "[steps('instance').fwbLicense.fwbLicenseFlexVMCheck]"
+                "visible": "[steps('instance').fwbLicense.fwbLicenseFortiFlexCheck]"
               },
               {
                 "name": "fwbLicensePAYGInfo",
@@ -465,7 +465,7 @@
                   "subnets": "During deployment 2 subnets will be deployed: external, internal"
                 },
                 "defaultValue": {
-                  "name": "[if(equals(basics('fortiWebNamePrefix'),''),'FortiWeb-VNET',concat(basics('fortiWebNamePrefix'),'-VNET'))]",
+                  "name": "[if(equals(basics('fortiWebNamePrefix'),''),'fortiweb-vnet',concat(basics('fortiWebNamePrefix'),'-vnet'))]",
                   "addressPrefixSize": "/20"
                 },
                 "constraints": {
@@ -734,8 +734,8 @@
       "availabilityOptions": "[steps('instance').availabilityOptions.availabilityOptions]",
       "fortiWebALicenseBYOL": "[steps('instance').fwbLicense.licenseacontent]",
       "fortiWebBLicenseBYOL": "[steps('instance').fwbLicense.licensebcontent]",
-      "fortiWebALicenseFlexVM": "[steps('instance').fwbLicense.fwbAflexvm]",
-      "fortiWebBLicenseFlexVM": "[steps('instance').fwbLicense.fwbBflexvm]",
+      "fortiWebALicenseFortiFlex": "[steps('instance').fwbLicense.fwbAfortiflex]",
+      "fortiWebBLicenseFortiFlex": "[steps('instance').fwbLicense.fwbBfortiflex]",
       "publicIPNewOrExisting": "[steps('publicip').loadbalancerpublicip.newOrExistingOrNone]",
       "publicIPName": "[steps('publicip').loadbalancerpublicip.name]",
       "publicIPResourceGroup": "[steps('publicip').loadbalancerpublicip.resourceGroup]",

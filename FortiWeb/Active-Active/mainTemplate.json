@@ -276,28 +276,28 @@
         "description": "FortiWeb BYOL license content"
       }
     },
-	"fortiWebALicenseFlexVM": {
+	"fortiWebALicenseFortiFlex": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
-        "description": "FortiWeb BYOL FlexVM license token"
+        "description": "FortiWeb BYOL FortiFlex license token"
       }
     },
-	"fortiWebBLicenseFlexVM": {
+	"fortiWebBLicenseFortiFlex": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
-        "description": "FortiWeb BYOL FlexVM license token"
+        "description": "FortiWeb BYOL FortiFlex license token"
       }
     },
-    "haAppId": {
+    "haApplicationId": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
         "description": "Active/Active config - Azure Service Principal Application Id"
       }
     },
-    "haAppSecret": {
+    "haApplicationSecret": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
@@ -368,7 +368,7 @@
       "HaGroupName": "[tolower(parameters('fortiWebNamePrefix'))]",
       "HaOverride": "[parameters('fortiWebHaOverride')]",
       "FwbLicenseBYOL": "[parameters('fortiWebALicenseBYOL')]",
-      "flex_token": "[parameters('fortiWebALicenseFlexVM')]"
+      "flex_token": "[parameters('fortiWebALicenseFortiFlex')]"
     },
     "fwbACustomData": "[base64(string(variables('fwbACustomDataCombined')))]",
     "fwbBCustomDataBodyHA": "[concat('config system ha\nset mode active-active-high-volume\nset group-id ', parameters('fortiWebHaGroupId'), '\nset group-name ', tolower(parameters('fortiWebNamePrefix')), '\nset priority 2\nset tunnel-local ', variables('sn2IPfwbB'), '\nset tunnel-peer ', variables('sn2IPfwbA'), '\nset monitor port1 port2\nend\n')]",
@@ -392,7 +392,7 @@
       "HaGroupName": "[tolower(parameters('fortiWebNamePrefix'))]",
       "HaOverride": "[parameters('fortiWebHaOverride')]",
       "FwbLicenseBYOL": "[parameters('fortiWebBLicenseBYOL')]",
-      "flex_token": "[parameters('fortiWebBLicenseFlexVM')]"
+      "flex_token": "[parameters('fortiWebBLicenseFortiFlex')]"
     },
     "fwbBCustomData": "[base64(string(variables('fwbBCustomDataCombined')))]",
     "fwbAVmName": "[concat(parameters('fortiWebNamePrefix'),'-fwb-a')]",
