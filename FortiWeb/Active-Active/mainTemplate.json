@@ -298,7 +298,7 @@
       }
     },
     "haApplicationSecret": {
-      "type": "string",
+      "type": "securestring",
       "defaultValue": "",
       "metadata": {
         "description": "Active/Active config - Azure Service Principal Application Secret"
