@@ -762,7 +762,7 @@
             "properties": {
               "protocol": "Tcp",
               "port": 80,
-              "intervalInSeconds": 15,
+              "intervalInSeconds": 5,
               "numberOfProbes": 2
             },
             "name": "[variables('externalLBProbeName')]"
@@ -771,7 +771,7 @@
             "properties": {
               "protocol": "Tcp",
               "port": 443,
-              "intervalInSeconds": 15,
+              "intervalInSeconds": 5,
               "numberOfProbes": 2
             },
             "name": "[variables('externalLBProbe2Name')]"
