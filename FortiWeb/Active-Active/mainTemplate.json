@@ -580,20 +580,6 @@
             }
           },
           {
-            "name": "AllowDevRegInbound",
-            "properties": {
-              "description": "Allow 514 in for device registration",
-              "protocol": "Tcp",
-              "sourcePortRange": "*",
-              "destinationPortRange": "514",
-              "sourceAddressPrefix": "*",
-              "destinationAddressPrefix": "*",
-              "access": "Allow",
-              "priority": 130,
-              "direction": "Inbound"
-            }
-          },
-          {
             "name": "AllowMgmtHTTPInbound",
             "properties": {
               "description": "Allow 8080 In",
