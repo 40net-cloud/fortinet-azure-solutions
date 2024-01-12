@@ -460,6 +460,34 @@
             }
           },
           {
+            "name": "AllowLogsInbound",
+            "properties": {
+              "description": "Allow 514 in for inbound logging",
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "514",
+              "sourceAddressPrefix": "*",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 140,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "AllowRemoteAccessInbound",
+            "properties": {
+              "description": "Allow 8082 in for remote access to FortiGate",
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "8082",
+              "sourceAddressPrefix": "*",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 150,
+              "direction": "Inbound"
+            }
+          },
+          {
             "name": "AllowAllOutbound",
             "properties": {
               "description": "Allow all out",
