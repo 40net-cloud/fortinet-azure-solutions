@@ -706,7 +706,7 @@
               "domainNameLabel": "DNS name linked to this public IP"
             },
             "defaultValue": {
-              "publicIpAddressName": "FAZPublicIP",
+              "publicIpAddressName": "[if(equals(basics('fortiGateNamePrefix'),''),'FMGPublicIP',concat(basics('fortiManager'),'-FMG-PIP'))]",
               "domainNameLabel": "mydomain"
             },
             "constraints": {
