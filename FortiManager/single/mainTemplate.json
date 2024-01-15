@@ -327,7 +327,7 @@
     "customDataFortiFlex": "[if(equals(parameters('fortiManagerLicenseFortiFlex'),''),'',concat('exec vm-license ',parameters('fortiManagerLicenseFortiFlex'), '\n'))]",
     "customDataCombined": "[concat(variables('customDataHeader'),variables('customDataBody'),variables('customDataFortiFlex'),variables('customDataLicenseHeader'),parameters('fortiManagerLicenseBYOL'), variables('customDataFooter'))]",
     "fmgCustomData": "[base64(if(equals(parameters('fortiManagerLicenseBYOL'),''),variables('customDataBody'),variables('customDataCombined')))]",
-    "fmgNic1Name": "[concat(variables('fmgVmName'),'-Nic1')]",
+    "fmgNic1Name": "[concat(variables('fmgVmName'),'-nic1')]",
     "fmgNic1Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('fmgNic1Name'))]",
     "publicIPName": "[if(equals(parameters('publicIPName'),''),concat(parameters('namePrefix'),'-fmg-pip'),parameters('publicIPName'))]",
     "publicIPId": "[if(equals(parameters('publicIPNewOrExisting'),'new'),resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPName')),if(equals(parameters('publicIPNewOrExisting'),'existing'),resourceId(parameters('publicIPResourceGroup'),'Microsoft.Network/publicIPAddresses',variables('publicIPName')),''))]",
