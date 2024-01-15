@@ -422,7 +422,7 @@
       "type": "string",
       "defaultValue": "",
       "metadata": {
-        "description": "By default, the deployment will use Azure Marketplace images. In specific cases, using BYOL custom FortiGate images can be deployed. This requires a reference "
+        "description": "By default, the deployment will use Azure Marketplace images. In specific cases, using BYOL custom FortiGate images can be deployed from support.fortinet.com."
       }
     },
     "location": {
