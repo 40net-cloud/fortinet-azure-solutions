@@ -639,7 +639,7 @@
                   "subnets": "Standard deployment is to have an "
                 },
                 "defaultValue": {
-                  "name": "[if(equals(basics('namePrefix'),''),'FortiManager-VNET',concat(basics('namePrefix'),'-VNET'))]",
+                  "name": "[if(equals(basics('namePrefix'),''),'FortiManager-vnet',concat(basics('namePrefix'),'-vnet'))]",
                   "addressPrefixSize": "/24"
                 },
                 "constraints": {
@@ -706,7 +706,7 @@
               "domainNameLabel": "DNS name linked to this public IP"
             },
             "defaultValue": {
-              "publicIpAddressName": "[if(equals(basics('fortiGateNamePrefix'),''),'FMGPublicIP',concat(basics('fortiManager'),'-FMG-PIP'))]",
+              "publicIpAddressName": "[if(equals(basics('fortiGateNamePrefix'),''),'fmg-public-ip',concat(basics('fortiManager'),'-fmg-pip'))]",
               "domainNameLabel": "mydomain"
             },
             "constraints": {
