@@ -309,7 +309,7 @@
   "variables": {
     "imagePublisher": "fortinet",
     "imageOffer": "fortinet_fortigate-vm_v5",
-    "availabilitySetName": "[if(equals(parameters('existingAvailabilitySetName'),''),concat(parameters('namePrefix'),'-AvailabilitySet'),parameters('existingAvailabilitySetName'))]",
+    "availabilitySetName": "[if(equals(parameters('existingAvailabilitySetName'),''),concat(parameters('namePrefix'),'-availabilityset'),parameters('existingAvailabilitySetName'))]",
     "availabilitySetId": {
       "id": "[resourceId('Microsoft.Compute/availabilitySets', variables('availabilitySetName'))]"
     },
@@ -317,9 +317,9 @@
     "useAZ": "[and(not(empty(pickZones('Microsoft.Compute', 'virtualMachines', parameters('location')))), equals(parameters('availabilityOptions'), 'Availability zone'))]",
     "pipZones": "[if(variables('useAZ'), pickZones('Microsoft.Network', 'publicIPAddresses', parameters('location'), 3), json('null'))]",
     "zone1": "[if(equals(parameters('availabilityZoneNumber'),''),pickZones('Microsoft.Compute', 'virtualMachines', parameters('location')),array(parameters('availabilityZoneNumber')))]",
-    "vnetName": "[if(equals(parameters('vnetName'),''),concat(parameters('namePrefix'),'-VNET'),parameters('vnetName'))]",
+    "vnetName": "[if(equals(parameters('vnetName'),''),concat(parameters('namePrefix'),'-vnet'),parameters('vnetName'))]",
     "subnet1Id": "[if(equals(parameters('vnetNewOrExisting'),'new'),resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'), parameters('subnet1Name')),resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet1Name')))]",
-    "fmgVmName": "[concat(parameters('namePrefix'),'-FMG-A')]",
+    "fmgVmName": "[concat(parameters('namePrefix'),'-fmg-a')]",
     "customDataHeader": "Content-Type: multipart/mixed; boundary=\"12345\"\nMIME-Version: 1.0\n\n--12345\nContent-Type: text/plain; charset=\"us-ascii\"\nMIME-Version: 1.0\nContent-Transfer-Encoding: 7bit\nContent-Disposition: attachment; filename=\"config\"\n\n",
     "customDataBody": "[concat('config system global\n set hostname ', variables('fmgVmName'), '\n set adom-status enable\n set clone-name-option keep\n set create-revision enable\n set device-view-mode tree\n set disable-module fortiview-noc\n set import-ignore-addr-cmt enable\n set partial-install enable\n set partial-install-force enable\n set partial-install-rev enable\n set perform-improve-by-ha enable\n set policy-hit-count enable\n set policy-object-icon enable\n set search-all-adoms enable\n end\n config system admin setting\n set sdwan-monitor-history enable\n set show-add-multiple enable\n set show-checkbox-in-table enable\n set show-device-import-export enable\n set show-hostname enable\n set show_automatic_script enable\n set show_schedule_script enable\n set show_tcl_script enable\n end\nconfig system interface\nedit port1\nset mode static\nset ip ',  variables('sn1IPfmg'), '/', variables('sn1CIDRmask'), '\nset description fortimanager\nset allowaccess ping ssh https\nnext\nend\nconfig system route\nedit 1\nset dst 0.0.0.0/0\nset gateway ', variables('sn1GatewayIP'), '\nset device port1\nnext\nend\n',parameters('additionalCustomData'),variables('customDataFortiFlex'))]",
     "customDataLicenseHeader": "--12345\nContent-Type: text/plain; charset=\"us-ascii\"\nMIME-Version: 1.0\nContent-Transfer-Encoding: 7bit\nContent-Disposition: attachment; filename=\"fgtlicense\"\n\n",
@@ -329,13 +329,13 @@
     "fmgCustomData": "[base64(if(equals(parameters('fortiManagerLicenseBYOL'),''),variables('customDataBody'),variables('customDataCombined')))]",
     "fmgNic1Name": "[concat(variables('fmgVmName'),'-Nic1')]",
     "fmgNic1Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('fmgNic1Name'))]",
-    "publicIPName": "[if(equals(parameters('publicIPName'),''),concat(parameters('namePrefix'),'-FMG-PIP'),parameters('publicIPName'))]",
+    "publicIPName": "[if(equals(parameters('publicIPName'),''),concat(parameters('namePrefix'),'-fmg-pip'),parameters('publicIPName'))]",
     "publicIPId": "[if(equals(parameters('publicIPNewOrExisting'),'new'),resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPName')),if(equals(parameters('publicIPNewOrExisting'),'existing'),resourceId(parameters('publicIPResourceGroup'),'Microsoft.Network/publicIPAddresses',variables('publicIPName')),''))]",
     "publicIPAddressId": {
       "id": "[variables('publicIPId')]"
     },
     "serialConsoleEnabled": "[if(equals(parameters('serialConsole'),'yes'),'true','false')]",
-    "NSGName": "[concat(parameters('namePrefix'),'-',uniqueString(resourceGroup().id),'-NSG')]",
+    "NSGName": "[concat(parameters('namePrefix'),'-fmg-',uniqueString(resourceGroup().id),'-nsg')]",
     "sn1IPArray": "[split(parameters('subnet1Prefix'),'.')]",
     "sn1IPArray2ndString": "[string(variables('sn1IPArray')[3])]",
     "sn1IPArray2nd": "[split(variables('sn1IPArray2ndString'),'/')]",
