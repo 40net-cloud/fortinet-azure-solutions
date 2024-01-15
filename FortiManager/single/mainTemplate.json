@@ -586,7 +586,7 @@
         "type": "SystemAssigned"
       },
       "zones": "[if(variables('useAZ'), variables('zone1'), json('null'))]",
-      "plan": "[if(and(equals(parameters('imageSKU'),'fortinet_fg-vm'),not(equals(parameters('customImageReference'),''))), json('null'), variables('virtualMachinePlan'))]",
+      "plan": "[if(and(equals(parameters('imageSKU'),'fortinet-fortimanager'),not(equals(parameters('customImageReference'),''))), json('null'), variables('virtualMachinePlan'))]",
       "dependsOn": [
         "[variables('fmgNic1Name')]"
       ],
