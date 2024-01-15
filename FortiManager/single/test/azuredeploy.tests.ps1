@@ -75,6 +75,7 @@ Describe 'FMG' {
         It 'Contains the expected parameters' {
             $expectedTemplateParameters = 'adminPassword',
                                           'adminUsername',
+                                          'customImageReference',
                                           'dataDiskSize',
                                           'FortinetTags',
                                           'imageSKU',
