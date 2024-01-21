@@ -43,6 +43,8 @@
         "6.4.1",
         "6.4.10",
         "6.4.11",
+        "6.4.12",
+        "6.4.13",
         "6.4.2",
         "6.4.5",
         "6.4.6",
@@ -289,7 +291,6 @@
         "description": "By default, the deployment will use Azure Marketplace images. In specific cases, using BYOL custom FortiManager images can be deployed from support.fortinet.com."
       }
     },
-
     "location": {
       "type": "string",
       "defaultValue": "[resourceGroup().location]",
