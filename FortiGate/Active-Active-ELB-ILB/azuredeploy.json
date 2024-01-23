@@ -552,7 +552,7 @@
       "condition": "[equals(parameters('vnetNewOrExisting'), 'new')]",
       "name": "[variables('vnetName')]",
       "type": "Microsoft.Network/virtualNetworks",
-      "apiVersion": "2023-06-01",
+      "apiVersion": "2023-04-01",
       "location": "[parameters('location')]",
       "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Network/virtualNetworks'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Network/virtualNetworks']), parameters('fortinetTags')) ]",
       "dependsOn": [
@@ -592,7 +592,7 @@
     {
       "type": "Microsoft.Network/routeTables",
       "name": "[variables('routeTable3Name')]",
-      "apiVersion": "2023-06-01",
+      "apiVersion": "2023-04-01",
       "location": "[parameters('location')]",
       "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Network/routeTables'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Network/routeTables']), parameters('fortinetTags')) ]",
       "properties": {
@@ -611,7 +611,7 @@
     {
       "type": "Microsoft.Network/networkSecurityGroups",
       "name": "[variables('nsgName')]",
-      "apiVersion": "2023-06-01",
+      "apiVersion": "2023-04-01",
       "location": "[parameters('location')]",
       "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Network/networkSecurityGroups'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Network/networkSecurityGroups']), parameters('fortinetTags')) ]",
       "properties": {
@@ -669,7 +669,7 @@
       "condition": "[parameters('externalLoadBalancer')]",
       "type": "Microsoft.Network/loadBalancers",
       "name": "[variables('externalLBName')]",
-      "apiVersion": "2023-06-01",
+      "apiVersion": "2023-04-01",
       "location": "[parameters('location')]",
       "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Network/loadBalancers'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Network/loadBalancers']), parameters('fortinetTags')) ]",
       "sku": {
@@ -751,7 +751,7 @@
       "condition": "[parameters('externalLoadBalancer')]",
       "type": "Microsoft.Network/loadBalancers/inboundNatRules",
       "name": "[concat(variables('externalLBName'), '/', variables('fgVmName'), '-', copyIndex(1), '-MGMT-SSH')]",
-      "apiVersion": "2023-06-01",
+      "apiVersion": "2023-04-01",
       "location": "[parameters('location')]",
       "dependsOn": [
         "[variables('externalLBId')]"
@@ -774,7 +774,7 @@
       "condition": "[parameters('externalLoadBalancer')]",
       "type": "Microsoft.Network/loadBalancers/inboundNatRules",
       "name": "[concat(variables('externalLBName'), '/', variables('fgVmName'), '-', copyIndex(1), '-MGMT-HTTPS')]",
-      "apiVersion": "2023-06-01",
+      "apiVersion": "2023-04-01",
       "location": "[parameters('location')]",
       "dependsOn": [
         "[variables('externalLBId')]"
@@ -796,7 +796,7 @@
     {
       "type": "Microsoft.Network/loadBalancers",
       "name": "[variables('internalLBName')]",
-      "apiVersion": "2023-06-01",
+      "apiVersion": "2023-04-01",
       "location": "[parameters('location')]",
       "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Network/loadBalancers'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Network/loadBalancers']), parameters('fortinetTags')) ]",
       "sku": {
@@ -862,7 +862,7 @@
       "condition": "[parameters('externalLoadBalancer')]",
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[concat(variables('fgVmName'),'-',copyIndex(1),'-Nic',if(not(parameters('externalLoadBalancer')), 2, 1))]",
-      "apiVersion": "2023-06-01",
+      "apiVersion": "2023-04-01",
       "copy": {
         "name": "nodeCopy",
         "count": "[parameters('fortiGateCount')]"
@@ -911,7 +911,7 @@
     {
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[concat(variables('fgVmName'),'-',copyIndex(1),'-Nic',if(not(parameters('externalLoadBalancer')), 1, 2))]",
-      "apiVersion": "2023-06-01",
+      "apiVersion": "2023-04-01",
       "copy": {
         "name": "nodeCopy",
         "count": "[parameters('fortiGateCount')]"
@@ -1015,11 +1015,11 @@
   "outputs": {
     "fortiGatePublicIP": {
       "type": "string",
-      "value": "[if(equals(parameters('publicIP1NewOrExisting'), 'new'), reference(variables('publicIP1Id')).ipAddress, '')]"
+      "value": "[if(and(equals(parameters('publicIP1NewOrExisting'), 'new'),parameters('externalLoadBalancer')), reference(variables('publicIP1Id')).ipAddress, '')]"
     },
     "fortiGateFQDN": {
       "type": "string",
-      "value": "[if(equals(parameters('publicIP1NewOrExisting'), 'new'), reference(variables('publicIP1Id')).dnsSettings.fqdn, '' )]"
+      "value": "[if(and(equals(parameters('publicIP1NewOrExisting'), 'new'),parameters('externalLoadBalancer')), reference(variables('publicIP1Id')).dnsSettings.fqdn, '' )]"
     }
   }
 }

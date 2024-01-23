@@ -396,7 +396,7 @@
     {
       "condition": "[equals(parameters('vnetNewOrExisting'), 'new')]",
       "type": "Microsoft.Network/virtualNetworks",
-      "apiVersion": "2023-06-01",
+      "apiVersion": "2023-04-01",
       "name": "[variables('vnetName')]",
       "location": "[parameters('location')]",
       "properties": {
@@ -416,7 +416,7 @@
       }
     },
     {
-      "apiVersion": "2023-06-01",
+      "apiVersion": "2023-04-01",
       "tags": {
         "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
@@ -530,7 +530,7 @@
       "condition": "[equals(parameters('publicIPNewOrExisting'), 'new')]",
       "type": "Microsoft.Network/publicIPAddresses",
       "name": "[variables('publicIPName')]",
-      "apiVersion": "2023-06-01",
+      "apiVersion": "2023-04-01",
       "location": "[parameters('location')]",
       "tags": {
         "provider": "[toUpper(parameters('fortinetTags').provider)]"
@@ -544,7 +544,7 @@
       }
     },
     {
-      "apiVersion": "2023-06-01",
+      "apiVersion": "2023-04-01",
       "tags": {
         "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },

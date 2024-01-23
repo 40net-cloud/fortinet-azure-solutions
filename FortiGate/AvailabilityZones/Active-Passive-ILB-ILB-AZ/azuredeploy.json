@@ -445,7 +445,7 @@
     {
       "type": "Microsoft.Network/routeTables",
       "name": "[variables('routeTableName')]",
-      "apiVersion": "2023-06-01",
+      "apiVersion": "2023-04-01",
       "location": "[parameters('location')]",
       "properties": {
         "routes": [
@@ -463,7 +463,7 @@
     {
       "condition": "[equals(parameters('vnetNewOrExisting'), 'new')]",
       "type": "Microsoft.Network/virtualNetworks",
-      "apiVersion": "2023-06-01",
+      "apiVersion": "2023-04-01",
       "name": "[variables('vnetName')]",
       "location": "[parameters('location')]",
       "dependsOn": [
@@ -522,7 +522,7 @@
       }
     },
     {
-      "apiVersion": "2023-06-01",
+      "apiVersion": "2023-04-01",
       "type": "Microsoft.Network/loadBalancers",
       "name": "[variables('internalLBName')]",
       "location": "[parameters('location')]",
@@ -617,7 +617,7 @@
       }
     },
     {
-      "apiVersion": "2023-06-01",
+      "apiVersion": "2023-04-01",
       "type": "Microsoft.Network/networkSecurityGroups",
       "name": "[variables('NSGName')]",
       "location": "[parameters('location')]",
@@ -655,7 +655,7 @@
       }
     },
     {
-      "apiVersion": "2023-06-01",
+      "apiVersion": "2023-04-01",
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[variables('fgaNic1Name')]",
       "location": "[parameters('location')]",
@@ -690,7 +690,7 @@
       }
     },
     {
-      "apiVersion": "2023-06-01",
+      "apiVersion": "2023-04-01",
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[variables('fgbNic1Name')]",
       "location": "[parameters('location')]",
@@ -725,7 +725,7 @@
       }
     },
     {
-      "apiVersion": "2023-06-01",
+      "apiVersion": "2023-04-01",
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[variables('fgaNic2Name')]",
       "location": "[parameters('location')]",
@@ -759,7 +759,7 @@
       }
     },
     {
-      "apiVersion": "2023-06-01",
+      "apiVersion": "2023-04-01",
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[variables('fgbNic2Name')]",
       "location": "[parameters('location')]",
@@ -793,7 +793,7 @@
       }
     },
     {
-      "apiVersion": "2023-06-01",
+      "apiVersion": "2023-04-01",
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[variables('fgaNic3Name')]",
       "location": "[parameters('location')]",
@@ -821,7 +821,7 @@
       }
     },
     {
-      "apiVersion": "2023-06-01",
+      "apiVersion": "2023-04-01",
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[variables('fgbNic3Name')]",
       "location": "[parameters('location')]",
@@ -849,7 +849,7 @@
       }
     },
     {
-      "apiVersion": "2023-06-01",
+      "apiVersion": "2023-04-01",
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[variables('fgaNic4Name')]",
       "location": "[parameters('location')]",
@@ -877,7 +877,7 @@
       }
     },
     {
-      "apiVersion": "2023-06-01",
+      "apiVersion": "2023-04-01",
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[variables('fgbNic4Name')]",
       "location": "[parameters('location')]",
