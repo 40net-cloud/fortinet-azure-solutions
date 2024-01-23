@@ -535,7 +535,7 @@
   },
   "resources": [
     {
-      "apiVersion": "2021-04-01",
+      "apiVersion": "2023-07-01",
       "name": "[concat(parameters('fortiGateNamePrefix'), '-fortinetdeployment-', uniquestring(resourceGroup().id))]",
       "type": "Microsoft.Resources/deployments",
       "properties": {
@@ -568,7 +568,7 @@
       "condition": "[equals(parameters('vnetNewOrExisting'), 'new')]",
       "name": "[variables('vnetName')]",
       "type": "Microsoft.Network/virtualNetworks",
-      "apiVersion": "2022-01-01",
+      "apiVersion": "2023-06-01",
       "location": "[parameters('location')]",
       "properties": {
         "addressSpace": {
@@ -607,7 +607,7 @@
     {
       "type": "Microsoft.Network/networkSecurityGroups",
       "name": "[variables('nsgName')]",
-      "apiVersion": "2022-01-01",
+      "apiVersion": "2023-06-01",
       "location": "[parameters('location')]",
       "tags": {
         "provider": "[toUpper(parameters('fortinetTags').provider)]"
@@ -648,7 +648,7 @@
     {
       "type": "Microsoft.Network/publicIPAddresses",
       "name": "[variables('publicIPLBName')]",
-      "apiVersion": "2022-01-01",
+      "apiVersion": "2023-06-01",
       "location": "[parameters('location')]",
       "tags": {
         "provider": "[toUpper(parameters('fortinetTags').provider)]"
@@ -667,7 +667,7 @@
     {
       "type": "Microsoft.Network/publicIPAddresses",
       "name": "[variables('publicIPARSName')]",
-      "apiVersion": "2022-01-01",
+      "apiVersion": "2023-06-01",
       "location": "[parameters('location')]",
       "tags": {
         "provider": "[toUpper(parameters('fortinetTags').provider)]"
@@ -732,7 +732,7 @@
     {
       "type": "Microsoft.Network/loadBalancers",
       "name": "[variables('externalLBName')]",
-      "apiVersion": "2022-01-01",
+      "apiVersion": "2023-06-01",
       "location": "[parameters('location')]",
       "tags": {
         "provider": "[toUpper(parameters('fortinetTags').provider)]"
@@ -865,7 +865,7 @@
     {
       "type": "Microsoft.Network/loadBalancers",
       "name": "[variables('internalLBName')]",
-      "apiVersion": "2022-01-01",
+      "apiVersion": "2023-06-01",
       "location": "[parameters('location')]",
       "tags": {
         "provider": "[toUpper(parameters('fortinetTags').provider)]"

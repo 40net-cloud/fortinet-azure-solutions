@@ -438,7 +438,7 @@
   },
   "resources": [
     {
-      "apiVersion": "2021-04-01",
+      "apiVersion": "2023-07-01",
       "name": "pid-78f62ebc-9614-47cd-8b62-16543326c3ea-partnercenter",
       "type": "Microsoft.Resources/deployments",
       "properties": {
@@ -453,7 +453,7 @@
     {
       "condition": "[equals(parameters('vnetNewOrExisting'), 'new')]",
       "type": "Microsoft.Network/virtualNetworks",
-      "apiVersion": "2022-01-01",
+      "apiVersion": "2023-06-01",
       "name": "[variables('vnetName')]",
       "location": "[parameters('location')]",
       "properties": {
@@ -480,7 +480,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2021-04-01",
+      "apiVersion": "2023-07-01",
       "name": "FGT-ZTNA-deployment",
       "dependsOn": [
         "[variables('vnetName')]"

@@ -626,7 +626,7 @@
     {
       "name": "[concat(parameters('fortiGateNamePrefix'), '-fortinetdeployment-', uniquestring(resourceGroup().id))]",
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2021-04-01",
+      "apiVersion": "2023-07-01",
       "properties": {
         "mode": "Incremental",
         "template": {
@@ -654,7 +654,7 @@
     {
       "condition": "[equals(parameters('vnetNewOrExisting'), 'new')]",
       "type": "Microsoft.Network/virtualNetworks",
-      "apiVersion": "2022-01-01",
+      "apiVersion": "2023-06-01",
       "name": "[variables('vnetName')]",
       "location": "[parameters('location')]",
       "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Network/virtualNetworks'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Network/virtualNetworks']), parameters('fortinetTags')) ]",
@@ -707,7 +707,7 @@
     {
       "type": "Microsoft.Network/routeTables",
       "name": "[variables('routeTableName')]",
-      "apiVersion": "2022-01-01",
+      "apiVersion": "2023-06-01",
       "location": "[parameters('location')]",
       "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Network/routeTables'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Network/routeTables']), parameters('fortinetTags')) ]",
       "properties": {
@@ -734,7 +734,7 @@
     {
       "type": "Microsoft.Network/networkSecurityGroups",
       "name": "[variables('NSGName')]",
-      "apiVersion": "2022-01-01",
+      "apiVersion": "2023-06-01",
       "location": "[parameters('location')]",
       "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Network/networkSecurityGroups'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Network/networkSecurityGroups']), parameters('fortinetTags')) ]",
       "properties": {
@@ -774,7 +774,7 @@
       "condition": "[equals(parameters('publicIP1NewOrExisting'), 'new')]",
       "type": "Microsoft.Network/publicIPAddresses",
       "name": "[variables('publicIP1Name')]",
-      "apiVersion": "2022-01-01",
+      "apiVersion": "2023-06-01",
       "location": "[parameters('location')]",
       "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Network/publicIPAddresses'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Network/publicIPAddresses']), parameters('fortinetTags')) ]",
       "sku": {
@@ -792,7 +792,7 @@
       "condition": "[equals(parameters('publicIP2NewOrExisting'), 'new')]",
       "type": "Microsoft.Network/publicIPAddresses",
       "name": "[variables('publicIP2Name')]",
-      "apiVersion": "2022-01-01",
+      "apiVersion": "2023-06-01",
       "location": "[parameters('location')]",
       "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Network/publicIPAddresses'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Network/publicIPAddresses']), parameters('fortinetTags')) ]",
       "sku": {
@@ -807,7 +807,7 @@
       "condition": "[equals(parameters('publicIP3NewOrExisting'), 'new')]",
       "type": "Microsoft.Network/publicIPAddresses",
       "name": "[variables('publicIP3Name')]",
-      "apiVersion": "2022-01-01",
+      "apiVersion": "2023-06-01",
       "location": "[parameters('location')]",
       "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Network/publicIPAddresses'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Network/publicIPAddresses']), parameters('fortinetTags')) ]",
       "sku": {
@@ -821,7 +821,7 @@
     {
       "type": "Microsoft.Network/loadBalancers",
       "name": "[variables('externalLBName')]",
-      "apiVersion": "2022-01-01",
+      "apiVersion": "2023-06-01",
       "location": "[parameters('location')]",
       "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Network/loadBalancers'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Network/loadBalancers']), parameters('fortinetTags')) ]",
       "sku": {
@@ -902,7 +902,7 @@
     {
       "type": "Microsoft.Network/loadBalancers",
       "name": "[variables('internalLBName')]",
-      "apiVersion": "2022-01-01",
+      "apiVersion": "2023-06-01",
       "location": "[parameters('location')]",
       "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Network/loadBalancers'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Network/loadBalancers']), parameters('fortinetTags')) ]",
       "sku": {
@@ -967,7 +967,7 @@
     {
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[variables('fgaNic1Name')]",
-      "apiVersion": "2022-01-01",
+      "apiVersion": "2023-06-01",
       "location": "[parameters('location')]",
       "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Network/networkInterfaces'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Network/networkInterfaces']), parameters('fortinetTags')) ]",
       "dependsOn": [
@@ -1003,7 +1003,7 @@
     {
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[variables('fgbNic1Name')]",
-      "apiVersion": "2022-01-01",
+      "apiVersion": "2023-06-01",
       "location": "[parameters('location')]",
       "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Network/networkInterfaces'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Network/networkInterfaces']), parameters('fortinetTags')) ]",
       "dependsOn": [
@@ -1039,7 +1039,7 @@
     {
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[variables('fgaNic2Name')]",
-      "apiVersion": "2022-01-01",
+      "apiVersion": "2023-06-01",
       "location": "[parameters('location')]",
       "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Network/networkInterfaces'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Network/networkInterfaces']), parameters('fortinetTags')) ]",
       "dependsOn": [
@@ -1075,7 +1075,7 @@
     {
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[variables('fgbNic2Name')]",
-      "apiVersion": "2022-01-01",
+      "apiVersion": "2023-06-01",
       "location": "[parameters('location')]",
       "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Network/networkInterfaces'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Network/networkInterfaces']), parameters('fortinetTags')) ]",
       "dependsOn": [
@@ -1111,7 +1111,7 @@
     {
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[variables('fgaNic3Name')]",
-      "apiVersion": "2022-01-01",
+      "apiVersion": "2023-06-01",
       "location": "[parameters('location')]",
       "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Network/networkInterfaces'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Network/networkInterfaces']), parameters('fortinetTags')) ]",
       "dependsOn": [
@@ -1141,7 +1141,7 @@
     {
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[variables('fgbNic3Name')]",
-      "apiVersion": "2022-01-01",
+      "apiVersion": "2023-06-01",
       "location": "[parameters('location')]",
       "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Network/networkInterfaces'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Network/networkInterfaces']), parameters('fortinetTags')) ]",
       "dependsOn": [
@@ -1171,7 +1171,7 @@
     {
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[variables('fgaNic4Name')]",
-      "apiVersion": "2022-01-01",
+      "apiVersion": "2023-06-01",
       "location": "[parameters('location')]",
       "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Network/networkInterfaces'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Network/networkInterfaces']), parameters('fortinetTags')) ]",
       "dependsOn": [
@@ -1202,7 +1202,7 @@
     {
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[variables('fgbNic4Name')]",
-      "apiVersion": "2022-01-01",
+      "apiVersion": "2023-06-01",
       "location": "[parameters('location')]",
       "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Network/networkInterfaces'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Network/networkInterfaces']), parameters('fortinetTags')) ]",
       "dependsOn": [

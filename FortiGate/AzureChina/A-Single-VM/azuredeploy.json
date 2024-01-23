@@ -427,7 +427,7 @@
   },
   "resources": [
     {
-      "apiVersion": "2021-04-01",
+      "apiVersion": "2023-07-01",
       "name": "[concat(parameters('fortiGateNamePrefix'), '-fortinetdeployment-', uniquestring(resourceGroup().id))]",
       "type": "Microsoft.Resources/deployments",
       "properties": {
@@ -470,7 +470,7 @@
     {
       "type": "Microsoft.Network/routeTables",
       "name": "[variables('routeTableProtectedName')]",
-      "apiVersion": "2022-01-01",
+      "apiVersion": "2023-06-01",
       "tags": {
         "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
@@ -506,7 +506,7 @@
     {
       "condition": "[equals(parameters('vnetNewOrExisting'), 'new')]",
       "type": "Microsoft.Network/virtualNetworks",
-      "apiVersion": "2022-01-01",
+      "apiVersion": "2023-06-01",
       "name": "[variables('vnetName')]",
       "location": "[parameters('location')]",
       "dependsOn": [
@@ -544,7 +544,7 @@
       }
     },
     {
-      "apiVersion": "2022-01-01",
+      "apiVersion": "2023-06-01",
       "tags": {
         "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
@@ -587,7 +587,7 @@
     {
       "condition": "[equals(parameters('publicIP1NewOrExisting'), 'new')]",
       "type": "Microsoft.Network/publicIPAddresses",
-      "apiVersion": "2022-01-01",
+      "apiVersion": "2023-06-01",
       "tags": {
         "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
@@ -604,7 +604,7 @@
       }
     },
     {
-      "apiVersion": "2022-01-01",
+      "apiVersion": "2023-06-01",
       "tags": {
         "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
@@ -637,7 +637,7 @@
       }
     },
     {
-      "apiVersion": "2022-01-01",
+      "apiVersion": "2023-06-01",
       "tags": {
         "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },

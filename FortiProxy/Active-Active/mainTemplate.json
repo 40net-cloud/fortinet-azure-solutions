@@ -682,7 +682,7 @@
   ],
   "resources": [
     {
-      "apiVersion": "2021-04-01",
+      "apiVersion": "2023-07-01",
       "name": "[concat(parameters('fortiProxyNamePrefix'), '-fortinetdeployment-', uniquestring(resourceGroup().id))]",
       "type": "Microsoft.Resources/deployments",
       "properties": {
@@ -713,7 +713,7 @@
       "condition": "[equals(parameters('vnetNewOrExisting'), 'new')]",
       "name": "[variables('vnetName')]",
       "type": "Microsoft.Network/virtualNetworks",
-      "apiVersion": "2022-01-01",
+      "apiVersion": "2023-06-01",
       "location": "[parameters('location')]",
       "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Network/virtualNetworks'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Network/virtualNetworks']), parameters('fortinetTags')) ]",
       "properties": {
@@ -741,7 +741,7 @@
     {
       "condition": "[and(not(parameters('externalLoadBalancer')),equals(parameters('outboundConnectivity'),'deploy-nat-gateway'))]",
       "type": "Microsoft.Network/virtualNetworks/subnets",
-      "apiVersion": "2022-01-01",
+      "apiVersion": "2023-06-01",
       "name": "[concat(variables('vnetName'),'/', parameters('subnet1Name'))]",
       "dependsOn": [
         "[variables('vnetName')]",
@@ -757,7 +757,7 @@
     {
       "type": "Microsoft.Network/networkSecurityGroups",
       "name": "[variables('nsgName')]",
-      "apiVersion": "2022-01-01",
+      "apiVersion": "2023-06-01",
       "location": "[parameters('location')]",
       "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Network/networkSecurityGroups'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Network/networkSecurityGroups']), parameters('fortinetTags')) ]",
       "properties": {
@@ -787,7 +787,7 @@
       "condition": "[or(parameters('externalLoadBalancer'),not(equals(parameters('outboundConnectivity'),'deploy-nat-gateway')))]",
       "type": "Microsoft.Network/publicIPAddresses",
       "name": "[variables('publicIP1Name')]",
-      "apiVersion": "2022-01-01",
+      "apiVersion": "2023-06-01",
       "location": "[parameters('location')]",
       "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Network/publicIPAddresses'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Network/publicIPAddresses']), parameters('fortinetTags')) ]",
       "sku": {
@@ -805,7 +805,7 @@
       "condition": "[equals(parameters('outboundConnectivity'),'per-node-standard-sku-pip')]",
       "type": "Microsoft.Network/publicIPAddresses",
       "name": "[concat(variables('publicIP1Name'),copyIndex(1))]",
-      "apiVersion": "2022-01-01",
+      "apiVersion": "2023-06-01",
       "location": "[parameters('location')]",
       "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Network/publicIPAddresses'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Network/publicIPAddresses']), parameters('fortinetTags')) ]",
       "sku": {
@@ -827,7 +827,7 @@
       "condition": "[parameters('externalLoadBalancer')]",
       "type": "Microsoft.Network/loadBalancers",
       "name": "[variables('externalLBName')]",
-      "apiVersion": "2022-01-01",
+      "apiVersion": "2023-06-01",
       "location": "[parameters('location')]",
       "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Network/loadBalancers'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Network/loadBalancers']), parameters('fortinetTags')) ]",
       "sku": {
@@ -890,7 +890,7 @@
       "condition": "[parameters('externalLoadBalancer')]",
       "type": "Microsoft.Network/loadBalancers/inboundNatRules",
       "name": "[concat(variables('externalLBName'), '/', variables('fpxVmName'), '-', copyIndex(1), '-mgmt-ssh')]",
-      "apiVersion": "2022-01-01",
+      "apiVersion": "2023-06-01",
       "location": "[parameters('location')]",
       "dependsOn": [
         "[variables('externalLBId')]"
@@ -913,7 +913,7 @@
       "condition": "[parameters('externalLoadBalancer')]",
       "type": "Microsoft.Network/loadBalancers/inboundNatRules",
       "name": "[concat(variables('externalLBName'), '/', variables('fpxVmName'), '-', copyIndex(1), '-mgmt-https')]",
-      "apiVersion": "2022-01-01",
+      "apiVersion": "2023-06-01",
       "location": "[parameters('location')]",
       "dependsOn": [
         "[variables('externalLBId')]"
@@ -936,7 +936,7 @@
       "condition": "[not(parameters('externalLoadBalancer'))]",
       "type": "Microsoft.Network/loadBalancers",
       "name": "[variables('internalLBName')]",
-      "apiVersion": "2022-01-01",
+      "apiVersion": "2023-06-01",
       "location": "[parameters('location')]",
       "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Network/loadBalancers'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Network/loadBalancers']), parameters('fortinetTags')) ]",
       "sku": {
@@ -1002,7 +1002,7 @@
       "condition": "[and(not(parameters('externalLoadBalancer')),equals(parameters('outboundConnectivity'),'deploy-nat-gateway'))]",
       "type": "Microsoft.Network/natGateways",
       "name": "[variables('natGWName')]",
-      "apiVersion": "2022-01-01",
+      "apiVersion": "2023-06-01",
       "location": "[parameters('location')]",
       "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Network/natGateways'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Network/natGateways']), parameters('fortinetTags')) ]",
       "sku": {
@@ -1023,7 +1023,7 @@
     {
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[concat(variables('fpxVmName'),'-',copyIndex(1),'-nic1')]",
-      "apiVersion": "2022-01-01",
+      "apiVersion": "2023-06-01",
       "copy": {
         "name": "nodeCopy",
         "count": "[parameters('fortiProxyCount')]"
@@ -1069,7 +1069,7 @@
     {
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[concat(variables('fpxVmName'),'-',copyIndex(1),'-nic2')]",
-      "apiVersion": "2022-01-01",
+      "apiVersion": "2023-06-01",
       "copy": {
         "name": "nodeCopy",
         "count": "[parameters('fortiProxyCount')]"
