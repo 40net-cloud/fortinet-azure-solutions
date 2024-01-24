@@ -34,7 +34,7 @@ For the deployment Terraform is required. This multi-cloud deployment tool can b
 
 To fast track the deployment, use the Azure Cloud Shell. The Azure Cloud Shell is an in-browser CLI that contains Terraform and other tools for deployment into Microsoft Azure. It is accessible via the Azure Portal or directly at [https://shell.azure.com/](https://shell.azure.com). You can copy and paste the below one-liner to get started with your deployment.
 
-`cd ~/clouddrive/ && wget -qO- https://github.com/fortinet/azure-templates/archive/main.tar.gz | tar zxf - && cd ~/clouddrive/azure-templates-main/FortiAnalyzer/Terraform/single-1nic/ && ./deploy.sh`
+`cd ~/clouddrive/ && wget -qO- https://github.com/fortinet/azure-templates/archive/main.tar.gz | tar zxf - && cd ~/clouddrive/azure-templates-main/FortiAnalyzer/Terraform/single/ && ./deploy.sh`
 
 ![Azure Cloud Shell](images/azure-cloud-shell.png)
 
