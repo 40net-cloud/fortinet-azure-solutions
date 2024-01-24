@@ -29,15 +29,14 @@ jobs:
       with:
         inlineScript: |
           $buildingBlocks = @("single", "ha")
-          $fazMarketplaceVersions = @()
-          $fazMarketplaceVersionsUI = @()
+          $versions = @()
+          $versionsui = @()
 
-          $fortiManagerVersions = Get-AzVMImage -PublisherName "fortinet" -Location eastus -Offer "fortinet-fortianalyzer" -sku "fortinet-fortianalyzer"
-          $fazMarketplaceVersions += $($fortiManagerVersions).Version
-          $fazMarketplaceVersions += "latest"
-          $fazMarketplaceVersions | ConvertTo-Json | Out-File -Filepath "./fazversion.json"
-          $fazMarketplaceVersions | ForEach-Object { $fazMarketplaceVersionsUI += [pscustomobject]@{label=$_;value=$_} }
-          $fazMarketplaceVersionsUI | ConvertTo-Json | Out-File -Filepath "./fazversionui.json"
+          $versions = $(Get-AzVMImage -PublisherName "fortinet" -Location eastus -Offer "fortinet-fortianalyzer" -sku "fortinet-fortianalyzer").Version
+          $versions += "latest"
+          $versions | ConvertTo-Json | Out-File -Filepath "./fazversion.json"
+          $versions | ForEach-Object { $versionsui += [pscustomobject]@{label=$_;value=$_} }
+          $versionsui | ConvertTo-Json | Out-File -Filepath "./fazversionui.json"
 
           foreach ($buildingBlock in $buildingBlocks) {
             Get-Content -Raw -Path "./FortiAnalyzer/${buildingBlock}/mainTemplate.json" | jq --slurpfile content "./fazversion.json" '.parameters.imageVersion.allowedValues = $content[]' | Set-Content -Path "./FortiAnalyzer/${buildingBlock}/mainTemplate.json"
