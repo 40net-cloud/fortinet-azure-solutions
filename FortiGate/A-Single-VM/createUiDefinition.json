@@ -860,7 +860,7 @@
                     }
                   ]
                 },
-                "visible": "[and(equals(steps('networking').acceleratednetworksection.acceleratednetworking, 'true'),steps('networking').acceleratednetworksection.AcceleratedConnectionCheck)]"
+                "visible": "[and(equals(steps('networking').acceleratednetworksection.acceleratednetworking, 'true'),steps('networking').acceleratednetworksection.acceleratedconnectionscheck)]"
               },
               {
                 "name": "AccelConnwarning",
