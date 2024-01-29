@@ -3,7 +3,7 @@
 
 ## Introduction
 
-This deployment is similar to the [FortiAnalyzer Single 1 NIC](../single-1nic/README.md) deployment but it doesn't deploy any public IP. This is useful for deploy behind a FortiGate.
+This deployment is similar to the [FortiAnalyzer Single 1 NIC](../single/README.md) deployment but it doesn't deploy any public IP. This is useful for deploy behind a FortiGate.
 
 ## Design
 
@@ -15,7 +15,7 @@ This Azure ARM template will automatically deploy a full working environment con
 - 1 VNETs containing a subnet for the FortiAnalyzer
 - 1 Basic public IP
 
-![FortiGate-VM azure design](../../single-1nic/images/faz-single-1nic.png)
+![FortiGate-VM azure design](../../single/images/faz-single-1nic.png)
 
 The VM will have the sixth IP in the network range as his static IP. You can adapt the 'sn1IPfg1' variable in the ARM template to change this.
 
@@ -44,7 +44,7 @@ After deployment, you will be shown the IP addresses of all deployed components.
 
 ## Requirements and limitations
 
-More documentation can be found [here](../../single-1nic/README.md).
+More documentation can be found [here](../../single/README.md).
 
 ## Support
 

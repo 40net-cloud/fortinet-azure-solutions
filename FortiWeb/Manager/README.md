@@ -2,7 +2,7 @@
 
 ## Introduction
 
-In some large-scale FortiWeb deployments, it is required to use additional FortiWeb Manager VM for managing unified configuration. FortiWeb Manager is a separate product not currently available on the Azure Marketplace and needs to be deployed from a custom VHD. Full instructions on how to download firmware from [Fortinet support portal](https://support.fortinet.com) and use it to create new VM are available [here](https://docs.fortinet.com/document/fortiweb-manager/6.2.3/deploying-fortiweb-manager-vm-on-azure/275937).
+In some large-scale FortiWeb deployments, it is required to use additional FortiWeb Manager VM for managing unified configuration. FortiWeb Manager is a separate product not currently available on the Azure Marketplace and needs to be deployed from a custom VHD. Full instructions on how to download firmware from [Fortinet support portal](https://support.fortinet.com) and use it to create new VM are available [here](https://docs.fortinet.com/document/fortimanager-public-cloud/7.2.0/azure-administration-guide/889571).
 
 ## Design
 
