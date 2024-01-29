@@ -907,5 +907,15 @@
         }
       }
     }
-  ]
+  ],
+  "outputs": {
+    "fortiGatePublicIP": {
+      "type": "string",
+      "value": "[if(equals(parameters('publicIPNewOrExisting'), 'new'), reference(variables('publicIPId')).ipAddress, '')]"
+    },
+    "fortiGateFQDN": {
+      "type": "string",
+      "value": "[if(equals(parameters('publicIPNewOrExisting'), 'new'), reference(variables('publicIPId')).dnsSettings.fqdn, '')]"
+    }
+  }
 }

@@ -53,6 +53,7 @@ Describe 'FWB Single VM' {
         It 'Converts from JSON and has the expected properties' {
             $expectedProperties = '$schema',
             'contentVersion',
+            'outputs',
             'parameters',
             'resources',
             'variables'
@@ -81,10 +82,10 @@ Describe 'FWB Single VM' {
             $expectedTemplateParameters = 'adminPassword',
                                           'adminUsername',
                                           'fortinetTags',
-                                          'fortiWebImageSKU',
-                                          'fortiWebImageVersion',
                                           'fortiWebNamePrefix',
                                           'instanceType',
+                                          'imageSKU',
+                                          'imageVersion',
                                           'location',
                                           'publicIPName',
                                           'publicIPNewOrExisting',

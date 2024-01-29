@@ -62,7 +62,6 @@ Describe 'FWB Single VM' {
 
         It 'Creates the expected Azure resources' {
             $expectedResources = 'Microsoft.Resources/deployments',
-                                    'Microsoft.Storage/storageAccounts',
                                     'Microsoft.Network/virtualNetworks',
                                     'Microsoft.Network/networkSecurityGroups',
                                     'Microsoft.Network/publicIPAddresses',
@@ -82,11 +81,11 @@ Describe 'FWB Single VM' {
                                             'existingAvailabilitySetName',
                                             'fortinetTags',
                                             'fortiWebAdditionalCustomData',
-                                            'fortiWebImageSKU',
-                                            'fortiWebImageVersion',
                                             'fortiWebLicenseBYOL',
                                             'fortiWebNamePrefix',
                                             'instanceType',
+                                            'imageSKU',
+                                            'imageVersion',
                                             'location',
                                             'publicIPName',
                                             'publicIPNewOrExistingOrNone',
