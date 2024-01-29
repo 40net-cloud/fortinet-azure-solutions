@@ -899,7 +899,7 @@
               "hideNone": true,
               "hideDomainNameLabel": true
             },
-            "visible": true
+            "visible": "[not(equals(steps('publicip').externalLoadBalancer.enabled, 'true'))]"
           },
           {
             "name": "standardsku",
