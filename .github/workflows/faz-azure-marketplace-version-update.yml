@@ -10,7 +10,6 @@ env:
   PRODUCT: FortiAnalyzer
   PRODUCTSHORT: FAZ
 
-
 jobs:
   ARM-FAZ-Version-Update:
     name: Update FAZ version list
