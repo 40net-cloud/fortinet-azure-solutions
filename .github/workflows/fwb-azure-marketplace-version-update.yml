@@ -6,6 +6,10 @@ on:
   schedule:
     - cron:  '00 22 * * 0'
 
+env:
+  PRODUCT: FortiWeb
+  PRODUCTSHORT: FWB
+
 jobs:
   ARM-FWB-Version-Update:
     name: Update FWB version list
@@ -24,23 +28,23 @@ jobs:
       with:
         inlineScript: |
           $buildingBlocks = @("A-Single-VM", "Active-Active","Active-Passive")
-          $fwbMarketplaceVersions = @()
-          $fwbMarketplaceVersionsUI = @()
+          $versions = @()
+          $versionsui = @()
 
           $fortiwebVersions = Get-AzVMImage -PublisherName "fortinet" -Location eastus -Offer "fortinet_fortiweb-vm_v5" -sku "fortinet_fw-vm"
-          $fwbMarketplaceVersions += $($fortiwebVersions).Version
-          $fwbMarketplaceVersions += "latest"
-          $fwbMarketplaceVersions | ConvertTo-Json | Out-File -Filepath "./fwbversion.json"
-          $fwbMarketplaceVersions | ForEach-Object { $fwbMarketplaceVersionsUI += [pscustomobject]@{label=$_;value=$_} }
-          $fwbMarketplaceVersionsUI | ConvertTo-Json | Out-File -Filepath "./fwbversionui.json"
+          $versions += $($fortiwebVersions).Version
+          $versions += "latest"
+          $versions | ConvertTo-Json | Out-File -Filepath "./fwbversion.json"
+          $versions | ForEach-Object { $versionsui += [pscustomobject]@{label=$_;value=$_} }
+          $versionsui | ConvertTo-Json | Out-File -Filepath "./fwbversionui.json"
 
           foreach ($buildingBlock in $buildingBlocks) {
-            Get-Content -Raw -Path "./FortiWeb/${buildingBlock}/mainTemplate.json" | jq --slurpfile content "./fwbversion.json" '.parameters.fortiWebImageVersion.allowedValues = $content[]' | Set-Content -Path "./FortiWeb/${buildingBlock}/mainTemplate.json"
+            Get-Content -Raw -Path "./FortiWeb/${buildingBlock}/mainTemplate.json" | jq --slurpfile content "./fwbversion.json" '.parameters.imageVersion.allowedValues = $content[]' | Set-Content -Path "./FortiWeb/${buildingBlock}/mainTemplate.json"
             $content = Get-Content "./FortiWeb/${buildingBlock}/mainTemplate.json" -Raw
             if (-Not $content -match '(?<=\r\n)\z') {
               "" | Out-File -Append "./FortiWeb/${buildingBlock}/mainTemplate.json"
             }
-            Get-Content -Raw -Path "./FortiWeb/${buildingBlock}/createUiDefinition.json" | jq --slurpfile content "./fwbversionui.json" '(.parameters.basics[] | select( .name == \"fortiWebImageVersion\") | .constraints.allowedValues) |= $content[]' | Set-Content -Path "./FortiWeb/${buildingBlock}/createUiDefinition.json"
+            Get-Content -Raw -Path "./FortiWeb/${buildingBlock}/createUiDefinition.json" | jq --slurpfile content "./fwbversionui.json" '(.parameters.basics[] | select( .name == \"imageVersion\") | .constraints.allowedValues) |= $content[]' | Set-Content -Path "./FortiWeb/${buildingBlock}/createUiDefinition.json"
             $content = Get-Content "./FortiWeb/${buildingBlock}/createUiDefinition.json" -Raw
             if (-Not $content -match '(?<=\r\n)\z') {
               "" | Out-File -Append "./FortiWeb/${buildingBlock}/createUiDefinition.json"
