@@ -71,7 +71,7 @@
         "visible": true
       },
       {
-        "name": "fortiAnalyzerImageSKU",
+        "name": "imageSku",
         "type": "Microsoft.Common.DropDown",
         "label": "FortiAnalyzer Image SKU",
         "defaultValue": "Bring Your Own License",
@@ -88,7 +88,7 @@
         "visible": true
       },
       {
-        "name": "fortiAnalyzerImageVersion",
+        "name": "imageVersion",
         "type": "Microsoft.Common.DropDown",
         "label": "FortiAnalyzer Image Version",
         "defaultValue": "latest",
@@ -386,9 +386,9 @@
               {
                 "name": "fazLicenseBYOLInfo",
                 "type": "Microsoft.Common.TextBlock",
-                "visible": "[equals(basics('fortiAnalyzerImageSKU'), 'fortinet-fortianalyzer')]",
+                "visible": true,
                 "options": {
-                  "text": "Bring Your Own License was selected in the basics blade. The license file(s) retrieved from support.fortinet.com can be uploaded here or uploaded after deployment."
+                  "text": "The Bring Your Own license file(s), retrieved from support.fortinet.com, can be uploaded here or uploaded after deployment."
                 }
               },
               {
@@ -396,7 +396,7 @@
                 "type": "Microsoft.Common.CheckBox",
                 "label": "My organisation is using the FortiFlex subscription service.",
                 "toolTip": "My organisation is using the FortiFlex subscription service.",
-                "visible": "[equals(basics('fortiAnalyzerImageSKU'), 'fortinet-fortianalyzer')]"
+                "visible": true
               },
               {
                 "name": "fazAcontent",
@@ -413,7 +413,7 @@
                   "openMode": "text",
                   "encoding": "UTF-8"
                 },
-                "visible": "[and(equals(basics('fortiAnalyzerImageSKU'), 'fortinet-fortianalyzer'),not(steps('instance').fazLicense.fortiFlexCheck))]"
+                "visible": "[not(steps('instance').fazLicense.fortiFlexCheck)]"
               },
               {
                 "name": "fazBcontent",
@@ -430,7 +430,7 @@
                   "openMode": "text",
                   "encoding": "UTF-8"
                 },
-                "visible": "[and(equals(basics('fortiAnalyzerImageSKU'), 'fortinet-fortianalyzer'),not(steps('instance').fazLicense.fortiFlexCheck))]"
+                "visible": "[not(steps('instance').fazLicense.fortiFlexCheck)]"
               },
               {
                 "name": "fazAfortiflex",
@@ -443,7 +443,7 @@
                   "regex": "^[A-Za-z0-9-]{1,64}$",
                   "validationMessage": "Only alphanumeric characters and a dash are allowed, and the value must be 1 to 64 characters."
                 },
-                "visible": "[and(equals(basics('fortiAnalyzerImageSKU'), 'fortinet-fortianalyzer'),steps('instance').fazLicense.fortiFlexCheck)]"
+                "visible": "[steps('instance').fazLicense.fortiFlexCheck]"
               },
               {
                 "name": "fazBfortiflex",
@@ -456,7 +456,7 @@
                   "regex": "^[A-Za-z0-9-]{1,64}$",
                   "validationMessage": "Only alphanumeric characters and a dash are allowed, and the value must be 1 to 64 characters."
                 },
-                "visible": "[and(equals(basics('fortiAnalyzerImageSKU'), 'fortinet-fortianalyzer'),steps('instance').fazLicense.fortiFlexCheck)]"
+                "visible": "[steps('instance').fazLicense.fortiFlexCheck]"
               },
               {
                 "name": "fazAserial",
@@ -670,8 +670,8 @@
     ],
     "outputs": {
       "namePrefix": "[basics('namePrefix')]",
-      "imageSku": "[basics('fortiAnalyzerImageSKU')]",
-      "imageVersion": "[basics('fortiAnalyzerImageVersion')]",
+      "imageSku": "[basics('imageSku')]",
+      "imageVersion": "[basics('imageVersion')]",
       "adminUsername": "[basics('adminUsername')]",
       "adminPassword": "[basics('adminPassword')]",
       "location": "[location()]",
