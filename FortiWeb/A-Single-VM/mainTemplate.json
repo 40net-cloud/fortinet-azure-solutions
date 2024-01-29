@@ -20,7 +20,7 @@
         "description": "Naming prefix for all deployed resources"
       }
     },
-    "fortiWebImageSKU": {
+    "imageSku": {
       "type": "string",
       "defaultValue": "fortinet_fw-vm",
       "allowedValues": [
@@ -31,7 +31,7 @@
         "description": "Identifies whether to to use PAYG (on demand licensing) or BYOL license model (where license is purchased separately)"
       }
     },
-    "fortiWebImageVersion": {
+    "imageVersion": {
       "type": "string",
       "defaultValue": "latest",
       "allowedValues": [
@@ -621,7 +621,7 @@
       "location": "[parameters('location')]",
       "zones": "[if(variables('useAZ'), variables('zone1'), json('null'))]",
       "plan": {
-        "name": "[parameters('fortiWebImageSKU')]",
+        "name": "[parameters('imageSku')]",
         "publisher": "[variables('imagePublisher')]",
         "product": "[variables('imageOffer')]"
       },
@@ -644,8 +644,8 @@
           "imageReference": {
             "publisher": "[variables('imagePublisher')]",
             "offer": "[variables('imageOffer')]",
-            "sku": "[parameters('fortiWebImageSKU')]",
-            "version": "[parameters('fortiWebImageVersion')]"
+            "sku": "[parameters('imageSku')]",
+            "version": "[parameters('imageVersion')]"
           },
           "osDisk": {
             "createOption": "FromImage"

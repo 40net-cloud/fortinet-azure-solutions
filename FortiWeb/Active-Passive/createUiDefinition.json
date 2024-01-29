@@ -81,7 +81,7 @@
         "visible": true
       },
       {
-        "name": "fortiWebImageSKU",
+        "name": "imageSku",
         "type": "Microsoft.Common.DropDown",
         "label": "FortiWeb Image SKU",
         "defaultValue": "Bring Your Own License",
@@ -102,7 +102,7 @@
         "visible": true
       },
       {
-        "name": "fortiWebImageVersion",
+        "name": "imageVersion",
         "type": "Microsoft.Common.DropDown",
         "label": "FortiWeb Image Version",
         "defaultValue": "latest",
@@ -287,7 +287,7 @@
             "imageReference": {
               "publisher": "Fortinet",
               "offer": "fortinet_fortiweb-vm_v5",
-              "sku": "[basics('fortiWebImageSKU')]"
+              "sku": "[basics('imageSku')]"
             },
             "count": 2,
             "visible": true
@@ -435,8 +435,8 @@
     ],
     "outputs": {
       "fortiWebNamePrefix": "[basics('fortiWebNamePrefix')]",
-      "fortiWebImageSKU": "[basics('fortiWebImageSKU')]",
-      "fortiWebImageVersion": "[basics('fortiWebImageVersion')]",
+      "imageSku": "[basics('imageSku')]",
+      "imageVersion": "[basics('imageVersion')]",
       "adminUsername": "[basics('adminUsername')]",
       "adminPassword": "[basics('adminPassword')]",
       "availabilityOptions": "[basics('availabilityOptions')]",

@@ -81,7 +81,7 @@
         "visible": true
       },
       {
-        "name": "fortiWebImageSKU",
+        "name": "imageSku",
         "type": "Microsoft.Common.DropDown",
         "label": "FortiWeb Image SKU",
         "defaultValue": "Bring Your Own License",
@@ -102,7 +102,7 @@
         "visible": true
       },
       {
-        "name": "fortiWebImageVersion",
+        "name": "imageVersion",
         "type": "Microsoft.Common.DropDown",
         "label": "FortiWeb Image Version",
         "defaultValue": "latest",
@@ -271,7 +271,7 @@
                 "imageReference": {
                   "publisher": "Fortinet",
                   "offer": "fortinet_fortiweb-vm_v5",
-                  "sku": "[basics('fortiWebImageSKU')]"
+                  "sku": "[basics('imageSku')]"
                 },
                 "count": 2,
                 "visible": true
@@ -336,7 +336,7 @@
               {
                 "name": "fwbLicenseBYOLInfo",
                 "type": "Microsoft.Common.TextBlock",
-                "visible": "[equals(basics('fortiWebImageSKU'), 'fortinet_fw-vm')]",
+                "visible": "[equals(basics('imageSku'), 'fortinet_fw-vm')]",
                 "options": {
                   "text": "When using BYOL, you can upload the license file retrieved from support.fortinet.com here."
                 }
@@ -346,7 +346,7 @@
                 "type": "Microsoft.Common.CheckBox",
                 "label": "My organisation is using the FortiFlex subscription service.",
                 "toolTip": "Select this box to enter a FortiFlex token",
-                "visible": "[equals(basics('fortiWebImageSKU'), 'fortinet_fw-vm')]"
+                "visible": "[equals(basics('imageSku'), 'fortinet_fw-vm')]"
               },
               {
                 "name": "licenseacontent",
@@ -363,7 +363,7 @@
                   "openMode": "text",
                   "encoding": "UTF-8"
                 },
-                "visible": "[and(equals(basics('fortiWebImageSKU'), 'fortinet_fw-vm'),not(steps('instance').fwbLicense.fwbLicenseFortiFlexCheck))]"
+                "visible": "[and(equals(basics('imageSku'), 'fortinet_fw-vm'),not(steps('instance').fwbLicense.fwbLicenseFortiFlexCheck))]"
               },
               {
                 "name": "licensebcontent",
@@ -380,7 +380,7 @@
                   "openMode": "text",
                   "encoding": "UTF-8"
                 },
-                "visible": "[and(equals(basics('fortiWebImageSKU'), 'fortinet_fw-vm'),not(steps('instance').fwbLicense.fwbLicenseFortiFlexCheck))]"
+                "visible": "[and(equals(basics('imageSku'), 'fortinet_fw-vm'),not(steps('instance').fwbLicense.fwbLicenseFortiFlexCheck))]"
               },
               {
                 "name": "fwbAfortiflex",
@@ -416,7 +416,7 @@
                   "text": "Pay as you go licenses was selected in the basics blade. The licenses uploaded here will not be used.",
                   "uri": "https://docs.fortinet.com/document/fortigate-public-cloud/7.2.0/azure-administration-guide/533394/creating-a-support-account"
                 },
-                "visible": "[not(equals(basics('fortiWebImageSKU'), 'fortinet_fw-vm'))]"
+                "visible": "[not(equals(basics('imageSku'), 'fortinet_fw-vm'))]"
               },
               {
                 "name": "fwbLicenseMigrateInfo",
@@ -734,8 +734,8 @@
     ],
     "outputs": {
       "fortiWebNamePrefix": "[basics('fortiWebNamePrefix')]",
-      "fortiWebImageSKU": "[basics('fortiWebImageSKU')]",
-      "fortiWebImageVersion": "[basics('fortiWebImageVersion')]",
+      "imageSku": "[basics('imageSku')]",
+      "imageVersion": "[basics('imageVersion')]",
       "adminUsername": "[basics('adminUsername')]",
       "adminPassword": "[basics('adminPassword')]",
       "location": "[location()]",
