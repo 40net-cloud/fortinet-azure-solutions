@@ -71,7 +71,24 @@
         "visible": true
       },
       {
-        "name": "fortiManagerImageVersion",
+        "name": "imageSku",
+        "type": "Microsoft.Common.DropDown",
+        "label": "FortiManager Image SKU",
+        "defaultValue": "Bring Your Own License",
+        "toolTip": "BYOL license model (where license is purchased separately)",
+        "constraints": {
+          "required": false,
+          "allowedValues": [
+            {
+              "label": "Bring Your Own License",
+              "value": "fortinet-fortimanager"
+            }
+          ]
+        },
+        "visible": true
+      },
+      {
+        "name": "imageVersion",
         "type": "Microsoft.Common.DropDown",
         "label": "FortiManager Image Version",
         "defaultValue": "latest",
@@ -520,9 +537,9 @@
               {
                 "name": "fmgLicenseBYOLInfo",
                 "type": "Microsoft.Common.TextBlock",
-                "visible": "[equals(basics('fortiManagerImageSKU'), 'fortinet-fortimanager')]",
+                "visible": true,
                 "options": {
-                  "text": "Bring Your Own License was selected in the basics blade. The license file(s) retrieved from support.fortinet.com can be uploaded here or uploaded after deployment."
+                  "text": "The Bring Your Own license file(s), retrieved from support.fortinet.com, can be uploaded here or uploaded after deployment."
                 }
               },
               {
@@ -530,7 +547,7 @@
                 "type": "Microsoft.Common.CheckBox",
                 "label": "My organisation is using the FortiFlex subscription service.",
                 "toolTip": "Select this box to enter a FortiFlex token",
-                "visible": "[equals(basics('fortiManagerImageSKU'), 'fortinet-fortimanager')]"
+                "visible": true
               },
               {
                 "name": "fmgcontent",
@@ -547,7 +564,7 @@
                   "openMode": "text",
                   "encoding": "UTF-8"
                 },
-                "visible": "[and(equals(basics('fortiManagerImageSKU'), 'fortinet-fortimanager'),not(steps('instance').fmgLicense.fmgLicenseFortiFlexCheck))]"
+                "visible": "[not(steps('instance').fmgLicense.fmgLicenseFortiFlexCheck)]"
               },
               {
                 "name": "fmgfortiflex",
@@ -560,27 +577,7 @@
                   "regex": "^[A-Za-z0-9-]{1,64}$",
                   "validationMessage": "Only alphanumeric characters and a dash are allowed, and the value must be 1 to 64 characters."
                 },
-                "visible": "[and(equals(basics('fortiManagerImageSKU'), 'fortinet-fortimanager'),steps('instance').fmgLicense.fmgLicenseFortiFlexCheck)]"
-              },
-              {
-                "name": "fmgLicensePAYGInfo",
-                "type": "Microsoft.Common.InfoBox",
-                "options": {
-                  "icon": "Info",
-                  "text": "Pay As You Go licenses was selected in the basics blade and provisioned automatically durig deployment. Registration of the PAYG license is required to receive support.",
-                  "uri": "https://docs.fortinet.com/document/fortigate-public-cloud/7.2.0/azure-administration-guide/533394/creating-a-support-account"
-                },
-                "visible": "[not(equals(basics('fortiManagerImageSKU'), 'fortinet-fortimanager'))]"
-              },
-              {
-                "name": "fmgLicenseMigrateInfo",
-                "type": "Microsoft.Common.InfoBox",
-                "options": {
-                  "icon": "Info",
-                  "text": "Migration between BYOL and PAYG is possible using a redeployment of the VM.",
-                  "uri": "https://docs.fortinet.com/document/fortigate-public-cloud/7.2.0/azure-administration-guide/81283/migrating-a-fortigate-vm-instance-between-license-types"
-                },
-                "visible": true
+                "visible": "[steps('instance').fmgLicense.fmgLicenseFortiFlexCheck]"
               }
             ]
           },
@@ -855,8 +852,8 @@
     ],
     "outputs": {
       "namePrefix": "[basics('namePrefix')]",
-      "imageSKU": "fortinet-fortimanager",
-      "imageVersion": "[basics('fortiManagerImageVersion')]",
+      "imageSku": "[basics('imageSku')]",
+      "imageVersion": "[basics('imageVersion')]",
       "adminUsername": "[basics('adminUsername')]",
       "adminPassword": "[basics('adminPassword')]",
       "location": "[location()]",

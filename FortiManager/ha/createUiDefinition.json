@@ -71,7 +71,7 @@
         "visible": true
       },
       {
-        "name": "fortiManagerImageSKU",
+        "name": "imageSku",
         "type": "Microsoft.Common.DropDown",
         "label": "FortiManager Image SKU",
         "defaultValue": "Bring Your Own License",
@@ -479,9 +479,9 @@
               {
                 "name": "fmgLicenseBYOLInfo",
                 "type": "Microsoft.Common.TextBlock",
-                "visible": "[equals(basics('fortiManagerImageSKU'), 'fortinet-fortimanager')]",
+                "visible": true,
                 "options": {
-                  "text": "Bring Your Own License was selected in the basics blade. The license file(s) retrieved from support.fortinet.com can be uploaded here or uploaded after deployment."
+                  "text": "The Bring Your Own license file(s), retrieved from support.fortinet.com, can be uploaded here or uploaded after deployment."
                 }
               },
               {
@@ -489,7 +489,7 @@
                 "type": "Microsoft.Common.CheckBox",
                 "label": "My organisation is using the FortiFlex subscription service.",
                 "toolTip": "My organisation is using the FortiFlex subscription service.",
-                "visible": "[equals(basics('fortiManagerImageSKU'), 'fortinet-fortimanager')]"
+                "visible": true
               },
               {
                 "name": "fmgAcontent",
@@ -506,7 +506,7 @@
                   "openMode": "text",
                   "encoding": "UTF-8"
                 },
-                "visible": "[and(equals(basics('fortiManagerImageSKU'), 'fortinet-fortimanager'),not(steps('instance').fmgLicense.fortiFlexCheck))]"
+                "visible": "[not(steps('instance').fmgLicense.fortiFlexCheck)]"
               },
               {
                 "name": "fmgBcontent",
@@ -523,7 +523,7 @@
                   "openMode": "text",
                   "encoding": "UTF-8"
                 },
-                "visible": "[and(equals(basics('fortiManagerImageSKU'), 'fortinet-fortimanager'),not(steps('instance').fmgLicense.fortiFlexCheck))]"
+                "visible": "[not(steps('instance').fmgLicense.fortiFlexCheck)]"
               },
               {
                 "name": "fmgAfortiflex",
@@ -536,7 +536,7 @@
                   "regex": "^[A-Za-z0-9-]{1,64}$",
                   "validationMessage": "Only alphanumeric characters and a dash are allowed, and the value must be 1 to 64 characters."
                 },
-                "visible": "[and(equals(basics('fortiManagerImageSKU'), 'fortinet-fortimanager'),steps('instance').fmgLicense.fortiFlexCheck)]"
+                "visible": "[steps('instance').fmgLicense.fortiFlexCheck]"
               },
               {
                 "name": "fmgBfortiflex",
@@ -549,7 +549,7 @@
                   "regex": "^[A-Za-z0-9-]{1,64}$",
                   "validationMessage": "Only alphanumeric characters and a dash are allowed, and the value must be 1 to 64 characters."
                 },
-                "visible": "[and(equals(basics('fortiManagerImageSKU'), 'fortinet-fortimanager'),steps('instance').fmgLicense.fortiFlexCheck)]"
+                "visible": "[steps('instance').fmgLicense.fortiFlexCheck]"
               },
               {
                 "name": "fmgAserial",
@@ -827,7 +827,7 @@
     ],
     "outputs": {
       "namePrefix": "[basics('namePrefix')]",
-      "imageSKU": "[basics('fortiManagerImageSKU')]",
+      "imageSku": "[basics('imageSku')]",
       "imageVersion": "[basics('fortiManagerImageVersion')]",
       "adminUsername": "[basics('adminUsername')]",
       "adminPassword": "[basics('adminPassword')]",
