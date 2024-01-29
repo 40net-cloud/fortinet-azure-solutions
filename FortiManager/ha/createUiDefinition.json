@@ -88,7 +88,7 @@
         "visible": true
       },
       {
-        "name": "fortiManagerImageVersion",
+        "name": "imageVersion",
         "type": "Microsoft.Common.DropDown",
         "label": "FortiManager Image Version",
         "defaultValue": "latest",
@@ -828,7 +828,7 @@
     "outputs": {
       "namePrefix": "[basics('namePrefix')]",
       "imageSku": "[basics('imageSku')]",
-      "imageVersion": "[basics('fortiManagerImageVersion')]",
+      "imageVersion": "[basics('imageVersion')]",
       "adminUsername": "[basics('adminUsername')]",
       "adminPassword": "[basics('adminPassword')]",
       "location": "[location()]",
