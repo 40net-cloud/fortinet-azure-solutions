@@ -80,7 +80,9 @@ Describe 'FGT Single VM' {
         }
 
         It 'Contains the expected parameters' {
-            $expectedTemplateParameters = 'acceleratedNetworking',
+            $expectedTemplateParameters = 'acceleratedConnections',
+                                          'acceleratedConnectionsSku',
+                                          'acceleratedNetworking',
                                           'adminPassword',
                                           'adminUsername',
                                           'availabilityOptions',
