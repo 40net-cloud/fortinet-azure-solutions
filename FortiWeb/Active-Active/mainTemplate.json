@@ -276,14 +276,14 @@
         "description": "FortiWeb BYOL license content"
       }
     },
-	"fortiWebALicenseFortiFlex": {
+    "fortiWebALicenseFortiFlex": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
         "description": "FortiWeb BYOL FortiFlex license token"
       }
     },
-	"fortiWebBLicenseFortiFlex": {
+    "fortiWebBLicenseFortiFlex": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
@@ -352,7 +352,7 @@
     "fwbACustomDataCombined": {
       "cloud-initd": "enable",
       "usr-cli": "[variables('fwbACustomDataBody')]",
-      "HaAzureInit": "enable",      
+      "HaAzureInit": "enable",
       "HaResourceGroupName": "[resourceGroup().name]",
       "HaSubscriptionId": "[parameters('haSubscriptionId')]",
       "HaTenantId": "[parameters('haTenantId')]",
