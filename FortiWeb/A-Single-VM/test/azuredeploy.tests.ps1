@@ -82,6 +82,7 @@ Describe 'FWB Single VM' {
                                             'fortinetTags',
                                             'fortiWebAdditionalCustomData',
                                             'fortiWebLicenseBYOL',
+                                            'fortiWebLicenseFortiFlex',
                                             'fortiWebNamePrefix',
                                             'instanceType',
                                             'imageSKU',

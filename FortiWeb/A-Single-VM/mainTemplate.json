@@ -308,11 +308,11 @@
         "description": "FortiWeb BYOL license content"
       }
     },
-    "fortiWebLicenseFlexVM": {
+    "fortiWebLicenseFortiFlex": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
-        "description": "FortiWeb BYOL FlexVM license token"
+        "description": "FortiWeb BYOL FortiFlex license token"
       }
     },
     "location": {
@@ -348,7 +348,7 @@
       "usr-cli": "[parameters('fortiWebAdditionalCustomData')]",
       "HaAzureInit": "enable",
       "FwbLicenseBYOL": "[parameters('fortiWebLicenseBYOL')]",
-      "flex_token": "[parameters('fortiWebLicenseFlexVM')]"
+      "flex_token": "[parameters('fortiWebLicenseFortiFlex')]"
     },
     "fwbCustomData": "[base64(string(variables('customDataCombined')))]",
     "fwbVmName": "[concat(parameters('fortiWebNamePrefix'),'-FWB')]",
