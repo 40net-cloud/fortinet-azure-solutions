@@ -133,10 +133,12 @@ config system ha
 end
 
 config system standalone-cluster
+  config cluster-peer
     edit 0
         set peerip 10.0.1.x
         set syncvd "root"
     next
+  end
 end
 ```
 
