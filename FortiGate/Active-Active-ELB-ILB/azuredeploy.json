@@ -487,7 +487,7 @@
     "sn2GatewayIP": "[concat(variables('sn2IPArray0'),'.',variables('sn2IPArray1'),'.',variables('sn2IPArray2'),'.',variables('sn2IPArray3'))]",
     "sn2IPStartAddress": "[split(parameters('subnet2StartAddress'),'.')]",
     "sn2IPlb": "[concat(variables('sn2IPArray0'),'.',variables('sn2IPArray1'),'.',variables('sn2IPArray2'),'.',int(variables('sn2IPStartAddress')[3]))]",
-    "internalLBName": "[concat(parameters('fortiGateNamePrefix'),'-InternalLoadBalancer')]",
+    "internalLBName": "[concat(parameters('fortiGateNamePrefix'),'-internalloadbalancer')]",
     "internalLBId": "[resourceId('Microsoft.Network/loadBalancers',variables('internalLBName'))]",
     "internalLBFEName": "[concat(parameters('fortiGateNamePrefix'),'-ilb-',parameters('subnet2Name'),'-frontend')]",
     "internalLBFEId": "[resourceId('Microsoft.Network/loadBalancers/frontendIPConfigurations',variables('internalLBName'),variables('internalLBFEName'))]",
@@ -495,7 +495,7 @@
     "internalLBBEId": "[resourceId('Microsoft.Network/loadBalancers/backendAddressPools',variables('internalLBName'),variables('internalLBBEName'))]",
     "internalLBProbeName": "lbprobe",
     "internalLBProbeId": "[resourceId('Microsoft.Network/loadBalancers/probes',variables('internalLBName'),variables('internalLBProbeName'))]",
-    "externalLBName": "[concat(parameters('fortiGateNamePrefix'),'-ExternalLoadBalancer')]",
+    "externalLBName": "[concat(parameters('fortiGateNamePrefix'),'-externalloadbalancer')]",
     "externalLBId": "[resourceId('Microsoft.Network/loadBalancers',variables('externalLBName'))]",
     "externalLBFEName": "[concat(parameters('fortiGateNamePrefix'),'-elb-',parameters('subnet1Name'),'-frontend')]",
     "externalLBFEId": "[resourceId('Microsoft.Network/loadBalancers/frontendIPConfigurations',variables('externalLBName'),variables('externalLBFEName'))]",
@@ -862,7 +862,7 @@
     {
       "condition": "[parameters('externalLoadBalancer')]",
       "type": "Microsoft.Network/networkInterfaces",
-      "name": "[concat(variables('fgVmName'),'-',copyIndex(1),'-Nic',if(not(parameters('externalLoadBalancer')), 2, 1))]",
+      "name": "[concat(variables('fgVmName'),'-',copyIndex(1),'-nic',if(not(parameters('externalLoadBalancer')), 2, 1))]",
       "apiVersion": "2023-04-01",
       "copy": {
         "name": "nodeCopy",
@@ -911,7 +911,7 @@
     },
     {
       "type": "Microsoft.Network/networkInterfaces",
-      "name": "[concat(variables('fgVmName'),'-',copyIndex(1),'-Nic',if(not(parameters('externalLoadBalancer')), 1, 2))]",
+      "name": "[concat(variables('fgVmName'),'-',copyIndex(1),'-nic',if(not(parameters('externalLoadBalancer')), 1, 2))]",
       "apiVersion": "2023-04-01",
       "copy": {
         "name": "nodeCopy",
@@ -959,8 +959,8 @@
       "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Compute/virtualMachines'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Compute/virtualMachines']), parameters('fortinetTags')) ]",
       "location": "[parameters('location')]",
       "dependsOn": [
-        "[concat(variables('fgVmName'),'-',copyIndex(1),'-Nic1')]",
-        "[concat(variables('fgVmName'),'-',copyIndex(1),'-Nic2')]"
+        "[concat(variables('fgVmName'),'-',copyIndex(1),'-nic1')]",
+        "[concat(variables('fgVmName'),'-',copyIndex(1),'-nic2')]"
       ],
       "identity": {
         "type": "SystemAssigned"
@@ -997,7 +997,7 @@
               "name": "networkInterfaces",
               "count": "[if(parameters('externalLoadBalancer'), 2, 1)]",
               "input": {
-                "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(variables('fgVmName'),'-',copyIndex(1),'-Nic',copyIndex('networkInterfaces',1)))]",
+                "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(variables('fgVmName'),'-',copyIndex(1),'-nic',copyIndex('networkInterfaces',1)))]",
                 "properties": {
                   "primary": "[if(equals(copyIndex('networkInterfaces',1),1), 'true', 'false')]"
                 }
