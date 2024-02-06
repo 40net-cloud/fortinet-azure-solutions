@@ -712,7 +712,7 @@
                   "subnets": "Standard deployment is to have external and internal subnets."
                 },
                 "defaultValue": {
-                  "name": "[if(equals(basics('fortiGateNamePrefix'),''),'FortiGate-VNET',concat(basics('fortiGateNamePrefix'),'-VNET'))]",
+                  "name": "[if(equals(basics('fortiGateNamePrefix'),''),'fortigte-vnet',concat(basics('fortiGateNamePrefix'),'-vnet'))]",
                   "addressPrefixSize": "/22"
                 },
                 "constraints": {
@@ -891,7 +891,7 @@
               "domainNameLabel": "DNS name linked to this public IP"
             },
             "defaultValue": {
-              "publicIpAddressName": "[if(equals(basics('fortiGateNamePrefix'),''),'FGTPublicIP',concat(basics('fortiGateNamePrefix'),'-FGT-PIP'))]",
+              "publicIpAddressName": "[if(equals(basics('fortiGateNamePrefix'),''),'fgtpublicip',concat(basics('fortiGateNamePrefix'),'-fgt-pip'))]",
               "domainNameLabel": "mydomain"
             },
             "constraints": {

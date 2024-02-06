@@ -54,7 +54,7 @@
             "value": "172.16.136.0/22"
         },
         "subnet1Name": {
-            "value": "ExternalSubnet"
+            "value": "externalsubnet"
         },
         "subnet1Prefix": {
             "value": "172.16.136.0/26"
@@ -63,7 +63,7 @@
             "value": "172.16.136.4"
         },
         "subnet2Name": {
-            "value": "InternalSubnet"
+            "value": "internalsubnet"
         },
         "subnet2Prefix": {
             "value": "172.16.136.64/26"
@@ -72,7 +72,7 @@
             "value": "172.16.136.68"
         },
         "subnet3Name": {
-            "value": "ProtectedASubnet"
+            "value": "protectedsubnet"
         },
         "subnet3Prefix": {
             "value": "172.16.137.0/24"
