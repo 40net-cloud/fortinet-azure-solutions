@@ -858,22 +858,22 @@
                   "required": true
                 },
                 "visible": true
-              },
-              {
-                "name": "standardsku",
-                "type": "Microsoft.Common.InfoBox",
-                "visible": true,
-                "options": {
-                  "icon": "Info",
-                  "text": "If no external load balancer is installed, it is required to have an environment where the FortiGate can access the internet. Either via another external facing FortiGate, NAT Gateway, proxy server or other routing functionality."
-                }
               }
             ]
           },
           {
+            "name": "standardsku",
+            "type": "Microsoft.Common.InfoBox",
+            "visible": "[not(equals(steps('publicip').externalLoadBalancer.enabled, 'true'))]",
+            "options": {
+              "icon": "Info",
+              "text": "No external load balancer will be installed. It is required to have an environment where the FortiGate can access the internet. Either via another external facing FortiGate, NAT Gateway, proxy server or other routing functionality."
+            }
+          },
+          {
             "name": "publiciptext",
             "type": "Microsoft.Common.TextBlock",
-            "visible": true,
+            "visible": "[equals(steps('publicip').externalLoadBalancer.enabled, 'true')]",
             "options": {
               "text": "The Load Balancer public IP will be used for public services hosted on the FortiGate such as IPSEC termination or services behind the FortiGate such as a webserver. The FortiGate Management public IPs are used for management of the virtual machines. They are also used for the Fabric connector to retrieve information from the Azure platform."
             }
@@ -907,7 +907,7 @@
           {
             "name": "standardsku",
             "type": "Microsoft.Common.InfoBox",
-            "visible": true,
+            "visible": "[equals(steps('publicip').externalLoadBalancer.enabled, 'true')]",
             "options": {
               "icon": "Info",
               "text": "This deployment uses a Standard SKU Azure Load Balancer and requires a Standard SKU public IP. Microsoft Azure offers a migration path from a basic to standard SKU public IP.",
