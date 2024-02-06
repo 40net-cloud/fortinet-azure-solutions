@@ -725,7 +725,7 @@
                   "subnet1": {
                     "label": "External Subnet",
                     "defaultValue": {
-                      "name": "ExternalSubnet",
+                      "name": "externalsubnet",
                       "addressPrefixSize": "/26"
                     },
                     "constraints": {
@@ -737,7 +737,7 @@
                   "subnet2": {
                     "label": "Internal subnet",
                     "defaultValue": {
-                      "name": "InternalSubnet",
+                      "name": "internalsubnet",
                       "addressPrefixSize": "/26"
                     },
                     "constraints": {
@@ -747,9 +747,9 @@
                     }
                   },
                   "subnet3": {
-                    "label": "Protected A subnet",
+                    "label": "Protected Subnet",
                     "defaultValue": {
-                      "name": "ProtectedASubnet",
+                      "name": "protectedsubnet",
                       "addressPrefixSize": "/24"
                     },
                     "constraints": {
@@ -865,8 +865,7 @@
                 "visible": true,
                 "options": {
                   "icon": "Info",
-                  "text": "If no ",
-                  "uri": "https://docs.microsoft.com/en-us/troubleshoot/azure/virtual-machines/serial-console-overview"
+                  "text": "If no external load balancer is installed, it is required to have an environment where the FortiGate can access the internet. Either via another external facing FortiGate, NAT Gateway, proxy server or other routing functionality."
                 }
               }
             ]
@@ -903,7 +902,7 @@
               "hideNone": true,
               "hideDomainNameLabel": true
             },
-            "visible": "[not(equals(steps('publicip').externalLoadBalancer.enabled, 'true'))]"
+            "visible": "[equals(steps('publicip').externalLoadBalancer.enabled, 'true')]"
           },
           {
             "name": "standardsku",
@@ -933,7 +932,7 @@
               "icon": "Error",
               "text": "The External Load Balancer Public IP is configured using Basic SKU. Please return to previous blade and use Standard type public IPs to support Azure Standard Load Balancers"
             },
-            "visible": "[not(equals(steps('publicip').loadbalancerpublicip.sku, 'Standard'))]"
+            "visible": "[and(not(equals(steps('publicip').loadbalancerpublicip.sku, 'Standard')),equals(steps('publicip').externalLoadBalancer.enabled, 'true'))]"
           },
           {
             "name": "StandardIPConfirmation1",
@@ -942,7 +941,16 @@
               "icon": "Info",
               "text": "The External Load Balancer Public IP is Standard SKU. Proceed."
             },
-            "visible": "[equals(steps('publicip').loadbalancerpublicip.sku, 'Standard')]"
+            "visible": "[and(equals(steps('publicip').loadbalancerpublicip.sku, 'Standard'),equals(steps('publicip').externalLoadBalancer.enabled, 'true'))]"
+          },
+          {
+            "name": "StandardIPConfirmation2",
+            "type": "Microsoft.Common.InfoBox",
+            "options": {
+              "icon": "Info",
+              "text": "No external load balancer will be installed. FortiGate requires external access using another means."
+            },
+            "visible": "[not(equals(steps('publicip').externalLoadBalancer.enabled, 'true'))]"
           }
         ]
       },
