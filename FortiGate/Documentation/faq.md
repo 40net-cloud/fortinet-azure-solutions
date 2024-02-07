@@ -26,4 +26,4 @@ A dedicated page be found [here](faq-pay-as-you-go.md)
 
 ### FortiGate and FortiAnalyzer Integration with Microsoft Sentinel 
 
-You can find more details about setup and data flow from [here] (faq-fgt-faz-microsoft-sentinel.md)
+You can find more details about setup and data flow from [here](faq-fgt-faz-microsoft-sentinel.md)
