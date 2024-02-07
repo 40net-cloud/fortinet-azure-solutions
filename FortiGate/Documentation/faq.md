@@ -23,3 +23,7 @@ https://learn.microsoft.com/en-us/azure/virtual-network/accelerated-networking-o
 ## How can I figure our what license I'm using on the FortiGate VM (PAYG vs BYOL)
 
 A dedicated page be found [here](faq-pay-as-you-go.md)
+
+### FortiGate and FortiAnalyzer Integration with Microsoft Sentinel 
+
+You can find more details about setup and data flow from [here] (faq-fgt-faz-microsoft-sentinel.md)
