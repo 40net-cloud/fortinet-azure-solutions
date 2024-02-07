@@ -831,7 +831,7 @@
                 "type": "Microsoft.Common.CheckBox",
                 "label": "Accelerated Connections feature (PREVIEW)",
                 "toolTip": "This option enables the Accelerated Connections feature. provides higher bandwidth at an additional cost",
-                "visible": "[equals(steps('networking').acceleratednetworksection.acceleratednetworking, 'true')]"
+                "visible": "[and(equals(steps('networking').acceleratednetworksection.acceleratednetworking, 'true'),not(contains(steps('instance').instancetype.selection, 'p')),not(contains(steps('instance').instancetype.selection, 'v5')))]"
               },
               {
                 "name": "acceleratedconnectionssku",
@@ -868,7 +868,8 @@
                 "visible": "[steps('networking').acceleratednetworksection.AcceleratedConnectionCheck]",
                 "options": {
                   "icon" : "Warning",
-                  "text": "This feature is currently in Preview, please contact Fortinet at 'azuretech@fortinet.com'. "
+                  "text": "This feature is currently in Preview, please contact Fortinet at 'azuretech@fortinet.com'. Verify the limitations with Microsoft on supported regions. Currently Dv5 instance types are not supported.",
+                  "uri": "https://learn.microsoft.com/en-us/azure/networking/nva-accelerated-connections"
                 }
               }
             ]

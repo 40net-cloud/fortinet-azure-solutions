@@ -820,6 +820,52 @@
                   "text": "Accelerated Networking is supported on most general purpose and compute-optimized instance sizes with 2 or more vCPUs. On instances that support hyperthreading, Accelerated Networking is supported on VM instances with 4 or more vCPUs. Deployment with the accelerated networking feature enabled on a host that doesn't support it will result in a failure to connect to it. The accelerated networking can be disabled after deployment from the Azure Portal or Azure CLI.",
                   "uri": "https://docs.microsoft.com/en-us/azure/virtual-machines/sizes"
                 }
+              },
+              {
+                "name": "acceleratedconnectionscheck",
+                "type": "Microsoft.Common.CheckBox",
+                "label": "Accelerated Connections feature (PREVIEW)",
+                "toolTip": "This option enables the Accelerated Connections feature. provides higher bandwidth at an additional cost",
+                "visible": "[and(equals(steps('networking').acceleratednetworksection.acceleratednetworking, 'true'),not(contains(steps('instance').instancetype.selection, 'p')),not(contains(steps('instance').instancetype.selection, 'v5')))]"
+              },
+              {
+                "name": "acceleratedconnectionssku",
+                "type": "Microsoft.Common.DropDown",
+                "label": "Auxiliary SKU - Bandwidth Tiers",
+                "defaultValue": "A1 - 4vCPU and above",
+                "toolTip": "This option selects the required bandwidth capability. SKUs incur additional cost when selected.",
+                "constraints": {
+                  "required": false,
+                  "allowedValues": [
+                    {
+                      "label": "A1 - 4vCPU and above",
+                      "value": "A1"
+                    },
+                    {
+                      "label": "A2 - 4vCPU and above",
+                      "value": "A2"
+                    },
+                    {
+                      "label": "A4 - 8vCPU and above",
+                      "value": "A4"
+                    },
+                    {
+                      "label": "A8 - 32vCPU and above",
+                      "value": "A8"
+                    }
+                  ]
+                },
+                "visible": "[and(equals(steps('networking').acceleratednetworksection.acceleratednetworking, 'true'),steps('networking').acceleratednetworksection.acceleratedconnectionscheck)]"
+              },
+              {
+                "name": "AccelConnwarning",
+                "type": "Microsoft.Common.InfoBox",
+                "visible": "[steps('networking').acceleratednetworksection.AcceleratedConnectionCheck]",
+                "options": {
+                  "icon" : "Warning",
+                  "text": "This feature is currently in Preview, please contact Fortinet at 'azuretech@fortinet.com'. Verify the limitations with Microsoft on supported regions. Currently Dv5 instance types are not supported.",
+                  "uri": "https://learn.microsoft.com/en-us/azure/networking/nva-accelerated-connections"
+                }
               }
             ]
           }
@@ -1187,6 +1233,8 @@
       "fortiGateLicenseFortiFlexB": "[steps('instance').fgtLicense.fgtBfortiflex]",
       "fortiGateLicenseFortiFlexC": "[steps('instance').fgtLicense.fgtCfortiflex]",
       "acceleratedNetworking": "[steps('networking').acceleratednetworksection.acceleratednetworking]",
+      "acceleratedConnections": "[steps('networking').acceleratednetworksection.acceleratedconnectionscheck]",
+      "acceleratedConnectionsSku": "[steps('networking').acceleratednetworksection.acceleratedconnectionssku]",
       "externalLoadBalancer": "[bool(steps('publicip').externalLoadBalancer.enabled)]",
       "publicIP1NewOrExisting": "[steps('publicip').loadbalancerpublicip.newOrExistingOrNone]",
       "publicIP1Name": "[steps('publicip').loadbalancerpublicip.name]",
