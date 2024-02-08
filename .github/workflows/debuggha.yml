@@ -37,8 +37,8 @@ jobs:
           chmod 700 /home/runner/.ssh/
           cat ${{secrets.TEST_SSH_KEY}} > /home/runner/.ssh/id_test
           chmod 400 /home/runner/.ssh/id_test*
-          ls -la /home/runner/.ssh/id_test* 
-          cat /home/runner/.ssh/id_test* 
+          ls -la /home/runner/.ssh/id_test 
+          cat /home/runner/.ssh/id_test 
           Set-PSRepository psgallery -InstallationPolicy trusted
           Install-Module -Name Pester -RequiredVersion 5.0.4 -confirm:$false -Force
           $container = New-PesterContainer -Path ".github/workflows/test/" -Data @{sshkey = "/home/runner/.ssh/id_test"}
