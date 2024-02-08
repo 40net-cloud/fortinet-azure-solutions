@@ -815,7 +815,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2023-07-01",
+      "apiVersion": "2022-09-01",
       "name": "[variables('hubADeployementName')]",
       "dependsOn": [
         "[variables('hubAVnetName')]"
@@ -873,7 +873,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2023-07-01",
+      "apiVersion": "2022-09-01",
       "name": "[variables('hubBDeployementName')]",
       "dependsOn": [
         "[variables('hubBVnetName')]"
@@ -931,7 +931,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2023-07-01",
+      "apiVersion": "2022-09-01",
       "name": "[variables('hubARTDeployementName')]",
       "dependsOn": [
         "[resourceId('Microsoft.Resources/deployments', variables('hubADeployementName'))]"
@@ -1034,7 +1034,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2023-07-01",
+      "apiVersion": "2022-09-01",
       "name": "[variables('hubBRTDeployementName')]",
       "dependsOn": [
         "[resourceId('Microsoft.Resources/deployments', variables('hubARTDeployementName'))]"

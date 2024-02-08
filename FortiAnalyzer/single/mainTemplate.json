@@ -352,8 +352,8 @@
     {
       "condition": "[and(variables('useAS'),equals(parameters('existingAvailabilitySetName'),''))]",
       "type": "Microsoft.Compute/availabilitySets",
+      "apiVersion": "2023-03-01",
       "name": "[variables('availabilitySetName')]",
-      "apiVersion": "2022-03-01",
       "location": "[parameters('location')]",
       "tags": {
         "provider": "[toUpper(parameters('fortinetTags').provider)]"

@@ -471,7 +471,7 @@
   "resources": [
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2023-07-01",
+      "apiVersion": "2022-09-01",
       "name": "pid-2e181e90-36f0-4061-9842-64c219116819-partnercenter",
       "properties": {
         "mode": "Incremental",

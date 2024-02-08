@@ -179,18 +179,18 @@
       "type": "bool",
       "defaultValue": false,
       "metadata": {
-          "description": "Accelerated connections provides an enhanced bandwidth at an additional cost"
+        "description": "Accelerated connections provides an enhanced bandwidth at an additional cost"
       }
     },
     "acceleratedConnectionsSku": {
-    "type": "string",
-    "defaultValue": "A1",
-    "allowedValues": [
-      "A1",
-      "A2",
-      "A4",
-      "A8"
-    ],
+      "type": "string",
+      "defaultValue": "A1",
+      "allowedValues": [
+        "A1",
+        "A2",
+        "A4",
+        "A8"
+      ],
       "metadata": {
         "description": "Accelerated Connections Auxiliary SKU bandwidth Tiers"
       }
@@ -645,14 +645,14 @@
     "fastpathtag": {
       "fastpathenabled": "[if(and(equals(parameters('acceleratedNetworking'),'true'),parameters('acceleratedConnections')),'true','false')]"
     },
-    "auxiliaryMode":"[if(and(equals(parameters('acceleratedNetworking'),'true'),parameters('acceleratedConnections')),'AcceleratedConnections','None')]",
-    "auxiliarySku" :"[if(and(equals(parameters('acceleratedNetworking'),'true'),parameters('acceleratedConnections')),parameters('acceleratedConnectionsSku'),'None')]"
+    "auxiliaryMode": "[if(and(equals(parameters('acceleratedNetworking'),'true'),parameters('acceleratedConnections')),'AcceleratedConnections','None')]",
+    "auxiliarySku": "[if(and(equals(parameters('acceleratedNetworking'),'true'),parameters('acceleratedConnections')),parameters('acceleratedConnectionsSku'),'None')]"
   },
   "resources": [
     {
       "name": "[concat(parameters('fortiGateNamePrefix'), '-fortinetdeployment-', uniquestring(resourceGroup().id))]",
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2023-07-01",
+      "apiVersion": "2022-09-01",
       "properties": {
         "mode": "Incremental",
         "template": {
@@ -665,8 +665,8 @@
     {
       "condition": "[not(variables('useAZ'))]",
       "type": "Microsoft.Compute/availabilitySets",
+      "apiVersion": "2023-03-01",
       "name": "[variables('availabilitySetName')]",
-      "apiVersion": "2022-03-01",
       "location": "[parameters('location')]",
       "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Compute/availabilitySets'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Compute/availabilitySets']), parameters('fortinetTags')) ]",
       "properties": {
@@ -1021,6 +1021,8 @@
         ],
         "enableIPForwarding": true,
         "enableAcceleratedNetworking": "[parameters('acceleratedNetworking')]",
+        "auxiliaryMode": "[variables('auxiliaryMode')]",
+        "auxiliarySku": "[variables('auxiliarySku')]",
         "networkSecurityGroup": {
           "id": "[variables('NSGId')]"
         }
@@ -1057,6 +1059,8 @@
         ],
         "enableIPForwarding": true,
         "enableAcceleratedNetworking": "[parameters('acceleratedNetworking')]",
+        "auxiliaryMode": "[variables('auxiliaryMode')]",
+        "auxiliarySku": "[variables('auxiliarySku')]",
         "networkSecurityGroup": {
           "id": "[variables('NSGId')]"
         }
@@ -1093,6 +1097,8 @@
         ],
         "enableIPForwarding": true,
         "enableAcceleratedNetworking": "[parameters('acceleratedNetworking')]",
+        "auxiliaryMode": "[variables('auxiliaryMode')]",
+        "auxiliarySku": "[variables('auxiliarySku')]",
         "networkSecurityGroup": {
           "id": "[variables('NSGId')]"
         }
@@ -1129,6 +1135,8 @@
         ],
         "enableIPForwarding": true,
         "enableAcceleratedNetworking": "[parameters('acceleratedNetworking')]",
+        "auxiliaryMode": "[variables('auxiliaryMode')]",
+        "auxiliarySku": "[variables('auxiliarySku')]",
         "networkSecurityGroup": {
           "id": "[variables('NSGId')]"
         }

@@ -700,7 +700,7 @@
     {
       "name": "[concat(parameters('fortiGateNamePrefix'), '-fortinetdeployment-', uniquestring(resourceGroup().id))]",
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2023-07-01",
+      "apiVersion": "2022-09-01",
       "properties": {
         "mode": "Incremental",
         "template": {
@@ -713,8 +713,8 @@
     {
       "condition": "[not(variables('useAZ'))]",
       "type": "Microsoft.Compute/availabilitySets",
+      "apiVersion": "2023-03-01",
       "name": "[variables('availabilitySetName')]",
-      "apiVersion": "2022-03-01",
       "location": "[parameters('location')]",
       "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Compute/availabilitySets'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Compute/availabilitySets']), parameters('fortinetTags')) ]",
       "properties": {
@@ -728,8 +728,8 @@
     {
       "condition": "[equals(parameters('vnetNewOrExisting'), 'new')]",
       "type": "Microsoft.Network/virtualNetworks",
-      "name": "[variables('vnetName')]",
       "apiVersion": "2023-04-01",
+      "name": "[variables('vnetName')]",
       "location": "[parameters('location')]",
       "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Network/virtualNetworks'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Network/virtualNetworks']), parameters('fortinetTags')) ]",
       "dependsOn": [
@@ -910,6 +910,8 @@
         ],
         "enableIPForwarding": true,
         "enableAcceleratedNetworking": "[parameters('acceleratedNetworking')]",
+        "auxiliaryMode": "[variables('auxiliaryMode')]",
+        "auxiliarySku": "[variables('auxiliarySku')]",
         "networkSecurityGroup": {
           "id": "[variables('NSGId')]"
         }
@@ -941,6 +943,8 @@
         ],
         "enableIPForwarding": true,
         "enableAcceleratedNetworking": "[parameters('acceleratedNetworking')]",
+        "auxiliaryMode": "[variables('auxiliaryMode')]",
+        "auxiliarySku": "[variables('auxiliarySku')]",
         "networkSecurityGroup": {
           "id": "[variables('NSGId')]"
         }
@@ -971,6 +975,8 @@
         ],
         "enableIPForwarding": true,
         "enableAcceleratedNetworking": "[parameters('acceleratedNetworking')]",
+        "auxiliaryMode": "[variables('auxiliaryMode')]",
+        "auxiliarySku": "[variables('auxiliarySku')]",
         "networkSecurityGroup": {
           "id": "[variables('NSGId')]"
         }
@@ -1002,6 +1008,8 @@
         ],
         "enableIPForwarding": true,
         "enableAcceleratedNetworking": "[parameters('acceleratedNetworking')]",
+        "auxiliaryMode": "[variables('auxiliaryMode')]",
+        "auxiliarySku": "[variables('auxiliarySku')]",
         "networkSecurityGroup": {
           "id": "[variables('NSGId')]"
         }
