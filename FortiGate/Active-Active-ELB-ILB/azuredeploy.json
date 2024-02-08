@@ -228,18 +228,18 @@
       "type": "bool",
       "defaultValue": false,
       "metadata": {
-          "description": "Accelerated connections provides an enhanced bandwidth at an additional cost"
+        "description": "Accelerated connections provides an enhanced bandwidth at an additional cost"
       }
     },
     "acceleratedConnectionsSku": {
-    "type": "string",
-    "defaultValue": "A1",
-    "allowedValues": [
-      "A1",
-      "A2",
-      "A4",
-      "A8"
-    ],
+      "type": "string",
+      "defaultValue": "A1",
+      "allowedValues": [
+        "A1",
+        "A2",
+        "A4",
+        "A8"
+      ],
       "metadata": {
         "description": "Accelerated Connections Auxiliary SKU bandwidth Tiers"
       }
@@ -542,8 +542,8 @@
     "fastpathtag": {
       "fastpathenabled": "[if(and(equals(parameters('acceleratedNetworking'),'true'),parameters('acceleratedConnections')),'true','false')]"
     },
-    "auxiliaryMode":"[if(and(equals(parameters('acceleratedNetworking'),'true'),parameters('acceleratedConnections')),'AcceleratedConnections','None')]",
-    "auxiliarySku" :"[if(and(equals(parameters('acceleratedNetworking'),'true'),parameters('acceleratedConnections')),parameters('acceleratedConnectionsSku'),'None')]"
+    "auxiliaryMode": "[if(and(equals(parameters('acceleratedNetworking'),'true'),parameters('acceleratedConnections')),'AcceleratedConnections','None')]",
+    "auxiliarySku": "[if(and(equals(parameters('acceleratedNetworking'),'true'),parameters('acceleratedConnections')),parameters('acceleratedConnectionsSku'),'None')]"
   },
   "resources": [
     {
