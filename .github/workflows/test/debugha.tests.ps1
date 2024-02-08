@@ -67,8 +67,9 @@ Describe 'FGT Single VM' {
         }
         It "FGT: Verify FortiGate A configuration" {
             $result = $($verify_commands | ssh -v -tt -i $sshkey -o StrictHostKeyChecking=no devops@$fgt)
-            Write-Host ("Result : " + $result) -Separator `n
-            exit 22
+            $LASTEXITCODE | Should -Be "0"
+            Write-Host ("FGT CLI info: " + $result) -Separator `n
+            $result | Should -Not -BeLike "*Command fail*"
         }
     }
 }
