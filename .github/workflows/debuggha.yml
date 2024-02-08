@@ -56,11 +56,11 @@ jobs:
         inlineScript: |
           mkdir -p /home/runner/.ssh/
           chmod 700 /home/runner/.ssh/
-          ssh-keygen -t rsa -b 4096 -f /home/runner/.ssh/id_rsa -C "fortigate_test@40net.cloud" -N '""'
-          chmod 400 /home/runner/.ssh/id_rsa*
+          cat ${{secrets.TEST_SSH_KEY}} > /home/runner/.ssh/id_test
+          chmod 400 /home/runner/.ssh/id_test*
           Set-PSRepository psgallery -InstallationPolicy trusted
           Install-Module -Name Pester -RequiredVersion 5.0.4 -confirm:$false -Force
-          $container = New-PesterContainer -Path ".github/workflows/test/" -Data @{sshkey = "/home/runner/.ssh/id_rsa"; sshkeypub = "/home/runner/.ssh/id_rsa.pub"}
+          $container = New-PesterContainer -Path ".github/workflows/test/" -Data @{sshkey = "/home/runner/.ssh/id_test"}
           $config = New-PesterConfiguration
           $config.Run.Container = $container
           $config.Run.Exit = $true
@@ -70,29 +70,3 @@ jobs:
           $config.Output.Verbosity = 'Detailed'
           Invoke-Pester -Configuration $config
         azPSVersion: "latest"
-
-    - name: Microsoft Teams Notification
-      uses: jvhoof/notify-microsoft-teams@main
-      if: always()
-      with:
-        webhook_url: ${{ secrets.MS_TEAMS_WEBHOOK_URI }}
-        needs: ${{ toJson(needs) }}
-        job: ${{ toJson(job) }}
-        steps: ${{ toJson(steps) }}
-
-#    - name: Microsoft Teams Notifications DC
-#      uses: dragos-cojocari/ms-teams-notification@v1.0.2
-#      with:
-#        github-token: ${{ github.token }} # this will use the runner's token.
-#        ms-teams-webhook-uri: ${{ secrets.MS_TEAMS_WEBHOOK_URI }}
-#        notification-summary: [FGT] A Single VM
-#        notification-color: 17a2b8
-#        timezone: Europe/Paris
-# https://github.com/FreEZer00/teams-webhook-action
-#    - name: Post result to Teams
-#      uses: freezer00/teams-webhook-action@v1.0.0
-#      if: always()
-#      with:
-#        webhook_url: ${{ secrets.MS_TEAMS_WEBHOOK_URI }}
-#        needs: ${{ toJson(needs) }}
-#        job: ${{ toJson(job) }}

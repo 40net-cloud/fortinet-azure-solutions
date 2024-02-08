@@ -176,13 +176,13 @@ Describe 'FGT A/A' {
             }
         }
         It "FGT A: Verify configuration" {
-            $result = $verify_commands | ssh -p 50030 -tt -i $sshkey -o StrictHostKeyChecking=no devops@$fgt
+            $result = $verify_commands | ssh -p 50030 -v -tt -i $sshkey -o StrictHostKeyChecking=no devops@$fgt
             $LASTEXITCODE | Should -Be "0"
             Write-Host ("FGT CLI info: " + $result) -Separator `n
             $result | Should -Not -BeLike "*Command fail*"
         }
         It "FGT B: Verify configuration" {
-            $result = $verify_commands | ssh -p 50031 -tt -i $sshkey -o StrictHostKeyChecking=no devops@$fgt
+            $result = $verify_commands | ssh -p 50031 -v -tt -i $sshkey -o StrictHostKeyChecking=no devops@$fgt
             $LASTEXITCODE | Should -Be "0"
             Write-Host ("FGT CLI info: " + $result) -Separator `n
             $result | Should -Not -BeLike "*Command fail*"

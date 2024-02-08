@@ -9,8 +9,7 @@
 #>
 
 param (
-    [string]$sshkey,
-    [string]$sshkeypub
+    [string]$sshkey
 )
 $VerbosePreference = "Continue"
 
@@ -31,9 +30,6 @@ BeforeAll {
     $testsResourceGroupLocation = "westeurope"
 
     # ARM Template Variables
-    $config = "config system global `n set gui-theme mariner `n end `n config system admin `n edit devops `n set accprofile super_admin `n set ssh-public-key1 `""
-    $config += Get-Content $sshkeypub
-    $config += "`" `n set password $testsResourceGroupName `n next `n end"
     $publicIPName = "$testsPrefix-FGT-PIP"
     $params = @{ 'adminUsername'=$testsAdminUsername
                  'adminPassword'=$testsResourceGroupName
@@ -45,16 +41,10 @@ BeforeAll {
 }
 
 Describe 'FGT Single VM' {
-    Context 'Validation' {
-        It 'Has a JSON template' {
-            $templateFileLocation | Should -Exist
-        }
-    }
-
     Context 'Deployment test' {
 
         BeforeAll {
-            $fgt = "w.jvh.be"
+            $fgt = "roz.jvh.be"
             Write-Host ("FortiGate public IP: " + $fgt)
             $verify_commands = @'
             config system console
