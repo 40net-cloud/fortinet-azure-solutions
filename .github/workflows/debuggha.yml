@@ -13,7 +13,7 @@ on:
 #    - 'FortiGate/A-Single-VM/**.tests.ps1'
 
 jobs:
-  ARM_A-Single-VM:
+  ARM_debug:
     name: 'ARM Template A-Single-VM'
     runs-on: ubuntu-latest
     env:
@@ -23,27 +23,6 @@ jobs:
       ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
 
     steps:
-    - name: "Checkout"
-      uses: actions/checkout@v4
-
-#    - name: ARM TTK - Test ARM Templates
-#      shell: pwsh
-#      run: |
-#        Install-Module -Name Pester -RequiredVersion 4.10.1 -Force
-#        Import-Module -Name Pester -RequiredVersion 4.10.1 -Force
-#        Invoke-WebRequest -Uri "https://aka.ms/arm-ttk-latest" -OutFile arm-template-toolkit.zip
-#        Expand-Archive -LiteralPath arm-template-toolkit.zip -DestinationPath arm-ttk
-#        Import-Module ./arm-ttk/arm-ttk/arm-ttk.psd1
-#        echo "Test-AzTemplate -TemplatePath ${{ env.ARMPath }} -Pester" | Out-File -FilePath ./armttk.ps1
-#        Invoke-Pester -Script ./armttk.ps1 -EnableExit -OutputFormat NUnitXml -OutputFile ./armttk.xml
-
-#    - name: ARM TTK - Publish Test Results
-#      uses: actions/upload-artifact@v3
-#      with:
-#        name: ARMTTKResults
-#        path: ./armttk.xml
-#      if: ${{ always() }}
-
     - name: Azure Login via Az module
       uses: azure/login@v1
       with:
@@ -58,6 +37,8 @@ jobs:
           chmod 700 /home/runner/.ssh/
           cat ${{secrets.TEST_SSH_KEY}} > /home/runner/.ssh/id_test
           chmod 400 /home/runner/.ssh/id_test*
+          ls -la /home/runner/.ssh/id_test* 
+          cat /home/runner/.ssh/id_test* 
           Set-PSRepository psgallery -InstallationPolicy trusted
           Install-Module -Name Pester -RequiredVersion 5.0.4 -confirm:$false -Force
           $container = New-PesterContainer -Path ".github/workflows/test/" -Data @{sshkey = "/home/runner/.ssh/id_test"}
