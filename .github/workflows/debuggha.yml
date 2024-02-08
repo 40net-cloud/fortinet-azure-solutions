@@ -23,6 +23,9 @@ jobs:
       ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
 
     steps:
+    - name: "Checkout"
+      uses: actions/checkout@v4
+
     - name: Azure Login via Az module
       uses: azure/login@v1
       with:
@@ -35,9 +38,11 @@ jobs:
         inlineScript: |
           mkdir -p /home/runner/.ssh/
           chmod 700 /home/runner/.ssh/
-          cat ${{secrets.TEST_SSH_KEY}} > /home/runner/.ssh/id_test
+          echo "${{secrets.TEST_SSH_KEY}}" > /home/runner/.ssh/id_test
           chmod 400 /home/runner/.ssh/id_test*
           ls -la /home/runner/.ssh/id_test 
+          ls -la .github/workflows/test
+          ls -la ~/.github/workflows/test
           Set-PSRepository psgallery -InstallationPolicy trusted
           Install-Module -Name Pester -RequiredVersion 5.0.4 -confirm:$false -Force
           $container = New-PesterContainer -Path ".github/workflows/" -Data @{sshkey = "/home/runner/.ssh/id_test"}
