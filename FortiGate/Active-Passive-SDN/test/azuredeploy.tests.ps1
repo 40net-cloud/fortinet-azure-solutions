@@ -95,7 +95,9 @@ Describe 'FGT A/P SDN' {
         }
 
         It 'Contains the expected parameters' {
-            $expectedTemplateParameters = 'acceleratedNetworking',
+            $expectedTemplateParameters = 'acceleratedConnections',
+                                          'acceleratedConnectionsSku',
+                                          'acceleratedNetworking',
                                           'adminPassword',
                                           'adminUsername',
                                           'availabilityOptions',

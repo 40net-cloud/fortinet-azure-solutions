@@ -175,6 +175,26 @@
         "description": "Accelerated Networking enables direct connection between the VM and network card. Only available on 2 CPU F/Fs and 4 CPU D/Dsv2, D/Dsv3, E/Esv3, Fsv2, Lsv2, Ms/Mms and Ms/Mmsv2"
       }
     },
+    "acceleratedConnections": {
+      "type": "bool",
+      "defaultValue": false,
+      "metadata": {
+        "description": "Accelerated connections provides an enhanced bandwidth at an additional cost"
+      }
+    },
+    "acceleratedConnectionsSku": {
+      "type": "string",
+      "defaultValue": "A1",
+      "allowedValues": [
+        "A1",
+        "A2",
+        "A4",
+        "A8"
+      ],
+      "metadata": {
+        "description": "Accelerated Connections Auxiliary SKU bandwidth Tiers"
+      }
+    },
     "publicIP1NewOrExisting": {
       "type": "string",
       "defaultValue": "new",
@@ -669,7 +689,12 @@
       "name": "[parameters('fortiGateImageSKU')]",
       "publisher": "[variables('imagePublisher')]",
       "product": "[variables('imageOffer')]"
-    }
+    },
+    "fastpathtag": {
+      "fastpathenabled": "[if(and(equals(parameters('acceleratedNetworking'),'true'),parameters('acceleratedConnections')),'true','false')]"
+    },
+    "auxiliaryMode": "[if(and(equals(parameters('acceleratedNetworking'),'true'),parameters('acceleratedConnections')),'AcceleratedConnections','None')]",
+    "auxiliarySku": "[if(and(equals(parameters('acceleratedNetworking'),'true'),parameters('acceleratedConnections')),parameters('acceleratedConnectionsSku'),'None')]"
   },
   "resources": [
     {
@@ -864,7 +889,7 @@
       "name": "[variables('fgaNic1Name')]",
       "apiVersion": "2023-04-01",
       "location": "[parameters('location')]",
-      "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Network/networkInterfaces'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Network/networkInterfaces']), parameters('fortinetTags')) ]",
+      "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Network/networkInterfaces'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Network/networkInterfaces'],variables('fastpathtag')), union(parameters('fortinetTags'),variables('fastpathtag'))) ]",
       "dependsOn": [
         "[variables('vnetName')]",
         "[variables('NSGId')]"
@@ -895,7 +920,7 @@
       "name": "[variables('fgbNic1Name')]",
       "apiVersion": "2023-04-01",
       "location": "[parameters('location')]",
-      "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Network/networkInterfaces'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Network/networkInterfaces']), parameters('fortinetTags')) ]",
+      "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Network/networkInterfaces'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Network/networkInterfaces'],variables('fastpathtag')), union(parameters('fortinetTags'),variables('fastpathtag'))) ]",
       "dependsOn": [
         "[variables('fgaNic1Name')]",
         "[variables('vnetName')]",
@@ -926,7 +951,7 @@
       "name": "[variables('fgaNic2Name')]",
       "apiVersion": "2023-04-01",
       "location": "[parameters('location')]",
-      "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Network/networkInterfaces'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Network/networkInterfaces']), parameters('fortinetTags')) ]",
+      "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Network/networkInterfaces'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Network/networkInterfaces'],variables('fastpathtag')), union(parameters('fortinetTags'),variables('fastpathtag'))) ]",
       "dependsOn": [
         "[variables('vnetName')]",
         "[variables('NSGId')]"
@@ -956,7 +981,7 @@
       "name": "[variables('fgbNic2Name')]",
       "apiVersion": "2023-04-01",
       "location": "[parameters('location')]",
-      "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Network/networkInterfaces'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Network/networkInterfaces']), parameters('fortinetTags')) ]",
+      "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Network/networkInterfaces'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Network/networkInterfaces'],variables('fastpathtag')), union(parameters('fortinetTags'),variables('fastpathtag'))) ]",
       "dependsOn": [
         "[variables('vnetName')]",
         "[variables('fgaNic2Name')]",

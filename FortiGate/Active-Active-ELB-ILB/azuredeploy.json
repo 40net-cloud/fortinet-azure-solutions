@@ -244,7 +244,6 @@
         "description": "Accelerated Connections Auxiliary SKU bandwidth Tiers"
       }
     },
-
     "publicIP1NewOrExisting": {
       "type": "string",
       "defaultValue": "new",
@@ -894,7 +893,7 @@
         "name": "nodeCopy",
         "count": "[parameters('fortiGateCount')]"
       },
-      "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Network/networkInterfaces'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Network/networkInterfaces']), parameters('fortinetTags')) ]",
+      "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Network/networkInterfaces'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Network/networkInterfaces'],variables('fastpathtag')), union(parameters('fortinetTags'),variables('fastpathtag'))) ]",
       "location": "[parameters('location')]",
       "dependsOn": [
         "[variables('vnetName')]",
@@ -945,7 +944,7 @@
         "name": "nodeCopy",
         "count": "[parameters('fortiGateCount')]"
       },
-      "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Network/networkInterfaces'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Network/networkInterfaces']), parameters('fortinetTags')) ]",
+      "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Network/networkInterfaces'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Network/networkInterfaces'],variables('fastpathtag')), union(parameters('fortinetTags'),variables('fastpathtag'))) ]",
       "location": "[parameters('location')]",
       "dependsOn": [
         "[variables('internalLBId')]",
