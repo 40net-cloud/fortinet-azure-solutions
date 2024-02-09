@@ -34,7 +34,7 @@ BeforeAll {
   $config = "config system global `n set gui-theme mariner `n end `n config system admin `n edit devops `n set accprofile super_admin `n set ssh-public-key1 `""
   $config += Get-Content $sshkeypub
   $config += "`" `n set password $testsResourceGroupName `n next `n end"
-  $publicIPName = "$testsPrefix-FGT-PIP"
+  $publicIPName = "$testsPrefix-fgt-pip"
   $params = @{ 'adminUsername'      = $testsAdminUsername
     'adminPassword'                 = $testsResourceGroupName
     'fortiGateNamePrefix'           = $testsPrefix
@@ -173,7 +173,7 @@ Describe 'FGT Single VM' {
       }
     }
     It "FGT: Verify FortiGate configuration" {
-      $result = $verify_commands | ssh -v -tt -i $sshkey -o StrictHostKeyChecking=no devops@$fgt
+      $result = $($verify_commands | ssh -v -tt -i $sshkey -o StrictHostKeyChecking=no devops@$fgt)
       $LASTEXITCODE | Should -Be "0"
       Write-Host ("FGT CLI info: " + $result) -Separator `n
       $result | Should -Not -BeLike "*Command fail*"
