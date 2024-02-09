@@ -37,7 +37,7 @@ BeforeAll {
                  'fortiGateAdditionalCustomData'=$config
                  'publicIP1Name'=$publicIPName
                }
-    $ports = @(443, 22)
+    $ports = @(22)
 }
 
 Describe 'FGT Single VM' {
