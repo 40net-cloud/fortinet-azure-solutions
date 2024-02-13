@@ -39,7 +39,7 @@
     },
     "fortiGateImageVersion": {
       "type": "string",
-      "defaultValue": "7.2.6",
+      "defaultValue": "7.2.7",
       "allowedValues": [
         "6.2.0",
         "6.2.2",
