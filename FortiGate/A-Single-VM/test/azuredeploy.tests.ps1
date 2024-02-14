@@ -153,9 +153,6 @@ Describe 'FGT Single VM' {
     BeforeAll {
       $fgt = (Get-AzPublicIpAddress -Name $publicIPName -ResourceGroupName $testsResourceGroupName).IpAddress
       Write-Host ("FortiGate public IP: " + $fgt)
-      Write-Host ("FortiGate SSH1: " + $params['adminPassword'])
-      Write-Host ("FortiGate SSH2: `n" + $config)
-      Write-Host ("FortiGate SSH3: `n" + (Get-Content $sshkey -Raw))
       $verify_commands = @'
             config system console
             set output standard

@@ -49,7 +49,7 @@ jobs:
         inlineScript: |
           mkdir -p /home/runner/.ssh/
           chmod 700 /home/runner/.ssh/
-          ssh-keygen -t ed25519 -f /home/runner/.ssh/id_ed25519 -C "fortigate_test@40net.cloud" -N '""'
+          ssh-keygen -t ed25519 -f /home/runner/.ssh/id_ed25519 -C "fortigate_test@40net.cloud" -N ''
           chmod 400 /home/runner/.ssh/id_ed25519* 
           Set-PSRepository psgallery -InstallationPolicy trusted
           Install-Module -Name Pester -RequiredVersion 5.0.4 -confirm:$false -Force
