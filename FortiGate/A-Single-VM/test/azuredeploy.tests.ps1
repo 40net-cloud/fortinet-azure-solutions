@@ -185,8 +185,7 @@ Describe 'FGT Single VM' {
 
   Context 'Cleanup' {
     It "Cleanup of deployment" {
-      Write-Host ("Cleanup disabled" )
-#      Remove-AzResourceGroup -Name $testsResourceGroupName -Force
+      Remove-AzResourceGroup -Name $testsResourceGroupName -Force
     }
   }
 }
