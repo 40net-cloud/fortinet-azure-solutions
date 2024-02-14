@@ -4,6 +4,7 @@ env:
   ARMPath: FortiGate/Active-Passive-SDN/
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main

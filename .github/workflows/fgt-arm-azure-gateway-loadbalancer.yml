@@ -4,6 +4,7 @@ env:
   ARMPath: FortiGate/AzureGatewayLoadBalancer/
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main

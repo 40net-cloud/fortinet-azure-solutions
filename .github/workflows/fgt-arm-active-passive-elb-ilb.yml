@@ -4,6 +4,7 @@ env:
   ARMPath: FortiGate/Active-Passive-ELB-ILB/
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
