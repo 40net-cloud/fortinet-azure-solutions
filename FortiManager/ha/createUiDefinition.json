@@ -650,7 +650,7 @@
                   "subnets": "Standard deployment is to have an "
                 },
                 "defaultValue": {
-                  "name": "[if(equals(basics('namePrefix'),''),'FortiManager-VNET',concat(basics('namePrefix'),'-VNET'))]",
+                  "name": "[if(equals(basics('namePrefix'),''),'fortimanager-vnet',concat(basics('namePrefix'),'-vnet'))]",
                   "addressPrefixSize": "/24"
                 },
                 "constraints": {
@@ -717,7 +717,7 @@
               "domainNameLabel": "DNS name linked to this public IP"
             },
             "defaultValue": {
-              "publicIpAddressName": "[if(equals(basics('namePrefix'),''),'FMGAPublicIP',concat(basics('namePrefix'),'-FMG-A-PIP'))]",
+              "publicIpAddressName": "[if(equals(basics('namePrefix'),''),'fortimanager-a-pip',concat(basics('namePrefix'),'-fmg-a-pip'))]",
               "domainNameLabel": "mydomain"
             },
             "constraints": {
@@ -743,7 +743,7 @@
               "domainNameLabel": "DNS name linked to this public IP"
             },
             "defaultValue": {
-              "publicIpAddressName": "[if(equals(basics('namePrefix'),''),'FMGBPublicIP',concat(basics('namePrefix'),'-FMG-B-PIP'))]",
+              "publicIpAddressName": "[if(equals(basics('namePrefix'),''),'fortimanager-b-pip',concat(basics('namePrefix'),'-fmg-b-pip'))]",
               "domainNameLabel": "mydomain"
             },
             "constraints": {

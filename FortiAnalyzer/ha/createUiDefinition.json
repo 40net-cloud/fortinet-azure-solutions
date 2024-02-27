@@ -653,7 +653,7 @@
                   "subnets": "Standard deployment is to have an "
                 },
                 "defaultValue": {
-                  "name": "[if(equals(basics('namePrefix'),''),'FortiAnalyzer-VNET',concat(basics('namePrefix'),'-VNET'))]",
+                  "name": "[if(equals(basics('namePrefix'),''),'fortianalyzer-vnet',concat(basics('namePrefix'),'-vnet'))]",
                   "addressPrefixSize": "/24"
                 },
                 "constraints": {
@@ -720,7 +720,7 @@
               "domainNameLabel": "DNS name linked to this public IP"
             },
             "defaultValue": {
-              "publicIpAddressName": "[if(equals(basics('namePrefix'),''),'FAZAPublicIP',concat(basics('namePrefix'),'-FAZ-A-PIP'))]",
+              "publicIpAddressName": "[if(equals(basics('namePrefix'),''),'fortianalyzer-pip',concat(basics('namePrefix'),'-faz-pip'))]",
               "domainNameLabel": "mydomain"
             },
             "constraints": {
