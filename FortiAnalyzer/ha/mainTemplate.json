@@ -383,14 +383,14 @@
   "variables": {
     "imagePublisher": "fortinet",
     "imageOffer": "fortinet-fortianalyzer",
-    "availabilitySetName": "[concat(parameters('namePrefix'),'-AvailabilitySet')]",
+    "availabilitySetName": "[concat(parameters('namePrefix'),'-availabilityset')]",
     "availabilitySetId": {
       "id": "[resourceId('Microsoft.Compute/availabilitySets', variables('availabilitySetName'))]"
     },
     "vnetName": "[if(equals(parameters('vnetName'),''),concat(parameters('namePrefix'),'-VNET'),parameters('vnetName'))]",
     "subnet1Id": "[if(equals(parameters('vnetNewOrExisting'),'new'),resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'), parameters('subnet1Name')),resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet1Name')))]",
-    "fazAVmName": "[concat(parameters('namePrefix'),'-FAZ-A')]",
-    "fazBVmName": "[concat(parameters('namePrefix'),'-FAZ-B')]",
+    "fazAVmName": "[concat(parameters('namePrefix'),'-faz-a')]",
+    "fazBVmName": "[concat(parameters('namePrefix'),'-faz-b')]",
     "customDataHeader": "Content-Type: multipart/mixed; boundary=\"12345\"\nMIME-Version: 1.0\n\n--12345\nContent-Type: text/plain; charset=\"us-ascii\"\nMIME-Version: 1.0\nContent-Transfer-Encoding: 7bit\nContent-Disposition: attachment; filename=\"config\"\n\n",
     "fazACustomDataBody": "[concat('config system global\n set admin-lockout-duration 120\n set hostname ', variables('fazAVmName'), '\n end\n config system ha\n set mode a-p\n set group-id 10\n set group-name FAZAZURE\n set password ', parameters('adminPassword'), '\n config peer\n edit 1\n set ip', variables('sn1IPfazB'),'\n set serial-number ', parameters('fortiAnalyzerBSerialNumber'), '\n next\n end\n set preferred-role primary\n config vip\n edit 1\n set vip 1.2.3.4\n set vip-interface port1\n end\n', parameters('additionalCustomData'), variables('fazACustomDataFortiFlex'))]",
     "fazBCustomDataBody": "[concat('config system global\n set admin-lockout-duration 120\n set hostname ', variables('fazBVmName'), '\n end\n config system ha\n set mode a-p\n set group-id 10\n set group-name FAZAZURE\n set password ', parameters('adminPassword'), '\n config peer\n edit 1\n set ip', variables('sn1IPfazA'),'\n set serial-number ', parameters('fortiAnalyzerASerialNumber'), '\n next\n end\n set preferred-role secondary\n config vip\n edit 1\n set vip 1.2.3.4\n set vip-interface port1\n end\n', parameters('additionalCustomData'), variables('fazBCustomDataFortiFlex'))]",
@@ -797,6 +797,11 @@
               "id": "[variables('fazANic1Id')]"
             }
           ]
+        },
+        "diagnosticsProfile": {
+          "bootDiagnostics": {
+            "enabled": "[variables('serialConsoleEnabled')]"
+          }
         }
       }
     },
@@ -877,5 +882,23 @@
         }
       }
     }
-  ]
+  ],
+  "outputs": {
+    "fortiGatePublicIP": {
+      "type": "string",
+      "value": "[if(equals(parameters('publicIP1NewOrExisting'), 'new'), reference(variables('publicIP1Id')).ipAddress, '')]"
+    },
+    "fortiGateFQDN": {
+      "type": "string",
+      "value": "[if(equals(parameters('publicIP1NewOrExisting'), 'new'), reference(variables('publicIP1Id')).dnsSettings.fqdn, '' )]"
+    },
+    "fazacustomdata": {
+      "type": "string",
+      "value": "[variables('fazACustomData')]"
+    },
+    "fazbcustomdata": {
+      "type": "string",
+      "value": "[variables('fazBCustomData')]"
+    }
+  }
 }
