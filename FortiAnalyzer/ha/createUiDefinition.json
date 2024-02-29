@@ -709,18 +709,70 @@
             }
           },
           {
-            "name": "publicip",
+            "name": "fazvippublicip",
             "type": "Microsoft.Network.PublicIpAddressCombo",
             "label": {
-              "publicIpAddress": "FortiAnalyze Public IP",
+              "publicIpAddress": "FortiAnalyzer VIP Public IP",
               "domainNameLabel": "Domain name label"
             },
             "toolTip": {
-              "publicIpAddress": "Public IP attached to FortiAnalyzer VM",
+              "publicIpAddress": "Public IP attached for FortiAnalyzer service",
               "domainNameLabel": "DNS name linked to this public IP"
             },
             "defaultValue": {
-              "publicIpAddressName": "[if(equals(basics('namePrefix'),''),'fortianalyzer-pip',concat(basics('namePrefix'),'-faz-pip'))]",
+              "publicIpAddressName": "[if(equals(basics('namePrefix'),''),'faz-vip-pip',concat(basics('namePrefix'),'-faz-vip-pip'))]",
+              "domainNameLabel": "mydomain"
+            },
+            "constraints": {
+              "required": {
+                "domainNameLabel": false
+              }
+            },
+            "options": {
+              "hideNone": false,
+              "hideDomainNameLabel": true
+            },
+            "visible": true
+          },
+          {
+            "name": "fazamgmtpublicip",
+            "type": "Microsoft.Network.PublicIpAddressCombo",
+            "label": {
+              "publicIpAddress": "FortiAnalyzer A management",
+              "domainNameLabel": "Domain name label"
+            },
+            "toolTip": {
+              "publicIpAddress": "Public IP attached to the FortiAnalyzer A for management",
+              "domainNameLabel": "DNS name linked to this public IP"
+            },
+            "defaultValue": {
+              "publicIpAddressName": "[if(equals(basics('namePrefix'),''),'faz-a-mgmt-pip',concat(basics('namePrefix'),'-faz-a-mgmt-pip'))]",
+              "domainNameLabel": "mydomain"
+            },
+            "constraints": {
+              "required": {
+                "domainNameLabel": false
+              }
+            },
+            "options": {
+              "hideNone": false,
+              "hideDomainNameLabel": true
+            },
+            "visible": true
+          },
+          {
+            "name": "fazbmgmtpublicip",
+            "type": "Microsoft.Network.PublicIpAddressCombo",
+            "label": {
+              "publicIpAddress": "FortiAnalyzer B management",
+              "domainNameLabel": "Domain name label"
+            },
+            "toolTip": {
+              "publicIpAddress": "Public IP attached to the FortiAnalyzer B for management",
+              "domainNameLabel": "DNS name linked to this public IP"
+            },
+            "defaultValue": {
+              "publicIpAddressName": "[if(equals(basics('namePrefix'),''),'faz-b-mgmt-pip',concat(basics('namePrefix'),'-faz-b-mgmt-pip'))]",
               "domainNameLabel": "mydomain"
             },
             "constraints": {
@@ -740,9 +792,74 @@
             "visible": true,
             "options": {
               "icon": "Info",
-              "text": "This deployment can use standard or basic SKU public IP's. Microsoft Azure offers a migration path from a basic to standard SKU public IP.",
+              "text": "This deployment requires standard SKU public IP's.",
               "uri": "https://docs.microsoft.com/en-us/azure/virtual-network/virtual-network-public-ip-address-upgrade?tabs=option-upgrade-cli%2Coption-migrate-powershell"
             }
+          }
+        ]
+      },
+      {
+        "name": "publicipreview",
+        "label": "Public IP Verification",
+        "subLabel": {
+          "preValidation": "Public IP SKU Review",
+          "postValidation": "Done"
+        },
+        "bladeTitle": "Public IP SKU Review",
+        "elements": [
+          {
+            "name": "BasicIPWarning1",
+            "type": "Microsoft.Common.InfoBox",
+            "options": {
+              "icon": "Error",
+              "text": "The FortiAnalyzer VIP Public IP is configured using Basic SKU. Please return to previous blade and use Standard type public IPs"
+            },
+            "visible": "[not(equals(steps('publicip').fazvippublicip.sku, 'Standard'))]"
+          },
+          {
+            "name": "StandardIPConfirmation1",
+            "type": "Microsoft.Common.InfoBox",
+            "options": {
+              "icon": "Info",
+              "text": "The FortiAnalyzer VIP Public IP is Standard SKU. Proceed."
+            },
+            "visible": "[equals(steps('publicip').loadbalancerpublicip.sku, 'Standard')]"
+          },
+          {
+            "name": "BasicIPWarning2",
+            "type": "Microsoft.Common.InfoBox",
+            "options": {
+              "icon": "Error",
+              "text": "The FortiGate A management Public IP is configured using Basic SKU. Please return to previous blade and use Standard type public IPs"
+            },
+            "visible": "[not(or(equals(steps('publicip').fazamgmtpublicip.newOrExistingOrNone,'none'),equals(steps('publicip').fazamgmtpublicip.sku, 'Standard')))]"
+          },
+          {
+            "name": "StandardIPConfirmation2",
+            "type": "Microsoft.Common.InfoBox",
+            "options": {
+              "icon": "Info",
+              "text": "The FortiGate A management Public IP is Standard SKU or none selected. Proceed."
+            },
+            "visible": "[equals(steps('publicip').fazamgmtpublicip.sku, 'Standard')]"
+          },
+          {
+            "name": "BasicIPWarning3",
+            "type": "Microsoft.Common.InfoBox",
+            "options": {
+              "icon": "Error",
+              "text": "The FortiGate B management Public IP is configured using Basic SKU. Please return to previous blade and use Standard type public IPs"
+            },
+            "visible": "[not(or(equals(steps('publicip').fazbmgmtpublicip.newOrExistingOrNone,'none'),equals(steps('publicip').fazbmgmtpublicip.sku, 'Standard')))]"
+          },
+          {
+            "name": "StandardIPConfirmation3",
+            "type": "Microsoft.Common.InfoBox",
+            "options": {
+              "icon": "Info",
+              "text": "The FortiGate B management Public IP is Standard SKU or none selected. Proceed."
+            },
+            "visible": "[equals(steps('publicip').fazbmgmtpublicip.sku, 'Standard')]"
           }
         ]
       },
@@ -818,10 +935,18 @@
       "fortiAnalyzerLicenseFortiFlexB": "[steps('instance').fazLicense.fazBfortiflex]",
       "fortiAnalyzerSerialNumberA": "[steps('instance').fazLicense.fazAserial]",
       "fortiAnalyzerSerialNumberB": "[steps('instance').fazLicense.fazBserial]",
-      "publicIP1NewOrExisting": "[steps('publicip').publicip.newOrExistingOrNone]",
-      "publicIP1Name": "[steps('publicip').publicip.name]",
-      "publicIP1ResourceGroup": "[steps('publicip').publicip.resourceGroup]",
-      "publicIP1AddressType": "[steps('publicip').publicip.publicIPAllocationMethod]",
+      "publicIP1NewOrExisting": "[steps('publicip').fazvippublicip.newOrExistingOrNone]",
+      "publicIP1Name": "[steps('publicip').fazvippublicip.name]",
+      "publicIP1ResourceGroup": "[steps('publicip').fazvippublicip.resourceGroup]",
+      "publicIP1AddressType": "[steps('publicip').fazvippublicip.publicIPAllocationMethod]",
+      "publicIP2NewOrExisting": "[steps('publicip').fazamgmtpublicip.newOrExistingOrNone]",
+      "publicIP2Name": "[steps('publicip').fazamgmtpublicip.name]",
+      "publicIP2ResourceGroup": "[steps('publicip').fazamgmtpublicip.resourceGroup]",
+      "publicIP2AddressType": "[steps('publicip').fazamgmtpublicip.publicIPAllocationMethod]",
+      "publicIP3NewOrExisting": "[steps('publicip').fazbmgmtpublicip.newOrExistingOrNone]",
+      "publicIP3Name": "[steps('publicip').fazbmgmtpublicip.name]",
+      "publicIP3ResourceGroup": "[steps('publicip').fazbmgmtpublicip.resourceGroup]",
+      "publicIP3AddressType": "[steps('publicip').fazbmgmtpublicip.publicIPAllocationMethod]",
       "vnetNewOrExisting": "[steps('networking').virtualnetworksection.virtualnetwork.newOrExisting]",
       "vnetName": "[steps('networking').virtualnetworksection.virtualnetwork.name]",
       "vnetResourceGroup": "[steps('networking').virtualnetworksection.virtualnetwork.resourceGroup]",

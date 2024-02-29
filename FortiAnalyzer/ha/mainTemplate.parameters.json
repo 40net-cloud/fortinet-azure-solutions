@@ -17,17 +17,44 @@
         "imageVersion": {
             "value": "latest"
         },
-        "instanceType": {
-            "value": "Standard_D2s_v3"
+        "additionalCustomData": {
+            "value": ""
         },
-        "publicIPNewOrExisting": {
+        "instanceType": {
+            "value": "Standard_D4as_v4"
+        },
+        "availabilityOptions": {
+            "value": "Availability Set"
+        },
+        "publicIP1NewOrExisting": {
             "value": "new"
         },
-        "publicIPName": {
-            "value": "FAZPublicIP"
-        },
-        "publicIPResourceGroup": {
+        "publicIP1Name": {
             "value": ""
+        },
+        "publicIP1ResourceGroup": {
+            "value": ""
+        },
+        "publicIP2NewOrExisting": {
+            "value": "new"
+        },
+        "publicIP2Name": {
+            "value": ""
+        },
+        "publicIP2ResourceGroup": {
+            "value": ""
+        },
+        "publicIP3NewOrExisting": {
+            "value": "new"
+        },
+        "publicIP3Name": {
+            "value": ""
+        },
+        "publicIP3ResourceGroup": {
+            "value": ""
+        },
+        "publicIPAddressSKU": {
+            "value": "Standard"
         },
         "publicIPAddressType": {
             "value": "Static"
@@ -45,22 +72,52 @@
             "value": "172.16.136.0/22"
         },
         "subnet1Name": {
-            "value": "FortiAnalyzerSubnet"
+            "value": "fortianalyzersubnet"
         },
         "subnet1Prefix": {
             "value": "172.16.137.0/24"
         },
+        "subnet1StartAddress": {
+            "value": "172.16.137.4"
+        },
+        "diskType": {
+            "value": "Default"
+        },
         "dataDiskSize": {
             "value": "1024"
+        },
+        "dataDiskCount": {
+            "value": 1
+        },
+        "fortiAnalyzerLicenseBYOLA": {
+            "value": ""
+        },
+        "fortiAnalyzerLicenseBYOLB": {
+            "value": ""
+        },
+        "fortiAnalyzerLicenseFortiFlexA": {
+            "value": ""
+        },
+        "fortiAnalyzerLicenseFortiFlexB": {
+            "value": ""
+        },
+        "fortiAnalyzerASerialNumber": {
+            "value": ""
+        },
+        "fortiAnalyzerBSerialNumber": {
+            "value": ""
+        },
+        "serialConsole": {
+            "value": "yes"
         },
         "location": {
             "value": "[resourceGroup().location]"
         },
         "fortinetTags": {
             "value": {
-                "publisher": "Fortinet",
-                "template": "FortiAnalyzer",
-                "provider": "6EB3B02F-50E5-4A3E-8CB8-2E1292583FAZ"
+              "publisher": "Fortinet",
+              "template": "FortiAnalyzer",
+              "provider": "6EB3B02F-50E5-4A3E-8CB8-2E1292583FAZ"
             }
         }
     }
