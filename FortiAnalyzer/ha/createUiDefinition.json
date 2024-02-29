@@ -671,7 +671,7 @@
                     },
                     "constraints": {
                       "minAddressPrefixSize": "/29",
-                      "minAddressCount": 1,
+                      "minAddressCount": 4,
                       "requireContiguousAddresses": true
                     }
                   }
@@ -818,10 +818,10 @@
       "fortiAnalyzerLicenseFortiFlexB": "[steps('instance').fazLicense.fazBfortiflex]",
       "fortiAnalyzerSerialNumberA": "[steps('instance').fazLicense.fazAserial]",
       "fortiAnalyzerSerialNumberB": "[steps('instance').fazLicense.fazBserial]",
-      "publicIPNewOrExisting": "[steps('publicip').publicip.newOrExistingOrNone]",
-      "publicIPName": "[steps('publicip').publicip.name]",
-      "publicIPResourceGroup": "[steps('publicip').publicip.resourceGroup]",
-      "publicIPAddressType": "[steps('publicip').publicip.publicIPAllocationMethod]",
+      "publicIP1NewOrExisting": "[steps('publicip').publicip.newOrExistingOrNone]",
+      "publicIP1Name": "[steps('publicip').publicip.name]",
+      "publicIP1ResourceGroup": "[steps('publicip').publicip.resourceGroup]",
+      "publicIP1AddressType": "[steps('publicip').publicip.publicIPAllocationMethod]",
       "vnetNewOrExisting": "[steps('networking').virtualnetworksection.virtualnetwork.newOrExisting]",
       "vnetName": "[steps('networking').virtualnetworksection.virtualnetwork.name]",
       "vnetResourceGroup": "[steps('networking').virtualnetworksection.virtualnetwork.resourceGroup]",
