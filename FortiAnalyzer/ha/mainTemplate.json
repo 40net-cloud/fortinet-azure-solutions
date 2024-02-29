@@ -660,6 +660,7 @@
           {
             "name": "ipconfig1",
             "properties": {
+              "primary": "true",
               "privateIPAddress": "[variables('sn1IPfazA')]",
               "privateIPAllocationMethod": "Static",
               "publicIPAddress": "[if(not(equals(parameters('publicIP2NewOrExisting'), 'none')), variables('publicIPAddress2Id') , json('null'))]",
@@ -703,6 +704,7 @@
           {
             "name": "ipconfig1",
             "properties": {
+              "primary": "true",
               "privateIPAddress": "[variables('sn1IPfazB')]",
               "privateIPAllocationMethod": "Static",
               "publicIPAddress": "[if(not(equals(parameters('publicIP3NewOrExisting'), 'none')), variables('publicIPAddress3Id') , json('null'))]",
