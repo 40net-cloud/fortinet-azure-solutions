@@ -666,7 +666,7 @@
                   "subnet1": {
                     "label": "FortiAnalyzer Subnet",
                     "defaultValue": {
-                      "name": "ProtectedSubnet",
+                      "name": "fortianalyzersubnet",
                       "addressPrefixSize": "/26"
                     },
                     "constraints": {
@@ -792,7 +792,7 @@
             "visible": true,
             "options": {
               "icon": "Info",
-              "text": "This deployment requires standard SKU public IP's.",
+              "text": "This deployment can be deployed without public IPs but requires outbound access using a upstream FortiGate, NAT Gateway or other path to internet. Deployment with public IPs requires the standard SKU.",
               "uri": "https://docs.microsoft.com/en-us/azure/virtual-network/virtual-network-public-ip-address-upgrade?tabs=option-upgrade-cli%2Coption-migrate-powershell"
             }
           }
@@ -823,7 +823,7 @@
               "icon": "Info",
               "text": "The FortiAnalyzer VIP Public IP is Standard SKU. Proceed."
             },
-            "visible": "[equals(steps('publicip').loadbalancerpublicip.sku, 'Standard')]"
+            "visible": "[equals(steps('publicip').fazvippublicip.sku, 'Standard')]"
           },
           {
             "name": "BasicIPWarning2",
