@@ -206,28 +206,6 @@
         "description": "Resource group to which the Public IP belongs."
       }
     },
-    "publicIPAddressSKU": {
-      "type": "string",
-      "defaultValue": "Standard",
-      "allowedValues": [
-        "Standard",
-        "Basic"
-      ],
-      "metadata": {
-        "description": "SKU of public IP address"
-      }
-    },
-    "publicIPAddressType": {
-      "type": "string",
-      "defaultValue": "Static",
-      "allowedValues": [
-        "Dynamic",
-        "Static"
-      ],
-      "metadata": {
-        "description": "Type of public IP address"
-      }
-    },
     "vnetNewOrExisting": {
       "type": "string",
       "defaultValue": "new",
@@ -310,28 +288,28 @@
         "description": "Number of data disk"
       }
     },
-    "fortiAnalyzerLicenseBYOLA": {
+    "fortiAnalyzerALicenseBYOL": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
         "description": "FortiAnalyzer BYOL license content"
       }
     },
-    "fortiAnalyzerLicenseBYOLB": {
+    "fortiAnalyzerBLicenseBYOL": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
         "description": "FortiAnalyzer BYOL license content"
       }
     },
-    "fortiAnalyzerLicenseFortiFlexA": {
+    "fortiAnalyzerALicenseFortiFlex": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
         "description": "Primary FortiManager BYOL FortiFlex license token"
       }
     },
-    "fortiAnalyzerLicenseFortiFlexB": {
+    "fortiAnalyzerBLicenseFortiFlex": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
@@ -392,16 +370,16 @@
     "fazAVmName": "[concat(parameters('namePrefix'),'-faz-a')]",
     "fazBVmName": "[concat(parameters('namePrefix'),'-faz-b')]",
     "customDataHeader": "Content-Type: multipart/mixed; boundary=\"12345\"\nMIME-Version: 1.0\n\n--12345\nContent-Type: text/plain; charset=\"us-ascii\"\nMIME-Version: 1.0\nContent-Transfer-Encoding: 7bit\nContent-Disposition: attachment; filename=\"config\"\n\n",
-    "fazACustomDataBody": "[concat('config system global\n set admin-lockout-duration 120\n set hostname ', variables('fazAVmName'), '\n end\n config system ha\n set mode a-p\n set group-id 10\n set group-name FAZAZURE\n set password ', parameters('adminPassword'), '\n config peer\n edit 1\n set ip', variables('sn1IPfazB'),'\n set serial-number ', parameters('fortiAnalyzerBSerialNumber'), '\n next\n end\n set preferred-role primary\n config vip\n edit 1\n set vip 1.2.3.4\n set vip-interface port1\n end\n', parameters('additionalCustomData'), variables('fazACustomDataFortiFlex'))]",
-    "fazBCustomDataBody": "[concat('config system global\n set admin-lockout-duration 120\n set hostname ', variables('fazBVmName'), '\n end\n config system ha\n set mode a-p\n set group-id 10\n set group-name FAZAZURE\n set password ', parameters('adminPassword'), '\n config peer\n edit 1\n set ip', variables('sn1IPfazA'),'\n set serial-number ', parameters('fortiAnalyzerASerialNumber'), '\n next\n end\n set preferred-role secondary\n config vip\n edit 1\n set vip 1.2.3.4\n set vip-interface port1\n end\n', parameters('additionalCustomData'), variables('fazBCustomDataFortiFlex'))]",
+    "fazACustomDataBody": "[concat('config system global\n set admin-lockout-duration 120\n set hostname ', variables('fazAVmName'), '\n end\n config system ha\n set mode a-p\n set group-id 10\n set group-name FAZAZURE\n set hb-interface port1\n set password ', parameters('adminPassword'), '\n config peer\n edit 1\n set ip ', variables('sn1IPfazB'),'\n set serial-number ', parameters('fortiAnalyzerBSerialNumber'), '\n next\n end\n set preferred-role primary\n config vip\n edit 1\n set vip 1.2.3.4\n set vip-interface port1\n end\n end\n', parameters('additionalCustomData'), variables('fazACustomDataFortiFlex'))]",
+    "fazBCustomDataBody": "[concat('config system global\n set admin-lockout-duration 120\n set hostname ', variables('fazBVmName'), '\n end\n config system ha\n set mode a-p\n set group-id 10\n set group-name FAZAZURE\n set hb-interface port1\n set password ', parameters('adminPassword'), '\n config peer\n edit 1\n set ip ', variables('sn1IPfazA'),'\n set serial-number ', parameters('fortiAnalyzerASerialNumber'), '\n next\n end\n set preferred-role secondary\n config vip\n edit 1\n set vip 1.2.3.4\n set vip-interface port1\n end\n end\n', parameters('additionalCustomData'), variables('fazBCustomDataFortiFlex'))]",
     "customDataLicenseHeader": "--12345\nContent-Type: text/plain; charset=\"us-ascii\"\nMIME-Version: 1.0\nContent-Transfer-Encoding: 7bit\nContent-Disposition: attachment; filename=\"fgtlicense\"\n\n",
     "customDataFooter": "\n--12345--\n",
-    "fazACustomDataFortiFlex": "[if(equals(parameters('fortiAnalyzerLicenseFortiFlexA'),''),'',concat('exec vm-license ',parameters('fortiAnalyzerLicenseFortiFlexA'), '\n'))]",
-    "fazBCustomDataFortiFlex": "[if(equals(parameters('fortiAnalyzerLicenseFortiFlexB'),''),'',concat('exec vm-license ',parameters('fortiAnalyzerLicenseFortiFlexB'), '\n'))]",
-    "fazAcustomDataCombined": "[concat(variables('customDataHeader'),variables('fazACustomDataBody'),variables('customDataLicenseHeader'), parameters('fortiAnalyzerLicenseBYOLA'), variables('customDataFooter'))]",
-    "fazBcustomDataCombined": "[concat(variables('customDataHeader'),variables('fazBCustomDataBody'),variables('customDataLicenseHeader'), parameters('fortiAnalyzerLicenseBYOLB'), variables('customDataFooter'))]",
-    "fazACustomData": "[base64(if(equals(parameters('fortiAnalyzerLicenseBYOLA'),''),variables('fazACustomDataBody'),variables('fazACustomDataCombined')))]",
-    "fazBCustomData": "[base64(if(equals(parameters('fortiAnalyzerLicenseBYOLA'),''),variables('fazBCustomDataBody'),variables('fazBCustomDataCombined')))]",
+    "fazACustomDataFortiFlex": "[if(equals(parameters('fortiAnalyzerALicenseFortiFlex'),''),'',concat('exec vm-license ',parameters('fortiAnalyzerALicenseFortiFlex'), '\n'))]",
+    "fazBCustomDataFortiFlex": "[if(equals(parameters('fortiAnalyzerBLicenseFortiFlex'),''),'',concat('exec vm-license ',parameters('fortiAnalyzerBLicenseFortiFlex'), '\n'))]",
+    "fazAcustomDataCombined": "[concat(variables('customDataHeader'),variables('fazACustomDataBody'),variables('customDataLicenseHeader'), parameters('fortiAnalyzerALicenseBYOL'), variables('customDataFooter'))]",
+    "fazBcustomDataCombined": "[concat(variables('customDataHeader'),variables('fazBCustomDataBody'),variables('customDataLicenseHeader'), parameters('fortiAnalyzerBLicenseBYOL'), variables('customDataFooter'))]",
+    "fazACustomData": "[base64(if(equals(parameters('fortiAnalyzerALicenseBYOL'),''),variables('fazACustomDataBody'),variables('fazACustomDataCombined')))]",
+    "fazBCustomData": "[base64(if(equals(parameters('fortiAnalyzerALicenseBYOL'),''),variables('fazBCustomDataBody'),variables('fazBCustomDataCombined')))]",
     "fazANic1Name": "[concat(variables('fazAVmName'),'-nic1')]",
     "fazANic1Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('fazANic1Name'))]",
     "fazBNic1Name": "[concat(variables('fazBVmName'),'-nic1')]",
