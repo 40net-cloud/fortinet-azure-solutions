@@ -16,18 +16,22 @@ In Microsoft Azure, you can deploy an active/active pair of FortiGate VMs that c
 
 This Azure ARM template will automatically deploy a full working environment containing the the following components.
 
-- 2 FortiGate firewalls in an active/active deployment
-- 1 external Azure Standard Load Balancer for communication with internet
+- 2 or more FortiGate firewalls in an active/active deployment
+- (Optional) 1 external Azure Standard Load Balancer for communication with internet
 - 1 internal Azure Standard Load Balancer to receive all internal traffic and forwarding towards Azure Gateways connecting ExpressRoute or Azure VPNs.
-- 1 VNET with 2 protected subnets
-- 1 public IP for services and FortiGate management
-- User Defined Routes (UDR) for the protected subnets
+- 1 VNET with an external, internal and a protected subnets
+- (Optional) 1 public IP for services and FortiGate management
+- User Defined Routes (UDR) for the protected subnets when deployed in a new VNET
 
 ![active/active design](images/fgt-aa.png)
 
 To enhance the availability of the solution VM can be installed in different Availability Zones instead of an Availability Set. If Availability Zones deployment is selected but the location does not support Availability Zones an Availability Set will be deployed. If Availability Zones deployment is selected and Availability Zones are available in the location, FortiGate A will be placed in Zone 1, FortiGate B will be placed in Zone 2.
 
 ![active/active design](images/fgt-aa-az.png)
+
+It is possible with the template to not deploy the public IP and the externa load balancer. This results in a setup used for east-west inspection of the traffic. For validation of the licenses and updates to the FortiGate a route towards internet needs to exist using one of the following options: public IP on each FortiGate, Azure NAT Gateway, forced tunneling via a VPN gateway or Azure ExpressRoute or a different FortiGate deployment. The external subnet needs to be referenced and created during deployment. No FortiGate will be deployed in this external subnet however.
+
+![active/active design](images/fgt-aa-internal.png)
 
 This ARM template can also be used to extend or customized based on your requirements. Additional subnets besides the one's mentioned above are not automatically generated. By adapting the ARM templates you can add additional subnets which prefereably require their own routing tables.
 
