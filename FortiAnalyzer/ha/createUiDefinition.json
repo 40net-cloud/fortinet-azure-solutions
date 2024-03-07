@@ -720,7 +720,7 @@
               "domainNameLabel": "DNS name linked to this public IP"
             },
             "defaultValue": {
-              "publicIpAddressName": "[if(equals(basics('namePrefix'),''),'faz-vip-pip',concat(basics('namePrefix'),'-faz-vip-pip'))]",
+              "publicIpAddressName": "[if(equals(basics('namePrefix'),''),'faz-vip',concat(basics('namePrefix'),'-faz-vip'))]",
               "domainNameLabel": "mydomain"
             },
             "constraints": {
