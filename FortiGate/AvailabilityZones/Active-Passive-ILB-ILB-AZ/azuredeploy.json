@@ -905,7 +905,7 @@
       }
     },
     {
-      "apiVersion": "2022-03-01",
+      "apiVersion": "2023-03-01",
       "type": "Microsoft.Compute/virtualMachines",
       "name": "[variables('fgaVmName')]",
       "location": "[parameters('location')]",
@@ -984,7 +984,7 @@
       }
     },
     {
-      "apiVersion": "2022-03-01",
+      "apiVersion": "2023-03-01",
       "type": "Microsoft.Compute/virtualMachines",
       "name": "[variables('fgbVmName')]",
       "location": "[parameters('location')]",

@@ -515,7 +515,7 @@
       }
     },
     {
-      "apiVersion": "2022-03-01",
+      "apiVersion": "2023-03-01",
       "type": "Microsoft.Compute/availabilitySets",
       "name": "[variables('compute_AvailabilitySet_FG_Name')]",
       "tags": {
@@ -1401,7 +1401,7 @@
     {
       "type": "Microsoft.Compute/virtualMachines",
       "name": "[variables('fgaVmName')]",
-      "apiVersion": "2022-03-01",
+      "apiVersion": "2023-03-01",
       "tags": {
         "provider": "[toUpper(parameters('FortinetTags').provider)]"
       },
@@ -1484,7 +1484,7 @@
     {
       "type": "Microsoft.Compute/virtualMachines",
       "name": "[variables('fgbVmName')]",
-      "apiVersion": "2022-03-01",
+      "apiVersion": "2023-03-01",
       "tags": {
         "provider": "[toUpper(parameters('FortinetTags').provider)]"
       },

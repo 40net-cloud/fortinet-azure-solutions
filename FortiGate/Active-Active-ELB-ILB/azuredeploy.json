@@ -984,7 +984,7 @@
     {
       "type": "Microsoft.Compute/virtualMachines",
       "name": "[concat(variables('fgVmName'),'-',copyIndex(1))]",
-      "apiVersion": "2022-03-01",
+      "apiVersion": "2023-03-01",
       "copy": {
         "name": "nodeCopy",
         "count": "[parameters('fortiGateCount')]"

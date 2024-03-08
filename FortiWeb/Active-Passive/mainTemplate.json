@@ -776,7 +776,7 @@
     {
       "type": "Microsoft.Compute/virtualMachines",
       "name": "[variables('fwbAVmName')]",
-      "apiVersion": "2022-03-01",
+      "apiVersion": "2023-03-01",
       "location": "[parameters('location')]",
       "tags": {
         "provider": "[toUpper(parameters('fortinetTags').provider)]"
@@ -843,7 +843,7 @@
     {
       "type": "Microsoft.Compute/virtualMachines",
       "name": "[variables('fwbBVmName')]",
-      "apiVersion": "2022-03-01",
+      "apiVersion": "2023-03-01",
       "location": "[parameters('location')]",
       "tags": {
         "provider": "[toUpper(parameters('fortinetTags').provider)]"

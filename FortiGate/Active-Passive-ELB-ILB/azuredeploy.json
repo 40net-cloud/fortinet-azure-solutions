@@ -1271,7 +1271,7 @@
     {
       "type": "Microsoft.Compute/virtualMachines",
       "name": "[variables('fgaVmName')]",
-      "apiVersion": "2022-03-01",
+      "apiVersion": "2023-03-01",
       "location": "[parameters('location')]",
       "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Network/networkInterfaces'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Network/networkInterfaces']), parameters('fortinetTags')) ]",
       "identity": {
@@ -1347,7 +1347,7 @@
     {
       "type": "Microsoft.Compute/virtualMachines",
       "name": "[variables('fgbVmName')]",
-      "apiVersion": "2022-03-01",
+      "apiVersion": "2023-03-01",
       "location": "[parameters('location')]",
       "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Network/networkInterfaces'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Network/networkInterfaces']), parameters('fortinetTags')) ]",
       "identity": {
