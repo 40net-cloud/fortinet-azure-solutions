@@ -23,6 +23,8 @@ This Azure ARM template will automatically deploy a full working environment con
 - (Optional) 1 public IP for services and FortiGate management
 - User Defined Routes (UDR) for the protected subnets when deployed in a new VNET
 
+The protected subnet is an example subnet to be used to deploy your servers into. When deploying a new VNET and subnets the template will automatically attach the example routing table. When deployment is done in an existing VNET and subnets, the routing table is created but not attached to the protected subnet.
+
 ![active/active design](images/fgt-aa.png)
 
 To enhance the availability of the solution VM can be installed in different Availability Zones instead of an Availability Set. If Availability Zones deployment is selected but the location does not support Availability Zones an Availability Set will be deployed. If Availability Zones deployment is selected and Availability Zones are available in the location, FortiGate A will be placed in Zone 1, FortiGate B will be placed in Zone 2.
