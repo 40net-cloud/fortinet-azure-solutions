@@ -98,7 +98,7 @@
         "visible": true
       },
       {
-        "name": "fortiProxyImageVersion",
+        "name": "imageVersion",
         "type": "Microsoft.Common.DropDown",
         "label": "FortiProxy Image Version",
         "defaultValue": "latest",
@@ -861,7 +861,7 @@
     "outputs": {
       "fortiProxyNamePrefix": "[basics('fortiProxyNamePrefix')]",
       "fortiProxyImageSKU": "[basics('fortiProxyImageSKU')]",
-      "fortiProxyImageVersion": "[basics('fortiProxyImageVersion')]",
+      "fortiProxyImageVersion": "[basics('imageVersion')]",
       "fortiProxyName": "[steps('instance').virtualmachinename.fpxvmname]",
       "adminUsername": "[basics('adminUsername')]",
       "adminPassword": "[basics('adminPassword')]",

@@ -111,7 +111,7 @@
         "visible": true
       },
       {
-        "name": "fortiProxyImageVersion",
+        "name": "imageVersion",
         "type": "Microsoft.Common.DropDown",
         "label": "FortiProxy Image Version",
         "defaultValue": "latest",
@@ -1103,7 +1103,7 @@
       "fortiProxyCount": "[basics('fortiProxyCount')]",
       "fortiProxyNamePrefix": "[basics('fortiProxyNamePrefix')]",
       "fortiProxyImageSKU": "[basics('fortiProxyImageSKU')]",
-      "fortiProxyImageVersion": "[basics('fortiProxyImageVersion')]",
+      "fortiProxyImageVersion": "[basics('imageVersion')]",
       "fortiProxyAdditionalCustomData": "[steps('advanced').customdata.config]",
       "instanceType": "[steps('instance').instancetype.selection]",
       "externalLoadBalancer": "[bool(steps('publicip').externalLoadBalancer.enabled)]",
