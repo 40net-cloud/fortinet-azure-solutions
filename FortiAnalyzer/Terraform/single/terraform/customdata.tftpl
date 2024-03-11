@@ -10,19 +10,13 @@ Content-Disposition: attachment; filename="config"
 config system global
     set hostname "${faz_vm_name}"
 end
-config system interface
-    edit "port1"
-        set ip ${faz_ipaddr}/${faz_mask}
-        set allowaccess ping https ssh
+%{ if faz_ssh_public_key != "" }
+config system admin user
+    edit "${faz_username}"
+        set ssh-public-key1 "${faz_ssh_public_key}"
     next
 end
-config system route
-    edit 1
-        set device "port1"
-        set gateway ${faz_gw}
-    next
-end
-
+%{ endif }
 %{ if faz_license_file != "" }
 --===============0086047718136476635==
 Content-Type: text/plain; charset="us-ascii"

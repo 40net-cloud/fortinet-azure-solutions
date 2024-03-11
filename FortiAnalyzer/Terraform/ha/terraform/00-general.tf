@@ -1,6 +1,7 @@
 ##############################################################################################################
 #
 # FortiAnalyzer VM
+# Active / Passive deployment
 # Terraform deployment template for Microsoft Azure
 #
 ##############################################################################################################
@@ -34,11 +35,27 @@ variable "FAZ_VERSION" {
   default     = "latest"
 }
 
-variable "FAZ_BYOL_LICENSE_FILE" {
+variable "FAZ_BYOL_SERIAL_NUMBER_A" {
   default = ""
 }
 
-variable "FAZ_BYOL_FORTIFLEX_LICENSE_TOKEN" {
+variable "FAZ_BYOL_SERIAL_NUMBER_B" {
+  default = ""
+}
+
+variable "FAZ_BYOL_LICENSE_FILE_A" {
+  default = ""
+}
+
+variable "FAZ_BYOL_LICENSE_FILE_B" {
+  default = ""
+}
+
+variable "FAZ_BYOL_FORTIFLEX_LICENSE_TOKEN_A" {
+  default = ""
+}
+
+variable "FAZ_BYOL_FORTIFLEX_LICENSE_TOKEN_B" {
   default = ""
 }
 
@@ -108,6 +125,17 @@ variable "faz_ipaddress_a" {
 
   default = {
     "1" = "172.16.140.4" # FAZ network
+    "2" = "172.16.140.6" # FAZ network
+  }
+}
+
+variable "faz_ipaddress_b" {
+  type        = map(string)
+  description = ""
+
+  default = {
+    "1" = "172.16.140.5" # FAZ network
+    "2" = "172.16.140.7" # FAZ network
   }
 }
 
@@ -128,7 +156,7 @@ variable "fortinet_tags" {
   type = map(string)
   default = {
     publisher : "Fortinet",
-    template : "FortiAnalyzer-Terraform",
+    template : "FortiAnalyzer-Terraform-ha",
     provider : "6EB3B02F-50E5-4A3E-8CB8-2E1292583FAZ"
   }
 }

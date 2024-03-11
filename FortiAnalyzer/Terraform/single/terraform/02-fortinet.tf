@@ -6,7 +6,7 @@
 ##############################################################################################################
 
 resource "azurerm_network_security_group" "faznsg" {
-  name                = "${var.PREFIX}-FAZ-NSG"
+  name                = "${var.PREFIX}-faz-nsg"
   location            = var.LOCATION
   resource_group_name = azurerm_resource_group.resourcegroup.name
 }
@@ -82,27 +82,28 @@ resource "azurerm_network_security_rule" "faznsgallowdevregin" {
 }
 
 resource "azurerm_public_ip" "fazpip" {
-  name                = "${var.PREFIX}-FAZ-PIP"
+  name                = "${var.PREFIX}-faz-pip"
   location            = var.LOCATION
   resource_group_name = azurerm_resource_group.resourcegroup.name
   allocation_method   = "Static"
   sku                 = "Standard"
-  domain_name_label   = format("%s-%s", lower(var.PREFIX), "lb-pip")
+  domain_name_label   = format("%s-%s", lower(var.PREFIX), "faz-pip")
 }
 
 
 resource "azurerm_network_interface" "fazifc" {
-  name                 = "${var.PREFIX}-FAZ-IFC"
+  name                 = "${var.PREFIX}-faz-nic1"
   location             = azurerm_resource_group.resourcegroup.location
   resource_group_name  = azurerm_resource_group.resourcegroup.name
   enable_ip_forwarding = true
 
   ip_configuration {
-    name                          = "interface1"
+    name                          = "ipconfig1"
     subnet_id                     = azurerm_subnet.subnet1.id
     private_ip_address_allocation = "Static"
     private_ip_address            = var.faz_ipaddress_a["1"]
     public_ip_address_id          = azurerm_public_ip.fazpip.id
+    primary                       = true
   }
 }
 
@@ -111,19 +112,18 @@ resource "azurerm_network_interface_security_group_association" "faznsg" {
   network_security_group_id = azurerm_network_security_group.faznsg.id
 }
 
-resource "azurerm_virtual_machine" "fazvm" {
-  name                         = "${var.PREFIX}-FAZ-VM"
-  location                     = azurerm_resource_group.resourcegroup.location
-  resource_group_name          = azurerm_resource_group.resourcegroup.name
-  network_interface_ids        = [azurerm_network_interface.fazifc.id]
-  primary_network_interface_id = azurerm_network_interface.fazifc.id
-  vm_size                      = var.faz_vmsize
+resource "azurerm_linux_virtual_machine" "faz" {
+  name                  = "${var.PREFIX}-faz"
+  location              = azurerm_resource_group.resourcegroup.location
+  resource_group_name   = azurerm_resource_group.resourcegroup.name
+  network_interface_ids = [azurerm_network_interface.fazifc.id]
+  size                  = var.faz_vmsize
 
   identity {
     type = "SystemAssigned"
   }
 
-  storage_image_reference {
+  source_image_reference {
     publisher = "fortinet"
     offer     = "fortinet-fortianalyzer"
     sku       = var.FAZ_IMAGE_SKU
@@ -136,44 +136,30 @@ resource "azurerm_virtual_machine" "fazvm" {
     name      = var.FAZ_IMAGE_SKU
   }
 
-  storage_os_disk {
-    name              = "${var.PREFIX}-FAZ-OSDISK"
-    caching           = "ReadWrite"
-    create_option     = "FromImage"
-    managed_disk_type = "Standard_LRS"
+  os_disk {
+    name                 = "${var.PREFIX}-faz-osdisk"
+    caching              = "ReadWrite"
+    storage_account_type = "Standard_LRS"
   }
 
-  os_profile {
-    computer_name  = "${var.PREFIX}-FAZ-A"
-    admin_username = var.USERNAME
-    admin_password = var.PASSWORD
-    custom_data    = data.template_file.faz_custom_data.rendered
+  admin_username                  = var.USERNAME
+  admin_password                  = var.PASSWORD
+  disable_password_authentication = false
+  custom_data = base64encode(templatefile("${path.module}/customdata.tftpl", {
+    faz_vm_name           = "${var.PREFIX}-faz"
+    faz_username          = var.USERNAME
+    faz_license_file      = var.FAZ_BYOL_LICENSE_FILE
+    faz_license_fortiflex = var.FAZ_BYOL_FORTIFLEX_LICENSE_TOKEN
+    faz_ssh_public_key    = var.FAZ_SSH_PUBLIC_KEY_FILE
+    faz_ipaddress_b       = var.faz_ipaddress_b["1"]
+    faz_vip               = data.azurerm_public_ip.fazpip.ip_address
+    faz_role              = "primary"
+  }))
+
+  boot_diagnostics {
   }
 
-  os_profile_linux_config {
-    disable_password_authentication = false
-  }
-
-  tags = {
-    publisher = "Fortinet",
-    template  = "FortiAnalyzer-Terraform",
-    provider  = "6EB3B02F-50E5-4A3E-8CB8-2E1292583FAZ"
-  }
-}
-
-data "template_file" "faz_custom_data" {
-  template = file("${path.module}/customdata.tpl")
-
-  vars = {
-    faz_vm_name        = "${var.PREFIX}-FAZ-A"
-    faz_license_file   = var.FAZ_BYOL_LICENSE_FILE
-    faz_username       = var.USERNAME
-    faz_ssh_public_key = var.FAZ_SSH_PUBLIC_KEY_FILE
-    faz_ipaddr         = var.faz_ipaddress_a["1"]
-    faz_mask           = var.subnetmask["1"]
-    faz_gw             = var.gateway_ipaddress["1"]
-    vnet_network       = var.vnet
-  }
+  tags = var.fortinet_tags
 }
 
 data "azurerm_public_ip" "fazpip" {

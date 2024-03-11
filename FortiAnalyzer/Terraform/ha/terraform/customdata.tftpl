@@ -1,0 +1,55 @@
+Content-Type: multipart/mixed; boundary="===============0086047718136476635=="
+MIME-Version: 1.0
+
+--===============0086047718136476635==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: attachment; filename="config"
+
+config system global
+    set admin-lockout-duration 120
+    set hostname "${faz_vm_name}"
+end
+config system ha
+    set mode a-p
+    set group-id 10
+    set group-name FAZAZURE
+    set hb-interface port1
+    set password "${faz_password}"
+    config peer
+        edit 1
+            set ip "${faz_ipaddress_b}"
+            set serial-number "${faz_serial_number}"
+        next
+    end
+%{ if faz_role == "primary" } set preferred-role primary %{ endif }
+    config vip
+        edit 1
+            set vip "${faz_vip}"
+            set vip-interface port1
+        next
+    end
+end
+%{ if faz_ssh_public_key != "" }
+config system admin user
+    edit "${faz_username}"
+        set ssh-public-key1 "${faz_ssh_public_key}"
+    next
+end
+%{ endif }
+%{ if faz_license_fortiflex != "" }
+exec vm-license ${faz_license_fortiflex}
+%{ endif }
+
+%{ if faz_license_file != "" }
+--===============0086047718136476635==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: attachment; filename="${faz_license_file}"
+
+${file(faz_license_file)}
+
+%{ endif }
+--===============0086047718136476635==--
