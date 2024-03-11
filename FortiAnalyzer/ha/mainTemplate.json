@@ -438,7 +438,7 @@
       }
     },
     {
-      "apiVersion": "2022-03-01",
+      "apiVersion": "2023-03-01",
       "type": "Microsoft.Compute/availabilitySets",
       "condition": "[not(variables('useAZ'))]",
       "name": "[variables('availabilitySetName')]",
@@ -710,7 +710,7 @@
     {
       "type": "Microsoft.Compute/virtualMachines",
       "name": "[variables('fazAVmName')]",
-      "apiVersion": "2022-03-01",
+      "apiVersion": "2023-03-01",
       "tags": {
         "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
@@ -786,7 +786,7 @@
     {
       "type": "Microsoft.Compute/virtualMachines",
       "name": "[variables('fazBVmName')]",
-      "apiVersion": "2022-03-01",
+      "apiVersion": "2023-03-01",
       "tags": {
         "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
