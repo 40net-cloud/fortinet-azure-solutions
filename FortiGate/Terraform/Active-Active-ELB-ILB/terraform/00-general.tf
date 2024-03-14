@@ -24,6 +24,11 @@ variable "PASSWORD" {
 # FortiGate license type
 ##############################################################################################################
 
+variable "FGT_COUNT" {
+  description = "Number of FortiGate VMs to deploy"
+  default     = 2
+}
+
 variable "FGT_IMAGE_SKU" {
   description = "Azure Marketplace default image sku hourly (PAYG 'fortinet_fg-vm_payg_2023') or byol (Bring your own license 'fortinet_fg-vm')"
   default     = "fortinet_fg-vm_payg_2023"
@@ -34,20 +39,24 @@ variable "FGT_VERSION" {
   default     = "latest"
 }
 
-variable "FGT_BYOL_LICENSE_FILE_A" {
-  default = ""
+variable "FGT_BYOL_LICENSE_FILE" {
+  type        = map(string)
+  description = "Map with location of license files"
+
+  default = {
+    "0" = ""      # FortiGate 1
+    "1" = ""      # FortiGate 2
+  }
 }
 
-variable "FGT_BYOL_LICENSE_FILE_B" {
-  default = ""
-}
+variable "FGT_BYOL_FORTIFLEX_LICENSE_TOKEN" {
+  type        = map(string)
+  description = "Map with license tokens"
 
-variable "FGT_BYOL_FORTIFLEX_LICENSE_TOKEN_A" {
-  default = ""
-}
-
-variable "FGT_BYOL_FORTIFLEX_LICENSE_TOKEN_B" {
-  default = ""
+  default = {
+    "0" = ""      # FortiGate 1
+    "1" = ""      # FortiGate 2
+  }
 }
 
 variable "FGT_SSH_PUBLIC_KEY_FILE" {
@@ -107,9 +116,9 @@ variable "subnet" {
   description = ""
 
   default = {
-    "1" = "172.16.136.0/26"  # External
-    "2" = "172.16.136.64/26" # Internal
-    "3" = "172.16.137.0/24"  # Protected a
+    "0" = "172.16.136.0/26"  # External
+    "1" = "172.16.136.64/26" # Internal
+    "2" = "172.16.137.0/24"  # Protected a
   }
 }
 
@@ -118,46 +127,10 @@ variable "subnetmask" {
   description = ""
 
   default = {
-    "1" = "26" # External
-    "2" = "26" # Internal
-    "3" = "24" # Protected a
+    "0" = "26" # External
+    "1" = "26" # Internal
+    "2" = "24" # Protected a
   }
-}
-
-variable "fgt_ipaddress_a" {
-  type        = map(string)
-  description = ""
-
-  default = {
-    "1" = "172.16.136.5"  # External
-    "2" = "172.16.136.69" # Internal
-  }
-}
-
-variable "fgt_ipaddress_b" {
-  type        = map(string)
-  description = ""
-
-  default = {
-    "1" = "172.16.136.6"  # External
-    "2" = "172.16.136.70" # Internal
-  }
-}
-
-variable "gateway_ipaddress" {
-  type        = map(string)
-  description = ""
-
-  default = {
-    "1" = "172.16.136.1"  # External
-    "2" = "172.16.136.65" # Internal
-  }
-}
-
-variable "lb_internal_ipaddress" {
-  description = ""
-
-  default = "172.16.136.68"
 }
 
 variable "fgt_vmsize" {
@@ -178,7 +151,7 @@ variable "fortinet_tags" {
 ##############################################################################################################
 
 resource "azurerm_resource_group" "resourcegroup" {
-  name     = "${var.PREFIX}-RG"
+  name     = "${var.PREFIX}-rg"
   location = var.LOCATION
 }
 
