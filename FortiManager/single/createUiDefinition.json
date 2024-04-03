@@ -640,7 +640,7 @@
                 "name": "fmgvmname",
                 "type": "Microsoft.Common.TextBox",
                 "label": "Name of the FortiManager VM",
-                "defaultValue": "[if(equals(basics('namePrefix'),''),'FortiManager-VM',concat(basics('namePrefix'),'-FGT'))]",
+                "defaultValue": "[if(equals(basics('namePrefix'),''),'fortimanager-vm',concat(basics('namePrefix'),'-fmg'))]",
                 "toolTip": "Provide the name of the FortiManager VM. This is not required as a field.",
                 "constraints": {
                   "required": false,
@@ -753,7 +753,7 @@
               "domainNameLabel": "DNS name linked to this public IP"
             },
             "defaultValue": {
-              "publicIpAddressName": "[if(equals(basics('fortiManagerNamePrefix'),''),'fmg-public-ip',concat(basics('fortiManager'),'-fmg-pip'))]",
+              "publicIpAddressName": "[if(equals(basics('namePrefix'),''),'fmg-public-ip',concat(basics('namePrefix'),'-fmg-pip'))]",
               "domainNameLabel": "mydomain"
             },
             "constraints": {
