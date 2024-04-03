@@ -134,21 +134,21 @@
       ],
       "defaultValue": "None",
       "metadata": {
-        "description": "Deploy FortiGate VM in an Availability Set or Availability Zones. If Availability Zones deployment is selected but the location does not support Availability Zones an Availability Set will be deployed. If Availability Zones deployment is selected and Availability Zones are available in the location, FortiGate A will be placed in Zone 1, FortiGate B will be placed in Zone 2"
+        "description": "Deploy FortiManager VM in an Availability Set or Availability Zones. If Availability Zones deployment is selected but the location does not support Availability Zones an Availability Set will be deployed. If Availability Zones deployment is selected and Availability Zones are available in the location, FortiManager A will be placed in Zone 1, FortiManager B will be placed in Zone 2"
       }
     },
     "existingAvailabilitySetName": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
-        "description": "Name of existing Availability Set in case you want to replace or add a FortiGate to an existing cluster."
+        "description": "Name of existing Availability Set in case you want to replace or add a FortiManager to an existing cluster."
       }
     },
     "availabilityZoneNumber": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
-        "description": "Name of existing Availability Set in case you want to replace or add a FortiGate to an existing cluster."
+        "description": "Name of existing Availability Set in case you want to replace or add a FortiManager to an existing cluster."
       }
     },
     "publicIPNewOrExisting": {
@@ -320,7 +320,7 @@
   },
   "variables": {
     "imagePublisher": "fortinet",
-    "imageOffer": "fortinet_fortigate-vm_v5",
+    "imageOffer": "fortinet-fortimanager",
     "availabilitySetName": "[if(equals(parameters('existingAvailabilitySetName'),''),concat(parameters('namePrefix'),'-availabilityset'),parameters('existingAvailabilitySetName'))]",
     "availabilitySetId": {
       "id": "[resourceId('Microsoft.Compute/availabilitySets', variables('availabilitySetName'))]"
@@ -510,7 +510,7 @@
           {
             "name": "AllowRemoteAccessInbound",
             "properties": {
-              "description": "Allow 8082 in for remote access to FortiGate",
+              "description": "Allow 8082 in for remote access to FortiManager",
               "protocol": "Tcp",
               "sourcePortRange": "*",
               "destinationPortRange": "8082",
