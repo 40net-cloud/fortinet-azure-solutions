@@ -686,7 +686,7 @@
                   "subnets": "Standard deployment is to have an "
                 },
                 "defaultValue": {
-                  "name": "[if(equals(basics('namePrefix'),''),'FortiManager-vnet',concat(basics('namePrefix'),'-vnet'))]",
+                  "name": "[if(equals(basics('namePrefix'),''),'fortimanager-vnet',concat(basics('namePrefix'),'-vnet'))]",
                   "addressPrefixSize": "/24"
                 },
                 "constraints": {
