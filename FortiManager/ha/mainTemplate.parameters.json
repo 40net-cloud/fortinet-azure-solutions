@@ -21,7 +21,7 @@
             "value": ""
         },
         "instanceType": {
-            "value": "Standard_D2s_v3"
+            "value": "Standard_D4s_v3"
         },
         "availabilityOptions": {
             "value": "Availability Set"
