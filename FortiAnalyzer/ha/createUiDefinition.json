@@ -814,7 +814,7 @@
               "icon": "Error",
               "text": "The FortiAnalyzer VIP Public IP is configured using Basic SKU. Please return to previous blade and use Standard type public IPs"
             },
-            "visible": "[not(equals(steps('publicip').fazvippublicip.sku, 'Standard'))]"
+            "visible": "[not(or(equals(steps('publicip').fazvippublicip.newOrExistingOrNone,'none'),equals(steps('publicip').fazvippublicip.sku, 'Standard')))]"
           },
           {
             "name": "StandardIPConfirmation1",
