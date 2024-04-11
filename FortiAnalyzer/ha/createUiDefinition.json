@@ -60,7 +60,7 @@
       {
         "name": "namePrefix",
         "type": "Microsoft.Common.TextBox",
-        "label": "FortiAnalyser Name Prefix",
+        "label": "FortiAnalyzer Name Prefix",
         "defaultValue": "",
         "toolTip": "Naming prefix for all deployed resources",
         "constraints": {
