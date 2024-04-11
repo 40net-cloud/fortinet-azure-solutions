@@ -60,7 +60,7 @@
       {
         "name": "namePrefix",
         "type": "Microsoft.Common.TextBox",
-        "label": "FortiAnalyser Name Prefix",
+        "label": "FortiAnalyzer Name Prefix",
         "defaultValue": "",
         "toolTip": "Naming prefix for all deployed resources",
         "constraints": {
@@ -73,7 +73,7 @@
       {
         "name": "imageSku",
         "type": "Microsoft.Common.DropDown",
-        "label": "FortiManager Image SKU",
+        "label": "FortiAnalyzer Image SKU",
         "defaultValue": "Bring Your Own License",
         "toolTip": "BYOL license model (where license is purchased separately)",
         "constraints": {
@@ -81,7 +81,7 @@
           "allowedValues": [
             {
               "label": "Bring Your Own License",
-              "value": "fortinet-fortimanager"
+              "value": "fortinet-fortianalyzer"
             }
           ]
         },
