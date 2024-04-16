@@ -170,4 +170,4 @@ For other questions related to this project, contact [github@fortinet.com](mailt
 ## License
 [License](/../../blob/main/LICENSE) © Fortinet Technologies. All rights reserved.
 
-*In memory of @github/jbismans, contributor to these fine templates. From diver to [astronaut](https://star-finder.starregistration.net/?q=8A66120FE).*
+*In memory of @jbismans, contributor to these fine templates. From diver to [astronaut](https://star-finder.starregistration.net/?q=8A66120FE).*
