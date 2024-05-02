@@ -1215,7 +1215,36 @@
                 }
               }
             ]
+          },
+          {
+            "name": "identityDetails",
+            "label": "Managed Identity Details",
+            "subLabel": {
+              "preValidation": "Required",
+              "postValidation": "Done"
+            },
+            "bladeTitle": "Managed Identity Details",
+            "elements": [
+              {
+                "name": "identity",
+                "type": "Microsoft.ManagedIdentity.IdentitySelector",
+                "label": "Managed Identity Configuration",
+                "toolTip": {
+                  "systemAssignedIdentity": "Enable system assigned identity to grant the resource access to other existing resources.",
+                  "userAssignedIdentity": "Add user assigned identities to grant the resource access to other existing resources."
+                },
+                "defaultValue": {
+                  "systemAssignedIdentity": "Off"
+                },
+                "options": {
+                  "hideSystemAssignedIdentity": false,
+                  "hideUserAssignedIdentity": false
+                },
+                "visible": true
+              }
+            ]
           }
+
         ]
       },
       {
@@ -1280,7 +1309,8 @@
       "fortiManagerSerial": "[steps('advanced').fortimanager.fortimanagerserial]",
       "fortiGateAdditionalCustomData": "[steps('advanced').customdata.config]",
       "customImageReference": "[steps('advanced').customvhd.resourceid]",
-      "tagsByResource": "[steps('tags').tagsByResource]"
+      "tagsByResource": "[steps('tags').tagsByResource]",
+      "managedIdentity": "[steps('identityDetails').identity]"
     }
   }
 }
