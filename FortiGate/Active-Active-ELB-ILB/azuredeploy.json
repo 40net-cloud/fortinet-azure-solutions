@@ -1071,7 +1071,7 @@
       "value": "[variables('fgcCustomData')]"
     },
     "ilbZones": {
-      "type": "string",
+      "type": "array",
       "value": "[variables('ilbZones')]"
     }
   }
