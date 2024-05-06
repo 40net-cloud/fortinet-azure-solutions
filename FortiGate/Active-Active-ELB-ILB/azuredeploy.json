@@ -19,6 +19,7 @@
       "metadata": {
         "description": "Number of FortiGate VM instances to deploy"
       }
+      "defaultValue": "2",
     },
     "fortiGateNamePrefix": {
       "type": "string",
@@ -1068,10 +1069,6 @@
     "customDataFGTc": {
       "type": "string",
       "value": "[variables('fgcCustomData')]"
-    },
-    "pipZones": {
-      "type": "array",
-      "value": "[variables('pipZones')]"
     }
   }
 }
