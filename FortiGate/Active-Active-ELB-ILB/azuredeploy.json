@@ -1070,6 +1070,10 @@
       "type": "string",
       "value": "[variables('fgcCustomData')]"
     },
+    "pipZones": {
+      "type": "array",
+      "value": "[variables('pipZones')]"
+    },
     "ilbZones": {
       "type": "array",
       "value": "[variables('ilbZones')]"
