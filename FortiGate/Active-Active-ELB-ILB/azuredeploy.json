@@ -18,8 +18,8 @@
       "type": "int",
       "metadata": {
         "description": "Number of FortiGate VM instances to deploy"
-      }
-      "defaultValue": "2",
+      },
+      "defaultValue": "2"
     },
     "fortiGateNamePrefix": {
       "type": "string",
