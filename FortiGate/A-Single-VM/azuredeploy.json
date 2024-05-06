@@ -849,10 +849,6 @@
     "fortiGateFQDN": {
       "type": "string",
       "value": "[if(equals(parameters('publicIP1NewOrExisting'), 'new'), reference(variables('publicIP1Id')).dnsSettings.fqdn, '' )]"
-    },
-    "customDataFGT": {
-      "type": "string",
-      "value": "[variables('fgtCustomData')]"
     }
   }
 }
