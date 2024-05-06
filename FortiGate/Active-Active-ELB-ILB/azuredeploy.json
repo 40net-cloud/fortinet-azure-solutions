@@ -848,7 +848,7 @@
                 "id": "[variables('subnet2Id')]"
               }
             },
-            "zones": "[if(variables('useAZ'), variables('pipZones'), json('null'))]"
+            "zones": "[variables('pipZones')]"
           }
         ],
         "backendAddressPools": [
