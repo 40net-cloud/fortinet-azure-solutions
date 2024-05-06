@@ -104,7 +104,7 @@
         "name": "fortiGateImageVersion",
         "type": "Microsoft.Common.DropDown",
         "label": "FortiGate Image Version",
-        "defaultValue": "7.2.7",
+        "defaultValue": "7.2.8",
         "toolTip": "Select the FortiGate image version",
         "constraints": {
           "required": false,
