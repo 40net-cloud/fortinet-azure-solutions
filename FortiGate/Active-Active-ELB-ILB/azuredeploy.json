@@ -19,7 +19,7 @@
       "metadata": {
         "description": "Number of FortiGate VM instances to deploy"
       },
-      "defaultValue": "2"
+      "defaultValue": 2
     },
     "fortiGateNamePrefix": {
       "type": "string",
@@ -393,48 +393,119 @@
         "description": "FortiManager serial number to add the deployed FortiGate into the FortiManager"
       }
     },
-    "fortiGateLicenseBYOLA": {
+    "fortiGateLicenseBYOL1": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
-        "description": "First FortiGate BYOL license content"
+        "description": "FortiProxy 1 BYOL license content"
       }
     },
-    "fortiGateLicenseBYOLB": {
+    "fortiGateLicenseBYOL2": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
-        "description": "Second FortiGate BYOL license content"
+        "description": "FortiProxy 2 BYOL license content"
       }
     },
-    "fortiGateLicenseBYOLC": {
+    "fortiGateLicenseBYOL3": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
-        "description": "Third FortiGate BYOL license content"
+        "description": "FortiProxy 3 BYOL license content"
       }
     },
-    "fortiGateLicenseFortiFlexA": {
+    "fortiGateLicenseBYOL4": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
-        "description": "First FortiGate BYOL FortiFlex license token"
+        "description": "FortiProxy 4 BYOL license content"
       }
     },
-    "fortiGateLicenseFortiFlexB": {
+    "fortiGateLicenseBYOL5": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
-        "description": "Second FortiGate BYOL FortiFlex license token"
+        "description": "FortiProxy 5 BYOL license content"
       }
     },
-    "fortiGateLicenseFortiFlexC": {
+    "fortiGateLicenseBYOL6": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
-        "description": "Third FortiGate BYOL FortiFlex license token"
+        "description": "FortiProxy 6 BYOL license content"
       }
     },
+    "fortiGateLicenseBYOL7": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "FortiProxy 7 BYOL license content"
+      }
+    },
+    "fortiGateLicenseBYOL8": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "FortiProxy 8 BYOL license content"
+      }
+    },
+    "fortiGateLicenseFortiFlex1": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "FortiProxy 1 BYOL license content"
+      }
+    },
+    "fortiGateLicenseFortiFlex2": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "FortiProxy 2 BYOL license content"
+      }
+    },
+    "fortiGateLicenseFortiFlex3": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "FortiProxy 3 BYOL license content"
+      }
+    },
+    "fortiGateLicenseFortiFlex4": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "FortiProxy 4 BYOL license content"
+      }
+    },
+    "fortiGateLicenseFortiFlex5": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "FortiProxy 5 BYOL license content"
+      }
+    },
+    "fortiGateLicenseFortiFlex6": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "FortiProxy 6 BYOL license content"
+      }
+    },
+    "fortiGateLicenseFortiFlex7": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "FortiProxy 7 BYOL license content"
+      }
+    },
+    "fortiGateLicenseFortiFlex8": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "FortiProxy 8 BYOL license content"
+      }
+    },
+
     "customImageReference": {
       "type": "string",
       "defaultValue": "",
@@ -473,22 +544,13 @@
     "subnet1Id": "[if(equals(parameters('vnetNewOrExisting'),'new'),resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet1Name')),resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet1Name')))]",
     "subnet2Id": "[if(equals(parameters('vnetNewOrExisting'),'new'),resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet2Name')),resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet2Name')))]",
     "fgVmName": "[concat(parameters('fortiGateNamePrefix'),'-fgt')]",
-    "fmgCustomData": "[if(equals(parameters('fortiManager'),'yes'),concat('\nconfig system central-management\nset type fortimanager\n set fmg ',parameters('fortiManagerIP'),'\nset serial-number ', parameters('fortiManagerSerial'), '\nend\n config system interface\n edit port1\n append allowaccess fgfm\n end\n config system interface\n edit port2\n append allowaccess fgfm\n end\n'),'')]",
+    "fmgCustomData": "[if(equals(parameters('fortiManager'),'yes'),concat('\nconfig system central-management\nset type fortimanager\nset fmg ',parameters('fortiManagerIP'),'\nset serial-number ', parameters('fortiManagerSerial'), '\nend\nconfig system interface\nedit port1\nappend allowaccess fgfm\nend\nconfig system interface\nedit port2\nappend allowaccess fgfm\nend\n'),'')]",
     "customDataHeader": "Content-Type: multipart/mixed; boundary=\"12345\"\nMIME-Version: 1.0\n\n--12345\nContent-Type: text/plain; charset=\"us-ascii\"\nMIME-Version: 1.0\nContent-Transfer-Encoding: 7bit\nContent-Disposition: attachment; filename=\"config\"\n\n",
-    "customDataInterface2NIC": "[if(parameters('externalLoadBalancer'),concat('config system interface\n edit port1\n set mode dhcp\n set description external\n set allowaccess ping ssh https probe-response\n next\n edit port2\n set mode dhcp\n set description internal\n set allowaccess ping ssh https probe-response\n next\n end\n'),'')]",
-    "customDataInterface1NIC": "[if(not(parameters('externalLoadBalancer')),concat('config system interface\n edit port1\n set mode dhcp\n set description internal\n set allowaccess ping ssh https probe-response\n next\n end\n'),'')]",
-    "customDataBody": "[concat('config system sdn-connector\nedit AzureSDN\nset type azure\nnext\nend\nconfig router static\n edit 1\n set dst ', parameters('vnetAddressPrefix'), '\n set gateway ', variables('sn2GatewayIP'), '\n set device port2\n next\n edit 3\nset dst 168.63.129.16 255.255.255.255\nset device port2\n set gateway ', variables ('sn2GatewayIP'), '\n next\nedit 4\nset dst 168.63.129.16 255.255.255.255\nset device port1\n set gateway ', variables ('sn1GatewayIP'), '\n next\n end\n config system probe-response\n set mode http-probe\n end\n', if(parameters('externalLoadBalancer'), variables('customDataInterface2NIC'), variables('customDataInterface1NIC')), variables('fmgCustomData'), parameters('fortiGateAdditionalCustomData'), '\n')]",
+    "customDataInterface2NIC": "[if(parameters('externalLoadBalancer'),concat('config system interface\nedit port1\nset mode dhcp\nset description external\nset allowaccess ping ssh https probe-response\nnext\nedit port2\nset mode dhcp\nset description internal\nset allowaccess ping ssh https probe-response\nnext\nend\n'),'')]",
+    "customDataInterface1NIC": "[if(not(parameters('externalLoadBalancer')),concat('config system interface\nedit port1\nset mode dhcp\nset description internal\nset allowaccess ping ssh https probe-response\nnext\nend\n'),'')]",
+    "customDataBodyShared": "[concat('config system sdn-connector\nedit AzureSDN\nset type azure\nnext\nend\nconfig router static\nedit 1\nset dst ', parameters('vnetAddressPrefix'), '\nset gateway ', variables('sn2GatewayIP'), '\nset device port2\nnext\nedit 2\nset dst 168.63.129.16 255.255.255.255\nset device port2\nset gateway ', variables ('sn2GatewayIP'), '\nnext\nedit 4\nset dst 168.63.129.16 255.255.255.255\nset device port1\nset gateway ', variables ('sn1GatewayIP'), '\nnext\nend\nconfig system probe-response\nset mode http-probe\nend\n', if(parameters('externalLoadBalancer'), variables('customDataInterface2NIC'), variables('customDataInterface1NIC')), variables('fmgCustomData'), parameters('fortiGateAdditionalCustomData'), '\n')]",
     "customDataLicenseHeader": "--12345\nContent-Type: text/plain; charset=\"us-ascii\"\nMIME-Version: 1.0\nContent-Transfer-Encoding: 7bit\nContent-Disposition: attachment; filename=\"license\"\n\n",
     "customDataFooter": "\n--12345--\n",
-    "fgaCustomDataFortiFlex": "[if(equals(parameters('fortiGateLicenseFortiFlexA'),''),'',concat('LICENSE-TOKEN:',parameters('fortiGateLicenseFortiFlexA'), '\n'))]",
-    "fgbCustomDataFortiFlex": "[if(equals(parameters('fortiGateLicenseFortiFlexB'),''),'',concat('LICENSE-TOKEN:',parameters('fortiGateLicenseFortiFlexB'), '\n'))]",
-    "fgcCustomDataFortiFlex": "[if(equals(parameters('fortiGateLicenseFortiFlexC'),''),'',concat('LICENSE-TOKEN:',parameters('fortiGateLicenseFortiFlexC'), '\n'))]",
-    "fgaCustomDataCombined": "[concat(variables('customDataHeader'),variables('customDataBody'),variables('customDataLicenseHeader'), variables('fgaCustomDataFortiFlex'), parameters('fortiGateLicenseBYOLA'), variables('customDataFooter'))]",
-    "fgbCustomDataCombined": "[concat(variables('customDataHeader'),variables('customDataBody'),variables('customDataLicenseHeader'), variables('fgbCustomDataFortiFlex'), parameters('fortiGateLicenseBYOLB'), variables('customDataFooter'))]",
-    "fgcCustomDataCombined": "[concat(variables('customDataHeader'),variables('customDataBody'),variables('customDataLicenseHeader'), variables('fgcCustomDataFortiFlex'), parameters('fortiGateLicenseBYOLC'), variables('customDataFooter'))]",
-    "fgaCustomData": "[base64(if(and(equals(parameters('fortiGateLicenseBYOLA'),''),equals(parameters('fortiGateLicenseFortiFlexA'),'')),variables('customDataBody'),variables('fgaCustomDataCombined')))]",
-    "fgbCustomData": "[base64(if(and(equals(parameters('fortiGateLicenseBYOLB'),''),equals(parameters('fortiGateLicenseFortiFlexB'),'')),variables('customDataBody'),variables('fgbCustomDataCombined')))]",
-    "fgcCustomData": "[base64(if(and(equals(parameters('fortiGateLicenseBYOLC'),''),equals(parameters('fortiGateLicenseFortiFlexC'),'')),variables('customDataBody'),variables('fgcCustomDataCombined')))]",
     "routeTable3Name": "[concat(parameters('fortiGateNamePrefix'),'-routetable-',parameters('subnet3Name'))]",
     "routeTable3Id": "[resourceId('Microsoft.Network/routeTables',variables('routeTable3Name'))]",
     "serialConsoleEnabled": "[if(equals(parameters('serialConsole'),'yes'),'true','false')]",
@@ -514,6 +576,30 @@
     "sn2GatewayIP": "[concat(variables('sn2IPArray0'),'.',variables('sn2IPArray1'),'.',variables('sn2IPArray2'),'.',variables('sn2IPArray3'))]",
     "sn2IPStartAddress": "[split(parameters('subnet2StartAddress'),'.')]",
     "sn2IPlb": "[concat(variables('sn2IPArray0'),'.',variables('sn2IPArray1'),'.',variables('sn2IPArray2'),'.',int(variables('sn2IPStartAddress')[3]))]",
+    "licenseBYOL": "[createArray(parameters('fortiGateLicenseBYOL1'), parameters('fortiGateLicenseBYOL2'), parameters('fortiGateLicenseBYOL3'), parameters('fortiGateLicenseBYOL4'), parameters('fortiGateLicenseBYOL5'), parameters('fortiGateLicenseBYOL6'), parameters('fortiGateLicenseBYOL7'), parameters('fortiGateLicenseBYOL8'))]",
+    "licenseFortiFlex": "[createArray(parameters('fortiGateLicenseFortiFlex1'), parameters('fortiGateLicenseFortiFlex2'), parameters('fortiGateLicenseFortiFlex3'), parameters('fortiGateLicenseFortiFlex4'), parameters('fortiGateLicenseFortiFlex5'), parameters('fortiGateLicenseFortiFlex6'), parameters('fortiGateLicenseFortiFlex7'), parameters('fortiGateLicenseFortiFlex8'))]",
+    "copy": [
+      {
+        "name": "customDataFortiFlex",
+        "count": "[length(range(1, 8))]",
+        "input": "[if(equals(variables('licenseFortiFlex')[copyIndex('customDataFortiFlex')],''),'',concat('LICENSE-TOKEN:',variables('licenseFortiFlex')[copyIndex('customDataFortiFlex')], '\n'))]"
+      },
+      {
+        "name": "customDataBody",
+        "count": "[length(range(1, 8))]",
+        "input": "[concat(variables('customDataBodyShared'))]"
+      },
+      {
+        "name": "customDataCombined",
+        "count": "[length(range(1, 8))]",
+        "input": "[concat(variables('customDataHeader'),variables('customDataBody')[copyIndex('customDataCombined')],variables('customDataLicenseHeader'), variables('customDataFortiFlex')[copyIndex('customDataCombined')], variables('licenseBYOL')[copyIndex('customDataCombined')], variables('customDataFooter'))]"
+      },
+      {
+        "name": "customData",
+        "count": "[length(range(1, 8))]",
+        "input": "[base64(if(and(equals(variables('licenseBYOL')[copyIndex('customData')],''),equals(variables('licenseFortiFlex')[copyIndex('customData')],'')),variables('customDataBody')[copyIndex('customData')],variables('customDataCombined')[copyIndex('customData')]))]"
+      }
+    ],
     "internalLBName": "[concat(parameters('fortiGateNamePrefix'),'-internalloadbalancer')]",
     "internalLBId": "[resourceId('Microsoft.Network/loadBalancers',variables('internalLBName'))]",
     "internalLBFEName": "[concat(parameters('fortiGateNamePrefix'),'-ilb-',parameters('subnet2Name'),'-frontend')]",
@@ -1012,7 +1098,7 @@
           "computerName": "[concat(variables('fgVmName'),'-',copyIndex(1))]",
           "adminUsername": "[parameters('adminUsername')]",
           "adminPassword": "[parameters('adminPassword')]",
-          "customData": "[if(equals(copyIndex(1),'1'),variables('fgaCustomData'),if(equals(copyIndex(1),'2'),variables('fgbCustomData'),if(equals(copyIndex(1),'3'),variables('fgcCustomData'),base64(variables('customDataBody')))))]"
+          "customData": "[variables('customData')[copyIndex()]]"
         },
         "storageProfile": {
           "imageReference": "[if(and(equals(parameters('fortiGateImageSKU'),'fortinet_fg-vm'),not(equals(parameters('customImageReference'),''))), variables('imageReferenceCustomImage'), variables('imageReferenceMarketplace'))]",
@@ -1057,18 +1143,6 @@
     "fortiGateFQDN": {
       "type": "string",
       "value": "[if(and(equals(parameters('publicIP1NewOrExisting'), 'new'),parameters('externalLoadBalancer')), reference(variables('publicIP1Id')).dnsSettings.fqdn, '' )]"
-    },
-    "customDataFGTa": {
-      "type": "string",
-      "value": "[variables('fgaCustomData')]"
-    },
-    "customDataFGTb": {
-      "type": "string",
-      "value": "[variables('fgbCustomData')]"
-    },
-    "customDataFGTc": {
-      "type": "string",
-      "value": "[variables('fgcCustomData')]"
     }
   }
 }

@@ -590,10 +590,10 @@
                 "visible": "[equals(basics('fortiGateImageSKU'), 'fortinet_fg-vm')]"
               },
               {
-                "name": "fgtAcontent",
+                "name": "fgt1content",
                 "type": "Microsoft.Common.FileUpload",
-                "label": "FortiGate A License",
-                "toolTip": "Upload the license file for the first FortiGate VM BYOL here.",
+                "label": "FortiGate 1 License",
+                "toolTip": "Upload the license file FortiGate VM 1 BYOL here.",
                 "constraints": {
                   "required": false,
                   "accept": ".lic,.txt"
@@ -604,13 +604,13 @@
                   "openMode": "text",
                   "encoding": "UTF-8"
                 },
-                "visible": "[and(equals(basics('fortiGateImageSKU'), 'fortinet_fg-vm'),not(steps('instance').fgtLicense.fgtLicenseFortiFlexCheck))]"
+                "visible": "[and(equals(basics('fortiGateImageSKU'), 'fortinet_fg-vm'),greaterOrEquals(int(basics('fortiGateCount')),1),not(steps('instance').fgtLicense.fgtLicenseFortiFlexCheck))]"
               },
               {
-                "name": "fgtBcontent",
+                "name": "fgt2content",
                 "type": "Microsoft.Common.FileUpload",
-                "label": "FortiGate B License",
-                "toolTip": "Upload the license file for the second FortiGate VM BYOL here.",
+                "label": "FortiGate 2 License",
+                "toolTip": "Upload the license file FortiGate VM 2 BYOL here.",
                 "constraints": {
                   "required": false,
                   "accept": ".lic,.txt"
@@ -621,13 +621,13 @@
                   "openMode": "text",
                   "encoding": "UTF-8"
                 },
-                "visible": "[and(equals(basics('fortiGateImageSKU'), 'fortinet_fg-vm'),not(steps('instance').fgtLicense.fgtLicenseFortiFlexCheck))]"
+                "visible": "[and(equals(basics('fortiGateImageSKU'), 'fortinet_fg-vm'),greaterOrEquals(int(basics('fortiGateCount')),2),not(steps('instance').fgtLicense.fgtLicenseFortiFlexCheck))]"
               },
               {
-                "name": "fgtCcontent",
+                "name": "fgt3content",
                 "type": "Microsoft.Common.FileUpload",
-                "label": "FortiGate C License",
-                "toolTip": "Upload the license file for the third FortiGate VM BYOL here.",
+                "label": "FortiGate 3 License",
+                "toolTip": "Upload the license file FortiGate VM 3 BYOL here.",
                 "constraints": {
                   "required": false,
                   "accept": ".lic,.txt"
@@ -638,46 +638,196 @@
                   "openMode": "text",
                   "encoding": "UTF-8"
                 },
-                "visible": "[and(equals(basics('fortiGateImageSKU'), 'fortinet_fg-vm'),not(steps('instance').fgtLicense.fgtLicenseFortiFlexCheck))]"
+                "visible": "[and(equals(basics('fortiGateImageSKU'), 'fortinet_fg-vm'),greaterOrEquals(int(basics('fortiGateCount')),3),not(steps('instance').fgtLicense.fgtLicenseFortiFlexCheck))]"
               },
               {
-                "name": "fgtAfortiflex",
-                "type": "Microsoft.Common.TextBox",
-                "label": "FortiGate A FortiFlex",
+                "name": "fgt4content",
+                "type": "Microsoft.Common.FileUpload",
+                "label": "FortiGate 4 License",
+                "toolTip": "Upload the license file FortiGate VM 4 BYOL here.",
+                "constraints": {
+                  "required": false,
+                  "accept": ".lic,.txt"
+                },
+                "options": {
+                  "multiple": false,
+                  "uploadMode": "file",
+                  "openMode": "text",
+                  "encoding": "UTF-8"
+                },
+                "visible": "[and(equals(basics('fortiGateImageSKU'), 'fortinet_fg-vm'),greaterOrEquals(int(basics('fortiGateCount')),4),not(steps('instance').fgtLicense.fgtLicenseFortiFlexCheck))]"
+              },
+              {
+                "name": "fgt5content",
+                "type": "Microsoft.Common.FileUpload",
+                "label": "FortiGate 5 License",
+                "toolTip": "Upload the license file FortiGate VM 5 BYOL here.",
+                "constraints": {
+                  "required": false,
+                  "accept": ".lic,.txt"
+                },
+                "options": {
+                  "multiple": false,
+                  "uploadMode": "file",
+                  "openMode": "text",
+                  "encoding": "UTF-8"
+                },
+                "visible": "[and(equals(basics('fortiGateImageSKU'), 'fortinet_fg-vm'),greaterOrEquals(int(basics('fortiGateCount')),5),not(steps('instance').fgtLicense.fgtLicenseFortiFlexCheck))]"
+              },
+              {
+                "name": "fgt6content",
+                "type": "Microsoft.Common.FileUpload",
+                "label": "FortiGate 6 License",
+                "toolTip": "Upload the license file FortiGate VM 6 BYOL here.",
+                "constraints": {
+                  "required": false,
+                  "accept": ".lic,.txt"
+                },
+                "options": {
+                  "multiple": false,
+                  "uploadMode": "file",
+                  "openMode": "text",
+                  "encoding": "UTF-8"
+                },
+                "visible": "[and(equals(basics('fortiGateImageSKU'), 'fortinet_fg-vm'),greaterOrEquals(int(basics('fortiGateCount')),6),not(steps('instance').fgtLicense.fgtLicenseFortiFlexCheck))]"
+              },
+              {
+                "name": "fgt7content",
+                "type": "Microsoft.Common.FileUpload",
+                "label": "FortiGate 7 License",
+                "toolTip": "Upload the license file FortiGate VM 7 BYOL here.",
+                "constraints": {
+                  "required": false,
+                  "accept": ".lic,.txt"
+                },
+                "options": {
+                  "multiple": false,
+                  "uploadMode": "file",
+                  "openMode": "text",
+                  "encoding": "UTF-8"
+                },
+                "visible": "[and(equals(basics('fortiGateImageSKU'), 'fortinet_fg-vm'),greaterOrEquals(int(basics('fortiGateCount')),7),not(steps('instance').fgtLicense.fgtLicenseFortiFlexCheck))]"
+              },
+              {
+                "name": "fgt8content",
+                "type": "Microsoft.Common.FileUpload",
+                "label": "FortiGate 8 License",
+                "toolTip": "Upload the license file FortiGate VM 8 BYOL here.",
+                "constraints": {
+                  "required": false,
+                  "accept": ".lic,.txt"
+                },
+                "options": {
+                  "multiple": false,
+                  "uploadMode": "file",
+                  "openMode": "text",
+                  "encoding": "UTF-8"
+                },
+                "visible": "[and(equals(basics('fortiGateImageSKU'), 'fortinet_fg-vm'),greaterOrEquals(int(basics('fortiGateCount')),8),not(steps('instance').fgtLicense.fgtLicenseFortiFlexCheck))]"
+              },
+              {
+                "name": "fgt1fortiflex",
+                "type": "Microsoft.Common.FileUpload",
+                "label": "FortiGate 1 FortiFlex",
                 "defaultValue": "",
-                "toolTip": "FortiGate A FortiFlex license token",
+                "toolTip": "FortiGate VM 1 FortiFlex license token",
                 "constraints": {
                   "required": false,
                   "regex": "^[A-Za-z0-9-]{1,64}$",
                   "validationMessage": "Only alphanumeric characters and a dash are allowed, and the value must be 1 to 64 characters."
                 },
-                "visible": "[and(equals(basics('fortiGateImageSKU'), 'fortinet_fg-vm'),steps('instance').fgtLicense.fgtLicenseFortiFlexCheck)]"
+                "visible": "[and(equals(basics('fortiGateImageSKU'), 'fortinet_fg-vm'),greaterOrEquals(int(basics('fortiGateCount')),1),steps('instance').fgtLicense.fgtLicenseFortiFlexCheck)]"
               },
               {
-                "name": "fgtBfortiflex",
-                "type": "Microsoft.Common.TextBox",
-                "label": "FortiGate B FortiFlex",
+                "name": "fgt2fortiflex",
+                "type": "Microsoft.Common.FileUpload",
+                "label": "FortiGate 2 FortiFlex",
                 "defaultValue": "",
-                "toolTip": "FortiGate VM B FortiFlex license token",
+                "toolTip": "FortiGate VM 2 FortiFlex license token",
                 "constraints": {
                   "required": false,
                   "regex": "^[A-Za-z0-9-]{1,64}$",
                   "validationMessage": "Only alphanumeric characters and a dash are allowed, and the value must be 1 to 64 characters."
                 },
-                "visible": "[and(equals(basics('fortiGateImageSKU'), 'fortinet_fg-vm'),steps('instance').fgtLicense.fgtLicenseFortiFlexCheck)]"
+                "visible": "[and(equals(basics('fortiGateImageSKU'), 'fortinet_fg-vm'),greaterOrEquals(int(basics('fortiGateCount')),2),steps('instance').fgtLicense.fgtLicenseFortiFlexCheck)]"
               },
               {
-                "name": "fgtCfortiflex",
-                "type": "Microsoft.Common.TextBox",
-                "label": "FortiGate C FortiFlex",
+                "name": "fgt3fortiflex",
+                "type": "Microsoft.Common.FileUpload",
+                "label": "FortiGate 3 FortiFlex",
                 "defaultValue": "",
-                "toolTip": "FortiGate VM C FortiFlex license token",
+                "toolTip": "FortiGate VM 3 FortiFlex license token",
                 "constraints": {
                   "required": false,
                   "regex": "^[A-Za-z0-9-]{1,64}$",
                   "validationMessage": "Only alphanumeric characters and a dash are allowed, and the value must be 1 to 64 characters."
                 },
-                "visible": "[and(equals(basics('fortiGateImageSKU'), 'fortinet_fg-vm'),steps('instance').fgtLicense.fgtLicenseFortiFlexCheck)]"
+                "visible": "[and(equals(basics('fortiGateImageSKU'), 'fortinet_fg-vm'),greaterOrEquals(int(basics('fortiGateCount')),3),steps('instance').fgtLicense.fgtLicenseFortiFlexCheck)]"
+              },
+              {
+                "name": "fgt4fortiflex",
+                "type": "Microsoft.Common.FileUpload",
+                "label": "FortiGate 4 FortiFlex",
+                "defaultValue": "",
+                "toolTip": "FortiGate VM 4 FortiFlex license token",
+                "constraints": {
+                  "required": false,
+                  "regex": "^[A-Za-z0-9-]{1,64}$",
+                  "validationMessage": "Only alphanumeric characters and a dash are allowed, and the value must be 1 to 64 characters."
+                },
+                "visible": "[and(equals(basics('fortiGateImageSKU'), 'fortinet_fg-vm'),greaterOrEquals(int(basics('fortiGateCount')),4),steps('instance').fgtLicense.fgtLicenseFortiFlexCheck)]"
+              },
+              {
+                "name": "fgt5fortiflex",
+                "type": "Microsoft.Common.FileUpload",
+                "label": "FortiGate 5 FortiFlex",
+                "defaultValue": "",
+                "toolTip": "FortiGate VM 5 FortiFlex license token",
+                "constraints": {
+                  "required": false,
+                  "regex": "^[A-Za-z0-9-]{1,64}$",
+                  "validationMessage": "Only alphanumeric characters and a dash are allowed, and the value must be 1 to 64 characters."
+                },
+                "visible": "[and(equals(basics('fortiGateImageSKU'), 'fortinet_fg-vm'),greaterOrEquals(int(basics('fortiGateCount')),5),steps('instance').fgtLicense.fgtLicenseFortiFlexCheck)]"
+              },
+              {
+                "name": "fgt6fortiflex",
+                "type": "Microsoft.Common.FileUpload",
+                "label": "FortiGate 6 FortiFlex",
+                "defaultValue": "",
+                "toolTip": "FortiGate VM 6 FortiFlex license token",
+                "constraints": {
+                  "required": false,
+                  "regex": "^[A-Za-z0-9-]{1,64}$",
+                  "validationMessage": "Only alphanumeric characters and a dash are allowed, and the value must be 1 to 64 characters."
+                },
+                "visible": "[and(equals(basics('fortiGateImageSKU'), 'fortinet_fg-vm'),greaterOrEquals(int(basics('fortiGateCount')),6),steps('instance').fgtLicense.fgtLicenseFortiFlexCheck)]"
+              },
+              {
+                "name": "fgt7fortiflex",
+                "type": "Microsoft.Common.FileUpload",
+                "label": "FortiGate 7 FortiFlex",
+                "defaultValue": "",
+                "toolTip": "FortiGate VM 7 FortiFlex license token",
+                "constraints": {
+                  "required": false,
+                  "regex": "^[A-Za-z0-9-]{1,64}$",
+                  "validationMessage": "Only alphanumeric characters and a dash are allowed, and the value must be 1 to 64 characters."
+                },
+                "visible": "[and(equals(basics('fortiGateImageSKU'), 'fortinet_fg-vm'),greaterOrEquals(int(basics('fortiGateCount')),7),steps('instance').fgtLicense.fgtLicenseFortiFlexCheck)]"
+              },
+              {
+                "name": "fgt8fortiflex",
+                "type": "Microsoft.Common.FileUpload",
+                "label": "FortiGate 8 FortiFlex",
+                "defaultValue": "",
+                "toolTip": "FortiGate VM 8 FortiFlex license token",
+                "constraints": {
+                  "required": false,
+                  "regex": "^[A-Za-z0-9-]{1,64}$",
+                  "validationMessage": "Only alphanumeric characters and a dash are allowed, and the value must be 1 to 64 characters."
+                },
+                "visible": "[and(equals(basics('fortiGateImageSKU'), 'fortinet_fg-vm'),greaterOrEquals(int(basics('fortiGateCount')),8),steps('instance').fgtLicense.fgtLicenseFortiFlexCheck)]"
               },
               {
                 "name": "fgtLicensePAYGInfo",
@@ -1250,12 +1400,22 @@
       "location": "[location()]",
       "instanceType": "[steps('instance').instancetype.selection]",
       "availabilityOptions": "[steps('instance').availabilityOptions.availabilityOptions]",
-      "fortiGateLicenseBYOLA": "[steps('instance').fgtLicense.fgtAcontent]",
-      "fortiGateLicenseBYOLB": "[steps('instance').fgtLicense.fgtBcontent]",
-      "fortiGateLicenseBYOLC": "[steps('instance').fgtLicense.fgtCcontent]",
-      "fortiGateLicenseFortiFlexA": "[steps('instance').fgtLicense.fgtAfortiflex]",
-      "fortiGateLicenseFortiFlexB": "[steps('instance').fgtLicense.fgtBfortiflex]",
-      "fortiGateLicenseFortiFlexC": "[steps('instance').fgtLicense.fgtCfortiflex]",
+      "fortiGateLicenseBYOL1": "[steps('instance').fgtLicense.fgt1content]",
+      "fortiGateLicenseBYOL2": "[steps('instance').fgtLicense.fgt2content]",
+      "fortiGateLicenseBYOL3": "[steps('instance').fgtLicense.fgt3content]",
+      "fortiGateLicenseBYOL4": "[steps('instance').fgtLicense.fgt4content]",
+      "fortiGateLicenseBYOL5": "[steps('instance').fgtLicense.fgt5content]",
+      "fortiGateLicenseBYOL6": "[steps('instance').fgtLicense.fgt6content]",
+      "fortiGateLicenseBYOL7": "[steps('instance').fgtLicense.fgt7content]",
+      "fortiGateLicenseBYOL8": "[steps('instance').fgtLicense.fgt8content]",
+      "fortiGateLicenseFortiFlex1": "[steps('instance').fgtLicense.fgt1fortiflex]",
+      "fortiGateLicenseFortiFlex2": "[steps('instance').fgtLicense.fgt2fortiflex]",
+      "fortiGateLicenseFortiFlex3": "[steps('instance').fgtLicense.fgt3fortiflex]",
+      "fortiGateLicenseFortiFlex4": "[steps('instance').fgtLicense.fgt4fortiflex]",
+      "fortiGateLicenseFortiFlex5": "[steps('instance').fgtLicense.fgt5fortiflex]",
+      "fortiGateLicenseFortiFlex6": "[steps('instance').fgtLicense.fgt6fortiflex]",
+      "fortiGateLicenseFortiFlex7": "[steps('instance').fgtLicense.fgt7fortiflex]",
+      "fortiGateLicenseFortiFlex8": "[steps('instance').fgtLicense.fgt8fortiflex]",
       "acceleratedNetworking": "[steps('networking').acceleratednetworksection.acceleratednetworking]",
       "acceleratedConnections": "[steps('networking').acceleratednetworksection.acceleratedconnectionscheck]",
       "acceleratedConnectionsSku": "[steps('networking').acceleratednetworksection.acceleratedconnectionssku]",

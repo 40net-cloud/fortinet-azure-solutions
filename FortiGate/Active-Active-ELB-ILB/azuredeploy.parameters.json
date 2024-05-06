@@ -95,22 +95,52 @@
     "fortiManagerSerial": {
       "value": ""
     },
-    "fortiGateLicenseBYOLA": {
+    "fortiGateLicenseBYOL1": {
       "value": ""
     },
-    "fortiGateLicenseBYOLB": {
+    "fortiGateLicenseBYOL2": {
       "value": ""
     },
-    "fortiGateLicenseBYOLC": {
+    "fortiGateLicenseBYOL3": {
       "value": ""
     },
-    "fortiGateLicenseFortiFlexA": {
+    "fortiGateLicenseBYOL4": {
       "value": ""
     },
-    "fortiGateLicenseFortiFlexB": {
+    "fortiGateLicenseBYOL5": {
       "value": ""
     },
-    "fortiGateLicenseFortiFlexC": {
+    "fortiGateLicenseBYOL6": {
+      "value": ""
+    },
+    "fortiGateLicenseBYOL7": {
+      "value": ""
+    },
+    "fortiGateLicenseBYOL8": {
+      "value": ""
+    },
+    "fortiGateLicenseFortiFlex1": {
+      "value": ""
+    },
+    "fortiGateLicenseFortiFlex2": {
+      "value": ""
+    },
+    "fortiGateLicenseFortiFlex3": {
+      "value": ""
+    },
+    "fortiGateLicenseFortiFlex4": {
+      "value": ""
+    },
+    "fortiGateLicenseFortiFlex5": {
+      "value": ""
+    },
+    "fortiGateLicenseFortiFlex6": {
+      "value": ""
+    },
+    "fortiGateLicenseFortiFlex7": {
+      "value": ""
+    },
+    "fortiGateLicenseFortiFlex8": {
       "value": ""
     },
     "customImageReference": {
