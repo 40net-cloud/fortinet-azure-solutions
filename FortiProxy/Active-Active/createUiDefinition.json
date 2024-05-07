@@ -812,7 +812,7 @@
                 "type": "Microsoft.Common.InfoBox",
                 "options": {
                   "icon": "Info",
-                  "text": "A Public IP address will be attached to port1 on each Fortiproxy for license validation and to retrieve proxied content."
+                  "text": "A Public IP address will be attached to port1 on each FortiPoxy for license validation and to retrieve proxied content."
                 },
                 "visible": "[equals(steps('publicip').internalLoadBalancer.outboundConnectivityOptions,'per-node-standard-sku-pip')]"
               },
