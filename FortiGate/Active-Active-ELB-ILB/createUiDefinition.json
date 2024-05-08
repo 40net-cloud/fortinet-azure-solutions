@@ -1107,6 +1107,52 @@
                   ]
                 },
                 "visible": true
+              },
+              {
+                "name": "deploynatgatewaytext",
+                "type": "Microsoft.Common.InfoBox",
+                "options": {
+                  "icon": "Info",
+                  "text": "NAT Gateway public IP will be used for license validation and outbound connections."
+                },
+                "visible": "[equals(steps('publicip').outboundConnectivity.options,'deploy-nat-gateway')]"
+              },
+              {
+                "name": "pernodestandardskupiptext",
+                "type": "Microsoft.Common.InfoBox",
+                "options": {
+                  "icon": "Info",
+                  "text": "A Public IP address will be attached to port1 on each FortiGate for license validation and outbound connections."
+                },
+                "visible": "[equals(steps('publicip').outboundConnectivity.options,'per-node-standard-sku-pip')]"
+              },
+              {
+                "name": "externalloadbalancertext",
+                "type": "Microsoft.Common.InfoBox",
+                "options": {
+                  "icon": "Info",
+                  "text": "The FortiGate will use the external load balancer (deployed with this template) for outbound connectivity. Beware to configure the outbound rules to prevent port exhaustion.",
+                  "uri": "https://learn.microsoft.com/en-us/azure/load-balancer/load-balancer-outbound-connections"
+                },
+                "visible": "[and(equals(steps('publicip').outboundConnectivity.options,'external-nat-device-elb'),bool(steps('publicip').externalLoadBalancer.enabled))]"
+              },
+              {
+                "name": "externalnatdevicetext",
+                "type": "Microsoft.Common.InfoBox",
+                "options": {
+                  "icon": "Info",
+                  "text": "The FortiGate will use the existing infrastructure and NAT capabilities of the VNET for outbound access, e.g. FortiGate"
+                },
+                "visible": "[and(equals(steps('publicip').outboundConnectivity.options,'external-nat-device-elb'),not(bool(steps('publicip').externalLoadBalancer.enabled))]"
+              },
+              {
+                "name": "externalnatdevicetextnoelb",
+                "type": "Microsoft.Common.InfoBox",
+                "options": {
+                  "icon": "Info",
+                  "text": "This deployment will be a one-armed setup with only an internal NIC connected to an internal load balancer."
+                },
+                "visible": "[and(equals(steps('publicip').outboundConnectivity.options,'external-nat-device'),not(bool(steps('publicip').externalLoadBalancer.enabled)))]"
               }
             ]
           }
