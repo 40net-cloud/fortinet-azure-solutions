@@ -1034,6 +1034,60 @@
         ]
       },
       {
+        "name": "publicip",
+        "label": "Public IP",
+        "subLabel": {
+          "preValidation": "Configure public networking",
+          "postValidation": "Done"
+        },
+        "elements": [
+          {
+            "name": "externalLoadBalancer",
+            "type": "Microsoft.Common.Section",
+            "label": "External Load Balancer",
+            "elements": [
+              {
+                "name": "enabled",
+                "type": "Microsoft.Common.OptionsGroup",
+                "label": "Deploy ELB with external subnet",
+                "defaultValue": "yes",
+                "toolTip": "Deploys an external load balancer and external interface for each FortiGate VM",
+                "constraints": {
+                  "allowedValues": [
+                    {
+                      "label": "yes",
+                      "value": "true"
+                    },
+                    {
+                      "label": "no",
+                      "value": "false"
+                    }
+                  ],
+                  "required": true
+                },
+                "visible": true
+              }
+            ]
+          },
+          {
+            "name": "outboundConnectivity",
+            "type": "Microsoft.Common.Section",
+            "label": "Outbound Connectivity",
+            "visible": true,
+            "elements": [
+              {
+                "name": "outboundconnectivitytext",
+                "type": "Microsoft.Common.TextBlock",
+                "options": {
+                  "text": "Outbound connectivity needs to be configured in Microsoft Azure when using a Standard SKU Load Balancer. Different methods are available to provide the FortiGate outbound connectivity."
+                },
+                "visible": true
+              }
+            ]
+          }
+        ]
+      },
+      {
         "name": "advanced",
         "label": "Advanced",
         "subLabel": {
@@ -1254,7 +1308,6 @@
               }
             ]
           },
-
           {
             "name": "customvhd",
             "type": "Microsoft.Common.Section",
@@ -1367,6 +1420,8 @@
       "acceleratedNetworking": "[steps('networking').acceleratednetworksection.acceleratednetworking]",
       "acceleratedConnections": "[steps('networking').acceleratednetworksection.acceleratedconnectionscheck]",
       "acceleratedConnectionsSku": "[steps('networking').acceleratednetworksection.acceleratedconnectionssku]",
+      "externalLoadBalancer": "[bool(steps('publicip').externalLoadBalancer.enabled)]",
+      "outboundConnectivity": "[steps('publicip').outboundConnectivity.options]",
       "vnetNewOrExisting": "[steps('networking').virtualnetworksection.virtualnetwork.newOrExisting]",
       "vnetName": "[steps('networking').virtualnetworksection.virtualnetwork.name]",
       "vnetResourceGroup": "[steps('networking').virtualnetworksection.virtualnetwork.resourceGroup]",
