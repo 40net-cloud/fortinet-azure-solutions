@@ -1186,6 +1186,76 @@
             ]
           },
           {
+            "name": "highavailability",
+            "type": "Microsoft.Common.Section",
+            "label": "Synchronisation",
+            "elements": [
+              {
+                "name": "configsync",
+                "type": "Microsoft.Common.OptionsGroup",
+                "label": "Enable Configuration Synchronisation",
+                "defaultValue": "no",
+                "toolTip": "Synchronizes the configuration between FortiGate peers.",
+                "constraints": {
+                  "allowedValues": [
+                    {
+                      "label": "yes",
+                      "value": "yes"
+                    },
+                    {
+                      "label": "no",
+                      "value": "no"
+                    }
+                  ],
+                  "required": true
+                },
+                "visible": true
+              },
+              {
+                "name": "hainfo",
+                "type": "Microsoft.Common.InfoBox",
+                "visible": true,
+                "options": {
+                  "icon": "Info",
+                  "text": "This option enabled unicast standalone configuration synchronization is supported on layer 3.",
+                  "uri": "https://docs.fortinet.com/document/fortigate/7.4.3/administration-guide/346301"
+                }
+              },
+              {
+                "name": "fgspsync",
+                "type": "Microsoft.Common.OptionsGroup",
+                "label": "Enable Session Synchronisation",
+                "defaultValue": "no",
+                "toolTip": "Synchronizes the sessions between FortiGate peers.",
+                "constraints": {
+                  "allowedValues": [
+                    {
+                      "label": "yes",
+                      "value": "yes"
+                    },
+                    {
+                      "label": "no",
+                      "value": "no"
+                    }
+                  ],
+                  "required": true
+                },
+                "visible": true
+              },
+              {
+                "name": "fgspinfo",
+                "type": "Microsoft.Common.InfoBox",
+                "visible": true,
+                "options": {
+                  "icon": "Info",
+                  "text": "This option enabled FGSP session synchronisation to allow assymetric return traffic instead of using SNAT. This option can't be combined with security checks like IPS, AV scanning, ... unless additional options are configured.",
+                  "uri": "https://github.com/40net-cloud/fortinet-azure-solutions/tree/main/FortiGate/Active-Active-ELB-ILB#north-south-traffic"
+                }
+              }
+            ]
+          },
+
+          {
             "name": "customvhd",
             "type": "Microsoft.Common.Section",
             "label": "Custom VHD",
@@ -1247,6 +1317,25 @@
             ]
           }
         ]
+      },
+      {
+        "name": "postdeployment",
+        "label": "Post Deployment Info",
+        "subLabel": {
+          "preValidation": "Post Deployment steps to follow",
+          "postValidation": "Done"
+        },
+        "bladeTitle": "Post Deployment Info",
+        "elements": [
+          {
+            "name": "StandardIPConfirmation2",
+            "type": "Microsoft.Common.InfoBox",
+            "options": {
+              "icon": "Info",
+              "text": "Steps to follow after deployment"
+            }
+          }
+        ]
       }
     ],
     "outputs": {
@@ -1293,6 +1382,8 @@
       "fortiManagerIP": "[steps('advanced').fortimanager.fortimanagerip]",
       "fortiManagerSerial": "[steps('advanced').fortimanager.fortimanagerserial]",
       "fortiGateAdditionalCustomData": "[steps('advanced').customdata.config]",
+      "fortiGateConfigSync": "[steps('advanced').highavailability.configsync]",
+      "fortiGateSessionSync": "[steps('advanced').highavailability.fgspsync]",
       "customImageReference": "[steps('advanced').customvhd.resourceid]",
       "tagsByResource": "[steps('tags').tagsByResource]"
     }
