@@ -919,18 +919,6 @@
                       "minAddressCount": 3,
                       "requireContiguousAddresses": true
                     }
-                  },
-                  "subnet3": {
-                    "label": "Protected Subnet",
-                    "defaultValue": {
-                      "name": "protectedsubnet",
-                      "addressPrefixSize": "/24"
-                    },
-                    "constraints": {
-                      "minAddressPrefixSize": "/29",
-                      "minAddressCount": 8,
-                      "requireContiguousAddresses": true
-                    }
                   }
                 },
                 "visible": true
@@ -1082,95 +1070,92 @@
             ]
           },
           {
-            "name": "standardsku",
-            "type": "Microsoft.Common.InfoBox",
-            "visible": "[not(equals(steps('publicip').externalLoadBalancer.enabled, 'true'))]",
-            "options": {
-              "icon": "Info",
-              "text": "No external load balancer will be installed. It is required to have an environment where the FortiGate can access the internet. Either via another external facing FortiGate, NAT Gateway, proxy server or other routing functionality."
-            }
-          },
-          {
-            "name": "publiciptext",
-            "type": "Microsoft.Common.TextBlock",
-            "visible": "[equals(steps('publicip').externalLoadBalancer.enabled, 'true')]",
-            "options": {
-              "text": "The Load Balancer public IP will be used for public services hosted on the FortiGate such as IPSEC termination or services behind the FortiGate such as a webserver. The FortiGate Management public IPs are used for management of the virtual machines. They are also used for the Fabric connector to retrieve information from the Azure platform."
-            }
-          },
-          {
-            "name": "loadbalancerpublicip",
-            "type": "Microsoft.Network.PublicIpAddressCombo",
-            "label": {
-              "publicIpAddress": "Public IP address",
-              "domainNameLabel": "Domain name label"
-            },
-            "toolTip": {
-              "publicIpAddress": "Public IP attached to the public load balancer",
-              "domainNameLabel": "DNS name linked to this public IP"
-            },
-            "defaultValue": {
-              "publicIpAddressName": "[if(equals(basics('fortiGateNamePrefix'),''),'fgtpublicip',concat(basics('fortiGateNamePrefix'),'-fgt-pip'))]",
-              "domainNameLabel": "mydomain"
-            },
-            "constraints": {
-              "required": {
-                "domainNameLabel": false
+            "name": "outboundConnectivity",
+            "type": "Microsoft.Common.Section",
+            "label": "Outbound Connectivity",
+            "visible": true,
+            "elements": [
+              {
+                "name": "outboundconnectivitytext",
+                "type": "Microsoft.Common.TextBlock",
+                "options": {
+                  "text": "Outbound connectivity needs to be configured in Microsoft Azure when using a Standard SKU Load Balancer. Different methods are available to provide the FortiGate outbound connectivity."
+                },
+                "visible": true
+              },
+              {
+                "name": "outboundConnectivityOptions",
+                "type": "Microsoft.Common.DropDown",
+                "label": "Internet Access Options",
+                "defaultValue": "External Load Balancer or External NAT device (e.g. different FortiGate, ...)",
+                "toolTip": "Deploy NAT Gateway or attach Public IP address for each FortiGate.",
+                "constraints": {
+                  "required": false,
+                  "allowedValues": [
+                    {
+                      "label": "Per node standard SKU Public IP address",
+                      "value": "per-node-standard-sku-pip"
+                    },
+                    {
+                      "label": "Deploy NAT Gateway",
+                      "value": "deploy-nat-gateway"
+                    },
+                    {
+                      "label": "External Load Balancer or External NAT device (e.g. different FortiGate, ...)",
+                      "value": "external-nat-device-elb"
+                    }
+                  ]
+                },
+                "visible": true
+              },
+              {
+                "name": "deploynatgatewaytext",
+                "type": "Microsoft.Common.InfoBox",
+                "options": {
+                  "icon": "Info",
+                  "text": "NAT Gateway public IP will be used for license validation and outbound connections."
+                },
+                "visible": "[equals(steps('publicip').outboundConnectivity.outboundConnectivityOptions,'deploy-nat-gateway')]"
+              },
+              {
+                "name": "pernodestandardskupiptext",
+                "type": "Microsoft.Common.InfoBox",
+                "options": {
+                  "icon": "Info",
+                  "text": "A Public IP address will be attached to port1 on each FortiGate for license validation and outbound connections."
+                },
+                "visible": "[equals(steps('publicip').outboundConnectivity.outboundConnectivityOptions,'per-node-standard-sku-pip')]"
+              },
+              {
+                "name": "externalloadbalancertext",
+                "type": "Microsoft.Common.InfoBox",
+                "options": {
+                  "icon": "Info",
+                  "text": "The FortiGate will use the external load balancer (deployed with this template) for outbound connectivity. Beware to configure the outbound rules to prevent port exhaustion.",
+                  "uri": "https://learn.microsoft.com/en-us/azure/load-balancer/load-balancer-outbound-connections"
+                },
+                "visible": "[and(equals(steps('publicip').outboundConnectivity.outboundConnectivityOptions,'external-nat-device-elb'),bool(steps('publicip').externalLoadBalancer.enabled))]"
+              },
+              {
+                "name": "externalnatdevicetext",
+                "type": "Microsoft.Common.InfoBox",
+                "options": {
+                  "icon": "Info",
+                  "text": "The FortiGate will use the existing infrastructure and NAT capabilities of the VNET for outbound access, e.g. FortiGate"
+                },
+                "visible": "[and(equals(steps('publicip').outboundConnectivity.outboundConnectivityOptions,'external-nat-device-elb'),not(bool(steps('publicip').externalLoadBalancer.enabled))]"
+              },
+              {
+                "name": "externalnatdevicetextnoelb",
+                "type": "Microsoft.Common.InfoBox",
+                "options": {
+                  "icon": "Info",
+                  "text": "This deployment will be a one-armed setup with only an internal NIC connected to an internal load balancer."
+                },
+                "visible": "[and(equals(steps('publicip').outboundConnectivity.outboundConnectivityOptions,'external-nat-device'),not(bool(steps('publicip').externalLoadBalancer.enabled)))]"
               }
-            },
-            "options": {
-              "hideNone": true,
-              "hideDomainNameLabel": true
-            },
-            "visible": "[equals(steps('publicip').externalLoadBalancer.enabled, 'true')]"
-          },
-          {
-            "name": "standardsku",
-            "type": "Microsoft.Common.InfoBox",
-            "visible": "[equals(steps('publicip').externalLoadBalancer.enabled, 'true')]",
-            "options": {
-              "icon": "Info",
-              "text": "This deployment uses a Standard SKU Azure Load Balancer and requires a Standard SKU public IP. Microsoft Azure offers a migration path from a basic to standard SKU public IP.",
-              "uri": "https://docs.microsoft.com/en-us/azure/virtual-network/virtual-network-public-ip-address-upgrade?tabs=option-upgrade-cli%2Coption-migrate-powershell"
-            }
-          }
-        ]
-      },
-      {
-        "name": "publicipreview",
-        "label": "Public IP Verification",
-        "subLabel": {
-          "preValidation": "Public IP SKU Review",
-          "postValidation": "Done"
-        },
-        "bladeTitle": "Public IP SKU Review",
-        "elements": [
-          {
-            "name": "BasicIPWarning1",
-            "type": "Microsoft.Common.InfoBox",
-            "options": {
-              "icon": "Error",
-              "text": "The External Load Balancer Public IP is configured using Basic SKU. Please return to previous blade and use Standard type public IPs to support Azure Standard Load Balancers"
-            },
-            "visible": "[and(not(equals(steps('publicip').loadbalancerpublicip.sku, 'Standard')),equals(steps('publicip').externalLoadBalancer.enabled, 'true'))]"
-          },
-          {
-            "name": "StandardIPConfirmation1",
-            "type": "Microsoft.Common.InfoBox",
-            "options": {
-              "icon": "Info",
-              "text": "The External Load Balancer Public IP is Standard SKU. Proceed."
-            },
-            "visible": "[and(equals(steps('publicip').loadbalancerpublicip.sku, 'Standard'),equals(steps('publicip').externalLoadBalancer.enabled, 'true'))]"
-          },
-          {
-            "name": "StandardIPConfirmation2",
-            "type": "Microsoft.Common.InfoBox",
-            "options": {
-              "icon": "Info",
-              "text": "No external load balancer will be installed. FortiGate requires external access using another means."
-            },
-            "visible": "[not(equals(steps('publicip').externalLoadBalancer.enabled, 'true'))]"
+
+            ]
           }
         ]
       },
@@ -1327,6 +1312,76 @@
             ]
           },
           {
+            "name": "highavailability",
+            "type": "Microsoft.Common.Section",
+            "label": "Synchronisation",
+            "elements": [
+              {
+                "name": "configsync",
+                "type": "Microsoft.Common.OptionsGroup",
+                "label": "Enable Configuration Synchronisation",
+                "defaultValue": "no",
+                "toolTip": "Synchronizes the configuration between FortiGate peers.",
+                "constraints": {
+                  "allowedValues": [
+                    {
+                      "label": "yes",
+                      "value": "yes"
+                    },
+                    {
+                      "label": "no",
+                      "value": "no"
+                    }
+                  ],
+                  "required": true
+                },
+                "visible": true
+              },
+              {
+                "name": "hainfo",
+                "type": "Microsoft.Common.InfoBox",
+                "visible": true,
+                "options": {
+                  "icon": "Info",
+                  "text": "This option enabled unicast standalone configuration synchronization is supported on layer 3.",
+                  "uri": "https://docs.fortinet.com/document/fortigate/7.4.3/administration-guide/346301"
+                }
+              },
+              {
+                "name": "fgspsync",
+                "type": "Microsoft.Common.OptionsGroup",
+                "label": "Enable Session Synchronisation",
+                "defaultValue": "no",
+                "toolTip": "Synchronizes the sessions between FortiGate peers.",
+                "constraints": {
+                  "allowedValues": [
+                    {
+                      "label": "yes",
+                      "value": "yes"
+                    },
+                    {
+                      "label": "no",
+                      "value": "no"
+                    }
+                  ],
+                  "required": true
+                },
+                "visible": true
+              },
+              {
+                "name": "fgspinfo",
+                "type": "Microsoft.Common.InfoBox",
+                "visible": true,
+                "options": {
+                  "icon": "Info",
+                  "text": "This option enabled FGSP session synchronisation to allow assymetric return traffic instead of using SNAT. This option can't be combined with security checks like IPS, AV scanning, ... unless additional options are configured.",
+                  "uri": "https://github.com/40net-cloud/fortinet-azure-solutions/tree/main/FortiGate/Active-Active-ELB-ILB#north-south-traffic"
+                }
+              }
+            ]
+          },
+
+          {
             "name": "customvhd",
             "type": "Microsoft.Common.Section",
             "label": "Custom VHD",
@@ -1388,6 +1443,25 @@
             ]
           }
         ]
+      },
+      {
+        "name": "postdeployment",
+        "label": "Post Deployment Info",
+        "subLabel": {
+          "preValidation": "Post Deployment steps to follow",
+          "postValidation": "Done"
+        },
+        "bladeTitle": "Post Deployment Info",
+        "elements": [
+          {
+            "name": "StandardIPConfirmation2",
+            "type": "Microsoft.Common.InfoBox",
+            "options": {
+              "icon": "Info",
+              "text": "Steps to follow after deployment"
+            }
+          }
+        ]
       }
     ],
     "outputs": {
@@ -1420,25 +1494,24 @@
       "acceleratedConnections": "[steps('networking').acceleratednetworksection.acceleratedconnectionscheck]",
       "acceleratedConnectionsSku": "[steps('networking').acceleratednetworksection.acceleratedconnectionssku]",
       "externalLoadBalancer": "[bool(steps('publicip').externalLoadBalancer.enabled)]",
-      "publicIP1NewOrExisting": "[steps('publicip').loadbalancerpublicip.newOrExistingOrNone]",
-      "publicIP1Name": "[steps('publicip').loadbalancerpublicip.name]",
-      "publicIP1ResourceGroup": "[steps('publicip').loadbalancerpublicip.resourceGroup]",
+      "outboundConnectivity": "[steps('publicip').internalLoadBalancer.outboundConnectivityOptions]",
       "vnetNewOrExisting": "[steps('networking').virtualnetworksection.virtualnetwork.newOrExisting]",
       "vnetName": "[steps('networking').virtualnetworksection.virtualnetwork.name]",
       "vnetResourceGroup": "[steps('networking').virtualnetworksection.virtualnetwork.resourceGroup]",
       "vnetAddressPrefix": "[steps('networking').virtualnetworksection.virtualnetwork.addressPrefix]",
       "subnet1Name": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet1.name]",
       "subnet1Prefix": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet1.addressPrefix]",
+      "subnet1StartAddress": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet1.startAddress]",
       "subnet2Name": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet2.name]",
       "subnet2Prefix": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet2.addressPrefix]",
       "subnet2StartAddress": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet2.startAddress]",
-      "subnet3Name": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet3.name]",
-      "subnet3Prefix": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet3.addressPrefix]",
       "serialConsole": "[steps('advanced').serialconsole.enabled]",
       "fortiManager": "[steps('advanced').fortimanager.enabled]",
       "fortiManagerIP": "[steps('advanced').fortimanager.fortimanagerip]",
       "fortiManagerSerial": "[steps('advanced').fortimanager.fortimanagerserial]",
       "fortiGateAdditionalCustomData": "[steps('advanced').customdata.config]",
+      "fortiGateConfigSync": "[steps('advanced').highavailability.configsync]",
+      "fortiGateSessionSync": "[steps('advanced').highavailability.fgspsync]",
       "customImageReference": "[steps('advanced').customvhd.resourceid]",
       "tagsByResource": "[steps('tags').tagsByResource]"
     }
