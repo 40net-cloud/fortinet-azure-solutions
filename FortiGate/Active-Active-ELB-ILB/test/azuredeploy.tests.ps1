@@ -33,13 +33,11 @@ BeforeAll {
     $config = "config system global `n set gui-theme mariner `n end `n config system admin `n edit devops `n set accprofile super_admin `n set ssh-public-key1 `""
     $config += Get-Content $sshkeypub
     $config += "`" `n set password $testsResourceGroupName `n next `n end"
-    $publicIP1Name = "$testsPrefix-FGT-PIP"
     $fortiGateCount = 3
     $params = @{ 'adminUsername'=$testsAdminUsername
                  'adminPassword'=$testsResourceGroupName
                  'fortiGateNamePrefix'=$testsPrefix
                  'fortiGateAdditionalCustomData'=$config
-                 'publicIP1Name'=$publicIP1Name
                  'fortiGateCount'=$fortiGateCount
                }
     $ports = @(40030, 50030, 40031, 50031)
@@ -58,9 +56,9 @@ Describe 'FGT A/A' {
         It 'Converts from JSON and has the expected properties' {
             $expectedProperties = '$schema',
             'contentVersion',
+            'functions',
             'outputs',
             'parameters',
-            'functions',
             'resources',
             'variables'
             $templateProperties = (get-content $templateFileLocation | ConvertFrom-Json -ErrorAction SilentlyContinue) | Get-Member -MemberType NoteProperty | % Name
@@ -120,6 +118,7 @@ Describe 'FGT A/A' {
                                           'fortiGateLicenseFortiFlex7',
                                           'fortiGateLicenseFortiFlex8',
                                           'fortiGateNamePrefix',
+                                          'fortiGateSessionSync',
                                           'fortiManager',
                                           'fortiManagerIP',
                                           'fortiManagerSerial',
