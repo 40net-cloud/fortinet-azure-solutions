@@ -1134,7 +1134,7 @@
                   "text": "The FortiGate will use the external load balancer (deployed with this template) for outbound connectivity. Beware to configure the outbound rules to prevent port exhaustion.",
                   "uri": "https://learn.microsoft.com/en-us/azure/load-balancer/load-balancer-outbound-connections"
                 },
-                "visible": "[and(equals(steps('publicip').outboundConnectivity.options,'external-nat-device-elb'),bool(steps('publicip').externalLoadBalancer.enabled))]"
+                "visible": "[and(equals(steps('publicip').outboundConnectivity.options,'external-nat-device-or-elb'),bool(steps('publicip').externalLoadBalancer.enabled))]"
               },
               {
                 "name": "externalnatdevicetext",
@@ -1143,7 +1143,7 @@
                   "icon": "Info",
                   "text": "The FortiGate will use the existing infrastructure and NAT capabilities of the VNET for outbound access, e.g. FortiGate"
                 },
-                "visible": "[and(equals(steps('publicip').outboundConnectivity.options,'external-nat-device-elb'),not(bool(steps('publicip').externalLoadBalancer.enabled)))]"
+                "visible": "[and(equals(steps('publicip').outboundConnectivity.options,'external-nat-device-or-elb'),not(bool(steps('publicip').externalLoadBalancer.enabled)))]"
               },
               {
                 "name": "externalnatdevicetextnoelb",
