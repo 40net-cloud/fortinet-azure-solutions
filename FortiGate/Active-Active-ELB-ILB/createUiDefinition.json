@@ -1082,6 +1082,31 @@
                   "text": "Outbound connectivity needs to be configured in Microsoft Azure when using a Standard SKU Load Balancer. Different methods are available to provide the FortiGate outbound connectivity."
                 },
                 "visible": true
+              },
+              {
+                "name": "options",
+                "type": "Microsoft.Common.DropDown",
+                "label": "Internet Access Options",
+                "defaultValue": "External Load Balancer or External NAT device (e.g. different FortiGate, ...)",
+                "toolTip": "Deploy NAT Gateway or attach Public IP address for each FortiGate.",
+                "constraints": {
+                  "required": false,
+                  "allowedValues": [
+                    {
+                      "label": "Per node standard SKU Public IP address",
+                      "value": "per-node-standard-sku-pip"
+                    },
+                    {
+                      "label": "Deploy NAT Gateway",
+                      "value": "deploy-nat-gateway"
+                    },
+                    {
+                      "label": "External Load Balancer or External NAT device (e.g. different FortiGate, ...)",
+                      "value": "external-nat-device-elb"
+                    }
+                  ]
+                },
+                "visible": true
               }
             ]
           }
