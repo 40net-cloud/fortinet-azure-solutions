@@ -614,7 +614,7 @@
       {
         "name": "haCustomData",
         "count": 8,
-        "input": "[concat('config system ha\nset group-name fgt-cluster\nset standalone-config-sync only\nset hbdev port2 50\n', variables('haPeerCustomData')[copyIndex('haCustomData')],'\nset override enable\nset priority ', if(equals(copyIndex('haCustomData'),1),'255','1') ,'\nset unicast-status enable\nend\n')]"
+        "input": "[concat('config system ha\nset group-name fgt-cluster\nset standalone-config-sync enable\nset hbdev port2 50\n', variables('haPeerCustomData')[copyIndex('haCustomData')],'\nset override enable\nset priority ', if(equals(copyIndex('haCustomData'),1),'255','1') ,'\nset unicast-status enable\nend\n')]"
       },
       {
         "name": "fgspPeerCustomData",
