@@ -1102,7 +1102,7 @@
                     },
                     {
                       "label": "External Load Balancer or External NAT device (e.g. different FortiGate, ...)",
-                      "value": "external-nat-device-elb"
+                      "value": "external-nat-device-or-elb"
                     }
                   ]
                 },
