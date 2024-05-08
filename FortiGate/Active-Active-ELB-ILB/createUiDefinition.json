@@ -1508,8 +1508,8 @@
       "fortiManagerIP": "[steps('advanced').fortimanager.fortimanagerip]",
       "fortiManagerSerial": "[steps('advanced').fortimanager.fortimanagerserial]",
       "fortiGateAdditionalCustomData": "[steps('advanced').customdata.config]",
-      "fortiGateConfigSync": "[steps('advanced').highavailability.configsync]",
-      "fortiGateSessionSync": "[steps('advanced').highavailability.fgspsync]",
+      "fortiGateConfigSync": "[bool(steps('advanced').highavailability.configsync)]",
+      "fortiGateSessionSync": "[bool(steps('advanced').highavailability.fgspsync)]",
       "customImageReference": "[steps('advanced').customvhd.resourceid]",
       "tagsByResource": "[steps('tags').tagsByResource]"
     }
