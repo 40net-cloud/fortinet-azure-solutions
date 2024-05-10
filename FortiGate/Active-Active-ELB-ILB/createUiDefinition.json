@@ -1325,11 +1325,11 @@
                   "allowedValues": [
                     {
                       "label": "yes",
-                      "value": "yes"
+                      "value": "true"
                     },
                     {
                       "label": "no",
-                      "value": "no"
+                      "value": "false"
                     }
                   ],
                   "required": true
@@ -1356,11 +1356,11 @@
                   "allowedValues": [
                     {
                       "label": "yes",
-                      "value": "yes"
+                      "value": "true"
                     },
                     {
                       "label": "no",
-                      "value": "no"
+                      "value": "false"
                     }
                   ],
                   "required": true
