@@ -100,13 +100,6 @@
         "description": "The ARM template provides a basic configuration. Additional configuration can be added here."
       }
     },
-    "fortiGateConfigSync": {
-      "type": "bool",
-      "defaultValue": false,
-      "metadata": {
-        "description": "Enables configuration synchronisation between FortiGate peers."
-      }
-    },
     "fortiGateSessionSync": {
       "type": "bool",
       "defaultValue": false,
@@ -634,7 +627,7 @@
       {
         "name": "customDataBody",
         "count": "[length(range(1, 8))]",
-        "input": "[concat(if(and(not(parameters('externalLoadBalancer')),equals(parameters('outboundConnectivity'),'external-nat-device-or-elb')), variables('interfaceCustomData1Nic')[copyIndex('customDataBody')], variables('interfaceCustomData2Nic')[copyIndex('customDataBody')]), variables('fmgCustomData'), variables('customDataBodyShared'),if(parameters('fortiGateConfigSync'),variables('haCustomData')[copyIndex('customDataBody')],''),if(parameters('fortiGateSessionSync'),variables('fgspCustomData')[copyIndex('customDataBody')],''))]"
+        "input": "[concat(if(and(not(parameters('externalLoadBalancer')),equals(parameters('outboundConnectivity'),'external-nat-device-or-elb')), variables('interfaceCustomData1Nic')[copyIndex('customDataBody')], variables('interfaceCustomData2Nic')[copyIndex('customDataBody')]), variables('fmgCustomData'), variables('customDataBodyShared'),if(parameters('fortiGateSessionSync'),variables('fgspCustomData')[copyIndex('customDataBody')],''))]"
       },
       {
         "name": "customDataCombined",

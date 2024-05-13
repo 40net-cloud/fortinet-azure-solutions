@@ -1316,37 +1316,6 @@
             "label": "Synchronisation",
             "elements": [
               {
-                "name": "configsync",
-                "type": "Microsoft.Common.OptionsGroup",
-                "label": "Enable Configuration Synchronisation",
-                "defaultValue": "no",
-                "toolTip": "Synchronizes the configuration between FortiGate peers.",
-                "constraints": {
-                  "allowedValues": [
-                    {
-                      "label": "yes",
-                      "value": "true"
-                    },
-                    {
-                      "label": "no",
-                      "value": "false"
-                    }
-                  ],
-                  "required": true
-                },
-                "visible": true
-              },
-              {
-                "name": "hainfo",
-                "type": "Microsoft.Common.InfoBox",
-                "visible": true,
-                "options": {
-                  "icon": "Info",
-                  "text": "This option enabled unicast standalone configuration synchronization is supported on layer 3.",
-                  "uri": "https://docs.fortinet.com/document/fortigate/7.4.3/administration-guide/346301"
-                }
-              },
-              {
                 "name": "fgspsync",
                 "type": "Microsoft.Common.OptionsGroup",
                 "label": "Enable Session Synchronisation",
@@ -1508,7 +1477,6 @@
       "fortiManagerIP": "[steps('advanced').fortimanager.fortimanagerip]",
       "fortiManagerSerial": "[steps('advanced').fortimanager.fortimanagerserial]",
       "fortiGateAdditionalCustomData": "[steps('advanced').customdata.config]",
-      "fortiGateConfigSync": "[bool(steps('advanced').highavailability.configsync)]",
       "fortiGateSessionSync": "[bool(steps('advanced').highavailability.fgspsync)]",
       "customImageReference": "[steps('advanced').customvhd.resourceid]",
       "tagsByResource": "[steps('tags').tagsByResource]"
