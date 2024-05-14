@@ -39,6 +39,12 @@ jobs:
         ls -la $GITHUB_WORKSPACE
         echo .
 
+    - name: FortiDevSec IaC scan
+      run: |
+        env | grep -E "GITHUB_ACTIONS|GITHUB_RUN_NUMBER|GITHUB_REF_NAME|GITHUB_SHA" > /tmp/env
+        docker run --pull always --rm --env-file /tmp/env --mount type=bind,source=$PWD/FortiGate/Terraform/A-Single-VM/terraform/,target=/scan registry.fortidevsec.forticloud.com/fdevsec_iac:latest
+
+
 
 #    - name: Azure Login via Az module
 #      uses: azure/login@v1
