@@ -26,32 +26,46 @@ jobs:
     - name: "Checkout"
       uses: actions/checkout@v4
 
-    - name: Azure Login via Az module
-      uses: azure/login@v1
-      with:
-        creds: ${{secrets.AZURE_CREDENTIALS}}
-        enable-AzPSSession: true
+    - name: FortiDevSec application config file
+      run: |
+        echo "${{ secrets.FDEVSEC_FGT_AZURE_TERRAFORM}}" | base64 --decode > $GITHUB_WORKSPACE/fdevsec.yaml
+        echo .
+        cat ./fdevsec.yaml
+        echo .
+        ls -la
+        echo .
+        pwd
+        echo .
+        ls -la $GITHUB_WORKSPACE
+        echo .
 
-    - name: Run Pester tests (pwsh)
-      uses: azure/powershell@v1
-      with:
-        inlineScript: |
-          mkdir -p /home/runner/.ssh/
-          chmod 700 /home/runner/.ssh/
-          echo "${{secrets.TEST_SSH_KEY}}" > /home/runner/.ssh/id_test
-          chmod 400 /home/runner/.ssh/id_test*
-          ls -la /home/runner/.ssh/id_test 
-          ls -la .github/workflows/test
-          ls -la ~/.github/workflows/test
-          Set-PSRepository psgallery -InstallationPolicy trusted
-          Install-Module -Name Pester -RequiredVersion 5.0.4 -confirm:$false -Force
-          $container = New-PesterContainer -Path ".github/workflows/" -Data @{sshkey = "/home/runner/.ssh/id_test"}
-          $config = New-PesterConfiguration
-          $config.Run.Container = $container
-          $config.Run.Exit = $true
-          $config.Run.PassThru = $true
-          $config.TestResult.OutputFormat = "NUnitXML"
-          $config.TestResult.OutputPath = "Test-Pester.XML"
-          $config.Output.Verbosity = 'Detailed'
-          Invoke-Pester -Configuration $config
-        azPSVersion: "latest"
+
+#    - name: Azure Login via Az module
+#      uses: azure/login@v1
+#      with:
+#        creds: ${{secrets.AZURE_CREDENTIALS}}
+#        enable-AzPSSession: true
+#
+#    - name: Run Pester tests (pwsh)
+#      uses: azure/powershell@v1
+#      with:
+#        inlineScript: |
+#          mkdir -p /home/runner/.ssh/
+#          chmod 700 /home/runner/.ssh/
+#          echo "${{secrets.TEST_SSH_KEY}}" > /home/runner/.ssh/id_test
+#          chmod 400 /home/runner/.ssh/id_test*
+#          ls -la /home/runner/.ssh/id_test 
+#          ls -la .github/workflows/test
+#          ls -la ~/.github/workflows/test
+#          Set-PSRepository psgallery -InstallationPolicy trusted
+#          Install-Module -Name Pester -RequiredVersion 5.0.4 -confirm:$false -Force
+#          $container = New-PesterContainer -Path ".github/workflows/" -Data @{sshkey = "/home/runner/.ssh/id_test"}
+#          $config = New-PesterConfiguration
+#          $config.Run.Container = $container
+#          $config.Run.Exit = $true
+#          $config.Run.PassThru = $true
+#          $config.TestResult.OutputFormat = "NUnitXML"
+#          $config.TestResult.OutputPath = "Test-Pester.XML"
+#          $config.Output.Verbosity = 'Detailed'
+#          Invoke-Pester -Configuration $config
+#        azPSVersion: "latest"
