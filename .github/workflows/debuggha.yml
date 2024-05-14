@@ -29,6 +29,7 @@ jobs:
     - name: FortiDevSec application config file
       run: |
         echo "${{ secrets.FDEVSEC_FGT_AZURE_TERRAFORM}}" | base64 --decode > $GITHUB_WORKSPACE/fdevsec.yaml
+        echo "${{ secrets.FDEVSEC_FGT_AZURE_TERRAFORM}}" | base64 --decode > $GITHUB_WORKSPACE/FortiGate/Terraform/A-Single-VM/terraform/fdevsec.yaml
         echo .
         cat ./fdevsec.yaml
         echo .
