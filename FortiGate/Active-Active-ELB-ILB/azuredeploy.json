@@ -323,7 +323,6 @@
         "description": "Subnet 1 start address, 2 consecutive private IPs are required"
       }
     },
-
     "subnet2Name": {
       "type": "string",
       "defaultValue": "internalsubnet",
@@ -493,7 +492,6 @@
         "description": "FortiGate 8 BYOL license content"
       }
     },
-
     "customImageReference": {
       "type": "string",
       "defaultValue": "",
@@ -794,7 +792,6 @@
             "value": "[if( greater(parameters('fgtnr'),parameters('count')), '', concat(if(and(greater(parameters('count'),0),not(equals(parameters('fgtnr'),1))),concat('edit 0\nset peerip ',parameters('sn2IP')[1],'\nset syncvd root\nnext\n'),''), if(and(greater(parameters('count'),1),not(equals(parameters('fgtnr'),2))),concat('edit 0\nset peerip ',parameters('sn2IP')[2],'\nset syncvd root\nnext\n'),''), if(and(greater(parameters('count'),2),not(equals(parameters('fgtnr'),3))),concat('edit 0\nset peerip ',parameters('sn2IP')[3],'\nset syncvd root\nnext\n'),''), if(and(greater(parameters('count'),3),not(equals(parameters('fgtnr'),4))),concat('edit 0\nset peerip ',parameters('sn2IP')[4],'\nset syncvd root\nnext\n'),''), if(and(greater(parameters('count'),4),not(equals(parameters('fgtnr'),5))),concat('edit 0\nset peerip ',parameters('sn2IP')[5],'\nset syncvd root\nnext\n'),''), if(and(greater(parameters('count'),5),not(equals(parameters('fgtnr'),6))),concat('edit 0\nset peerip ',parameters('sn2IP')[6],'\nset syncvd root\nnext\n'),''), if(and(greater(parameters('count'),6),not(equals(parameters('fgtnr'),7))),concat('edit 0\nset peerip ',parameters('sn2IP')[7],'\nset syncvd root\nnext\n'),''), if(and(greater(parameters('count'),7),not(equals(parameters('fgtnr'),8))),concat('edit 0\nset peerip ',parameters('sn2IP')[8],'\nset syncvd root\nnext\n'),'')))]"
           }
         }
-
       }
     }
   ],
