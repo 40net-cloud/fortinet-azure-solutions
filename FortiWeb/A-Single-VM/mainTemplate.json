@@ -550,7 +550,7 @@
     {
       "type": "Microsoft.Network/networkInterfaces",
       "apiVersion": "2023-04-01",
-      "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Network/networkInterfaces'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Network/networkInterfaces'],variables('fastpathtag')), union(parameters('fortinetTags'),variables('fastpathtag'))) ]",
+      "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Network/networkInterfaces'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Network/networkInterfaces']), parameters('fortinetTags')) ]",
       "name": "[variables('fwbNic1Name')]",
       "location": "[parameters('location')]",
       "dependsOn": [
@@ -581,7 +581,7 @@
     {
       "type": "Microsoft.Network/networkInterfaces",
       "apiVersion": "2023-04-01",
-      "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Network/networkInterfaces'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Network/networkInterfaces'],variables('fastpathtag')), union(parameters('fortinetTags'),variables('fastpathtag'))) ]",
+      "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Network/networkInterfaces'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Network/networkInterfaces']), parameters('fortinetTags')) ]",
       "name": "[variables('fwbNic2Name')]",
       "location": "[parameters('location')]",
       "dependsOn": [
