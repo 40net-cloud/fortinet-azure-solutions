@@ -322,6 +322,10 @@
         "description": "Location for all resources."
       }
     },
+    "tagsByResource": {
+      "type": "object",
+      "defaultValue": {}
+    },
     "fortinetTags": {
       "type": "object",
       "defaultValue": {
@@ -397,6 +401,7 @@
       "apiVersion": "2023-04-01",
       "name": "[variables('vnetName')]",
       "location": "[parameters('location')]",
+      "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Network/virtualNetworks'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Network/virtualNetworks']), parameters('fortinetTags')) ]",
       "properties": {
         "addressSpace": {
           "addressPrefixes": [
@@ -422,9 +427,7 @@
     {
       "type": "Microsoft.Network/networkSecurityGroups",
       "apiVersion": "2023-04-01",
-      "tags": {
-        "provider": "[toUpper(parameters('FortinetTags').provider)]"
-      },
+      "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Network/networkSecurityGroups'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Network/networkSecurityGroups']), parameters('fortinetTags')) ]",
       "name": "[variables('NSGName')]",
       "location": "[parameters('location')]",
       "properties": {
@@ -534,9 +537,7 @@
       "condition": "[equals(parameters('publicIPNewOrExistingOrNone'), 'new')]",
       "type": "Microsoft.Network/publicIPAddresses",
       "apiVersion": "2023-04-01",
-      "tags": {
-        "provider": "[toUpper(parameters('fortinetTags').provider)]"
-      },
+      "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Network/publicIPAddresses'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Network/publicIPAddresses']), parameters('fortinetTags')) ]",
       "name": "[variables('publicIPName')]",
       "location": "[parameters('location')]",
       "sku": {
@@ -549,9 +550,7 @@
     {
       "type": "Microsoft.Network/networkInterfaces",
       "apiVersion": "2023-04-01",
-      "tags": {
-        "provider": "[toUpper(parameters('fortinetTags').provider)]"
-      },
+      "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Network/networkInterfaces'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Network/networkInterfaces'],variables('fastpathtag')), union(parameters('fortinetTags'),variables('fastpathtag'))) ]",
       "name": "[variables('fwbNic1Name')]",
       "location": "[parameters('location')]",
       "dependsOn": [
@@ -582,9 +581,7 @@
     {
       "type": "Microsoft.Network/networkInterfaces",
       "apiVersion": "2023-04-01",
-      "tags": {
-        "provider": "[toUpper(parameters('fortinetTags').provider)]"
-      },
+      "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Network/networkInterfaces'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Network/networkInterfaces'],variables('fastpathtag')), union(parameters('fortinetTags'),variables('fastpathtag'))) ]",
       "name": "[variables('fwbNic2Name')]",
       "location": "[parameters('location')]",
       "dependsOn": [
@@ -611,9 +608,7 @@
     {
       "type": "Microsoft.Compute/virtualMachines",
       "apiVersion": "2023-03-01",
-      "tags": {
-        "provider": "[toUpper(parameters('fortinetTags').provider)]"
-      },
+      "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Compute/virtualMachines'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Compute/virtualMachines']), parameters('fortinetTags')) ]",
       "name": "[variables('fwbVmName')]",
       "identity": {
         "type": "SystemAssigned"
@@ -683,9 +678,13 @@
     }
   ],
   "outputs": {
-    "fortiGatePublicIP": {
+    "fortiWebPublicIP": {
       "type": "string",
       "value": "[if(equals(parameters('publicIPNewOrExistingOrNone'), 'new'), reference(variables('publicIPId')).ipAddress, '')]"
+    },
+    "fortiWebFQDN": {
+      "type": "string",
+      "value": "[if(equals(parameters('publicIPNewOrExistingOrNone'), 'new'), reference(variables('publicIPId')).dnsSettings.fqdn, '' )]"
     },
     "fwbCustomData": {
       "type": "string",
