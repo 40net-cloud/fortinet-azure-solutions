@@ -84,11 +84,11 @@ Describe 'FWB Single VM' {
       'availabilityOptions',
       'availabilityZoneNumber',
       'existingAvailabilitySetName',
+      'fortinetTags',
       'fortiWebAdditionalCustomData',
       'fortiWebLicenseBYOL',
       'fortiWebLicenseFortiFlex',
       'fortiWebNamePrefix',
-      'fortinetTags',
       'imageSku',
       'imageVersion',
       'instanceType',
@@ -111,8 +111,6 @@ Describe 'FWB Single VM' {
       'vnetNewOrExisting',
       'vnetResourceGroup'
       $templateParameters = (get-content $templateFileLocation | ConvertFrom-Json -ErrorAction SilentlyContinue).Parameters | Get-Member -MemberType NoteProperty | % Name | Sort-Object
-      Write-Host ( "Expected: $expectedTemplateParameters" )
-      Write-Host ( "Received: $templateParameters" )
       $templateParameters | Should -Be $expectedTemplateParameters
     }
 
