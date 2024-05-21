@@ -16,8 +16,8 @@ $VerbosePreference = "Continue"
 
 BeforeAll {
   $templateName = "Active-Active"
-  $sourcePath = "$env:BUILD_SOURCESDIRECTORY\FortiWeb\$templateName"
-  $scriptPath = "$env:BUILD_SOURCESDIRECTORY\FortiWeb\$templateName\test"
+  $sourcePath = "$env:GITHUB_WORKSPACE\FortiWeb\$templateName"
+  $scriptPath = "$env:GITHUB_WORKSPACE\FortiWeb\$templateName\test"
   $templateFileName = "mainTemplate.json"
   $templateFileLocation = "$sourcePath\$templateFileName"
   $templateParameterFileName = "mainTemplate.parameters.json"
@@ -31,7 +31,10 @@ BeforeAll {
   $testsResourceGroupLocation = "westeurope"
 
   # ARM Template Variables
-  $publicIPName = "$testsPrefix-FWB-PIP"
+  $config = "config system global `n set hostname FortiWebTest `n end `n config system admin `n edit devops `n set access-profil prof_admin `n set sshkey `""
+  $config += Get-Content $sshkeypub
+  $config += "`" `n set password $testsResourceGroupName `n next `n end"
+  $publicIPName = "$testsPrefix-fwb-pip"
   $params = @{ 'adminUsername'      = $testsAdminUsername
     'adminPassword'                 = $testsResourceGroupName
     'fortiWebNamePrefix'            = $testsPrefix
@@ -81,19 +84,33 @@ Describe 'FWB Active/Active' {
     }
 
     It 'Contains the expected parameters' {
-      $expectedTemplateParameters = 'adminPassword',
+      $expectedTemplateParameters = 'acceleratedNetworking',
+      'adminPassword',
       'adminUsername',
-      'fortinetTags',
+      'availabilityOptions',
+      'fortiWebAAdditionalCustomData',
+      'fortiWebALicenseBYOL',
+      'fortiWebALicenseFortiFlex',
+      'fortiWebBAdditionalCustomData',
+      'fortiWebBLicenseBYOL',
+      'fortiWebBLicenseFortiFlex',
+      'fortiWebHaGroupId',
+      'fortiWebHaOverride',
       'fortiWebNamePrefix',
-      'instanceType',
-      'imageSKU',
+      'fortinetTags',
+      'haApplicationId',
+      'haApplicationSecret',
+      'haSubscriptionId',
+      'haTenantId',
+      'imageSku',
       'imageVersion',
+      'instanceType',
       'location',
       'publicIPName',
-      'publicIPNewOrExisting',
+      'publicIPNewOrExistingOrNone',
       'publicIPResourceGroup',
-      'publicIPSKU',
       'publicIPType',
+      'serialConsole',
       'subnet1Name',
       'subnet1Prefix',
       'subnet1StartAddress',
@@ -144,6 +161,18 @@ Describe 'FWB Active/Active' {
         $portListening = (Test-Connection -TargetName $fwb -TCPPort $port -TimeoutSeconds 100)
         $portListening | Should -Be $true
       }
+    }
+    It "FWB A: Verify configuration" {
+      $result = $verify_commands | ssh -p 50030 -v -tt -i $sshkey -o StrictHostKeyChecking=no devops@$fgt
+      $LASTEXITCODE | Should -Be "0"
+      Write-Host ("FWB CLI info: " + $result) -Separator `n
+      $result | Should -Not -BeLike "*Command fail*"
+    }
+    It "FWB B: Verify configuration" {
+      $result = $verify_commands | ssh -p 50031 -v -tt -i $sshkey -o StrictHostKeyChecking=no devops@$fgt
+      $LASTEXITCODE | Should -Be "0"
+      Write-Host ("FWB CLI info: " + $result) -Separator `n
+      $result | Should -Not -BeLike "*Command fail*"
     }
   }
 
