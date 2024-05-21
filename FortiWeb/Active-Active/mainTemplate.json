@@ -351,7 +351,6 @@
       "id": "[variables('subnet1Id')]"
     },
     "subnet2Id": "[if(equals(parameters('vnetNewOrExisting'),'new'),resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet2Name')),resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet2Name')))]",
-    "fwbACustomDataBodyHA": "[concat('config system ha\nset mode active-active-high-volume\nset group-id ', parameters('fortiWebHaGroupId'), '\nset group-name ', tolower(parameters('fortiWebNamePrefix')), '\nset priority 1\nset tunnel-local ', variables('sn2IPfwbA'), '\nset tunnel-peer ', variables('sn2IPfwbB'), '\nset monitor port1 port2\nend\n')]",
     "fwbACustomDataBody": "[concat(parameters('fortiWebAAdditionalCustomData'), '\n')]",
     "fwbACustomDataCombined": {
       "cloud-initd": "enable",
@@ -375,7 +374,6 @@
       "flex_token": "[parameters('fortiWebALicenseFortiFlex')]"
     },
     "fwbACustomData": "[base64(string(variables('fwbACustomDataCombined')))]",
-    "fwbBCustomDataBodyHA": "[concat('config system ha\nset mode active-active-high-volume\nset group-id ', parameters('fortiWebHaGroupId'), '\nset group-name ', tolower(parameters('fortiWebNamePrefix')), '\nset priority 2\nset tunnel-local ', variables('sn2IPfwbB'), '\nset tunnel-peer ', variables('sn2IPfwbA'), '\nset monitor port1 port2\nend\n')]",
     "fwbBCustomDataBody": "[concat(parameters('fortiWebBAdditionalCustomData'), '\n')]",
     "fwbbCustomDataCombined": {
       "cloud-initd": "enable",
@@ -463,6 +461,7 @@
     "externalLBProbe2Name": "heatlhProbeHttps",
     "externalLBProbe2Id": "[resourceId('Microsoft.Network/loadBalancers/probes/',variables('externalLBName'),variables('externalLBProbe2Name'))]",
     "useAZ": "[and(not(empty(pickZones('Microsoft.Compute', 'virtualMachines', parameters('location')))), equals(parameters('availabilityOptions'), 'Availability Zones'))]",
+    "pipZones": "[if(variables('useAZ'), pickZones('Microsoft.Network', 'publicIPAddresses', parameters('location'), 3), json('null'))]",
     "zone1": [
       "1"
     ],
@@ -486,7 +485,7 @@
     },
     {
       "condition": "[not(variables('useAZ'))]",
-      "apiVersion": "2021-07-01",
+      "apiVersion": "2023-03-01",
       "type": "Microsoft.Compute/availabilitySets",
       "name": "[variables('availabilitySetName')]",
       "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Compute/availabilitySets'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Compute/availabilitySets']), parameters('fortinetTags')) ]",
@@ -633,6 +632,7 @@
       "sku": {
         "name": "Standard"
       },
+      "zones": "[variables('pipZones')]",
       "properties": {
         "publicIPAllocationMethod": "[parameters('publicIPType')]",
         "dnsSettings": {

@@ -723,10 +723,30 @@
                   "validationMessage": "The password must be between 12 characters or longer, and contain characters from at least 3 of the following groups: uppercase characters, lowercase characters, numbers, and special characters excluding '\\' or '-'."
                 },
                 "options": {
-                  "hideConfirmation": true
+                  "hideConfirmation": false
                 },
                 "visible": true
               }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "tags",
+        "label": "Tags",
+        "elements": [
+          {
+            "name": "tagsByResource",
+            "type": "Microsoft.Common.TagsByResource",
+            "toolTip": "Add tags to Azure Resources",
+            "resources": [
+              "Microsoft.Compute/availabilitySets",
+              "Microsoft.Network/networkSecurityGroups",
+              "Microsoft.Network/publicIPAddresses",
+              "Microsoft.Network/networkInterfaces",
+              "Microsoft.Compute/virtualMachines",
+              "Microsoft.Network/virtualNetworks",
+              "Microsoft.Network/routeTables"
             ]
           }
         ]
@@ -746,7 +766,7 @@
       "fortiWebBLicenseBYOL": "[steps('instance').fwbLicense.licensebcontent]",
       "fortiWebALicenseFortiFlex": "[steps('instance').fwbLicense.fwbAfortiflex]",
       "fortiWebBLicenseFortiFlex": "[steps('instance').fwbLicense.fwbBfortiflex]",
-      "publicIPNewOrExisting": "[steps('publicip').loadbalancerpublicip.newOrExistingOrNone]",
+      "publicIPNewOrExistingOrNone": "[steps('publicip').loadbalancerpublicip.newOrExistingOrNone]",
       "publicIPName": "[steps('publicip').loadbalancerpublicip.name]",
       "publicIPResourceGroup": "[steps('publicip').loadbalancerpublicip.resourceGroup]",
       "publicIPType": "[steps('publicip').loadbalancerpublicip.publicIPAllocationMethod]",
@@ -763,7 +783,8 @@
       "haTenantId": "[steps('advanced').highavailability.hatenantid]",
       "haSubscriptionId": "[steps('advanced').highavailability.hasubscriptionid]",
       "haApplicationId": "[steps('advanced').highavailability.haapplicationid]",
-      "haApplicationSecret": "[steps('advanced').highavailability.haapplicationsecret]"
+      "haApplicationSecret": "[steps('advanced').highavailability.haapplicationsecret]",
+      "tagsByResource": "[steps('tags').tagsByResource]"
     }
   }
 }

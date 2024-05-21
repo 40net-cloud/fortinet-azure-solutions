@@ -69,7 +69,10 @@
             "value": "172.16.136.68"
         },
         "location": {
-            "value": "[resourceGroup().location]"
+            "value": ""
+        },
+        "tagsByResource": {
+            "value": {}
         },
         "fortinetTags": {
             "value": {
