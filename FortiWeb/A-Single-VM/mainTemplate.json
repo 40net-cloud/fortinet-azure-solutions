@@ -544,7 +544,10 @@
         "name": "[parameters('publicIPSku')]"
       },
       "properties": {
-        "publicIPAllocationMethod": "[parameters('publicIPType')]"
+        "publicIPAllocationMethod": "[parameters('publicIPType')]",
+        "dnsSettings": {
+          "domainNameLabel": "[concat(toLower(variables('fwbVmName')), '-', uniquestring(resourceGroup().id))]"
+        }
       }
     },
     {
