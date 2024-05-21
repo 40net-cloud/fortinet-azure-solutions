@@ -340,7 +340,7 @@
     "useAS": "[equals(parameters('availabilityOptions'), 'Availability set')]",
     "useAZ": "[and(not(empty(pickZones('Microsoft.Compute', 'virtualMachines', parameters('location')))), equals(parameters('availabilityOptions'), 'Availability zone'))]",
     "zone1": "[if(equals(parameters('availabilityZoneNumber'),''),pickZones('Microsoft.Compute', 'virtualMachines', parameters('location')),array(parameters('availabilityZoneNumber')))]",
-    "vnetName": "[if(equals(parameters('vnetName'),''),concat(parameters('fortiWebNamePrefix'),'-VNET'),parameters('vnetName'))]",
+    "vnetName": "[if(equals(parameters('vnetName'),''),concat(parameters('fortiWebNamePrefix'),'-vnet'),parameters('vnetName'))]",
     "subnet1Id": "[if(equals(parameters('vnetNewOrExisting'),'new'),resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet1Name')),resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet1Name')))]",
     "subnet2Id": "[if(equals(parameters('vnetNewOrExisting'),'new'),resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet2Name')),resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet2Name')))]",
     "customDataCombined": {
@@ -351,18 +351,18 @@
       "flex_token": "[parameters('fortiWebLicenseFortiFlex')]"
     },
     "fwbCustomData": "[base64(string(variables('customDataCombined')))]",
-    "fwbVmName": "[concat(parameters('fortiWebNamePrefix'),'-FWB')]",
-    "fwbNic1Name": "[concat(variables('fwbVmName'),'-Nic1')]",
+    "fwbVmName": "[concat(parameters('fortiWebNamePrefix'),'-fwb')]",
+    "fwbNic1Name": "[concat(variables('fwbVmName'),'-nic1')]",
     "fwbNic1Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('fwbNic1Name'))]",
-    "fwbNic2Name": "[concat(variables('fwbVmName'),'-Nic2')]",
+    "fwbNic2Name": "[concat(variables('fwbVmName'),'-nic2')]",
     "fwbNic2Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('fwbNic2Name'))]",
     "serialConsoleEnabled": "[if(equals(parameters('serialConsole'),'yes'),'true','false')]",
-    "publicIPName": "[if(equals(parameters('publicIPName'),''),concat(parameters('fortiWebNamePrefix'),'-FWB-PIP'),parameters('publicIPName'))]",
+    "publicIPName": "[if(equals(parameters('publicIPName'),''),concat(parameters('fortiWebNamePrefix'),'-fwb-pip'),parameters('publicIPName'))]",
     "publicIPId": "[if(equals(parameters('publicIPNewOrExistingOrNone'),'new'),resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPName')),resourceId(parameters('publicIPResourceGroup'),'Microsoft.Network/publicIPAddresses',variables('publicIPName')))]",
     "publicIPAddressId": {
       "id": "[variables('publicIPId')]"
     },
-    "NSGName": "[concat(parameters('fortiWebNamePrefix'),'-',uniqueString(resourceGroup().id),'-NSG')]",
+    "NSGName": "[concat(parameters('fortiWebNamePrefix'),'-',uniqueString(resourceGroup().id),'-nsg')]",
     "NSGId": "[resourceID('Microsoft.Network/networkSecurityGroups/',variables('NSGName'))]",
     "sn1IPArray": "[split(parameters('subnet1Prefix'),'.')]",
     "sn1IPArray2": "[string(int(variables('sn1IPArray')[2]))]",

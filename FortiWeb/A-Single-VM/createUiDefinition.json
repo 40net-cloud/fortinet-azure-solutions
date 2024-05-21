@@ -612,7 +612,7 @@
               "domainNameLabel": "DNS name linked to this public IP"
             },
             "defaultValue": {
-              "publicIpAddressName": "FWBPublicIP",
+              "publicIpAddressName": "[if(equals(basics('fortiWebNamePrefix'),''),'FWBPublicIP',concat(basics('fortiWebNamePrefix'),'-fwb-pip'))]",
               "domainNameLabel": "mydomain"
             },
             "constraints": {
