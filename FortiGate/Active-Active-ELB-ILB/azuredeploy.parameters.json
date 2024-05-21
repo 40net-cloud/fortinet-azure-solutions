@@ -23,11 +23,11 @@
         "fortiGateAdditionalCustomData": {
             "value": ""
         },
-        "fortiGateConfigSync": {
-            "value": false
-        },
         "fortiGateSessionSync": {
             "value": false
+        },
+        "fortiGateProbeResponse": {
+            "value": true
         },
         "instanceType": {
             "value": "Standard_F2s"
