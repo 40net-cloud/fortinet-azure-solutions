@@ -325,6 +325,10 @@
         "description": "Location for all resources."
       }
     },
+    "tagsByResource": {
+      "type": "object",
+      "defaultValue": {}
+    },
     "fortinetTags": {
       "type": "object",
       "defaultValue": {
@@ -405,8 +409,6 @@
     "fwbBNic1Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('fwbBNic1Name'))]",
     "fwbBNic2Name": "[concat(variables('fwbBVmName'),'-nic2')]",
     "fwbBNic2Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('fwbBNic2Name'))]",
-    "serialConsoleStorageAccountName": "[concat('console', uniquestring(resourceGroup().id))]",
-    "serialConsoleStorageAccountType": "Standard_LRS",
     "serialConsoleEnabled": "[if(equals(parameters('serialConsole'),'yes'),'true','false')]",
     "publicIPName": "[if(equals(parameters('publicIPName'),''),concat(parameters('fortiWebNamePrefix'),'-FWB-PIP'),parameters('publicIPName'))]",
     "publicIPId": "[if(equals(parameters('publicIPNewOrExistingOrNone'),'new'),resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPName')),resourceId(parameters('publicIPResourceGroup'),'Microsoft.Network/publicIPAddresses',variables('publicIPName')))]",
@@ -487,9 +489,7 @@
       "apiVersion": "2021-07-01",
       "type": "Microsoft.Compute/availabilitySets",
       "name": "[variables('availabilitySetName')]",
-      "tags": {
-        "provider": "[toUpper(parameters('fortinetTags').provider)]"
-      },
+      "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Compute/availabilitySets'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Compute/availabilitySets']), parameters('fortinetTags')) ]",
       "location": "[parameters('location')]",
       "properties": {
         "platformFaultDomainCount": 2,
@@ -505,6 +505,7 @@
       "apiVersion": "2023-04-01",
       "name": "[variables('vnetName')]",
       "location": "[parameters('location')]",
+      "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Network/virtualNetworks'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Network/virtualNetworks']), parameters('fortinetTags')) ]",
       "properties": {
         "addressSpace": {
           "addressPrefixes": [
@@ -530,9 +531,7 @@
     {
       "type": "Microsoft.Network/networkSecurityGroups",
       "apiVersion": "2023-04-01",
-      "tags": {
-        "provider": "[toUpper(parameters('fortinetTags').provider)]"
-      },
+      "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Network/networkSecurityGroups'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Network/networkSecurityGroups']), parameters('fortinetTags')) ]",
       "name": "[variables('NSGName')]",
       "location": "[parameters('location')]",
       "properties": {
@@ -628,24 +627,23 @@
       "condition": "[equals(parameters('publicIPNewOrExistingOrNone'), 'new')]",
       "type": "Microsoft.Network/publicIPAddresses",
       "apiVersion": "2023-04-01",
-      "tags": {
-        "provider": "[toUpper(parameters('fortinetTags').provider)]"
-      },
+      "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Network/publicIPAddresses'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Network/publicIPAddresses']), parameters('fortinetTags')) ]",
       "name": "[variables('publicIPName')]",
       "location": "[parameters('location')]",
       "sku": {
         "name": "Standard"
       },
       "properties": {
-        "publicIPAllocationMethod": "[parameters('publicIPType')]"
+        "publicIPAllocationMethod": "[parameters('publicIPType')]",
+        "dnsSettings": {
+          "domainNameLabel": "[concat(toLower(variables('externalLBName')), '-', uniquestring(resourceGroup().id))]"
+        }
       }
     },
     {
       "type": "Microsoft.Network/loadBalancers",
       "apiVersion": "2023-04-01",
-      "tags": {
-        "provider": "[toUpper(parameters('fortinetTags').provider)]"
-      },
+      "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Network/loadBalancers'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Network/loadBalancers']), parameters('fortinetTags')) ]",
       "name": "[variables('externalLBName')]",
       "location": "[parameters('location')]",
       "sku": {
@@ -782,9 +780,7 @@
     {
       "type": "Microsoft.Network/networkInterfaces",
       "apiVersion": "2023-04-01",
-      "tags": {
-        "provider": "[toUpper(parameters('fortinetTags').provider)]"
-      },
+      "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Network/networkInterfaces'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Network/networkInterfaces']), parameters('fortinetTags')) ]",
       "name": "[variables('fwbANic1Name')]",
       "location": "[parameters('location')]",
       "dependsOn": [
@@ -828,9 +824,7 @@
     {
       "type": "Microsoft.Network/networkInterfaces",
       "apiVersion": "2023-04-01",
-      "tags": {
-        "provider": "[toUpper(parameters('fortinetTags').provider)]"
-      },
+      "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Network/networkInterfaces'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Network/networkInterfaces']), parameters('fortinetTags')) ]",
       "name": "[variables('fwbBNic1Name')]",
       "location": "[parameters('location')]",
       "dependsOn": [
@@ -874,9 +868,7 @@
     {
       "type": "Microsoft.Network/networkInterfaces",
       "apiVersion": "2023-04-01",
-      "tags": {
-        "provider": "[toUpper(parameters('fortinetTags').provider)]"
-      },
+      "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Network/networkInterfaces'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Network/networkInterfaces']), parameters('fortinetTags')) ]",
       "name": "[variables('fwbANic2Name')]",
       "location": "[parameters('location')]",
       "dependsOn": [
@@ -902,9 +894,7 @@
     {
       "type": "Microsoft.Network/networkInterfaces",
       "apiVersion": "2023-04-01",
-      "tags": {
-        "provider": "[toUpper(parameters('fortinetTags').provider)]"
-      },
+      "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Network/networkInterfaces'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Network/networkInterfaces']), parameters('fortinetTags')) ]",
       "name": "[variables('fwbBNic2Name')]",
       "location": "[parameters('location')]",
       "dependsOn": [
@@ -930,9 +920,7 @@
     {
       "type": "Microsoft.Compute/virtualMachines",
       "apiVersion": "2023-03-01",
-      "tags": {
-        "provider": "[toUpper(parameters('fortinetTags').provider)]"
-      },
+      "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Compute/virtualMachines'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Compute/virtualMachines']), parameters('fortinetTags')) ]",
       "name": "[variables('fwbAVmName')]",
       "location": "[parameters('location')]",
       "identity": {
@@ -1078,6 +1066,10 @@
     "fortiWebPublicIP": {
       "type": "string",
       "value": "[if(equals(parameters('publicIPNewOrExistingOrNone'), 'new'), reference(variables('publicIPId')).ipAddress, '')]"
+    },
+    "fortiWebFQDN": {
+      "type": "string",
+      "value": "[if(equals(parameters('publicIPNewOrExistingOrNone'), 'new'), reference(variables('publicIPId')).dnsSettings.fqdn, '' )]"
     },
     "fwbACustomData": {
       "type": "string",
