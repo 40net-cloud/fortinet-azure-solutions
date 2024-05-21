@@ -168,9 +168,9 @@ Describe 'FWB Single VM' {
     }
   }
 
-  #    Context 'Cleanup' {
-  #        It "Cleanup of deployment" {
-  #            Remove-AzResourceGroup -Name $testsResourceGroupName -Force
-  #        }
-  #    }
+  Context 'Cleanup' {
+    It "Cleanup of deployment" {
+      Remove-AzResourceGroup -Name $testsResourceGroupName -Force
+    }
+  }
 }
