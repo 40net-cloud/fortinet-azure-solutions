@@ -31,7 +31,7 @@ BeforeAll {
   $testsResourceGroupLocation = "westeurope"
 
   # ARM Template Variables
-  $config = "config system global `n set gui-theme mariner `n end `n config system admin `n edit devops `n set accprofile prof_admin `n set sshkey `""
+  $config = "config system global `n set hostname FortiWebTest `n end `n config system admin `n edit devops `n set accprofile prof_admin `n set sshkey `""
   $config += Get-Content $sshkeypub
   $config += "`" `n set password $testsResourceGroupName `n next `n end"
   $publicIPName = "$testsPrefix-fwb-pip"
