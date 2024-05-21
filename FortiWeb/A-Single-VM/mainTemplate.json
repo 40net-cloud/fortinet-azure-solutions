@@ -205,7 +205,7 @@
         "description": "Type of public IP address"
       }
     },
-    "publicIPSKU": {
+    "publicIPSku": {
       "type": "string",
       "defaultValue": "Basic",
       "allowedValues": [
@@ -540,7 +540,7 @@
       "name": "[variables('publicIPName')]",
       "location": "[parameters('location')]",
       "sku": {
-        "name": "[parameters('publicIPSKU')]"
+        "name": "[parameters('publicIPSku')]"
       },
       "properties": {
         "publicIPAllocationMethod": "[parameters('publicIPType')]"

@@ -56,6 +56,7 @@ Describe 'FWB Single VM' {
     It 'Converts from JSON and has the expected properties' {
       $expectedProperties = '$schema',
       'contentVersion',
+      'outputs',
       'parameters',
       'resources',
       'variables'
@@ -88,13 +89,13 @@ Describe 'FWB Single VM' {
       'fortiWebLicenseFortiFlex',
       'fortiWebNamePrefix',
       'instanceType',
-      'imageSKU',
+      'imageSku',
       'imageVersion',
       'location',
       'publicIPName',
       'publicIPNewOrExistingOrNone',
       'publicIPResourceGroup',
-      'publicIPSKU',
+      'publicIPSku',
       'publicIPType',
       'serialConsole',
       'subnet1Name',
@@ -137,8 +138,8 @@ Describe 'FWB Single VM' {
   Context 'Deployment test' {
 
     BeforeAll {
-      $FWB = (Get-AzPublicIpAddress -Name $publicIPName -ResourceGroupName $testsResourceGroupName).IpAddress
-      Write-Host ("FortiWeb public IP: " + $FWB)
+      $fwb = (Get-AzPublicIpAddress -Name $publicIPName -ResourceGroupName $testsResourceGroupName).IpAddress
+      Write-Host ("FortiWeb public IP: " + $fwb)
       $fgt = (Get-AzPublicIpAddress -Name $publicIPName -ResourceGroupName $testsResourceGroupName).IpAddress
       Write-Host ("FortiGate public IP: " + $fgt)
       $verify_commands = @'
@@ -155,9 +156,15 @@ Describe 'FWB Single VM' {
         It "FWB: Ports listening" {
             ForEach( $port in $ports ) {
                 Write-Host ("Check port: $port" )
-                $portListening = (Test-Connection -TargetName $FWB -TCPPort $port -TimeoutSeconds 100)
+                $portListening = (Test-Connection -TargetName $fwb -TCPPort $port -TimeoutSeconds 100)
                 $portListening | Should -Be $true
             }
+        }
+        It "FWB: Verify FortiWeb configuration" {
+          $result = $($verify_commands | ssh -v -tt -i $sshkey -o StrictHostKeyChecking=no devops@$fwb)
+          $LASTEXITCODE | Should -Be "0"
+          Write-Host ("FWB CLI info: " + $result) -Separator `n
+          $result | Should -Not -BeLike "*Command fail*"
         }
     }
 
