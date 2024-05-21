@@ -9,133 +9,148 @@
 #>
 
 param (
-    [string]$sshkey,
-    [string]$sshkeypub
+  [string]$sshkey,
+  [string]$sshkeypub
 )
 $VerbosePreference = "Continue"
 
 BeforeAll {
-    $templateName = "A-Single-VM"
-    $sourcePath = "$env:GITHUB_WORKSPACE\FortiWeb\$templateName"
-    $scriptPath = "$env:GITHUB_WORKSPACE\FortiWeb\$templateName\test"
-    $templateFileName = "mainTemplate.json"
-    $templateFileLocation = "$sourcePath\$templateFileName"
-    $templateParameterFileName = "mainTemplate.parameters.json"
-    $templateParameterFileLocation = "$sourcePath\$templateParameterFileName"
+  $templateName = "A-Single-VM"
+  $sourcePath = "$env:GITHUB_WORKSPACE\FortiWeb\$templateName"
+  $scriptPath = "$env:GITHUB_WORKSPACE\FortiWeb\$templateName\test"
+  $templateFileName = "mainTemplate.json"
+  $templateFileLocation = "$sourcePath\$templateFileName"
+  $templateParameterFileName = "mainTemplate.parameters.json"
+  $templateParameterFileLocation = "$sourcePath\$templateParameterFileName"
 
-    # Basic Variables
-    $testsRandom = Get-Random 10001
-    $testsPrefix = "FORTIQA"
-    $testsResourceGroupName = "FORTIQA-$testsRandom-$templateName"
-    $testsAdminUsername = "azureuser"
-    $testsResourceGroupLocation = "westeurope"
+  # Basic Variables
+  $testsRandom = Get-Random 10001
+  $testsPrefix = "FORTIQA"
+  $testsResourceGroupName = "FORTIQA-$testsRandom-$templateName"
+  $testsAdminUsername = "azureuser"
+  $testsResourceGroupLocation = "westeurope"
 
-    # ARM Template Variables
-    $publicIPName = "$testsPrefix-FWB-PIP"
-    $params = @{ 'adminUsername'=$testsAdminUsername
-                    'adminPassword'=$testsResourceGroupName
-                    'fortiWebNamePrefix'=$testsPrefix
-                    'publicIPName'=$publicIPName
-                }
-    $ports = @(8443, 22)
+  # ARM Template Variables
+  $config = "config system global `n set gui-theme mariner `n end `n config system admin `n edit devops `n set accprofile prof_admin `n set sshkey `""
+  $config += Get-Content $sshkeypub
+  $config += "`" `n set password $testsResourceGroupName `n next `n end"
+  $publicIPName = "$testsPrefix-fwb-pip"
+  $params = @{ 'adminUsername' = $testsAdminUsername
+    'adminPassword'            = $testsResourceGroupName
+    'fortiWebNamePrefix'       = $testsPrefix
+    'publicIPName'             = $publicIPName
+  }
+  $ports = @(8443, 22)
 }
 
 Describe 'FWB Single VM' {
-    Context 'Validation' {
-        It 'Has a JSON template' {
-            $templateFileLocation | Should -Exist
-        }
-
-        It 'Has a parameters file' {
-            $templateParameterFileLocation | Should -Exist
-        }
-
-        It 'Converts from JSON and has the expected properties' {
-            $expectedProperties = '$schema',
-            'contentVersion',
-            'parameters',
-            'resources',
-            'variables'
-            $templateProperties = (get-content $templateFileLocation | ConvertFrom-Json -ErrorAction SilentlyContinue) | Get-Member -MemberType NoteProperty | % Name
-            $templateProperties | Should -Be $expectedProperties
-        }
-
-        It 'Creates the expected Azure resources' {
-            $expectedResources = 'Microsoft.Resources/deployments',
-                                    'Microsoft.Network/virtualNetworks',
-                                    'Microsoft.Network/networkSecurityGroups',
-                                    'Microsoft.Network/publicIPAddresses',
-                                    'Microsoft.Network/networkInterfaces',
-                                    'Microsoft.Network/networkInterfaces',
-                                    'Microsoft.Compute/virtualMachines'
-            $templateResources = (get-content $templateFileLocation | ConvertFrom-Json -ErrorAction SilentlyContinue).Resources.type
-            $templateResources | Should -Be $expectedResources
-        }
-
-        It 'Contains the expected parameters' {
-            $expectedTemplateParameters = 'acceleratedNetworking',
-                                            'adminPassword',
-                                            'adminUsername',
-                                            'availabilityOptions',
-                                            'availabilityZoneNumber',
-                                            'existingAvailabilitySetName',
-                                            'fortinetTags',
-                                            'fortiWebAdditionalCustomData',
-                                            'fortiWebLicenseBYOL',
-                                            'fortiWebLicenseFortiFlex',
-                                            'fortiWebNamePrefix',
-                                            'instanceType',
-                                            'imageSKU',
-                                            'imageVersion',
-                                            'location',
-                                            'publicIPName',
-                                            'publicIPNewOrExistingOrNone',
-                                            'publicIPResourceGroup',
-                                            'publicIPSKU',
-                                            'publicIPType',
-                                            'serialConsole',
-                                            'subnet1Name',
-                                            'subnet1Prefix',
-                                            'subnet1StartAddress',
-                                            'subnet2Name',
-                                            'subnet2Prefix',
-                                            'subnet2StartAddress',
-                                            'vnetAddressPrefix',
-                                            'vnetName',
-                                            'vnetNewOrExisting',
-                                            'vnetResourceGroup'
-            $templateParameters = (get-content $templateFileLocation | ConvertFrom-Json -ErrorAction SilentlyContinue).Parameters | Get-Member -MemberType NoteProperty | % Name | Sort-Object
-            $templateParameters | Should -Be $expectedTemplateParameters
-        }
-
+  Context 'Validation' {
+    It 'Has a JSON template' {
+      $templateFileLocation | Should -Exist
     }
 
-    Context 'Deployment' {
+    It 'Has a parameters file' {
+      $templateParameterFileLocation | Should -Exist
+    }
 
-        It "Test Deployment" {
-            New-AzResourceGroup -Name $testsResourceGroupName -Location "$testsResourceGroupLocation"
+    It 'Converts from JSON and has the expected properties' {
+      $expectedProperties = '$schema',
+      'contentVersion',
+      'parameters',
+      'resources',
+      'variables'
+      $templateProperties = (get-content $templateFileLocation | ConvertFrom-Json -ErrorAction SilentlyContinue) | Get-Member -MemberType NoteProperty | % Name
+      $templateProperties | Should -Be $expectedProperties
+    }
+
+    It 'Creates the expected Azure resources' {
+      $expectedResources = 'Microsoft.Resources/deployments',
+      'Microsoft.Network/virtualNetworks',
+      'Microsoft.Network/networkSecurityGroups',
+      'Microsoft.Network/publicIPAddresses',
+      'Microsoft.Network/networkInterfaces',
+      'Microsoft.Network/networkInterfaces',
+      'Microsoft.Compute/virtualMachines'
+      $templateResources = (get-content $templateFileLocation | ConvertFrom-Json -ErrorAction SilentlyContinue).Resources.type
+      $templateResources | Should -Be $expectedResources
+    }
+
+    It 'Contains the expected parameters' {
+      $expectedTemplateParameters = 'acceleratedNetworking',
+      'adminPassword',
+      'adminUsername',
+      'availabilityOptions',
+      'availabilityZoneNumber',
+      'existingAvailabilitySetName',
+      'fortinetTags',
+      'fortiWebAdditionalCustomData',
+      'fortiWebLicenseBYOL',
+      'fortiWebLicenseFortiFlex',
+      'fortiWebNamePrefix',
+      'instanceType',
+      'imageSKU',
+      'imageVersion',
+      'location',
+      'publicIPName',
+      'publicIPNewOrExistingOrNone',
+      'publicIPResourceGroup',
+      'publicIPSKU',
+      'publicIPType',
+      'serialConsole',
+      'subnet1Name',
+      'subnet1Prefix',
+      'subnet1StartAddress',
+      'subnet2Name',
+      'subnet2Prefix',
+      'subnet2StartAddress',
+      'vnetAddressPrefix',
+      'vnetName',
+      'vnetNewOrExisting',
+      'vnetResourceGroup'
+      $templateParameters = (get-content $templateFileLocation | ConvertFrom-Json -ErrorAction SilentlyContinue).Parameters | Get-Member -MemberType NoteProperty | % Name | Sort-Object
+      $templateParameters | Should -Be $expectedTemplateParameters
+    }
+
+  }
+
+  Context 'Deployment' {
+
+    It "Test Deployment" {
+      New-AzResourceGroup -Name $testsResourceGroupName -Location "$testsResourceGroupLocation"
             (Test-AzResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName" -TemplateFile "$templateFileLocation" -TemplateParameterObject $params).Count | Should -Not -BeGreaterThan 0
-        }
-        It "Deployment" {
-            Write-Host ( "Deployment name: $testsResourceGroupName" )
-
-            $resultDeployment = New-AzResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName" -TemplateFile "$templateFileLocation" -TemplateParameterObject $params
-            Write-Host ($resultDeployment | Format-Table | Out-String)
-            Write-Host ("Deployment state: " + $resultDeployment.ProvisioningState | Out-String)
-            $resultDeployment.ProvisioningState | Should -Be "Succeeded"
-        }
-        It "Search deployment" {
-            $result = Get-AzVM | Where-Object { $_.Name -like "$testsPrefix*" }
-            Write-Host ($result | Format-Table | Out-String)
-            $result | Should -Not -Be $null
-        }
     }
+    It "Deployment" {
+      Write-Host ( "Deployment name: $testsResourceGroupName" )
 
-    Context 'Deployment test' {
+      $resultDeployment = New-AzResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName" -TemplateFile "$templateFileLocation" -TemplateParameterObject $params
+      Write-Host ($resultDeployment | Format-Table | Out-String)
+      Write-Host ("Deployment state: " + $resultDeployment.ProvisioningState | Out-String)
+      $resultDeployment.ProvisioningState | Should -Be "Succeeded"
+    }
+    It "Search deployment" {
+      $result = Get-AzVM | Where-Object { $_.Name -like "$testsPrefix*" }
+      Write-Host ($result | Format-Table | Out-String)
+      $result | Should -Not -Be $null
+    }
+  }
 
-        BeforeAll {
-            $FWB = (Get-AzPublicIpAddress -Name $publicIPName -ResourceGroupName $testsResourceGroupName).IpAddress
-            Write-Host ("FortiWeb public IP: " + $FWB)
+  Context 'Deployment test' {
+
+    BeforeAll {
+      $FWB = (Get-AzPublicIpAddress -Name $publicIPName -ResourceGroupName $testsResourceGroupName).IpAddress
+      Write-Host ("FortiWeb public IP: " + $FWB)
+      $fgt = (Get-AzPublicIpAddress -Name $publicIPName -ResourceGroupName $testsResourceGroupName).IpAddress
+      Write-Host ("FortiGate public IP: " + $fgt)
+      $verify_commands = @'
+        config system console
+        set output standard
+        end
+        get system status
+        show system interface
+        diag debug cloudinit show
+        exit
+'@
+        $OFS = "`n"
         }
         It "FWB: Ports listening" {
             ForEach( $port in $ports ) {
