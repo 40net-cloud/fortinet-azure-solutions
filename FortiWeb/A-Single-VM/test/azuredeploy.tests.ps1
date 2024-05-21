@@ -140,8 +140,6 @@ Describe 'FWB Single VM' {
     BeforeAll {
       $fwb = (Get-AzPublicIpAddress -Name $publicIPName -ResourceGroupName $testsResourceGroupName).IpAddress
       Write-Host ("FortiWeb public IP: " + $fwb)
-      $fgt = (Get-AzPublicIpAddress -Name $publicIPName -ResourceGroupName $testsResourceGroupName).IpAddress
-      Write-Host ("FortiGate public IP: " + $fgt)
       $verify_commands = @'
         config system console
         set output standard
@@ -152,6 +150,8 @@ Describe 'FWB Single VM' {
         exit
 '@
         $OFS = "`n"
+        Write-Host ("FWB SSH key: " + $sshkey) -Separator `n
+        Write-Host ("FWB devops password: " + $testsResourceGroupName) -Separator `n
         }
         It "FWB: Ports listening" {
             ForEach( $port in $ports ) {
@@ -168,9 +168,9 @@ Describe 'FWB Single VM' {
         }
     }
 
-    Context 'Cleanup' {
-        It "Cleanup of deployment" {
-            Remove-AzResourceGroup -Name $testsResourceGroupName -Force
-        }
-    }
+#    Context 'Cleanup' {
+#        It "Cleanup of deployment" {
+#            Remove-AzResourceGroup -Name $testsResourceGroupName -Force
+#        }
+#    }
 }
