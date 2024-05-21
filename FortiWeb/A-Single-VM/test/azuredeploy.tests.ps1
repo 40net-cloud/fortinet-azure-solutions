@@ -105,12 +105,15 @@ Describe 'FWB Single VM' {
       'subnet2Name',
       'subnet2Prefix',
       'subnet2StartAddress',
+      'tagsByResource',
       'vnetAddressPrefix',
       'vnetName',
       'vnetNewOrExisting',
       'vnetResourceGroup'
       $templateParameters = (get-content $templateFileLocation | ConvertFrom-Json -ErrorAction SilentlyContinue).Parameters | Get-Member -MemberType NoteProperty | % Name | Sort-Object
       $templateParameters | Should -Be $expectedTemplateParameters
+      Write-Host ( "Expected: $expectedTemplateParameters" )
+      Write-Host ( "Received: $templateParameters" )
     }
 
   }
@@ -151,10 +154,6 @@ Describe 'FWB Single VM' {
         exit
 '@
       $OFS = "`n"
-      Write-Host ("FWB SSH key: " + $sshkey) -Separator `n
-      $sshkeycontent = Get-Content($sshkey)
-      Write-Host ("FWB SSH key: " + $sshkeycontent) -Separator `n
-      Write-Host ("FWB devops password: " + $testsResourceGroupName) -Separator `n
     }
     It "FWB: Ports listening" {
       ForEach ( $port in $ports ) {
@@ -164,7 +163,7 @@ Describe 'FWB Single VM' {
       }
     }
     It "FWB: Verify FortiWeb configuration" {
-      $result = $($verify_commands | ssh -v -tt -i $sshkey -o StrictHostKeyChecking=no devops@$fwb)
+      $result = $($verify_commands | ssh -tt -i $sshkey -o StrictHostKeyChecking=no devops@$fwb)
       $LASTEXITCODE | Should -Be "0"
       Write-Host ("FWB CLI info: " + $result) -Separator `n
       $result | Should -Not -BeLike "*Command fail*"
