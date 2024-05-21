@@ -629,11 +629,6 @@
     "zone2": [
       "2"
     ],
-    "zones": [
-      "1",
-      "2",
-      "3"
-    ],
     "imageReferenceMarketplace": {
       "publisher": "[variables('imagePublisher')]",
       "offer": "[variables('imageOffer')]",
@@ -954,7 +949,7 @@
                 "id": "[variables('subnet2Id')]"
               }
             },
-            "zones": "[if(variables('useAZ'), variables('zones'), json('null'))]"
+            "zones": "[if(variables('useAZ'), variables('pipZones'), json('null'))]"
           }
         ],
         "backendAddressPools": [
