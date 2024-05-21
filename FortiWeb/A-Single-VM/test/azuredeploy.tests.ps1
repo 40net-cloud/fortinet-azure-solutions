@@ -35,10 +35,11 @@ BeforeAll {
   $config += Get-Content $sshkeypub
   $config += "`" `n set password $testsResourceGroupName `n next `n end"
   $publicIPName = "$testsPrefix-fwb-pip"
-  $params = @{ 'adminUsername' = $testsAdminUsername
-    'adminPassword'            = $testsResourceGroupName
-    'fortiWebNamePrefix'       = $testsPrefix
-    'publicIPName'             = $publicIPName
+  $params = @{ 'adminUsername'     = $testsAdminUsername
+    'adminPassword'                = $testsResourceGroupName
+    'fortiWebNamePrefix'           = $testsPrefix
+    'fortiWebAdditionalCustomData' = $config
+    'publicIPName'                 = $publicIPName
   }
   $ports = @(8443, 22)
 }
@@ -149,28 +150,30 @@ Describe 'FWB Single VM' {
         diag debug cloudinit show
         exit
 '@
-        $OFS = "`n"
-        Write-Host ("FWB SSH key: " + $sshkey) -Separator `n
-        Write-Host ("FWB devops password: " + $testsResourceGroupName) -Separator `n
-        }
-        It "FWB: Ports listening" {
-            ForEach( $port in $ports ) {
-                Write-Host ("Check port: $port" )
-                $portListening = (Test-Connection -TargetName $fwb -TCPPort $port -TimeoutSeconds 100)
-                $portListening | Should -Be $true
-            }
-        }
-        It "FWB: Verify FortiWeb configuration" {
-          $result = $($verify_commands | ssh -v -tt -i $sshkey -o StrictHostKeyChecking=no devops@$fwb)
-          $LASTEXITCODE | Should -Be "0"
-          Write-Host ("FWB CLI info: " + $result) -Separator `n
-          $result | Should -Not -BeLike "*Command fail*"
-        }
+      $OFS = "`n"
+      Write-Host ("FWB SSH key: " + $sshkey) -Separator `n
+      $sshkeycontent = Get-Content($sshkey)
+      Write-Host ("FWB SSH key: " + $sshkeycontent) -Separator `n
+      Write-Host ("FWB devops password: " + $testsResourceGroupName) -Separator `n
     }
+    It "FWB: Ports listening" {
+      ForEach ( $port in $ports ) {
+        Write-Host ("Check port: $port" )
+        $portListening = (Test-Connection -TargetName $fwb -TCPPort $port -TimeoutSeconds 100)
+        $portListening | Should -Be $true
+      }
+    }
+    It "FWB: Verify FortiWeb configuration" {
+      $result = $($verify_commands | ssh -v -tt -i $sshkey -o StrictHostKeyChecking=no devops@$fwb)
+      $LASTEXITCODE | Should -Be "0"
+      Write-Host ("FWB CLI info: " + $result) -Separator `n
+      $result | Should -Not -BeLike "*Command fail*"
+    }
+  }
 
-#    Context 'Cleanup' {
-#        It "Cleanup of deployment" {
-#            Remove-AzResourceGroup -Name $testsResourceGroupName -Force
-#        }
-#    }
+  #    Context 'Cleanup' {
+  #        It "Cleanup of deployment" {
+  #            Remove-AzResourceGroup -Name $testsResourceGroupName -Force
+  #        }
+  #    }
 }
