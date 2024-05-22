@@ -178,9 +178,9 @@ Describe 'FWB Active/Active' {
     }
   }
 
-  Context 'Cleanup' {
-    It "Cleanup of deployment" {
-      Remove-AzResourceGroup -Name $testsResourceGroupName -Force
-    }
-  }
+#  Context 'Cleanup' {
+#    It "Cleanup of deployment" {
+#      Remove-AzResourceGroup -Name $testsResourceGroupName -Force
+#    }
+#  }
 }
