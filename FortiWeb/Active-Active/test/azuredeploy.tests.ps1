@@ -160,6 +160,15 @@ Describe 'FWB Active/Active' {
       Write-Host ("FortiWeb password: " + $testsResourceGroupName)
       $sshkeycontent = Get-Content($sshkey)
       Write-Host ("FortiWeb sshkey: " + $sshkeycontent)
+      $verify_commands = @'
+        config system console
+        set output standard
+        end
+        get system status
+        show system interface
+        diag debug cloudinit show
+        exit
+'@
     }
     It "FWB: Ports listening" {
       ForEach ( $port in $ports ) {
@@ -182,9 +191,9 @@ Describe 'FWB Active/Active' {
     }
   }
 
-  #  Context 'Cleanup' {
-  #    It "Cleanup of deployment" {
-  #      Remove-AzResourceGroup -Name $testsResourceGroupName -Force
-  #    }
-  #  }
+  Context 'Cleanup' {
+    It "Cleanup of deployment" {
+      Remove-AzResourceGroup -Name $testsResourceGroupName -Force
+    }
+  }
 }
