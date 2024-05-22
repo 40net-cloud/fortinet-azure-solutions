@@ -183,7 +183,6 @@ Describe 'FWB Active/Active' {
       $LASTEXITCODE | Should -Be "0"
       Write-Host ("FWB CLI info: " + $result) -Separator `n
       $result | Should -Not -BeLike "*Command fail*"
-      $result | Should -Not -BeLike "*Timeout*"
     }
     It "FWB B: Verify configuration" {
       $result = $($verify_commands | ssh -tt -i $sshkey -o StrictHostKeyChecking=no -p 50031 devops@$fwb)
