@@ -174,13 +174,13 @@ Describe 'FWB Active/Active' {
       }
     }
     It "FWB A: Verify configuration" {
-      $result = $verify_commands | ssh -p 50030 -tt -i $sshkey -o StrictHostKeyChecking=no devops@$fwb
+      $result = $($verify_commands | ssh -p 50030 -tt -i $sshkey -o StrictHostKeyChecking=no devops@$fwb)
       $LASTEXITCODE | Should -Be "0"
       Write-Host ("FWB CLI info: " + $result) -Separator `n
       $result | Should -Not -BeLike "*Command fail*"
     }
     It "FWB B: Verify configuration" {
-      $result = $verify_commands | ssh -p 50031 -tt -i $sshkey -o StrictHostKeyChecking=no devops@$fwb
+      $result = $($verify_commands | ssh -p 50031 -tt -i $sshkey -o StrictHostKeyChecking=no devops@$fwb)
       $LASTEXITCODE | Should -Be "0"
       Write-Host ("FWB CLI info: " + $result) -Separator `n
       $result | Should -Not -BeLike "*Command fail*"
