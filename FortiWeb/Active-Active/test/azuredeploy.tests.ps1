@@ -156,6 +156,9 @@ Describe 'FWB Active/Active' {
     BeforeAll {
       $fwb = (Get-AzPublicIpAddress -Name $publicIPName -ResourceGroupName $testsResourceGroupName).IpAddress
       Write-Host ("FortiWeb public IP: " + $fwb)
+      Write-Host ("FortiWeb ARM_CLIENT_ID: " + $env:ARM_CLIENT_ID)
+      Write-Host ("FortiWeb ARM_SUBSCRIPTION_ID: " + $env:ARM_SUBSCRIPTION_ID)
+      Write-Host ("FortiWeb ARM_TENANT_ID: " + $env:ARM_TENANT_ID)
       $verify_commands = @'
         config system console
         set output standard
