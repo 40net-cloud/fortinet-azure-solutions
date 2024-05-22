@@ -43,6 +43,10 @@ BeforeAll {
     'publicIPName'                  = $publicIPName
     'imageSku'                      = "fortinet_fw-vm_payg_v3"
     'availabilityOptions'           = "Availability Zones"
+    'haApplicationId'               = $env:ARM_CLIENT_ID
+    'haApplicationSecret'           = $env:ARM_CLIENT_SECRET
+    'haSubscriptionId'              = $env:ARM_SUBSCRIPTION_ID
+    'haTenantId'                    = $env:ARM_TENANT_ID
   }
   $ports = @(40030, 50030, 40031, 50031)
 }
@@ -156,9 +160,6 @@ Describe 'FWB Active/Active' {
     BeforeAll {
       $fwb = (Get-AzPublicIpAddress -Name $publicIPName -ResourceGroupName $testsResourceGroupName).IpAddress
       Write-Host ("FortiWeb public IP: " + $fwb)
-      Write-Host ("FortiWeb ARM_CLIENT_ID: " + $env:ARM_CLIENT_ID)
-      Write-Host ("FortiWeb ARM_SUBSCRIPTION_ID: " + $env:ARM_SUBSCRIPTION_ID)
-      Write-Host ("FortiWeb ARM_TENANT_ID: " + $env:ARM_TENANT_ID)
       $verify_commands = @'
         config system console
         set output standard
