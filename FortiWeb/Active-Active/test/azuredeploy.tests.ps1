@@ -31,7 +31,7 @@ BeforeAll {
   $testsResourceGroupLocation = "westeurope"
 
   # ARM Template Variables
-  $config = "config system global `n set hostname FortiWebTest `n end `n config system admin `n edit devops `n set access-profil prof_admin `n set sshkey `""
+  $config = "config system admin `n edit devops `n set access-profil prof_admin `n set sshkey `""
   $config += Get-Content $sshkeypub
   $config += "`" `n set password $testsResourceGroupName `n next `n end"
   $publicIPName = "$testsPrefix-fwb-pip"
@@ -156,10 +156,6 @@ Describe 'FWB Active/Active' {
     BeforeAll {
       $fwb = (Get-AzPublicIpAddress -Name $publicIPName -ResourceGroupName $testsResourceGroupName).IpAddress
       Write-Host ("FortiWeb public IP: " + $fwb)
-      Write-Host ("FortiWeb username: " + $testsAdminUsername)
-      Write-Host ("FortiWeb password: " + $testsResourceGroupName)
-      $sshkeycontent = Get-Content($sshkey)
-      Write-Host ("FortiWeb sshkey: " + $sshkeycontent)
       $verify_commands = @'
         config system console
         set output standard
@@ -178,13 +174,13 @@ Describe 'FWB Active/Active' {
       }
     }
     It "FWB A: Verify configuration" {
-      $result = $verify_commands | ssh -p 50030 -v -tt -i $sshkey -o StrictHostKeyChecking=no devops@$fwb
+      $result = $verify_commands | ssh -p 50030 -tt -i $sshkey -o StrictHostKeyChecking=no devops@$fwb
       $LASTEXITCODE | Should -Be "0"
       Write-Host ("FWB CLI info: " + $result) -Separator `n
       $result | Should -Not -BeLike "*Command fail*"
     }
     It "FWB B: Verify configuration" {
-      $result = $verify_commands | ssh -p 50031 -v -tt -i $sshkey -o StrictHostKeyChecking=no devops@$fwb
+      $result = $verify_commands | ssh -p 50031 -tt -i $sshkey -o StrictHostKeyChecking=no devops@$fwb
       $LASTEXITCODE | Should -Be "0"
       Write-Host ("FWB CLI info: " + $result) -Separator `n
       $result | Should -Not -BeLike "*Command fail*"
