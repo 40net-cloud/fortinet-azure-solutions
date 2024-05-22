@@ -167,6 +167,7 @@ Describe 'FWB Single VM' {
       $LASTEXITCODE | Should -Be "0"
       Write-Host ("FWB CLI info: " + $result) -Separator `n
       $result | Should -Not -BeLike "*Command fail*"
+      $result | Should -Not -BeLike "*Timeout*"
     }
   }
 
