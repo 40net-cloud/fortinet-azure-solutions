@@ -158,7 +158,8 @@ Describe 'FWB Active/Active' {
       Write-Host ("FortiWeb public IP: " + $fwb)
       Write-Host ("FortiWeb username: " + $testsAdminUsername)
       Write-Host ("FortiWeb password: " + $testsResourceGroupName)
-      Write-Host ("FortiWeb sshkey: " + $sshkey)
+      $sshkeycontent = Get-Content($sshkey)
+      Write-Host ("FortiWeb sshkey: " + $sshkeycontent)
     }
     It "FWB: Ports listening" {
       ForEach ( $port in $ports ) {
