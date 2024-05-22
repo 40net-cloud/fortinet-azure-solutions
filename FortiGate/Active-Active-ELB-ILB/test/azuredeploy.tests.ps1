@@ -118,6 +118,7 @@ Describe 'FGT A/A' {
       'fortiGateLicenseFortiFlex7',
       'fortiGateLicenseFortiFlex8',
       'fortiGateNamePrefix',
+      'fortiGateProbeResponse',
       'fortiGateSessionSync',
       'fortiManager',
       'fortiManagerIP',

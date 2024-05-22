@@ -14,7 +14,7 @@
         "fortiGateNamePrefix": {
             "value": "## TO BE DEFINED ##"
         },
-        "fortiGateImageSKU": {
+        "fortiGateImageSku": {
             "value": "fortinet_fg-vm"
         },
         "fortiGateImageVersion": {

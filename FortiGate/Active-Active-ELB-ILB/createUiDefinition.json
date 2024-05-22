@@ -94,7 +94,7 @@
         "visible": true
       },
       {
-        "name": "fortiGateImageSKU",
+        "name": "fortiGateImageSku",
         "type": "Microsoft.Common.DropDown",
         "label": "FortiGate Image SKU",
         "defaultValue": "Bring Your Own License",
@@ -512,7 +512,7 @@
                 "imageReference": {
                   "publisher": "Fortinet",
                   "offer": "fortinet_fortigate-vm_v5",
-                  "sku": "[basics('fortiGateImageSKU')]"
+                  "sku": "[basics('fortiGateImageSku')]"
                 },
                 "count": 2,
                 "visible": true
@@ -577,7 +577,7 @@
               {
                 "name": "fgtLicenseBYOLInfo",
                 "type": "Microsoft.Common.TextBlock",
-                "visible": "[equals(basics('fortiGateImageSKU'), 'fortinet_fg-vm')]",
+                "visible": "[equals(basics('fortiGateImageSku'), 'fortinet_fg-vm')]",
                 "options": {
                   "text": "Bring Your Own License was selected in the basics blade. The license file(s) retrieved from support.fortinet.com can be uploaded here or uploaded after deployment. License files or FortiFlex license for the first three FortiGate VM systems can be provided via this deployment. Additional licenses need to be uplaoded localy on these systems after deployment or a custom template need to created."
                 }
@@ -587,7 +587,7 @@
                 "type": "Microsoft.Common.CheckBox",
                 "label": "My organisation is using the FortiFlex subscription service.",
                 "toolTip": "My organisation is using the FortiFlex subscription service.",
-                "visible": "[equals(basics('fortiGateImageSKU'), 'fortinet_fg-vm')]"
+                "visible": "[equals(basics('fortiGateImageSku'), 'fortinet_fg-vm')]"
               },
               {
                 "name": "fgt1content",
@@ -604,7 +604,7 @@
                   "openMode": "text",
                   "encoding": "UTF-8"
                 },
-                "visible": "[and(equals(basics('fortiGateImageSKU'), 'fortinet_fg-vm'),greaterOrEquals(int(basics('fortiGateCount')),1),not(steps('instance').fgtLicense.fgtLicenseFortiFlexCheck))]"
+                "visible": "[and(equals(basics('fortiGateImageSku'), 'fortinet_fg-vm'),greaterOrEquals(int(basics('fortiGateCount')),1),not(steps('instance').fgtLicense.fgtLicenseFortiFlexCheck))]"
               },
               {
                 "name": "fgt2content",
@@ -621,7 +621,7 @@
                   "openMode": "text",
                   "encoding": "UTF-8"
                 },
-                "visible": "[and(equals(basics('fortiGateImageSKU'), 'fortinet_fg-vm'),greaterOrEquals(int(basics('fortiGateCount')),2),not(steps('instance').fgtLicense.fgtLicenseFortiFlexCheck))]"
+                "visible": "[and(equals(basics('fortiGateImageSku'), 'fortinet_fg-vm'),greaterOrEquals(int(basics('fortiGateCount')),2),not(steps('instance').fgtLicense.fgtLicenseFortiFlexCheck))]"
               },
               {
                 "name": "fgt3content",
@@ -638,7 +638,7 @@
                   "openMode": "text",
                   "encoding": "UTF-8"
                 },
-                "visible": "[and(equals(basics('fortiGateImageSKU'), 'fortinet_fg-vm'),greaterOrEquals(int(basics('fortiGateCount')),3),not(steps('instance').fgtLicense.fgtLicenseFortiFlexCheck))]"
+                "visible": "[and(equals(basics('fortiGateImageSku'), 'fortinet_fg-vm'),greaterOrEquals(int(basics('fortiGateCount')),3),not(steps('instance').fgtLicense.fgtLicenseFortiFlexCheck))]"
               },
               {
                 "name": "fgt4content",
@@ -655,7 +655,7 @@
                   "openMode": "text",
                   "encoding": "UTF-8"
                 },
-                "visible": "[and(equals(basics('fortiGateImageSKU'), 'fortinet_fg-vm'),greaterOrEquals(int(basics('fortiGateCount')),4),not(steps('instance').fgtLicense.fgtLicenseFortiFlexCheck))]"
+                "visible": "[and(equals(basics('fortiGateImageSku'), 'fortinet_fg-vm'),greaterOrEquals(int(basics('fortiGateCount')),4),not(steps('instance').fgtLicense.fgtLicenseFortiFlexCheck))]"
               },
               {
                 "name": "fgt5content",
@@ -672,7 +672,7 @@
                   "openMode": "text",
                   "encoding": "UTF-8"
                 },
-                "visible": "[and(equals(basics('fortiGateImageSKU'), 'fortinet_fg-vm'),greaterOrEquals(int(basics('fortiGateCount')),5),not(steps('instance').fgtLicense.fgtLicenseFortiFlexCheck))]"
+                "visible": "[and(equals(basics('fortiGateImageSku'), 'fortinet_fg-vm'),greaterOrEquals(int(basics('fortiGateCount')),5),not(steps('instance').fgtLicense.fgtLicenseFortiFlexCheck))]"
               },
               {
                 "name": "fgt6content",
@@ -689,7 +689,7 @@
                   "openMode": "text",
                   "encoding": "UTF-8"
                 },
-                "visible": "[and(equals(basics('fortiGateImageSKU'), 'fortinet_fg-vm'),greaterOrEquals(int(basics('fortiGateCount')),6),not(steps('instance').fgtLicense.fgtLicenseFortiFlexCheck))]"
+                "visible": "[and(equals(basics('fortiGateImageSku'), 'fortinet_fg-vm'),greaterOrEquals(int(basics('fortiGateCount')),6),not(steps('instance').fgtLicense.fgtLicenseFortiFlexCheck))]"
               },
               {
                 "name": "fgt7content",
@@ -706,7 +706,7 @@
                   "openMode": "text",
                   "encoding": "UTF-8"
                 },
-                "visible": "[and(equals(basics('fortiGateImageSKU'), 'fortinet_fg-vm'),greaterOrEquals(int(basics('fortiGateCount')),7),not(steps('instance').fgtLicense.fgtLicenseFortiFlexCheck))]"
+                "visible": "[and(equals(basics('fortiGateImageSku'), 'fortinet_fg-vm'),greaterOrEquals(int(basics('fortiGateCount')),7),not(steps('instance').fgtLicense.fgtLicenseFortiFlexCheck))]"
               },
               {
                 "name": "fgt8content",
@@ -723,7 +723,7 @@
                   "openMode": "text",
                   "encoding": "UTF-8"
                 },
-                "visible": "[and(equals(basics('fortiGateImageSKU'), 'fortinet_fg-vm'),greaterOrEquals(int(basics('fortiGateCount')),8),not(steps('instance').fgtLicense.fgtLicenseFortiFlexCheck))]"
+                "visible": "[and(equals(basics('fortiGateImageSku'), 'fortinet_fg-vm'),greaterOrEquals(int(basics('fortiGateCount')),8),not(steps('instance').fgtLicense.fgtLicenseFortiFlexCheck))]"
               },
               {
                 "name": "fgt1fortiflex",
@@ -736,7 +736,7 @@
                   "regex": "^[A-Za-z0-9-]{1,64}$",
                   "validationMessage": "Only alphanumeric characters and a dash are allowed, and the value must be 1 to 64 characters."
                 },
-                "visible": "[and(equals(basics('fortiGateImageSKU'), 'fortinet_fg-vm'),greaterOrEquals(int(basics('fortiGateCount')),1),steps('instance').fgtLicense.fgtLicenseFortiFlexCheck)]"
+                "visible": "[and(equals(basics('fortiGateImageSku'), 'fortinet_fg-vm'),greaterOrEquals(int(basics('fortiGateCount')),1),steps('instance').fgtLicense.fgtLicenseFortiFlexCheck)]"
               },
               {
                 "name": "fgt2fortiflex",
@@ -749,7 +749,7 @@
                   "regex": "^[A-Za-z0-9-]{1,64}$",
                   "validationMessage": "Only alphanumeric characters and a dash are allowed, and the value must be 1 to 64 characters."
                 },
-                "visible": "[and(equals(basics('fortiGateImageSKU'), 'fortinet_fg-vm'),greaterOrEquals(int(basics('fortiGateCount')),2),steps('instance').fgtLicense.fgtLicenseFortiFlexCheck)]"
+                "visible": "[and(equals(basics('fortiGateImageSku'), 'fortinet_fg-vm'),greaterOrEquals(int(basics('fortiGateCount')),2),steps('instance').fgtLicense.fgtLicenseFortiFlexCheck)]"
               },
               {
                 "name": "fgt3fortiflex",
@@ -762,7 +762,7 @@
                   "regex": "^[A-Za-z0-9-]{1,64}$",
                   "validationMessage": "Only alphanumeric characters and a dash are allowed, and the value must be 1 to 64 characters."
                 },
-                "visible": "[and(equals(basics('fortiGateImageSKU'), 'fortinet_fg-vm'),greaterOrEquals(int(basics('fortiGateCount')),3),steps('instance').fgtLicense.fgtLicenseFortiFlexCheck)]"
+                "visible": "[and(equals(basics('fortiGateImageSku'), 'fortinet_fg-vm'),greaterOrEquals(int(basics('fortiGateCount')),3),steps('instance').fgtLicense.fgtLicenseFortiFlexCheck)]"
               },
               {
                 "name": "fgt4fortiflex",
@@ -775,7 +775,7 @@
                   "regex": "^[A-Za-z0-9-]{1,64}$",
                   "validationMessage": "Only alphanumeric characters and a dash are allowed, and the value must be 1 to 64 characters."
                 },
-                "visible": "[and(equals(basics('fortiGateImageSKU'), 'fortinet_fg-vm'),greaterOrEquals(int(basics('fortiGateCount')),4),steps('instance').fgtLicense.fgtLicenseFortiFlexCheck)]"
+                "visible": "[and(equals(basics('fortiGateImageSku'), 'fortinet_fg-vm'),greaterOrEquals(int(basics('fortiGateCount')),4),steps('instance').fgtLicense.fgtLicenseFortiFlexCheck)]"
               },
               {
                 "name": "fgt5fortiflex",
@@ -788,7 +788,7 @@
                   "regex": "^[A-Za-z0-9-]{1,64}$",
                   "validationMessage": "Only alphanumeric characters and a dash are allowed, and the value must be 1 to 64 characters."
                 },
-                "visible": "[and(equals(basics('fortiGateImageSKU'), 'fortinet_fg-vm'),greaterOrEquals(int(basics('fortiGateCount')),5),steps('instance').fgtLicense.fgtLicenseFortiFlexCheck)]"
+                "visible": "[and(equals(basics('fortiGateImageSku'), 'fortinet_fg-vm'),greaterOrEquals(int(basics('fortiGateCount')),5),steps('instance').fgtLicense.fgtLicenseFortiFlexCheck)]"
               },
               {
                 "name": "fgt6fortiflex",
@@ -801,7 +801,7 @@
                   "regex": "^[A-Za-z0-9-]{1,64}$",
                   "validationMessage": "Only alphanumeric characters and a dash are allowed, and the value must be 1 to 64 characters."
                 },
-                "visible": "[and(equals(basics('fortiGateImageSKU'), 'fortinet_fg-vm'),greaterOrEquals(int(basics('fortiGateCount')),6),steps('instance').fgtLicense.fgtLicenseFortiFlexCheck)]"
+                "visible": "[and(equals(basics('fortiGateImageSku'), 'fortinet_fg-vm'),greaterOrEquals(int(basics('fortiGateCount')),6),steps('instance').fgtLicense.fgtLicenseFortiFlexCheck)]"
               },
               {
                 "name": "fgt7fortiflex",
@@ -814,7 +814,7 @@
                   "regex": "^[A-Za-z0-9-]{1,64}$",
                   "validationMessage": "Only alphanumeric characters and a dash are allowed, and the value must be 1 to 64 characters."
                 },
-                "visible": "[and(equals(basics('fortiGateImageSKU'), 'fortinet_fg-vm'),greaterOrEquals(int(basics('fortiGateCount')),7),steps('instance').fgtLicense.fgtLicenseFortiFlexCheck)]"
+                "visible": "[and(equals(basics('fortiGateImageSku'), 'fortinet_fg-vm'),greaterOrEquals(int(basics('fortiGateCount')),7),steps('instance').fgtLicense.fgtLicenseFortiFlexCheck)]"
               },
               {
                 "name": "fgt8fortiflex",
@@ -827,7 +827,7 @@
                   "regex": "^[A-Za-z0-9-]{1,64}$",
                   "validationMessage": "Only alphanumeric characters and a dash are allowed, and the value must be 1 to 64 characters."
                 },
-                "visible": "[and(equals(basics('fortiGateImageSKU'), 'fortinet_fg-vm'),greaterOrEquals(int(basics('fortiGateCount')),8),steps('instance').fgtLicense.fgtLicenseFortiFlexCheck)]"
+                "visible": "[and(equals(basics('fortiGateImageSku'), 'fortinet_fg-vm'),greaterOrEquals(int(basics('fortiGateCount')),8),steps('instance').fgtLicense.fgtLicenseFortiFlexCheck)]"
               },
               {
                 "name": "fgtLicensePAYGInfo",
@@ -837,7 +837,7 @@
                   "text": "Pay As You Go licenses was selected in the basics blade and provisioned automatically durig deployment. Registration of the PAYG license is required to receive support.",
                   "uri": "https://docs.fortinet.com/document/fortigate-public-cloud/7.2.0/azure-administration-guide/533394/creating-a-support-account"
                 },
-                "visible": "[not(equals(basics('fortiGateImageSKU'), 'fortinet_fg-vm'))]"
+                "visible": "[not(equals(basics('fortiGateImageSku'), 'fortinet_fg-vm'))]"
               },
               {
                 "name": "fgtLicenseMigrateInfo",
@@ -1370,11 +1370,11 @@
                 "defaultValue": "",
                 "toolTip": "Azure Compute Gallery Image Version resource ID",
                 "constraints": {
-                  "required": "[and(contains(steps('instance').instancetype.selection, 'p'),equals(basics('fortiGateImageSKU'),'fortinet_fg-vm'))]",
+                  "required": "[and(contains(steps('instance').instancetype.selection, 'p'),equals(basics('fortiGateImageSku'),'fortinet_fg-vm'))]",
                   "regex": "^[\\w\\W\n\t]{0,10240}$",
                   "validationMessage": "All characters allowed, max 10240 characters."
                 },
-                "visible": "[equals(basics('fortiGateImageSKU'),'fortinet_fg-vm')]"
+                "visible": "[equals(basics('fortiGateImageSku'),'fortinet_fg-vm')]"
               },
               {
                 "name": "customvhdinfo2",
@@ -1434,7 +1434,7 @@
     "outputs": {
       "fortiGateNamePrefix": "[basics('fortiGateNamePrefix')]",
       "fortiGateCount": "[basics('fortiGateCount')]",
-      "fortiGateImageSKU": "[basics('fortiGateImageSKU')]",
+      "fortiGateImageSku": "[basics('fortiGateImageSku')]",
       "fortiGateImageVersion": "[basics('fortiGateImageVersion')]",
       "adminUsername": "[basics('adminUsername')]",
       "adminPassword": "[basics('adminPassword')]",
