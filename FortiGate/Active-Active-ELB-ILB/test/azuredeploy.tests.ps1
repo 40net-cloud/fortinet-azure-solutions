@@ -98,7 +98,6 @@ Describe 'FGT A/A' {
       'customImageReference',
       'externalLoadBalancer',
       'fortiGateAdditionalCustomData',
-      'fortiGateConfigSync',
       'fortiGateCount',
       'fortiGateImageSKU',
       'fortiGateImageVersion',
@@ -140,8 +139,6 @@ Describe 'FGT A/A' {
       'vnetNewOrExisting',
       'vnetResourceGroup'
       $templateParameters = (get-content $templateFileLocation | ConvertFrom-Json -ErrorAction SilentlyContinue).Parameters | Get-Member -MemberType NoteProperty | % Name | sort
-      Write-Host ( "Expected: $expectedTemplateParameters" )
-      Write-Host ( "Received: $templateParameters" )
       $templateParameters | Should -Be $expectedTemplateParameters
     }
 
