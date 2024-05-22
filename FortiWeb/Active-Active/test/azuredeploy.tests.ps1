@@ -41,6 +41,8 @@ BeforeAll {
     'fortiWebAAdditionalCustomData' = $config
     'fortiWebBAdditionalCustomData' = $config
     'publicIPName'                  = $publicIPName
+    'imageSku'                      = "fortinet_fw-vm_payg_v3"
+    'availabilityOptions'           = "Availability Zones"
   }
   $ports = @(40030, 50030, 40031, 50031)
 }
@@ -179,9 +181,9 @@ Describe 'FWB Active/Active' {
     }
   }
 
-#  Context 'Cleanup' {
-#    It "Cleanup of deployment" {
-#      Remove-AzResourceGroup -Name $testsResourceGroupName -Force
-#    }
-#  }
+  #  Context 'Cleanup' {
+  #    It "Cleanup of deployment" {
+  #      Remove-AzResourceGroup -Name $testsResourceGroupName -Force
+  #    }
+  #  }
 }
