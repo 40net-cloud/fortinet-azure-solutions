@@ -123,8 +123,6 @@ Describe 'FWB Active/Active' {
       'vnetNewOrExisting',
       'vnetResourceGroup'
       $templateParameters = (get-content $templateFileLocation | ConvertFrom-Json -ErrorAction SilentlyContinue).Parameters | Get-Member -MemberType NoteProperty | % Name | Sort-Object
-      Write-Host ( "Expected: $expectedTemplateParameters" )
-      Write-Host ( "Received: $templateParameters" )
       $templateParameters | Should -Be $expectedTemplateParameters
     }
 
@@ -156,6 +154,9 @@ Describe 'FWB Active/Active' {
     BeforeAll {
       $fwb = (Get-AzPublicIpAddress -Name $publicIPName -ResourceGroupName $testsResourceGroupName).IpAddress
       Write-Host ("FortiWeb public IP: " + $fwb)
+      Write-Host ("FortiWeb username: " + $testsAdminUsername)
+      Write-Host ("FortiWeb password: " + $testsResourceGroupName)
+      Write-Host ("FortiWeb sshkey: " + $sshkey)
     }
     It "FWB: Ports listening" {
       ForEach ( $port in $ports ) {
