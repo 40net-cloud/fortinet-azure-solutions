@@ -30,7 +30,7 @@ BeforeAll {
   $testsResourceGroupLocation = "westeurope"
 
   # ARM Template Variables
-  $config = "config system global `n set gui-theme mariner `n end `n config system admin `n edit devops `n set accprofile super_admin `n set ssh-public-key1 `""
+  $config = "config system console `n set output standard `n end `n config system global `n set gui-theme mariner `n end `n config system admin `n edit devops `n set accprofile super_admin `n set ssh-public-key1 `""
   $config += Get-Content $sshkeypub
   $config += "`" `n set password $testsResourceGroupName `n next `n end"
   $publicIPName = "$testsPrefix-externalloadbalancer-pip"
@@ -170,9 +170,6 @@ Describe 'FGT A/A' {
       $fgt = (Get-AzPublicIpAddress -Name $publicIPName -ResourceGroupName $testsResourceGroupName).IpAddress
       Write-Host ("FortiGate public IP: " + $fgt)
       $verify_commands = @'
-            config system console
-            set output standard
-            end
             get system status
             show system interface
             show router static
