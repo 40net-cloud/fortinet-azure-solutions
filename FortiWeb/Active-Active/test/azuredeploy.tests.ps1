@@ -31,7 +31,7 @@ BeforeAll {
   $testsResourceGroupLocation = "westeurope"
 
   # ARM Template Variables
-  $config = "config system admin `n edit devops `n set access-profil prof_admin `n set sshkey `""
+  $config = "config system console `n set output standard `n end `n config system admin `n edit devops `n set access-profil prof_admin `n set sshkey `""
   $config += Get-Content $sshkeypub
   $config += "`" `n set password $testsResourceGroupName `n next `n end"
   $publicIPName = "$testsPrefix-fwb-pip"
@@ -161,9 +161,6 @@ Describe 'FWB Active/Active' {
       $fwb = (Get-AzPublicIpAddress -Name $publicIPName -ResourceGroupName $testsResourceGroupName).IpAddress
       Write-Host ("FortiWeb public IP: " + $fwb)
       $verify_commands = @'
-        config system console
-        set output standard
-        end
         get system status
         show system interface
         diag debug cloudinit show
