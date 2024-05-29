@@ -91,3 +91,5 @@ For direct issues, please refer to the [Issues](https://github.com/40net-cloud/f
 ## License
 
 [License](/../../blob/main/LICENSE) © Fortinet Technologies. All rights reserved.
+
+[![Azure Portal Wizard](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.svg?sanitize=true)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fyarafe%2FTest%2Fmain%2FFGT%2FIPv6%2FA-Single-VM%2Fazuredeploy.json/createUIDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2Fyarafe%2FTest%2Fmain%2FFGT%2FIPv6%2FA-Single-VM%2FcreateUiDefinition.json)
