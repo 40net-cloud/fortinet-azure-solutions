@@ -304,6 +304,10 @@
               "value": "7.4.3"
             },
             {
+              "label": "7.4.4",
+              "value": "7.4.4"
+            },
+            {
               "label": "latest",
               "value": "latest"
             }
