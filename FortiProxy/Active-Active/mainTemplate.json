@@ -40,11 +40,7 @@
       "type": "string",
       "defaultValue": "latest",
       "allowedValues": [
-        "7.0.12",
-        "7.0.13",
         "7.0.16",
-        "7.2.6",
-        "7.2.7",
         "7.2.9",
         "7.4.3",
         "latest"

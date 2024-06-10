@@ -120,24 +120,8 @@
           "required": false,
           "allowedValues": [
             {
-              "label": "7.0.12",
-              "value": "7.0.12"
-            },
-            {
-              "label": "7.0.13",
-              "value": "7.0.13"
-            },
-            {
               "label": "7.0.16",
               "value": "7.0.16"
-            },
-            {
-              "label": "7.2.6",
-              "value": "7.2.6"
-            },
-            {
-              "label": "7.2.7",
-              "value": "7.2.7"
             },
             {
               "label": "7.2.9",
