@@ -129,6 +129,7 @@ The ARM template deploys different resources and it is required to have the acce
 The FortiGate VMs need a specific configuration to match the deployed environment. This configuration can be injected during provisioning or afterwards via the different options including GUI, CLI, FortiManager or REST API.
 
 - [Fabric Connector](#fabric-connector)
+- [VNET peering](#vnet-peering)
 - [East-West connections](#east-west-connections)
 - [Inbound connections](#inbound-connections)
 - [Outbound connections](#outbound-connections)
