@@ -14,12 +14,12 @@ This Azure ARM template deploys up to 8 FortiGate VM instances, all active combi
 
 In Microsoft Azure, you can deploy op to 8 FortiGate VM instances, all active that communicate with each other and the Azure fabric. This FortiGate setup will receive the to be inspected traffic using user defined routing (UDR) and public IPs. You can send all or specific traffic that needs inspection, going to/coming from on-prem networks or public internet by adapting the UDR routing. Depending on the options selected you will have one of the following architectures deployed:
 
-1. External and internal Azure Standard Load Balancer
-2. Internal Azure Standard Load Balancer only
-3. External public IP per instance and a internal Azure Standard Load Balancer
-4. External and internal Azure Standard Load Balancer and a public IP per instance 
-5. Internal Azure Standard Load Balancer and an Azure NAT Gateway for outbound connections
-6. External and internal Azure Standard Load Balancer combined with an Azure NAT Gateway for outbound connections
+1. [External and internal Azure Standard Load Balancer](#external-and-internal-azure-standard-load-balancer)
+2. [Internal Azure Standard Load Balancer only](#internal-azure-standard-load-balancer-only)
+3. [External public IP per instance and a internal Azure Standard Load Balancer](#external-public-ip-per-instance-and-a-internal-azure-standard-load-balancer)
+4. [External and internal Azure Standard Load Balancer and a public IP per instance](#external-and-internal-azure-standard-load-balancer-and-a-public-ip-per-instance) 
+5. [Internal Azure Standard Load Balancer and an Azure NAT Gateway for outbound connections](#internal-azure-standard-load-balancer-and-an-azure-nat-gateway-for-outbound-connections)
+6. [External and internal Azure Standard Load Balancer combined with an Azure NAT Gateway for outbound connections](#external-and-internal-azure-standard-load-balancer-and-an-azure-nat-gateway-for-outbound-connections)
 
 This Azure ARM template will automatically deploy a full working environment containing the the following components.
 
@@ -143,7 +143,9 @@ The FortiGate-VM uses [Managed Identities](https://docs.microsoft.com/en-us/azur
 
 ### VNET peering
 
-In Microsoft Azure, this central security services hub is commonly implemented using VNET peering. The central security services hub component will receive, using user-defined routing (UDR), all or specific traffic that needs inspection going to/coming from on-prem networks or the public internet.
+In Microsoft Azure, this central security services hub is commonly implemented using VNET peering. The central security services hub component will receive, using user-defined routing (UDR), all or specific traffic that needs inspection going to/coming from on-prem networks or the public internet. This deployment can be used as the hub section of such a [Hub-Spoke network topology](https://learn.microsoft.com/en-us/azure/architecture/networking/architecture/hub-spoke?tabs=cli#communication-through-an-nva)
+
+![VNET peering](images/vnet-peering.png)
 
 ### East-West connections
 
