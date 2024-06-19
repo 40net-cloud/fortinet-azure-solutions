@@ -1,0 +1,72 @@
+name: "[FWB] Azure Marketplace release"
+
+on:
+  push:
+    tags:
+      - "FWB-*"
+
+  workflow_dispatch:
+
+env:
+  PUBLISHER: fortinet
+  PRODUCT: FortiWeb
+  PRODUCTL: FortiWeb
+  PRODUCTSHORT: FWB
+  PRODUCTOFFER: fortinet_fortiweb-vm_v5
+  PRODUCTSKU: fortinet_fw-vm
+
+jobs:
+  build:
+    name: Getting all data ready for publishing
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Azure Login via Az module
+        uses: azure/login@v2
+        with:
+          creds: ${{secrets.AZURE_CREDENTIALS}}
+          enable-AzPSSession: true
+
+      - name: Package and convert templates
+        uses: azure/powershell@v2
+        with:
+          inlineScript: |
+            $buildingBlocks = @("A-Single-VM", "Active-Active")
+            $marketplaceVersions = @()
+            $marketplaceVersionsUI = @()
+
+            $versions = Get-AzVMImage -PublisherName "${env:PUBLISHER}" -Location eastus -Offer "${env:PRODUCTOFFER}" -sku "${env:PRODUCTSKU}"
+            $marketplaceVersions += $($versions | Where-Object {$_.Version.StartsWith("7.0")} | Sort-Object -Unique { $_.Version -as [version]} | Select-Object -Last 2).Version
+            $marketplaceVersions += $($versions | Where-Object {$_.Version.StartsWith("7.2")} | Sort-Object -Unique { $_.Version -as [version]} | Select-Object -Last 2).Version
+            $marketplaceVersions += $($versions | Where-Object {$_.Version.StartsWith("7.4")} | Sort-Object -Unique { $_.Version -as [version]} | Select-Object -Last 2).Version
+            $marketplaceVersions += "latest"
+            $marketplaceVersions | ForEach-Object { $marketplaceVersionsUI += [pscustomobject]@{label=$_;value=$_} }
+
+            foreach ($buildingBlock in $buildingBlocks) {
+              $dest = "./releases/${buildingBlock}/"
+              [void](New-Item -Path "${dest}" -Type Directory)
+
+              $content = Get-Content -Raw -Path "./${env:PRODUCT}/${buildingBlock}/mainTemplate.json" | ConvertFrom-Json
+              $content.parameters.FortiWebImageVersion.allowedValues = $marketplaceVersions
+              $content.resources.Where({$_.type -eq 'Microsoft.Resources/deployments'})[0].name = "pid-776b2227-2743-485a-b385-e9dfd42bfe75-partnercenter"
+              $content | ConvertTo-Json -depth 100 | Out-File "${dest}/mainTemplate.json"
+              "" | Out-File -Append "${dest}/mainTemplate.json"
+
+              $content = Get-Content -Raw -Path "./${env:PRODUCT}/${buildingBlock}/createUiDefinition.json" | ConvertFrom-Json
+              $content.parameters.basics.Where({$_.Name.equals("FortiWebImageVersion")}).constraints.allowedValues = $marketplaceVersionsUI
+              $content | ConvertTo-Json -depth 100 | Out-File "${dest}/createUiDefinition.json"
+              "" | Out-File -Append "${dest}/createUiDefinition.json"
+            }
+            Compress-Archive -Path "./releases/*" -DestinationPath "./releases/${env:PRODUCTL}-azure-templates.zip"
+          azPSVersion: "latest"
+
+      - name: upload-templates-zip
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{secrets.GITHUB_TOKEN}}
+          file: "./releases/${{env.PRODUCTL}}-azure-templates.zip"
+          asset_name: "${{env.PRODUCTL}}-azure-templates.zip"
+          tag: ${{github.ref}}
+          overwrite: true
+          body: "${{env.PRODUCT}} Azure Marketplace Release"
