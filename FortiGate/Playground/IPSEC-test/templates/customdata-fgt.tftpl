@@ -5,7 +5,7 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Content-Disposition: attachment; filename="config"
+Content-Disposition: attachment; filename="preconfig"
 
 config system sdn-connector
 	edit AzureSDN
@@ -17,26 +17,32 @@ config sys global
     set hostname "${fgt_vm_name}"
     set timezone 26
     set gui-theme mariner
-    set ipsec-soft-dec-async enable
+    set ipsec-round-robin enable
+end
+config system affinity-packet-redistribution
+    edit 1
+        set interface "port1"
+        set rxqid 255
+        set round-robin enable
+        set affinity-cpumask "ffff"
+    next
+end
+config system probe-response
+    set mode http-probe
+    set port 8008
+    set http-probe-value "OK"
 end
 config system interface
     edit port1
         set mode static
         set ip ${fgt_external_ipaddress} ${fgt_external_mask}
         set description external
-        set allowaccess ping https ssh ftm
-        set secondary-IP enable
-        config secondaryip
-        %{ for i in range(1, fgt_external_ipcount + 1) ~}
-            edit ${i}
-                set ip ${cidrhost(fgt_external_network, i + 4)} ${fgt_external_mask}
-            next
-        %{ endfor ~}
-        end
+        set allowaccess ping https ssh probe-response
     next
     edit port2
         set mode static
         set ip ${fgt_internal_ipaddress}/${fgt_internal_mask}
+        set allowaccess ping probe-response
         set description internal
     next
 end
@@ -51,6 +57,21 @@ config router static
     edit 1
         set gateway ${fgt_external_gateway}
         set device port1
+    next
+    edit 2
+        set dst ${fgt_protected_network}
+        set gateway ${fgt_internal_gateway}
+        set device port2
+    next
+    edit 3
+        set dst 168.63.129.16 255.255.255.255
+        set gateway ${fgt_external_gateway}
+        set device "port1"
+    next
+    edit 4
+        set dst 168.63.129.16 255.255.255.255
+        set gateway ${fgt_internal_gateway}
+        set device "port2"
     next
 end
 
@@ -74,4 +95,64 @@ Content-Disposition: attachment; filename="${fgt_license_file}"
 ${file(fgt_license_file)}
 
 %{ endif }
+--===============0086047718136476635==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: attachment; filename="preconfig"
+
+config vpn ipsec phase1-interface
+    edit "vpn1"
+        set interface "port1"
+        set ike-version 2
+        set keylife 28800
+        set peertype any
+        set net-device disable
+        set packet-redistribution enable
+        set proposal aes256-sha256
+        set network-overlay enable
+        set network-id 1
+        set remote-gw ${remote_public_ip}
+        set psksecret ${ipsec_psk}
+    next
+end
+config vpn ipsec phase2-interface
+    edit "vpn1"
+        set phase1name "vpn1"
+        set proposal aes256-sha256
+        set keepalive enable
+        set keylifeseconds 3600
+        set auto-negotiate enable
+    next
+end
+config router static
+    edit 5
+        set dst ${remote_protected_network}
+        set device vpn1
+    next
+end
+config firewall policy
+    edit 1
+        set name "InboundIPSEC"
+        set srcintf "vpn1"
+        set dstintf "port2"
+        set action accept
+        set srcaddr "all"
+        set dstaddr "all"
+        set schedule "always"
+        set service "ALL"
+        set logtraffic all
+    next
+    edit 2
+        set name "OutboundIPSEC"
+        set srcintf "port2"
+        set dstintf "vpn1"
+        set action accept
+        set srcaddr "all"
+        set dstaddr "all"
+        set schedule "always"
+        set service "ALL"
+        set logtraffic all
+    next
+end
 --===============0086047718136476635==--

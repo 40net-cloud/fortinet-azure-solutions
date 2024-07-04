@@ -6,7 +6,7 @@
 
 resource "azurerm_public_ip" "lnxbpip" {
   count               = var.lnx_count
-  name                = "${var.PREFIX}-LNX-B-${count.index}-PIP"
+  name                = "${var.PREFIX}-LNX-B-${count.index}-pip"
   location            = var.LOCATION
   resource_group_name = azurerm_resource_group.resourcegroup.name
   allocation_method   = "Static"
@@ -15,11 +15,11 @@ resource "azurerm_public_ip" "lnxbpip" {
 
 resource "azurerm_network_interface" "lnxbifc" {
   count                         = var.lnx_count
-  name                          = "${var.PREFIX}-LNX-B-${count.index}-IFC"
+  name                          = "${var.PREFIX}-lnx-b-${count.index}-ifc"
   location                      = azurerm_resource_group.resourcegroup.location
   resource_group_name           = azurerm_resource_group.resourcegroup.name
-  enable_ip_forwarding          = false
-  enable_accelerated_networking = true
+  ip_forwarding_enabled          = false
+  accelerated_networking_enabled = true
 
   ip_configuration {
     name                          = "interface1"
@@ -31,7 +31,7 @@ resource "azurerm_network_interface" "lnxbifc" {
 
 resource "azurerm_linux_virtual_machine" "lnxbvm" {
   count                 = var.lnx_count
-  name                  = "${var.PREFIX}-LNX-B-${count.index}-VM"
+  name                  = "${var.PREFIX}-lnx-b-${count.index}-vm"
   location              = azurerm_resource_group.resourcegroup.location
   resource_group_name   = azurerm_resource_group.resourcegroup.name
   network_interface_ids = [azurerm_network_interface.lnxbifc[count.index].id]
@@ -50,12 +50,12 @@ resource "azurerm_linux_virtual_machine" "lnxbvm" {
   }
 
   os_disk {
-    name                 = "${var.PREFIX}-LNX-B-${count.index}-OSDISK"
+    name                 = "${var.PREFIX}-lnx-b-${count.index}-osdisk"
     caching              = "ReadWrite"
     storage_account_type = "StandardSSD_LRS"
   }
 
-  computer_name                   = "${var.PREFIX}-LNX-B-${count.index}-VM"
+  computer_name                   = "${var.PREFIX}-lnx-b-${count.index}-vm"
   admin_username                  = var.USERNAME
   admin_password                  = var.PASSWORD
   disable_password_authentication = false

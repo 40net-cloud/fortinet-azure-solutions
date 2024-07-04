@@ -28,7 +28,7 @@ variable "FGT_IMAGE_SKU" {
 
 variable "FGT_VERSION" {
   description = "FortiGate version by default the 'latest' available version in the Azure Marketplace is selected"
-  default     = "7.2.5"
+  default     = "7.4.4"
 }
 
 variable "FGT_BYOL_LICENSE_FILE_A" {
@@ -134,8 +134,24 @@ variable "subnet_protected" {
 # Virtual Machines sizes
 ##############################################################################################################
 
-variable "fgt_vmsize" {
-  default = "Standard_D16s_v4"
+variable "fgt_a_vmsize" {
+  default = "Standard_D16s_v5"
+}
+
+variable "fgt_b_vmsize" {
+  default = "Standard_D16s_v5"
+}
+
+# Change cpumask depending on instance type: 
+# 4 core = f
+# 8 core = ff
+# 16 core = ffff
+variable "fgt_a_cpumask" {
+  default = "ffff"
+}
+
+variable "fgt_b_cpumask" {
+  default = "ffff"
 }
 
 variable "lnx_vmsize" {
@@ -151,7 +167,7 @@ variable "lnx_count" {
 ##############################################################################################################
 
 resource "azurerm_resource_group" "resourcegroup" {
-  name     = "${var.PREFIX}-RG"
+  name     = "${var.PREFIX}-rg"
   location = var.LOCATION
 
   tags = var.TAGS
@@ -178,10 +194,14 @@ resource "random_string" "ipsec_psk" {
 
 locals {
   fgt_external_ipcount = 32
-  fgt_a_prefix         = "${var.PREFIX}-FGT-A"
-  fgt_a_vm_name        = "${local.fgt_a_prefix}-VM"
-  fgt_b_prefix         = "${var.PREFIX}-FGT-B"
-  fgt_b_vm_name        = "${local.fgt_b_prefix}-VM"
+  fgt_a_prefix         = "${var.PREFIX}-fgt-a"
+  fgt_a_vm_name        = "${local.fgt_a_prefix}-vm"
+  fgt_a_private_ip_address_ext = cidrhost(var.subnet_fgt_external["a"], 5)
+  fgt_a_private_ip_address_int = cidrhost(var.subnet_fgt_internal["a"], 5)
+  fgt_b_prefix         = "${var.PREFIX}-fgt-b"
+  fgt_b_vm_name        = "${local.fgt_b_prefix}-vm"
+  fgt_b_private_ip_address_ext = cidrhost(var.subnet_fgt_external["b"], 5)
+  fgt_b_private_ip_address_int = cidrhost(var.subnet_fgt_internal["b"], 5)
 }
 
 ##############################################################################################################

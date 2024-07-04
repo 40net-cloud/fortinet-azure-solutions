@@ -14,7 +14,8 @@ vpn_a_ip_underlay = ipaddress.ip_network("172.16.136.0/25").network_address
 vpn_b_ip_underlay = ipaddress.ip_network("172.16.137.0/25").network_address
 vpn_a_subnet = "172.16.136.128/25"
 vpn_b_subnet = "172.16.137.128/25"
-vpn_config_name="VPN"
+vpn_config_name="vpn"
+vpn_config_agg="${vpn_config_name}-agg"
 
 #################################################################################
 # Templates
@@ -44,7 +45,7 @@ config vpn ipsec phase2-interface
     next
 end
 config system ipsec-aggregate
-    edit "VPNagg"
+    edit "{{ vpn_config_agg }}"
         append member "{{ vpn_config_name }}{{n}}"
     next
 end
@@ -70,10 +71,12 @@ config router static
     next
     edit 2
         set dst {{ vpn_b_subnet }}
-        set device "VPNagg"
+        set device {{ vpn_config_agg }}
     next
 end
-
+config system global
+    set ipsec-round-robin enable
+end
 """
 
 #################################################################################
