@@ -397,7 +397,7 @@
                 "name": "availabilityOptions",
                 "type": "Microsoft.Common.DropDown",
                 "label": "Availability Option",
-                "defaultValue": "Availability Set",
+                "defaultValue": "Availability Zones",
                 "toolTip": "Deploy FortiGate VMs in an Availability Set or Availability Zones.",
                 "constraints": {
                   "required": false,
@@ -651,10 +651,35 @@
         "name": "networking",
         "label": "Networking",
         "subLabel": {
-          "preValidation": "Configure internal networking",
+          "preValidation": "Configure networking",
           "postValidation": "Done"
         },
         "elements": [
+          {
+            "name": "options",
+            "type": "Microsoft.Common.DropDown",
+            "label": "Architecture options",
+            "defaultValue": "Manual failover",
+            "toolTip": "Deploy NAT Gateway or attach Public IP address for each FortiGate.",
+            "constraints": {
+              "required": false,
+              "allowedValues": [
+                {
+                  "label": "Manual failover",
+                  "value": "manual"
+                },
+                {
+                  "label": "VRRP automatic failover using an external Azure Load Balancer",
+                  "value": "vrrp-external-loadbalancer"
+                },
+                {
+                  "label": "VRRP automatic failover using an internal Azure Load Balancer",
+                  "value": "vrrp-internal-loadbalancer"
+                }
+              ]
+            },
+            "visible": true
+          },
           {
             "name": "virtualnetworksection",
             "type": "Microsoft.Common.Section",
@@ -693,7 +718,7 @@
                   "subnet1": {
                     "label": "FortiManager Subnet",
                     "defaultValue": {
-                      "name": "ProtectedSubnet",
+                      "name": "fortimanagersubnet",
                       "addressPrefixSize": "/26"
                     },
                     "constraints": {
@@ -703,7 +728,56 @@
                     }
                   }
                 },
-                "visible": true
+                "visible": "[equals(steps('networking').options, 'manual')]"
+              },
+              {
+                "name": "virtualnetworkvrrp",
+                "type": "Microsoft.Network.VirtualNetworkCombo",
+                "label": {
+                  "virtualNetwork": "Virtual network",
+                  "subnets": "Subnets"
+                },
+                "toolTip": {
+                  "virtualNetwork": "Virtual Network for deployment of the FortiManager VM solution",
+                  "subnets": "Standard deployment is to have an "
+                },
+                "defaultValue": {
+                  "name": "[if(equals(basics('namePrefix'),''),'fortimanager-vnet',concat(basics('namePrefix'),'-vnet'))]",
+                  "addressPrefixSize": "/24"
+                },
+                "constraints": {
+                  "minAddressPrefixSize": "/29"
+                },
+                "options": {
+                  "hideExisting": false
+                },
+                "subnets": {
+                  "subnet1": {
+                    "label": "FortiManager Subnet",
+                    "defaultValue": {
+                      "name": "fortimanagersubnet",
+                      "addressPrefixSize": "/26"
+                    },
+                    "constraints": {
+                      "minAddressPrefixSize": "/29",
+                      "minAddressCount": 1,
+                      "requireContiguousAddresses": true
+                    }
+                  },
+                  "subnet2": {
+                    "label": "FortiManager HA Subnet",
+                    "defaultValue": {
+                      "name": "fortimanagerhasubnet",
+                      "addressPrefixSize": "/26"
+                    },
+                    "constraints": {
+                      "minAddressPrefixSize": "/29",
+                      "minAddressCount": 1,
+                      "requireContiguousAddresses": true
+                    }
+                  }
+                },
+                "visible": "[not(equals(steps('networking').options, 'manual'))]"
               },
               {
                 "name": "virtualnetworkinfo",
@@ -728,9 +802,17 @@
         },
         "elements": [
           {
+            "name": "publiciptextvrrp",
+            "type": "Microsoft.Common.TextBlock",
+            "visible": "[equals(steps('networking').options, 'vrrp-external-loadbalancer')]",
+            "options": {
+              "text": "Using VRRP with an external Azure Load Balancer, a public IP address will be provisioned during deployment."
+            }
+          },
+          {
             "name": "publiciptext",
             "type": "Microsoft.Common.TextBlock",
-            "visible": true,
+            "visible": "[equals(steps('networking').options, 'manual')]",
             "options": {
               "text": "The public IP will be used for connect to the FortiManager. The public IP is optional. Selecting none will result in a FortiManager that is not accessible from the public internet. Other means like VPN connection or Experess Route are needed to connect to the unit in that case."
             }
@@ -759,7 +841,7 @@
               "hideNone": false,
               "hideDomainNameLabel": true
             },
-            "visible": true
+            "visible": "[equals(steps('networking').options, 'manual')]"
           },
           {
             "name": "publicip2",
@@ -785,7 +867,33 @@
               "hideNone": false,
               "hideDomainNameLabel": true
             },
-            "visible": true
+            "visible": "[equals(steps('networking').options, 'manual')]"
+          },
+          {
+            "name": "publicip3",
+            "type": "Microsoft.Network.PublicIpAddressCombo",
+            "label": {
+              "publicIpAddress": "External Load Balancer",
+              "domainNameLabel": "Domain name label"
+            },
+            "toolTip": {
+              "publicIpAddress": "Public IP attached to the External Load Balancer",
+              "domainNameLabel": "DNS name linked to this public IP"
+            },
+            "defaultValue": {
+              "publicIpAddressName": "[if(equals(basics('namePrefix'),''),'fortimanager-elb',concat(basics('namePrefix'),'-elb-pip'))]",
+              "domainNameLabel": "mydomain"
+            },
+            "constraints": {
+              "required": {
+                "domainNameLabel": false
+              }
+            },
+            "options": {
+              "hideNone": false,
+              "hideDomainNameLabel": true
+            },
+            "visible": "[equals(steps('networking').options, 'vrrp-external-loadbalancer')]"
           },
           {
             "name": "standardsku",
@@ -909,6 +1017,7 @@
       "fortiManagerLicenseFortiFlexB": "[steps('instance').fmgLicense.fmgBfortiflex]",
       "fortiManagerSerialNumberA": "[steps('instance').fmgLicense.fmgAserial]",
       "fortiManagerSerialNumberB": "[steps('instance').fmgLicense.fmgBserial]",
+      "highavailabilityMethod": "[steps('networking').options]",
       "publicIP1NewOrExisting": "[steps('publicip').publicip1.newOrExistingOrNone]",
       "publicIP1Name": "[steps('publicip').publicip1.name]",
       "publicIP1ResourceGroup": "[steps('publicip').publicip1.resourceGroup]",
@@ -917,13 +1026,16 @@
       "publicIP2Name": "[steps('publicip').publicip2.name]",
       "publicIP2ResourceGroup": "[steps('publicip').publicip2.resourceGroup]",
       "publicIPAddress2Type": "[steps('publicip').publicip2.publicIPAllocationMethod]",
-      "vnetNewOrExisting": "[steps('networking').virtualnetworksection.virtualnetwork.newOrExisting]",
-      "vnetName": "[steps('networking').virtualnetworksection.virtualnetwork.name]",
-      "vnetResourceGroup": "[steps('networking').virtualnetworksection.virtualnetwork.resourceGroup]",
-      "vnetAddressPrefix": "[steps('networking').virtualnetworksection.virtualnetwork.addressPrefix]",
-      "subnet1Name": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet1.name]",
-      "subnet1Prefix": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet1.addressPrefix]",
-      "subnet1StartAddress": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet1.startAddress]",
+      "vnetNewOrExisting": "[if(equals(steps('networking').options, 'manual'),steps('networking').virtualnetworksection.virtualnetwork.newOrExisting,steps('networking').virtualnetworksection.virtualnetworkvrrp.newOrExisting)]",
+      "vnetName": "[if(equals(steps('networking').options, 'manual'),steps('networking').virtualnetworksection.virtualnetwork.name,steps('networking').virtualnetworksection.virtualnetworkvrrp.name)]",
+      "vnetResourceGroup": "[if(equals(steps('networking').options, 'manual'),steps('networking').virtualnetworksection.virtualnetwork.resourceGroup,steps('networking').virtualnetworksection.virtualnetworkvrrp.resourceGroup)]",
+      "vnetAddressPrefix": "[if(equals(steps('networking').options, 'manual'),steps('networking').virtualnetworksection.virtualnetwork.addressPrefix,steps('networking').virtualnetworksection.virtualnetworkvrrp.addressPrefix)]",
+      "subnet1Name": "[if(equals(steps('networking').options, 'manual'),steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet1.name,steps('networking').virtualnetworksection.virtualnetworkvrrp.subnets.subnet1.name)]",
+      "subnet1Prefix": "[if(equals(steps('networking').options, 'manual'),steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet1.addressPrefix,steps('networking').virtualnetworksection.virtualnetworkvrrp.subnets.subnet1.addressPrefix)]",
+      "subnet1StartAddress": "[if(equals(steps('networking').options, 'manual'),steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet1.startAddress,steps('networking').virtualnetworksection.virtualnetworkvrrp.subnets.subnet1.startAddres)]",
+      "subnet2Name": "[if(equals(steps('networking').options, 'manual'),'',steps('networking').virtualnetworksection.virtualnetworkvrrp.subnets.subnet2.name)]",
+      "subnet2Prefix": "[if(equals(steps('networking').options, 'manual'),'',steps('networking').virtualnetworksection.virtualnetworkvrrp.subnets.subnet2.addressPrefix)]",
+      "subnet2StartAddress": "[if(equals(steps('networking').options, 'manual'),'',steps('networking').virtualnetworksection.virtualnetworkvrrp.subnets.subnet2.startAddress)]",
       "serialConsole": "[steps('advanced').serialconsole.enabled]",
       "additionalCustomData": "[steps('advanced').customdata.config]"
     }
