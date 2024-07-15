@@ -476,7 +476,7 @@
     "sn2IPArray2": "[string(int(variables('sn2IPArray')[2]))]",
     "sn2IPArray1": "[string(int(variables('sn2IPArray')[1]))]",
     "sn2IPArray0": "[string(int(variables('sn2IPArray')[0]))]",
-    "sn2IPStartAddress": "[split(parameters('subnet2StartAddress'),'.')]",
+    "sn2IPStartAddress": "[if(equals(parameters('subnet2StartAddress'),''),split('1.2.3.4','.'),split(parameters('subnet2StartAddress'),'.'))]",
     "sn2IPfmgA": "[concat(variables('sn2IPArray0'),'.',variables('sn2IPArray1'),'.',variables('sn2IPArray2'),'.',add(int(variables('sn2IPStartAddress')[3]),1))]",
     "sn2IPfmgB": "[concat(variables('sn2IPArray0'),'.',variables('sn2IPArray1'),'.',variables('sn2IPArray2'),'.',add(int(variables('sn2IPStartAddress')[3]),2))]",
     "internalLBName": "[concat(parameters('namePrefix'),'-internalloadbalancer')]",
