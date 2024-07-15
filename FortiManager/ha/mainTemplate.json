@@ -727,7 +727,13 @@
       "sku": {
         "name": "Standard"
       },
-      "zones": "[variables('pipZones')]"
+      "zones": "[variables('pipZones')]",
+      "properties": {
+        "publicIPAllocationMethod": "static",
+        "dnsSettings": {
+          "domainNameLabel": "[concat(toLower(variables('publicIP1Name')), '-', uniquestring(resourceGroup().id))]"
+        }
+      }
     },
     {
       "condition": "[and(equals(parameters('highavailabilityMethod'),'manual'),equals(parameters('publicIP2NewOrExisting'), 'new'))]",
@@ -741,7 +747,13 @@
       "sku": {
         "name": "Standard"
       },
-      "zones": "[variables('pipZones')]"
+      "zones": "[variables('pipZones')]",
+      "properties": {
+        "publicIPAllocationMethod": "static",
+        "dnsSettings": {
+          "domainNameLabel": "[concat(toLower(variables('publicIP2Name')), '-', uniquestring(resourceGroup().id))]"
+        }
+      }
     },
     {
       "condition": "[equals(parameters('highavailabilityMethod'),'vrrp-external-loadbalancer')]",
@@ -755,7 +767,13 @@
       "sku": {
         "name": "Standard"
       },
-      "zones": "[variables('pipZones')]"
+      "zones": "[variables('pipZones')]",
+      "properties": {
+        "publicIPAllocationMethod": "static",
+        "dnsSettings": {
+          "domainNameLabel": "[concat(toLower(variables('publicIP3Name')), '-', uniquestring(resourceGroup().id))]"
+        }
+      }
     },
     {
       "condition": "[equals(parameters('highavailabilityMethod'),'vrrp-external-loadbalancer')]",
