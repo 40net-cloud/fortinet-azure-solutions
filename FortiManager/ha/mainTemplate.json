@@ -469,7 +469,7 @@
     "sn1IPilb": "[concat(variables('sn1IPArray0'),'.',variables('sn1IPArray1'),'.',variables('sn1IPArray2'),'.',int(variables('sn1IPStartAddress')[3]))]",
     "sn1IPfmgA": "[concat(variables('sn1IPArray0'),'.',variables('sn1IPArray1'),'.',variables('sn1IPArray2'),'.',add(int(variables('sn1IPStartAddress')[3]),1))]",
     "sn1IPfmgB": "[concat(variables('sn1IPArray0'),'.',variables('sn1IPArray1'),'.',variables('sn1IPArray2'),'.',add(int(variables('sn1IPStartAddress')[3]),2))]",
-    "sn2IPArray": "[if(equals(parameters('subnet2Prefix'),''),split('1.2.3.4','.'),split(parameters('subnet2Prefix'),'.'))]",
+    "sn2IPArray": "[if(equals(parameters('subnet2Prefix'),''),split('1.2.3.4/24','.'),split(parameters('subnet2Prefix'),'.'))]",
     "sn2IPArray2ndString": "[string(variables('sn2IPArray')[3])]",
     "sn2IPArray2nd": "[split(variables('sn2IPArray2ndString'),'/')]",
     "sn2CIDRmask": "[string(int(variables('sn2IPArray2nd')[1]))]",
@@ -1116,6 +1116,7 @@
       }
     },
     {
+      "condition": "[equals(parameters('highavailabilityMethod'),'manual')]",
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[variables('fmgBNic1Name')]",
       "apiVersion": "2023-04-01",
@@ -1148,6 +1149,7 @@
       }
     },
     {
+      "condition": "[equals(parameters('highavailabilityMethod'),'manual')]",
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[variables('fmgBNic2Name')]",
       "apiVersion": "2023-04-01",
@@ -1233,20 +1235,17 @@
           ]
         },
         "networkProfile": {
-          "networkInterfaces": [
+          "copy": [
             {
-              "properties": {
-                "primary": true
-              },
-              "id": "[variables('fmgANic1Id')]"
-            },
-            {
-              "properties": {
-                "primary": false
-              },
-              "id": "[variables('fmgANic2Id')]"
+              "name": "networkInterfaces",
+              "count": "[if(equals(parameters('highavailabilityMethod'),'manual'), 1, 2)]",
+              "input": {
+                "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(variables('fmgAVmName'),'-nic', copyIndex(1)))]",
+                "properties": {
+                  "primary": "[if(equals(copyIndex('networkInterfaces',1),1), 'true', 'false')]"
+                }
+              }
             }
-
           ]
         },
         "diagnosticsProfile": {
@@ -1317,18 +1316,16 @@
           ]
         },
         "networkProfile": {
-          "networkInterfaces": [
+          "copy": [
             {
-              "properties": {
-                "primary": true
-              },
-              "id": "[variables('fmgBNic1Id')]"
-            },
-            {
-              "properties": {
-                "primary": false
-              },
-              "id": "[variables('fmgBNic2Id')]"
+              "name": "networkInterfaces",
+              "count": "[if(equals(parameters('highavailabilityMethod'),'manual'), 1, 2)]",
+              "input": {
+                "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(variables('fmgBVmName'),'-nic', copyIndex(1)))]",
+                "properties": {
+                  "primary": "[if(equals(copyIndex('networkInterfaces',1),1), 'true', 'false')]"
+                }
+              }
             }
           ]
         },
