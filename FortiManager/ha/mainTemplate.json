@@ -601,7 +601,7 @@
       "condition": "[and(equals(parameters('vnetNewOrExisting'), 'new'),not(equals(parameters('highavailabilityMethod'),'manual')))]",
       "type": "Microsoft.Network/virtualNetworks/subnets",
       "apiVersion": "2023-04-01",
-      "name": "[concat(variables('vnetName'),'/', parameters('subnet2Name'))]",
+      "name": "[concat(variables('vnetName'),'/', if(equals(parameters('highavailabilityMethod'),'manual'), 'test', parameters('subnet2Name')))]",
       "dependsOn": [
         "[variables('vnetName')]"
       ],
