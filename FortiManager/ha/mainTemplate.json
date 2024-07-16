@@ -418,13 +418,13 @@
     "fmgAVmName": "[concat(parameters('namePrefix'),'-fmg-a')]",
     "fmgBVmName": "[concat(parameters('namePrefix'),'-fmg-b')]",
     "customDataHeader": "Content-Type: multipart/mixed; boundary=\"12345\"\nMIME-Version: 1.0\n\n--12345\nContent-Type: text/plain; charset=\"us-ascii\"\nMIME-Version: 1.0\nContent-Transfer-Encoding: 7bit\nContent-Disposition: attachment; filename=\"config\"\n\n",
-    "fmgACustomDataHAManual": "[concat('config system ha\n set mode primary\n set clusterid 10\n set password ', base64(parameters('adminPassword')), '\n config peer\n edit 1\n set serial-number ', parameters('fortiManagerSerialNumberB'), '\n set ip ', variables('sn1IPfmgB'), '\n next\n next\n end\n')]",
-    "fmgBCustomDataHAManual": "[concat('config system ha\n set mode secondary\n set clusterid 10\n set password ', base64(parameters('adminPassword')), '\n config peer\n edit 1\n set serial-number ', parameters('fortiManagerSerialNumberA'), '\n set ip ', variables('sn1IPfmgA'),'\n next\n next\n end\n')]",
-    "fmgACustomDataHAVRRPelb": "[concat('config system ha\n set clusterid 10\n set failover-mode vrrp\n set hb-interval 5\n set hb-lost-threshold 10\n config monitored-ips\n edit 1\n set interface port2\n set ip ', variables('sn2IPfmgB'), '\nnext\n end\n set password ', base64(parameters('adminPassword')), '\n config peer\n edit 1\n set serial-number ', parameters('fortiManagerSerialNumberB'), '\n set ip ', variables('sn1IPfmgB'), '\n next\n end\n set priority 100\n set unicast enable\n set vip 1.2.3.4\n set vrrp-interface port1\n end\n')]",
-    "fmgBCustomDataHAVRRPelb": "[concat('config system ha\n set clusterid 10\n set failover-mode vrrp\n set hb-interval 5\n set hb-lost-threshold 10\n config monitored-ips\n edit 1\n set interface port2\n set ip ', variables('sn2IPfmgA'), '\nnext\n end\n set password ', base64(parameters('adminPassword')), '\n config peer\n edit 1\n set serial-number ', parameters('fortiManagerSerialNumberA'), '\n set ip ', variables('sn1IPfmgA'),'\n next\n end\n set priority 100\n set unicast enable\n set vip 1.2.3.4\n set vrrp-interface port1\n end\n')]",
-    "fmgACustomDataHAVRRPilb": "[concat('config system ha\n set clusterid 10\n set failover-mode vrrp\n set hb-interval 5\n set hb-lost-threshold 10\n config monitored-ips\n edit 1\n set interface port2\n set ip ', variables('sn2IPfmgB'), '\nnext\n end\n set password ', base64(parameters('adminPassword')), '\n config peer\n edit 1\n set serial-number ', parameters('fortiManagerSerialNumberB'), '\n set ip ', variables('sn1IPfmgB'), '\n next\n end\n set priority 100\n set unicast enable\n set vip 1.2.3.4\n set vrrp-interface port1\n end\n')]",
-    "fmgBCustomDataHAVRRPilb": "[concat('config system ha\n set clusterid 10\n set failover-mode vrrp\n set hb-interval 5\n set hb-lost-threshold 10\n config monitored-ips\n edit 1\n set interface port2\n set ip ', variables('sn2IPfmgA'), '\nnext\n end\n set password ', base64(parameters('adminPassword')), '\n config peer\n edit 1\n set serial-number ', parameters('fortiManagerSerialNumberA'), '\n set ip ', variables('sn1IPfmgA'),'\n next\n end\n set priority 100\n set unicast enable\n set vip 1.2.3.4\n set vrrp-interface port1\n end\n')]",
-    "fmgACustomDataBody": "[concat('config system global\n set admin-lockout-duration 120\n set hostname ', variables('fmgAVmName'), '\n end\nconfig system interface\nedit port1\nset mode static\nset ip ',  variables('sn1IPfmgA'), '/', variables('sn1CIDRmask'), '\nset description fortimanager\nset allowaccess ping ssh https\nnext\nedit port2\nset mode static\nset ip ',  variables('sn2IPfmgA'), '/', variables('sn2CIDRmask'), '\nset description fortimanager\nset allowaccess ping ssh https\nnext\nend\nconfig system route\nedit 1\nset dst 0.0.0.0/0\nset gateway ', variables('sn1GatewayIP'), '\nset device port1\nnext\nend\n', if(equals(parameters('highavailabilityMethod'),'manual'),variables('fmgACustomDataHAManual'),''), if(equals(parameters('highavailabilityMethod'),'vrrp-external-loadbalancer'),variables('fmgACustomDataHAVRRPelb'),''), if(equals(parameters('highavailabilityMethod'),'vrrp-internal-loadbalancer'),variables('fmgACustomDataHAVRRPilb'),''), parameters('additionalCustomData'), variables('fmgACustomDataFortiFlex'))]",
+    "fmgACustomDataHAManual": "[concat('config system ha\n set mode primary\n set clusterid 10\n set password ', base64(parameters('adminPassword')), '\n config peer\n edit 1\n set serial-number ', parameters('fortiManagerSerialNumberB'), '\n set ip ', variables('sn1IPfmgB'), '\n next\n end\n end\n')]",
+    "fmgBCustomDataHAManual": "[concat('config system ha\n set mode secondary\n set clusterid 10\n set password ', base64(parameters('adminPassword')), '\n config peer\n edit 1\n set serial-number ', parameters('fortiManagerSerialNumberA'), '\n set ip ', variables('sn1IPfmgA'),'\n next\n end\n end\n')]",
+    "fmgACustomDataHAVRRPelb": "[concat('config system interface\nport2\nset mode static\nset ip ',  variables('sn2IPfmgA'), '/', variables('sn2CIDRmask'), '\nset description fortimanager\nset allowaccess ping ssh https\nnext\nend\nconfig system ha\n set clusterid 10\n set failover-mode vrrp\n set hb-interval 5\n set hb-lost-threshold 10\n config monitored-ips\n edit 1\n set interface port2\n set ip ', variables('sn2IPfmgB'), '\nnext\n end\n set password ', base64(parameters('adminPassword')), '\n config peer\n edit 1\n set serial-number ', parameters('fortiManagerSerialNumberB'), '\n set ip ', variables('sn1IPfmgB'), '\n next\n end\n set priority 100\n set unicast enable\n set vip 1.2.3.4\n set vrrp-interface port1\n end\n')]",
+    "fmgBCustomDataHAVRRPelb": "[concat('config system interface\nport2\nset mode static\nset ip ',  variables('sn2IPfmgB'), '/', variables('sn2CIDRmask'), '\nset description fortimanager\nset allowaccess ping ssh https\nnext\nend\nconfig system ha\n set clusterid 10\n set failover-mode vrrp\n set hb-interval 5\n set hb-lost-threshold 10\n config monitored-ips\n edit 1\n set interface port2\n set ip ', variables('sn2IPfmgA'), '\nnext\n end\n set password ', base64(parameters('adminPassword')), '\n config peer\n edit 1\n set serial-number ', parameters('fortiManagerSerialNumberA'), '\n set ip ', variables('sn1IPfmgA'),'\n next\n end\n set priority 100\n set unicast enable\n set vip 1.2.3.4\n set vrrp-interface port1\n end\n')]",
+    "fmgACustomDataHAVRRPilb": "[concat('config system interface\nport2\nset mode static\nset ip ',  variables('sn2IPfmgA'), '/', variables('sn2CIDRmask'), '\nset description fortimanager\nset allowaccess ping ssh https\nnext\nend\nconfig system ha\n set clusterid 10\n set failover-mode vrrp\n set hb-interval 5\n set hb-lost-threshold 10\n config monitored-ips\n edit 1\n set interface port2\n set ip ', variables('sn2IPfmgB'), '\nnext\n end\n set password ', base64(parameters('adminPassword')), '\n config peer\n edit 1\n set serial-number ', parameters('fortiManagerSerialNumberB'), '\n set ip ', variables('sn1IPfmgB'), '\n next\n end\n set priority 100\n set unicast enable\n set vip 1.2.3.4\n set vrrp-interface port1\n end\n')]",
+    "fmgBCustomDataHAVRRPilb": "[concat('config system interface\nport2\nset mode static\nset ip ',  variables('sn2IPfmgB'), '/', variables('sn2CIDRmask'), '\nset description fortimanager\nset allowaccess ping ssh https\nnext\nend\nconfig system ha\n set clusterid 10\n set failover-mode vrrp\n set hb-interval 5\n set hb-lost-threshold 10\n config monitored-ips\n edit 1\n set interface port2\n set ip ', variables('sn2IPfmgA'), '\nnext\n end\n set password ', base64(parameters('adminPassword')), '\n config peer\n edit 1\n set serial-number ', parameters('fortiManagerSerialNumberA'), '\n set ip ', variables('sn1IPfmgA'),'\n next\n end\n set priority 100\n set unicast enable\n set vip 1.2.3.4\n set vrrp-interface port1\n end\n')]",
+    "fmgACustomDataBody": "[concat('config system global\n set admin-lockout-duration 120\n set hostname ', variables('fmgAVmName'), '\n end\nconfig system interface\nedit port1\nset mode static\nset ip ',  variables('sn1IPfmgA'), '/', variables('sn1CIDRmask'), '\nset description fortimanager\nset allowaccess ping ssh https\nnext\nedit \nconfig system route\nedit 1\nset dst 0.0.0.0/0\nset gateway ', variables('sn1GatewayIP'), '\nset device port1\nnext\nend\n', if(equals(parameters('highavailabilityMethod'),'manual'),variables('fmgACustomDataHAManual'),''), if(equals(parameters('highavailabilityMethod'),'vrrp-external-loadbalancer'),variables('fmgACustomDataHAVRRPelb'),''), if(equals(parameters('highavailabilityMethod'),'vrrp-internal-loadbalancer'),variables('fmgACustomDataHAVRRPilb'),''), parameters('additionalCustomData'), variables('fmgACustomDataFortiFlex'))]",
     "fmgBCustomDataBody": "[concat('config system global\n set admin-lockout-duration 120\n set hostname ', variables('fmgBVmName'), '\n end\nconfig system interface\nedit port1\nset mode static\nset ip ',  variables('sn1IPfmgB'), '/', variables('sn1CIDRmask'), '\nset description fortimanager\nset allowaccess ping ssh https\nnext\nedit port2\nset mode static\nset ip ',  variables('sn2IPfmgB'), '/', variables('sn2CIDRmask'), '\nset description fortimanager\nset allowaccess ping ssh https\nnext\nend\nconfig system route\nedit 1\nset dst 0.0.0.0/0\nset gateway ', variables('sn1GatewayIP'), '\nset device port1\nnext\nend\n', if(equals(parameters('highavailabilityMethod'),'manual'),variables('fmgBCustomDataHAManual'),''), if(equals(parameters('highavailabilityMethod'),'vrrp-external-loadbalancer'),variables('fmgBCustomDataHAVRRPelb'),''), if(equals(parameters('highavailabilityMethod'),'vrrp-internal-loadbalancer'),variables('fmgBCustomDataHAVRRPilb'),''), parameters('additionalCustomData'), variables('fmgBCustomDataFortiFlex'))]",
     "customDataLicenseHeader": "--12345\nContent-Type: text/plain; charset=\"us-ascii\"\nMIME-Version: 1.0\nContent-Transfer-Encoding: 7bit\nContent-Disposition: attachment; filename=\"fmglicense\"\n\n",
     "customDataFooter": "\n--12345--\n",
@@ -455,7 +455,7 @@
     "publicIP3Name": "[if(equals(parameters('publicIP3Name'),''),concat(parameters('namePrefix'),'-externalloadbalancer-pip'),parameters('publicIP2Name'))]",
     "publicIP3Id": "[resourceId('Microsoft.Network/publicIPAddresses',variables('publicIP3Name'))]",
     "serialConsoleEnabled": "[if(equals(parameters('serialConsole'),'yes'),'true','false')]",
-    "NSGName": "[concat(parameters('namePrefix'),'-',uniqueString(resourceGroup().id),'-nsg')]",
+    "nsgName": "[concat(parameters('namePrefix'),'-',uniqueString(resourceGroup().id),'-nsg')]",
     "sn1IPArray": "[split(parameters('subnet1Prefix'),'.')]",
     "sn1IPArray2ndString": "[string(variables('sn1IPArray')[3])]",
     "sn1IPArray2nd": "[split(variables('sn1IPArray2ndString'),'/')]",
@@ -615,7 +615,7 @@
         "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
       "type": "Microsoft.Network/networkSecurityGroups",
-      "name": "[variables('NSGName')]",
+      "name": "[variables('nsgName')]",
       "location": "[parameters('location')]",
       "properties": {
         "securityRules": [
@@ -1064,7 +1064,7 @@
       },
       "dependsOn": [
         "[variables('vnetName')]",
-        "[variables('NSGName')]",
+        "[variables('nsgName')]",
         "[variables('externalLBName')]",
         "[variables('internalLBName')]"
       ],
@@ -1085,11 +1085,12 @@
           }
         ],
         "networkSecurityGroup": {
-          "id": "[resourceId('Microsoft.Network/networkSecurityGroups/',variables('NSGName'))]"
+          "id": "[resourceId('Microsoft.Network/networkSecurityGroups/',variables('nsgName'))]"
         }
       }
     },
     {
+      "condition": "[not(equals(parameters('highavailabilityMethod'),'manual'))]",
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[variables('fmgANic2Name')]",
       "apiVersion": "2023-04-01",
@@ -1116,7 +1117,6 @@
       }
     },
     {
-      "condition": "[equals(parameters('highavailabilityMethod'),'manual')]",
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[variables('fmgBNic1Name')]",
       "apiVersion": "2023-04-01",
@@ -1126,7 +1126,7 @@
       },
       "dependsOn": [
         "[variables('vnetName')]",
-        "[variables('NSGName')]",
+        "[variables('nsgName')]",
         "[variables('externalLBName')]",
         "[variables('internalLBName')]"
       ],
@@ -1145,11 +1145,14 @@
               "loadBalancerInboundNatRules": "[if(equals(parameters('highavailabilityMethod'),'vrrp-external-loadbalancer'),variables('externalLoadBalancerNatRulesFMGb'),json('null'))]"
             }
           }
-        ]
+        ],
+        "networkSecurityGroup": {
+          "id": "[resourceId('Microsoft.Network/networkSecurityGroups/',variables('nsgName'))]"
+        }
       }
     },
     {
-      "condition": "[equals(parameters('highavailabilityMethod'),'manual')]",
+      "condition": "[not(equals(parameters('highavailabilityMethod'),'manual'))]",
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[variables('fmgBNic2Name')]",
       "apiVersion": "2023-04-01",

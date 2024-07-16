@@ -644,6 +644,16 @@
                 "visible": "true"
               }
             ]
+          },
+          {
+            "name": "serialnrnotification",
+            "type": "Microsoft.Common.InfoBox",
+            "visible": true,
+            "options": {
+              "icon": "Info",
+              "text": "The HA configuration requires the serialnumbers of both FortiManager VMs in order to complete the config. If the serialnumbers are not provided during deployment the FortiManager HA config needs to be performed manually afterwards.",
+              "uri": "https://docs.fortinet.com/document/fortimanager-public-cloud/7.4.0/azure-administration-guide/629099/deploying-fortimanager-ha-instances-on-azure"
+            }
           }
         ]
       },
@@ -901,8 +911,8 @@
             "visible": true,
             "options": {
               "icon": "Info",
-              "text": "This deployment can use standard or basic SKU public IP's. Microsoft Azure offers a migration path from a basic to standard SKU public IP.",
-              "uri": "https://docs.microsoft.com/en-us/azure/virtual-network/virtual-network-public-ip-address-upgrade?tabs=option-upgrade-cli%2Coption-migrate-powershell"
+              "text": "This deployment uses and forces the use of standard SKU public IP's. By 30 September 2025, the basic SKU will be retired.",
+              "uri": "https://azure.microsoft.com/en-gb/updates/upgrade-to-standard-sku-public-ip-addresses-in-azure-by-30-september-2025-basic-sku-will-be-retired/"
             }
           }
         ]
