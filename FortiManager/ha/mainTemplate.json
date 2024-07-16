@@ -1321,7 +1321,7 @@
               "name": "networkInterfaces",
               "count": "[if(equals(parameters('highavailabilityMethod'),'manual'), 1, 2)]",
               "input": {
-                "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(variables('fmgBVmName'),'-nic', copyIndex(1)))]",
+                "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(variables('fmgBVmName'),'-nic', copyIndex('networkInterfaces',1)))]",
                 "properties": {
                   "primary": "[if(equals(copyIndex('networkInterfaces',1),1), 'true', 'false')]"
                 }
