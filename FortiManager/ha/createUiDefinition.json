@@ -834,11 +834,11 @@
             "name": "publicip3",
             "type": "Microsoft.Network.PublicIpAddressCombo",
             "label": {
-              "publicIpAddress": "External Load Balancer",
+              "publicIpAddress": "External VIP",
               "domainNameLabel": "Domain name label"
             },
             "toolTip": {
-              "publicIpAddress": "Public IP attached to the External Load Balancer",
+              "publicIpAddress": "Public IP attached to active FortiManager on a secondary IP",
               "domainNameLabel": "DNS name linked to this public IP"
             },
             "defaultValue": {
