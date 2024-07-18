@@ -842,7 +842,7 @@
               "domainNameLabel": "DNS name linked to this public IP"
             },
             "defaultValue": {
-              "publicIpAddressName": "[if(equals(basics('namePrefix'),''),'fortimanager-elb',concat(basics('namePrefix'),'-elb-pip'))]",
+              "publicIpAddressName": "[if(equals(basics('namePrefix'),''),'fortimanager-vip',concat(basics('namePrefix'),'-fmg-vip'))]",
               "domainNameLabel": "mydomain"
             },
             "constraints": {
@@ -969,7 +969,7 @@
       "location": "[location()]",
       "instanceType": "[steps('instance').instancetype.selection]",
       "availabilityOptions": "[steps('instance').availabilityOptions.availabilityOptions]",
-      "dataDiskCount": "[steps('instance').datadisk.vmDataDiskCount]",
+      "dataDiskCount": "[int(steps('instance').datadisk.vmDataDiskCount)]",
       "dataDiskSize": "[steps('instance').datadisk.vmDataDiskSize]",
       "diskType": "[steps('instance').datadisk.diskType]",
       "fortiManagerLicenseBYOLA": "[steps('instance').fmgLicense.fmgAcontent]",
