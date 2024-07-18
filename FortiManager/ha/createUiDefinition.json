@@ -679,12 +679,12 @@
                   "value": "manual"
                 },
                 {
-                  "label": "VRRP automatic failover using an external Azure Load Balancer",
-                  "value": "vrrp-external-loadbalancer"
+                  "label": "VRRP automatic failover using a public IP attached to a secondary ipconfig",
+                  "value": "vrrp-external-vip"
                 },
                 {
-                  "label": "VRRP automatic failover using an internal Azure Load Balancer",
-                  "value": "vrrp-internal-loadbalancer"
+                  "label": "VRRP automatic failover using a secondary private IP",
+                  "value": "vrrp-internal-vip"
                 }
               ]
             },
@@ -738,56 +738,7 @@
                     }
                   }
                 },
-                "visible": "[equals(steps('networking').options, 'manual')]"
-              },
-              {
-                "name": "virtualnetworkvrrp",
-                "type": "Microsoft.Network.VirtualNetworkCombo",
-                "label": {
-                  "virtualNetwork": "Virtual network",
-                  "subnets": "Subnets"
-                },
-                "toolTip": {
-                  "virtualNetwork": "Virtual Network for deployment of the FortiManager VM solution",
-                  "subnets": "Standard deployment is to have an "
-                },
-                "defaultValue": {
-                  "name": "[if(equals(basics('namePrefix'),''),'fortimanager-vnet',concat(basics('namePrefix'),'-vnet'))]",
-                  "addressPrefixSize": "/24"
-                },
-                "constraints": {
-                  "minAddressPrefixSize": "/29"
-                },
-                "options": {
-                  "hideExisting": false
-                },
-                "subnets": {
-                  "subnet1": {
-                    "label": "FortiManager Subnet",
-                    "defaultValue": {
-                      "name": "fortimanagersubnet",
-                      "addressPrefixSize": "/26"
-                    },
-                    "constraints": {
-                      "minAddressPrefixSize": "/29",
-                      "minAddressCount": 1,
-                      "requireContiguousAddresses": true
-                    }
-                  },
-                  "subnet2": {
-                    "label": "FortiManager HA Subnet",
-                    "defaultValue": {
-                      "name": "fortimanagerhasubnet",
-                      "addressPrefixSize": "/26"
-                    },
-                    "constraints": {
-                      "minAddressPrefixSize": "/29",
-                      "minAddressCount": 1,
-                      "requireContiguousAddresses": true
-                    }
-                  }
-                },
-                "visible": "[not(equals(steps('networking').options, 'manual'))]"
+                "visible": true
               },
               {
                 "name": "virtualnetworkinfo",
@@ -814,9 +765,9 @@
           {
             "name": "publiciptextvrrp",
             "type": "Microsoft.Common.TextBlock",
-            "visible": "[equals(steps('networking').options, 'vrrp-external-loadbalancer')]",
+            "visible": "[equals(steps('networking').options, 'vrrp-external-vip')]",
             "options": {
-              "text": "Using VRRP with an external Azure Load Balancer, a public IP address will be provisioned during deployment."
+              "text": "Using VRRP automatic failover, a public IP address will be provisioned during deployment."
             }
           },
           {
@@ -903,7 +854,7 @@
               "hideNone": false,
               "hideDomainNameLabel": true
             },
-            "visible": "[equals(steps('networking').options, 'vrrp-external-loadbalancer')]"
+            "visible": "[equals(steps('networking').options, 'vrrp-external-vip')]"
           },
           {
             "name": "standardsku",
@@ -1036,16 +987,13 @@
       "publicIP2Name": "[steps('publicip').publicip2.name]",
       "publicIP2ResourceGroup": "[steps('publicip').publicip2.resourceGroup]",
       "publicIPAddress2Type": "[steps('publicip').publicip2.publicIPAllocationMethod]",
-      "vnetNewOrExisting": "[if(equals(steps('networking').options, 'manual'),steps('networking').virtualnetworksection.virtualnetwork.newOrExisting,steps('networking').virtualnetworksection.virtualnetworkvrrp.newOrExisting)]",
-      "vnetName": "[if(equals(steps('networking').options, 'manual'),steps('networking').virtualnetworksection.virtualnetwork.name,steps('networking').virtualnetworksection.virtualnetworkvrrp.name)]",
-      "vnetResourceGroup": "[if(equals(steps('networking').options, 'manual'),steps('networking').virtualnetworksection.virtualnetwork.resourceGroup,steps('networking').virtualnetworksection.virtualnetworkvrrp.resourceGroup)]",
-      "vnetAddressPrefix": "[if(equals(steps('networking').options, 'manual'),steps('networking').virtualnetworksection.virtualnetwork.addressPrefix,steps('networking').virtualnetworksection.virtualnetworkvrrp.addressPrefix)]",
-      "subnet1Name": "[if(equals(steps('networking').options, 'manual'),steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet1.name,steps('networking').virtualnetworksection.virtualnetworkvrrp.subnets.subnet1.name)]",
-      "subnet1Prefix": "[if(equals(steps('networking').options, 'manual'),steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet1.addressPrefix,steps('networking').virtualnetworksection.virtualnetworkvrrp.subnets.subnet1.addressPrefix)]",
-      "subnet1StartAddress": "[if(equals(steps('networking').options, 'manual'),steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet1.startAddress,steps('networking').virtualnetworksection.virtualnetworkvrrp.subnets.subnet1.startAddres)]",
-      "subnet2Name": "[if(equals(steps('networking').options, 'manual'),'',steps('networking').virtualnetworksection.virtualnetworkvrrp.subnets.subnet2.name)]",
-      "subnet2Prefix": "[if(equals(steps('networking').options, 'manual'),'',steps('networking').virtualnetworksection.virtualnetworkvrrp.subnets.subnet2.addressPrefix)]",
-      "subnet2StartAddress": "[if(equals(steps('networking').options, 'manual'),'',steps('networking').virtualnetworksection.virtualnetworkvrrp.subnets.subnet2.startAddress)]",
+      "vnetNewOrExisting": "[steps('networking').virtualnetworksection.virtualnetwork.newOrExisting]",
+      "vnetName": "[steps('networking').virtualnetworksection.virtualnetwork.name]",
+      "vnetResourceGroup": "[steps('networking').virtualnetworksection.virtualnetwork.resourceGroup]",
+      "vnetAddressPrefix": "[steps('networking').virtualnetworksection.virtualnetwork.addressPrefix]",
+      "subnet1Name": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet1.name]",
+      "subnet1Prefix": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet1.addressPrefix]",
+      "subnet1StartAddress": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet1.startAddress]",
       "serialConsole": "[steps('advanced').serialconsole.enabled]",
       "additionalCustomData": "[steps('advanced').customdata.config]"
     }

@@ -88,7 +88,7 @@
     },
     "instanceType": {
       "type": "string",
-      "defaultValue": "Standard_D2s_v3",
+      "defaultValue": "Standard_D4s_v3",
       "allowedValues": [
         "Standard_DS4_v2",
         "Standard_DS5_v2",
@@ -129,11 +129,11 @@
     },
     "highavailabilityMethod": {
       "type": "string",
-      "defaultValue": "vrrp-external-loadbalancer",
+      "defaultValue": "vrrp-external-vip",
       "allowedValues": [
         "manual",
-        "vrrp-external-loadbalancer",
-        "vrrp-internal-loadbalancer"
+        "vrrp-external-vip",
+        "vrrp-internal-vip"
       ],
       "metadata": {
         "description": "choose how you want to get internet connectivity when you use internal loadbalancer"
@@ -222,7 +222,7 @@
       }
     },
     "publicIP3ResourceGroup": {
-      "type":"string",
+      "type": "string",
       "defaultValue": "",
       "metadata": {
         "description": "Resource group to which the Public IP belongs."
@@ -281,28 +281,6 @@
         "description": "Subnet 1 start address, 2 or 3 consecutive private IPs are required"
       }
     },
-    "subnet2Name": {
-      "type": "string",
-      "defaultValue": "FortiManagerHASubnet",
-      "metadata": {
-        "description": "FortiManager HA Subnet"
-      }
-    },
-    "subnet2Prefix": {
-      "type": "string",
-      "defaultValue": "172.16.138.0/24",
-      "metadata": {
-        "description": "FortiManager HA Subnet Prefix"
-      }
-    },
-    "subnet2StartAddress": {
-      "type": "string",
-      "defaultValue": "172.16.138.4",
-      "metadata": {
-        "description": "Subnet 1 start address, 2 consecutive private IPs are required"
-      }
-    },
-
     "serialConsole": {
       "type": "string",
       "defaultValue": "yes",
@@ -414,18 +392,17 @@
     },
     "vnetName": "[if(equals(parameters('vnetName'),''),concat(parameters('namePrefix'),'-vnet'),parameters('vnetName'))]",
     "subnet1Id": "[if(equals(parameters('vnetNewOrExisting'),'new'),resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'), parameters('subnet1Name')),resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet1Name')))]",
-    "subnet2Id": "[if(equals(parameters('vnetNewOrExisting'),'new'),resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'), parameters('subnet2Name')),resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet2Name')))]",
     "fmgAVmName": "[concat(parameters('namePrefix'),'-fmg-a')]",
     "fmgBVmName": "[concat(parameters('namePrefix'),'-fmg-b')]",
     "customDataHeader": "Content-Type: multipart/mixed; boundary=\"12345\"\nMIME-Version: 1.0\n\n--12345\nContent-Type: text/plain; charset=\"us-ascii\"\nMIME-Version: 1.0\nContent-Transfer-Encoding: 7bit\nContent-Disposition: attachment; filename=\"config\"\n\n",
     "fmgACustomDataHAManual": "[concat('config system ha\n set mode primary\n set clusterid 10\n set password ', base64(parameters('adminPassword')), '\n config peer\n edit 1\n set serial-number ', parameters('fortiManagerSerialNumberB'), '\n set ip ', variables('sn1IPfmgB'), '\n next\n end\n end\n')]",
     "fmgBCustomDataHAManual": "[concat('config system ha\n set mode secondary\n set clusterid 10\n set password ', base64(parameters('adminPassword')), '\n config peer\n edit 1\n set serial-number ', parameters('fortiManagerSerialNumberA'), '\n set ip ', variables('sn1IPfmgA'),'\n next\n end\n end\n')]",
-    "fmgACustomDataHAVRRPelb": "[concat('config system interface\nport2\nset mode static\nset ip ',  variables('sn2IPfmgA'), '/', variables('sn2CIDRmask'), '\nset description fortimanager\nset allowaccess ping ssh https\nnext\nend\nconfig system ha\n set clusterid 10\n set failover-mode vrrp\n set hb-interval 5\n set hb-lost-threshold 10\n config monitored-ips\n edit 1\n set interface port2\n set ip ', variables('sn2IPfmgB'), '\nnext\n end\n set password ', base64(parameters('adminPassword')), '\n config peer\n edit 1\n set serial-number ', parameters('fortiManagerSerialNumberB'), '\n set ip ', variables('sn1IPfmgB'), '\n next\n end\n set priority 100\n set unicast enable\n set vip 1.2.3.4\n set vrrp-interface port1\n end\n')]",
-    "fmgBCustomDataHAVRRPelb": "[concat('config system interface\nport2\nset mode static\nset ip ',  variables('sn2IPfmgB'), '/', variables('sn2CIDRmask'), '\nset description fortimanager\nset allowaccess ping ssh https\nnext\nend\nconfig system ha\n set clusterid 10\n set failover-mode vrrp\n set hb-interval 5\n set hb-lost-threshold 10\n config monitored-ips\n edit 1\n set interface port2\n set ip ', variables('sn2IPfmgA'), '\nnext\n end\n set password ', base64(parameters('adminPassword')), '\n config peer\n edit 1\n set serial-number ', parameters('fortiManagerSerialNumberA'), '\n set ip ', variables('sn1IPfmgA'),'\n next\n end\n set priority 100\n set unicast enable\n set vip 1.2.3.4\n set vrrp-interface port1\n end\n')]",
-    "fmgACustomDataHAVRRPilb": "[concat('config system interface\nport2\nset mode static\nset ip ',  variables('sn2IPfmgA'), '/', variables('sn2CIDRmask'), '\nset description fortimanager\nset allowaccess ping ssh https\nnext\nend\nconfig system ha\n set clusterid 10\n set failover-mode vrrp\n set hb-interval 5\n set hb-lost-threshold 10\n config monitored-ips\n edit 1\n set interface port2\n set ip ', variables('sn2IPfmgB'), '\nnext\n end\n set password ', base64(parameters('adminPassword')), '\n config peer\n edit 1\n set serial-number ', parameters('fortiManagerSerialNumberB'), '\n set ip ', variables('sn1IPfmgB'), '\n next\n end\n set priority 100\n set unicast enable\n set vip 1.2.3.4\n set vrrp-interface port1\n end\n')]",
-    "fmgBCustomDataHAVRRPilb": "[concat('config system interface\nport2\nset mode static\nset ip ',  variables('sn2IPfmgB'), '/', variables('sn2CIDRmask'), '\nset description fortimanager\nset allowaccess ping ssh https\nnext\nend\nconfig system ha\n set clusterid 10\n set failover-mode vrrp\n set hb-interval 5\n set hb-lost-threshold 10\n config monitored-ips\n edit 1\n set interface port2\n set ip ', variables('sn2IPfmgA'), '\nnext\n end\n set password ', base64(parameters('adminPassword')), '\n config peer\n edit 1\n set serial-number ', parameters('fortiManagerSerialNumberA'), '\n set ip ', variables('sn1IPfmgA'),'\n next\n end\n set priority 100\n set unicast enable\n set vip 1.2.3.4\n set vrrp-interface port1\n end\n')]",
-    "fmgACustomDataBody": "[concat('config system global\n set admin-lockout-duration 120\n set hostname ', variables('fmgAVmName'), '\n end\nconfig system interface\nedit port1\nset mode static\nset ip ',  variables('sn1IPfmgA'), '/', variables('sn1CIDRmask'), '\nset description fortimanager\nset allowaccess ping ssh https\nnext\nedit \nconfig system route\nedit 1\nset dst 0.0.0.0/0\nset gateway ', variables('sn1GatewayIP'), '\nset device port1\nnext\nend\n', if(equals(parameters('highavailabilityMethod'),'manual'),variables('fmgACustomDataHAManual'),''), if(equals(parameters('highavailabilityMethod'),'vrrp-external-loadbalancer'),variables('fmgACustomDataHAVRRPelb'),''), if(equals(parameters('highavailabilityMethod'),'vrrp-internal-loadbalancer'),variables('fmgACustomDataHAVRRPilb'),''), parameters('additionalCustomData'), variables('fmgACustomDataFortiFlex'))]",
-    "fmgBCustomDataBody": "[concat('config system global\n set admin-lockout-duration 120\n set hostname ', variables('fmgBVmName'), '\n end\nconfig system interface\nedit port1\nset mode static\nset ip ',  variables('sn1IPfmgB'), '/', variables('sn1CIDRmask'), '\nset description fortimanager\nset allowaccess ping ssh https\nnext\nedit port2\nset mode static\nset ip ',  variables('sn2IPfmgB'), '/', variables('sn2CIDRmask'), '\nset description fortimanager\nset allowaccess ping ssh https\nnext\nend\nconfig system route\nedit 1\nset dst 0.0.0.0/0\nset gateway ', variables('sn1GatewayIP'), '\nset device port1\nnext\nend\n', if(equals(parameters('highavailabilityMethod'),'manual'),variables('fmgBCustomDataHAManual'),''), if(equals(parameters('highavailabilityMethod'),'vrrp-external-loadbalancer'),variables('fmgBCustomDataHAVRRPelb'),''), if(equals(parameters('highavailabilityMethod'),'vrrp-internal-loadbalancer'),variables('fmgBCustomDataHAVRRPilb'),''), parameters('additionalCustomData'), variables('fmgBCustomDataFortiFlex'))]",
+    "fmgACustomDataHAVRRPvipExternal": "[concat('config system ha\n set clusterid 10\n set failover-mode vrrp\n set hb-interval 5\n set hb-lost-threshold 10\n end\n set password ', base64(parameters('adminPassword')), '\n config peer\n edit 1\n set serial-number ', parameters('fortiManagerSerialNumberB'), '\n set ip ', variables('sn1IPfmgB'), '\n next\n end\n set priority 100\n set unicast enable\n set vip 1.2.3.4\n set vrrp-interface port1\n end\n')]",
+    "fmgBCustomDataHAVRRPvipExternal": "[concat('config system ha\n set clusterid 10\n set failover-mode vrrp\n set hb-interval 5\n set hb-lost-threshold 10\n end\n set password ', base64(parameters('adminPassword')), '\n config peer\n edit 1\n set serial-number ', parameters('fortiManagerSerialNumberA'), '\n set ip ', variables('sn1IPfmgA'),'\n next\n end\n set priority 100\n set unicast enable\n set vip 1.2.3.4\n set vrrp-interface port1\n end\n')]",
+    "fmgACustomDataHAVRRPvipInternal": "[concat('config system ha\n set clusterid 10\n set failover-mode vrrp\n set hb-interval 5\n set hb-lost-threshold 10\n end\n set password ', base64(parameters('adminPassword')), '\n config peer\n edit 1\n set serial-number ', parameters('fortiManagerSerialNumberB'), '\n set ip ', variables('sn1IPfmgB'), '\n next\n end\n set priority 100\n set unicast enable\n set vip 1.2.3.4\n set vrrp-interface port1\n end\n')]",
+    "fmgBCustomDataHAVRRPvipInternal": "[concat('config system ha\n set clusterid 10\n set failover-mode vrrp\n set hb-interval 5\n set hb-lost-threshold 10\n end\n set password ', base64(parameters('adminPassword')), '\n config peer\n edit 1\n set serial-number ', parameters('fortiManagerSerialNumberA'), '\n set ip ', variables('sn1IPfmgA'),'\n next\n end\n set priority 100\n set unicast enable\n set vip 1.2.3.4\n set vrrp-interface port1\n end\n')]",
+    "fmgACustomDataBody": "[concat('config system global\n set admin-lockout-duration 120\n set hostname ', variables('fmgAVmName'), '\n end\nconfig system interface\nedit port1\nset mode static\nset ip ',  variables('sn1IPfmgA'), '/', variables('sn1CIDRmask'), '\nset description fortimanager\nset allowaccess ping ssh https\nnext\nend\nconfig system route\nedit 1\nset dst 0.0.0.0/0\nset gateway ', variables('sn1GatewayIP'), '\nset device port1\nnext\nend\n', if(equals(parameters('highavailabilityMethod'),'manual'),variables('fmgACustomDataHAManual'),''), if(equals(parameters('highavailabilityMethod'),'vrrp-external-vip'),variables('fmgACustomDataHAVRRPvipExternal'),''), if(equals(parameters('highavailabilityMethod'),'vrrp-internal-vip'),variables('fmgACustomDataHAVRRPvipInternal'),''), parameters('additionalCustomData'), variables('fmgACustomDataFortiFlex'))]",
+    "fmgBCustomDataBody": "[concat('config system global\n set admin-lockout-duration 120\n set hostname ', variables('fmgBVmName'), '\n end\nconfig system interface\nedit port1\nset mode static\nset ip ',  variables('sn1IPfmgB'), '/', variables('sn1CIDRmask'), '\nset description fortimanager\nset allowaccess ping ssh https\nnext\nend\nconfig system route\nedit 1\nset dst 0.0.0.0/0\nset gateway ', variables('sn1GatewayIP'), '\nset device port1\nnext\nend\n', if(equals(parameters('highavailabilityMethod'),'manual'),variables('fmgBCustomDataHAManual'),''), if(equals(parameters('highavailabilityMethod'),'vrrp-external-vip'),variables('fmgBCustomDataHAVRRPvipExternal'),''), if(equals(parameters('highavailabilityMethod'),'vrrp-internal-vip'),variables('fmgBCustomDataHAVRRPvipInternal'),''), parameters('additionalCustomData'), variables('fmgBCustomDataFortiFlex'))]",
     "customDataLicenseHeader": "--12345\nContent-Type: text/plain; charset=\"us-ascii\"\nMIME-Version: 1.0\nContent-Transfer-Encoding: 7bit\nContent-Disposition: attachment; filename=\"fmglicense\"\n\n",
     "customDataFooter": "\n--12345--\n",
     "fmgACustomDataFortiFlex": "[if(equals(parameters('fortiManagerLicenseFortiFlexA'),''),'',concat('exec vm-license ',parameters('fortiManagerLicenseFortiFlexA'), '\n'))]",
@@ -436,24 +413,23 @@
     "fmgBCustomData": "[base64(if(equals(parameters('fortiManagerLicenseBYOLB'),''),variables('fmgBCustomDataBody'),variables('fmgBCustomDataCombined')))]",
     "fmgANic1Name": "[concat(variables('fmgAVmName'),'-nic1')]",
     "fmgANic1Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('fmgANic1Name'))]",
-    "fmgANic2Name": "[concat(variables('fmgAVmName'),'-nic2')]",
-    "fmgANic2Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('fmgANic2Name'))]",
     "fmgBNic1Name": "[concat(variables('fmgBVmName'),'-nic1')]",
     "fmgBNic1Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('fmgBNic1Name'))]",
-    "fmgBNic2Name": "[concat(variables('fmgBVmName'),'-nic2')]",
-    "fmgBNic2Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('fmgBNic2Name'))]",
     "publicIP1Name": "[if(equals(parameters('publicIP1Name'),''),concat(parameters('namePrefix'),'-fmg-a-pip'),parameters('publicIP1Name'))]",
     "publicIP1Id": "[if(equals(parameters('publicIP1NewOrExisting'),'new'),resourceId('Microsoft.Network/publicIPAddresses',variables('publicIP1Name')),if(equals(parameters('publicIP1NewOrExisting'),'existing'),resourceId(parameters('publicIP1ResourceGroup'),'Microsoft.Network/publicIPAddresses',variables('publicIP1Name')),''))]",
     "publicIPAddress1Id": {
       "id": "[variables('publicIP1Id')]"
     },
     "publicIP2Name": "[if(equals(parameters('publicIP2Name'),''),concat(parameters('namePrefix'),'-fmg-b-pip'),parameters('publicIP2Name'))]",
-    "publicIP2Id": "[if(equals(parameters('publicIP2NewOrExisting'),'new'),resourceId('Microsoft.Network/publicIPAddresses',variables('publicIP2Name')),resourceId(parameters('publicIP2ResourceGroup'),'Microsoft.Network/publicIPAddresses',variables('publicIP2Name')))]",
+    "publicIP2Id": "[if(equals(parameters('publicIP2NewOrExisting'),'new'),resourceId('Microsoft.Network/publicIPAddresses',variables('publicIP2Name')),if(equals(parameters('publicIP2NewOrExisting'),'existing'),resourceId(parameters('publicIP2ResourceGroup'),'Microsoft.Network/publicIPAddresses',variables('publicIP2Name')),''))]",
     "publicIPAddress2Id": {
       "id": "[variables('publicIP2Id')]"
     },
-    "publicIP3Name": "[if(equals(parameters('publicIP3Name'),''),concat(parameters('namePrefix'),'-externalloadbalancer-pip'),parameters('publicIP2Name'))]",
-    "publicIP3Id": "[resourceId('Microsoft.Network/publicIPAddresses',variables('publicIP3Name'))]",
+    "publicIP3Name": "[if(equals(parameters('publicIP3Name'),''),concat(parameters('namePrefix'),'-fmg-vip'),parameters('publicIP3Name'))]",
+    "publicIP3Id": "[if(equals(parameters('publicIP3NewOrExisting'),'new'),resourceId('Microsoft.Network/publicIPAddresses',variables('publicIP3Name')),if(equals(parameters('publicIP3NewOrExisting'),'existing'),resourceId(parameters('publicIP3ResourceGroup'),'Microsoft.Network/publicIPAddresses',variables('publicIP3Name')),''))]",
+    "publicIPAddress3Id": {
+      "id": "[variables('publicIP3Id')]"
+    },
     "serialConsoleEnabled": "[if(equals(parameters('serialConsole'),'yes'),'true','false')]",
     "nsgName": "[concat(parameters('namePrefix'),'-',uniqueString(resourceGroup().id),'-nsg')]",
     "sn1IPArray": "[split(parameters('subnet1Prefix'),'.')]",
@@ -466,70 +442,59 @@
     "sn1IPArray0": "[string(int(variables('sn1IPArray')[0]))]",
     "sn1GatewayIP": "[concat(variables('sn1IPArray0'),'.',variables('sn1IPArray1'),'.',variables('sn1IPArray2'),'.',variables('sn1IPArray3'))]",
     "sn1IPStartAddress": "[split(parameters('subnet1StartAddress'),'.')]",
-    "sn1IPilb": "[concat(variables('sn1IPArray0'),'.',variables('sn1IPArray1'),'.',variables('sn1IPArray2'),'.',int(variables('sn1IPStartAddress')[3]))]",
     "sn1IPfmgA": "[concat(variables('sn1IPArray0'),'.',variables('sn1IPArray1'),'.',variables('sn1IPArray2'),'.',add(int(variables('sn1IPStartAddress')[3]),1))]",
     "sn1IPfmgB": "[concat(variables('sn1IPArray0'),'.',variables('sn1IPArray1'),'.',variables('sn1IPArray2'),'.',add(int(variables('sn1IPStartAddress')[3]),2))]",
-    "sn2IPArray": "[if(equals(parameters('subnet2Prefix'),''),split('1.2.3.4/24','.'),split(parameters('subnet2Prefix'),'.'))]",
-    "sn2IPArray2ndString": "[string(variables('sn2IPArray')[3])]",
-    "sn2IPArray2nd": "[split(variables('sn2IPArray2ndString'),'/')]",
-    "sn2CIDRmask": "[string(int(variables('sn2IPArray2nd')[1]))]",
-    "sn2IPArray2": "[string(int(variables('sn2IPArray')[2]))]",
-    "sn2IPArray1": "[string(int(variables('sn2IPArray')[1]))]",
-    "sn2IPArray0": "[string(int(variables('sn2IPArray')[0]))]",
-    "sn2IPStartAddress": "[if(equals(parameters('subnet2StartAddress'),''),split('1.2.3.4','.'),split(parameters('subnet2StartAddress'),'.'))]",
-    "sn2IPfmgA": "[concat(variables('sn2IPArray0'),'.',variables('sn2IPArray1'),'.',variables('sn2IPArray2'),'.',add(int(variables('sn2IPStartAddress')[3]),1))]",
-    "sn2IPfmgB": "[concat(variables('sn2IPArray0'),'.',variables('sn2IPArray1'),'.',variables('sn2IPArray2'),'.',add(int(variables('sn2IPStartAddress')[3]),2))]",
-    "internalLBName": "[concat(parameters('namePrefix'),'-internalloadbalancer')]",
-    "internalLBId": "[resourceId('Microsoft.Network/loadBalancers',variables('internalLBName'))]",
-    "internalLBFEName": "[concat(parameters('namePrefix'),'-ilb-',parameters('subnet2Name'),'-frontend')]",
-    "internalLBFEId": "[resourceId('Microsoft.Network/loadBalancers/frontendIPConfigurations',variables('internalLBName'),variables('internalLBFEName'))]",
-    "internalLBBEName": "[concat(parameters('namePrefix'),'-ilb-',parameters('subnet2Name'),'-backend')]",
-    "internalLBBEId": "[resourceId('Microsoft.Network/loadBalancers/backendAddressPools',variables('internalLBName'),variables('internalLBBEName'))]",
-    "internalLBProbeName": "lbprobe",
-    "internalLBProbeId": "[resourceId('Microsoft.Network/loadBalancers/probes',variables('internalLBName'),variables('internalLBProbeName'))]",
-    "internalLoadBalancerBackendAddressPools": [
+    "sn1IPfmgA-2": "[concat(variables('sn1IPArray0'),'.',variables('sn1IPArray1'),'.',variables('sn1IPArray2'),'.',add(int(variables('sn1IPStartAddress')[3]),3))]",
+    "sn1IPfmgB-2": "[concat(variables('sn1IPArray0'),'.',variables('sn1IPArray1'),'.',variables('sn1IPArray2'),'.',add(int(variables('sn1IPStartAddress')[3]),4))]",
+    "fmgAifconfig": [
       {
-        "id": "[variables('internalLBBEId')]"
-      }
-    ],
-    "externalLBName": "[concat(parameters('namePrefix'),'-externalloadbalancer')]",
-    "externalLBId": "[resourceId('Microsoft.Network/loadBalancers',variables('externalLBName'))]",
-    "externalLBFEName": "[concat(parameters('namePrefix'),'-elb-',parameters('subnet1Name'),'-frontend')]",
-    "externalLBFEId": "[resourceId('Microsoft.Network/loadBalancers/frontendIPConfigurations',variables('externalLBName'),variables('externalLBFEName'))]",
-    "externalLBBEName": "[concat(parameters('namePrefix'),'-elb-',parameters('subnet1Name'),'-backend')]",
-    "externalLBBEId": "[resourceId('Microsoft.Network/loadBalancers/backendAddressPools',variables('externalLBName'),variables('externalLBBEName'))]",
-    "externalLBProbeName": "lbprobe",
-    "externalLBProbeId": "[resourceId('Microsoft.Network/loadBalancers/probes',variables('externalLBName'),variables('externalLBProbeName'))]",
-    "externalLoadBalancerBackendAddressPools": [
-      {
-        "id": "[variables('externalLBBEId')]"
-      }
-    ],
-    "externalLoadBalancerNatRulesFMGa": [
-      {
-        "id": "[variables('externalLBId_NatRule_SSH_fmga')]"
+        "name": "ipconfig1",
+        "properties": {
+          "primary": true,
+          "privateIPAddress": "[variables('sn1IPfmgA')]",
+          "privateIPAllocationMethod": "Static",
+          "publicIPAddress": "[if(not(equals(parameters('publicIP1NewOrExisting'), 'none')), variables('publicIPAddress1Id'), json('null'))]",
+          "subnet": {
+            "id": "[variables('subnet1Id')]"
+          }
+        }
       },
       {
-        "id": "[variables('externalLBId_NatRule_WEB_fmga')]"
+        "name": "ipconfig2",
+        "properties": {
+          "privateIPAddress": "[variables('sn1IPfmgA-2')]",
+          "privateIPAllocationMethod": "Static",
+          "publicIPAddress": "[if(and(not(equals(parameters('publicIP3NewOrExisting'), 'none')),equals(parameters('highavailabilityMethod'),'vrrp-external-vip')), variables('publicIPAddress3Id'), json('null'))]",
+          "subnet": {
+            "id": "[variables('subnet1Id')]"
+          }
+        }
       }
     ],
-    "externalLoadBalancerNatRulesFMGb": [
+    "fmgBifconfig": [
       {
-        "id": "[variables('externalLBId_NatRule_SSH_fmgb')]"
+        "name": "ipconfig1",
+        "properties": {
+          "primary": true,
+          "privateIPAddress": "[variables('sn1IPfmgB')]",
+          "privateIPAllocationMethod": "Static",
+          "publicIPAddress": "[if(not(equals(parameters('publicIP2NewOrExisting'), 'none')), variables('publicIPAddress2Id'), json('null'))]",
+          "subnet": {
+            "id": "[variables('subnet1Id')]"
+          }
+        }
       },
       {
-        "id": "[variables('externalLBId_NatRule_WEB_fmgb')]"
+        "name": "ipconfig2",
+        "properties": {
+          "privateIPAddress": "[variables('sn1IPfmgB-2')]",
+          "privateIPAllocationMethod": "Static",
+          "subnet": {
+            "id": "[variables('subnet1Id')]"
+          }
+        }
       }
     ],
-    "externalLBName_NatRule_WEB_fmga": "[concat(variables('fmgaVmName'),'WEB')]",
-    "externalLBId_NatRule_WEB_fmga": "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'),variables('externalLBName_NatRule_WEB_fmga'))]",
-    "externalLBName_NatRule_SSH_fmga": "[concat(variables('fmgaVmName'),'SSH')]",
-    "externalLBId_NatRule_SSH_fmga": "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'),variables('externalLBName_NatRule_SSH_fmga'))]",
-    "externalLBName_NatRule_WEB_fmgb": "[concat(variables('fmgbVmName'),'WEB')]",
-    "externalLBId_NatRule_WEB_fmgb": "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'),variables('externalLBName_NatRule_WEB_fmgb'))]",
-    "externalLBName_NatRule_SSH_fmgb": "[concat(variables('fmgbVmName'),'SSH')]",
-    "externalLBId_NatRule_SSH_fmgb": "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'),variables('externalLBName_NatRule_SSH_fmgb'))]",
-
     "useAZ": "[and(not(empty(pickZones('Microsoft.Compute', 'virtualMachines', parameters('location')))), equals(parameters('availabilityOptions'), 'Availability Zones'))]",
     "pipZones": "[if(variables('useAZ'), pickZones('Microsoft.Network', 'publicIPAddresses', parameters('location'), 3), json('null'))]",
     "zone1": [
@@ -595,18 +560,6 @@
             }
           }
         ]
-      }
-    },
-    {
-      "condition": "[and(equals(parameters('vnetNewOrExisting'), 'new'),not(equals(parameters('highavailabilityMethod'),'manual')))]",
-      "type": "Microsoft.Network/virtualNetworks/subnets",
-      "apiVersion": "2023-04-01",
-      "name": "[concat(variables('vnetName'),'/', if(equals(parameters('highavailabilityMethod'),'manual'), 'test', parameters('subnet2Name')))]",
-      "dependsOn": [
-        "[variables('vnetName')]"
-      ],
-      "properties": {
-        "addressPrefix": "[parameters('subnet2Prefix')]"
       }
     },
     {
@@ -721,7 +674,7 @@
       }
     },
     {
-      "condition": "[and(equals(parameters('highavailabilityMethod'),'manual'),equals(parameters('publicIP1NewOrExisting'), 'new'))]",
+      "condition": "[equals(parameters('publicIP1NewOrExisting'), 'new')]",
       "type": "Microsoft.Network/publicIPAddresses",
       "name": "[variables('publicIP1Name')]",
       "apiVersion": "2023-04-01",
@@ -741,7 +694,7 @@
       }
     },
     {
-      "condition": "[and(equals(parameters('highavailabilityMethod'),'manual'),equals(parameters('publicIP2NewOrExisting'), 'new'))]",
+      "condition": "[equals(parameters('publicIP2NewOrExisting'), 'new')]",
       "type": "Microsoft.Network/publicIPAddresses",
       "name": "[variables('publicIP2Name')]",
       "apiVersion": "2023-04-01",
@@ -761,7 +714,7 @@
       }
     },
     {
-      "condition": "[equals(parameters('highavailabilityMethod'),'vrrp-external-loadbalancer')]",
+      "condition": "[equals(parameters('highavailabilityMethod'),'vrrp-external-vip')]",
       "type": "Microsoft.Network/publicIPAddresses",
       "name": "[variables('publicIP3Name')]",
       "apiVersion": "2023-04-01",
@@ -781,280 +734,6 @@
       }
     },
     {
-      "condition": "[equals(parameters('highavailabilityMethod'),'vrrp-external-loadbalancer')]",
-      "type": "Microsoft.Network/loadBalancers",
-      "name": "[variables('externalLBName')]",
-      "apiVersion": "2023-04-01",
-      "location": "[parameters('location')]",
-      "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Network/loadBalancers'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Network/loadBalancers']), parameters('fortinetTags')) ]",
-      "sku": {
-        "name": "Standard"
-      },
-      "dependsOn": [
-        "[variables('publicIP3Name')]"
-      ],
-      "properties": {
-        "frontendIPConfigurations": [
-          {
-            "name": "[variables('externalLBFEName')]",
-            "properties": {
-              "publicIPAddress": {
-                "id": "[variables('publicIP3Id')]"
-              }
-            }
-          }
-        ],
-        "backendAddressPools": [
-          {
-            "name": "[variables('externalLBBEName')]"
-          }
-        ],
-        "loadBalancingRules": [
-          {
-            "properties": {
-              "frontendIPConfiguration": {
-                "id": "[variables('externalLBFEId')]"
-              },
-              "backendAddressPool": {
-                "id": "[variables('externalLBBEId')]"
-              },
-              "probe": {
-                "id": "[variables('externalLBProbeId')]"
-              },
-              "protocol": "Tcp",
-              "frontendPort": 541,
-              "backendPort": 541,
-              "enableFloatingIP": true,
-              "idleTimeoutInMinutes": 5
-            },
-            "name": "ExternalLBRule-FE-devreg"
-          },
-          {
-            "properties": {
-              "frontendIPConfiguration": {
-                "id": "[variables('externalLBFEId')]"
-              },
-              "backendAddressPool": {
-                "id": "[variables('externalLBBEId')]"
-              },
-              "probe": {
-                "id": "[variables('externalLBProbeId')]"
-              },
-              "protocol": "Tcp",
-              "frontendPort": 514,
-              "backendPort": 514,
-              "enableFloatingIP": true,
-              "idleTimeoutInMinutes": 5
-            },
-            "name": "ExternalLBRule-FE-logs"
-          },
-          {
-            "properties": {
-              "frontendIPConfiguration": {
-                "id": "[variables('externalLBFEId')]"
-              },
-              "backendAddressPool": {
-                "id": "[variables('externalLBBEId')]"
-              },
-              "probe": {
-                "id": "[variables('externalLBProbeId')]"
-              },
-              "protocol": "Tcp",
-              "frontendPort": 8082,
-              "backendPort": 8082,
-              "enableFloatingIP": true,
-              "idleTimeoutInMinutes": 5
-            },
-            "name": "ExternalLBRule-FE-remote-access-fgt"
-          },
-          {
-            "properties": {
-              "frontendIPConfiguration": {
-                "id": "[variables('externalLBFEId')]"
-              },
-              "backendAddressPool": {
-                "id": "[variables('externalLBBEId')]"
-              },
-              "probe": {
-                "id": "[variables('externalLBProbeId')]"
-              },
-              "protocol": "Udp",
-              "frontendPort": 10551,
-              "backendPort": 10551,
-              "enableFloatingIP": true,
-              "idleTimeoutInMinutes": 5
-            },
-            "name": "ExternalLBRule-FE-udp10551"
-          }
-        ],
-        "probes": [
-          {
-            "properties": {
-              "protocol": "Tcp",
-              "port": 443,
-              "intervalInSeconds": 5,
-              "numberOfProbes": 2
-            },
-            "name": "lbprobe"
-          }
-        ],
-        "inboundNatRules": [
-          {
-            "name": "[variables('externalLBName_NatRule_SSH_fmga')]",
-            "properties": {
-              "frontendIPConfiguration": {
-                "id": "[variables('externalLBFEId')]"
-              },
-              "protocol": "Tcp",
-              "frontendPort": 50030,
-              "backendPort": 22,
-              "enableFloatingIP": false
-            }
-          },
-          {
-            "name": "[variables('externalLBName_NatRule_WEB_fmga')]",
-            "properties": {
-              "frontendIPConfiguration": {
-                "id": "[variables('externalLBFEId')]"
-              },
-              "protocol": "Tcp",
-              "frontendPort": 40030,
-              "backendPort": 443,
-              "enableFloatingIP": false
-            }
-          },
-          {
-            "name": "[variables('externalLBName_NatRule_SSH_fmgb')]",
-            "properties": {
-              "frontendIPConfiguration": {
-                "id": "[variables('externalLBFEId')]"
-              },
-              "protocol": "Tcp",
-              "frontendPort": 50031,
-              "backendPort": 22,
-              "enableFloatingIP": false
-            }
-          },
-          {
-            "name": "[variables('externalLBName_NatRule_WEB_fmgb')]",
-            "properties": {
-              "frontendIPConfiguration": {
-                "id": "[variables('externalLBFEId')]"
-              },
-              "protocol": "Tcp",
-              "frontendPort": 40031,
-              "backendPort": 443,
-              "enableFloatingIP": false
-            }
-          }
-        ]
-      }
-    },
-    {
-      "condition": "[equals(parameters('highavailabilityMethod'),'vrrp-internal-loadbalancer')]",
-      "type": "Microsoft.Network/loadBalancers",
-      "name": "[variables('internalLBName')]",
-      "apiVersion": "2023-04-01",
-      "location": "[parameters('location')]",
-      "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Network/loadBalancers'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Network/loadBalancers']), parameters('fortinetTags')) ]",
-      "sku": {
-        "name": "Standard"
-      },
-      "dependsOn": [
-        "[variables('vnetName')]"
-      ],
-      "properties": {
-        "frontendIPConfigurations": [
-          {
-            "name": "[variables('internalLBFEName')]",
-            "properties": {
-              "privateIPAddress": "[variables('sn1IPilb')]",
-              "privateIPAllocationMethod": "Static",
-              "subnet": {
-                "id": "[variables('subnet1Id')]"
-              }
-            },
-            "zones": "[variables('pipZones')]"
-          }
-        ],
-        "backendAddressPools": [
-          {
-            "name": "[variables('internalLBBEName')]"
-          }
-        ],
-        "loadBalancingRules": [
-          {
-            "properties": {
-              "frontendIPConfiguration": {
-                "id": "[variables('internalLBFEId')]"
-              },
-              "backendAddressPool": {
-                "id": "[variables('internalLBBEId')]"
-              },
-              "probe": {
-                "id": "[variables('internalLBProbeId')]"
-              },
-              "protocol": "Tcp",
-              "frontendPort": 541,
-              "backendPort": 541,
-              "enableFloatingIP": true,
-              "idleTimeoutInMinutes": 5
-            },
-            "name": "InternalLBRule-FE-devreg"
-          },
-          {
-            "properties": {
-              "frontendIPConfiguration": {
-                "id": "[variables('internalLBFEId')]"
-              },
-              "backendAddressPool": {
-                "id": "[variables('internalLBBEId')]"
-              },
-              "probe": {
-                "id": "[variables('internalLBProbeId')]"
-              },
-              "protocol": "Tcp",
-              "frontendPort": 514,
-              "backendPort": 514,
-              "enableFloatingIP": true,
-              "idleTimeoutInMinutes": 5
-            },
-            "name": "InternalLBRule-FE-logs"
-          },
-          {
-            "properties": {
-              "frontendIPConfiguration": {
-                "id": "[variables('internalLBFEId')]"
-              },
-              "backendAddressPool": {
-                "id": "[variables('internalLBBEId')]"
-              },
-              "probe": {
-                "id": "[variables('internalLBProbeId')]"
-              },
-              "protocol": "Tcp",
-              "frontendPort": 8082,
-              "backendPort": 8082,
-              "enableFloatingIP": true,
-              "idleTimeoutInMinutes": 5
-            },
-            "name": "InternalLBRule-FE-remote-access-fgt"
-          }
-        ],
-        "probes": [
-          {
-            "properties": {
-              "protocol": "Tcp",
-              "port": 443,
-              "intervalInSeconds": 5,
-              "numberOfProbes": 2
-            },
-            "name": "lbprobe"
-          }
-        ]
-      }
-    },
-    {
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[variables('fmgANic1Name')]",
       "apiVersion": "2023-04-01",
@@ -1064,56 +743,13 @@
       },
       "dependsOn": [
         "[variables('vnetName')]",
-        "[variables('nsgName')]",
-        "[variables('externalLBName')]",
-        "[variables('internalLBName')]"
+        "[variables('nsgName')]"
       ],
       "properties": {
-        "ipConfigurations": [
-          {
-            "name": "ipconfig1",
-            "properties": {
-              "privateIPAddress": "[variables('sn1IPfmgA')]",
-              "privateIPAllocationMethod": "Static",
-              "publicIPAddress": "[if(and(not(equals(parameters('publicIP1NewOrExisting'), 'none')),equals(parameters('highavailabilityMethod'),'manual')), variables('publicIPAddress1Id'), json('null'))]",
-              "subnet": {
-                "id": "[variables('subnet1Id')]"
-              },
-              "loadBalancerBackendAddressPools": "[if(equals(parameters('highavailabilityMethod'),'vrrp-external-loadbalancer'),variables('externalLoadBalancerBackendAddressPools'),json('null'))]",
-              "loadBalancerInboundNatRules": "[if(equals(parameters('highavailabilityMethod'),'vrrp-external-loadbalancer'),variables('externalLoadBalancerNatRulesFMGa'),json('null'))]"
-            }
-          }
-        ],
+        "ipConfigurations": "[if(endsWith(parameters('highavailabilityMethod'),'vip'), variables('fmgAifconfig'), array(variables('fmgAifconfig')[0]))]",
         "networkSecurityGroup": {
           "id": "[resourceId('Microsoft.Network/networkSecurityGroups/',variables('nsgName'))]"
         }
-      }
-    },
-    {
-      "condition": "[not(equals(parameters('highavailabilityMethod'),'manual'))]",
-      "type": "Microsoft.Network/networkInterfaces",
-      "name": "[variables('fmgANic2Name')]",
-      "apiVersion": "2023-04-01",
-      "location": "[parameters('location')]",
-      "tags": {
-        "provider": "[toUpper(parameters('fortinetTags').provider)]"
-      },
-      "dependsOn": [
-        "[variables('vnetName')]"
-      ],
-      "properties": {
-        "ipConfigurations": [
-          {
-            "name": "ipconfig1",
-            "properties": {
-              "privateIPAddress": "[variables('sn2IPfmgA')]",
-              "privateIPAllocationMethod": "Static",
-              "subnet": {
-                "id": "[variables('subnet2Id')]"
-              }
-            }
-          }
-        ]
       }
     },
     {
@@ -1126,56 +762,13 @@
       },
       "dependsOn": [
         "[variables('vnetName')]",
-        "[variables('nsgName')]",
-        "[variables('externalLBName')]",
-        "[variables('internalLBName')]"
+        "[variables('nsgName')]"
       ],
       "properties": {
-        "ipConfigurations": [
-          {
-            "name": "ipconfig1",
-            "properties": {
-              "privateIPAddress": "[variables('sn1IPfmgB')]",
-              "privateIPAllocationMethod": "Static",
-              "publicIPAddress": "[if(and(not(equals(parameters('publicIP2NewOrExisting'), 'none')),equals(parameters('highavailabilityMethod'),'manual')), variables('publicIPAddress2Id'), json('null'))]",
-              "subnet": {
-                "id": "[variables('subnet1Id')]"
-              },
-              "loadBalancerBackendAddressPools": "[if(equals(parameters('highavailabilityMethod'),'vrrp-external-loadbalancer'),variables('externalLoadBalancerBackendAddressPools'),json('null'))]",
-              "loadBalancerInboundNatRules": "[if(equals(parameters('highavailabilityMethod'),'vrrp-external-loadbalancer'),variables('externalLoadBalancerNatRulesFMGb'),json('null'))]"
-            }
-          }
-        ],
+        "ipConfigurations": "[if(endsWith(parameters('highavailabilityMethod'),'vip'), variables('fmgBifconfig'), array(variables('fmgBifconfig')[0]))]",
         "networkSecurityGroup": {
           "id": "[resourceId('Microsoft.Network/networkSecurityGroups/',variables('nsgName'))]"
         }
-      }
-    },
-    {
-      "condition": "[not(equals(parameters('highavailabilityMethod'),'manual'))]",
-      "type": "Microsoft.Network/networkInterfaces",
-      "name": "[variables('fmgBNic2Name')]",
-      "apiVersion": "2023-04-01",
-      "location": "[parameters('location')]",
-      "tags": {
-        "provider": "[toUpper(parameters('fortinetTags').provider)]"
-      },
-      "dependsOn": [
-        "[variables('vnetName')]"
-      ],
-      "properties": {
-        "ipConfigurations": [
-          {
-            "name": "ipconfig1",
-            "properties": {
-              "privateIPAddress": "[variables('sn2IPfmgB')]",
-              "privateIPAllocationMethod": "Static",
-              "subnet": {
-                "id": "[variables('subnet2Id')]"
-              }
-            }
-          }
-        ]
       }
     },
     {
@@ -1238,16 +831,12 @@
           ]
         },
         "networkProfile": {
-          "copy": [
+          "networkInterfaces": [
             {
-              "name": "networkInterfaces",
-              "count": "[if(equals(parameters('highavailabilityMethod'),'manual'), 1, 2)]",
-              "input": {
-                "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(variables('fmgAVmName'),'-nic', copyIndex('networkInterfaces', 1)))]",
-                "properties": {
-                  "primary": "[if(equals(copyIndex('networkInterfaces',1),1), 'true', 'false')]"
-                }
-              }
+              "properties": {
+                "primary": true
+              },
+              "id": "[variables('fmgANic1Id')]"
             }
           ]
         },
@@ -1319,16 +908,12 @@
           ]
         },
         "networkProfile": {
-          "copy": [
+          "networkInterfaces": [
             {
-              "name": "networkInterfaces",
-              "count": "[if(equals(parameters('highavailabilityMethod'),'manual'), 1, 2)]",
-              "input": {
-                "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(variables('fmgBVmName'),'-nic', copyIndex('networkInterfaces',1)))]",
-                "properties": {
-                  "primary": "[if(equals(copyIndex('networkInterfaces',1),1), 'true', 'false')]"
-                }
-              }
+              "properties": {
+                "primary": true
+              },
+              "id": "[variables('fmgBNic1Id')]"
             }
           ]
         },
