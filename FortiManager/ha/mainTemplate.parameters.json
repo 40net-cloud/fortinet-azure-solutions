@@ -3,13 +3,13 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "adminUsername": {
-            "value": ""
+            "value": "" // TODO: Fill in parameter value
         },
         "adminPassword": {
-            "value": ""
+            "value": "" // TODO: Fill in parameter value
         },
         "namePrefix": {
-            "value": ""
+            "value": "" // TODO: Fill in parameter value
         },
         "imageSku": {
             "value": "fortinet-fortimanager"
@@ -23,13 +23,13 @@
         "instanceType": {
             "value": "Standard_D4s_v3"
         },
+        "highavailabilityMethod": {
+            "value": "vrrp-external-vip"
+        },
         "availabilityOptions": {
-            "value": "Availability Set"
+            "value": "Availability Zones"
         },
         "publicIP1NewOrExisting": {
-            "value": "new"
-        },
-        "publicIP2NewOrExisting": {
             "value": "new"
         },
         "publicIP1Name": {
@@ -38,11 +38,8 @@
         "publicIP1ResourceGroup": {
             "value": ""
         },
-        "publicIP2AddressSKU": {
-            "value": "Standard"
-        },
-        "publicIP2AddressType": {
-            "value": "Static"
+        "publicIP2NewOrExisting": {
+            "value": "new"
         },
         "publicIP2Name": {
             "value": ""
@@ -50,11 +47,14 @@
         "publicIP2ResourceGroup": {
             "value": ""
         },
-        "publicIP1AddressSKU": {
-            "value": "Standard"
+        "publicIP3NewOrExisting": {
+            "value": "new"
         },
-        "publicIP1AddressType": {
-            "value": "Static"
+        "publicIP3Name": {
+            "value": ""
+        },
+        "publicIP3ResourceGroup": {
+            "value": ""
         },
         "vnetNewOrExisting": {
             "value": "new"
@@ -66,16 +66,19 @@
             "value": ""
         },
         "vnetAddressPrefix": {
-            "value": "172.16.136.0/22"
+            "value": "172.16.140.0/24"
         },
         "subnet1Name": {
             "value": "FortiManagerSubnet"
         },
         "subnet1Prefix": {
-            "value": "172.16.137.0/24"
+            "value": "172.16.140.0/26"
         },
         "subnet1StartAddress": {
-            "value": "172.16.137.4"
+            "value": "172.16.140.4"
+        },
+        "serialConsole": {
+            "value": "yes"
         },
         "diskType": {
             "value": "Default"
@@ -105,7 +108,10 @@
             "value": ""
         },
         "location": {
-            "value": ""
+            "value": "" // TODO: Fill in parameter value
+        },
+        "tagsByResource": {
+            "value": {}
         },
         "fortinetTags": {
             "value": {
