@@ -113,7 +113,8 @@
           "validationMessage": "Only alphanumeric characters are allowed, and the value must be 1 to 15 characters."
         },
         "visible": true
-      },
+      }
+    ],
     "steps": [
       {
         "name": "instance",
