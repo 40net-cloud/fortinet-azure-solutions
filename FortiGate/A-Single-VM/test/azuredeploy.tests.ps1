@@ -26,24 +26,25 @@ BeforeAll {
   # Basic Variables
   $testsRandom = Get-Random 10001
   $testsPrefix = "FORTIQA"
-  $testsResourceGroupName = "FORTIQA-$testsRandom-$templateName"
+  $testsResourceGroupName_x64 = "FORTIQA-$testsRandom-$templateName-x64"
+  $testsResourceGroupName_arm64 = "FORTIQA-$testsRandom-$templateName-arm64"
   $testsAdminUsername = "azureuser"
-  $testsResourceGroupLocation_x86 = "westeurope"
+  $testsResourceGroupLocation_x64 = "westeurope"
   $testsResourceGroupLocation_arm64 = "northeurope"
 
   # ARM Template Variables
   $config = "config system console `n set output standard `n end `n config system global `n set gui-theme mariner `n end `n config system admin `n edit devops `n set accprofile super_admin `n set ssh-public-key1 `""
   $config += Get-Content $sshkeypub
-  $config += "`" `n set password $testsResourceGroupName `n next `n end"
+  $config += "`" `n set password $testsResourceGroupName_x64 `n next `n end"
   $publicIPName = "$testsPrefix-fgt-pip"
-  $params_x86 = @{ 'adminUsername'      = $testsAdminUsername
-    'adminPassword'                 = $testsResourceGroupName
+  $params_x64 = @{ 'adminUsername'      = $testsAdminUsername
+    'adminPassword'                 = $testsResourceGroupName_x64
     'fortiGateNamePrefix'           = $testsPrefix
     'fortiGateAdditionalCustomData' = $config
     'publicIP1Name'                 = $publicIPName
   }
   $params_arm64 = @{ 'adminUsername'      = $testsAdminUsername
-    'adminPassword'                 = $testsResourceGroupName
+    'adminPassword'                 = $testsResourceGroupName_arm64
     'fortiGateNamePrefix'           = $testsPrefix
     'fortiGateAdditionalCustomData' = $config
     'publicIP1Name'                 = $publicIPName
@@ -139,16 +140,16 @@ Describe 'FGT Single VM' {
 
   }
 
-  Context 'Deployment x86' {
+  Context 'Deployment x64' {
 
     It "Test Deployment" {
-      New-AzResourceGroup -Name $testsResourceGroupName -Location "$testsResourceGroupLocation_x86"
-            (Test-AzResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName" -TemplateFile "$templateFileLocation" -TemplateParameterObject $params_x86).Count | Should -Not -BeGreaterThan 0
+      New-AzResourceGroup -Name $testsResourceGroupName_x64 -Location "$testsResourceGroupLocation_x64"
+            (Test-AzResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName_x64" -TemplateFile "$templateFileLocation" -TemplateParameterObject $params_x64).Count | Should -Not -BeGreaterThan 0
     }
     It "Deployment" {
-      Write-Host ( "Deployment name: $testsResourceGroupName" )
+      Write-Host ( "Deployment name: $testsResourceGroupName_x64" )
 
-      $resultDeployment = New-AzResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName" -TemplateFile "$templateFileLocation" -TemplateParameterObject $params_x86
+      $resultDeployment = New-AzResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName_x64" -TemplateFile "$templateFileLocation" -TemplateParameterObject $params_x64
       Write-Host ($resultDeployment | Format-Table | Out-String)
       Write-Host ("Deployment state: " + $resultDeployment.ProvisioningState | Out-String)
       $resultDeployment.ProvisioningState | Should -Be "Succeeded"
@@ -160,10 +161,10 @@ Describe 'FGT Single VM' {
     }
   }
 
-  Context 'Deployment test x86' {
+  Context 'Deployment test x64' {
 
     BeforeAll {
-      $fgt = (Get-AzPublicIpAddress -Name $publicIPName -ResourceGroupName $testsResourceGroupName).IpAddress
+      $fgt = (Get-AzPublicIpAddress -Name $publicIPName -ResourceGroupName $testsResourceGroupName_x64).IpAddress
       Write-Host ("FortiGate public IP: " + $fgt)
       $verify_commands = @'
             get system status
@@ -189,22 +190,22 @@ Describe 'FGT Single VM' {
     }
   }
 
-  Context 'Cleanup x86' {
+  Context 'Cleanup x64' {
     It "Cleanup of deployment" {
-      Remove-AzResourceGroup -Name $testsResourceGroupName -Force
+      Remove-AzResourceGroup -Name $testsResourceGroupName_x64 -Force
     }
   }
 
   Context 'Deployment ARM64' {
 
     It "Test Deployment" {
-      New-AzResourceGroup -Name $testsResourceGroupName -Location "$testsResourceGroupLocation_arm64"
-            (Test-AzResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName" -TemplateFile "$templateFileLocation" -TemplateParameterObject $params_arm64).Count | Should -Not -BeGreaterThan 0
+      New-AzResourceGroup -Name $testsResourceGroupName_arm64 -Location "$testsResourceGroupLocation_arm64"
+            (Test-AzResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName_arm64" -TemplateFile "$templateFileLocation" -TemplateParameterObject $params_arm64).Count | Should -Not -BeGreaterThan 0
     }
     It "Deployment" {
-      Write-Host ( "Deployment name: $testsResourceGroupName" )
+      Write-Host ( "Deployment name: $testsResourceGroupName_arm64" )
 
-      $resultDeployment = New-AzResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName" -TemplateFile "$templateFileLocation" -TemplateParameterObject $params_arm64
+      $resultDeployment = New-AzResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName_arm64" -TemplateFile "$templateFileLocation" -TemplateParameterObject $params_arm64
       Write-Host ($resultDeployment | Format-Table | Out-String)
       Write-Host ("Deployment state: " + $resultDeployment.ProvisioningState | Out-String)
       $resultDeployment.ProvisioningState | Should -Be "Succeeded"
@@ -219,7 +220,7 @@ Describe 'FGT Single VM' {
   Context 'Deployment test ARM64' {
 
     BeforeAll {
-      $fgt = (Get-AzPublicIpAddress -Name $publicIPName -ResourceGroupName $testsResourceGroupName).IpAddress
+      $fgt = (Get-AzPublicIpAddress -Name $publicIPName -ResourceGroupName $testsResourceGroupName_arm64).IpAddress
       Write-Host ("FortiGate public IP: " + $fgt)
       $verify_commands = @'
             get system status
@@ -247,7 +248,7 @@ Describe 'FGT Single VM' {
 
   Context 'Cleanup ARM64' {
     It "Cleanup of deployment" {
-      Remove-AzResourceGroup -Name $testsResourceGroupName -Force
+      Remove-AzResourceGroup -Name $testsResourceGroupName_arm64 -Force
     }
   }
 }
