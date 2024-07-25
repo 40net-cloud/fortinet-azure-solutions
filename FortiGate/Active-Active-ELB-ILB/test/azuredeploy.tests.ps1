@@ -25,21 +25,30 @@ BeforeAll {
   # Basic Variables
   $testsRandom = Get-Random 10001
   $testsPrefix = "FORTIQA"
-  $testsResourceGroupName = "FORTIQA-$testsRandom-$templateName"
+  $testsResourceGroupName_x64 = "FORTIQA-$testsRandom-$templateName-x64"
+  $testsResourceGroupName_arm64 = "FORTIQA-$testsRandom-$templateName-arm64"
   $testsAdminUsername = "azureuser"
-  $testsResourceGroupLocation = "westeurope"
+  $testsResourceGroupLocation_x64 = "westeurope"
+  $testsResourceGroupLocation_arm64 = "northeurope"
 
   # ARM Template Variables
   $config = "config system console `n set output standard `n end `n config system global `n set gui-theme mariner `n end `n config system admin `n edit devops `n set accprofile super_admin `n set ssh-public-key1 `""
   $config += Get-Content $sshkeypub
-  $config += "`" `n set password $testsResourceGroupName `n next `n end"
+  $config += "`" `n set password $testsResourceGroupName_x64 `n next `n end"
   $publicIPName = "$testsPrefix-externalloadbalancer-pip"
   $fortiGateCount = 3
-  $params = @{ 'adminUsername'      = $testsAdminUsername
-    'adminPassword'                 = $testsResourceGroupName
+  $params_x64 = @{ 'adminUsername'  = $testsAdminUsername
+    'adminPassword'                 = $testsResourceGroupName_x64
     'fortiGateNamePrefix'           = $testsPrefix
     'fortiGateAdditionalCustomData' = $config
     'fortiGateCount'                = $fortiGateCount
+  }
+  $params_arm64 = @{ 'adminUsername' = $testsAdminUsername
+    'adminPassword'                  = $testsResourceGroupName_arm64
+    'fortiGateNamePrefix'            = $testsPrefix
+    'fortiGateAdditionalCustomData'  = $config
+    'fortiGateCount'                 = $fortiGateCount
+    'fortiGateInstanceArchitecture'  = 'arm64'
   }
   $ports = @(40030, 50030, 40031, 50031)
 }
@@ -99,8 +108,11 @@ Describe 'FGT A/A' {
       'externalLoadBalancer',
       'fortiGateAdditionalCustomData',
       'fortiGateCount',
-      'fortiGateImageSKU',
-      'fortiGateImageVersion',
+      'fortiGateImageSKU_arm64',
+      'fortiGateImageSKU_x64',
+      'fortiGateImageVersion_arm64',
+      'fortiGateImageVersion_x64',
+      'fortiGateInstanceArchitecture',
       'fortiGateLicenseBYOL1',
       'fortiGateLicenseBYOL2',
       'fortiGateLicenseBYOL3',
@@ -124,7 +136,8 @@ Describe 'FGT A/A' {
       'fortiManagerIP',
       'fortiManagerSerial',
       'fortinetTags',
-      'instanceType',
+      'instanceType_arm64',
+      'instanceType_x64',
       'location',
       'outboundConnectivity',
       'serialConsole',
@@ -145,11 +158,11 @@ Describe 'FGT A/A' {
 
   }
 
-  Context 'Deployment' {
+  Context 'Deployment x64' {
 
     It "Test deployment" {
-      New-AzResourceGroup -Name $testsResourceGroupName -Location "$testsResourceGroupLocation"
-            (Test-AzResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName" -TemplateFile "$templateFileLocation" -TemplateParameterObject $params).Count | Should -Not -BeGreaterThan 0
+      New-AzResourceGroup -Name $testsResourceGroupName_x64 -Location "$testsResourceGroupLocation"
+            (Test-AzResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName_x64" -TemplateFile "$templateFileLocation" -TemplateParameterObject $params_x64).Count | Should -Not -BeGreaterThan 0
     }
     It "Deployment" {
       $resultDeployment = New-AzResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName" -TemplateFile "$templateFileLocation" -TemplateParameterObject $params
@@ -164,7 +177,7 @@ Describe 'FGT A/A' {
     }
   }
 
-  Context 'Deployment test' {
+  Context 'Deployment test x64' {
 
     BeforeAll {
       $fgt = (Get-AzPublicIpAddress -Name $publicIPName -ResourceGroupName $testsResourceGroupName).IpAddress
@@ -199,7 +212,7 @@ Describe 'FGT A/A' {
     }
   }
 
-  Context 'Cleanup' {
+  Context 'Cleanup x86' {
     It "Cleanup of deployment" {
       Remove-AzResourceGroup -Name $testsResourceGroupName -Force
     }
