@@ -738,7 +738,7 @@
                   "subnets": "Standard deployment is to have an external and internal subnet"
                 },
                 "defaultValue": {
-                  "name": "[if(equals(basics('fortiGateNamePrefix'),''),'FortiGate-VNET',concat(basics('fortiGateNamePrefix'),'-VNET'))]",
+                  "name": "[if(equals(basics('fortiGateNamePrefix'),''),'fortigate-vnet',concat(basics('fortiGateNamePrefix'),'-vnet'))]",
                   "addressPrefixSize": "/22"
                 },
                 "constraints": {

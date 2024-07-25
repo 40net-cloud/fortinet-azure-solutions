@@ -28,7 +28,8 @@ BeforeAll {
   $testsPrefix = "FORTIQA"
   $testsResourceGroupName = "FORTIQA-$testsRandom-$templateName"
   $testsAdminUsername = "azureuser"
-  $testsResourceGroupLocation = "westeurope"
+  $testsResourceGroupLocation_x86 = "westeurope"
+  $testsResourceGroupLocation_arm64 = "northeurope"
 
   # ARM Template Variables
   $config = "config system console `n set output standard `n end `n config system global `n set gui-theme mariner `n end `n config system admin `n edit devops `n set accprofile super_admin `n set ssh-public-key1 `""
@@ -141,7 +142,7 @@ Describe 'FGT Single VM' {
   Context 'Deployment x86' {
 
     It "Test Deployment" {
-      New-AzResourceGroup -Name $testsResourceGroupName -Location "$testsResourceGroupLocation"
+      New-AzResourceGroup -Name $testsResourceGroupName -Location "$testsResourceGroupLocation_x86"
             (Test-AzResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName" -TemplateFile "$templateFileLocation" -TemplateParameterObject $params_x86).Count | Should -Not -BeGreaterThan 0
     }
     It "Deployment" {
@@ -197,7 +198,7 @@ Describe 'FGT Single VM' {
   Context 'Deployment ARM64' {
 
     It "Test Deployment" {
-      New-AzResourceGroup -Name $testsResourceGroupName -Location "$testsResourceGroupLocation"
+      New-AzResourceGroup -Name $testsResourceGroupName -Location "$testsResourceGroupLocation_arm64"
             (Test-AzResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName" -TemplateFile "$templateFileLocation" -TemplateParameterObject $params_arm64).Count | Should -Not -BeGreaterThan 0
     }
     It "Deployment" {
