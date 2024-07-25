@@ -593,7 +593,7 @@
   },
   "resources": [
     {
-      "apiVersion": "202-01",
+      "apiVersion": "2023-07-01",
       "name": "[concat(parameters('fortiGateNamePrefix'), '-fortinetdeployment-', uniquestring(resourceGroup().id))]",
       "type": "Microsoft.Resources/deployments",
       "properties": {

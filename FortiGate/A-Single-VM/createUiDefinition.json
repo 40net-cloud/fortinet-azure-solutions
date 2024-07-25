@@ -504,26 +504,6 @@
             "visible": "[equals(basics('fortiGateInstanceArchitecture'),'arm64')]"
           },
           {
-            "name": "virtualmachinename",
-            "type": "Microsoft.Common.Section",
-            "label": "Virtual Machine Name",
-            "elements": [
-              {
-                "name": "fgtvmname",
-                "type": "Microsoft.Common.TextBox",
-                "label": "Name of the FortiGate VM",
-                "defaultValue": "[if(equals(basics('fortiGateNamePrefix'),''),'FortiGate-VM',concat(basics('fortiGateNamePrefix'),'-FGT'))]",
-                "toolTip": "Provide the name of the FortiGate VM. This is not required as a field.",
-                "constraints": {
-                  "required": false,
-                  "regex": "^[A-Za-z0-9-]{1,64}$",
-                  "validationMessage": "Only alphanumeric characters and a dash are allowed, and the value must be 1 to 64 characters."
-                },
-                "visible": true
-              }
-            ]
-          },
-          {
             "name": "availabilityOptions",
             "type": "Microsoft.Common.Section",
             "label": "Availability Options",

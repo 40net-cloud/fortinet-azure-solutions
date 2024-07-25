@@ -35,11 +35,18 @@ BeforeAll {
   $config += Get-Content $sshkeypub
   $config += "`" `n set password $testsResourceGroupName `n next `n end"
   $publicIPName = "$testsPrefix-fgt-pip"
-  $params = @{ 'adminUsername'      = $testsAdminUsername
+  $params_x86 = @{ 'adminUsername'      = $testsAdminUsername
     'adminPassword'                 = $testsResourceGroupName
     'fortiGateNamePrefix'           = $testsPrefix
     'fortiGateAdditionalCustomData' = $config
     'publicIP1Name'                 = $publicIPName
+  }
+  $params_arm64 = @{ 'adminUsername'      = $testsAdminUsername
+    'adminPassword'                 = $testsResourceGroupName
+    'fortiGateNamePrefix'           = $testsPrefix
+    'fortiGateAdditionalCustomData' = $config
+    'publicIP1Name'                 = $publicIPName
+    'fortiGateInstanceArchitecture' = 'arm64'
   }
   $ports = @(443, 22)
 }
@@ -90,8 +97,11 @@ Describe 'FGT Single VM' {
       'customImageReference',
       'existingAvailabilitySetName',
       'fortiGateAdditionalCustomData',
-      'fortiGateImageSKU',
-      'fortiGateImageVersion',
+      'fortiGateImageSKU_arm64',
+      'fortiGateImageSKU_x86',
+      'fortiGateImageVersion_arm64',
+      'fortiGateImageVersion_x86',
+      'fortiGateInstanceArchitecture',
       'fortiGateLicenseBYOL',
       'fortiGateLicenseFortiFlex',
       'fortiGateName',
@@ -100,7 +110,8 @@ Describe 'FGT Single VM' {
       'fortiManagerIP',
       'fortiManagerSerial',
       'fortinetTags',
-      'instanceType',
+      'instanceType_arm64',
+      'instanceType_x86',
       'location',
       'publicIP1AddressType',
       'publicIP1Name',
@@ -127,16 +138,16 @@ Describe 'FGT Single VM' {
 
   }
 
-  Context 'Deployment' {
+  Context 'Deployment x86' {
 
     It "Test Deployment" {
       New-AzResourceGroup -Name $testsResourceGroupName -Location "$testsResourceGroupLocation"
-            (Test-AzResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName" -TemplateFile "$templateFileLocation" -TemplateParameterObject $params).Count | Should -Not -BeGreaterThan 0
+            (Test-AzResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName" -TemplateFile "$templateFileLocation" -TemplateParameterObject $params_x86).Count | Should -Not -BeGreaterThan 0
     }
     It "Deployment" {
       Write-Host ( "Deployment name: $testsResourceGroupName" )
 
-      $resultDeployment = New-AzResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName" -TemplateFile "$templateFileLocation" -TemplateParameterObject $params
+      $resultDeployment = New-AzResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName" -TemplateFile "$templateFileLocation" -TemplateParameterObject $params_x86
       Write-Host ($resultDeployment | Format-Table | Out-String)
       Write-Host ("Deployment state: " + $resultDeployment.ProvisioningState | Out-String)
       $resultDeployment.ProvisioningState | Should -Be "Succeeded"
@@ -148,7 +159,7 @@ Describe 'FGT Single VM' {
     }
   }
 
-  Context 'Deployment test' {
+  Context 'Deployment test x86' {
 
     BeforeAll {
       $fgt = (Get-AzPublicIpAddress -Name $publicIPName -ResourceGroupName $testsResourceGroupName).IpAddress
@@ -177,7 +188,63 @@ Describe 'FGT Single VM' {
     }
   }
 
-  Context 'Cleanup' {
+  Context 'Cleanup x86' {
+    It "Cleanup of deployment" {
+      Remove-AzResourceGroup -Name $testsResourceGroupName -Force
+    }
+  }
+
+  Context 'Deployment ARM64' {
+
+    It "Test Deployment" {
+      New-AzResourceGroup -Name $testsResourceGroupName -Location "$testsResourceGroupLocation"
+            (Test-AzResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName" -TemplateFile "$templateFileLocation" -TemplateParameterObject $params_arm64).Count | Should -Not -BeGreaterThan 0
+    }
+    It "Deployment" {
+      Write-Host ( "Deployment name: $testsResourceGroupName" )
+
+      $resultDeployment = New-AzResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName" -TemplateFile "$templateFileLocation" -TemplateParameterObject $params_arm64
+      Write-Host ($resultDeployment | Format-Table | Out-String)
+      Write-Host ("Deployment state: " + $resultDeployment.ProvisioningState | Out-String)
+      $resultDeployment.ProvisioningState | Should -Be "Succeeded"
+    }
+    It "Search deployment" {
+      $result = Get-AzVM | Where-Object { $_.Name -like "$testsPrefix*" }
+      Write-Host ($result | Format-Table | Out-String)
+      $result | Should -Not -Be $null
+    }
+  }
+
+  Context 'Deployment test ARM64' {
+
+    BeforeAll {
+      $fgt = (Get-AzPublicIpAddress -Name $publicIPName -ResourceGroupName $testsResourceGroupName).IpAddress
+      Write-Host ("FortiGate public IP: " + $fgt)
+      $verify_commands = @'
+            get system status
+            show system interface
+            show router static
+            diag debug cloudinit show
+            exit
+'@
+      $OFS = "`n"
+    }
+    It "FGT: Ports listening" {
+      ForEach ( $port in $ports ) {
+        Write-Host ("Check port: $port" )
+        $portListening = (Test-Connection -TargetName $fgt -TCPPort $port -TimeoutSeconds 100)
+        $portListening | Should -BeTrue
+      }
+    }
+    It "FGT: Verify FortiGate configuration" {
+      $result = $($verify_commands | ssh -v -tt -i $sshkey -o StrictHostKeyChecking=no devops@$fgt)
+      $LASTEXITCODE | Should -Be "0"
+      Write-Host ("FGT CLI info: " + $result) -Separator `n
+      $result | Should -Not -BeLike "*Command fail*"
+    }
+  }
+
+  Context 'Cleanup ARM64' {
     It "Cleanup of deployment" {
       Remove-AzResourceGroup -Name $testsResourceGroupName -Force
     }
