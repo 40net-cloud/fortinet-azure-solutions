@@ -460,7 +460,7 @@
             "label": "Instance Type ARM 64",
             "elements": [
               {
-                "name": "fortiGateImageSKU_x64",
+                "name": "fortiGateImageSKU_arm64",
                 "type": "Microsoft.Common.DropDown",
                 "label": "FortiGate Image SKU",
                 "defaultValue": "Bring Your Own License",
