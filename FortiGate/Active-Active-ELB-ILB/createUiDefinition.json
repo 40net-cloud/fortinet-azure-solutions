@@ -1537,14 +1537,21 @@
             "label": "Custom VHD",
             "elements": [
               {
+                "name": "customvhdcheck",
+                "type": "Microsoft.Common.CheckBox",
+                "label": "Use Azure compute gallery VHD for deployment",
+                "toolTip": "Provide a customer VHD image provided by Fortinet",
+                "visible": true
+              },
+              {
                 "name": "customvhdinfo",
                 "type": "Microsoft.Common.InfoBox",
-                "visible": true,
                 "options": {
                   "icon": "Info",
                   "text": "For BYOL it is possible to upload a specific FortiGate image to Azure provided by support. Provide the resource ID of the required VM image version in the field below.",
                   "uri": "https://docs.fortinet.com/document/fortigate-public-cloud/7.2.0/azure-administration-guide/392531/deploying-fortigate-vm-from-a-vhd-image-file"
-                }
+                },
+                "visible": "[steps('advanced').customvhd.customvhdcheck]"
               },
               {
                 "name": "resourceid",
@@ -1552,17 +1559,16 @@
                 "label": "Azure Compute Gallery Image Version resource ID",
                 "defaultValue": "",
                 "toolTip": "Azure Compute Gallery Image Version resource ID",
-                "visible": "[equals(steps('instance').instancetype_x64.fortiGateImageSKU_x64,'fortinet_fg-vm')]"
-              },
-              {
-                "name": "customvhdinfo2",
-                "type": "Microsoft.Common.InfoBox",
-                "visible": "[equals(basics('fortiGateInstanceArchitecture'),'arm64')]",
-                "options": {
-                  "icon": "Info",
-                  "text": "An ARM64 based instance type was selected.",
-                  "uri": "https://docs.fortinet.com/document/fortigate-public-cloud/7.2.0/azure-administration-guide/392531/deploying-fortigate-vm-from-a-vhd-image-file"
-                }
+                "constraints": {
+                  "required": false,
+                  "validations": [
+                    {
+                      "regex": "^[\\w\\W\n\t]{0,1024}$",
+                      "message": "All characters allowed, max 1024 characters."
+                    }
+                  ]
+                },
+                "visible": "[steps('advanced').customvhd.customvhdcheck]"
               }
             ]
           }

@@ -1295,7 +1295,6 @@
               {
                 "name": "customvhdinfo",
                 "type": "Microsoft.Common.InfoBox",
-                "visible": "[steps('advanced').customvhd.customvhdcheck]",
                 "options": {
                   "icon": "Info",
                   "text": "For BYOL it is possible to upload a specific FortiGate image to Azure provided by support. Provide the resource ID of the required VM image version in the field below.",
