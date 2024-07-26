@@ -1309,11 +1309,6 @@
                 "label": "Azure Compute Gallery Image Version resource ID",
                 "defaultValue": "",
                 "toolTip": "Azure Compute Gallery Image Version resource ID",
-                "constraints": {
-                  "required": "[and(steps('advanced').customvhd.customvhdcheck, equals(basics('fortiGateInstanceArchitecture'), 'arm64'))]",
-                  "regex": "^[\\w\\W\n\t]{0,10240}$",
-                  "validationMessage": "All characters allowed, max 10240 characters."
-                },
                 "visible": "[steps('advanced').customvhd.customvhdcheck]"
               }
             ]
