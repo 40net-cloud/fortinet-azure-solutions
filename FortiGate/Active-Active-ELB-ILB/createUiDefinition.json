@@ -762,7 +762,7 @@
                 "type": "Microsoft.Common.TextBlock",
                 "options": {
                   "text": "Bring Your Own License was selected in the basics blade. The license file(s) retrieved from support.fortinet.com can be uploaded here or uploaded after deployment. License files or FortiFlex license for the first three FortiGate VM systems can be provided via this deployment. Additional licenses need to be uplaoded localy on these systems after deployment or a custom template need to created."
-                }
+                },
                 "visible": "[or(equals(steps('instance').instancetype_x64.fortiGateImageSKU_x64, 'fortinet_fg-vm'),equals(steps('instance').instancetype_arm64.fortiGateImageSKU_arm64, 'fortinet_fg-vm_arm64'))]"
               },
               {
