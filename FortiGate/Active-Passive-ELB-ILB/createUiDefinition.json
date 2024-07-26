@@ -1300,7 +1300,8 @@
                   "icon": "Info",
                   "text": "For BYOL it is possible to upload a specific FortiGate image to Azure provided by support. Provide the resource ID of the required VM image version in the field below.",
                   "uri": "https://docs.fortinet.com/document/fortigate-public-cloud/7.4.0/azure-administration-guide/392531/deploying-fortigate-vm-from-a-vhd-image-file"
-                }
+                },
+                "visible": "[steps('advanced').customvhd.customvhdcheck]"
               },
               {
                 "name": "resourceid",
@@ -1313,17 +1314,7 @@
                   "regex": "^[\\w\\W\n\t]{0,10240}$",
                   "validationMessage": "All characters allowed, max 10240 characters."
                 },
-                "visible": "[equals(basics('fortiGateImageSKU'),'fortinet_fg-vm')]"
-              },
-              {
-                "name": "customvhdinfo2",
-                "type": "Microsoft.Common.InfoBox",
-                "visible": "[and(steps('advanced').customvhd.customvhdcheck, equals(basics('fortiGateInstanceArchitecture'), 'arm64'))]",
-                "options": {
-                  "icon": "Info",
-                  "text": "An ARM64 based instance type was selected. This requires a custom image using an Azure Compute Gallery.",
-                  "uri": "https://docs.fortinet.com/document/fortigate-public-cloud/7.4.0/azure-administration-guide/392531/deploying-fortigate-vm-from-a-vhd-image-file"
-                }
+                "visible": "[steps('advanced').customvhd.customvhdcheck]"
               }
             ]
           }
