@@ -51,7 +51,7 @@
             "value": "external-nat-device-or-elb"
         },
         "availabilityOptions": {
-            "value": "Availability Set"
+            "value": "Availability Zones"
         },
         "acceleratedNetworking": {
             "value": "true"
