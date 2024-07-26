@@ -25,6 +25,27 @@
         }
       },
       {
+        "name": "fortiGateInstanceArchitecture",
+        "type": "Microsoft.Common.OptionsGroup",
+        "label": "FortiGate VM instance Architecture",
+        "defaultValue": "X64 - Intel / AMD based processors",
+        "toolTip": "Select FortiGate VM instance Architecture",
+        "constraints": {
+          "allowedValues": [
+            {
+              "label": "X64 - Intel / AMD based processors",
+              "value": "x64"
+            },
+            {
+              "label": "ARM64 - Ampere Altra based processors",
+              "value": "arm64"
+            }
+          ],
+          "required": true
+        },
+        "visible": true
+      },
+      {
         "name": "adminUsername",
         "type": "Microsoft.Common.TextBox",
         "label": "FortiGate administrative username",
@@ -92,228 +113,6 @@
           "validationMessage": "Only alphanumeric characters are allowed, and the value must be 1 to 15 characters."
         },
         "visible": true
-      },
-      {
-        "name": "fortiGateImageSku",
-        "type": "Microsoft.Common.DropDown",
-        "label": "FortiGate Image SKU",
-        "defaultValue": "Bring Your Own License",
-        "toolTip": "Identifies whether to to use PAYG (on demand licensing) or BYOL license model (where license is purchased separately)",
-        "constraints": {
-          "required": false,
-          "allowedValues": [
-            {
-              "label": "Bring Your Own License",
-              "value": "fortinet_fg-vm"
-            },
-            {
-              "label": "Pay As You Go",
-              "value": "fortinet_fg-vm_payg_2023"
-            }
-          ]
-        },
-        "visible": true
-      },
-      {
-        "name": "fortiGateImageVersion",
-        "type": "Microsoft.Common.DropDown",
-        "label": "FortiGate Image Version",
-        "defaultValue": "7.2.8",
-        "toolTip": "Select the FortiGate image version",
-        "constraints": {
-          "required": false,
-          "allowedValues": [
-            {
-              "label": "6.2.0",
-              "value": "6.2.0"
-            },
-            {
-              "label": "6.2.2",
-              "value": "6.2.2"
-            },
-            {
-              "label": "6.2.4",
-              "value": "6.2.4"
-            },
-            {
-              "label": "6.2.5",
-              "value": "6.2.5"
-            },
-            {
-              "label": "6.4.0",
-              "value": "6.4.0"
-            },
-            {
-              "label": "6.4.10",
-              "value": "6.4.10"
-            },
-            {
-              "label": "6.4.11",
-              "value": "6.4.11"
-            },
-            {
-              "label": "6.4.12",
-              "value": "6.4.12"
-            },
-            {
-              "label": "6.4.13",
-              "value": "6.4.13"
-            },
-            {
-              "label": "6.4.15",
-              "value": "6.4.15"
-            },
-            {
-              "label": "6.4.2",
-              "value": "6.4.2"
-            },
-            {
-              "label": "6.4.3",
-              "value": "6.4.3"
-            },
-            {
-              "label": "6.4.5",
-              "value": "6.4.5"
-            },
-            {
-              "label": "6.4.6",
-              "value": "6.4.6"
-            },
-            {
-              "label": "6.4.7",
-              "value": "6.4.7"
-            },
-            {
-              "label": "6.4.8",
-              "value": "6.4.8"
-            },
-            {
-              "label": "6.4.9",
-              "value": "6.4.9"
-            },
-            {
-              "label": "7.0.0",
-              "value": "7.0.0"
-            },
-            {
-              "label": "7.0.1",
-              "value": "7.0.1"
-            },
-            {
-              "label": "7.0.10",
-              "value": "7.0.10"
-            },
-            {
-              "label": "7.0.11",
-              "value": "7.0.11"
-            },
-            {
-              "label": "7.0.12",
-              "value": "7.0.12"
-            },
-            {
-              "label": "7.0.13",
-              "value": "7.0.13"
-            },
-            {
-              "label": "7.0.14",
-              "value": "7.0.14"
-            },
-            {
-              "label": "7.0.15",
-              "value": "7.0.15"
-            },
-            {
-              "label": "7.0.2",
-              "value": "7.0.2"
-            },
-            {
-              "label": "7.0.3",
-              "value": "7.0.3"
-            },
-            {
-              "label": "7.0.4",
-              "value": "7.0.4"
-            },
-            {
-              "label": "7.0.5",
-              "value": "7.0.5"
-            },
-            {
-              "label": "7.0.6",
-              "value": "7.0.6"
-            },
-            {
-              "label": "7.0.8",
-              "value": "7.0.8"
-            },
-            {
-              "label": "7.0.9",
-              "value": "7.0.9"
-            },
-            {
-              "label": "7.2.0",
-              "value": "7.2.0"
-            },
-            {
-              "label": "7.2.1",
-              "value": "7.2.1"
-            },
-            {
-              "label": "7.2.2",
-              "value": "7.2.2"
-            },
-            {
-              "label": "7.2.3",
-              "value": "7.2.3"
-            },
-            {
-              "label": "7.2.4",
-              "value": "7.2.4"
-            },
-            {
-              "label": "7.2.5",
-              "value": "7.2.5"
-            },
-            {
-              "label": "7.2.6",
-              "value": "7.2.6"
-            },
-            {
-              "label": "7.2.7",
-              "value": "7.2.7"
-            },
-            {
-              "label": "7.2.8",
-              "value": "7.2.8"
-            },
-            {
-              "label": "7.4.0",
-              "value": "7.4.0"
-            },
-            {
-              "label": "7.4.1",
-              "value": "7.4.1"
-            },
-            {
-              "label": "7.4.2",
-              "value": "7.4.2"
-            },
-            {
-              "label": "7.4.3",
-              "value": "7.4.3"
-            },
-            {
-              "label": "7.4.4",
-              "value": "7.4.4"
-            },
-            {
-              "label": "latest",
-              "value": "latest"
-            }
-          ]
-        },
-        "visible": true
       }
     ],
     "steps": [
@@ -331,6 +130,228 @@
             "label": "Instance Type",
             "elements": [
               {
+                "name": "fortiGateImageSku",
+                "type": "Microsoft.Common.DropDown",
+                "label": "FortiGate Image SKU",
+                "defaultValue": "Bring Your Own License",
+                "toolTip": "Identifies whether to to use PAYG (on demand licensing) or BYOL license model (where license is purchased separately)",
+                "constraints": {
+                  "required": false,
+                  "allowedValues": [
+                    {
+                      "label": "Bring Your Own License",
+                      "value": "fortinet_fg-vm"
+                    },
+                    {
+                      "label": "Pay As You Go",
+                      "value": "fortinet_fg-vm_payg_2023"
+                    }
+                  ]
+                },
+                "visible": true
+              },
+              {
+                "name": "fortiGateImageVersion",
+                "type": "Microsoft.Common.DropDown",
+                "label": "FortiGate Image Version",
+                "defaultValue": "7.2.8",
+                "toolTip": "Select the FortiGate image version",
+                "constraints": {
+                  "required": false,
+                  "allowedValues": [
+                    {
+                      "label": "6.2.0",
+                      "value": "6.2.0"
+                    },
+                    {
+                      "label": "6.2.2",
+                      "value": "6.2.2"
+                    },
+                    {
+                      "label": "6.2.4",
+                      "value": "6.2.4"
+                    },
+                    {
+                      "label": "6.2.5",
+                      "value": "6.2.5"
+                    },
+                    {
+                      "label": "6.4.0",
+                      "value": "6.4.0"
+                    },
+                    {
+                      "label": "6.4.10",
+                      "value": "6.4.10"
+                    },
+                    {
+                      "label": "6.4.11",
+                      "value": "6.4.11"
+                    },
+                    {
+                      "label": "6.4.12",
+                      "value": "6.4.12"
+                    },
+                    {
+                      "label": "6.4.13",
+                      "value": "6.4.13"
+                    },
+                    {
+                      "label": "6.4.15",
+                      "value": "6.4.15"
+                    },
+                    {
+                      "label": "6.4.2",
+                      "value": "6.4.2"
+                    },
+                    {
+                      "label": "6.4.3",
+                      "value": "6.4.3"
+                    },
+                    {
+                      "label": "6.4.5",
+                      "value": "6.4.5"
+                    },
+                    {
+                      "label": "6.4.6",
+                      "value": "6.4.6"
+                    },
+                    {
+                      "label": "6.4.7",
+                      "value": "6.4.7"
+                    },
+                    {
+                      "label": "6.4.8",
+                      "value": "6.4.8"
+                    },
+                    {
+                      "label": "6.4.9",
+                      "value": "6.4.9"
+                    },
+                    {
+                      "label": "7.0.0",
+                      "value": "7.0.0"
+                    },
+                    {
+                      "label": "7.0.1",
+                      "value": "7.0.1"
+                    },
+                    {
+                      "label": "7.0.10",
+                      "value": "7.0.10"
+                    },
+                    {
+                      "label": "7.0.11",
+                      "value": "7.0.11"
+                    },
+                    {
+                      "label": "7.0.12",
+                      "value": "7.0.12"
+                    },
+                    {
+                      "label": "7.0.13",
+                      "value": "7.0.13"
+                    },
+                    {
+                      "label": "7.0.14",
+                      "value": "7.0.14"
+                    },
+                    {
+                      "label": "7.0.15",
+                      "value": "7.0.15"
+                    },
+                    {
+                      "label": "7.0.2",
+                      "value": "7.0.2"
+                    },
+                    {
+                      "label": "7.0.3",
+                      "value": "7.0.3"
+                    },
+                    {
+                      "label": "7.0.4",
+                      "value": "7.0.4"
+                    },
+                    {
+                      "label": "7.0.5",
+                      "value": "7.0.5"
+                    },
+                    {
+                      "label": "7.0.6",
+                      "value": "7.0.6"
+                    },
+                    {
+                      "label": "7.0.8",
+                      "value": "7.0.8"
+                    },
+                    {
+                      "label": "7.0.9",
+                      "value": "7.0.9"
+                    },
+                    {
+                      "label": "7.2.0",
+                      "value": "7.2.0"
+                    },
+                    {
+                      "label": "7.2.1",
+                      "value": "7.2.1"
+                    },
+                    {
+                      "label": "7.2.2",
+                      "value": "7.2.2"
+                    },
+                    {
+                      "label": "7.2.3",
+                      "value": "7.2.3"
+                    },
+                    {
+                      "label": "7.2.4",
+                      "value": "7.2.4"
+                    },
+                    {
+                      "label": "7.2.5",
+                      "value": "7.2.5"
+                    },
+                    {
+                      "label": "7.2.6",
+                      "value": "7.2.6"
+                    },
+                    {
+                      "label": "7.2.7",
+                      "value": "7.2.7"
+                    },
+                    {
+                      "label": "7.2.8",
+                      "value": "7.2.8"
+                    },
+                    {
+                      "label": "7.4.0",
+                      "value": "7.4.0"
+                    },
+                    {
+                      "label": "7.4.1",
+                      "value": "7.4.1"
+                    },
+                    {
+                      "label": "7.4.2",
+                      "value": "7.4.2"
+                    },
+                    {
+                      "label": "7.4.3",
+                      "value": "7.4.3"
+                    },
+                    {
+                      "label": "7.4.4",
+                      "value": "7.4.4"
+                    },
+                    {
+                      "label": "latest",
+                      "value": "latest"
+                    }
+                  ]
+                },
+                "visible": true
+              },
+              {
                 "name": "info",
                 "type": "Microsoft.Common.TextBlock",
                 "visible": true,
@@ -338,7 +359,7 @@
                   "text": "For this FortiGate deployment, it is recommended to use the general purpose or compute optimized virtual machines. A selection of supported instances sizes is listed in our documentation.",
                   "link": {
                     "label": "Learn more",
-                    "uri": "https://docs.fortinet.com/document/fortigate-public-cloud/7.2.0/azure-administration-guide/562841/instance-type-support"
+                    "uri": "https://docs.fortinet.com/document/fortigate-public-cloud/7.4.0/azure-administration-guide/562841/instance-type-support"
                   }
                 }
               },
@@ -731,7 +752,7 @@
               },
               {
                 "name": "fgt1fortiflex",
-                "type": "Microsoft.Common.FileUpload",
+                "type": "Microsoft.Common.TextBox",
                 "label": "FortiGate 1 FortiFlex",
                 "defaultValue": "",
                 "toolTip": "FortiGate VM 1 FortiFlex license token",
@@ -744,7 +765,7 @@
               },
               {
                 "name": "fgt2fortiflex",
-                "type": "Microsoft.Common.FileUpload",
+                "type": "Microsoft.Common.TextBox",
                 "label": "FortiGate 2 FortiFlex",
                 "defaultValue": "",
                 "toolTip": "FortiGate VM 2 FortiFlex license token",
@@ -757,7 +778,7 @@
               },
               {
                 "name": "fgt3fortiflex",
-                "type": "Microsoft.Common.FileUpload",
+                "type": "Microsoft.Common.TextBox",
                 "label": "FortiGate 3 FortiFlex",
                 "defaultValue": "",
                 "toolTip": "FortiGate VM 3 FortiFlex license token",
@@ -770,7 +791,7 @@
               },
               {
                 "name": "fgt4fortiflex",
-                "type": "Microsoft.Common.FileUpload",
+                "type": "Microsoft.Common.TextBox",
                 "label": "FortiGate 4 FortiFlex",
                 "defaultValue": "",
                 "toolTip": "FortiGate VM 4 FortiFlex license token",
@@ -783,7 +804,7 @@
               },
               {
                 "name": "fgt5fortiflex",
-                "type": "Microsoft.Common.FileUpload",
+                "type": "Microsoft.Common.TextBox",
                 "label": "FortiGate 5 FortiFlex",
                 "defaultValue": "",
                 "toolTip": "FortiGate VM 5 FortiFlex license token",
@@ -796,7 +817,7 @@
               },
               {
                 "name": "fgt6fortiflex",
-                "type": "Microsoft.Common.FileUpload",
+                "type": "Microsoft.Common.TextBox",
                 "label": "FortiGate 6 FortiFlex",
                 "defaultValue": "",
                 "toolTip": "FortiGate VM 6 FortiFlex license token",
@@ -809,7 +830,7 @@
               },
               {
                 "name": "fgt7fortiflex",
-                "type": "Microsoft.Common.FileUpload",
+                "type": "Microsoft.Common.TextBox",
                 "label": "FortiGate 7 FortiFlex",
                 "defaultValue": "",
                 "toolTip": "FortiGate VM 7 FortiFlex license token",
@@ -822,7 +843,7 @@
               },
               {
                 "name": "fgt8fortiflex",
-                "type": "Microsoft.Common.FileUpload",
+                "type": "Microsoft.Common.TextBox",
                 "label": "FortiGate 8 FortiFlex",
                 "defaultValue": "",
                 "toolTip": "FortiGate VM 8 FortiFlex license token",
