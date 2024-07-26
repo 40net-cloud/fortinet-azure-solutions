@@ -754,7 +754,7 @@
               },
               {
                 "name": "fgt1fortiflex",
-                "type": "Microsoft.Common.FileUpload",
+                "type": "Microsoft.Common.TextBox",
                 "label": "FortiGate 1 FortiFlex",
                 "defaultValue": "",
                 "toolTip": "FortiGate VM 1 FortiFlex license token",
@@ -767,7 +767,7 @@
               },
               {
                 "name": "fgt2fortiflex",
-                "type": "Microsoft.Common.FileUpload",
+                "type": "Microsoft.Common.TextBox",
                 "label": "FortiGate 2 FortiFlex",
                 "defaultValue": "",
                 "toolTip": "FortiGate VM 2 FortiFlex license token",
@@ -780,7 +780,7 @@
               },
               {
                 "name": "fgt3fortiflex",
-                "type": "Microsoft.Common.FileUpload",
+                "type": "Microsoft.Common.TextBox",
                 "label": "FortiGate 3 FortiFlex",
                 "defaultValue": "",
                 "toolTip": "FortiGate VM 3 FortiFlex license token",
@@ -793,7 +793,7 @@
               },
               {
                 "name": "fgt4fortiflex",
-                "type": "Microsoft.Common.FileUpload",
+                "type": "Microsoft.Common.TextBox",
                 "label": "FortiGate 4 FortiFlex",
                 "defaultValue": "",
                 "toolTip": "FortiGate VM 4 FortiFlex license token",
@@ -806,7 +806,7 @@
               },
               {
                 "name": "fgt5fortiflex",
-                "type": "Microsoft.Common.FileUpload",
+                "type": "Microsoft.Common.TextBox",
                 "label": "FortiGate 5 FortiFlex",
                 "defaultValue": "",
                 "toolTip": "FortiGate VM 5 FortiFlex license token",
@@ -819,7 +819,7 @@
               },
               {
                 "name": "fgt6fortiflex",
-                "type": "Microsoft.Common.FileUpload",
+                "type": "Microsoft.Common.TextBox",
                 "label": "FortiGate 6 FortiFlex",
                 "defaultValue": "",
                 "toolTip": "FortiGate VM 6 FortiFlex license token",
@@ -832,7 +832,7 @@
               },
               {
                 "name": "fgt7fortiflex",
-                "type": "Microsoft.Common.FileUpload",
+                "type": "Microsoft.Common.TextBox",
                 "label": "FortiGate 7 FortiFlex",
                 "defaultValue": "",
                 "toolTip": "FortiGate VM 7 FortiFlex license token",
@@ -845,7 +845,7 @@
               },
               {
                 "name": "fgt8fortiflex",
-                "type": "Microsoft.Common.FileUpload",
+                "type": "Microsoft.Common.TextBox",
                 "label": "FortiGate 8 FortiFlex",
                 "defaultValue": "",
                 "toolTip": "FortiGate VM 8 FortiFlex license token",
