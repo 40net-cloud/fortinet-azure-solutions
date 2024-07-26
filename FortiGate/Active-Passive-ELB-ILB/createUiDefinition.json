@@ -1309,6 +1309,15 @@
                 "label": "Azure Compute Gallery Image Version resource ID",
                 "defaultValue": "",
                 "toolTip": "Azure Compute Gallery Image Version resource ID",
+                "constraints": {
+                  "required": false,
+                  "validations": [
+                    {
+                      "regex": "^[\\w\\W\n\t]{0,1024}$",
+                      "message": "All characters allowed, max 1024 characters."
+                    }
+                  ]
+                },
                 "visible": "[steps('advanced').customvhd.customvhdcheck]"
               }
             ]
