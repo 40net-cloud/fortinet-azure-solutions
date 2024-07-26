@@ -1460,7 +1460,7 @@
       "fortiGateNamePrefix": "[basics('fortiGateNamePrefix')]",
       "fortiGateCount": "[basics('fortiGateCount')]",
       "fortiGateImageSKU_x64": "[steps('instance').instancetype_x64.fortiGateImageSKU_x64]",
-      "fortiGateImageVersion": "[steps('instance').instancetype_x64.fortiGateImageVersion]",
+      "fortiGateImageVersion_x64": "[steps('instance').instancetype_x64.fortiGateImageVersion_x64]",
       "adminUsername": "[basics('adminUsername')]",
       "adminPassword": "[basics('adminPassword')]",
       "location": "[location()]",
