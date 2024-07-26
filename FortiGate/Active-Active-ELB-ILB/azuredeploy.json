@@ -843,9 +843,9 @@
   ],
   "resources": [
     {
-      "apiVersion": "2022-09-01",
       "name": "[concat(parameters('fortiGateNamePrefix'), '-fortinetdeployment-', uniquestring(resourceGroup().id))]",
       "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2022-09-01",
       "properties": {
         "mode": "Incremental",
         "template": {
@@ -857,9 +857,9 @@
     },
     {
       "condition": "[not(variables('useAZ'))]",
+      "name": "[variables('availabilitySetName')]",
       "type": "Microsoft.Compute/availabilitySets",
       "apiVersion": "2023-03-01",
-      "name": "[variables('availabilitySetName')]",
       "location": "[parameters('location')]",
       "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Compute/availabilitySets'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Compute/availabilitySets']), parameters('fortinetTags')) ]",
       "properties": {
@@ -904,9 +904,9 @@
     },
     {
       "condition": "[equals(parameters('outboundConnectivity'),'deploy-nat-gateway')]",
+      "name": "[concat(variables('vnetName'),'/', parameters('subnet1Name'))]",
       "type": "Microsoft.Network/virtualNetworks/subnets",
       "apiVersion": "2023-04-01",
-      "name": "[concat(variables('vnetName'),'/', parameters('subnet1Name'))]",
       "dependsOn": [
         "[variables('vnetName')]",
         "[resourceId('Microsoft.Network/natGateways', variables('natGWName'))]"
@@ -920,8 +920,8 @@
     },
     {
       "condition": "[equals(parameters('outboundConnectivity'),'deploy-nat-gateway')]",
-      "type": "Microsoft.Network/natGateways",
       "name": "[variables('natGWName')]",
+      "type": "Microsoft.Network/natGateways",
       "apiVersion": "2023-04-01",
       "location": "[parameters('location')]",
       "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Network/natGateways'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Network/natGateways']), parameters('fortinetTags')) ]",
@@ -1262,7 +1262,7 @@
       "location": "[parameters('location')]",
       "dependsOn": [
         "[variables('vnetName')]",
-        "[variables('NSGId')]",
+        "[variables('nsgId')]",
         "[variables('externalLBId')]",
         "[variables('attachedpipId')[copyIndex(1)]]",
         "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'), concat(variables('fgVmName'),'-', copyIndex(1),'-MGMT-SSH'))]",
@@ -1306,7 +1306,7 @@
       "dependsOn": [
         "[variables('internalLBId')]",
         "[variables('vnetName')]",
-        "[variables('NSGId')]"
+        "[variables('nsgId')]"
       ],
       "properties": {
         "ipConfigurations": [
