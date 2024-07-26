@@ -607,9 +607,9 @@
     },
     {
       "condition": "[and(variables('useAS'),equals(parameters('existingAvailabilitySetName'),''))]",
+      "name": "[variables('availabilitySetName')]",
       "type": "Microsoft.Compute/availabilitySets",
       "apiVersion": "2023-09-01",
-      "name": "[variables('availabilitySetName')]",
       "location": "[parameters('location')]",
       "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Compute/availabilitySets'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Compute/availabilitySets']), parameters('fortinetTags')) ]",
       "properties": {
@@ -697,8 +697,8 @@
       }
     },
     {
-      "type": "Microsoft.Network/networkSecurityGroups",
       "name": "[variables('nsgName')]",
+      "type": "Microsoft.Network/networkSecurityGroups",
       "apiVersion": "2023-04-01",
       "location": "[parameters('location')]",
       "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Network/networkSecurityGroups'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Network/networkSecurityGroups']), parameters('fortinetTags')) ]",
@@ -737,8 +737,8 @@
     },
     {
       "condition": "[equals(parameters('publicIP1NewOrExisting'), 'new')]",
-      "type": "Microsoft.Network/publicIPAddresses",
       "name": "[variables('publicIP1Name')]",
+      "type": "Microsoft.Network/publicIPAddresses",
       "apiVersion": "2023-04-01",
       "location": "[parameters('location')]",
       "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Network/publicIPAddresses'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Network/publicIPAddresses']), parameters('fortinetTags')) ]",
@@ -754,8 +754,8 @@
       }
     },
     {
-      "type": "Microsoft.Network/networkInterfaces",
       "name": "[variables('fgtNic1Name')]",
+      "type": "Microsoft.Network/networkInterfaces",
       "apiVersion": "2023-04-01",
       "location": "[parameters('location')]",
       "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Network/networkInterfaces'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Network/networkInterfaces'],variables('fastpathtag')), union(parameters('fortinetTags'),variables('fastpathtag'))) ]",
