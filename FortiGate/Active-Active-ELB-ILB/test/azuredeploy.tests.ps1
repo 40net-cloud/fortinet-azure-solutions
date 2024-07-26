@@ -161,11 +161,11 @@ Describe 'FGT A/A' {
   Context 'Deployment x64' {
 
     It "Test deployment" {
-      New-AzResourceGroup -Name $testsResourceGroupName_x64 -Location "$testsResourceGroupLocation"
+      New-AzResourceGroup -Name $testsResourceGroupName_x64 -Location "$testsResourceGroupLocation_x64"
             (Test-AzResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName_x64" -TemplateFile "$templateFileLocation" -TemplateParameterObject $params_x64).Count | Should -Not -BeGreaterThan 0
     }
     It "Deployment" {
-      $resultDeployment = New-AzResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName" -TemplateFile "$templateFileLocation" -TemplateParameterObject $params
+      $resultDeployment = New-AzResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName_x64" -TemplateFile "$templateFileLocation_x64" -TemplateParameterObject $params_x64
       Write-Host ($resultDeployment | Format-Table | Out-String)
       Write-Host ("Deployment state: " + $resultDeployment.ProvisioningState | Out-String)
       $resultDeployment.ProvisioningState | Should -Be "Succeeded"
@@ -180,7 +180,7 @@ Describe 'FGT A/A' {
   Context 'Deployment test x64' {
 
     BeforeAll {
-      $fgt = (Get-AzPublicIpAddress -Name $publicIPName -ResourceGroupName $testsResourceGroupName).IpAddress
+      $fgt = (Get-AzPublicIpAddress -Name $publicIPName -ResourceGroupName $testsResourceGroupName_x64).IpAddress
       Write-Host ("FortiGate public IP: " + $fgt)
       $verify_commands = @'
             get system status
@@ -214,7 +214,7 @@ Describe 'FGT A/A' {
 
   Context 'Cleanup x86' {
     It "Cleanup of deployment" {
-      Remove-AzResourceGroup -Name $testsResourceGroupName -Force
+      Remove-AzResourceGroup -Name $testsResourceGroupName_x64 -Force
     }
   }
 }
