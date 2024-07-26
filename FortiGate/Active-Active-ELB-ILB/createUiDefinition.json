@@ -804,7 +804,7 @@
                   "openMode": "text",
                   "encoding": "UTF-8"
                 },
-                "visible": "[or(equals(steps('instance').instancetype_x64.fortiGateImageSKU_x64, 'fortinet_fg-vm'),equals(steps('instance').instancetype_arm64.fortiGateImageSKU_arm64, 'fortinet_fg-vm_arm64'))]"
+                "visible": "[and(or(equals(steps('instance').instancetype_x64.fortiGateImageSKU_x64, 'fortinet_fg-vm'),equals(steps('instance').instancetype_arm64.fortiGateImageSKU_arm64, 'fortinet_fg-vm_arm64')),greaterOrEquals(int(basics('fortiGateCount')),2),not(steps('instance').fgtLicense.fgtLicenseFortiFlexCheck))]"
               },
               {
                 "name": "fgt3content",
@@ -821,7 +821,7 @@
                   "openMode": "text",
                   "encoding": "UTF-8"
                 },
-                "visible": "[or(equals(steps('instance').instancetype_x64.fortiGateImageSKU_x64, 'fortinet_fg-vm'),equals(steps('instance').instancetype_arm64.fortiGateImageSKU_arm64, 'fortinet_fg-vm_arm64'))]"
+                "visible": "[and(or(equals(steps('instance').instancetype_x64.fortiGateImageSKU_x64, 'fortinet_fg-vm'),equals(steps('instance').instancetype_arm64.fortiGateImageSKU_arm64, 'fortinet_fg-vm_arm64')),greaterOrEquals(int(basics('fortiGateCount')),3),not(steps('instance').fgtLicense.fgtLicenseFortiFlexCheck))]"
               },
               {
                 "name": "fgt4content",
@@ -838,7 +838,7 @@
                   "openMode": "text",
                   "encoding": "UTF-8"
                 },
-                "visible": "[or(equals(steps('instance').instancetype_x64.fortiGateImageSKU_x64, 'fortinet_fg-vm'),equals(steps('instance').instancetype_arm64.fortiGateImageSKU_arm64, 'fortinet_fg-vm_arm64'))]"
+                "visible": "[and(or(equals(steps('instance').instancetype_x64.fortiGateImageSKU_x64, 'fortinet_fg-vm'),equals(steps('instance').instancetype_arm64.fortiGateImageSKU_arm64, 'fortinet_fg-vm_arm64')),greaterOrEquals(int(basics('fortiGateCount')),4),not(steps('instance').fgtLicense.fgtLicenseFortiFlexCheck))]"
               },
               {
                 "name": "fgt5content",
@@ -855,7 +855,7 @@
                   "openMode": "text",
                   "encoding": "UTF-8"
                 },
-                "visible": "[or(equals(steps('instance').instancetype_x64.fortiGateImageSKU_x64, 'fortinet_fg-vm'),equals(steps('instance').instancetype_arm64.fortiGateImageSKU_arm64, 'fortinet_fg-vm_arm64'))]"
+                "visible": "[and(or(equals(steps('instance').instancetype_x64.fortiGateImageSKU_x64, 'fortinet_fg-vm'),equals(steps('instance').instancetype_arm64.fortiGateImageSKU_arm64, 'fortinet_fg-vm_arm64')),greaterOrEquals(int(basics('fortiGateCount')),5),not(steps('instance').fgtLicense.fgtLicenseFortiFlexCheck))]"
               },
               {
                 "name": "fgt6content",
@@ -872,7 +872,7 @@
                   "openMode": "text",
                   "encoding": "UTF-8"
                 },
-                "visible": "[or(equals(steps('instance').instancetype_x64.fortiGateImageSKU_x64, 'fortinet_fg-vm'),equals(steps('instance').instancetype_arm64.fortiGateImageSKU_arm64, 'fortinet_fg-vm_arm64'))]"
+                "visible": "[and(or(equals(steps('instance').instancetype_x64.fortiGateImageSKU_x64, 'fortinet_fg-vm'),equals(steps('instance').instancetype_arm64.fortiGateImageSKU_arm64, 'fortinet_fg-vm_arm64')),greaterOrEquals(int(basics('fortiGateCount')),6),not(steps('instance').fgtLicense.fgtLicenseFortiFlexCheck))]"
               },
               {
                 "name": "fgt7content",
@@ -889,7 +889,7 @@
                   "openMode": "text",
                   "encoding": "UTF-8"
                 },
-                "visible": "[or(equals(steps('instance').instancetype_x64.fortiGateImageSKU_x64, 'fortinet_fg-vm'),equals(steps('instance').instancetype_arm64.fortiGateImageSKU_arm64, 'fortinet_fg-vm_arm64'))]"
+                "visible": "[and(or(equals(steps('instance').instancetype_x64.fortiGateImageSKU_x64, 'fortinet_fg-vm'),equals(steps('instance').instancetype_arm64.fortiGateImageSKU_arm64, 'fortinet_fg-vm_arm64')),greaterOrEquals(int(basics('fortiGateCount')),7),not(steps('instance').fgtLicense.fgtLicenseFortiFlexCheck))]"
               },
               {
                 "name": "fgt8content",
@@ -906,7 +906,7 @@
                   "openMode": "text",
                   "encoding": "UTF-8"
                 },
-                "visible": "[or(equals(steps('instance').instancetype_x64.fortiGateImageSKU_x64, 'fortinet_fg-vm'),equals(steps('instance').instancetype_arm64.fortiGateImageSKU_arm64, 'fortinet_fg-vm_arm64'))]"
+                "visible": "[and(or(equals(steps('instance').instancetype_x64.fortiGateImageSKU_x64, 'fortinet_fg-vm'),equals(steps('instance').instancetype_arm64.fortiGateImageSKU_arm64, 'fortinet_fg-vm_arm64')),greaterOrEquals(int(basics('fortiGateCount')),8),not(steps('instance').fgtLicense.fgtLicenseFortiFlexCheck))]"
               },
               {
                 "name": "fgt1fortiflex",
