@@ -1627,7 +1627,7 @@
       "adminPassword": "[basics('adminPassword')]",
       "location": "[location()]",
       "instanceType_x64": "[steps('instance').instancetype_x64.selection_x64]",
-      "instanceType_arm64":"[steps('instance').instancetype_arm64.selection_arm64]",
+      "instanceType_arm64": "[steps('instance').instancetype_arm64.selection_arm64]",
       "availabilityOptions": "[steps('instance').availabilityOptions.availabilityOptions]",
       "fortiGateLicenseBYOL1": "[steps('instance').fgtLicense.fgt1content]",
       "fortiGateLicenseBYOL2": "[steps('instance').fgtLicense.fgt2content]",
