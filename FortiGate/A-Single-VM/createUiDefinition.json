@@ -1105,7 +1105,7 @@
                 "label": "Use Azure compute gallery VHD for deployment",
                 "toolTip": "This option enables the Internet inbound usecase and creates additional routing infrastructure",
                 "visible": true
-              },  
+              },
               {
                 "name": "customvhdinfo",
                 "type": "Microsoft.Common.InfoBox",
@@ -1170,7 +1170,7 @@
       "adminPassword": "[basics('adminPassword')]",
       "location": "[location()]",
       "instanceType_x64": "[steps('instance').instancetype_x64.selection_x64]",
-      "instanceType_arm64":"[steps('instance').instancetype_arm64.selection_arm64]",
+      "instanceType_arm64": "[steps('instance').instancetype_arm64.selection_arm64]",
       "availabilityOptions": "[steps('instance').availabilityOptions.availabilityOptions]",
       "existingAvailabilitySetName": "[steps('instance').availabilityOptions.availabilitySetSelector.name]",
       "availabilityZoneNumber": "[steps('instance').availabilityOptions.availabilityZoneSelector]",
