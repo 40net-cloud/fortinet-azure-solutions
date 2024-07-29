@@ -787,7 +787,7 @@
                   "subnet1": {
                     "label": "External Subnet",
                     "defaultValue": {
-                      "name": "ExternalSubnet",
+                      "name": "externalsubnet",
                       "addressPrefixSize": "/26"
                     },
                     "constraints": {
@@ -799,7 +799,7 @@
                   "subnet2": {
                     "label": "Internal subnet",
                     "defaultValue": {
-                      "name": "InternalSubnet",
+                      "name": "internalsubnet",
                       "addressPrefixSize": "/26"
                     },
                     "constraints": {
@@ -811,7 +811,7 @@
                   "subnet3": {
                     "label": "HA Sync subnet",
                     "defaultValue": {
-                      "name": "HASyncSubnet",
+                      "name": "hasyncsubnet",
                       "addressPrefixSize": "/26"
                     },
                     "constraints": {
@@ -821,9 +821,9 @@
                     }
                   },
                   "subnet4": {
-                    "label": "Management subnet",
+                    "label": "HA Management subnet",
                     "defaultValue": {
-                      "name": "MGMTSubnet",
+                      "name": "hamgmtsubnet",
                       "addressPrefixSize": "/26"
                     },
                     "constraints": {
@@ -835,7 +835,7 @@
                   "subnet5": {
                     "label": "Protected subnet",
                     "defaultValue": {
-                      "name": "ProtectedSubnet",
+                      "name": "protectedsubnet",
                       "addressPrefixSize": "/24"
                     },
                     "constraints": {
@@ -902,7 +902,7 @@
                 "type": "Microsoft.Common.CheckBox",
                 "label": "Accelerated Connections feature (PREVIEW)",
                 "toolTip": "This option enables the Accelerated Connections feature. provides higher bandwidth at an additional cost",
-                "visible": "[and(equals(steps('networking').acceleratednetworksection.acceleratednetworking, 'true'),not(contains(steps('instance').instancetype.selection, 'p')),not(contains(steps('instance').instancetype.selection, 'v5')))]"
+                "visible": "[and(equals(steps('networking').acceleratednetworksection.acceleratednetworking, 'true'),equals(basics('fortiGateInstanceArchitecture'),'x64'),not(contains(steps('instance').instancetype_x64.selection_x64, 'v5')))]"
               },
               {
                 "name": "acceleratedconnectionssku",
@@ -931,17 +931,17 @@
                     }
                   ]
                 },
-                "visible": "[and(equals(steps('networking').acceleratednetworksection.acceleratednetworking, 'true'),steps('networking').acceleratednetworksection.acceleratedconnectionscheck)]"
+                "visible": "[and(steps('networking').acceleratednetworksection.acceleratedconnectionscheck,equals(basics('fortiGateInstanceArchitecture'),'x64'),not(contains(steps('instance').instancetype_x64.selection_x64, 'v5')))]"
               },
               {
                 "name": "AccelConnwarning",
                 "type": "Microsoft.Common.InfoBox",
-                "visible": "[steps('networking').acceleratednetworksection.AcceleratedConnectionCheck]",
                 "options": {
                   "icon": "Warning",
                   "text": "This feature is currently in Preview, please contact Fortinet at 'azuretech@fortinet.com'. Verify the limitations with Microsoft on supported regions. Currently Dv5 instance types are not supported.",
                   "uri": "https://learn.microsoft.com/en-us/azure/networking/nva-accelerated-connections"
-                }
+                },
+                "visible": "[and(steps('networking').acceleratednetworksection.acceleratedconnectionscheck,equals(basics('fortiGateInstanceArchitecture'),'x64'),not(contains(steps('instance').instancetype_x64.selection_x64, 'v5')))]"
               }
             ]
           }
@@ -1334,12 +1334,12 @@
               {
                 "name": "customvhdinfo",
                 "type": "Microsoft.Common.InfoBox",
-                "visible": "[steps('advanced').customvhd.customvhdcheck]",
                 "options": {
                   "icon": "Info",
                   "text": "For BYOL it is possible to upload a specific FortiGate image to Azure provided by support. Provide the resource ID of the required VM image version in the field below.",
                   "uri": "https://docs.fortinet.com/document/fortigate-public-cloud/7.4.0/azure-administration-guide/392531/deploying-fortigate-vm-from-a-vhd-image-file"
-                }
+                },
+                "visible": "[steps('advanced').customvhd.customvhdcheck]"
               },
               {
                 "name": "resourceid",
@@ -1352,17 +1352,7 @@
                   "regex": "^[\\w\\W\n\t]{0,10240}$",
                   "validationMessage": "All characters allowed, max 10240 characters."
                 },
-                "visible": "[equals(basics('fortiGateImageSKU'),'fortinet_fg-vm')]"
-              },
-              {
-                "name": "customvhdinfo2",
-                "type": "Microsoft.Common.InfoBox",
-                "visible": "[and(steps('advanced').customvhd.customvhdcheck, equals(basics('fortiGateInstanceArchitecture'), 'arm64'))]",
-                "options": {
-                  "icon": "Info",
-                  "text": "An ARM64 based instance type was selected. This requires a custom image using an Azure Compute Gallery.",
-                  "uri": "https://docs.fortinet.com/document/fortigate-public-cloud/7.4.0/azure-administration-guide/392531/deploying-fortigate-vm-from-a-vhd-image-file"
-                }
+                "visible": "[steps('advanced').customvhd.customvhdcheck]"
               }
             ]
           }
