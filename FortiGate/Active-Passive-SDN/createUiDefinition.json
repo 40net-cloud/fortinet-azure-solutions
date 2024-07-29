@@ -608,7 +608,7 @@
                 "name": "availabilityOptions",
                 "type": "Microsoft.Common.DropDown",
                 "label": "Availability Option",
-                "defaultValue": "Availability Set",
+                "defaultValue": "Availability Zones",
                 "toolTip": "Deploy FortiGate VMs in an Availability Set or Availability Zones.",
                 "constraints": {
                   "required": false,
@@ -774,7 +774,7 @@
                   "subnets": "Requirement to have 4 subnets connected to the FortiGate VM: external, internal, hasync and management"
                 },
                 "defaultValue": {
-                  "name": "[if(equals(basics('fortiGateNamePrefix'),''),'FortiGate-VNET',concat(basics('fortiGateNamePrefix'),'-VNET'))]",
+                  "name": "[if(equals(basics('fortiGateNamePrefix'),''),'FortiGate-vnet',concat(basics('fortiGateNamePrefix'),'-vnet'))]",
                   "addressPrefixSize": "/21"
                 },
                 "constraints": {
