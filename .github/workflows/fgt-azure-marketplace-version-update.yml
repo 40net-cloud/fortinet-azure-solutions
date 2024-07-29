@@ -23,7 +23,7 @@ jobs:
       uses: azure/powershell@v2
       with:
         inlineScript: |
-          $buildingBlocks = @("A-Single-VM", "Active-Active-ELB-ILB","Active-Passive-ELB-ILB")
+          $buildingBlocks = @("A-Single-VM", "Active-Active-ELB-ILB","Active-Passive-ELB-ILB","Active-Passive-SDN")
           $fgtMarketplaceVersions_x64 = @()
           $fgtMarketplaceVersions_x64_UI = @()
 
@@ -80,7 +80,7 @@ jobs:
             }
           }
 
-          $buildingBlocks = @("Active-Passive-SDN","AzureApplicationGateway/scenario1","AzureApplicationGateway/scenario2","AzureApplicationGateway/scenario3","AzureGatewayLoadBalancer","AzureRouteServer/Active-Passive","ZTNAApplicationGateway")
+          $buildingBlocks = @("AzureApplicationGateway/scenario1","AzureApplicationGateway/scenario2","AzureApplicationGateway/scenario3","AzureGatewayLoadBalancer","AzureRouteServer/Active-Passive","ZTNAApplicationGateway")
 
           foreach ($buildingBlock in $buildingBlocks) {
             if (Test-Path -Path "./FortiGate/${buildingBlock}/mainTemplate.json" -PathType Leaf) {
