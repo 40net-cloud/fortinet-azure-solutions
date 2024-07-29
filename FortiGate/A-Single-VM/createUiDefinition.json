@@ -852,7 +852,7 @@
                 "type": "Microsoft.Common.CheckBox",
                 "label": "Accelerated Connections feature (PREVIEW)",
                 "toolTip": "This option enables the Accelerated Connections feature. provides higher bandwidth at an additional cost",
-                "visible": "[and(equals(steps('networking').acceleratednetworksection.acceleratednetworking, 'true'),not(contains(steps('instance').instancetype.selection, 'p')),not(contains(steps('instance').instancetype.selection, 'v5')))]"
+                "visible": "[and(equals(steps('networking').acceleratednetworksection.acceleratednetworking, 'true'),equals(basics('fortiGateInstanceArchitecture'),'x64'))]"
               },
               {
                 "name": "acceleratedconnectionssku",
@@ -1112,7 +1112,7 @@
                 "options": {
                   "icon": "Info",
                   "text": "For BYOL it is possible to upload a specific FortiGate image to Azure provided by support. Provide the resource ID of the required VM image version in the field below.",
-                  "uri": "https://docs.fortinet.com/document/fortigate-public-cloud/7.2.0/azure-administration-guide/392531/deploying-fortigate-vm-from-a-vhd-image-file"
+                  "uri": "https://docs.fortinet.com/document/fortigate-public-cloud/7.4.0/azure-administration-guide/392531/deploying-fortigate-vm-from-a-vhd-image-file"
                 },
                 "visible": "[steps('advanced').customvhd.customvhdcheck]"
               },
