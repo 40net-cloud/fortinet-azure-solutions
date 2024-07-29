@@ -20,7 +20,7 @@
         "description": "Naming prefix for all deployed resources"
       }
     },
-    "fortiGateImageSKU": {
+    "fortiGateImageSKU_x64": {
       "type": "string",
       "defaultValue": "fortinet_fg-vm",
       "allowedValues": [
@@ -31,9 +31,31 @@
         "description": "Identifies whether to to use PAYG (on demand licensing) or BYOL license model (where license is purchased separately)"
       }
     },
-    "fortiGateImageVersion": {
+    "fortiGateImageSKU_arm64": {
       "type": "string",
-      "defaultValue": "7.2.8",
+      "defaultValue": "fortinet_fg-vm_arm64",
+      "allowedValues": [
+        "fortinet_fg-vm_arm64",
+        "fortinet_fg-vm_payg_2023_arm64"
+      ],
+      "metadata": {
+        "description": "Identifies whether to to use PAYG (on demand licensing) or BYOL license model (where license is purchased separately"
+      }
+    },
+    "fortiGateInstanceArchitecture": {
+      "type": "string",
+      "defaultValue": "x64",
+      "allowedValues": [
+        "x64",
+        "arm64"
+      ],
+      "metadata": {
+        "description": "Indicates the instance Architecture of the VM deployment. Intel/AMD or ARM"
+      }
+    },
+    "fortiGateImageVersion_x64": {
+      "type": "string",
+      "defaultValue": "7.4.4",
       "allowedValues": [
         "6.2.0",
         "6.2.2",
@@ -87,6 +109,20 @@
         "description": "FortiGate Version"
       }
     },
+    "fortiGateImageVersion_arm64": {
+      "type": "string",
+      "defaultValue": "7.4.4",
+      "allowedValues": [
+        "7.2.8",
+        "7.2.7",
+        "7.4.4",
+        "7.4.3",
+        "latest"
+      ],
+      "metadata": {
+        "description": "FortiGate version"
+      }
+    },
     "fortiGateAdditionalCustomData": {
       "type": "string",
       "defaultValue": "",
@@ -94,7 +130,7 @@
         "description": "The ARM template provides a basic configuration. Additional configuration can be added here."
       }
     },
-    "instanceType": {
+    "instanceType_x64": {
       "type": "string",
       "defaultValue": "Standard_F4s",
       "allowedValues": [
@@ -136,7 +172,16 @@
         "Standard_D32as_v5",
         "Standard_D8ads_v5",
         "Standard_D16ads_v5",
-        "Standard_D32ads_v5",
+        "Standard_D32ads_v5"
+      ],
+      "metadata": {
+        "description": "Virtual Machine size selection - must be F4 or other instance that supports 4 NICs"
+      }
+    },
+    "instanceType_arm64": {
+      "type": "string",
+      "defaultValue": "Standard_D8ps_v5",
+      "allowedValues": [
         "Standard_D8ps_v5",
         "Standard_D16ps_v5",
         "Standard_D32ps_v5",
@@ -570,6 +615,9 @@
   "variables": {
     "imagePublisher": "fortinet",
     "imageOffer": "fortinet_fortigate-vm_v5",
+    "fortiGateImageSKU": "[if(equals(parameters('fortiGateInstanceArchitecture'), 'arm64'), parameters('fortiGateImageSKU_arm64'), parameters('fortiGateImageSKU_x64'))]",
+    "instanceType": "[if(equals(parameters('fortiGateInstanceArchitecture'), 'arm64'), parameters('instanceType_arm64'), parameters('instanceType_x64'))]",
+    "fortiGateImageVersion": "[if(equals(parameters('fortiGateInstanceArchitecture'), 'arm64'), parameters('fortiGateImageVersion_arm64'), parameters('fortiGateImageVersion_x64'))]",
     "availabilitySetName": "[concat(parameters('fortiGateNamePrefix'),'-AvailabilitySet')]",
     "availabilitySetId": {
       "id": "[resourceId('Microsoft.Compute/availabilitySets', variables('availabilitySetName'))]"
@@ -686,14 +734,14 @@
     "imageReferenceMarketplace": {
       "publisher": "[variables('imagePublisher')]",
       "offer": "[variables('imageOffer')]",
-      "sku": "[parameters('fortiGateImageSKU')]",
-      "version": "[parameters('FortiGateImageVersion')]"
+      "sku": "[variables('fortiGateImageSKU')]",
+      "version": "[variables('FortigateImageVersion')]"
     },
     "imageReferenceCustomImage": {
       "id": "[parameters('customImageReference')]"
     },
     "virtualMachinePlan": {
-      "name": "[parameters('fortiGateImageSKU')]",
+      "name": "[variables('fortiGateImageSKU')]",
       "publisher": "[variables('imagePublisher')]",
       "product": "[variables('imageOffer')]"
     },
@@ -707,7 +755,7 @@
     {
       "name": "[concat(parameters('fortiGateNamePrefix'), '-fortinetdeployment-', uniquestring(resourceGroup().id))]",
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2022-09-01",
+      "apiVersion": "2023-07-01",
       "properties": {
         "mode": "Incremental",
         "template": {
@@ -719,9 +767,9 @@
     },
     {
       "condition": "[not(variables('useAZ'))]",
-      "type": "Microsoft.Compute/availabilitySets",
-      "apiVersion": "2023-03-01",
       "name": "[variables('availabilitySetName')]",
+      "type": "Microsoft.Compute/availabilitySets",
+      "apiVersion": "2023-09-01",
       "location": "[parameters('location')]",
       "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Compute/availabilitySets'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Compute/availabilitySets']), parameters('fortinetTags')) ]",
       "properties": {
@@ -734,9 +782,9 @@
     },
     {
       "condition": "[equals(parameters('vnetNewOrExisting'), 'new')]",
-      "type": "Microsoft.Network/virtualNetworks",
-      "apiVersion": "2023-04-01",
       "name": "[variables('vnetName')]",
+      "type": "Microsoft.Network/virtualNetworks",
+      "apiVersion": "2023-06-01",
       "location": "[parameters('location')]",
       "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Network/virtualNetworks'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Network/virtualNetworks']), parameters('fortinetTags')) ]",
       "dependsOn": [
@@ -788,7 +836,7 @@
     {
       "type": "Microsoft.Network/routeTables",
       "name": "[variables('routeTableName')]",
-      "apiVersion": "2023-04-01",
+      "apiVersion": "2023-06-01",
       "location": "[parameters('location')]",
       "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Network/routeTables'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Network/routeTables']), parameters('fortinetTags')) ]",
       "properties": {
@@ -807,7 +855,7 @@
     {
       "type": "Microsoft.Network/networkSecurityGroups",
       "name": "[variables('NSGName')]",
-      "apiVersion": "2023-04-01",
+      "apiVersion": "2023-06-01",
       "location": "[parameters('location')]",
       "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Network/networkSecurityGroups'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Network/networkSecurityGroups']), parameters('fortinetTags')) ]",
       "properties": {
