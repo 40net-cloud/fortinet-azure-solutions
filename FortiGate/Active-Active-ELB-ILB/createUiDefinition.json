@@ -93,7 +93,7 @@
         "type": "Microsoft.Common.TextBox",
         "label": "FortiGate Name Prefix",
         "defaultValue": "",
-        "toolTip": "Naming prefix for all deployed resources. The FortiGate VMs will have the suffix '-FGT-A' and '-FGT-B'. For example if the prefix is 'ACME-01' the FortiGates will be named 'ACME-01-FGT-A' and 'ACME-01-FGT-B'",
+        "toolTip": "Naming prefix for all deployed resources. The FortiGate VMs will have the suffix '-fgt-a' and '-fgt-b'. For example if the prefix is 'acme-01' the FortiGates will be named 'acme-01-fgt-a' and 'acme-01-fgt-b'",
         "constraints": {
           "required": true,
           "regex": "^[A-Za-z0-9-]{1,15}$",
