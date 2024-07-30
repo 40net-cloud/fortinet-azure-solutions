@@ -881,17 +881,17 @@
                     }
                   ]
                 },
-                "visible": "[and(equals(steps('networking').acceleratednetworksection.acceleratednetworking, 'true'),steps('networking').acceleratednetworksection.acceleratedconnectionscheck)]"
+                "visible": "[and(steps('networking').acceleratednetworksection.acceleratedconnectionscheck,equals(basics('fortiGateInstanceArchitecture'),'x64'),not(contains(steps('instance').instancetype_x64.selection_x64, 'v5')))]"
               },
               {
                 "name": "AccelConnwarning",
                 "type": "Microsoft.Common.InfoBox",
-                "visible": "[steps('networking').acceleratednetworksection.AcceleratedConnectionCheck]",
                 "options": {
                   "icon": "Warning",
                   "text": "This feature is currently in Preview, please contact Fortinet at 'azuretech@fortinet.com'. Verify the limitations with Microsoft on supported regions. Currently Dv5 instance types are not supported.",
                   "uri": "https://learn.microsoft.com/en-us/azure/networking/nva-accelerated-connections"
-                }
+                },
+                "visible": "[and(equals(steps('networking').acceleratednetworksection.acceleratednetworking, 'true'),steps('networking').acceleratednetworksection.acceleratedconnectionscheck)]"
               }
             ]
           }

@@ -975,7 +975,7 @@
               "domainNameLabel": "DNS name linked to this public IP"
             },
             "defaultValue": {
-              "publicIpAddressName": "[if(equals(basics('fortiGateNamePrefix'),''),'FGTAPClusterPublicIP',concat(basics('fortiGateNamePrefix'),'-FGT-PIP'))]",
+              "publicIpAddressName": "[if(equals(basics('fortiGateNamePrefix'),''),'fgtapclusterpublicip',concat(basics('fortiGateNamePrefix'),'-fgt-pip'))]",
               "domainNameLabel": "mydomain"
             },
             "constraints": {
@@ -1001,7 +1001,7 @@
               "domainNameLabel": "DNS name linked to this public IP"
             },
             "defaultValue": {
-              "publicIpAddressName": "[if(equals(basics('fortiGateNamePrefix'),''),'FGTAMgmtPublicIP',concat(basics('fortiGateNamePrefix'),'-FGT-A-MGMT-PIP'))]",
+              "publicIpAddressName": "[if(equals(basics('fortiGateNamePrefix'),''),'fgtamgmtpublicip',concat(basics('fortiGateNamePrefix'),'-fgt-a-mgmt-pip'))]",
               "domainNameLabel": "mydomain"
             },
             "constraints": {
@@ -1027,7 +1027,7 @@
               "domainNameLabel": "DNS name linked to this public IP"
             },
             "defaultValue": {
-              "publicIpAddressName": "[if(equals(basics('fortiGateNamePrefix'),''),'FGTBMgmtPublicIP',concat(basics('fortiGateNamePrefix'),'-FGT-B-MGMT-PIP'))]",
+              "publicIpAddressName": "[if(equals(basics('fortiGateNamePrefix'),''),'fgtbmgmtpublicip',concat(basics('fortiGateNamePrefix'),'-fgt-b-mgmt-pip'))]",
               "domainNameLabel": "mydomain"
             },
             "constraints": {
