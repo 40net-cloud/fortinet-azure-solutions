@@ -107,6 +107,7 @@ Describe 'FGT A/P SDN' {
                                           'fortiGateImageSku_x64',
                                           'fortiGateImageVersion_arm64',
                                           'fortiGateImageVersion_x64',
+                                          'fortiGateInstanceArchitecture',
                                           'fortiGateLicenseBYOLA',
                                           'fortiGateLicenseBYOLB',
                                           'fortiGateLicenseFortiFlexA',
