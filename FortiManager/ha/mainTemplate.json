@@ -484,16 +484,6 @@
             "id": "[variables('subnet1Id')]"
           }
         }
-      },
-      {
-        "name": "ipconfig2",
-        "properties": {
-          "privateIPAddress": "[variables('sn1IPfmgB-2')]",
-          "privateIPAllocationMethod": "Static",
-          "subnet": {
-            "id": "[variables('subnet1Id')]"
-          }
-        }
       }
     ],
     "useAZ": "[and(not(empty(pickZones('Microsoft.Compute', 'virtualMachines', parameters('location')))), equals(parameters('availabilityOptions'), 'Availability Zones'))]",
