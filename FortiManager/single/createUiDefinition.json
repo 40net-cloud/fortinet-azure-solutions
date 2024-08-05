@@ -257,6 +257,10 @@
               "value": "7.4.3"
             },
             {
+              "label": "7.6.0",
+              "value": "7.6.0"
+            },
+            {
               "label": "latest",
               "value": "latest"
             }
