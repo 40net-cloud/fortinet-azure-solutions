@@ -91,7 +91,7 @@
         "name": "imageVersion",
         "type": "Microsoft.Common.DropDown",
         "label": "FortiAnalyzer Image Version",
-        "defaultValue": "latest",
+        "defaultValue": "7.4.3",
         "toolTip": "Only 6.x has the A/P HA feature currently",
         "constraints": {
           "required": false,
