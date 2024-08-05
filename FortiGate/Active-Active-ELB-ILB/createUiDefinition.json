@@ -344,6 +344,10 @@
                       "value": "7.4.4"
                     },
                     {
+                      "label": "7.6.0",
+                      "value": "7.6.0"
+                    },
+                    {
                       "label": "latest",
                       "value": "latest"
                     }
@@ -581,20 +585,20 @@
                   "required": false,
                   "allowedValues": [
                     {
-                      "label": "7.4.4",
-                      "value": "7.4.4"
+                      "label": "7.2.8",
+                      "value": "7.2.8"
                     },
                     {
                       "label": "7.4.3",
                       "value": "7.4.3"
                     },
                     {
-                      "label": "7.2.8",
-                      "value": "7.2.8"
+                      "label": "7.4.4",
+                      "value": "7.4.4"
                     },
                     {
-                      "label": "7.2.7",
-                      "value": "7.2.7"
+                      "label": "7.6.0",
+                      "value": "7.6.0"
                     },
                     {
                       "label": "latest",
