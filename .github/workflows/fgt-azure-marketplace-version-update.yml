@@ -74,7 +74,7 @@ jobs:
               if (-Not $content -match '(?<=\r\n)\z') {
                 "" | Out-File -Append "./FortiGate/${buildingBlock}/createUiDefinition.json"
               }
-              Get-Content -Raw -Path "./FortiGate/${buildingBlock}/createUiDefinition.json" | jq --slurpfile content "./fgtversion_arm64_ui.json" '(.parameters.steps[].elements[] | select( .name == "instancetype_x64") | .elements[] | select( .name == "fortiGateImageVersion_arm64") | .constraints.allowedValues) |= $content[]' | Set-Content -Path "./FortiGate/${buildingBlock}/createUiDefinition.json"
+              Get-Content -Raw -Path "./FortiGate/${buildingBlock}/createUiDefinition.json" | jq --slurpfile content "./fgtversion_arm64_ui.json" '(.parameters.steps[].elements[] | select( .name == "instancetype_arm64") | .elements[] | select( .name == "fortiGateImageVersion_arm64") | .constraints.allowedValues) |= $content[]' | Set-Content -Path "./FortiGate/${buildingBlock}/createUiDefinition.json"
               $content = Get-Content "./FortiGate/${buildingBlock}/createUiDefinition.json" -Raw
               if (-Not $content -match '(?<=\r\n)\z') {
                 "" | Out-File -Append "./FortiGate/${buildingBlock}/createUiDefinition.json"
