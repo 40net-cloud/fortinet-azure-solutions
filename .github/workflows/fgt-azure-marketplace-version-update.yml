@@ -30,15 +30,17 @@ jobs:
           $fgtMarketplaceVersions_arm64_UI = @()
 
           $fortigateVersions_x64 = Get-AzVMImage -PublisherName "fortinet" -Location eastus -Offer "fortinet_fortigate-vm_v5" -sku "fortinet_fg-vm"
-          $fgtMarketplaceVersions_x64 += $($fortigateVersions_x64).Version
+          [array]::Reverse($fortigateVersions_x64)
           $fgtMarketplaceVersions_x64 += "latest"
+          $fgtMarketplaceVersions_x64 += $($fortigateVersions_x64).Version
           $fgtMarketplaceVersions_x64 | ConvertTo-Json | Out-File -Filepath "./fgtversion_x64.json"
           $fgtMarketplaceVersions_x64 | ForEach-Object { $fgtMarketplaceVersions_x64_UI += [pscustomobject]@{label=$_;value=$_} }
           $fgtMarketplaceVersions_x64_UI | ConvertTo-Json | Out-File -Filepath "./fgtversion_x64_ui.json"
 
           $fortigateVersions_arm64 = Get-AzVMImage -PublisherName "fortinet" -Location eastus -Offer "fortinet_fortigate-vm_v5" -sku "fortinet_fg-vm_arm64"
-          $fgtMarketplaceVersions_arm64 += $($fortigateVersions_arm64).Version
+          [array]::Reverse($fortigateVersions_arm64)
           $fgtMarketplaceVersions_arm64 += "latest"
+          $fgtMarketplaceVersions_arm64 += $($fortigateVersions_arm64).Version
           $fgtMarketplaceVersions_arm64 | ConvertTo-Json | Out-File -Filepath "./fgtversion_arm64.json"
           $fgtMarketplaceVersions_arm64 | ForEach-Object { $fgtMarketplaceVersions_arm64_UI += [pscustomobject]@{label=$_;value=$_} }
           $fgtMarketplaceVersions_arm64_UI | ConvertTo-Json | Out-File -Filepath "./fgtversion_arm64_ui.json"
