@@ -1621,7 +1621,7 @@
     ],
     "outputs": {
       "fortiGateNamePrefix": "[basics('fortiGateNamePrefix')]",
-      "fortiGateCount": "[basics('fortiGateCount')]",
+      "fortiGateCount": "[int(basics('fortiGateCount'))]",
       "fortiGateImageSKU_x64": "[steps('instance').instancetype_x64.fortiGateImageSKU_x64]",
       "fortiGateImageSKU_arm64": "[steps('instance').instancetype_arm64.fortiGateImageSKU_arm64]",
       "fortiGateImageVersion_x64": "[steps('instance').instancetype_x64.fortiGateImageVersion_x64]",
