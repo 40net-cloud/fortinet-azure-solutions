@@ -649,6 +649,20 @@
             }
           },
           {
+            "name": "AllowHAInbound",
+            "properties": {
+              "description": "Allow 5199 in for HA",
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "5199",
+              "sourceAddressPrefix": "*",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 160,
+              "direction": "Inbound"
+            }
+          },
+          {
             "name": "AllowAllOutbound",
             "properties": {
               "description": "Allow all out",
