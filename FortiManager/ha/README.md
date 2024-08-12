@@ -103,7 +103,8 @@ After deployment perform the following three steps:
 
 FortiManager A and FortiManager B configuration should be like below:
 
-FMG A
+#### FortiManager A
+
 <pre><code>
 config system ha
     set clusterid 10
@@ -125,7 +126,8 @@ config system ha
 end
 </code></pre>
 
-FMG B
+#### FortiManager B
+
 <pre><code>
 config system ha
     set clusterid 10
@@ -161,7 +163,7 @@ end
 
 You will follow the same steps as in the previous scenario, with the only change being the use of private IPs instead of public IPs.
 
-FMG A
+#### FortiManager A
 <pre><code>
 config system ha
     set clusterid 10
@@ -172,18 +174,19 @@ config system ha
     set password xxx
         config peer
             edit 1
-                set ip <b>172.16.140.5</b>
+                set ip <b>FortiManager B private IP address - 172.16.140.5</b>
                 set serial-number <b>FortiManager B serial number</b>
             next
         end
     set priority 100
     set unicast enable
-    set vip <b>172.16.140.6</b>
+    set vip <b>FortiManager VRRP HA private IP address - 172.16.140.6</b>
     set vrrp-interface "port1"
 end
 </code></pre>
 
-FMG B
+#### FortiManager B
+
 <pre><code>
 config system ha
     set clusterid 10
@@ -194,12 +197,12 @@ config system ha
     set password xxx
         config peer
             edit 1
-                set ip <b>172.16.140.4</b>
+                set ip <b>FortiManager A private IP address - 172.16.140.4</b>
                 set serial-number <b>FortiManager A serial number</b>
             next
         end
     set unicast enable
-    set vip <b>172.16.140.6</b>
+    set vip <b>FortiManager VRRP HA private IP address - 172.16.140.6</b>
     set vrrp-interface "port1"
 end
 </code></pre>
