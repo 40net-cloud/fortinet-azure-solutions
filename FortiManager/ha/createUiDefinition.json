@@ -74,13 +74,13 @@
         "name": "imageSku",
         "type": "Microsoft.Common.DropDown",
         "label": "FortiManager Image SKU",
-        "defaultValue": "Bring Your Own License",
+        "defaultValue": "Bring Your Own License of FortiFlex",
         "toolTip": "BYOL license model (where license is purchased separately)",
         "constraints": {
           "required": false,
           "allowedValues": [
             {
-              "label": "Bring Your Own License",
+              "label": "Bring Your Own License of FortiFlex",
               "value": "fortinet-fortimanager"
             }
           ]
