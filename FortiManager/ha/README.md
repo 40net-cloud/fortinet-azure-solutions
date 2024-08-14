@@ -87,19 +87,19 @@ The Azure ARM template deployment deploys different resources and is required to
 - The template will deploy Standard DS4_v2 VMs for this architecture. Other VM instances are supported as well with a recommended minimum of 4 vCPU and 16Gb of RAM. A list can be found [here](https://docs.fortinet.com/document/fortimanager-public-cloud/7.6.0/azure-administration-guide/351055/instance-type-support)
 - A Network Security Group is installed that only opens TCP port 22, 80, 443, 541, 8082, 5199 and 514 for access to the FortiManager. Additional ports might be needed to support your use case and are documented [here](https://docs.fortinet.com/document/fortimanager/7.6.0/fortimanager-ports/465971)
 - License for FortiManager
-  - BYOL: A demo license can be made available via your Fortinet partner or on our website. These can be injected during deployment or added after deployment.
+  - BYOL: A demo license can be made available via your Fortinet partner or on our website. These can be injected during deployment or added after deployment. For the correct configuration of the HA during deployment, the serial numbers of both FortiManager devices need to be provider. If not provided the configuration needs to be adapted to reflect the below configuration
 
-## Configurations
+## Configuration
 
 The HA configuration requires the serialnumbers of both FortiManager VMs in order to complete the config. If the serialnumbers are not provided during deployment the FortiManager HA config needs to be performed manually afterwards.
 
 ### VRRP Automatic Failover with Public IP Attached to Secondary Private IP Address
 
-After deployment perform the following three steps:
+After deployment perform and validate the following three steps:
  
-- Establish HA by typing in the password again in the HA config on both units.
-- Add the Digicert CA cert G2 as a local CA cert. (will be adding this to the custom data later) You can download it from [here](https://learn.microsoft.com/en-us/azure/security/fundamentals/azure-ca-details?tabs=root-and-subordinate-cas-list).
-- Provide contributor access for the FMG VMs to the resource group where the FMGs are deployed.
+- During deployment the root certificate for management.azure.com is added. This certificate can also be downloaded [here](https://learn.microsoft.com/en-us/azure/security/fundamentals/azure-ca-details?tabs=root-and-subordinate-cas-list) and added as a local CA certificate on the FortiManager
+- For the failover process, FortiManager uses managed identity on Microsoft Azure to migrate the public IP. Assign either the network contributor or a custom role to the resource group containing the FortiManager resources (VM, network interface, public ip address, network security group)
+- The FortiManager devices need to have outbound access to management.azure.com via either the attached public IPs or another outbound path.
 
 FortiManager A and FortiManager B configuration should be like below:
 
@@ -112,7 +112,6 @@ config system ha
     set hb-interval 5
     set hb-lost-threshold 10
     set mode primary
-    set password xxx
         config peer
             edit 1
                 set ip <b>FortiManager B Public IP address</b>
@@ -135,7 +134,6 @@ config system ha
     set hb-interval 5
     set hb-lost-threshold 10
     set mode secondary
-    set password xxx
         config peer
             edit 1
                 set ip <b>FortiManager A Public IP address</b>
@@ -171,7 +169,6 @@ config system ha
     set hb-interval 5
     set hb-lost-threshold 10
     set mode primary
-    set password xxx
         config peer
             edit 1
                 set ip <b>FortiManager B private IP address - 172.16.140.5</b>
@@ -194,7 +191,6 @@ config system ha
     set hb-interval 5
     set hb-lost-threshold 10
     set mode secondary
-    set password xxx
         config peer
             edit 1
                 set ip <b>FortiManager A private IP address - 172.16.140.4</b>
@@ -221,7 +217,7 @@ end
 
 The configuration for FortiManager A and FortiManager B should be as follows:
 
-FMG A
+#### FortiManager A
 <pre><code>
 config system ha
   set mode primary
@@ -236,7 +232,7 @@ config system ha
 end
 </code></pre>
 
-FMG B
+#### FortiManager B
 <pre><code>
 config system ha
   set mode secondary
@@ -263,11 +259,88 @@ config system central-management
 end
 </code></pre>
 
+### VRRP managed identity 
+
+In case of automatic HA failover / VRRP the secondary FortiManger will become primary and start communication with Microsoft Azure to migrate the VIP (public or private IP address). For the communication, credentials are needed using a managed identity. During the deployment the system assigned managed identity is enabled on each FortiManger. It is required after deployment to provide give the FortiManager systems access to the resource group containing it's resources in Azure. This access can be using the Network Contributor role or a custom role. The following resources are updated:
+
+- FortiGate-VM network interfaces
+- Network security group attached to the FortiManager network interface nic1
+- VIP public IP address or private IP address attached to the FortiManager network interface nic1 as a secondary ipconfig
+- VNET and subnet that has the VIP IP address attached
+
+#### Network contributor role
+
+##### Azure Portal
+
+1. In the Azure portal, open your resource group and go to Access control (IAM).
+2. Click Add a role assignment.
+3. From the Role dropdown list, select Network Contributor.
+4. Select the FortiManager-VMs as virtual machine members for Managed Identity
+5. Review + assign the role
+
+##### Azure CLI
+
+```
+$ spID=$(az resource list -n {<FortiManager-VM name>} --query [*].identity.principalId --out tsv)
+$ az role assignment create --assignee $spID --role 'Network Contributor' --scope /subscriptions/{Azure subscription ID}/resourceGroups/{Azure resourceGroup name}
+```
+
+#### Customer specific role
+
+You must assign the Fortinet FortiGate SDN Connector RW role to both FortiGate-VMs when in an active-active or active-passive setup. You must apply this role since the VM principal ID must be retrieved. This action assigns required access rights for the service principal that Azure AD is managing specific for the FortiGate-VM to access Azure resources in the Azure subscription.
+
+##### Azure Portal
+
+1. In the Azure portal, open your resource group and go to Access control (IAM).
+2. Click Add a custom role
+3. Give the role a name
+4. Go to the JSON tab and using edit fill in the json code from the Azure CLI section or the 'azure_iamrol_rw.json' file
+5. Review + assign the custom role
+6. In the Azure portal, open your resource group and go to Access control (IAM).
+7. Click Add a role assignment.
+8. From the Role dropdown list, select your custom role
+9. Select the FortiManager-VMs as virtual machine members for Managed Identity
+10. Review + assign the role
+
+##### Azure CLI
+
+Create a JSON file that contains the following data or download the json file from github. Fill in your subscription ID, replacing in the curly brackets placeholder.
+
+```json
+{
+    "Name": "Fortinet FortiManager HA VRRP failover",
+    "IsCustom": true,
+    "Description": "Role to update the public ip address",
+    "Actions": [
+        "*/read",
+        "Microsoft.Network/publicIPAddresses/write",
+        "Microsoft.Network/publicIPAddresses/join/action",
+        "Microsoft.Network/networkInterfaces/write",
+        "Microsoft.Network/networkSecurityGroups/join/action",
+        "Microsoft.Network/virtualNetworks/subnets/join/action"
+    ],
+    "DataActions": [],
+    "NotActions": [],
+    "NotDataActions": [],
+    "AssignableScopes": [
+        "/subscriptions/{subscriptionID1}"
+    ]
+}
+```
+
+This action assigns required access rights for the managed identity of the FortiManager-VM to access Azure resources in the Azure Resource Group.
+
+```bash
+$ az role definition create --role-definition azure_SDN_iamrole_rw.json
+$ spID=$(az resource list -n {<FortiManager-VM name>} --query [*].identity.principalId --out tsv)
+$ az role assignment create --assignee $spID --role 'Fortinet FortiManager HA VRRP failover' --scope /subscriptions/{Azure subscription ID}/resourceGroups/{Azure resourceGroup name}
+```
+
 ## Troubleshooting
 
 You check HA status from cli using the following commands: 
 
-<pre><code>
+```
 fmg-a # get system ha-status
 HA Health Status                : OK
 HA Role                         : Primary
@@ -296,9 +369,9 @@ System Usage stats              :
                 average-cpu-user/nice/system/idle=0.27%/0.00%/0.94%/98.77%, memory=9.24%
         FMG-VM2xxxxxx(updated 10 seconds ago):
                 average-cpu-user/nice/system/idle=0.05%/0.00%/0.15%/99.77%, memory=9.47%
-</code></pre>
+```
 
-<pre><code>
+```
 fmg-a # get system ha
 clusterid           : 10
 failover-mode       : vrrp 
@@ -321,28 +394,28 @@ vip                 : 20.50.232.45
 vip-interface       : (null)
 vrrp-adv-interval   : 3
 vrrp-interface      : port1 
-</code></pre>
+```
 
 You can verify the communication with Azure REST API in shell mode.
 Enable shell and run these using exec shell. Please, visit the [link](https://community.fortinet.com/t5/FortiManager/Technical-Tip-How-to-enable-backend-shell-access-in-FortiManager/ta-p/242340) for more details.
 Then run the following commands:
 
-<pre><code>
+```
 # fazutil azure vm
 # fazutil azure nic
 # fazutil azure imds
 # fazutil information ha-azure
-</code></pre>
+```
 
-Force a failover. Run this on the active FMG
-<pre><code>
+Force a failover. Run this on the active FortiManager
+```
 # diag ha force-vrrp-reelection
-</code></pre>
+```
 
 Logging of the Azure Rest API calls
-<pre><code>
+```
 # diagnose ha dump-cloud-api-log
-</code></pre>
+```
 
 ## Support
 Fortinet-provided scripts in this and other GitHub projects do not fall under the regular Fortinet technical support scope and are not supported by FortiCare Support Services.
