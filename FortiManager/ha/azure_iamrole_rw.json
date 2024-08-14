@@ -1,19 +1,24 @@
 {
-    "Name": "Fortinet FortiManager HA VRRP failover",
-    "IsCustom": true,
-    "Description": "Role to update the public ip address",
-    "Actions": [
-        "*/read",
-        "Microsoft.Network/publicIPAddresses/write",
-        "Microsoft.Network/publicIPAddresses/join/action",
-        "Microsoft.Network/networkInterfaces/write",
-        "Microsoft.Network/networkSecurityGroups/join/action",
-        "Microsoft.Network/virtualNetworks/subnets/join/action"
-    ],
-    "DataActions": [],
-    "NotActions": [],
-    "NotDataActions": [],
-    "AssignableScopes": [
-        "/subscriptions/{subscriptionID1}"
-    ]
+    "properties": {
+        "roleName": "Fortinet FortiManager HA VRRP failover",
+        "description": "",
+        "assignableScopes": [
+            "/subscriptions/{subscriptionID1}"
+        ],
+        "permissions": [
+            {
+                "actions": [
+                    "*/read",
+                    "Microsoft.Network/publicIPAddresses/write",
+                    "Microsoft.Network/publicIPAddresses/join/action",
+                    "Microsoft.Network/networkInterfaces/write",
+                    "Microsoft.Network/networkSecurityGroups/join/action",
+                    "Microsoft.Network/virtualNetworks/subnets/join/action"
+                ],
+                "notActions": [],
+                "dataActions": [],
+                "notDataActions": []
+            }
+        ]
+    }
 }

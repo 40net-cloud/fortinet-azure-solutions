@@ -275,8 +275,11 @@ In case of automatic HA failover / VRRP the secondary FortiManger will become pr
 1. In the Azure portal, open your resource group and go to Access control (IAM).
 2. Click Add a role assignment.
 3. From the Role dropdown list, select Network Contributor.
+![FortiManager HA](images/step1a.png)
 4. Select the FortiManager-VMs as virtual machine members for Managed Identity
+![FortiManager HA](images/step2a.png)
 5. Review + assign the role
+![FortiManager HA](images/step3a.png)
 
 ##### Azure CLI
 
@@ -293,14 +296,21 @@ You must assign the Fortinet FortiGate SDN Connector RW role to both FortiGate-V
 
 1. In the Azure portal, open your resource group and go to Access control (IAM).
 2. Click Add a custom role
+![FortiManager HA](images/step1c.png)
 3. Give the role a name
+![FortiManager HA](images/step2c.png)
 4. Go to the JSON tab and using edit fill in the json code from the Azure CLI section or the 'azure_iamrol_rw.json' file
+![FortiManager HA](images/step3c.png)
 5. Review + assign the custom role
+![FortiManager HA](images/step3c.png)
 6. In the Azure portal, open your resource group and go to Access control (IAM).
 7. Click Add a role assignment.
 8. From the Role dropdown list, select your custom role
+![FortiManager HA](images/step1b.png)
 9. Select the FortiManager-VMs as virtual machine members for Managed Identity
+![FortiManager HA](images/step2b.png)
 10. Review + assign the role
+![FortiManager HA](images/step3b.png)
 
 ##### Azure CLI
 
