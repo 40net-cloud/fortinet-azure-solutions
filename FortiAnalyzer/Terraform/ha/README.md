@@ -36,7 +36,7 @@ To fast track the deployment, use the Azure Cloud Shell. The Azure Cloud Shell i
 
 `cd ~/clouddrive/ && wget -qO- https://github.com/fortinet/azure-templates/archive/main.tar.gz | tar zxf - && cd ~/clouddrive/azure-templates-main/FortiAnalyzer/Terraform/single/ && ./deploy.sh`
 
-![Azure Cloud Shell](images/azure-cloud-shell.png)
+![Azure Cloud Shell](/../../blob/main/FortiGate/Documentation/images/azure-cloud-shell.png)
 
 After deployment, you will be shown the IP addresses of all deployed components. You can access using the private IP assigned to the FortiAnalyzer on port 443.
 
