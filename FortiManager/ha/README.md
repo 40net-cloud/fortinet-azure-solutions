@@ -24,7 +24,6 @@ This Azure ARM template will automatically deploy a full working environment con
 	
 To enhance the availability of the solution VM can be installed in different Availability Zones instead of an Availability Set. The availability zone is the default option in the template. If Availability Zones deployment is selected but the location does not support Availability Zones an Availability Set will be deployed. If Availability Zones deployment is selected and Availability Zones are available in the location, FortiManager A will be placed in Zone 1, FortiManager B will be placed in Zone 2.
 
-
 This Azure ARM template can also be extended or customized based on your requirements. Additional subnets besides the ones mentioned above are not automatically generated.
 
 We will present three different scenarios for deploying FortiManager in high availability HA configuration:
@@ -85,9 +84,10 @@ After deployment, you will be shown the IP addresses of all deployed components.
 The Azure ARM template deployment deploys different resources and is required to have the access rights and quota in your Microsoft Azure subscription to deploy the resources.
 
 - The template will deploy Standard DS4_v2 VMs for this architecture. Other VM instances are supported as well with a recommended minimum of 4 vCPU and 16Gb of RAM. A list can be found [here](https://docs.fortinet.com/document/fortimanager-public-cloud/7.6.0/azure-administration-guide/351055/instance-type-support)
-- A Network Security Group is installed that only opens TCP port 22, 80, 443, 541, 8082, 5199 and 514 for access to the FortiManager. Additional ports might be needed to support your use case and are documented [here](https://docs.fortinet.com/document/fortimanager/7.6.0/fortimanager-ports/465971)
+- A Network Security Group is installed that only opens TCP port 22, 80, 443, 514, 541, 5199 and 8082 for access to the FortiManager. Additional ports might be needed to support your use case and are documented [here](https://docs.fortinet.com/document/fortimanager/7.6.0/fortimanager-ports/465971)
 - License for FortiManager
   - BYOL: A demo license can be made available via your Fortinet partner or on our website. These can be injected during deployment or added after deployment. For the correct configuration of the HA during deployment, the serial numbers of both FortiManager devices need to be provider. If not provided the configuration needs to be adapted to reflect the below configuration
+- This deployment uses and forces the use of standard SKU public IP's. By 30 September 2025, the basic SKU will be retired. More information is available [here](https://azure.microsoft.com/en-gb/updates/upgrade-to-standard-sku-public-ip-addresses-in-azure-by-30-september-2025-basic-sku-will-be-retired/)
 
 ## Configuration
 
