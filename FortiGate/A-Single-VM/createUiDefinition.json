@@ -120,13 +120,13 @@
                 "name": "fortiGateImageSKU_x64",
                 "type": "Microsoft.Common.DropDown",
                 "label": "Fortigate-VM License Type",
-                "defaultValue": "Bring Your Own License",
+                "defaultValue": "Bring Your Own License or FortiFlex",
                 "toolTip": "Identifies whether to to use PAYG (on demand licensing) or BYOL license model (where license is purchased separately)",
                 "constraints": {
                   "required": false,
                   "allowedValues": [
                     {
-                      "label": "Bring Your Own License",
+                      "label": "Bring Your Own License or FortiFlex",
                       "value": "fortinet_fg-vm"
                     },
                     {
@@ -515,13 +515,13 @@
                 "name": "fortiGateImageSKU_arm64",
                 "type": "Microsoft.Common.DropDown",
                 "label": "Fortigate-VM License Type",
-                "defaultValue": "Bring Your Own License",
+                "defaultValue": "Bring Your Own License or FortiFlex",
                 "toolTip": "Identifies whether to to use PAYG (on demand licensing) or BYOL license model (where license is purchased separately)",
                 "constraints": {
                   "required": false,
                   "allowedValues": [
                     {
-                      "label": "Bring Your Own License",
+                      "label": "Bring Your Own License or FortiFlex",
                       "value": "fortinet_fg-vm_arm64"
                     },
                     {
