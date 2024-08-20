@@ -39,6 +39,9 @@ jobs:
             $versions = Get-AzVMImage -PublisherName "${env:PUBLISHER}" -Location eastus -Offer "${env:PRODUCTOFFER}" -sku "${env:PRODUCTSKU}"
             $marketplaceVersions += $($versions | Where-Object {$_.Version.StartsWith("7.0")} | Sort-Object -Unique { $_.Version -as [version]} | Select-Object -Last 2).Version
             $marketplaceVersions += $($versions | Where-Object {$_.Version.StartsWith("7.2")} | Sort-Object -Unique { $_.Version -as [version]} | Select-Object -Last 2).Version
+            $marketplaceVersions += $($versions | Where-Object {$_.Version.StartsWith("7.4")} | Sort-Object -Unique { $_.Version -as [version]} | Select-Object -Last 2).Version
+            $marketplaceVersions += $($versions | Where-Object {$_.Version.StartsWith("7.6")} | Sort-Object -Unique { $_.Version -as [version]} | Select-Object -Last 2).Version
+            [array]::Reverse($marketplaceVersions)
             $marketplaceVersions += "latest"
             $marketplaceVersions | ForEach-Object { $marketplaceVersionsUI += [pscustomobject]@{label=$_;value=$_} }
 

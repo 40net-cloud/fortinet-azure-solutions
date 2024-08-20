@@ -9,6 +9,8 @@ on:
 env:
   PRODUCT: FortiAnalyzer
   PRODUCTSHORT: FAZ
+  PRODUCTOFFER: fortinet-fortianalyzer
+  PRODUCTSKU: fortinet-fortianalyzer
 
 jobs:
   ARM-FAZ-Version-Update:
@@ -28,25 +30,26 @@ jobs:
       with:
         inlineScript: |
           $buildingBlocks = @("single", "ha")
-          $versions = @()
-          $versionsui = @()
+          $marketplaceVersions = @()
+          $marketplaceVersionsUI = @()
 
-          $versions = $(Get-AzVMImage -PublisherName "fortinet" -Location eastus -Offer "fortinet-fortianalyzer" -sku "fortinet-fortianalyzer").Version
-          $versions += "latest"
-          $versions | ConvertTo-Json | Out-File -Filepath "./fazversion.json"
-          $versions | ForEach-Object { $versionsui += [pscustomobject]@{label=$_;value=$_} }
-          $versionsui | ConvertTo-Json | Out-File -Filepath "./fazversionui.json"
+          $marketplaceVersions = $(Get-AzVMImage -PublisherName "fortinet" -Location eastus -Offer "${env:PRODUCTOFFER}" -sku "${env:PRODUCTSKU}").Version
+          [array]::Reverse($marketplaceVersions)
+          $marketplaceVersions += "latest"
+          $marketplaceVersions | ConvertTo-Json | Out-File -Filepath "./fazversion.json"
+          $marketplaceVersions | ForEach-Object { $marketplaceVersionsUI += [pscustomobject]@{label=$_;value=$_} }
+          $marketplaceVersionsUI | ConvertTo-Json | Out-File -Filepath "./fazversionui.json"
 
           foreach ($buildingBlock in $buildingBlocks) {
-            Get-Content -Raw -Path "./FortiAnalyzer/${buildingBlock}/mainTemplate.json" | jq --slurpfile content "./fazversion.json" '.parameters.imageVersion.allowedValues = $content[]' | Set-Content -Path "./FortiAnalyzer/${buildingBlock}/mainTemplate.json"
-            $content = Get-Content "./FortiAnalyzer/${buildingBlock}/mainTemplate.json" -Raw
+            Get-Content -Raw -Path "./${env:PRODUCT}/${buildingBlock}/mainTemplate.json" | jq --slurpfile content "./fazversion.json" '.parameters.imageVersion.allowedValues = $content[]' | Set-Content -Path "./${env:PRODUCT}/${buildingBlock}/mainTemplate.json"
+            $content = Get-Content "./${env:PRODUCT}/${buildingBlock}/mainTemplate.json" -Raw
             if (-Not $content -match '(?<=\r\n)\z') {
-              "" | Out-File -Append "./FortiAnalyzer/${buildingBlock}/mainTemplate.json"
+              "" | Out-File -Append "./${env:PRODUCT}/${buildingBlock}/mainTemplate.json"
             }
-            Get-Content -Raw -Path "./FortiAnalyzer/${buildingBlock}/createUiDefinition.json" | jq --slurpfile content "./fazversionui.json" '(.parameters.basics[] | select( .name == "imageVersion" ) | .constraints.allowedValues) |= $content[]' | Set-Content -Path "./FortiAnalyzer/${buildingBlock}/createUiDefinition.json"
-            $content = Get-Content "./FortiAnalyzer/${buildingBlock}/createUiDefinition.json" -Raw
+            Get-Content -Raw -Path "./${env:PRODUCT}/${buildingBlock}/createUiDefinition.json" | jq --slurpfile content "./fazversionui.json" '(.parameters.basics[] | select( .name == "imageVersion" ) | .constraints.allowedValues) |= $content[]' | Set-Content -Path "./${env:PRODUCT}/${buildingBlock}/createUiDefinition.json"
+            $content = Get-Content "./${env:PRODUCT}/${buildingBlock}/createUiDefinition.json" -Raw
             if (-Not $content -match '(?<=\r\n)\z') {
-              "" | Out-File -Append "./FortiAnalyzer/${buildingBlock}/createUiDefinition.json"
+              "" | Out-File -Append "./${env:PRODUCT}/${buildingBlock}/createUiDefinition.json"
             }
           }
           Remove-Item "./fazversion.json"

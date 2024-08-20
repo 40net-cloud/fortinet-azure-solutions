@@ -33,27 +33,27 @@ jobs:
           $marketplaceVersions = @()
           $marketplaceVersionsUI = @()
 
-          $versions = Get-AzVMImage -PublisherName "fortinet" -Location eastus -Offer "${env:PRODUCTOFFER}" -sku "${env:PRODUCTSKU}"
-          $marketplaceVersions += $($versions).Version
+          $marketplaceVersions = $(Get-AzVMImage -PublisherName "fortinet" -Location eastus -Offer "${env:PRODUCTOFFER}" -sku "${env:PRODUCTSKU}").Version
+          [array]::Reverse($marketplaceVersions)
           $marketplaceVersions += "latest"
-          $marketplaceVersions | ConvertTo-Json | Out-File -Filepath "./version.json"
+          $marketplaceVersions | ConvertTo-Json | Out-File -Filepath "./fpxversion.json"
           $marketplaceVersions | ForEach-Object { $marketplaceVersionsUI += [pscustomobject]@{label=$_;value=$_} }
-          $marketplaceVersionsUI | ConvertTo-Json | Out-File -Filepath "./versionui.json"
+          $marketplaceVersionsUI | ConvertTo-Json | Out-File -Filepath "./fpxversionui.json"
 
           foreach ($buildingBlock in $buildingBlocks) {
-            Get-Content -Raw -Path "./${env:PRODUCT}/${buildingBlock}/mainTemplate.json" | jq --slurpfile content "./version.json" '.parameters.fortiProxyImageVersion.allowedValues = $content[]' | Set-Content -Path "./${env:PRODUCT}/${buildingBlock}/mainTemplate.json"
+            Get-Content -Raw -Path "./${env:PRODUCT}/${buildingBlock}/mainTemplate.json" | jq --slurpfile content "./fpxversion.json" '.parameters.fortiProxyImageVersion.allowedValues = $content[]' | Set-Content -Path "./${env:PRODUCT}/${buildingBlock}/mainTemplate.json"
             $content = Get-Content "./${env:PRODUCT}/${buildingBlock}/mainTemplate.json" -Raw
             if (-Not $content -match '(?<=\r\n)\z') {
               "" | Out-File -Append "./${env:PRODUCT}/${buildingBlock}/mainTemplate.json"
             }
-            Get-Content -Raw -Path "./${env:PRODUCT}/${buildingBlock}/createUiDefinition.json" | jq --slurpfile content "./versionui.json" '(.parameters.basics[] | select( .name == "imageVersion") | .constraints.allowedValues) |= $content[]' | Set-Content -Path "./${env:PRODUCT}/${buildingBlock}/createUiDefinition.json"
+            Get-Content -Raw -Path "./${env:PRODUCT}/${buildingBlock}/createUiDefinition.json" | jq --slurpfile content "./fpxversionui.json" '(.parameters.basics[] | select( .name == "imageVersion") | .constraints.allowedValues) |= $content[]' | Set-Content -Path "./${env:PRODUCT}/${buildingBlock}/createUiDefinition.json"
             $content = Get-Content "./${env:PRODUCT}/${buildingBlock}/createUiDefinition.json" -Raw
             if (-Not $content -match '(?<=\r\n)\z') {
               "" | Out-File -Append "./${env:PRODUCT}/${buildingBlock}/createUiDefinition.json"
             }
           }
-          Remove-Item "./version.json"
-          Remove-Item "./versionui.json"
+          Remove-Item "./fpxversion.json"
+          Remove-Item "./fpxversionui.json"
         azPSVersion: "latest"
 
     - name: Create Pull Request

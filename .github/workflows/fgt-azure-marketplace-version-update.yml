@@ -6,6 +6,12 @@ on:
   schedule:
     - cron:  '00 22 * * 0'
 
+env:
+  PRODUCT: FortiGate
+  PRODUCTSHORT: FGT
+  PRODUCTOFFER: fortinet_fortigate-vm_v5
+  PRODUCTSKU: fortinet_fg-vm
+
 jobs:
   ARM-FGT-Version-Update:
     name: Update FGT version list
@@ -24,62 +30,60 @@ jobs:
       with:
         inlineScript: |
           $buildingBlocks = @("A-Single-VM", "Active-Active-ELB-ILB","Active-Passive-ELB-ILB","Active-Passive-SDN")
-          $fgtMarketplaceVersions_x64 = @()
-          $fgtMarketplaceVersions_x64_UI = @()
-          $fgtMarketplaceVersions_arm64 = @()
-          $fgtMarketplaceVersions_arm64_UI = @()
+          $marketplaceVersions_x64 = @()
+          $marketplaceVersionsUI_x64 = @()
+          $marketplaceVersions_arm64 = @()
+          $marketplaceVersionsUI_arm64 = @()
 
-          $fortigateVersions_x64 = Get-AzVMImage -PublisherName "fortinet" -Location eastus -Offer "fortinet_fortigate-vm_v5" -sku "fortinet_fg-vm"
-          [array]::Reverse($fortigateVersions_x64)
-          $fgtMarketplaceVersions_x64 += "latest"
-          $fgtMarketplaceVersions_x64 += $($fortigateVersions_x64).Version
-          $fgtMarketplaceVersions_x64 | ConvertTo-Json | Out-File -Filepath "./fgtversion_x64.json"
-          $fgtMarketplaceVersions_x64 | ForEach-Object { $fgtMarketplaceVersions_x64_UI += [pscustomobject]@{label=$_;value=$_} }
-          $fgtMarketplaceVersions_x64_UI | ConvertTo-Json | Out-File -Filepath "./fgtversion_x64_ui.json"
+          $marketplaceVersions_x64 = $(Get-AzVMImage -PublisherName "fortinet" -Location eastus -Offer "${env:PRODUCTOFFER}" -sku "${env:PRODUCTSKU}").Version
+          [array]::Reverse($marketplaceVersions_x64)
+          $marketplaceVersions_x64 += "latest"
+          $marketplaceVersions_x64 | ConvertTo-Json | Out-File -Filepath "./fgtversion_x64.json"
+          $marketplaceVersions_x64 | ForEach-Object { $marketplaceVersionsUI_x64 += [pscustomobject]@{label=$_;value=$_} }
+          $marketplaceVersionsUI_x64 | ConvertTo-Json | Out-File -Filepath "./fgtversionui_x64.json"
 
-          $fortigateVersions_arm64 = Get-AzVMImage -PublisherName "fortinet" -Location eastus -Offer "fortinet_fortigate-vm_v5" -sku "fortinet_fg-vm_arm64"
-          [array]::Reverse($fortigateVersions_arm64)
-          $fgtMarketplaceVersions_arm64 += "latest"
-          $fgtMarketplaceVersions_arm64 += $($fortigateVersions_arm64).Version
-          $fgtMarketplaceVersions_arm64 | ConvertTo-Json | Out-File -Filepath "./fgtversion_arm64.json"
-          $fgtMarketplaceVersions_arm64 | ForEach-Object { $fgtMarketplaceVersions_arm64_UI += [pscustomobject]@{label=$_;value=$_} }
-          $fgtMarketplaceVersions_arm64_UI | ConvertTo-Json | Out-File -Filepath "./fgtversion_arm64_ui.json"
+          $marketplaceVersions_arm64 = $(Get-AzVMImage -PublisherName "fortinet" -Location eastus -Offer "${env:PRODUCTOFFER}" -sku "${env:PRODUCTSKU}").Version
+          [array]::Reverse($marketplaceVersions_arm64)
+          $marketplaceVersions_arm64 += "latest"
+          $marketplaceVersions_arm64 | ConvertTo-Json | Out-File -Filepath "./fgtversion_arm64.json"
+          $marketplaceVersions_arm64 | ForEach-Object { $marketplaceVersionsUI_arm64 += [pscustomobject]@{label=$_;value=$_} }
+          $marketplaceVersionsUI_arm64 | ConvertTo-Json | Out-File -Filepath "./fgtversion_arm64_ui.json"
 
           foreach ($buildingBlock in $buildingBlocks) {
-            if (Test-Path -Path "./FortiGate/${buildingBlock}/mainTemplate.json" -PathType Leaf) {
-              Get-Content -Raw -Path "./FortiGate/${buildingBlock}/mainTemplate.json" | jq --slurpfile content "./fgtversion_x64.json" '.parameters.fortiGateImageVersion_x64.allowedValues = $content[]' | Set-Content -Path "./FortiGate/${buildingBlock}/mainTemplate.json"
-              $content = Get-Content "./FortiGate/${buildingBlock}/mainTemplate.json" -Raw
+            if (Test-Path -Path "./${env:PRODUCT}/${buildingBlock}/mainTemplate.json" -PathType Leaf) {
+              Get-Content -Raw -Path "./${env:PRODUCT}/${buildingBlock}/mainTemplate.json" | jq --slurpfile content "./fgtversion_x64.json" '.parameters.fortiGateImageVersion_x64.allowedValues = $content[]' | Set-Content -Path "./${env:PRODUCT}/${buildingBlock}/mainTemplate.json"
+              $content = Get-Content "./${env:PRODUCT}/${buildingBlock}/mainTemplate.json" -Raw
               if (-Not $content -match '(?<=\r\n)\z') {
-                "" | Out-File -Append "./FortiGate/${buildingBlock}/mainTemplate.json"
+                "" | Out-File -Append "./${env:PRODUCT}/${buildingBlock}/mainTemplate.json"
               }
-              Get-Content -Raw -Path "./FortiGate/${buildingBlock}/mainTemplate.json" | jq --slurpfile content "./fgtversion_arm64.json" '.parameters.fortiGateImageVersion_arm64.allowedValues = $content[]' | Set-Content -Path "./FortiGate/${buildingBlock}/mainTemplate.json"
-              $content = Get-Content "./FortiGate/${buildingBlock}/mainTemplate.json" -Raw
+              Get-Content -Raw -Path "./${env:PRODUCT}/${buildingBlock}/mainTemplate.json" | jq --slurpfile content "./fgtversion_arm64.json" '.parameters.fortiGateImageVersion_arm64.allowedValues = $content[]' | Set-Content -Path "./${env:PRODUCT}/${buildingBlock}/mainTemplate.json"
+              $content = Get-Content "./${env:PRODUCT}/${buildingBlock}/mainTemplate.json" -Raw
               if (-Not $content -match '(?<=\r\n)\z') {
-                "" | Out-File -Append "./FortiGate/${buildingBlock}/mainTemplate.json"
-              }
-            }
-            if (Test-Path -Path "./FortiGate/${buildingBlock}/azuredeploy.json" -PathType Leaf) {
-              Get-Content -Raw -Path "./FortiGate/${buildingBlock}/azuredeploy.json" | jq --slurpfile content "./fgtversion_x64.json" '.parameters.fortiGateImageVersion_x64.allowedValues = $content[]' | Set-Content -Path "./FortiGate/${buildingBlock}/azuredeploy.json"
-              $content = Get-Content "./FortiGate/${buildingBlock}/azuredeploy.json" -Raw
-              if (-Not $content -match '(?<=\r\n)\z') {
-                "" | Out-File -Append "./FortiGate/${buildingBlock}/azuredeploy.json"
-              }
-              Get-Content -Raw -Path "./FortiGate/${buildingBlock}/azuredeploy.json" | jq --slurpfile content "./fgtversion_arm64.json" '.parameters.fortiGateImageVersion_arm64.allowedValues = $content[]' | Set-Content -Path "./FortiGate/${buildingBlock}/azuredeploy.json"
-              $content = Get-Content "./FortiGate/${buildingBlock}/azuredeploy.json" -Raw
-              if (-Not $content -match '(?<=\r\n)\z') {
-                "" | Out-File -Append "./FortiGate/${buildingBlock}/azuredeploy.json"
+                "" | Out-File -Append "./${env:PRODUCT}/${buildingBlock}/mainTemplate.json"
               }
             }
-            if (Test-Path -Path "./FortiGate/${buildingBlock}/createUiDefinition.json" -PathType Leaf) {
-              Get-Content -Raw -Path "./FortiGate/${buildingBlock}/createUiDefinition.json" | jq --slurpfile content "./fgtversion_x64_ui.json" '(.parameters.steps[].elements[] | select( .name == "instancetype_x64") | .elements[] | select( .name == "fortiGateImageVersion_x64") | .constraints.allowedValues) |= $content[]' | Set-Content -Path "./FortiGate/${buildingBlock}/createUiDefinition.json"
-              $content = Get-Content "./FortiGate/${buildingBlock}/createUiDefinition.json" -Raw
+            if (Test-Path -Path "./${env:PRODUCT}/${buildingBlock}/azuredeploy.json" -PathType Leaf) {
+              Get-Content -Raw -Path "./${env:PRODUCT}/${buildingBlock}/azuredeploy.json" | jq --slurpfile content "./fgtversion_x64.json" '.parameters.fortiGateImageVersion_x64.allowedValues = $content[]' | Set-Content -Path "./${env:PRODUCT}/${buildingBlock}/azuredeploy.json"
+              $content = Get-Content "./${env:PRODUCT}/${buildingBlock}/azuredeploy.json" -Raw
               if (-Not $content -match '(?<=\r\n)\z') {
-                "" | Out-File -Append "./FortiGate/${buildingBlock}/createUiDefinition.json"
+                "" | Out-File -Append "./${env:PRODUCT}/${buildingBlock}/azuredeploy.json"
               }
-              Get-Content -Raw -Path "./FortiGate/${buildingBlock}/createUiDefinition.json" | jq --slurpfile content "./fgtversion_arm64_ui.json" '(.parameters.steps[].elements[] | select( .name == "instancetype_arm64") | .elements[] | select( .name == "fortiGateImageVersion_arm64") | .constraints.allowedValues) |= $content[]' | Set-Content -Path "./FortiGate/${buildingBlock}/createUiDefinition.json"
-              $content = Get-Content "./FortiGate/${buildingBlock}/createUiDefinition.json" -Raw
+              Get-Content -Raw -Path "./${env:PRODUCT}/${buildingBlock}/azuredeploy.json" | jq --slurpfile content "./fgtversion_arm64.json" '.parameters.fortiGateImageVersion_arm64.allowedValues = $content[]' | Set-Content -Path "./${env:PRODUCT}/${buildingBlock}/azuredeploy.json"
+              $content = Get-Content "./${env:PRODUCT}/${buildingBlock}/azuredeploy.json" -Raw
               if (-Not $content -match '(?<=\r\n)\z') {
-                "" | Out-File -Append "./FortiGate/${buildingBlock}/createUiDefinition.json"
+                "" | Out-File -Append "./${env:PRODUCT}/${buildingBlock}/azuredeploy.json"
+              }
+            }
+            if (Test-Path -Path "./${env:PRODUCT}/${buildingBlock}/createUiDefinition.json" -PathType Leaf) {
+              Get-Content -Raw -Path "./${env:PRODUCT}/${buildingBlock}/createUiDefinition.json" | jq --slurpfile content "./fgtversionui_x64.json" '(.parameters.steps[].elements[] | select( .name == "instancetype_x64") | .elements[] | select( .name == "fortiGateImageVersion_x64") | .constraints.allowedValues) |= $content[]' | Set-Content -Path "./${env:PRODUCT}/${buildingBlock}/createUiDefinition.json"
+              $content = Get-Content "./${env:PRODUCT}/${buildingBlock}/createUiDefinition.json" -Raw
+              if (-Not $content -match '(?<=\r\n)\z') {
+                "" | Out-File -Append "./${env:PRODUCT}/${buildingBlock}/createUiDefinition.json"
+              }
+              Get-Content -Raw -Path "./${env:PRODUCT}/${buildingBlock}/createUiDefinition.json" | jq --slurpfile content "./fgtversion_arm64_ui.json" '(.parameters.steps[].elements[] | select( .name == "instancetype_arm64") | .elements[] | select( .name == "fortiGateImageVersion_arm64") | .constraints.allowedValues) |= $content[]' | Set-Content -Path "./${env:PRODUCT}/${buildingBlock}/createUiDefinition.json"
+              $content = Get-Content "./${env:PRODUCT}/${buildingBlock}/createUiDefinition.json" -Raw
+              if (-Not $content -match '(?<=\r\n)\z') {
+                "" | Out-File -Append "./${env:PRODUCT}/${buildingBlock}/createUiDefinition.json"
               }
             }
           }
@@ -87,31 +91,31 @@ jobs:
           $buildingBlocks = @("AzureApplicationGateway/scenario1","AzureApplicationGateway/scenario2","AzureApplicationGateway/scenario3","AzureGatewayLoadBalancer","AzureRouteServer/Active-Passive","ZTNAApplicationGateway")
 
           foreach ($buildingBlock in $buildingBlocks) {
-            if (Test-Path -Path "./FortiGate/${buildingBlock}/mainTemplate.json" -PathType Leaf) {
-              Get-Content -Raw -Path "./FortiGate/${buildingBlock}/mainTemplate.json" | jq --slurpfile content "./fgtversion.json" '.parameters.fortiGateImageVersion.allowedValues = $content[]' | Set-Content -Path "./FortiGate/${buildingBlock}/mainTemplate.json"
-              $content = Get-Content "./FortiGate/${buildingBlock}/mainTemplate.json" -Raw
+            if (Test-Path -Path "./${env:PRODUCT}/${buildingBlock}/mainTemplate.json" -PathType Leaf) {
+              Get-Content -Raw -Path "./${env:PRODUCT}/${buildingBlock}/mainTemplate.json" | jq --slurpfile content "./fgtversion_x64.json" '.parameters.fortiGateImageVersion.allowedValues = $content[]' | Set-Content -Path "./${env:PRODUCT}/${buildingBlock}/mainTemplate.json"
+              $content = Get-Content "./${env:PRODUCT}/${buildingBlock}/mainTemplate.json" -Raw
               if (-Not $content -match '(?<=\r\n)\z') {
-                "" | Out-File -Append "./FortiGate/${buildingBlock}/mainTemplate.json"
+                "" | Out-File -Append "./${env:PRODUCT}/${buildingBlock}/mainTemplate.json"
               }
             }
-            if (Test-Path -Path "./FortiGate/${buildingBlock}/azuredeploy.json" -PathType Leaf) {
-              Get-Content -Raw -Path "./FortiGate/${buildingBlock}/azuredeploy.json" | jq --slurpfile content "./fgtversion.json" '.parameters.fortiGateImageVersion.allowedValues = $content[]' | Set-Content -Path "./FortiGate/${buildingBlock}/azuredeploy.json"
-              $content = Get-Content "./FortiGate/${buildingBlock}/azuredeploy.json" -Raw
+            if (Test-Path -Path "./${env:PRODUCT}/${buildingBlock}/azuredeploy.json" -PathType Leaf) {
+              Get-Content -Raw -Path "./${env:PRODUCT}/${buildingBlock}/azuredeploy.json" | jq --slurpfile content "./fgtversion_x64.json" '.parameters.fortiGateImageVersion.allowedValues = $content[]' | Set-Content -Path "./${env:PRODUCT}/${buildingBlock}/azuredeploy.json"
+              $content = Get-Content "./${env:PRODUCT}/${buildingBlock}/azuredeploy.json" -Raw
               if (-Not $content -match '(?<=\r\n)\z') {
-                "" | Out-File -Append "./FortiGate/${buildingBlock}/azuredeploy.json"
+                "" | Out-File -Append "./${env:PRODUCT}/${buildingBlock}/azuredeploy.json"
               }
             }
-            if (Test-Path -Path "./FortiGate/${buildingBlock}/createUiDefinition.json" -PathType Leaf) {
-              Get-Content -Raw -Path "./FortiGate/${buildingBlock}/createUiDefinition.json" | jq --slurpfile content "./fgtversionui.json" '(.parameters.basics[] | select( .name == "fortiGateImageVersion") | .constraints.allowedValues) |= $content[]' | Set-Content -Path "./FortiGate/${buildingBlock}/createUiDefinition.json"
-              $content = Get-Content "./FortiGate/${buildingBlock}/createUiDefinition.json" -Raw
+            if (Test-Path -Path "./${env:PRODUCT}/${buildingBlock}/createUiDefinition.json" -PathType Leaf) {
+              Get-Content -Raw -Path "./${env:PRODUCT}/${buildingBlock}/createUiDefinition.json" | jq --slurpfile content "./fgtversionui_x64.json" '(.parameters.basics[] | select( .name == "fortiGateImageVersion") | .constraints.allowedValues) |= $content[]' | Set-Content -Path "./${env:PRODUCT}/${buildingBlock}/createUiDefinition.json"
+              $content = Get-Content "./${env:PRODUCT}/${buildingBlock}/createUiDefinition.json" -Raw
               if (-Not $content -match '(?<=\r\n)\z') {
-                "" | Out-File -Append "./FortiGate/${buildingBlock}/createUiDefinition.json"
+                "" | Out-File -Append "./${env:PRODUCT}/${buildingBlock}/createUiDefinition.json"
               }
             }
           }
 
           Remove-Item "./fgtversion_x64.json"
-          Remove-Item "./fgtversion_x64_ui.json"
+          Remove-Item "./fgtversionui_x64.json"
           Remove-Item "./fgtversion_arm64.json"
           Remove-Item "./fgtversion_arm64_ui.json"
         azPSVersion: "latest"
