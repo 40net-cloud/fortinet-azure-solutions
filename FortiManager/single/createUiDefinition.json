@@ -797,8 +797,8 @@
             "visible": true,
             "options": {
               "icon": "Info",
-              "text": "This deployment can use standard or basic SKU public IP's. Microsoft Azure offers a migration path from a basic to standard SKU public IP.",
-              "uri": "https://docs.microsoft.com/en-us/azure/virtual-network/virtual-network-public-ip-address-upgrade?tabs=option-upgrade-cli%2Coption-migrate-powershell"
+              "text": "This deployment uses and forces the use of standard SKU public IP's. By 30 September 2025, the basic SKU will be retired.",
+              "uri": "https://azure.microsoft.com/en-gb/updates/upgrade-to-standard-sku-public-ip-addresses-in-azure-by-30-september-2025-basic-sku-will-be-retired/"
             }
           }
         ]
@@ -942,7 +942,6 @@
       "publicIPNewOrExisting": "[steps('publicip').publicip.newOrExistingOrNone]",
       "publicIPName": "[steps('publicip').publicip.name]",
       "publicIPResourceGroup": "[steps('publicip').publicip.resourceGroup]",
-      "publicIPAddressType": "[steps('publicip').publicip.publicIPAllocationMethod]",
       "vnetNewOrExisting": "[steps('networking').virtualnetworksection.virtualnetwork.newOrExisting]",
       "vnetName": "[steps('networking').virtualnetworksection.virtualnetwork.name]",
       "vnetResourceGroup": "[steps('networking').virtualnetworksection.virtualnetwork.resourceGroup]",

@@ -181,17 +181,6 @@
         "description": "Resource group to which the Public IP belongs"
       }
     },
-    "publicIPAddressType": {
-      "type": "string",
-      "defaultValue": "Static",
-      "allowedValues": [
-        "Dynamic",
-        "Static"
-      ],
-      "metadata": {
-        "description": "Type of public IP address"
-      }
-    },
     "vnetNewOrExisting": {
       "type": "string",
       "defaultValue": "new",
@@ -219,7 +208,7 @@
     },
     "vnetAddressPrefix": {
       "type": "string",
-      "defaultValue": "172.16.136.0/22",
+      "defaultValue": "172.16.140.0/24",
       "metadata": {
         "description": "Virtual Network Address prefix"
       }
@@ -233,14 +222,14 @@
     },
     "subnet1Prefix": {
       "type": "string",
-      "defaultValue": "172.16.137.0/24",
+      "defaultValue": "172.16.140.0/26",
       "metadata": {
         "description": "FortiManager Subnet Prefix"
       }
     },
     "subnet1StartAddress": {
       "type": "string",
-      "defaultValue": "172.16.137.4",
+      "defaultValue": "172.16.140.4",
       "metadata": {
         "description": "Subnet 1 start address, 1 consecutive private IPs are required"
       }
@@ -486,10 +475,10 @@
           {
             "name": "AllowDevRegInbound",
             "properties": {
-              "description": "Allow 514 in for device registration",
+              "description": "Allow 541 in for device registration",
               "protocol": "Tcp",
               "sourcePortRange": "*",
-              "destinationPortRange": "514",
+              "destinationPortRange": "541",
               "sourceAddressPrefix": "*",
               "destinationAddressPrefix": "*",
               "access": "Allow",
@@ -508,6 +497,34 @@
               "destinationAddressPrefix": "*",
               "access": "Allow",
               "priority": 140,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "AllowRemoteAccessInbound",
+            "properties": {
+              "description": "Allow 8082 in for remote access to FortiManager",
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "8082",
+              "sourceAddressPrefix": "*",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 150,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "AllowHAInbound",
+            "properties": {
+              "description": "Allow 5199 in for HA",
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "5199",
+              "sourceAddressPrefix": "*",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 160,
               "direction": "Inbound"
             }
           },
@@ -552,11 +569,14 @@
         "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
       "sku": {
-        "name": "Basic"
+        "name": "Standard"
       },
       "zones": "[variables('pipZones')]",
       "properties": {
-        "publicIPAllocationMethod": "[parameters('publicIPAddressType')]"
+        "publicIPAllocationMethod": "static",
+        "dnsSettings": {
+          "domainNameLabel": "[concat(toLower(variables('publicIPName')), '-', uniquestring(resourceGroup().id))]"
+        }
       }
     },
     {

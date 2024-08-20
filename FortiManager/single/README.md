@@ -1,5 +1,7 @@
 # FortiManager
 
+:wave: - [Introduction](#introduction) - [Design](#design) - [Deployment](#deployment) - [Requirements](#requirements-and-limitations) - [Configuration](#configuration) - :wave:
+
 ## Introduction
 
 FortiManager - Automation-Driven Centralized Management
@@ -16,7 +18,7 @@ This Azure ARM template will automatically deploy a full working environment con
 
 - 1 FortiManager VM with a 1Tb data disk for log storage
 - 1 VNETs containing a subnet for the FortiManager
-- Optional: 1 Basic public IP
+- Optional: 1 Standard public IP
 
 ![FortiGate-VM azure design](images/fmg-single.png)
 
@@ -55,10 +57,61 @@ After deployment, you will be shown the IP addresses of all deployed components.
 
 The Azure ARM template deployment deploys different resources and is required to have the access rights and quota in your Microsoft Azure subscription to deploy the resources.
 
-- The template will deploy Standard D3s VMs for this architecture. Other VM instances are supported as well with a recommended minimum of 2 vCPU and 4Gb of RAM. A list can be found [here](https://docs.fortinet.com/document/fortimanager-public-cloud/7.0.0/azure-administration-guide/351055/instance-type-support)
-- A Network Security Group is installed that only opens TCP port 22, 443 and 514 for access to the FortiManager. Additional ports might be needed to support your use case and are documented [here](https://docs.fortinet.com/document/fortimanager/7.0.0/fortimanager-ports/465971/incoming-ports)
+- The template will deploy Standard D4s_v2 VMs for this architecture. Other VM instances are supported as well with a recommended minimum of 4 vCPU and 16Gb of RAM. A list can be found [here](https://docs.fortinet.com/document/fortimanager-public-cloud/7.6.0/azure-administration-guide/351055/instance-type-support)
+- A Network Security Group is installed that only opens TCP port 22, 80, 443, 514, 541, 5199 and 8082 for access to the FortiManager. Additional ports might be needed to support your use case and are documented [here](https://docs.fortinet.com/document/fortimanager/7.6.0/fortimanager-ports/465971)
 - License for FortiManager
   - BYOL: A demo license can be made available via your Fortinet partner or on our website. These can be injected during deployment or added after deployment.
+- This deployment uses and forces the use of standard SKU public IP's. By 30 September 2025, the basic SKU will be retired. More information is available [here](https://azure.microsoft.com/en-gb/updates/upgrade-to-standard-sku-public-ip-addresses-in-azure-by-30-september-2025-basic-sku-will-be-retired/)
+
+## Configuration
+
+The FortiManger VMs need a specific configuration to match the deployed environment. This configuration can be injected during provisioning or afterwards via the different options including GUI, CLI, FortiManager or REST API.
+
+### Default configuration
+
+<pre><code>
+config system global 
+  set hostname <b>hostname</b>
+  set adom-status enable
+  set clone-name-option keep
+  set create-revision enable
+  set device-view-mode tree
+  set disable-module fortiview-noc
+  set import-ignore-addr-cmt enable
+  set partial-install enable
+  set partial-install-force enable
+  set partial-install-rev enable
+  set perform-improve-by-ha enable
+  set policy-hit-count enable
+  set policy-object-icon enable
+  set search-all-adoms enable
+end
+config system admin setting
+  set sdwan-monitor-history enable
+  set show-add-multiple enable
+  set show-checkbox-in-table enable
+  set show-device-import-export enable
+  set show-hostname enable
+  set show_automatic_script enable
+  set show_schedule_script enable
+  set show_tcl_script enable
+end
+config system interface
+  edit port1
+    set mode static
+    set ip <b>172.16.140.4</b>
+    set description fortimanager
+    set allowaccess ping ssh https
+  next
+end
+config system route
+  edit 1
+    set dst 0.0.0.0/0
+    set gateway <b>172.16.140.1</b>
+    set device port1
+  next
+end
+</code></pre>
 
 ## Support
 Fortinet-provided scripts in this and other GitHub projects do not fall under the regular Fortinet technical support scope and are not supported by FortiCare Support Services.
