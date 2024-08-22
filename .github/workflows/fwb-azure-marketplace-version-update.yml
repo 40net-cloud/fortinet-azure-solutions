@@ -34,8 +34,8 @@ jobs:
           $marketplaceVersionsUI = @()
 
           $marketplaceVersions = $(Get-AzVMImage -PublisherName "fortinet" -Location eastus -Offer "${env:PRODUCTOFFER}" -sku "${env:PRODUCTSKU}").Version
-          [array]::Reverse($marketplaceVersions)
           $marketplaceVersions += "latest"
+          [array]::Reverse($marketplaceVersions)
           $marketplaceVersions | ConvertTo-Json | Out-File -Filepath "./fwbversion.json"
           $marketplaceVersions | ForEach-Object { $marketplaceVersionsUI += [pscustomobject]@{label=$_;value=$_} }
           $marketplaceVersionsUI | ConvertTo-Json | Out-File -Filepath "./fwbversionui.json"
@@ -46,7 +46,7 @@ jobs:
             if (-Not $content -match '(?<=\r\n)\z') {
               "" | Out-File -Append "./${env:PRODUCT}/${buildingBlock}/mainTemplate.json"
             }
-            Get-Content -Raw -Path "./${env:PRODUCT}/${buildingBlock}/createUiDefinition.json" | jq --slurpfile content "./fwbversionui.json" '(.parameters.basics[] | select( .name == \"imageVersion\") | .constraints.allowedValues) |= $content[]' | Set-Content -Path "./${env:PRODUCT}/${buildingBlock}/createUiDefinition.json"
+            Get-Content -Raw -Path "./${env:PRODUCT}/${buildingBlock}/createUiDefinition.json" | jq --slurpfile content "./fwbversionui.json" '(.parameters.basics[] | select( .name == "imageVersion") | .constraints.allowedValues) |= $content[]' | Set-Content -Path "./${env:PRODUCT}/${buildingBlock}/createUiDefinition.json"
             $content = Get-Content "./${env:PRODUCT}/${buildingBlock}/createUiDefinition.json" -Raw
             if (-Not $content -match '(?<=\r\n)\z') {
               "" | Out-File -Append "./${env:PRODUCT}/${buildingBlock}/createUiDefinition.json"
