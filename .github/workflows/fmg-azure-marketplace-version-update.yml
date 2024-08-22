@@ -35,8 +35,8 @@ jobs:
           $marketplaceVersionsUI = @()
 
           $marketplaceVersions = $(Get-AzVMImage -PublisherName "fortinet" -Location eastus -Offer "${env:PRODUCTOFFER}" -sku "${env:PRODUCTSKU}").Version
-          [array]::Reverse($marketplaceVersions)
           $marketplaceVersions += "latest"
+          [array]::Reverse($marketplaceVersions)
           $marketplaceVersions | ConvertTo-Json | Out-File -Filepath "./fmgversion.json"
           $marketplaceVersions | ForEach-Object { $marketplaceVersionsUI += [pscustomobject]@{label=$_;value=$_} }
           $marketplaceVersionsUI | ConvertTo-Json | Out-File -Filepath "./fmgversionui.json"
