@@ -111,44 +111,48 @@
           "required": false,
           "allowedValues": [
             {
-              "label": "6.1.0",
-              "value": "6.1.0"
+              "label": "latest",
+              "value": "latest"
             },
             {
-              "label": "6.3.17",
-              "value": "6.3.17"
-            },
-            {
-              "label": "7.0.0",
-              "value": "7.0.0"
-            },
-            {
-              "label": "7.0.3",
-              "value": "7.0.3"
-            },
-            {
-              "label": "7.0.8",
-              "value": "7.0.8"
-            },
-            {
-              "label": "7.2.0",
-              "value": "7.2.0"
-            },
-            {
-              "label": "7.2.3",
-              "value": "7.2.3"
-            },
-            {
-              "label": "7.2.4",
-              "value": "7.2.4"
+              "label": "7.4.3",
+              "value": "7.4.3"
             },
             {
               "label": "7.4.0",
               "value": "7.4.0"
             },
             {
-              "label": "latest",
-              "value": "latest"
+              "label": "7.2.4",
+              "value": "7.2.4"
+            },
+            {
+              "label": "7.2.3",
+              "value": "7.2.3"
+            },
+            {
+              "label": "7.2.0",
+              "value": "7.2.0"
+            },
+            {
+              "label": "7.0.8",
+              "value": "7.0.8"
+            },
+            {
+              "label": "7.0.3",
+              "value": "7.0.3"
+            },
+            {
+              "label": "7.0.0",
+              "value": "7.0.0"
+            },
+            {
+              "label": "6.3.17",
+              "value": "6.3.17"
+            },
+            {
+              "label": "6.1.0",
+              "value": "6.1.0"
             }
           ]
         },

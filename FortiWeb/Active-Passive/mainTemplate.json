@@ -35,17 +35,17 @@
       "type": "string",
       "defaultValue": "latest",
       "allowedValues": [
-        "6.1.0",
-        "6.3.17",
-        "7.0.0",
-        "7.0.3",
-        "7.0.8",
-        "7.2.0",
-        "7.2.3",
-        "7.2.4",
-        "7.4.0",
+        "latest",
         "7.4.3",
-        "latest"
+        "7.4.0",
+        "7.2.4",
+        "7.2.3",
+        "7.2.0",
+        "7.0.8",
+        "7.0.3",
+        "7.0.0",
+        "6.3.17",
+        "6.1.0"
       ],
       "metadata": {
         "description": "FortiWeb versions available in the Azure Marketplace. Additional version can be downloaded via https://support.fortinet.com/"
