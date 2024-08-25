@@ -120,32 +120,32 @@
           "required": false,
           "allowedValues": [
             {
-              "label": "7.0.16",
-              "value": "7.0.16"
-            },
-            {
-              "label": "7.0.17",
-              "value": "7.0.17"
-            },
-            {
-              "label": "7.2.10",
-              "value": "7.2.10"
-            },
-            {
-              "label": "7.2.9",
-              "value": "7.2.9"
-            },
-            {
-              "label": "7.4.3",
-              "value": "7.4.3"
+              "label": "latest",
+              "value": "latest"
             },
             {
               "label": "7.4.4",
               "value": "7.4.4"
             },
             {
-              "label": "latest",
-              "value": "latest"
+              "label": "7.4.3",
+              "value": "7.4.3"
+            },
+            {
+              "label": "7.2.9",
+              "value": "7.2.9"
+            },
+            {
+              "label": "7.2.10",
+              "value": "7.2.10"
+            },
+            {
+              "label": "7.0.17",
+              "value": "7.0.17"
+            },
+            {
+              "label": "7.0.16",
+              "value": "7.0.16"
             }
           ]
         },

@@ -40,13 +40,13 @@
       "type": "string",
       "defaultValue": "latest",
       "allowedValues": [
-        "7.0.16",
-        "7.0.17",
-        "7.2.10",
-        "7.2.9",
-        "7.4.3",
+        "latest",
         "7.4.4",
-        "latest"
+        "7.4.3",
+        "7.2.9",
+        "7.2.10",
+        "7.0.17",
+        "7.0.16"
       ],
       "metadata": {
         "description": "Select the image version"
