@@ -168,17 +168,6 @@
         "description": "Resource group to which the Public IP belongs."
       }
     },
-    "publicIPType": {
-      "type": "string",
-      "defaultValue": "Static",
-      "allowedValues": [
-        "Dynamic",
-        "Static"
-      ],
-      "metadata": {
-        "description": "Type of public IP address"
-      }
-    },
     "vnetNewOrExisting": {
       "type": "string",
       "defaultValue": "new",
@@ -636,7 +625,7 @@
       },
       "zones": "[variables('pipZones')]",
       "properties": {
-        "publicIPAllocationMethod": "[parameters('publicIPType')]",
+        "publicIPAllocationMethod": "static",
         "dnsSettings": {
           "domainNameLabel": "[concat(toLower(variables('externalLBName')), '-', uniquestring(resourceGroup().id))]"
         }

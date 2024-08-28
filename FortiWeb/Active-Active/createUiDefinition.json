@@ -777,7 +777,6 @@
       "publicIPNewOrExistingOrNone": "[steps('publicip').loadbalancerpublicip.newOrExistingOrNone]",
       "publicIPName": "[steps('publicip').loadbalancerpublicip.name]",
       "publicIPResourceGroup": "[steps('publicip').loadbalancerpublicip.resourceGroup]",
-      "publicIPType": "[steps('publicip').loadbalancerpublicip.publicIPAllocationMethod]",
       "vnetNewOrExisting": "[steps('networking').virtualnetworksection.virtualnetwork.newOrExisting]",
       "vnetName": "[steps('networking').virtualnetworksection.virtualnetwork.name]",
       "vnetResourceGroup": "[steps('networking').virtualnetworksection.virtualnetwork.resourceGroup]",

@@ -196,28 +196,6 @@
         "description": "Resource group to which the Public IP belongs"
       }
     },
-    "publicIPType": {
-      "type": "string",
-      "defaultValue": "Static",
-      "allowedValues": [
-        "Dynamic",
-        "Static"
-      ],
-      "metadata": {
-        "description": "Type of public IP address"
-      }
-    },
-    "publicIPSku": {
-      "type": "string",
-      "defaultValue": "Basic",
-      "allowedValues": [
-        "Basic",
-        "Standard"
-      ],
-      "metadata": {
-        "description": "SKU of public IP address"
-      }
-    },
     "vnetNewOrExisting": {
       "type": "string",
       "defaultValue": "new",
@@ -543,10 +521,10 @@
       "name": "[variables('publicIPName')]",
       "location": "[parameters('location')]",
       "sku": {
-        "name": "[parameters('publicIPSku')]"
+        "name": "Standard"
       },
       "properties": {
-        "publicIPAllocationMethod": "[parameters('publicIPType')]",
+        "publicIPAllocationMethod": "static",
         "dnsSettings": {
           "domainNameLabel": "[concat(toLower(variables('fwbVmName')), '-', uniquestring(resourceGroup().id))]"
         }
