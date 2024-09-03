@@ -52,7 +52,7 @@ resource "azurerm_network_interface" "fgtifcext" {
   name                          = "${var.PREFIX}-FGT-Nic1-EXT"
   location                      = azurerm_resource_group.resourcegroup.location
   resource_group_name           = azurerm_resource_group.resourcegroup.name
-  enable_ip_forwarding          = true
+  ip_forwarding_enabled         = true
   enable_accelerated_networking = var.FGT_ACCELERATED_NETWORKING
 
   ip_configuration {
@@ -70,10 +70,10 @@ resource "azurerm_network_interface_security_group_association" "fgtifcextnsg" {
 }
 
 resource "azurerm_network_interface" "fgtifcint" {
-  name                 = "${var.PREFIX}-FGT-Nic2-INT"
-  location             = azurerm_resource_group.resourcegroup.location
-  resource_group_name  = azurerm_resource_group.resourcegroup.name
-  enable_ip_forwarding = true
+  name                  = "${var.PREFIX}-FGT-Nic2-INT"
+  location              = azurerm_resource_group.resourcegroup.location
+  resource_group_name   = azurerm_resource_group.resourcegroup.name
+  ip_forwarding_enabled = true
 
   ip_configuration {
     name                          = "interface1"
