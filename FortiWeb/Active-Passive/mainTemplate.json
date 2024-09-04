@@ -301,9 +301,9 @@
   },
   "resources": [
     {
-      "name": "pid-2e181e90-36f0-4061-9842-64c219116819-partnercenter",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
+      "name": "pid-2e181e90-36f0-4061-9842-64c219116819-partnercenter",
       "properties": {
         "mode": "Incremental",
         "template": {

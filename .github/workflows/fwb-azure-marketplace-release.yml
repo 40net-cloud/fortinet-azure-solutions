@@ -10,7 +10,7 @@ on:
 env:
   PUBLISHER: fortinet
   PRODUCT: FortiWeb
-  PRODUCTL: FortiWeb
+  PRODUCTL: fortiweb
   PRODUCTSHORT: FWB
   PRODUCTOFFER: fortinet_fortiweb-vm_v5
   PRODUCTSKU: fortinet_fw-vm
@@ -49,7 +49,7 @@ jobs:
 
               $content = Get-Content -Raw -Path "./${env:PRODUCT}/${buildingBlock}/mainTemplate.json" | ConvertFrom-Json
               $content.parameters.imageVersion.allowedValues = $marketplaceVersions
-              $content.resources.Where({$_.type -eq 'Microsoft.Resources/deployments'})[0].name = "pid-776b2227-2743-485a-b385-e9dfd42bfe75-partnercenter"
+              $content.resources.Where({$_.type -eq 'Microsoft.Resources/deployments'})[0].name = "pid-2e181e90-36f0-4061-9842-64c219116819-partnercenter"
               $content | ConvertTo-Json -depth 100 | Out-File "${dest}/mainTemplate.json"
               "" | Out-File -Append "${dest}/mainTemplate.json"
 
@@ -57,6 +57,8 @@ jobs:
               $content.parameters.basics.Where({$_.Name.equals("imageVersion")}).constraints.allowedValues = $marketplaceVersionsUI
               $content | ConvertTo-Json -depth 100 | Out-File "${dest}/createUiDefinition.json"
               "" | Out-File -Append "${dest}/createUiDefinition.json"
+
+              Compress-Archive -Path "./releases/${env:PRODUCTL}-azure-templates/${buildingBlock}/*" -DestinationPath "./releases/${env:PRODUCTL}-${buildingBlock}-azure-templates.zip"
             }
             Compress-Archive -Path "./releases/*" -DestinationPath "./releases/${env:PRODUCTL}-azure-templates.zip"
           azPSVersion: "latest"
@@ -67,6 +69,15 @@ jobs:
           repo_token: ${{secrets.GITHUB_TOKEN}}
           file: "./releases/${{env.PRODUCTL}}-azure-templates.zip"
           asset_name: "${{env.PRODUCTL}}-azure-templates.zip"
+          tag: ${{github.ref}}
+          overwrite: true
+          body: "${{env.PRODUCT}} Azure Marketplace Release"
+
+      - name: upload-templates-zip
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{secrets.GITHUB_TOKEN}}
+          file: "./releases/${{env.PRODUCTL}}-*-azure-templates.zip"
           tag: ${{github.ref}}
           overwrite: true
           body: "${{env.PRODUCT}} Azure Marketplace Release"
