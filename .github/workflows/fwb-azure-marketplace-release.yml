@@ -73,11 +73,9 @@ jobs:
           overwrite: true
           body: "${{env.PRODUCT}} Azure Marketplace Release"
 
-      - name: upload-templates-zip
-        uses: svenstaro/upload-release-action@v2
-        with:
-          repo_token: ${{secrets.GITHUB_TOKEN}}
-          file: ./releases/${{env.PRODUCTL}}-*-azure-templates.zip
-          tag: ${{github.ref}}
-          overwrite: true
-          body: "${{env.PRODUCT}} Azure Marketplace Release"
+      - name: Upload release zips
+        shell: bash
+        run: |
+          gh release upload ${{github.ref}} ./releases/${{env.PRODUCTL}}-*-azure-templates.zip
+        env:
+          GITHUB_TOKEN: ${{ github.TOKEN }}
