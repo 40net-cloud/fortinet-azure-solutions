@@ -47,13 +47,13 @@ jobs:
               $dest = "./releases/${buildingBlock}/"
               [void](New-Item -Path "${dest}" -Type Directory)
 
-              $content = Get-Content -Raw -Path "./${env:PRODUCT}/${buildingBlock}/mainTemplate.json" | ConvertFrom-Json
+              $content = Get-Content -Raw -Path "./${env:PRODUCTL}/${buildingBlock}/mainTemplate.json" | ConvertFrom-Json
               $content.parameters.imageVersion.allowedValues = $marketplaceVersions
               $content.resources.Where({$_.type -eq 'Microsoft.Resources/deployments'})[0].name = "pid-2e181e90-36f0-4061-9842-64c219116819-partnercenter"
               $content | ConvertTo-Json -depth 100 | Out-File "${dest}/mainTemplate.json"
               "" | Out-File -Append "${dest}/mainTemplate.json"
 
-              $content = Get-Content -Raw -Path "./${env:PRODUCT}/${buildingBlock}/createUiDefinition.json" | ConvertFrom-Json
+              $content = Get-Content -Raw -Path "./${env:PRODUCTL}/${buildingBlock}/createUiDefinition.json" | ConvertFrom-Json
               $content.parameters.basics.Where({$_.Name.equals("imageVersion")}).constraints.allowedValues = $marketplaceVersionsUI
               $content | ConvertTo-Json -depth 100 | Out-File "${dest}/createUiDefinition.json"
               "" | Out-File -Append "${dest}/createUiDefinition.json"
