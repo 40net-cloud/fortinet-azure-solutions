@@ -76,6 +76,6 @@ jobs:
       - name: Upload release zips
         shell: bash
         run: |
-          gh release upload ${{github.ref}} ./releases/${{env.PRODUCTL}}-*-azure-templates.zip
+          gh release upload ${{github.ref_name}} ./releases/${{env.PRODUCTL}}-*-azure-templates.zip
         env:
           GITHUB_TOKEN: ${{ github.TOKEN }}
