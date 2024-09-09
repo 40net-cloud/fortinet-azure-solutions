@@ -121,7 +121,7 @@ config system ha
    edit 1
     set vip <b>FortiAnalyzer Public IP address in Azure</b>
     set vip-interface port1
-	next
+   next
   end
 end
 </code></pre>
