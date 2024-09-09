@@ -106,19 +106,23 @@ FortiAnalyzer A and FortiAnalyzer B configuration should be like below:
 
 <pre><code>
 config system ha
-  set mode a-p
-  set group-id 10
-  set group-name FAZAZURE
-  set password xxx
+ set mode a-p
+ set group-id 10
+ set group-name FAZAZURE
+ set password xxx
   config peer
-    edit 1
-      set serial-number <b>FortiAnalyzer B serial number</b>
-      set ip <b>FortiAnalyzer B IP address</b>
+   edit 1
+     set serial-number <b>FortiAnalyzer B serial number</b>
+     set addr <b>FortiAnalyzer B IP address</b>
     next
   end
-  set preferred-role primary
-  set vip <b>FortiAnalyzer Public IP address in Azure</b>
-  set vip-interface port1
+ set preferred-role primary
+  config vip
+   edit 1
+    set vip <b>FortiAnalyzer Public IP address in Azure</b>
+    set vip-interface port1
+	next
+  end
 end
 </code></pre>
 
@@ -126,19 +130,23 @@ end
 
 <pre><code>
 config system ha
-  set mode a-p
-  set group-id 10
-  set group-name FAZAZURE
-  set password xxx
+ set mode a-p
+ set group-id 10
+ set group-name FAZAZURE
+ set password xxx
   config peer
-    edit 1
-      set serial-number <b>FortiAnalyzer A serial number</b>
-      set ip <b>FortiAnalyzer A IP address</b>
-    next
+   edit 1
+    set serial-number <b>FortiAnalyzer A serial number</b>
+    set addr <b>FortiAnalyzer A IP address</b>
+   next
   end
-  set preferred-role secondary
-  set vip <b>FortiAnalyzer Public IP address in Azure</b>
-  set vip-interface port1
+ set preferred-role secondary
+  config vip
+   edit 1
+    set vip <b>FortiAnalyzer Public IP address in Azure</b>
+    set vip-interface port1
+   next
+  end
 end
 </code></pre>
 
@@ -158,21 +166,26 @@ end
 You will follow the same steps as in the previous scenario, with the only change being the use of private IPs instead of public IPs.
 
 #### FortiAnalyzer A
+
 <pre><code>
 config system ha
-  set mode a-p
-  set group-id 10
-  set group-name FAZAZURE
-  set password xxx
+ set mode a-p
+ set group-id 10
+ set group-name FAZAZURE
+ set password xxx
   config peer
-    edit 1
-      set serial-number <b>FortiAnalyzer B serial number</b> 
-      set ip <b>FortiAnalyzer B IP address - 172.16.140.5</b>
-    next
+   edit 1
+    set serial-number <b>FortiAnalyzer B serial number</b>
+    set addr <b>FortiAnalyzer B IP address - 172.16.140.5</b>
+   next
   end
-  set preferred-role primary
-  set vip <b>FortiAnalyzer HA private IP address - 172.16.140.6</b>
-  set vip-interface port1
+ set preferred-role primary
+  config vip
+   edit 1
+    set vip <b>FortiAnalyzer HA private IP address - 172.16.140.6</b>
+    set vip-interface port1
+    next
+   end
 end
 </code></pre>
 
@@ -180,19 +193,23 @@ end
 
 <pre><code>
 config system ha
-  set mode a-p
-  set group-id 10
-  set group-name FAZAZURE
-  set password xxx
+ set mode a-p
+ set group-id 10
+ set group-name FAZAZURE
+ set password xxx
   config peer
-    edit 1
-      set serial-number <b>FortiAnalyzer A serial number</b> 
-      set ip <b>FortiAnalyzer A IP address - 172.16.140.4</b>
-    next
+   edit 1
+    set serial-number <b>FortiAnalyzer A serial number</b> 
+    set addr <b>FortiAnalyzer A IP address - 172.16.140.4</b>
+   next
   end
-  set preferred-role secondary
-  set vip <b>FortiAnalyzer HA private IP address - 172.16.140.6</b>
-  set vip-interface port1
+ set preferred-role secondary
+  config vip
+   edit 1
+    set vip <b>FortiAnalyzer HA private IP address - 172.16.140.6</b>
+    set vip-interface port1
+   next
+  end
 end
 </code></pre>
 
@@ -211,37 +228,39 @@ end
 The configuration for FortiAnalyzer A and FortiAnalyzer B should be as follows:
 
 #### FortiAnalyzer A
+
 <pre><code>
 config system ha
-    set mode a-a
-    set group-id 10
-    set group-name "FAZAZURE"
-    set hb-interface "port1"
-    set password xxx
-        config peer
-            edit 1
-                set addr <b>FortiAnalyzer B IP address - 172.16.140.5</b>
-                set serial-number <b>FortiAnalyzer B serial number</b> 
-            next
-        end
-    set preferred-role primary
+ set mode a-a
+ set group-id 10
+ set group-name "FAZAZURE"
+ set hb-interface "port1"
+ set password xxx
+  config peer
+   edit 1
+    set addr <b>FortiAnalyzer B IP address - 172.16.140.5</b>
+    set serial-number <b>FortiAnalyzer B serial number</b> 
+   next
+  end
+ set preferred-role primary
 end
 </code></pre>
 
 #### FortiAnalyzer B
+
 <pre><code>
 config system ha
-    set mode a-a
-    set group-id 10
-    set group-name "FAZAZURE"
-    set hb-interface "port1"
-    set password xxx
-        config peer
-            edit 1
-                set addr <b>FortiAnalyzer A IP address - 172.16.140.4</b>
-                set serial-number <b>FortiAnalyzer A serial number</b> 
-            next
-        end
+ set mode a-a
+ set group-id 10
+ set group-name "FAZAZURE"
+ set hb-interface "port1"
+ set password xxx
+  config peer
+   edit 1
+    set addr <b>FortiAnalyzer A IP address - 172.16.140.4</b>
+    set serial-number <b>FortiAnalyzer A serial number</b> 
+   next
+  end
 end
 </code></pre>
 
