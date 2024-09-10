@@ -6,7 +6,7 @@
     "config": {
       "basics": {
         "resourceGroup": {
-          "allowExisting": true
+        "allowExisting": true
         }
       }
     },
@@ -657,6 +657,31 @@
         },
         "elements": [
           {
+            "name": "options",
+            "type": "Microsoft.Common.DropDown",
+            "label": "Architecture options",
+            "defaultValue": "a-p-internal-vip",
+            "toolTip": "Deploy NAT Gateway or attach Public IP address for each FortiGate.",
+            "constraints": {
+              "required": false,
+              "allowedValues": [
+                {
+                  "label": "Active-Active",
+                  "value": "a-a"
+                },
+                {
+                  "label": "VRRP automatic failover using a public IP attached to a secondary ipconfig",
+                  "value": "a-p-external-vip"
+                },
+                {
+                  "label": "VRRP automatic failover using a secondary private IP",
+                  "value": "a-p-internal-vip"
+                }
+              ]
+            },
+            "visible": true
+          },
+		  {
             "name": "virtualnetworksection",
             "type": "Microsoft.Common.Section",
             "label": "Configure Internal Networking",
@@ -760,7 +785,7 @@
               "hideNone": false,
               "hideDomainNameLabel": true
             },
-            "visible": true
+            "visible": "[equals(steps('networking').options, 'a-p-external-vip')]"
           },
           {
             "name": "fazamgmtpublicip",
@@ -999,8 +1024,9 @@
       "fortiAnalyzerBLicenseBYOL": "[steps('instance').fazLicense.fazBcontent]",
       "fortiAnalyzerALicenseFortiFlex": "[steps('instance').fazLicense.fazAfortiflex]",
       "fortiAnalyzerBLicenseFortiFlex": "[steps('instance').fazLicense.fazBfortiflex]",
-      "fortiAnalyzerASerialNumber": "[steps('instance').fazLicense.fazAserial]",
-      "fortiAnalyzerBSerialNumber": "[steps('instance').fazLicense.fazBserial]",
+      "fortiAnalyzerSerialNumberA": "[steps('instance').fazLicense.fazAserial]",
+      "fortiAnalyzerSerialNumberB": "[steps('instance').fazLicense.fazBserial]",
+      "highavailabilityMethod": "[steps('networking').options]",
       "publicIP1NewOrExisting": "[steps('publicip').fazvippublicip.newOrExistingOrNone]",
       "publicIP1Name": "[steps('publicip').fazvippublicip.name]",
       "publicIP1ResourceGroup": "[steps('publicip').fazvippublicip.resourceGroup]",
