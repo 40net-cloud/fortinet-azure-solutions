@@ -125,7 +125,7 @@
         "description": "Virtual Machine size selection - must be F4 or other instance that supports 4 NICs"
       }
     },
-	"highavailabilityMethod": {
+    "highavailabilityMethod": {
       "type": "string",
       "defaultValue": "a-p-external-vip",
       "allowedValues": [
@@ -582,7 +582,7 @@
               "direction": "Inbound"
             }
           },
-		  {
+          {
             "name": "AllowHAInbound",
             "properties": {
               "description": "Allow 5199 in for inbound HA ",

@@ -6,7 +6,7 @@
     "config": {
       "basics": {
         "resourceGroup": {
-        "allowExisting": true
+          "allowExisting": true
         }
       }
     },
@@ -681,7 +681,7 @@
             },
             "visible": true
           },
-		  {
+          {
             "name": "virtualnetworksection",
             "type": "Microsoft.Common.Section",
             "label": "Configure Internal Networking",
