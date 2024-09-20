@@ -58,6 +58,8 @@ jobs:
           $marketplaceVersionsUI_x64 | ConvertTo-Json | Out-File -Filepath "./fgtversionui_x64.json"
 
           $marketplaceVersions_arm64 = @("latest") + $(Sort-Versions($(Get-AzVMImage -PublisherName "fortinet" -Location eastus -Offer "${env:PRODUCTOFFER}" -sku "${env:PRODUCTSKU_ARM64}").Version))
+          $marketplaceVersions_arm64 += "latest"
+          [array]::Reverse($marketplaceVersions_arm64)
           $marketplaceVersions_arm64 | ConvertTo-Json | Out-File -Filepath "./fgtversion_arm64.json"
           $marketplaceVersions_arm64 | ForEach-Object { $marketplaceVersionsUI_arm64 += [pscustomobject]@{label=$_;value=$_} }
           $marketplaceVersionsUI_arm64 | ConvertTo-Json | Out-File -Filepath "./fgtversion_arm64_ui.json"
