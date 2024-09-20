@@ -550,28 +550,24 @@
                       "value": "latest"
                     },
                     {
-                      "label": "7.2.8",
-                      "value": "7.2.8"
-                    },
-                    {
-                      "label": "7.2.9",
-                      "value": "7.2.9"
-                    },
-                    {
-                      "label": "7.4.3",
-                      "value": "7.4.3"
+                      "label": "7.6.0",
+                      "value": "7.6.0"
                     },
                     {
                       "label": "7.4.4",
                       "value": "7.4.4"
                     },
                     {
-                      "label": "7.6.0",
-                      "value": "7.6.0"
+                      "label": "7.4.3",
+                      "value": "7.4.3"
                     },
                     {
-                      "label": "latest",
-                      "value": "latest"
+                      "label": "7.2.9",
+                      "value": "7.2.9"
+                    },
+                    {
+                      "label": "7.2.8",
+                      "value": "7.2.8"
                     }
                   ]
                 },
