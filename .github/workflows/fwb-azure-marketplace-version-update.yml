@@ -29,13 +29,28 @@ jobs:
       uses: azure/powershell@v2
       with:
         inlineScript: |
+          function Sort-Versions {
+            param (
+              [string[]]$Versions
+            )
+            $parsedVersions = $Versions | ForEach-Object {
+              $versionParts = $_ -split '\.'
+              [pscustomobject]@{
+                Major = [int]$versionParts[0]
+                Minor = [int]$versionParts[1]
+                Patch = [int]$versionParts[2]
+                FullVersion = $_
+              }
+            }
+            $sortedVersions = $parsedVersions | Sort-Object -Property Major, Minor, Patch -Descending
+            $sortedVersions.FullVersion
+          }
           $buildingBlocks = @("A-Single-VM", "Active-Active","Active-Passive")
           $marketplaceVersions = @()
           $marketplaceVersionsUI = @()
 
           $marketplaceVersions = $(Get-AzVMImage -PublisherName "fortinet" -Location eastus -Offer "${env:PRODUCTOFFER}" -sku "${env:PRODUCTSKU}").Version
-          $marketplaceVersions += "latest"
-          [array]::Reverse($marketplaceVersions)
+          $marketplaceVersions = @("latest") + $(Sort-Versions($marketplaceVersions))
           $marketplaceVersions | ConvertTo-Json | Out-File -Filepath "./fwbversion.json"
           $marketplaceVersions | ForEach-Object { $marketplaceVersionsUI += [pscustomobject]@{label=$_;value=$_} }
           $marketplaceVersionsUI | ConvertTo-Json | Out-File -Filepath "./fwbversionui.json"

@@ -51,15 +51,14 @@ jobs:
                 ForEach-Object {
                   $_.Group | Sort-Object -Property Patch -Descending | Select-Object -First 2
               }
-              $filteredVersions.FullVersion
+              $sortedVersions = $filteredVersions | Sort-Object -Property Major, Minor, Patch -Descending
+              $sortedVersions.FullVersion
             }
             $buildingBlocks = @("A-Single-VM", "Active-Active")
             $marketplaceVersions = @()
             $marketplaceVersionsUI = @()
 
-            $marketplaceVersions += Get-LatestVersions $(Get-AzVMImage -PublisherName "${env:PUBLISHER}" -Location eastus -Offer "${env:PRODUCTOFFER}" -sku "${env:PRODUCTSKU}").Version
-            $marketplaceVersions += "latest"
-            [array]::Reverse($marketplaceVersions)
+            $marketplaceVersions += @("latest") + $(Get-LatestVersions $(Get-AzVMImage -PublisherName "${env:PUBLISHER}" -Location eastus -Offer "${env:PRODUCTOFFER}" -sku "${env:PRODUCTSKU}").Version)
             $marketplaceVersions | ForEach-Object { $marketplaceVersionsUI += [pscustomobject]@{label=$_;value=$_} }
 
             foreach ($buildingBlock in $buildingBlocks) {
