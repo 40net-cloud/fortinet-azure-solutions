@@ -78,24 +78,24 @@ jobs:
               if (Test-Path -Path "./${env:PRODUCT}/${buildingBlock}/azuredeploy.json" -PathType Leaf) {
                 Get-Content -Raw -Path "./${env:PRODUCT}/${buildingBlock}/azuredeploy.json" | jq --slurpfile content "./fgtversion_x64.json" '.parameters.fortiGateImageVersion_x64.allowedValues = $content[]' | Set-Content -Path "./releases/${buildingBlock}/mainTemplate.json"
                 $content = Get-Content "./releases/${buildingBlock}/mainTemplate.json" -Raw
-                if (-Not ($content -match '(?<=\n)\z')) {
+                if (-Not $content -match '(?<=\n)\z') {
                   "" | Out-File -Append "./releases/${buildingBlock}/mainTemplate.json"
                 }
                 Get-Content -Raw -Path "./releases/${buildingBlock}/mainTemplate.json" | jq --slurpfile content "./fgtversion_arm64.json" '.parameters.fortiGateImageVersion_arm64.allowedValues = $content[]' | Set-Content -Path "./releases/${buildingBlock}/mainTemplate.json"
                 $content = Get-Content "./releases/${buildingBlock}/mainTemplate.json" -Raw
-                if (-Not ($content -match '(?<=\n)\z')) {
+                if (-Not $content -match '(?<=\n)\z') {
                   "" | Out-File -Append "./releases/${buildingBlock}/mainTemplate.json"
                 }
               }
               if (Test-Path -Path "./${env:PRODUCT}/${buildingBlock}/createUiDefinition.json" -PathType Leaf) {
                 Get-Content -Raw -Path "./${env:PRODUCT}/${buildingBlock}/createUiDefinition.json" | jq --slurpfile content "./fgtversion_ui_x64.json" '(.parameters.steps[].elements[] | select( .name == "instancetype_x64") | .elements[] | select( .name == "fortiGateImageVersion_x64") | .constraints.allowedValues) |= $content[]' | Set-Content -Path "./releases/${buildingBlock}/createUiDefinition.json"
                 $content = Get-Content "./releases/${buildingBlock}/createUiDefinition.json" -Raw
-                if (-Not ($content -match '(?<=\n)\z)')) {
+                if (-Not $content -match '(?<=\n)\z)') {
                   "" | Out-File -Append "./releases/${buildingBlock}/createUiDefinition.json"
                 }
                 Get-Content -Raw -Path "./releases/${buildingBlock}/createUiDefinition.json" | jq --slurpfile content "./fgtversion_ui_arm64.json" '(.parameters.steps[].elements[] | select( .name == "instancetype_arm64") | .elements[] | select( .name == "fortiGateImageVersion_arm64") | .constraints.allowedValues) |= $content[]' | Set-Content -Path "./releases/${buildingBlock}/createUiDefinition.json"
                 $content = Get-Content "./releases/${buildingBlock}/createUiDefinition.json" -Raw
-                if (-Not ($content -match '(?<=\n)\z)')) {
+                if (-Not $content -match '(?<=\n)\z)') {
                   "" | Out-File -Append "./releases/${buildingBlock}/createUiDefinition.json"
                 }
               }
