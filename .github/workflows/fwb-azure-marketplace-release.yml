@@ -32,15 +32,34 @@ jobs:
         uses: azure/powershell@v2
         with:
           inlineScript: |
+            function Get-LatestVersions {
+              param (
+                [string[]]$Versions
+              )
+              $parsedVersions = $Versions | ForEach-Object {
+                $versionParts = $_ -split '\.'
+                [pscustomobject]@{
+                  Major = [int]$versionParts[0]
+                  Minor = [int]$versionParts[1]
+                  Patch = [int]$versionParts[2]
+                  FullVersion = $_
+                }
+              }
+              $filteredByMajor = $parsedVersions | Where-Object { $_.Major -ge 7 }
+              $filteredVersions = $filteredByMajor |
+                Group-Object -Property Major, Minor |
+                ForEach-Object {
+                  $_.Group | Sort-Object -Property Patch -Descending | Select-Object -First 2
+              }
+              $filteredVersions.FullVersion
+            }
             $buildingBlocks = @("A-Single-VM", "Active-Active")
             $marketplaceVersions = @()
             $marketplaceVersionsUI = @()
 
-            $versions = Get-AzVMImage -PublisherName "${env:PUBLISHER}" -Location eastus -Offer "${env:PRODUCTOFFER}" -sku "${env:PRODUCTSKU}"
-            $marketplaceVersions += $($versions | Where-Object {$_.Version.StartsWith("7.0")} | Sort-Object -Unique { $_.Version -as [version]} | Select-Object -Last 2).Version
-            $marketplaceVersions += $($versions | Where-Object {$_.Version.StartsWith("7.2")} | Sort-Object -Unique { $_.Version -as [version]} | Select-Object -Last 2).Version
-            $marketplaceVersions += $($versions | Where-Object {$_.Version.StartsWith("7.4")} | Sort-Object -Unique { $_.Version -as [version]} | Select-Object -Last 2).Version
+            $marketplaceVersions += Get-LatestVersions $(Get-AzVMImage -PublisherName "${env:PUBLISHER}" -Location eastus -Offer "${env:PRODUCTOFFER}" -sku "${env:PRODUCTSKU}").Version
             $marketplaceVersions += "latest"
+            [array]::Reverse($marketplaceVersions)
             $marketplaceVersions | ForEach-Object { $marketplaceVersionsUI += [pscustomobject]@{label=$_;value=$_} }
 
             foreach ($buildingBlock in $buildingBlocks) {
