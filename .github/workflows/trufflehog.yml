@@ -4,13 +4,17 @@ on:
   push:
     branches: [ main ]
   pull_request:
-    branches: [ main ]
 
 jobs:
   trufflehog:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@master
-    - name: trufflehog-actions-scan
-      uses: edplato/trufflehog-actions-scan@master
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Secret Scanning
+        uses: trufflesecurity/trufflehog@main
+        with:
+          extra_args: --only-verified
