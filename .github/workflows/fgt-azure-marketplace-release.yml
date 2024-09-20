@@ -46,7 +46,7 @@ jobs:
                   FullVersion = $_
                 }
               }
-              $filteredByMajor = $parsedVersions | Where-Object { $_.Major -ge 6 -and $_.Minor -ge 4 }
+              $filteredByMajor = $parsedVersions | Where-Object { ($_.Major -ge 6 -and $_.Minor -ge 4) -or ($_.Major -ge 7 )}
               $filteredVersions = $filteredByMajor |
                 Group-Object -Property Major, Minor |
                 ForEach-Object {
@@ -59,12 +59,7 @@ jobs:
             $marketplaceVersions_x64 = @()
             $marketplaceVersionsUI_x64 = @()
 
-            $versions_x64 = Get-AzVMImage -PublisherName "${env:PUBLISHER}" -Location eastus -Offer "${env:PRODUCTOFFER}" -sku "${env:PRODUCTSKU_X64}"
-            $marketplaceVersions_x64 += $($versions_x64 | Where-Object {$_.Version.StartsWith("7.0")} | Sort-Object -Unique { $_.Version -as [version]} | Select-Object -Last 2).Version
-            $marketplaceVersions_x64 += $($versions_x64 | Where-Object {$_.Version.StartsWith("7.2")} | Sort-Object -Unique { $_.Version -as [version]} | Select-Object -Last 2).Version
-            $marketplaceVersions_x64 += $($versions_x64 | Where-Object {$_.Version.StartsWith("7.4")} | Sort-Object -Unique { $_.Version -as [version]} | Select-Object -Last 2).Version
-            $marketplaceVersions_x64 += "latest"
-            [array]::Reverse($marketplaceVersions_x64)
+            $marketplaceVersions_x64 = @("latest") + $(Get-LatestVersions $(Get-AzVMImage -PublisherName "${env:PUBLISHER}" -Location eastus -Offer "${env:PRODUCTOFFER}" -sku "${env:PRODUCTSKU_X64}").Version)
             $marketplaceVersions_x64 | ForEach-Object { $marketplaceVersionsUI_x64 += [pscustomobject]@{label=$_;value=$_} }
 
             $versions_arm64 = Get-AzVMImage -PublisherName "${env:PUBLISHER}" -Location eastus -Offer "${env:PRODUCTOFFER}" -sku "${env:PRODUCTSKU_X64}"
@@ -94,12 +89,9 @@ jobs:
             }
           azPSVersion: "latest"
 
-      - name: upload-templates-zip
-        uses: svenstaro/upload-release-action@v2
-        with:
-          repo_token: ${{secrets.GITHUB_TOKEN}}
-          file: ./releases/fortigate-azure-templates.zip
-          asset_name: fortigate-azure-templates.zip
-          tag: ${{github.ref}}
-          overwrite: true
-          body: "FortiGate Azure Marketplace Release"
+      - name: Upload release zips
+        shell: bash
+        run: |
+          gh release upload ${{github.ref_name}} ./releases/${{env.PRODUCTL}}-*.zip
+        env:
+          GITHUB_TOKEN: ${{ github.TOKEN }}
