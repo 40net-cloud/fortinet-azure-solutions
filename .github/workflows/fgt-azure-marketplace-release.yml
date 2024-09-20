@@ -58,17 +58,14 @@ jobs:
             $buildingBlocks = @("A-Single-VM", "Active-Active-ELB-ILB","Active-Passive-ELB-ILB","Active-Passive-SDN")
             $marketplaceVersions_x64 = @()
             $marketplaceVersionsUI_x64 = @()
+            $marketplaceVersions_arm64 = @()
+            $marketplaceVersionsUI_arm64 = @()
 
             $marketplaceVersions_x64 = @("latest") + $(Get-LatestVersions $(Get-AzVMImage -PublisherName "${env:PUBLISHER}" -Location eastus -Offer "${env:PRODUCTOFFER}" -sku "${env:PRODUCTSKU_X64}").Version)
             $marketplaceVersions_x64 | ForEach-Object { $marketplaceVersionsUI_x64 += [pscustomobject]@{label=$_;value=$_} }
 
-            $versions_arm64 = Get-AzVMImage -PublisherName "${env:PUBLISHER}" -Location eastus -Offer "${env:PRODUCTOFFER}" -sku "${env:PRODUCTSKU_X64}"
-            $marketplaceVersions_arm64 += $($versions_arm64 | Where-Object {$_.Version.StartsWith("7.0")} | Sort-Object -Unique { $_.Version -as [version]} | Select-Object -Last 2).Version
-            $marketplaceVersions_arm64 += $($versions_arm64 | Where-Object {$_.Version.StartsWith("7.2")} | Sort-Object -Unique { $_.Version -as [version]} | Select-Object -Last 2).Version
-            $marketplaceVersions_arm64 += $($versions_arm64 | Where-Object {$_.Version.StartsWith("7.4")} | Sort-Object -Unique { $_.Version -as [version]} | Select-Object -Last 2).Version
-            $marketplaceVersions_arm64 += "latest"
-            [array]::Reverse($marketplaceVersions_arm64)
-            $marketplaceVersions_x64 | ForEach-Object { $marketplaceVersionsUI_arm64 += [pscustomobject]@{label=$_;value=$_} }
+            $marketplaceVersions_arm64 = @("latest") + $(Get-LatestVersions $(Get-AzVMImage -PublisherName "${env:PUBLISHER}" -Location eastus -Offer "${env:PRODUCTOFFER}" -sku "${env:PRODUCTSKU_ARM64}").Version)
+            $marketplaceVersions_arm64 | ForEach-Object { $marketplaceVersionsUI_arm64 += [pscustomobject]@{label=$_;value=$_} }
 
             foreach ($buildingBlock in $buildingBlocks) {
               $dest = "./releases/${buildingBlock}/"
