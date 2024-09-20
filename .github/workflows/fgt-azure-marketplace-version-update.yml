@@ -10,7 +10,8 @@ env:
   PRODUCT: FortiGate
   PRODUCTSHORT: FGT
   PRODUCTOFFER: fortinet_fortigate-vm_v5
-  PRODUCTSKU: fortinet_fg-vm
+  PRODUCTSKU_X64: fortinet_fg-vm
+  PRODUCTSKU_ARM64: fortinet_fg-vm_arm64
 
 jobs:
   ARM-FGT-Version-Update:
@@ -29,20 +30,34 @@ jobs:
       uses: azure/powershell@v2
       with:
         inlineScript: |
+          function Sort-Versions {
+            param (
+              [string[]]$Versions
+            )
+            $parsedVersions = $Versions | ForEach-Object {
+              $versionParts = $_ -split '\.'
+              [pscustomobject]@{
+                Major = [int]$versionParts[0]
+                Minor = [int]$versionParts[1]
+                Patch = [int]$versionParts[2]
+                FullVersion = $_
+              }
+            }
+            $sortedVersions = $parsedVersions | Sort-Object -Property Major, Minor, Patch -Descending
+            $sortedVersions.FullVersion
+          }
           $buildingBlocks = @("A-Single-VM", "Active-Active-ELB-ILB","Active-Passive-ELB-ILB","Active-Passive-SDN")
           $marketplaceVersions_x64 = @()
           $marketplaceVersionsUI_x64 = @()
           $marketplaceVersions_arm64 = @()
           $marketplaceVersionsUI_arm64 = @()
 
-          $marketplaceVersions_x64 = $(Get-AzVMImage -PublisherName "fortinet" -Location eastus -Offer "${env:PRODUCTOFFER}" -sku "${env:PRODUCTSKU}").Version
-          $marketplaceVersions_x64 += "latest"
-          [array]::Reverse($marketplaceVersions_x64)
+          $marketplaceVersions_x64 = @("latest") + $(Sort-Versions($(Get-AzVMImage -PublisherName "fortinet" -Location eastus -Offer "${env:PRODUCTOFFER}" -sku "${env:PRODUCTSKU_X64}").Version))
           $marketplaceVersions_x64 | ConvertTo-Json | Out-File -Filepath "./fgtversion_x64.json"
           $marketplaceVersions_x64 | ForEach-Object { $marketplaceVersionsUI_x64 += [pscustomobject]@{label=$_;value=$_} }
           $marketplaceVersionsUI_x64 | ConvertTo-Json | Out-File -Filepath "./fgtversionui_x64.json"
 
-          $marketplaceVersions_arm64 = $(Get-AzVMImage -PublisherName "fortinet" -Location eastus -Offer "${env:PRODUCTOFFER}" -sku "${env:PRODUCTSKU}").Version
+          $marketplaceVersions_arm64 = @("latest") + $(Sort-Versions($(Get-AzVMImage -PublisherName "fortinet" -Location eastus -Offer "${env:PRODUCTOFFER}" -sku "${env:PRODUCTSKU_ARM64}").Version))
           $marketplaceVersions_arm64 += "latest"
           [array]::Reverse($marketplaceVersions_arm64)
           $marketplaceVersions_arm64 | ConvertTo-Json | Out-File -Filepath "./fgtversion_arm64.json"

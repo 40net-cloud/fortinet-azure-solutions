@@ -9,6 +9,15 @@ on:
 
   workflow_dispatch:
 
+env:
+  PUBLISHER: fortinet
+  PRODUCT: FortiGate
+  PRODUCTL: fortigate
+  PRODUCTSHORT: FGT
+  PRODUCTOFFER: fortinet_fortigate-vm_v5
+  PRODUCTSKU_X64: fortinet_fg-vm
+  PRODUCTSKU_ARM64: fortinet_fg-vm_arm64
+
 jobs:
   build:
     name: Getting all data ready for publishing
@@ -26,32 +35,65 @@ jobs:
         uses: azure/powershell@v2
         with:
           inlineScript: |
+            function Get-LatestVersions {
+              param (
+                [string[]]$Versions
+              )
+              $parsedVersions = $Versions | ForEach-Object {
+                $versionParts = $_ -split '\.'
+                [pscustomobject]@{
+                  Major = [int]$versionParts[0]
+                  Minor = [int]$versionParts[1]
+                  Patch = [int]$versionParts[2]
+                  FullVersion = $_
+                }
+              }
+              $filteredByMajor = $parsedVersions | Where-Object { $_.Major -ge 6 -and $_.Minor -ge 4 }
+              $filteredVersions = $filteredByMajor |
+                Group-Object -Property Major, Minor |
+                ForEach-Object {
+                  $_.Group | Sort-Object -Property Patch -Descending | Select-Object -First 2
+              }
+              $sortedVersions = $filteredVersions | Sort-Object -Property Major, Minor, Patch -Descending
+              $sortedVersions.FullVersion
+            }
             $buildingBlocks = @("A-Single-VM", "Active-Active-ELB-ILB","Active-Passive-ELB-ILB","Active-Passive-SDN")
-            $fgtMarketplaceVersions = @()
-            $fgtMarketplaceVersionsUI = @()
+            $marketplaceVersions_x64 = @()
+            $marketplaceVersionsUI_x64 = @()
 
-            $fortigateVersions = Get-AzVMImage -PublisherName "fortinet" -Location eastus -Offer "fortinet_fortigate-vm_v5" -sku "fortinet_fg-vm"
-            $fgtMarketplaceVersions += $($fortigateVersions | Where-Object {$_.Version.StartsWith("6")} | Sort-Object -Unique -Property Version | Select-Object -Last 2).Version
-            $fgtMarketplaceVersions += $($fortigateVersions | Where-Object {$_.Version.StartsWith("7")} | Sort-Object -Unique -Property Version | Select-Object -Last 2).Version
-            $fgtMarketplaceVersions += "latest"
-            $fgtMarketplaceVersions | ForEach-Object { $fgtMarketplaceVersionsUI += [pscustomobject]@{label=$_;value=$_} }
+            $versions_x64 = Get-AzVMImage -PublisherName "${env:PUBLISHER}" -Location eastus -Offer "${env:PRODUCTOFFER}" -sku "${env:PRODUCTSKU_X64}"
+            $marketplaceVersions_x64 += $($versions_x64 | Where-Object {$_.Version.StartsWith("7.0")} | Sort-Object -Unique { $_.Version -as [version]} | Select-Object -Last 2).Version
+            $marketplaceVersions_x64 += $($versions_x64 | Where-Object {$_.Version.StartsWith("7.2")} | Sort-Object -Unique { $_.Version -as [version]} | Select-Object -Last 2).Version
+            $marketplaceVersions_x64 += $($versions_x64 | Where-Object {$_.Version.StartsWith("7.4")} | Sort-Object -Unique { $_.Version -as [version]} | Select-Object -Last 2).Version
+            $marketplaceVersions_x64 += "latest"
+            [array]::Reverse($marketplaceVersions_x64)
+            $marketplaceVersions_x64 | ForEach-Object { $marketplaceVersionsUI_x64 += [pscustomobject]@{label=$_;value=$_} }
+
+            $versions_arm64 = Get-AzVMImage -PublisherName "${env:PUBLISHER}" -Location eastus -Offer "${env:PRODUCTOFFER}" -sku "${env:PRODUCTSKU_X64}"
+            $marketplaceVersions_arm64 += $($versions_arm64 | Where-Object {$_.Version.StartsWith("7.0")} | Sort-Object -Unique { $_.Version -as [version]} | Select-Object -Last 2).Version
+            $marketplaceVersions_arm64 += $($versions_arm64 | Where-Object {$_.Version.StartsWith("7.2")} | Sort-Object -Unique { $_.Version -as [version]} | Select-Object -Last 2).Version
+            $marketplaceVersions_arm64 += $($versions_arm64 | Where-Object {$_.Version.StartsWith("7.4")} | Sort-Object -Unique { $_.Version -as [version]} | Select-Object -Last 2).Version
+            $marketplaceVersions_arm64 += "latest"
+            [array]::Reverse($marketplaceVersions_arm64)
+            $marketplaceVersions_x64 | ForEach-Object { $marketplaceVersionsUI_arm64 += [pscustomobject]@{label=$_;value=$_} }
 
             foreach ($buildingBlock in $buildingBlocks) {
               $dest = "./releases/${buildingBlock}/"
               [void](New-Item -Path "${dest}" -Type Directory)
 
               $content = Get-Content -Raw -Path "./FortiGate/${buildingBlock}/azuredeploy.json" | ConvertFrom-Json
-              $content.parameters.fortiGateImageVersion.allowedValues = $fgtMarketplaceVersions
+              $content.parameters.fortiGateImageVersion.allowedValues = $marketplaceVersions_x64
               $content.resources.Where({$_.type -eq 'Microsoft.Resources/deployments'})[0].name = "pid-776b2227-2743-485a-b385-e9dfd42bfe75-partnercenter"
               $content | ConvertTo-Json -depth 100 | Out-File "${dest}/mainTemplate.json"
               "" | Out-File -Append "${dest}/mainTemplate.json"
 
               $content = Get-Content -Raw -Path "./FortiGate/${buildingBlock}/createUiDefinition.json" | ConvertFrom-Json
-              $content.parameters.basics.Where({$_.Name.equals("fortiGateImageVersion")}).constraints.allowedValues = $fgtMarketplaceVersionsUI
+              $content.parameters.basics.Where({$_.Name.equals("fortiGateImageVersion")}).constraints.allowedValues = $marketplaceVersionsUI_x64
               $content | ConvertTo-Json -depth 100 | Out-File "${dest}/createUiDefinition.json"
               "" | Out-File -Append "${dest}/createUiDefinition.json"
+
+              Compress-Archive -Path "./releases/${buildingBlock}/*" -DestinationPath "./releases/${env:PRODUCTL}-$($buildingBlock.ToLower())-azure-templates.zip"
             }
-            Compress-Archive -Path "./releases/*" -DestinationPath "./releases/fortigate-azure-templates.zip"
           azPSVersion: "latest"
 
       - name: upload-templates-zip
