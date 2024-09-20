@@ -3,9 +3,7 @@ name: "[FGT] Azure Marketplace release"
 on:
   push:
     tags:
-      - "*"
-      - "!FPX-*"
-      - "!FWB-*"
+      - "FGT-*"
 
   workflow_dispatch:
 
