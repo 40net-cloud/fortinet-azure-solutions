@@ -265,6 +265,13 @@
         "description": "Virtual Machine size selection"
       }
     },
+    "1nicDeployment": {
+      "type": "bool",
+      "defaultValue": true,
+      "metadata": {
+        "description": "Install an external load balancer and subnet or not."
+      }
+    },
     "externalLoadBalancer": {
       "type": "bool",
       "defaultValue": true,
@@ -674,7 +681,7 @@
       {
         "name": "customDataBody",
         "count": "[length(range(1, 8))]",
-        "input": "[concat(if(and(not(parameters('externalLoadBalancer')),equals(parameters('outboundConnectivity'),'external-nat-device-or-elb')), variables('interfaceCustomData1Nic')[copyIndex('customDataBody')], variables('interfaceCustomData2Nic')[copyIndex('customDataBody')]), variables('fmgCustomData'), variables('customDataBodyShared'),if(parameters('fortiGateSessionSync'),variables('fgspCustomData')[copyIndex('customDataBody')],''))]"
+        "input": "[concat(if(parameters('1nicDeployment'), variables('interfaceCustomData1Nic')[copyIndex('customDataBody')], variables('interfaceCustomData2Nic')[copyIndex('customDataBody')]), variables('fmgCustomData'), variables('customDataBodyShared'),if(parameters('fortiGateSessionSync'),variables('fgspCustomData')[copyIndex('customDataBody')],''))]"
       },
       {
         "name": "customDataCombined",
@@ -1002,7 +1009,7 @@
       }
     },
     {
-      "condition": "[parameters('externalLoadBalancer')]",
+      "condition": "[and(not(parameters('1nicDeployment')), parameters('externalLoadBalancer'))]",
       "type": "Microsoft.Network/publicIPAddresses",
       "name": "[variables('publicIP1Name')]",
       "apiVersion": "2023-06-01",
@@ -1020,7 +1027,7 @@
       }
     },
     {
-      "condition": "[equals(parameters('outboundConnectivity'),'deploy-nat-gateway')]",
+      "condition": "[and(not(parameters('1nicDeployment')), equals(parameters('outboundConnectivity'),'deploy-nat-gateway'))]",
       "type": "Microsoft.Network/publicIPAddresses",
       "name": "[variables('publicIP2Name')]",
       "apiVersion": "2023-06-01",
@@ -1038,7 +1045,7 @@
       }
     },
     {
-      "condition": "[equals(parameters('outboundConnectivity'),'per-node-standard-sku-pip')]",
+      "condition": "[and(not(parameters('1nicDeployment')), equals(parameters('outboundConnectivity'),'per-node-standard-sku-pip'))]",
       "type": "Microsoft.Network/publicIPAddresses",
       "name": "[variables('attachedpipName')[copyIndex(1)]]",
       "apiVersion": "2023-06-01",
@@ -1060,7 +1067,7 @@
       }
     },
     {
-      "condition": "[parameters('externalLoadBalancer')]",
+      "condition": "[and(not(parameters('1nicDeployment')), parameters('externalLoadBalancer'))]",
       "type": "Microsoft.Network/loadBalancers",
       "name": "[variables('externalLBName')]",
       "apiVersion": "2023-06-01",
@@ -1142,7 +1149,7 @@
       }
     },
     {
-      "condition": "[parameters('externalLoadBalancer')]",
+      "condition": "[and(not(parameters('1nicDeployment')), parameters('externalLoadBalancer'))]",
       "type": "Microsoft.Network/loadBalancers/inboundNatRules",
       "name": "[concat(variables('externalLBName'), '/', variables('fgVmName'), '-', copyIndex(1), '-MGMT-SSH')]",
       "apiVersion": "2023-06-01",
@@ -1165,7 +1172,7 @@
       }
     },
     {
-      "condition": "[parameters('externalLoadBalancer')]",
+      "condition": "[and(not(parameters('1nicDeployment')), parameters('externalLoadBalancer'))]",
       "type": "Microsoft.Network/loadBalancers/inboundNatRules",
       "name": "[concat(variables('externalLBName'), '/', variables('fgVmName'), '-', copyIndex(1), '-MGMT-HTTPS')]",
       "apiVersion": "2023-06-01",
@@ -1253,9 +1260,9 @@
       }
     },
     {
-      "condition": "[not(and(not(parameters('externalLoadBalancer')),equals(parameters('outboundConnectivity'),'external-nat-device-or-elb')))]",
+      "condition": "[not(parameters('1nicDeployment'))]",
       "type": "Microsoft.Network/networkInterfaces",
-      "name": "[concat(variables('fgVmName'),'-',copyIndex(1),'-nic',if(or(parameters('externalLoadBalancer'),equals(parameters('outboundConnectivity'),'per-node-standard-sku-pip')), 1, 2))]",
+      "name": "[concat(variables('fgVmName'),'-',copyIndex(1),'-nic',if(not(parameters('1nicDeployment')), 1, ''))]",
       "apiVersion": "2023-06-01",
       "copy": {
         "name": "nodeCopy",
@@ -1298,7 +1305,7 @@
     },
     {
       "type": "Microsoft.Network/networkInterfaces",
-      "name": "[concat(variables('fgVmName'),'-',copyIndex(1),'-nic',if(or(parameters('externalLoadBalancer'),equals(parameters('outboundConnectivity'),'per-node-standard-sku-pip')), 2, 1))]",
+      "name": "[concat(variables('fgVmName'),'-',copyIndex(1),'-nic',if(not(parameters('1nicDeployment')), 2, 1))]",
       "apiVersion": "2023-06-01",
       "copy": {
         "name": "nodeCopy",
@@ -1385,7 +1392,7 @@
           "copy": [
             {
               "name": "networkInterfaces",
-              "count": "[if(not(and(not(parameters('externalLoadBalancer')),equals(parameters('outboundConnectivity'),'external-nat-device-or-elb'))), 2, 1)]",
+              "count": "[if(parameters('1nicDeployment'), 1, 2)]",
               "input": {
                 "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(variables('fgVmName'),'-',copyIndex(1),'-nic',copyIndex('networkInterfaces',1)))]",
                 "properties": {

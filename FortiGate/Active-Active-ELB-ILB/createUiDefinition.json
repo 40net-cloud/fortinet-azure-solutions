@@ -1237,6 +1237,22 @@
         },
         "elements": [
           {
+            "name": "1niccheck",
+            "type": "Microsoft.Common.CheckBox",
+            "label": "Deploy internal 1 NIC deployment",
+            "toolTip": "This option enables the deployment of a 1 NIC internal only setup.",
+            "visible": true
+          },
+          {
+            "name": "1nicechecktext",
+            "type": "Microsoft.Common.InfoBox",
+            "options": {
+              "icon": "Info",
+              "text": "This deployment will be a one-armed setup with only an internal NIC connected to an internal load balancer."
+            },
+            "visible": "[steps('publicip').1niccheck]"
+          },
+          {
             "name": "externalLoadBalancer",
             "type": "Microsoft.Common.Section",
             "label": "External Load Balancer",
@@ -1260,7 +1276,7 @@
                   ],
                   "required": true
                 },
-                "visible": true
+                "visible": "[not(steps('publicip').1niccheck)]"
               }
             ]
           },
@@ -1268,7 +1284,7 @@
             "name": "outboundConnectivity",
             "type": "Microsoft.Common.Section",
             "label": "Outbound Connectivity",
-            "visible": true,
+            "visible": "[not(steps('publicip').1niccheck)]",
             "elements": [
               {
                 "name": "outboundconnectivitytext",
@@ -1301,7 +1317,7 @@
                     }
                   ]
                 },
-                "visible": true
+                "visible": "[steps('publicip').1niccheck]"
               },
               {
                 "name": "deploynatgatewaytext",
@@ -1339,15 +1355,6 @@
                   "text": "The FortiGate will use the existing infrastructure and NAT capabilities of the VNET for outbound access, e.g. FortiGate"
                 },
                 "visible": "[and(equals(steps('publicip').outboundConnectivity.options,'external-nat-device-or-elb'),not(bool(steps('publicip').externalLoadBalancer.enabled)))]"
-              },
-              {
-                "name": "externalnatdevicetextnoelb",
-                "type": "Microsoft.Common.InfoBox",
-                "options": {
-                  "icon": "Info",
-                  "text": "This deployment will be a one-armed setup with only an internal NIC connected to an internal load balancer."
-                },
-                "visible": "[and(equals(steps('publicip').outboundConnectivity.options,'external-nat-device'),not(bool(steps('publicip').externalLoadBalancer.enabled)))]"
               }
             ]
           }
@@ -1660,6 +1667,7 @@
       "acceleratedNetworking": "[steps('networking').acceleratednetworksection.acceleratednetworking]",
       "acceleratedConnections": "[steps('networking').acceleratednetworksection.acceleratedconnectionscheck]",
       "acceleratedConnectionsSku": "[steps('networking').acceleratednetworksection.acceleratedconnectionssku]",
+      "1nicDeployment": "[steps('publicip').1niccheck]",
       "externalLoadBalancer": "[bool(steps('publicip').externalLoadBalancer.enabled)]",
       "outboundConnectivity": "[steps('publicip').outboundConnectivity.options]",
       "vnetNewOrExisting": "[steps('networking').virtualnetworksection.virtualnetwork.newOrExisting]",
