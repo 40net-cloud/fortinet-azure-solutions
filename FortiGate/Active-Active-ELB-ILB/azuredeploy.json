@@ -267,7 +267,7 @@
     },
     "1nicDeployment": {
       "type": "bool",
-      "defaultValue": true,
+      "defaultValue": false,
       "metadata": {
         "description": "Install an external load balancer and subnet or not."
       }

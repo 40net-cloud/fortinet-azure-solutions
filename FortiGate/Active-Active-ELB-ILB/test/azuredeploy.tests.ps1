@@ -98,7 +98,8 @@ Describe 'FGT A/A' {
     }
 
     It 'Contains the expected parameters' {
-      $expectedTemplateParameters = 'acceleratedConnections',
+      $expectedTemplateParameters = '1nicDeployment',
+      'acceleratedConnections',
       'acceleratedConnectionsSku',
       'acceleratedNetworking',
       'adminPassword',

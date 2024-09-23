@@ -1256,6 +1256,7 @@
             "name": "externalLoadBalancer",
             "type": "Microsoft.Common.Section",
             "label": "External Load Balancer",
+            "visible": "[not(steps('publicip').1niccheck)]",
             "elements": [
               {
                 "name": "enabled",
@@ -1276,7 +1277,7 @@
                   ],
                   "required": true
                 },
-                "visible": "[not(steps('publicip').1niccheck)]"
+                "visible": true
               }
             ]
           },
