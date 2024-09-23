@@ -1318,7 +1318,7 @@
                     }
                   ]
                 },
-                "visible": "[steps('publicip').1niccheck]"
+                "visible": "[not(steps('publicip').1niccheck)]"
               },
               {
                 "name": "deploynatgatewaytext",
