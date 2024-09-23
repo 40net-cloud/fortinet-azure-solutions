@@ -1239,7 +1239,7 @@
           {
             "name": "1niccheck",
             "type": "Microsoft.Common.CheckBox",
-            "label": "Deploy internal 1 NIC deployment",
+            "label": "Deploy one-armed 1 NIC setup for internal traffic inspection",
             "toolTip": "This option enables the deployment of a 1 NIC internal only setup.",
             "visible": true
           },
@@ -1318,7 +1318,7 @@
                     }
                   ]
                 },
-                "visible": "[not(steps('publicip').1niccheck)]"
+                "visible": true
               },
               {
                 "name": "deploynatgatewaytext",

@@ -135,8 +135,8 @@ The FortiGate VMs need a specific configuration to match the deployed environmen
 - [Outbound connections](#outbound-connections)
 - [Session Synchronization](#session-synchronization)
 - [Availability Zone](#availability-zone)
+- [Default configuration using this template](#default-configuration)
 - [Upload VHD](../Documentation/faq-upload-vhd.md)
-- [Default configuration using this template](doc/config-provisioning.md)
 
 ### Fabric Connector
 
@@ -297,9 +297,24 @@ To direct traffic to the FortiGate NGFW routing needs to be adapted on Microsoft
 
 In this design an Azure Standard Load Balancer Internal is used with a specific feature called HA Ports. This feature allows fast failover between the different members of the FortiGate HA custer for all TCP, UDP and ICMP protocols. It is only available in the Standard Load Balancer and as such all load balancers connected to the FortiGate need to be of the Standard type. ALso the public IPs connected to the FortiGate need to be of the Standard type. These is no possibility to migrate between basic and standard public IP sku's. More information about HA Ports can be found [here](https://docs.microsoft.com/en-us/azure/load-balancer/load-balancer-ha-ports-overview)
 
+Which public IP is used for the outbound connections depends on the configuration and layout of your deployed setup. There are 3 options 
+
+- Public IP directly connected to a NIC of the FortiGate VM
+- One or more public IPs attached to the external Azure Load Balancer with the FortiGate VM as a backend server
+- NAT Gateway attached to the subnet of the external NIC of the FortiGate VM
+
+NAT Gateway takes precedence over a public IP directly connected to a NIC as second which takes precedence over an external Azure Load Balancer with or without outbound rules. More information can be found on the links below:
+
+- [Default outbound access in Azure](https://learn.microsoft.com/en-us/azure/virtual-network/ip-services/default-outbound-access)
+- [Use Source Network Address Translation (SNAT) for outbound connections](https://learn.microsoft.com/en-us/azure/load-balancer/load-balancer-outbound-connections)
+- [Outbound connectivity with a NAT Gateway](https://learn.microsoft.com/en-us/azure/nat-gateway/faq#how-can-i-use-a-nat-gateway-to-connect-outbound-in-a-setup-where-i-m-currently-using-a-different-service-for-outbound)
+- [Quickstart: Create a public load balancer to load balance VMs using the Azure portal](https://learn.microsoft.com/en-us/azure/load-balancer/quickstart-load-balancer-standard-public-portal)
+
 #### Outbound Flow
 
-In the diagram the different steps to establish a session are layed out. This flow is based on the configuration as deployed in this template.
+In the diagram the different steps to establish a session are layed out. 
+
+> **_NOTE:_** This flow is based on the configuration as deployed by default in this template using an external load balancer and no public IPs on the external NIC or a NAT Gateway.
 
 ![Outbound flow](images/outbound-flow.png)
 
@@ -407,6 +422,8 @@ end
 
 * Where x in 10.0.1.x is the IP of port 1 of the opposite FortiGate. With the default values this would be either 5 or 6.
 
+If the firewall policies include UTM profiles it is required to enable specific UTM inspection. When enabled, the packets arriving on FortiGate that has not seen the initial packet will be send back to the FortiGate that processed the initial packet. A maximum of 4 FortiGate devices can be linked using this method: [UTM inspection on asymmetric traffic on L3](https://docs.fortinet.com/document/fortigate/7.6.0/administration-guide/324430/utm-inspection-on-asymmetric-traffic-on-l3)
+
 ### Configuration synchronization
 
 The FortiGate VMs are, in this Active/Active setup, independent units. The FGCP protocol, used in the Active/Passive setup, to sync the configuration is not applicable here. To enable configuration sync between both unit the sync from the autoscaling setup can be used. This will sync all configuration except for the specific configuration item proper to the specific VM like hostname, routing and others. To enable the configuration sync the config below can be used on both.
@@ -449,6 +466,108 @@ Microsoft defines an Availability Zone to have the following properties:
 Based on information in the presentation ['Inside Azure datacenter architecture with Mark Russinovich' at Microsoft Ignite 2019](https://www.youtube.com/watch?v=X-0V6bYfTpA)
 
 ![active/passive design](images/fgt-aa-az.png)
+
+### Default Configuration
+
+After deployment, the below configuration has been automatically injected during the deployment. The bold sections are the default values. If parameters have been changed during deployment these values will be different.
+
+#### FortiGate A
+
+<pre><code>
+config system sdn-connector
+  edit AzureSDN
+    set type azure
+  next
+end
+config router static
+  edit 1
+    set gateway <b>172.16.136.1</b>
+    set device port1
+  next
+  edit 2
+    set dst <b>172.16.136.0/22</b>
+    set device port2
+    set gateway <b>172.16.136.65</b>
+  next
+  edit 3
+    set dst 168.63.129.16 255.255.255.255
+    set device port2
+    set gateway <b>172.16.136.65</b>
+  next
+  edit 4
+    set dst 168.63.129.16 255.255.255.255
+    set device port1
+    set gateway <b>172.16.136.1</b>
+  next
+end
+config system probe-response
+  set http-probe-value OK
+  set mode http-probe
+end
+config system interface
+  edit port1
+    set mode static
+    set ip <b>172.16.136.5/26</b>
+    set description external
+    set allowaccess ping ssh https probe-response
+  next
+  edit port2
+    set mode static
+    set ip <b>172.16.136.69/24</b>
+    set description internal
+    set allowaccess ping ssh https probe-response
+  next
+end
+</code></pre>
+
+#### FortiGate B
+
+<pre><code>
+config system sdn-connector
+  edit AzureSDN
+    set type azure
+  next
+end
+config router static
+  edit 1
+    set gateway <b>172.16.136.1</b>
+    set device port1
+  next
+  edit 2
+    set dst <b>172.16.136.0/22</b>
+    set device port2
+    set gateway <b>172.16.136.65</b>
+  next
+  edit 3
+    set dst 168.63.129.16 255.255.255.255
+    set device port2
+    set gateway <b>172.16.136.65</b>
+  next
+  edit 4
+    set dst 168.63.129.16 255.255.255.255
+    set device port1
+    set gateway <b>172.16.136.1</b>
+  next
+end
+config system probe-response
+  set http-probe-value OK
+  set mode http-probe
+end
+config system interface
+  edit port1
+    set mode static
+    set ip <b>172.16.136.6/26</b>
+    set description external
+    set allowaccess ping ssh https probe-response
+  next
+  edit port2
+    set mode static
+    set ip <b>172.16.136.70/26</b>
+    set description internal
+    set allowaccess ping ssh https probe-response
+  next
+end
+</code></pre>
 
 ## Support
 
