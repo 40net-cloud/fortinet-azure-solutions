@@ -114,7 +114,7 @@ config system ha
     set mode primary
         config peer
             edit 1
-                set ip <b>FortiManager B Public IP address</b>
+                set ip <b>FortiManager B Private IP address</b>
                 set serial-number <b>FortiManager B serial number</b>
             next
         end
@@ -136,7 +136,7 @@ config system ha
     set mode secondary
         config peer
             edit 1
-                set ip <b>FortiManager A Public IP address</b>
+                set ip <b>FortiManager A Private IP address</b>
                 set serial-number <b>FortiManager A serial number</b>
             next
         end
