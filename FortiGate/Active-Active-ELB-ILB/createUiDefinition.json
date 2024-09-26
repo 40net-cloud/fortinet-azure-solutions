@@ -154,7 +154,7 @@
                 "name": "fortiGateImageVersion_x64",
                 "type": "Microsoft.Common.DropDown",
                 "label": "FortiGate Image Version",
-                "defaultValue": "7.4.4",
+                "defaultValue": "7.4.5",
                 "toolTip": "Select the FortiGate image version",
                 "constraints": {
                   "required": false,
