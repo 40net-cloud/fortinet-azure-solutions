@@ -1266,7 +1266,7 @@
     {
       "condition": "[not(parameters('1nicDeployment'))]",
       "type": "Microsoft.Network/networkInterfaces",
-      "name": "[concat(variables('fgVmName'),'-',copyIndex(1),'-nic',if(not(parameters('1nicDeployment')), 1, ''))]",
+      "name": "[concat(variables('fgVmName'),'-',copyIndex(1),'-nic',if(not(parameters('1nicDeployment')), 1, 2))]",
       "apiVersion": "2023-06-01",
       "copy": {
         "name": "nodeCopy",
