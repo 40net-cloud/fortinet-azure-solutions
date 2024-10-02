@@ -78,6 +78,8 @@ The FortiGate VMs need a specific configuration to match the deployed environmen
 
 - [Fabric Connector](#fabric-connector)
 - [East-West connections](#east-west-connections)
+- [Inbound connections](#inbound-connections)
+- [Outbound connections](#outbound-connections)
 - [Default configuration using this template](#default-configuration)
 - [Upload VHD](../Documentation/faq-upload-vhd.md)
 
@@ -188,7 +190,7 @@ In the diagram the different steps to establish a session are layed out.
 5. The Azure Fabric translates the destination public IP to the linked private IP - s: w.x.y.z - d: 172.16.136.4
 6. The FortiGate-VM accepts the return packet after inspection. It translates and routes the packet to the client - s: w.x.y.z - d: 172.16.137.4
 
-### Deployment configuration
+### Default Configuration
 
 After deployment, the below configuration has been automatically injected during the deployment. The bold sections are the default values. If parameters have been changed during deployment these values will be different.
 
