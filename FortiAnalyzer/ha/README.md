@@ -109,7 +109,7 @@ config system ha
  set mode a-p
  set group-id 10
  set group-name FAZAZURE
- set password xxx
+ set hb-interface "port1"
   config peer
    edit 1
      set serial-number <b>FortiAnalyzer B serial number</b>
@@ -133,7 +133,7 @@ config system ha
  set mode a-p
  set group-id 10
  set group-name FAZAZURE
- set password xxx
+ set hb-interface "port1"
   config peer
    edit 1
     set serial-number <b>FortiAnalyzer A serial number</b>
@@ -172,7 +172,7 @@ config system ha
  set mode a-p
  set group-id 10
  set group-name FAZAZURE
- set password xxx
+ set hb-interface "port1"
   config peer
    edit 1
     set serial-number <b>FortiAnalyzer B serial number</b>
@@ -196,7 +196,7 @@ config system ha
  set mode a-p
  set group-id 10
  set group-name FAZAZURE
- set password xxx
+ set hb-interface "port1"
   config peer
    edit 1
     set serial-number <b>FortiAnalyzer A serial number</b> 
@@ -235,7 +235,7 @@ config system ha
  set group-id 10
  set group-name "FAZAZURE"
  set hb-interface "port1"
- set password xxx
+ set hb-interface "port1"
   config peer
    edit 1
     set addr <b>FortiAnalyzer B IP address - 172.16.140.5</b>
@@ -254,7 +254,7 @@ config system ha
  set group-id 10
  set group-name "FAZAZURE"
  set hb-interface "port1"
- set password xxx
+ set hb-interface "port1"
   config peer
    edit 1
     set addr <b>FortiAnalyzer A IP address - 172.16.140.4</b>
