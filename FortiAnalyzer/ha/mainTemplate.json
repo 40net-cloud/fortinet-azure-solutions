@@ -36,7 +36,7 @@
       "allowedValues": [
         "latest",
         "7.6.0",
-        "7.4.4",
+		"7.4.4",
         "7.4.3",
         "7.4.2",
         "7.4.1",
@@ -126,7 +126,7 @@
         "description": "Virtual Machine size selection - must be F4 or other instance that supports 4 NICs"
       }
     },
-    "highavailabilityMethod": {
+	"highavailabilityMethod": {
       "type": "string",
       "defaultValue": "a-p-external-vip",
       "allowedValues": [
@@ -144,7 +144,7 @@
         "Availability Set",
         "Availability Zones"
       ],
-      "defaultValue": "Availability Set",
+      "defaultValue": "Availability Zones",
       "metadata": {
         "description": "Deploy FortiGate VMs in an Availability Set or Availability Zones. If Availability Zones deployment is selected but the location does not support Availability Zones an Availability Set will be deployed. If Availability Zones deployment is selected and Availability Zones are available in the location, FortiGate A will be placed in Zone 1, FortiGate B will be placed in Zone 2"
       }
@@ -391,12 +391,12 @@
     "fazBVmName": "[concat(parameters('namePrefix'),'-faz-b')]",
     "customDataHeader": "Content-Type: multipart/mixed; boundary=\"12345\"\nMIME-Version: 1.0\n\n--12345\nContent-Type: text/plain; charset=\"us-ascii\"\nMIME-Version: 1.0\nContent-Transfer-Encoding: 7bit\nContent-Disposition: attachment; filename=\"config\"\n\n",
     "customDataCert": "config system certificate ca \n edit DigiCertGlobalRootG2 \n set ca \"-----BEGIN CERTIFICATE-----\nMIIDjjCCAnagAwIBAgIQAzrx5qcRqaC7KGSxHQn65TANBgkqhkiG9w0BAQsFADBh\nMQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMRkwFwYDVQQLExB3\nd3cuZGlnaWNlcnQuY29tMSAwHgYDVQQDExdEaWdpQ2VydCBHbG9iYWwgUm9vdCBH\nMjAeFw0xMzA4MDExMjAwMDBaFw0zODAxMTUxMjAwMDBaMGExCzAJBgNVBAYTAlVT\nMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5j\nb20xIDAeBgNVBAMTF0RpZ2lDZXJ0IEdsb2JhbCBSb290IEcyMIIBIjANBgkqhkiG\n9w0BAQEFAAOCAQ8AMIIBCgKCAQEAuzfNNNx7a8myaJCtSnX/RrohCgiN9RlUyfuI\n2/Ou8jqJkTx65qsGGmvPrC3oXgkkRLpimn7Wo6h+4FR1IAWsULecYxpsMNzaHxmx\n1x7e/dfgy5SDN67sH0NO3Xss0r0upS/kqbitOtSZpLYl6ZtrAGCSYP9PIUkY92eQ\nq2EGnI/yuum06ZIya7XzV+hdG82MHauVBJVJ8zUtluNJbd134/tJS7SsVQepj5Wz\ntCO7TG1F8PapspUwtP1MVYwnSlcUfIKdzXOS0xZKBgyMUNGPHgm+F6HmIcr9g+UQ\nvIOlCsRnKPZzFBQ9RnbDhxSJITRNrw9FDKZJobq7nMWxM4MphQIDAQABo0IwQDAP\nBgNVHRMBAf8EBTADAQH/MA4GA1UdDwEB/wQEAwIBhjAdBgNVHQ4EFgQUTiJUIBiV\n5uNu5g/6+rkS7QYXjzkwDQYJKoZIhvcNAQELBQADggEBAGBnKJRvDkhj6zHd6mcY\n1Yl9PMWLSn/pvtsrF9+wX3N3KjITOYFnQoQj8kVnNeyIv/iPsGEMNKSuIEyExtv4\nNeF22d+mQrvHRAiGfzZ0JFrabA0UWTW98kndth/Jsw1HKj2ZL7tcu7XUIOGZX1NG\nFdtom/DzMNU+MeKNhJ7jitralj41E6Vf8PlwUHBHQRFXGU7Aj64GxJUTFy8bJZ91\n8rGOmaFvE7FBcf6IKshPECBV1/MUReXgRPTqh5Uykw7+U0b6LJ3/iyK5S9kJRaTe\npLiaWN0bfVKfjllDiIGknibVb63dDcY3fe0Dkhvld1927jyNxF1WW6LZZm6zNTfl\nMrY=\n-----END CERTIFICATE-----\"\nset comment \"Created by ARM Template\"\nnext\nend",
-    "fazACustomDataHAa-a": "[concat('config system ha\n set mode a-a\n set group-id 10\n  set group-name FAZAZURE\n set hb-interface port1\n set hb-interval 5\n set hb-lost-threshold 10\n set password test\n config peer\n edit 1\n set addr ', variables('sn1IPfazB'),'\n set serial-number ', parameters('fortiAnalyzerSerialNumberB'), '\n next\n end\n set preferred-role primary\n end\n')]",
-    "fazBCustomDataHAa-a": "[concat('config system ha\n set mode a-a\n set group-id 10\n  set group-name FAZAZURE\n set hb-interface port1\n set hb-interval 5\n set hb-lost-threshold 10\n set password test\n config peer\n edit 1\n set addr ', variables('sn1IPfazA'),'\n set serial-number ', parameters('fortiAnalyzerSerialNumberA'), '\n next\n end\n end\n')]",
-    "fazACustomDataHAa-p-vipExternal": "[concat('config system ha\n set mode a-p\n set group-id 10\n set group-name FAZAZURE\n set hb-interface port1\n set hb-interval 5\n set hb-lost-threshold 10\n set password test\n config peer\n edit 1\n set addr ', variables('publicIP1Name'),'\n set serial-number ', parameters('fortiAnalyzerSerialNumberB'), '\n  next\n end\n set priority 100\n set preferred-role primary\n set unicast enable\n config vip\n edit 1\n set vip ', variables('sn1IPfazA2'), '\n set vip-interface port1\n end\n')]",
-    "fazBCustomDataHAa-p-vipExternal": "[concat('config system ha\n set mode a-p\n set group-id 10\n set group-name FAZAZURE\n set hb-interface port1\n set hb-interval 5\n set hb-lost-threshold 10\n set password test\n config peer\n edit 1\n set addr ', variables('publicIP1Name'),'\n set serial-number ', parameters('fortiAnalyzerSerialNumberA'), '\n next\n end\n set priority 90\n set unicast enable\n config vip\n edit 1\n set vip ', variables('sn1IPfazA2'), '\n set vip-interface port1\n end\n')]",
-    "fazACustomDataHAa-p-vipInternal": "[concat('config system ha\n set mode a-p\n set group-id 10\n set group-name FAZAZURE\n set hb-interface port1\n set hb-interval 5\n set hb-lost-threshold 10\n set password test\n config peer\n edit 1\n set addr ', variables('sn1IPfazB'),'\n set serial-number ', parameters('fortiAnalyzerSerialNumberB'), '\n next\n end\n set priority 100\n set preferred-role primary\n set unicast enable\n config vip\n edit 1\n set vip ', variables('sn1IPfazA2'), '\n set vip-interface port1\n end\n')]",
-    "fazBCustomDataHAa-p-vipInternal": "[concat('config system ha\n set mode a-p\n set group-id 10\n set group-name FAZAZURE\n set hb-interface port1\n set hb-interval 5\n set hb-lost-threshold 10\n set password test\n config peer\n edit 1\n set addr ', variables('sn1IPfazA'),'\n set serial-number ', parameters('fortiAnalyzerSerialNumberA'), '\n next\n end\n set priority 90\n set unicast enable\n config vip\n edit 1\n set vip ', variables('sn1IPfazA2'), '\n set vip-interface port1\n end\n')]",
+    "fazACustomDataHAa-a": "[concat('config system ha\n set mode a-a\n set group-id 10\n  set group-name FAZAZURE\n set hb-interface port1\n set hb-interval 5\n set hb-lost-threshold 10\n  config peer\n edit 1\n set addr ', variables('sn1IPfazB'),'\n set serial-number ', parameters('fortiAnalyzerSerialNumberB'), '\n next\n end\n set preferred-role primary\n end\n')]",
+    "fazBCustomDataHAa-a": "[concat('config system ha\n set mode a-a\n set group-id 10\n  set group-name FAZAZURE\n set hb-interface port1\n set hb-interval 5\n set hb-lost-threshold 10\n  config peer\n edit 1\n set addr ', variables('sn1IPfazA'),'\n set serial-number ', parameters('fortiAnalyzerSerialNumberA'), '\n next\n end\n end\n')]",
+    "fazACustomDataHAa-p-vipExternal": "[concat('config system ha\n set mode a-p\n set group-id 10\n set group-name FAZAZURE\n set hb-interface port1\n set hb-interval 5\n set hb-lost-threshold 10\n  config peer\n edit 1\n set addr ', variables('sn1IPfazB'),'\n set serial-number ', parameters('fortiAnalyzerSerialNumberB'), '\n  next\n end\n set priority 100\n set preferred-role primary\n set unicast enable\n config vip\n edit 1\n set vip ', variables('sn1IPfazA2'), '\n set vip-interface port1\n end\n')]",
+    "fazBCustomDataHAa-p-vipExternal": "[concat('config system ha\n set mode a-p\n set group-id 10\n set group-name FAZAZURE\n set hb-interface port1\n set hb-interval 5\n set hb-lost-threshold 10\n  config peer\n edit 1\n set addr ', variables('sn1IPfazA'),'\n set serial-number ', parameters('fortiAnalyzerSerialNumberA'), '\n next\n end\n set priority 90\n set unicast enable\n config vip\n edit 1\n set vip ', variables('sn1IPfazA2'), '\n set vip-interface port1\n end\n')]",
+    "fazACustomDataHAa-p-vipInternal": "[concat('config system ha\n set mode a-p\n set group-id 10\n set group-name FAZAZURE\n set hb-interface port1\n set hb-interval 5\n set hb-lost-threshold 10\n  config peer\n edit 1\n set addr ', variables('sn1IPfazB'),'\n set serial-number ', parameters('fortiAnalyzerSerialNumberB'), '\n next\n end\n set priority 100\n set preferred-role primary\n set unicast enable\n config vip\n edit 1\n set vip ', variables('sn1IPfazA2'), '\n set vip-interface port1\n end\n')]",
+    "fazBCustomDataHAa-p-vipInternal": "[concat('config system ha\n set mode a-p\n set group-id 10\n set group-name FAZAZURE\n set hb-interface port1\n set hb-interval 5\n set hb-lost-threshold 10\n  config peer\n edit 1\n set addr ', variables('sn1IPfazA'),'\n set serial-number ', parameters('fortiAnalyzerSerialNumberA'), '\n next\n end\n set priority 90\n set unicast enable\n config vip\n edit 1\n set vip ', variables('sn1IPfazA2'), '\n set vip-interface port1\n end\n')]",
     "fazACustomDataBody": "[concat('config system global\n set admin-lockout-duration 120\n set hostname ', variables('fazAVmName'), '\n end\nconfig system interface\nedit port1\nset mode static\nset ip ',  variables('sn1IPfazA'), '/', variables('sn1CIDRmask'), '\nset description fortianalyzer\nset allowaccess ping ssh https\nnext\nend\nconfig system route\nedit 1\nset dst 0.0.0.0/0\nset gateway ', variables('sn1GatewayIP'), '\nset device port1\nnext\nend\n', if(equals(parameters('highavailabilityMethod'),'a-a'),variables('fazACustomDataHAa-a'),''), if(equals(parameters('highavailabilityMethod'),'a-p-external-vip'),variables('fazACustomDataHAa-p-vipExternal'),''), if(equals(parameters('highavailabilityMethod'),'a-p-internal-vip'),variables('fazACustomDataHAa-p-vipInternal'),''), variables('customDataCert'), parameters('additionalCustomData'), variables('fazACustomDataFortiFlex'))]",
     "fazBCustomDataBody": "[concat('config system global\n set admin-lockout-duration 120\n set hostname ', variables('fazBVmName'), '\n end\nconfig system interface\nedit port1\nset mode static\nset ip ',  variables('sn1IPfazB'), '/', variables('sn1CIDRmask'), '\nset description fortianalyzer\nset allowaccess ping ssh https\nnext\nend\nconfig system route\nedit 1\nset dst 0.0.0.0/0\nset gateway ', variables('sn1GatewayIP'), '\nset device port1\nnext\nend\n', if(equals(parameters('highavailabilityMethod'),'a-a'),variables('fazBCustomDataHAa-a'),''), if(equals(parameters('highavailabilityMethod'),'a-p-external-vip'),variables('fazBCustomDataHAa-p-vipExternal'),''), if(equals(parameters('highavailabilityMethod'),'a-p-internal-vip'),variables('fazBCustomDataHAa-p-vipInternal'),''), variables('customDataCert'), parameters('additionalCustomData'), variables('fazBCustomDataFortiFlex'))]",
     "customDataLicenseHeader": "--12345\nContent-Type: text/plain; charset=\"us-ascii\"\nMIME-Version: 1.0\nContent-Transfer-Encoding: 7bit\nContent-Disposition: attachment; filename=\"fgtlicense\"\n\n",
@@ -405,8 +405,8 @@
     "fazBCustomDataFortiFlex": "[if(equals(parameters('fortiAnalyzerBLicenseFortiFlex'),''),'',concat('exec vm-license ',parameters('fortiAnalyzerBLicenseFortiFlex'), '\n'))]",
     "fazAcustomDataCombined": "[concat(variables('customDataHeader'),variables('fazACustomDataBody'),variables('customDataLicenseHeader'), parameters('fortiAnalyzerALicenseBYOL'), variables('customDataFooter'))]",
     "fazBcustomDataCombined": "[concat(variables('customDataHeader'),variables('fazBCustomDataBody'),variables('customDataLicenseHeader'), parameters('fortiAnalyzerBLicenseBYOL'), variables('customDataFooter'))]",
-    "fazACustomData": "[base64(if(equals(parameters('fortiAnalyzerALicenseBYOL'),''),variables('fazACustomDataBody'),variables('fazACustomDataCombined')))]",
-    "fazBCustomData": "[base64(if(equals(parameters('fortiAnalyzerALicenseBYOL'),''),variables('fazBCustomDataBody'),variables('fazBCustomDataCombined')))]",
+    "fazACustomData": "[if(equals(parameters('fortiAnalyzerALicenseBYOL'),''),variables('fazACustomDataBody'),variables('fazACustomDataCombined'))]",
+    "fazBCustomData": "[if(equals(parameters('fortiAnalyzerALicenseBYOL'),''),variables('fazBCustomDataBody'),variables('fazBCustomDataCombined'))]",
     "fazANic1Name": "[concat(variables('fazAVmName'),'-nic1')]",
     "fazANic1Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('fazANic1Name'))]",
     "fazBNic1Name": "[concat(variables('fazBVmName'),'-nic1')]",
@@ -583,7 +583,7 @@
               "direction": "Inbound"
             }
           },
-          {
+		  {
             "name": "AllowHAInbound",
             "properties": {
               "description": "Allow 5199 in for inbound HA ",
@@ -647,19 +647,22 @@
       }
     },
     {
-      "condition": "[equals(parameters('publicIP3NewOrExisting'), 'new')]",
+      "condition": "[equals(parameters('highavailabilityMethod'),'a-p-external-vip')]",
       "type": "Microsoft.Network/publicIPAddresses",
+      "name": "[variables('publicIP3Name')]",
       "apiVersion": "2023-04-01",
+      "location": "[parameters('location')]",
       "tags": {
         "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
-      "name": "[variables('publicIP3Name')]",
-      "location": "[parameters('location')]",
       "sku": {
         "name": "Standard"
       },
       "properties": {
-        "publicIPAllocationMethod": "Static"
+        "publicIPAllocationMethod": "static",
+        "dnsSettings": {
+          "domainNameLabel": "[concat(toLower(variables('publicIP3Name')), '-', uniquestring(resourceGroup().id))]"
+        }
       }
     },
     {
@@ -765,7 +768,7 @@
           "computerName": "[variables('fazAVmName')]",
           "adminUsername": "[parameters('adminUsername')]",
           "adminPassword": "[parameters('adminPassword')]",
-          "customData": "[variables('fazACustomData')]"
+          "customData": "[base64(if(equals(parameters('highavailabilityMethod'),'a-p-external-vip'),replace(variables('fazACustomData'),concat('set vip ', variables('sn1IPfazA2')), concat('set vip ', reference(resourceId('Microsoft.Network/publicIPAddresses',variables('publicIP3Name'))).IpAddress)),variables('fazACustomData')))]"
         },
         "storageProfile": {
           "imageReference": {
@@ -842,7 +845,7 @@
           "computerName": "[variables('fazBVmName')]",
           "adminUsername": "[parameters('adminUsername')]",
           "adminPassword": "[parameters('adminPassword')]",
-          "customData": "[variables('fazBCustomData')]"
+          "customData": "[base64(if(equals(parameters('highavailabilityMethod'),'a-p-external-vip'),replace(variables('fazBCustomData'),concat('set vip ', variables('sn1IPfazA2')), concat('set vip ', reference(resourceId('Microsoft.Network/publicIPAddresses',variables('publicIP3Name'))).IpAddress)),variables('fazBCustomData')))]"
         },
         "storageProfile": {
           "imageReference": {
@@ -896,11 +899,11 @@
       "type": "string",
       "value": "[if(equals(parameters('publicIP1NewOrExisting'), 'new'), reference(variables('publicIP1Id')).ipAddress, '')]"
     },
-    "fazacustomdata": {
+    "fortiAnalyzerACustomData": {
       "type": "string",
       "value": "[variables('fazACustomData')]"
     },
-    "fazbcustomdata": {
+    "fortiAnalyzerBCustomData": {
       "type": "string",
       "value": "[variables('fazBCustomData')]"
     }
