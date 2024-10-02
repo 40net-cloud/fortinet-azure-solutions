@@ -78,7 +78,8 @@ The FortiGate VMs need a specific configuration to match the deployed environmen
 
 - [Fabric Connector](#fabric-connector)
 - [East-West connections](#east-west-connections)
-- [Default configuration using this template](doc/config-provisioning.md)
+- [Inbound connections](#inbound-connections)
+- [Outbound connections](#outbound-connections)
 - [Default configuration using this template](#default-configuration)
 - [Upload VHD](../Documentation/faq-upload-vhd.md)
 
@@ -132,11 +133,68 @@ The drawing in the [flow](#east-west-flow) section is used in the configuration 
 
 On the FortiGate VM, a firewall policy rule needs to be created to allow traffic from specific IP ranges going in and out of the same internal interface (port2). It is also possible to use dynamic addresses using the SDN Connector to have more dynamic firewall policies.
 
-# Deployment configuration
+### Inbound connections
+
+#### Introduction
+
+Inbound connections are considered the connections coming from the internet towards the public IP address to publish services like a webserver or other, hosted in the VNET or peered VNETs. 
+
+This template will use the Standard SKU public IPs. The standard public IP by default is a static allocation. More information can be found [in the Microsoft documentation](https://docs.microsoft.com/en-us/azure/virtual-network/public-ip-addresses).
+
+#### Inbound Flow
+
+In the diagram the different steps to establish a session are layed out. This flow is based on the configuration as deployed in this template.
+
+<p align="center">
+  <img width="800px" src="images/inbound-flow.png" alt="inbound flow">
+</p>
+
+1. Connection from client to the public IP attached to a private IP on the FortiGate-VM - s: w.x.y.z - d: a.b.c.d
+2. The Azure Fabric will translate(DNAT) from the public IP to the private IP attacjed to the FortiGate-VM - s: w.x.y.z - d: 172.16.136.4
+3. FGT VIP linked to the private IP picks up the packet, translates (DNAT) the packet destined for the private IP on the FortiGate-VM. - s: w.x.y.z - d: 172.16.137.4
+4. Server responds to the request and the Azure Fabric using UDR will route the packet to the internal interface of the FortiGate-VM - s: 172.16.137.4 - d: w.x.y.z
+5. FortiGate-VM receives the packet and translates the source to the FortiGate-VM VIP on the external interface - s: 172.16.136.4 - d: w.x.y.z
+6. Azure Fabric translates (SNAT) the packet use the public IP to return to the client - s: a.b.c.d - d: w.x.y.z
+
+### Outbound connections
+
+#### Introduction
+
+Outbound connections are considered the connections coming from the internal subnets within the VNET or peered VNETs via the FortiGate-VM towards the internet.
+
+To direct traffic to the FortiGate-VM routing needs to be adapted on Microsoft Azure using User Defined Routing (UDR). With UDRs the routing in Azure can be adapted to send traffic destined for a specific network IP range to a specific destination such as Internet, VPN Gateway, Virtual Network (VNET), ... In order for the FortiGate-VM to become the destination there is a specific destination called Virtual Appliance. Either the private IP of the FortiGate-VM or the frontend IP of the internal Load Balancer is provided. More information about User Defined Routing can be found [here](https://docs.microsoft.com/en-us/azure/virtual-network/virtual-networks-udr-overview)
+
+Which public IP is used for the outbound connections depends on the configuration and layout of your deployed setup. There are 3 options 
+
+- Public IP directly connected to a NIC of the FortiGate-VM
+- One or more public IPs attached to the external Azure Load Balancer with the FortiGate-VM as a backend server
+- NAT Gateway attached to the subnet of the external NIC of the FortiGate-VM
+
+NAT Gateway takes precedence over a public IP directly connected to a NIC as second which takes precedence over an external Azure Load Balancer with or without outbound rules. More information can be found on the links below:
+
+- [Default outbound access in Azure](https://learn.microsoft.com/en-us/azure/virtual-network/ip-services/default-outbound-access)
+- [Use Source Network Address Translation (SNAT) for outbound connections](https://learn.microsoft.com/en-us/azure/load-balancer/load-balancer-outbound-connections)
+- [Outbound connectivity with a NAT Gateway](https://learn.microsoft.com/en-us/azure/nat-gateway/faq#how-can-i-use-a-nat-gateway-to-connect-outbound-in-a-setup-where-i-m-currently-using-a-different-service-for-outbound)
+- [Quickstart: Create a public load balancer to load balance VMs using the Azure portal](https://learn.microsoft.com/en-us/azure/load-balancer/quickstart-load-balancer-standard-public-portal)
+
+#### Outbound Flow
+
+In the diagram the different steps to establish a session are layed out. 
+
+![Outbound flow](images/outbound-flow.png)
+
+1. Connection from client to the public IP of the server. Azure routes the traffic using UDR to the internal network interface of the FortiGate-VM. - s: 172.16.137.4 - d: w.x.y.z
+2. The FortiGate-VM inspects the packet and when allowed sends the packet translated to it's external port private IP outbound. - s: 172.16.136.4 - d: a.b.c.d
+3. The Azure Fabric will translate the source private IP to the linked public IP - s: a.b.c.d - d: w.x.y.z
+4. The server responds to the request - s: w.x.y.z - d: a.b.c.d
+5. The Azure Fabric translates the destination public IP to the linked private IP - s: w.x.y.z - d: 172.16.136.4
+6. The FortiGate-VM accepts the return packet after inspection. It translates and routes the packet to the client - s: w.x.y.z - d: 172.16.137.4
+
+### Default Configuration
 
 After deployment, the below configuration has been automatically injected during the deployment. The bold sections are the default values. If parameters have been changed during deployment these values will be different.
 
-## FortiGate A
+#### FortiGate
 
 <pre><code>
 config system sdn-connector
