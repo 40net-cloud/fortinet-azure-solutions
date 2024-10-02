@@ -235,7 +235,6 @@ config system ha
  set group-id 10
  set group-name "FAZAZURE"
  set hb-interface "port1"
- set hb-interface "port1"
   config peer
    edit 1
     set addr <b>FortiAnalyzer B IP address - 172.16.140.5</b>
@@ -253,7 +252,6 @@ config system ha
  set mode a-a
  set group-id 10
  set group-name "FAZAZURE"
- set hb-interface "port1"
  set hb-interface "port1"
   config peer
    edit 1
