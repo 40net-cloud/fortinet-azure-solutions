@@ -76,12 +76,100 @@ The ARM template deploys different resources and it is required to have the acce
 
 The FortiGate VMs need a specific configuration to match the deployed environment. This configuration can be injected during provisioning or afterwards via the different options including GUI, CLI, FortiManager or REST API.
 
+- [Fabric Connector](#fabric-connector)
+- [East-West connections](#east-west-connections)
 - [Default configuration using this template](doc/config-provisioning.md)
+- [Default configuration using this template](#default-configuration)
 - [Upload VHD](../Documentation/faq-upload-vhd.md)
 
 ### Fabric Connector
 
 The FortiGate-VM uses [Managed Identities](https://docs.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/) for the SDN Fabric Connector. A SDN Fabric Connector is created automatically during deployment. After deployment, it is required apply the 'Reader' role to the Azure Subscription you want to resolve Azure Resources from. More information can be found on the [Fortinet Documentation Libary](https://docs.fortinet.com/document/fortigate-public-cloud/7.2.0/azure-administration-guide/236610/configuring-an-sdn-connector-using-a-managed-identity).
+
+### East-West connections
+
+#### Introduction
+
+East-West connections are considered the connections between internal subnets within the VNET or peered VNETs. The goal is to direct this traffic via the FortiGate.
+
+To direct traffic to the FortiGate NGFW routing needs to be adapted on Microsoft Azure using User Defined Routing (UDR). With UDRs the routing in Azure can be adapted to send traffic destined for a specific network IP range to a specific destination such as Internet, VPN Gateway, Virtual Network (VNET), ... In order for the FortiGate to become the destination there is a specific destination called Virtual Appliance. The private IP of the FortiGate is provided. More information about User Defined Routing can be found [here](https://docs.microsoft.com/en-us/azure/virtual-network/virtual-networks-udr-overview)
+
+#### East-West Flow
+
+In the diagram the different steps to establish a session are layed out. This flow is based on the configuration as deployed in this template.
+
+![East west flow](images/ew-flow.png)
+
+1. Connection from client to the private IP of server. Azure routes the traffic using UDR to the internal network interface - s: 172.16.137.4 - d: 172.16.138.4
+2. FGT inspects the packet and when allowed sends the packet to the server - s: 172.16.137.4 - d: 172.16.138.4
+3. The server responds to the request, th Azure fabric sends the packet for inspection to the FGT internal network interface using UDR - s: 172.16.137.4 - d: 172.16.138.4
+4. The active FGT accepts the return packet after inspection and sends it to the client - s: 172.16.137.4 - d: 172.16.138.4
+
+#### Configuration
+
+To configure the east-west connectivity to a service there are 2 resources that need to be verified/configured:
+
+- FortiGate
+- Azure user defined routing
+
+The drawing in the [flow](#east-west-flow) section is used in the configuration screenshots.
+
+##### Azure User Defined Routing
+
+<p align="center">
+  <img width="500px" src="images/ew-udr-a.png">
+</p>
+
+<p align="center">
+  <img width="500px" src="images/ew-udr-b.png">
+</p>
+
+<p align="center">
+  <img width="500px" src="images/ew-udr.png">
+</p>
+
+##### FortiGate
+
+On the FortiGate VM, a firewall policy rule needs to be created to allow traffic from specific IP ranges going in and out of the same internal interface (port2). It is also possible to use dynamic addresses using the SDN Connector to have more dynamic firewall policies.
+
+# Deployment configuration
+
+After deployment, the below configuration has been automatically injected during the deployment. The bold sections are the default values. If parameters have been changed during deployment these values will be different.
+
+## FortiGate A
+
+<pre><code>
+config system sdn-connector
+  edit AzureSDN
+    set type azure
+  next
+end
+config router static
+  edit 1
+    set gateway <b>172.16.136.1</b>
+    set device port1
+  next
+  edit 2
+    set dst <b>172.16.136.0/22</b>
+    set device port2
+    set gateway <b>172.16.136.65</b>
+  next
+end
+config system interface
+  edit port1
+    set mode static
+    set ip <b>172.16.136.5/26</b>
+    set description external
+    set allowaccess ping ssh https
+  next
+  edit port2
+    set mode static
+    set ip <b>172.16.136.69/24</b>
+    set description internal
+    set allowaccess ping ssh https
+  next
+end
+</code></pre>
 
 ## Support
 
