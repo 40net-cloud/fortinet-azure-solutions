@@ -634,7 +634,7 @@
     },
     {
       "type": "Microsoft.Network/loadBalancers",
-      "apiVersion": "2023-04-01",
+      "apiVersion": "2023-06-01",
       "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Network/loadBalancers'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Network/loadBalancers']), parameters('fortinetTags')) ]",
       "name": "[variables('externalLBName')]",
       "location": "[parameters('location')]",
@@ -753,7 +753,7 @@
               "protocol": "Tcp",
               "port": 80,
               "intervalInSeconds": 5,
-              "numberOfProbes": 2
+              "probeThreshold": 2
             },
             "name": "[variables('externalLBProbeName')]"
           },
@@ -762,7 +762,7 @@
               "protocol": "Tcp",
               "port": 443,
               "intervalInSeconds": 5,
-              "numberOfProbes": 2
+              "probeThreshold": 2
             },
             "name": "[variables('externalLBProbe2Name')]"
           }
