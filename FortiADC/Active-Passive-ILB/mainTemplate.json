@@ -406,7 +406,7 @@
       }
     },
     {
-      "apiVersion": "2020-11-01",
+      "apiVersion": "2023-06-01",
       "type": "Microsoft.Network/loadBalancers",
       "name": "[variables('internalLBName')]",
       "location": "[parameters('location')]",
@@ -483,7 +483,7 @@
               "protocol": "Tcp",
               "port": 80,
               "intervalInSeconds": 15,
-              "numberOfProbes": 2
+              "probeThreshold": 2
             },
             "name": "[variables('internalLBProbeName')]"
           },
@@ -492,7 +492,7 @@
               "protocol": "Tcp",
               "port": 443,
               "intervalInSeconds": 15,
-              "numberOfProbes": 2
+              "probeThreshold": 2
             },
             "name": "[variables('internalLBProbe2Name')]"
           }
