@@ -1145,7 +1145,7 @@
               "protocol": "Tcp",
               "port": 8008,
               "intervalInSeconds": 5,
-              "numberOfProbes": 2
+              "probeThreshold": 2
             },
             "name": "lbprobe"
           }
@@ -1256,7 +1256,7 @@
               "protocol": "Tcp",
               "port": 8008,
               "intervalInSeconds": 5,
-              "numberOfProbes": 2
+              "probeThreshold": 2
             },
             "name": "lbprobe"
           }
