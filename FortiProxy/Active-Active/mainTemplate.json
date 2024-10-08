@@ -827,7 +827,7 @@
       "condition": "[parameters('externalLoadBalancer')]",
       "type": "Microsoft.Network/loadBalancers",
       "name": "[variables('externalLBName')]",
-      "apiVersion": "2023-04-01",
+      "apiVersion": "2023-06-01",
       "location": "[parameters('location')]",
       "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Network/loadBalancers'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Network/loadBalancers']), parameters('fortinetTags')) ]",
       "sku": {
@@ -879,7 +879,7 @@
               "protocol": "Tcp",
               "port": 8080,
               "intervalInSeconds": 5,
-              "numberOfProbes": 2
+              "probeThreshold": 2
             },
             "name": "lbprobe"
           }
@@ -936,7 +936,7 @@
       "condition": "[not(parameters('externalLoadBalancer'))]",
       "type": "Microsoft.Network/loadBalancers",
       "name": "[variables('internalLBName')]",
-      "apiVersion": "2023-04-01",
+      "apiVersion": "2023-06-01",
       "location": "[parameters('location')]",
       "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Network/loadBalancers'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Network/loadBalancers']), parameters('fortinetTags')) ]",
       "sku": {
@@ -991,7 +991,7 @@
               "protocol": "Tcp",
               "port": 8008,
               "intervalInSeconds": 5,
-              "numberOfProbes": 2
+              "probeThreshold": 2
             },
             "name": "lbprobe"
           }
