@@ -975,7 +975,7 @@
               "protocol": "Tcp",
               "port": 8008,
               "intervalInSeconds": 5,
-              "numberOfProbes": 2
+              "probeThreshold": 2
             },
             "name": "[variables('externalLBProbeName')]"
           }
@@ -1040,7 +1040,7 @@
               "protocol": "Tcp",
               "port": 8008,
               "intervalInSeconds": 5,
-              "numberOfProbes": 2
+              "probeThreshold": 2
             },
             "name": "[variables('internalLBProbeName')]"
           }
