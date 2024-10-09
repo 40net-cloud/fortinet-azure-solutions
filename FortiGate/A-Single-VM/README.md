@@ -156,6 +156,65 @@ In the diagram the different steps to establish a session are layed out. This fl
 5. FortiGate-VM receives the packet and translates the source to the FortiGate-VM VIP on the external interface - s: 172.16.136.4 - d: w.x.y.z
 6. Azure Fabric translates (SNAT) the packet use the public IP to return to the client - s: a.b.c.d - d: w.x.y.z
 
+#### Configuration
+
+To configure the inbound connectivity to a service via the FortiGate-VM, configuration needs to happen on the Azure and FortiGate-VM level:
+
+- Azure user-defined route (UDR)
+- Azure network security group (NSG)
+- FortiGate
+
+The drawing in the [flow](#inbound-flow) section is used in the configuration screenshots.
+
+##### Azure user-defined route (UDR)
+
+The user-defined route (UDR) is required to route return traffic back from the internal server to the FortiGate-VM. If the UDR is not configured, one needs to SNAT the inbound packet behind the FortiGate-VM internal interface to ensure the return packet send back via the FortiGate-VM.
+
+It is possible to create more specific routes instead of the general 0.0.0.0/0 route if only specific traffic needs to pass through the FortiGate-VM.
+
+<p align="center">
+  <img width="800px" src="images/fgt-udr.png" alt="fgt udr">
+</p>
+
+The route needed to route internet traffic back to the FortiGate-VM contains the following values and attached to one or more protected subnets:
+```
+Name: Default
+Address Prefix: 0.0.0.0/0
+Next hop type: Virtual Appliance
+Next hop IP address: 172.16.136.68
+```
+The additional routes on the screenshot will provide additional functionality. The 'Subnet' route will unsure virtual machines can talk to each other without being send to the FortiGate-VM. The 'VirtualNetwork' route will send traffic for all the subnets in the VNET to the FortiGate-VM for inspection.
+
+It is recomended to deploy servers in different subnets behind the FortiGate-VM or in peered VNETs/subnets, these networks are indicated in documentation as protected subnets. It is not recomended to deploy virtual machines whose traffic needs to pass through the FortiGate-VM to be deployed in the same network as an interface of the FortiGate-VM (external or internal). This will cause routing loops when traffic needs to be routed between a protected subnet virtual machine and a internal subnet virtual machine via the FortiGate-VM.
+
+##### Azure network security group (NSG)
+
+The default deployment of the FortiGate-VM deploys a network security group (NSG) on the network interfaces. This NSG ensure that all traffic is allowed and that inbound traffic is allowed when using Standard SKU public IP addresses.
+
+<p align="center">
+  <img width="800px" src="images/fgt-nsg.png" alt="fgt nsg">
+</p>
+
+If any additional NSGs are configured, they need to allow traffic to and from the FortiGate-VM for this specific traffic.
+
+##### FortiGate-VM
+
+On the Azure level, the FortiGate-VM needs to have a Standard SKU public IP address connected to a private IP address. Up to 255 additional public IP addresses can be attached to secondary public IP addresses.
+<p align="center">
+  <img width="800px" src="images/inbound-vm.png" alt="inbound vm">
+</p>
+
+On the FortiGate-VM, the first task is to create a virtual IP. Beware that the primary IP is also used for managment of the FortiGate and some ports are reserved.
+<p align="center">
+  <img width="800px" src="images/inbound-vip.png" alt="inbound vip">
+</p>
+
+Once the virtual IP is configured, a firewall policy needs to be created based on the virtual IP. It is possible to have a different port on the outside the port running on the server internal resulting in port address translation (PAT)
+
+<p align="center">
+  <img width="800px" src="images/inbound-policy.png" alt="inbound policy">
+</p>
+
 ### Outbound connections
 
 #### Introduction
@@ -189,6 +248,52 @@ In the diagram the different steps to establish a session are layed out.
 4. The server responds to the request - s: w.x.y.z - d: a.b.c.d
 5. The Azure Fabric translates the destination public IP to the linked private IP - s: w.x.y.z - d: 172.16.136.4
 6. The FortiGate-VM accepts the return packet after inspection. It translates and routes the packet to the client - s: w.x.y.z - d: 172.16.137.4
+
+#### Configuration
+
+To configure the outbound connectivity via the FortiGate-VM, configuration needs to happen on the Azure and FortiGate-VM level:
+
+- Azure user-defined route (UDR)
+- Azure network security group (NSG)
+- FortiGate
+
+The drawing in the [flow](#outbound-flow) section is used in the configuration screenshots.
+
+##### Azure user-defined route (UDR)
+
+The user-defined route (UDR) is required to route outbound traffic from the internal client via the FortiGate-VM. The UDR is the same as the one required for the inbound return traffic.
+
+It is possible to create more specific routes instead of the general 0.0.0.0/0 route if only specific traffic needs to pass through the FortiGate-VM.
+
+<p align="center">
+  <img width="800px" src="images/fgt-udr.png" alt="fgt udr">
+</p>
+
+The route needed to route internet traffic to the FortiGate-VM contains the following values and attached to one or more protected subnets:
+```
+Name: Default
+Address Prefix: 0.0.0.0/0
+Next hop type: Virtual Appliance
+Next hop IP address: 172.16.136.68
+```
+
+##### Azure network security group (NSG)
+
+The default deployment of the FortiGate-VM deploys a network security group (NSG) on the network interfaces. This NSG ensure that all traffic is allowed and that inbound traffic is allowed when using Standard SKU public IP addresses.
+
+<p align="center">
+  <img width="800px" src="images/fgt-nsg.png" alt="fgt-nsg">
+</p>
+
+If any additional NSGs are configured, they need to allow traffic to and from the FortiGate-VM for this specific traffic.
+
+##### FortiGate-VM
+
+On the FortiGate-VM, a firewall policy needs to be created to allow traffic from the port2 (internal) side to the port1 (external) side. NAT is enabled to NAT behind the primary interface private IP address. Alternatively, it is also possible to NAT behind secondary private IP address in case they have a public IP address attached to it.
+
+<p align="center">
+  <img width="800px" src="images/outbound-policy.png" alt="outbound policy">
+</p>
 
 ### Default Configuration
 
@@ -237,5 +342,3 @@ For direct issues, please refer to the [Issues](https://github.com/40net-cloud/f
 ## License
 
 [License](/../../blob/main/LICENSE) © Fortinet Technologies. All rights reserved.
-
-[![Azure Portal Wizard](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.svg?sanitize=true)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fyarafe%2FTest%2Fmain%2FFGT%2FIPv6%2FA-Single-VM%2Fazuredeploy.json/createUIDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2Fyarafe%2FTest%2Fmain%2FFGT%2FIPv6%2FA-Single-VM%2FcreateUiDefinition.json)
