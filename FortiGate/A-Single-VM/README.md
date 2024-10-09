@@ -16,7 +16,7 @@ In Microsoft Azure, this single FortiGate-VM setup a basic setup to start explor
 
 This Azure ARM template will automatically deploy a full working environment containing the following components.
 
-- 1 standalone FortiGate firewall
+- 1 standalone FortiGate-VM
 - 1 VNETs containing a protected subnet
 - User Defined Routes (UDR) for the protected subnets
 
@@ -30,8 +30,8 @@ For the deployment, you can use the Azure Portal, Azure CLI, Powershell or Azure
 
 - PREFIX : This prefix will be added to each of the resources created by the template for ease of use and visibility.
 - LOCATION : This is the Azure region where the deployment will be deployed.
-- USERNAME : The username used to login to the FortiGate GUI and SSH management UI.
-- PASSWORD : The password used for the FortiGate GUI and SSH management UI.
+- USERNAME : The username used to login to the FortiGate-VM GUI and SSH management UI.
+- PASSWORD : The password used for the FortiGate-VM GUI and SSH management UI.
 
 ### Azure Portal
 
@@ -60,13 +60,13 @@ After deployment, you will be shown the IP addresses of all deployed components.
 The ARM template deploys different resources and it is required to have the access rights and quota in your Microsoft Azure subscription to deploy the resources.
 
 - The template will deploy Standard F2s VMs for this architecture. Other VM instances are supported as well with a minimum of 2 NICs. A list can be found [here](https://docs.fortinet.com/document/fortigate-public-cloud/7.4.0/azure-administration-guide/562841/instance-type-support)
-- Licenses for FortiGate
+- Licenses for FortiGate-VM
   - BYOL: A demo license can be made available via your Fortinet partner or on our website. These can be injected during deployment or added after deployment. Purchased licenses need to be registered on the [Fortinet support site](http://support.fortinet.com). Download the .lic file after registration. Note, these files may not work until 60 minutes after it's initial creation.
-  - PAYG or OnDemand: These licenses are automatically generated during the deployment of the FortiGate systems.
+  - PAYG or OnDemand: These licenses are automatically generated during the deployment of the FortiGate-VM systems.
   - The password provided during deployment must need password complexity rules from Microsoft Azure:
   - It must be 12 characters or longer
   - It needs to contain characters from at least 3 of the following groups: uppercase characters, lowercase characters, numbers, and special characters excluding '\' or '-'
-- The terms for the FortiGate PAYG or BYOL image in the Azure Marketplace needs to be accepted once before usage. This is done automatically during deployment via the Azure Portal. For the Azure CLI the commands below need to be run before the first deployment in a subscription.
+- The terms for the FortiGate-VM PAYG or BYOL image in the Azure Marketplace needs to be accepted once before usage. This is done automatically during deployment via the Azure Portal. For the Azure CLI the commands below need to be run before the first deployment in a subscription.
   - BYOL
 `az vm image terms accept --publisher fortinet --offer fortinet_fortigate-vm_v5 --plan fortinet_fg-vm`
   - PAYG
@@ -74,7 +74,7 @@ The ARM template deploys different resources and it is required to have the acce
 
 ## Configuration
 
-The FortiGate VMs need a specific configuration to match the deployed environment. This configuration can be injected during provisioning or afterwards via the different options including GUI, CLI, FortiManager or REST API.
+The FortiGate-VMs need a specific configuration to match the deployed environment. This configuration can be injected during provisioning or afterwards via the different options including GUI, CLI, FortiManager or REST API.
 
 - [Fabric Connector](#fabric-connector)
 - [VNET peering](#vnet-peering)
@@ -87,7 +87,7 @@ The FortiGate VMs need a specific configuration to match the deployed environmen
 
 ### Fabric Connector
 
-The FortiGate-VM uses [Managed Identities](https://docs.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/) for the SDN Fabric Connector. A SDN Fabric Connector is created automatically during deployment. After deployment, it is required apply the 'Reader' role to the Azure Subscription you want to resolve Azure Resources from. More information can be found on the [Fortinet Documentation Libary](https://docs.fortinet.com/document/fortigate-public-cloud/7.2.0/azure-administration-guide/236610/configuring-an-sdn-connector-using-a-managed-identity).
+The FortiGate-VM uses [Managed Identities](https://docs.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/) for the SDN Fabric Connector. A SDN Fabric Connector is created automatically during deployment. After deployment, it is required apply the 'Reader' role to the Azure Subscription you want to resolve Azure Resources from. More information can be found on the [Fortinet Documentation Libary](https://docs.fortinet.com/document/fortigate-public-cloud/7.6.0/azure-administration-guide/236610/configuring-an-sdn-connector-using-a-managed-identity).
 
 ### VNET peering
 
@@ -99,9 +99,9 @@ In Microsoft Azure, this central security services hub is commonly implemented u
 
 #### Introduction
 
-East-West connections are considered the connections between internal subnets within the VNET or peered VNETs. The goal is to direct this traffic via the FortiGate.
+East-West connections are considered the connections between internal subnets within the VNET or peered VNETs. The goal is to direct this traffic via the FortiGate-VM.
 
-To direct traffic to the FortiGate NGFW routing needs to be adapted on Microsoft Azure using User Defined Routing (UDR). With UDRs the routing in Azure can be adapted to send traffic destined for a specific network IP range to a specific destination such as Internet, VPN Gateway, Virtual Network (VNET), ... In order for the FortiGate to become the destination there is a specific destination called Virtual Appliance. The private IP of the FortiGate is provided. More information about User Defined Routing can be found [here](https://docs.microsoft.com/en-us/azure/virtual-network/virtual-networks-udr-overview)
+To direct traffic to the FortiGate-VM routing needs to be adapted on Microsoft Azure using User Defined Routing (UDR). With UDRs the routing in Azure can be adapted to send traffic destined for a specific network IP range to a specific destination such as Internet, VPN Gateway, Virtual Network (VNET), ... In order for the FortiGate-VM to become the destination there is a specific destination called Virtual Appliance. The private IP of the FortiGate-VM is provided. More information about User Defined Routing can be found [here](https://docs.microsoft.com/en-us/azure/virtual-network/virtual-networks-udr-overview)
 
 #### East-West Flow
 
@@ -118,7 +118,7 @@ In the diagram the different steps to establish a session are layed out. This fl
 
 To configure the east-west connectivity to a service there are 2 resources that need to be verified/configured:
 
-- FortiGate
+- FortiGate-VM
 - Azure user defined routing
 
 The drawing in the [flow](#east-west-flow) section is used in the configuration screenshots.
@@ -139,7 +139,7 @@ The drawing in the [flow](#east-west-flow) section is used in the configuration 
 
 ##### FortiGate
 
-On the FortiGate VM, a firewall policy rule needs to be created to allow traffic from specific IP ranges going in and out of the same internal interface (port2). It is also possible to use dynamic addresses using the SDN Connector to have more dynamic firewall policies.
+On the FortiGate-VM, a firewall policy rule needs to be created to allow traffic from specific IP ranges going in and out of the same internal interface (port2). It is also possible to use dynamic addresses using the SDN Connector to have more dynamic firewall policies.
 
 ### Inbound connections
 
@@ -170,7 +170,7 @@ To configure the inbound connectivity to a service via the FortiGate-VM, configu
 
 - Azure user-defined route (UDR)
 - Azure network security group (NSG)
-- FortiGate
+- FortiGate-VM
 
 The drawing in the [flow](#inbound-flow) section is used in the configuration screenshots.
 
@@ -229,12 +229,11 @@ Once the virtual IP is configured, a firewall policy needs to be created based o
 
 Outbound connections are considered the connections coming from the internal subnets within the VNET or peered VNETs via the FortiGate-VM towards the internet.
 
-To direct traffic to the FortiGate-VM routing needs to be adapted on Microsoft Azure using User Defined Routing (UDR). With UDRs the routing in Azure can be adapted to send traffic destined for a specific network IP range to a specific destination such as Internet, VPN Gateway, Virtual Network (VNET), ... In order for the FortiGate-VM to become the destination there is a specific destination called Virtual Appliance. Either the private IP of the FortiGate-VM or the frontend IP of the internal Load Balancer is provided. More information about User Defined Routing can be found [here](https://docs.microsoft.com/en-us/azure/virtual-network/virtual-networks-udr-overview)
+To direct traffic to the FortiGate-VM routing needs to be adapted on Microsoft Azure using User Defined Routing (UDR). With UDRs the routing in Azure can be adapted to send traffic destined for a specific network IP range to a specific destination such as Internet, VPN Gateway, Virtual Network (VNET), ... In order for the FortiGate-VM to become the destination there is a specific destination called Virtual Appliance. The private IP of the FortiGate-VM is provided. More information about User Defined Routing can be found [here](https://docs.microsoft.com/en-us/azure/virtual-network/virtual-networks-udr-overview)
 
 Which public IP is used for the outbound connections depends on the configuration and layout of your deployed setup. There are 3 options 
 
-- Public IP directly connected to a NIC of the FortiGate-VM
-- One or more public IPs attached to the external Azure Load Balancer with the FortiGate-VM as a backend server
+- Public IP directly connected to a primary or secondary private IP on the NIC of the FortiGate-VM
 - NAT Gateway attached to the subnet of the external NIC of the FortiGate-VM
 
 NAT Gateway takes precedence over a public IP directly connected to a NIC as second which takes precedence over an external Azure Load Balancer with or without outbound rules. More information can be found on the links below:
@@ -263,7 +262,7 @@ To configure the outbound connectivity via the FortiGate-VM, configuration needs
 
 - Azure user-defined route (UDR)
 - Azure network security group (NSG)
-- FortiGate
+- FortiGate-VM
 
 The drawing in the [flow](#outbound-flow) section is used in the configuration screenshots.
 
@@ -316,13 +315,14 @@ Microsoft defines an Availability Zone to have the following properties:
 - Fault-tolerant to protect from datacenter failure
 
 Based on information in the presentation ['Inside Azure datacenter architecture with Mark Russinovich' at Microsoft Ignite 2019](https://www.youtube.com/watch?v=X-0V6bYfTpA)
+
 ![active/passive design](images/fgt-single-vm-az.png)
 
 ### Default Configuration
 
 After deployment, the below configuration has been automatically injected during the deployment. The bold sections are the default values. If parameters have been changed during deployment these values will be different.
 
-#### FortiGate
+#### FortiGate-VM
 
 <pre><code>
 config system sdn-connector
