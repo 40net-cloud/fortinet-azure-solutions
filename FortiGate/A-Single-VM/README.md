@@ -87,6 +87,12 @@ The FortiGate VMs need a specific configuration to match the deployed environmen
 
 The FortiGate-VM uses [Managed Identities](https://docs.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/) for the SDN Fabric Connector. A SDN Fabric Connector is created automatically during deployment. After deployment, it is required apply the 'Reader' role to the Azure Subscription you want to resolve Azure Resources from. More information can be found on the [Fortinet Documentation Libary](https://docs.fortinet.com/document/fortigate-public-cloud/7.2.0/azure-administration-guide/236610/configuring-an-sdn-connector-using-a-managed-identity).
 
+### VNET peering
+
+In Microsoft Azure, this central security services hub is commonly implemented using VNET peering. The central security services hub component will receive, using user-defined routing (UDR), all or specific traffic that needs inspection going to/coming from on-prem networks or the public internet. This deployment can be used as the hub section of such a [Hub-Spoke network topology](https://learn.microsoft.com/en-us/azure/architecture/networking/architecture/hub-spoke?tabs=cli#communication-through-an-nva)
+
+![VNET peering](images/fgt-single-vm-vnet-peering.png)
+
 ### East-West connections
 
 #### Introduction
@@ -294,6 +300,21 @@ On the FortiGate-VM, a firewall policy needs to be created to allow traffic from
 <p align="center">
   <img width="800px" src="images/outbound-policy.png" alt="outbound policy">
 </p>
+
+### Availability Zone
+
+Each of the architecture options listed in the design section will have the possibility enable Availability Zones.
+
+Microsoft defines an Availability Zone to have the following properties:
+
+- Unique physical location with an Azure Region
+- Each zone is made up of one or more datacenter(s)
+- Independent power, cooling and networking
+- Inter Availability Zone network latency < 2ms (radius of +/- 100km)
+- Fault-tolerant to protect from datacenter failure
+
+Based on information in the presentation ['Inside Azure datacenter architecture with Mark Russinovich' at Microsoft Ignite 2019](https://www.youtube.com/watch?v=X-0V6bYfTpA)
+![active/passive design](images/fgt-single-vm-az.png)
 
 ### Default Configuration
 
