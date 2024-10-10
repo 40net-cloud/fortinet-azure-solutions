@@ -811,7 +811,7 @@
               {
                 "name": "fgtLicenseFortiFlexCheck",
                 "type": "Microsoft.Common.CheckBox",
-                "label": "My organisation is using the FortiFlex subscription service.",
+                "label": "My organization is using the FortiFlex subscription service.",
                 "toolTip": "Select this box to enter a FortiFlex token",
                 "visible": "[or(equals(steps('instance').instancetype_x64.fortiGateImageSKU_x64, 'fortinet_fg-vm'),equals(steps('instance').instancetype_arm64.fortiGateImageSKU_arm64, 'fortinet_fg-vm_arm64'))]"
               },
@@ -850,7 +850,7 @@
                 "type": "Microsoft.Common.InfoBox",
                 "options": {
                   "icon": "Info",
-                  "text": "Pay As You Go licenses was selected in the basics blade and provisioned automatically durig deployment. Registration of the PAYG license is required to receive support.",
+                  "text": "Pay As You Go licenses was selected in the basics blade and provisioned automatically during deployment. Registration of the PAYG license is required to receive support.",
                   "uri": "https://docs.fortinet.com/document/fortigate-public-cloud/7.2.0/azure-administration-guide/533394/creating-a-support-account"
                 },
                 "visible": "[not(or(equals(steps('instance').instancetype_x64.fortiGateImageSKU_x64, 'fortinet_fg-vm'),equals(steps('instance').instancetype_arm64.fortiGateImageSKU_arm64, 'fortinet_fg-vm_arm64')))]"
@@ -993,7 +993,7 @@
                 "type": "Microsoft.Common.TextBlock",
                 "visible": true,
                 "options": {
-                  "text": "Enables SR-IOV support allowing direct acces from the NIC in the Azure infrastructure to the FortiGate VM.",
+                  "text": "Enables SR-IOV support allowing direct access from the NIC in the Azure infrastructure to the FortiGate VM.",
                   "link": {
                     "label": "Learn more",
                     "uri": "https://docs.fortinet.com/document/fortigate-public-cloud/7.2.0/azure-administration-guide/651644/enabling-accelerated-networking-on-the-fortigate-vm"
@@ -1287,7 +1287,7 @@
                 "name": "customvhdcheck",
                 "type": "Microsoft.Common.CheckBox",
                 "label": "Use Azure compute gallery VHD for deployment",
-                "toolTip": "This option enables the Internet inbound usecase and creates additional routing infrastructure",
+                "toolTip": "This option enables the Internet inbound use case and creates additional routing infrastructure",
                 "visible": true
               },
               {
