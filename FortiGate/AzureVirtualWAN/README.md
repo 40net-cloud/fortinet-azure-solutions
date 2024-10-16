@@ -53,7 +53,8 @@ FortiGate-VM and Fortinet Secure SD-WAN Native Integration with Azure Virtual WA
 
 This setup can be combined with different FortiGate deployment outside of the Virtual WAN Hub like the [North-South](#north-south) setup for ingress publishing of services.
 
-More information can be found [here](doc/insidevwan-sdwan.md)
+### Flows, diagrams, Azure internet edge inbound/DNAT
+More information about those topics can be found [here](doc/insidevwan-sdwan.md)
 
 ### North-South
 *Inbound connectivity from internet to your workloads connected to Azure Virtual WAN*
