@@ -55,3 +55,44 @@ The integration of the FortiGate inside of the Virtual WAN Hub requires FortiMan
 4. Server responds to the request - s: 172.16.138.4 - d: 172.16.137.4
 5. Azure External Load Balancer sends the return packets to the same FGT-A thanks to session persistance - s: 172.16.138.4 - d: 172.16.137.4
 6. Active FGT accepts the return packet after inspection - s: 172.16.138.4 - d: 172.16.137.4
+
+
+### Azure internet edge inbound/DNAT
+
+The internet inbound use case will have an External Load Balancer (ELB) deployed as part of the managed application. Load balancing rules will be configured from the FortiGate CLI, and once configured, they will be automatically pushed with an API call to the ELB.
+
+### Inbound with SNAT applied on the FGTs
+
+![Flows_inbound-SNAT](../images/Flows_Inbound_with_SNAT.png)
+
+1.	Connection from client to one of the  public IPs associated with External Load Balancer s: a.b.c.d - d: 4.4.4.4
+2.	(a/b)Azure load balances the connection request to one of the Firewall NVA instances. Traffic is sent to the external/untrusted interface of the NVA. External Load Balancer is configured with Floating IP enabled thus destination IP is not changed  - s: a.b.c.d - d: 4.4.4.4
+3.	(a/b)FGT VIP(4.4.4.4) picks up the packet, translates (DNAT) the packet and sends the packet to the server. SNAT behind the firewall to make sure return traffic arrives on the FGT that has the session -                    s: 10.100.112.5 - d: 172.16.137.4
+4.	(a/b)Server responds to the request to the FGT-A - s: 172.16.137.4 - d: 10.100.112.5
+5.	(a/b)FGT A translates the source to the FGT VIP on the external interface and sends out packet to the client via untrusted interface   - s: 4.4.4.4 - d: a.b.c.d
+
+Connection would look the same for FTG-B (see 2a-5a steps) but packet would be SNATed (step 3a) behind private IP of the FGT-B 10.100.112.6 to ensure traffic symmetry and that return traffic (step 4a) will go to FGTB.
+
+### Inbound without SNAT applied on the FGTs
+
+![Flows_inbound-SNAT](../images/Flows_Inbound_withoutSNAT.png)
+
+
+1.	Connection from client to one of the  public IPs associated with External Load Balancer s: a.b.c.d - d: 4.4.4.4
+2.	Azure load balances the connection request to one of the Firewall NVA instances. Traffic is sent to the external/untrusted interface of the NVA. External Load Balancer is configured with Floating IP enabled thus destination IP is not changed  - s: a.b.c.d - d: 4.4.4.4
+3.	(a/b)FGT VIP(4.4.4.4) picks up the packet, translates (DNAT) the packet and sends the packet to the server.There is no SNAT applied on port2 of FGT - s: a.b.c.d - d: 172.16.137.4
+4.	Server responds to the request to the ILB. As this load balancer does not yet have a session state for traffic initiated from public addresses, it may send the traffic to any of the backend pool, which will likely not be the FortiGate where the session was originated. In order to resolve this issue with assymetrical flow FGSP needs to be configured and intent routing 0/0 route via the FGTs has to be enabled - s: 172.16.137.4 - d: a.b.c.d
+5.	(a/b)ILB is sending the traffic to any of the backendpool FGTs - s: 172.16.137.4 - d: a.b.c.d
+6.	(a/b)Packet is being SNAT to the Public IP of the External Load Balancer and is sent out to Internet - s: 4.4.4.4 - d: a.b.c.d
+   
+As packet is reaching External Load Balancer it can be balanced to any of the FGTs in the backend pool, taking 2/3 or 2a/3a path.
+
+More documentation about Azure internet edge inbound can be fund [here](https://learn.microsoft.com/en-us/azure/virtual-wan/how-to-network-virtual-appliance-inbound)
+
+Configuration and troubleshooting guide is located [here](https://docs.fortinet.com/document/fortigate-public-cloud/7.4.0/azure-vwan-sd-wan-ngfw-deployment-guide/323600/configuring-internet-inbound-dnat-policies)
+
+
+
+
+
+
