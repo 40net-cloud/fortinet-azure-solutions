@@ -8,17 +8,19 @@
 ##############################################################################################################
 
 # Prefix for all resources created for this deployment in Microsoft Azure
-variable "PREFIX" {
+variable "prefix" {
   description = "Added name to each deployed resource"
 }
 
-variable "LOCATION" {
+variable "location" {
   description = "Azure region"
 }
 
-variable "USERNAME" {}
+variable "username" {}
 
-variable "PASSWORD" {}
+variable "password" {}
+
+variable "subscription_id" {}
 
 ##############################################################################################################
 # Deployment in Microsoft Azure
@@ -35,15 +37,21 @@ terraform {
 
 provider "azurerm" {
   features {}
+  subscription_id = var.subscription_id
 }
 
 ##############################################################################################################
 # Variables
 ##############################################################################################################
 
-# Azure Virtual WAN NVA sku 'fortinet-sdwan-and-ngfw' or 'fortinet-ngfw'
-variable "fgt_sku" {
-  default = "fortinet-ngfw"
+# FortiGate deployment type in Azure Virtual WAN: SDWAN + NGFW (Hybrid) 'sdfw' or NGFW 'ngfw'
+variable "fgt_vwan_deployment_type" {
+  default = "ngfw"
+}
+
+# FortiGate License Type: Bring Your Own License or FortiFlex 'byol' or Pay As You Go 'payg'
+variable "fgt_image_sku" {
+  default = "payg"
 }
 
 variable "fgt_scaleunit" {
@@ -117,7 +125,7 @@ variable "fgt_asn" {
 
 variable "fgt_version" {
   description = "FortiGate version by default the 'latest' available version in the Azure Marketplace is selected"
-  default     = "7.4.0"
+  default     = "7.4.4"
 }
 
 ##############################################################################################################

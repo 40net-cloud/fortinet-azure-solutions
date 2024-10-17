@@ -12,6 +12,7 @@ variable "location" {}
 variable "resource_group_name" {}
 variable "username" {}
 variable "password" {}
+variable "deployment_type" {}
 variable "sku" {}
 variable "scaleunit" {}
 variable "mpversion" {}

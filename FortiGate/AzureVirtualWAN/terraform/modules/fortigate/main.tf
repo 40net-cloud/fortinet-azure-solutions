@@ -38,8 +38,11 @@ resource "azurerm_managed_application" "fgtinvhub" {
     fortiGateNamePrefix = {
       value = var.prefix
     },
+    vwandeploymentSKU = {
+      value = "${var.deployment_type}-${var.sku}"
+    }
     fortiGateImageVersion = {
-      value = "7.4.0"
+      value = "7.4.4"
     },
     hubId = {
       value = var.vhub_id
@@ -56,15 +59,18 @@ resource "azurerm_managed_application" "fgtinvhub" {
     hubASN = {
       value = tostring(var.vhub_virtual_router_asn)
     },
+    internetInboundCheck = {
+      value = false
+    },
     location = {
       value = var.location
     }
   })
   plan {
-    name      = "managedfgtngfw"
+    name      = "fortigate-managedvwan"
     product   = "fortigate_vwan_nva"
     publisher = "fortinet"
-    version   = "2.0.004"
+    version   = "7.4.410240925"
   }
 
   tags = var.tags

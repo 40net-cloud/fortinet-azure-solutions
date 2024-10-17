@@ -7,8 +7,8 @@
 # Main
 ##############################################################################################################
 resource "azurerm_resource_group" "resourcegroup" {
-  name     = "${var.PREFIX}-rg"
-  location = var.LOCATION
+  name     = "${var.prefix}-rg"
+  location = var.location
 
   tags = var.tags
 }
@@ -20,7 +20,7 @@ resource "azurerm_resource_group" "resourcegroup" {
 ##############################################################################################################
 
 resource "azurerm_virtual_network" "spoke1" {
-  name                = "${var.PREFIX}-spoke1-vnet"
+  name                = "${var.prefix}-spoke1-vnet"
   address_space       = [var.vnet["spoke1"]]
   location            = azurerm_resource_group.resourcegroup.location
   resource_group_name = azurerm_resource_group.resourcegroup.name
@@ -36,7 +36,7 @@ resource "azurerm_subnet" "spoke1subnet1" {
 }
 
 resource "azurerm_virtual_network" "spoke2" {
-  name                = "${var.PREFIX}-spoke2-vnet"
+  name                = "${var.prefix}-spoke2-vnet"
   address_space       = [var.vnet["spoke2"]]
   location            = azurerm_resource_group.resourcegroup.location
   resource_group_name = azurerm_resource_group.resourcegroup.name
@@ -57,11 +57,11 @@ resource "azurerm_subnet" "spoke2subnet1" {
 #
 ##############################################################################################################
 resource "azurerm_network_interface" "spoke1lnxifc" {
-  name                          = "${var.PREFIX}-spoke1-lnx-ifc"
-  location                      = azurerm_resource_group.resourcegroup.location
-  resource_group_name           = azurerm_resource_group.resourcegroup.name
-  enable_ip_forwarding          = false
-  enable_accelerated_networking = false
+  name                           = "${var.prefix}-spoke1-lnx-ifc"
+  location                       = azurerm_resource_group.resourcegroup.location
+  resource_group_name            = azurerm_resource_group.resourcegroup.name
+  ip_forwarding_enabled          = false
+  accelerated_networking_enabled = false
 
   ip_configuration {
     name                          = "interface1"
@@ -73,7 +73,7 @@ resource "azurerm_network_interface" "spoke1lnxifc" {
 }
 
 resource "azurerm_linux_virtual_machine" "spoke1lnxvm" {
-  name                  = "${var.PREFIX}-spoke1-lnx"
+  name                  = "${var.prefix}-spoke1-lnx"
   location              = azurerm_resource_group.resourcegroup.location
   resource_group_name   = azurerm_resource_group.resourcegroup.name
   network_interface_ids = [azurerm_network_interface.spoke1lnxifc.id]
@@ -87,14 +87,14 @@ resource "azurerm_linux_virtual_machine" "spoke1lnxvm" {
   }
 
   os_disk {
-    name                 = "${var.PREFIX}-spoke1-lnx-osdisk"
+    name                 = "${var.prefix}-spoke1-lnx-osdisk"
     caching              = "ReadWrite"
     storage_account_type = "StandardSSD_LRS"
   }
 
-  computer_name                   = "${var.PREFIX}-spoke1-lnx"
-  admin_username                  = var.USERNAME
-  admin_password                  = var.PASSWORD
+  computer_name                   = "${var.prefix}-spoke1-lnx"
+  admin_username                  = var.username
+  admin_password                  = var.password
   disable_password_authentication = false
   custom_data                     = base64encode(templatefile("${path.module}/vm-customdata.tftpl", {}))
 
@@ -105,11 +105,11 @@ resource "azurerm_linux_virtual_machine" "spoke1lnxvm" {
 }
 
 resource "azurerm_network_interface" "spoke2lnxifc" {
-  name                          = "${var.PREFIX}-spoke2-lnx-ifc"
-  location                      = azurerm_resource_group.resourcegroup.location
-  resource_group_name           = azurerm_resource_group.resourcegroup.name
-  enable_ip_forwarding          = false
-  enable_accelerated_networking = false
+  name                           = "${var.prefix}-spoke2-lnx-ifc"
+  location                       = azurerm_resource_group.resourcegroup.location
+  resource_group_name            = azurerm_resource_group.resourcegroup.name
+  ip_forwarding_enabled          = false
+  accelerated_networking_enabled = false
 
   ip_configuration {
     name                          = "interface1"
@@ -121,7 +121,7 @@ resource "azurerm_network_interface" "spoke2lnxifc" {
 }
 
 resource "azurerm_linux_virtual_machine" "spoke2lnxvm" {
-  name                  = "${var.PREFIX}-spoke2-lnx"
+  name                  = "${var.prefix}-spoke2-lnx"
   location              = azurerm_resource_group.resourcegroup.location
   resource_group_name   = azurerm_resource_group.resourcegroup.name
   network_interface_ids = [azurerm_network_interface.spoke2lnxifc.id]
@@ -135,14 +135,14 @@ resource "azurerm_linux_virtual_machine" "spoke2lnxvm" {
   }
 
   os_disk {
-    name                 = "${var.PREFIX}-spoke2-lnx-osdisk"
+    name                 = "${var.prefix}-spoke2-lnx-osdisk"
     caching              = "ReadWrite"
     storage_account_type = "StandardSSD_LRS"
   }
 
-  computer_name                   = "${var.PREFIX}-spoke2-lnx"
-  admin_username                  = var.USERNAME
-  admin_password                  = var.PASSWORD
+  computer_name                   = "${var.prefix}-spoke2-lnx"
+  admin_username                  = var.username
+  admin_password                  = var.password
   disable_password_authentication = false
   custom_data                     = base64encode(templatefile("${path.module}/vm-customdata.tftpl", {}))
 
@@ -159,7 +159,7 @@ resource "azurerm_linux_virtual_machine" "spoke2lnxvm" {
 ##############################################################################################################
 
 resource "azurerm_virtual_wan" "vwan" {
-  name                = "${var.PREFIX}-virtualwan"
+  name                = "${var.prefix}-virtualwan"
   resource_group_name = azurerm_resource_group.resourcegroup.name
   location            = azurerm_resource_group.resourcegroup.location
 
@@ -167,7 +167,7 @@ resource "azurerm_virtual_wan" "vwan" {
 }
 
 resource "azurerm_virtual_hub" "vhub" {
-  name                = "${var.PREFIX}-virtualwan-hub"
+  name                = "${var.prefix}-virtualwan-hub"
   resource_group_name = azurerm_resource_group.resourcegroup.name
   location            = azurerm_resource_group.resourcegroup.location
   virtual_wan_id      = azurerm_virtual_wan.vwan.id
@@ -177,13 +177,13 @@ resource "azurerm_virtual_hub" "vhub" {
 }
 
 resource "azurerm_virtual_hub_connection" "spoke1" {
-  name                      = "${var.PREFIX}-spoke1"
+  name                      = "${var.prefix}-spoke1"
   virtual_hub_id            = azurerm_virtual_hub.vhub.id
   remote_virtual_network_id = azurerm_virtual_network.spoke1.id
 }
 
 resource "azurerm_virtual_hub_connection" "spoke2" {
-  name                      = "${var.PREFIX}-spoke2"
+  name                      = "${var.prefix}-spoke2"
   virtual_hub_id            = azurerm_virtual_hub.vhub.id
   remote_virtual_network_id = azurerm_virtual_network.spoke2.id
 }
@@ -196,13 +196,14 @@ resource "azurerm_virtual_hub_connection" "spoke2" {
 module "fgt_nva" {
   source = "./modules/fortigate"
 
-  prefix                  = var.PREFIX
-  name                    = "${var.PREFIX}-vwan-fgt"
+  prefix                  = var.prefix
+  name                    = "${var.prefix}-vwan-fgt"
   location                = azurerm_resource_group.resourcegroup.location
   resource_group_name     = azurerm_resource_group.resourcegroup.name
-  username                = var.USERNAME
-  password                = var.PASSWORD
-  sku                     = var.fgt_sku
+  username                = var.username
+  password                = var.password
+  deployment_type         = var.fgt_vwan_deployment_type
+  sku                     = var.fgt_image_sku
   scaleunit               = var.fgt_scaleunit
   mpversion               = var.fgt_version
   asn                     = var.fgt_asn
