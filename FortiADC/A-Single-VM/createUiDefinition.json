@@ -81,11 +81,11 @@
           "allowedValues": [
             {
               "label": "Bring Your Own License",
-              "value": "fortinet_fw-vm"
+              "value": "fad-vm-byol"
             },
             {
               "label": "Pay As You Go",
-              "value": "fortinet_fw-vm_payg_v3"
+              "value": "fortinet-fad-vm_payg-100mbps"
             }
           ]
         },
@@ -423,7 +423,7 @@
                   "openMode": "text",
                   "encoding": "UTF-8"
                 },
-                "visible": "[and(equals(basics('imageSku'), 'fortinet_fw-vm'),not(steps('instance').fadLicense.fadLicenseFortiFlexCheck))]"
+                "visible": "[and(equals(basics('imageSku'), 'fad-vm-byol),not(steps('instance').fadLicense.fadLicenseFortiFlexCheck))]"
               },
               {
                 "name": "fadflexvm",
