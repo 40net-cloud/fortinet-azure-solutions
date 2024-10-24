@@ -74,6 +74,8 @@ Describe 'FWB Single VM' {
       'Microsoft.Network/networkInterfaces',
       'Microsoft.Compute/virtualMachines'
       $templateResources = (get-content $templateFileLocation | ConvertFrom-Json -ErrorAction SilentlyContinue).Resources.type
+      $diff = ( Compare-Object -ReferenceObject $expectedResources -DifferenceObject $templateResources | Format-Table | Out-String )
+      if ($diff) { Write-Host ( "Diff: $diff" ) }
       $templateResources | Should -Be $expectedResources
     }
 
@@ -111,7 +113,8 @@ Describe 'FWB Single VM' {
       'vnetNewOrExisting',
       'vnetResourceGroup'
       $templateParameters = (get-content $templateFileLocation | ConvertFrom-Json -ErrorAction SilentlyContinue).Parameters | Get-Member -MemberType NoteProperty | % Name | Sort-Object
-      Compare-Object -ReferenceObject $expectedTemplateParameters -DifferenceObject $templateParameters
+      $diff = ( Compare-Object -ReferenceObject $expectedTemplateParameters -DifferenceObject $templateParameters | Format-Table | Out-String )
+      if ($diff) { Write-Host ( "Diff: $diff" ) }
       $templateParameters | Should -Be $expectedTemplateParameters
     }
 

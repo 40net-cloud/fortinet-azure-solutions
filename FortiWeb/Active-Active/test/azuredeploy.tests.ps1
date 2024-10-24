@@ -86,6 +86,8 @@ Describe 'FWB Active/Active' {
       'Microsoft.Compute/virtualMachines',
       'Microsoft.Compute/virtualMachines'
       $templateResources = (get-content $templateFileLocation | ConvertFrom-Json -ErrorAction SilentlyContinue).Resources.type
+      $diff = ( Compare-Object -ReferenceObject $expectedResources -DifferenceObject $templateResources | Format-Table | Out-String )
+      if ($diff) { Write-Host ( "Diff: $diff" ) }
       $templateResources | Should -Be $expectedResources
     }
 
@@ -129,7 +131,7 @@ Describe 'FWB Active/Active' {
       'vnetResourceGroup'
       $templateParameters = (get-content $templateFileLocation | ConvertFrom-Json -ErrorAction SilentlyContinue).Parameters | Get-Member -MemberType NoteProperty | % Name | Sort-Object
       $diff = ( Compare-Object -ReferenceObject $expectedTemplateParameters -DifferenceObject $templateParameters | Format-Table | Out-String )
-      Write-Host ( "Diff: $diff" )
+      if ($diff) { Write-Host ( "Diff: $diff" ) }
       $templateParameters | Should -Be $expectedTemplateParameters
     }
 
