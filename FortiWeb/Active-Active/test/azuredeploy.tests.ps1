@@ -130,9 +130,7 @@ Describe 'FWB Active/Active' {
       'vnetResourceGroup'
       $templateParameters = (get-content $templateFileLocation | ConvertFrom-Json -ErrorAction SilentlyContinue).Parameters | Get-Member -MemberType NoteProperty | % Name | Sort-Object
       $diff = Compare-Object -ReferenceObject $expectedTemplateParameters -DifferenceObject $templateParameters
-      Write-Host ( "Diff: ( $diff | Out-String )" )
-      Write-Host ( "Expected: $expectedTemplateParameters" )
-      Write-Host ( "Received: $templateParameters" )
+      Write-Host ( "Diff: ( $diff | Format-Table | Out-String )" )
       $templateParameters | Should -Be $expectedTemplateParameters
     }
 
