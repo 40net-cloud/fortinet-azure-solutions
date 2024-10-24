@@ -62,6 +62,8 @@ Describe 'FWB Single VM' {
       'resources',
       'variables'
       $templateProperties = (get-content $templateFileLocation | ConvertFrom-Json -ErrorAction SilentlyContinue) | Get-Member -MemberType NoteProperty | % Name
+      $diff = ( Compare-Object -ReferenceObject $expectedProperties -DifferenceObject $templateProperties | Format-Table | Out-String )
+      if ($diff) { Write-Host ( "Diff: $diff" ) }
       $templateProperties | Should -Be $expectedProperties
     }
 
