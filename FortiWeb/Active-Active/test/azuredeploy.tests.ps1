@@ -115,7 +115,6 @@ Describe 'FWB Active/Active' {
       'publicIPName',
       'publicIPNewOrExistingOrNone',
       'publicIPResourceGroup',
-      'publicIPType',
       'serialConsole',
       'subnet1Name',
       'subnet1Prefix',
