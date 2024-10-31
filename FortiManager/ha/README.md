@@ -111,7 +111,6 @@ config system ha
     set failover-mode vrrp
     set hb-interval 5
     set hb-lost-threshold 10
-    set mode primary
         config peer
             edit 1
                 set ip <b>FortiManager B Private IP address</b>
@@ -133,7 +132,6 @@ config system ha
     set failover-mode vrrp
     set hb-interval 5
     set hb-lost-threshold 10
-    set mode secondary
         config peer
             edit 1
                 set ip <b>FortiManager A Private IP address</b>
@@ -168,7 +166,6 @@ config system ha
     set failover-mode vrrp
     set hb-interval 5
     set hb-lost-threshold 10
-    set mode primary
         config peer
             edit 1
                 set ip <b>FortiManager B private IP address - 172.16.140.5</b>
@@ -190,7 +187,6 @@ config system ha
     set failover-mode vrrp
     set hb-interval 5
     set hb-lost-threshold 10
-    set mode secondary
         config peer
             edit 1
                 set ip <b>FortiManager A private IP address - 172.16.140.4</b>
