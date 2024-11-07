@@ -87,6 +87,8 @@ The ARM template deploys different resources and it is required to have the acce
 
 The FortiGate VMs need a specific configuration to match the deployed environment. This configuration can be injected during provisioning or afterwards via the different options including GUI, CLI, FortiManager or REST API.
 
+- [Fabric Connector](#fabric-connector)
+- [VNET peering](#vnet-peering)
 - [Default configuration using this template](doc/config-provisioning.md)
 - [Availability Zone](doc/config-availability-zone.md)
 - [High Availability probe](doc/config-ha.md)
@@ -101,6 +103,12 @@ The FortiGate VMs need a specific configuration to match the deployed environmen
 ### Fabric Connector
 
 The FortiGate-VM uses [Managed Identities](https://docs.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/) for the SDN Fabric Connector. A SDN Fabric Connector is created automatically during deployment. After deployment, it is required apply the 'Reader' role to the Azure Subscription you want to resolve Azure Resources from. More information can be found on the [Fortinet Documentation Libary](https://docs.fortinet.com/document/fortigate-public-cloud/7.6.0/azure-administration-guide/236610/configuring-an-sdn-connector-using-a-managed-identity).
+
+### VNET peering
+
+In Microsoft Azure, this central security services hub is commonly implemented using VNET peering. The central security services hub component will receive, using user-defined routing (UDR), all or specific traffic that needs inspection going to/coming from on-prem networks or the public internet. This deployment can be used as the hub section of such a [Hub-Spoke network topology](https://learn.microsoft.com/en-us/azure/architecture/networking/architecture/hub-spoke?tabs=cli#communication-through-an-nva)
+
+![VNET peering](images/vnet-peering.png)
 
 ## Troubleshooting
 
