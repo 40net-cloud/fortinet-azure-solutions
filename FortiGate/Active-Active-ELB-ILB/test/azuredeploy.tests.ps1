@@ -72,6 +72,8 @@ Describe 'FGT A/A' {
       'resources',
       'variables'
       $templateProperties = (get-content $templateFileLocation | ConvertFrom-Json -ErrorAction SilentlyContinue) | Get-Member -MemberType NoteProperty | % Name
+      $diff = ( Compare-Object -ReferenceObject $expectedProperties -DifferenceObject $templateProperties | Format-Table | Out-String )
+      if ($diff) { Write-Host ( "Diff: $diff" ) }
       $templateProperties | Should -Be $expectedProperties
     }
 
@@ -94,6 +96,8 @@ Describe 'FGT A/A' {
       'Microsoft.Network/networkInterfaces',
       'Microsoft.Compute/virtualMachines'
       $templateResources = (get-content $templateFileLocation | ConvertFrom-Json -ErrorAction SilentlyContinue).Resources.type
+      $diff = ( Compare-Object -ReferenceObject $expectedResources -DifferenceObject $templateResources | Format-Table | Out-String )
+      if ($diff) { Write-Host ( "Diff: $diff" ) }
       $templateResources | Should -Be $expectedResources
     }
 
@@ -154,6 +158,8 @@ Describe 'FGT A/A' {
       'vnetNewOrExisting',
       'vnetResourceGroup'
       $templateParameters = (get-content $templateFileLocation | ConvertFrom-Json -ErrorAction SilentlyContinue).Parameters | Get-Member -MemberType NoteProperty | % Name | sort
+      $diff = ( Compare-Object -ReferenceObject $expectedTemplateParameters -DifferenceObject $templateParameters | Format-Table | Out-String )
+      if ($diff) { Write-Host ( "Diff: $diff" ) }
       $templateParameters | Should -Be $expectedTemplateParameters
     }
 
