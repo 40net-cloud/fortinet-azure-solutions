@@ -96,7 +96,7 @@ The FortiGate VMs need a specific configuration to match the deployed environmen
 - [Outbound connections](#outbound-connections)
   - [NAT considerations: 1-to-1 and 1-to-many](#outbound-connections---nat-considerations)
 - [IPSEC Connectivity](../Documentation/faq-ipsec-connectivity.md)
-- [High Availability probe](doc/config-ha.md)
+- [High Availability](#high-availability-probe-configuration)
 - [Cloud-Init](#cloud-init)
 - [Availability Zone](#availability-zone)
 - [Default configuration using this template](#default-configuration)
@@ -502,11 +502,56 @@ end
 - Traffic not matching the firewall policy created here will use the standard NAT via the Azure Load Balancer
 - Failover using the SDN connector is dependant on the execution time of the Azure API. If that timing is not acceptable it is possible to configure a public IP on both NICs and not use the SDN connector. The downside is that each firewall has a different public IP address
 
-## Cloud-init
+### High Availability
+
+For this Active/Passive setup external and internal load balancers are used. These need to detect which the FortiGate VMs is online. This is done using a health probe on both Azure Load Balancers.
+
+#### High Availability probe configuration
+
+##### Azure Load Balancer
+
+On both the internal and the external Azure Load Balancer a probe needs to be configured and attached to Load Balancing rules for the FortiGate backend systems.
+
+On the external Azure Load Balancer this probe is needed for each port you open. On the internal Azure Load Balancer a catch all 'HA Port' rules is used.
+
+![HA Probe](images/ha-probe1.png)
+![HA Probe 2](images/ha-probe2.png)
+
+##### FortiGate
+
+The probe configured on the Azure Load Balancer need to be enabled on the FortiGate. There are 4 lines of config that will enable the active FortiGate to respond on TCP port 8008 based on the state of the FGCP Unicast HA protocol.
+
+```text
+config system probe-response
+  set http-probe-value OK
+  set mode http-probe
+end
+```
+
+The Microsoft Azure Load Balancer sends out probes from a specific IP, 168.63.129.16. This IP requires to have a response from the same interface as it packet arrived from. To ensure that the probes send for the external or internal load balancer is send via the correct interface, the configuration deployed by the template adds static routes for this Microsoft probe IP for both the external and internal interface of the firewall.
+
+More information about this probe and the source IP can he found [here](https://docs.microsoft.com/en-us/azure/load-balancer/load-balancer-custom-probe-overview#probesource)
+
+```text
+config router static
+  edit 3
+    set dst 168.63.129.16 255.255.255.255
+    set device port2
+    set gateway <b>172.16.136.65</b>
+  next
+  edit 4
+    set dst 168.63.129.16 255.255.255.255
+    set device port1
+    set gateway <b>172.16.136.1</b>
+  next
+end
+```
+
+### Cloud-init
 
 Microsoft Azure offers the possibility to inject a configuration during deployment. This method is referred to as Cloud-Init. Both using templates (ARM or Terraform) or via CLI (Powershell, AzureCLI), it is possible to provide a file with this configuration. In the case of FortiGate there are 3 options available.
 
-### Inline configuration file
+#### Inline configuration file
 
 In this ARM template, a FortiGate configuration is passed via the customdata field used by Azure for the Cloud-Init process. Using variables and parameters you can customize the configuration based on the input provided during deployment. The full configuration injected during deployment with the default parameters can be found [here](config-provisioning.md).
 
@@ -521,7 +566,7 @@ In this ARM template, a FortiGate configuration is passed via the customdata fie
 ...
 ```
 
-### Inline configuration and license file
+#### Inline configuration and license file
 
 To provide the configuration and the license during deployment it is required to encode both using MIME. Part 1 will contain the FortiGate configuration and part 2 can contain the FortiGate license file. The code snippet below requires the config and license file content in the respective bold text placeholders.
 
@@ -552,6 +597,7 @@ Content-Disposition: attachment; filename="${fgt_license_file}"
 If you want to inject the license file via the AzureCLI, Powershell or via the Azure Portal (Custom Deployment) as a string, you need to remove the newline characters. The string in the 'fortiGateLicenseBYOLA' or 'fortiGateLicenseBYOLB' parameters should be a without newline. To remove the newline or carriage return out of the license file retrieved from Fortinet support you can use the below command:
 
 Bash
+
 ```text
 $ tr -d '\r\n' < FGVMXXXXXXXXXXXX.lic
 
@@ -559,13 +605,14 @@ $ tr -d '\r\n' < FGVMXXXXXXXXXXXX.lic
 ```
 
 Powershell
+
 ```text
 > (Get-Content 'FGVMXXXXXXXXXXXX.lic') -join ''
 
 -----BEGIN FGT VM LICENSE-----YourLicenseCode-----END FGT VM LICENSE-----
 ```
 
-### Externally loaded configuration and/or license file
+#### Externally loaded configuration and/or license file
 
 In certain environments it is possible to pull a configuration and license from a central repository. For example an Azure Storage Account or configuration management system. It is possible to provide these instead of the full configuration. The configURI and licenseURI need to be replaced with a HTTP(S) url that is accessible by the FortiGate during deployment.
 
@@ -578,14 +625,14 @@ In certain environments it is possible to pull a configuration and license from 
 
 It is recommended to secure the access to the configuration and license file using an SAS token. More information can be found [here](https://docs.microsoft.com/en-us/azure/storage/common/storage-sas-overview).
 
-### More information
+#### More information
 
 These links give you more information on these provisioning techniques:
 
 - [https://docs.microsoft.com/en-us/azure/virtual-machines/custom-data](https://docs.microsoft.com/en-us/azure/virtual-machines/custom-data)
 - [https://docs.fortinet.com/document/fortigate-public-cloud/7.4.0/azure-administration-guide/61731/bootstrapping-the-fortigate-cli-and-byol-license-at-initial-bootup-using-user-data](https://docs.fortinet.com/document/fortigate-public-cloud/7.4.0/azure-administration-guide/61731/bootstrapping-the-fortigate-cli-and-byol-license-at-initial-bootup-using-user-data)
 
-### Debugging
+#### Debugging
 
 After deployment, it is possible to review the cloudinit data on the FortiGate by running the command 'diag debug cloudinit show'
 
@@ -612,7 +659,7 @@ FTNT-FGT-A # diagnose debug cloudinit show
 ...
 ```
 
-## Availability Zone
+### Availability Zone
 
 Microsoft defines an Availability Zone to have the following properties:
 
@@ -626,11 +673,11 @@ Based on information in the presentation ['Inside Azure datacenter architecture 
 
 ![active/passive design](images/fgt-ap-az.png)
 
-## Default configuration
+### Default configuration
 
 After deployment, the below configuration has been automatically injected during the deployment. The bold sections are the default values. If parameters have been changed during deployment these values will be different.
 
-## FortiGate A
+#### FortiGate A
 
 <pre><code>
 config system sdn-connector
@@ -708,7 +755,7 @@ config system ha
 end
 </code></pre>
 
-## FortiGate B
+#### FortiGate B
 
 <pre><code>
 config system sdn-connector
@@ -788,7 +835,127 @@ end
 
 ## Troubleshooting
 
-You can find a troubleshooting guide for this setup [here](doc/troubleshooting.md)
+There are different components in the whole delivery chain
+
+- [Azure Load Balancer](#troubleshooting-azure-load-balancer)
+- [Network Security Groups](#troubleshooting-network-security-groups-nsg)
+- [Standard Public IP](#troubleshooting-standard-public-ip)
+- [FortiGate](#troubleshooting-fortigate)
+- [IPSEC Troubleshooting](../Documentation/faq-ipsec-connectivity.md#troubleshooting)
+
+### Troubleshooting Azure Load Balancer
+
+The Azure Load Balancer comes in 2 different flavors/SKUs: Basic and Standard. Due to the requirements in this deployment Standard SKU Load Balancers are used in this setup.
+Microsoft provides extensive documentation on the Azure Load Balancer [here](https://docs.microsoft.com/en-us/azure/load-balancer/load-balancer-overview). Before deployment it is advised to verify the [different components and concepts](https://docs.microsoft.com/en-us/azure/load-balancer/components) of the Azure Load Balancer.
+
+Once deployed and the traffic is somehow not flowing as expected the Azure Load Balancer, as it is in the data path, could be the source. Most of the issues seens with the Azure Load Balancer are regarding the health probes not responding. The current status of the health probes can be verified in the Azure Portal > Your Azure Load Balancer > Monitoring > Metrics > Metric - 'Health Probe Status'. The example taken from a test setup shows a health probe that stops responding around 5:30 PM.
+
+<p align="center">
+  <img width="500px" src="images/troubleshooting-loadbalancer.png">
+</p>
+
+Microsoft provides additional troubleshooting steps on the Azure Load Balancer [here](https://docs.microsoft.com/en-us/azure/load-balancer/load-balancer-troubleshoot).
+
+### Troubleshooting Network Security Groups (NSG)
+
+Microsoft provides access control lists (ACL) on Azure networking attaching to a subnet or a network interface of a virtual machine. Debugging is possible by writing logs to a Storage Account or Azure Log Analytics. More information can be found [here](https://docs.microsoft.com/en-us/azure/virtual-network/virtual-network-nsg-manage-log)
+
+Below you can see an output in JSON of a log rule as they can be found on the storage account:
+
+```
+{
+  "records": [
+    {
+      "time": "2020-08-03T07:18:43.2317151Z",
+      "systemId": "ca0eb670-63ac-4f05-9d82-7c01addd59f3",
+      "macAddress": "000D3ABEB097",
+      "category": "NetworkSecurityGroupFlowEvent",
+      "resourceId": "/SUBSCRIPTIONS/F7F4728A-781F-470F-B029-BAC8A9DF75AF/RESOURCEGROUPS/JVHAZS-RG/PROVIDERS/MICROSOFT.NETWORK/NETWORKSECURITYGROUPS/JVHAZS-HOST1-NSG",
+      "operationName": "NetworkSecurityGroupFlowEvents",
+      "properties": {
+        "Version": 2,
+        "flows": [
+          {
+            "rule": "DefaultRule_DenyAllInBound",
+            "flows": [
+              {
+                "mac": "000D3ABEB097",
+                "flowTuples": [
+                  "1596439087,94.102.51.77,10.0.0.4,58501,8121,T,I,D,B,,,,",
+                  "1596439097,194.26.29.143,10.0.0.4,53411,32457,T,I,D,B,,,,",
+                  "1596439102,87.251.74.200,10.0.0.4,44755,8213,T,I,D,B,,,,",
+                  "1596439103,45.129.33.8,10.0.0.4,51401,9849,T,I,D,B,,,,"
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}
+
+```
+
+### Troubleshooting Standard Public IP
+
+The standard public ip has some extra features like zone redundancy. The most important item property of this Standard SKU resource is that inbound communication fails until an network security group is associated with the network interface or subnet that allows the inbound traffic.
+
+More information can be found [here](https://docs.microsoft.com/en-us/azure/virtual-network/public-ip-addresses#standard)
+
+### Troubleshooting FortiGate
+
+On the FortiGate there is a plethora of troubleshooting tools available. More can be found [here](https://docs2.fortinet.com/document/fortigate/6.4.3/administration-guide/244292/troubleshooting).
+
+For your deployment in Azure there are some specific
+
+- Accelerated Networking: This enables direct connection from the VM to the backend ethernet hardware on the hypervisor and enables much better throughput.
+  - On the FortiGate you can retrieve the network interface configuration. The SR-IOV pseudo interace should only be available when accelerated networking is activated. On the driver side the driver called 'hv_netvsc' needs to be active. If the speed lists 40000full or 50000full the accelerated networking driver is active. The FortiOS GUI does not display the virtual interface.
+  - On the Azure Portal it can be verified on the network interface properties pane. Alternatively this information can be requested via the Azure CLI.
+
+```text
+<VM name> # fnsysctl ifconfig
+port1 Link encap:Ethernet HWaddr 00:0D:3A:B4:87:70
+inet addr:172.29.0.4 Bcast:172.29.0.255 Mask:255.255.255.0
+UP BROADCAST RUNNING MULTICAST MTU:1500 Metric:1
+RX packets:5689 errors:0 dropped:0 overruns:0 frame:0
+TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+collisions:0 txqueuelen:1000
+RX bytes:1548978 (1.5 MB) TX bytes:0 (0 Bytes)
+sriovslv0 Link encap:Ethernet HWaddr 00:0D:3A:B4:87:70
+UP BROADCAST RUNNING SLAVE MULTICAST MTU:1500 Metric:1
+RX packets:35007 errors:0 dropped:0 overruns:0 frame:0
+TX packets:33674 errors:0 dropped:0 overruns:0 carrier:0
+collisions:0 txqueuelen:1000
+RX bytes:34705194 (33.1 MB) TX bytes:10303956 (9.8 MB)
+```
+
+```text
+<VM name> # diagnose hardware deviceinfo nic port1
+Name: port1
+Driver: hv_netvsc
+...
+Speed:           40000full
+```
+
+or
+
+```text
+<VM name> # diagnose hardware deviceinfo nic port1
+Name: port1
+Driver: hv_netvsc
+...
+Speed:           50000full
+
+```
+
+Azure CLI NIC information
+
+```text
+# az network nic show -g <Resource group name> -n <NIC name>
+```
+
+- Fabric connector: This connector enables integration with the Azure platform. More troubleshooting can be found [here](https://docs.fortinet.com/document/fortigate-public-cloud/7.2.0/azure-administration-guide/985498/troubleshooting-azure-sdn-connector)
 
 ## Support
 
