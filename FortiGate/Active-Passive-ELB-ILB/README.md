@@ -95,11 +95,11 @@ The FortiGate VMs need a specific configuration to match the deployed environmen
   - [IPSEC configuration](#inbound-ipsec-configuration)
 - [Outbound connections](#outbound-connections)
   - [NAT considerations: 1-to-1 and 1-to-many](#outbound-connections---nat-considerations)
-- [Default configuration using this template](doc/config-provisioning.md)
-- [Availability Zone](doc/config-availability-zone.md)
-- [High Availability probe](doc/config-ha.md)
-- [Cloud-init](doc/config-cloud-init.md)
 - [IPSEC Connectivity](../Documentation/faq-ipsec-connectivity.md)
+- [High Availability probe](doc/config-ha.md)
+- [Cloud-Init](#cloud-init)
+- [Availability Zone](#availability-zone)
+- [Default configuration using this template](#default-configuration)
 - [Upload VHD](../Documentation/faq-upload-vhd.md)
 
 ### Fabric Connector
@@ -367,7 +367,7 @@ The NAT behind the FortiGate outgoing interface allows for a very simple configu
 
 ### Outbound connections - NAT considerations
 
-This chapter goes beyond the the [default scenario](#outbound-connections) with 1 or multiple public IPs that handle all outbound traffic. The Azure Load Balancer has a pool of IPs that can be used. In some deployments customers would like to have specific 1-to-1 NAT or NAT behind a separate public IPs for one service, server or user. These NAT scenario's are mostly requested for specific ACLs implemented at other side or validation of public IPs in case of sending email, ...
+This chapter goes beyond the [default scenario](#outbound-connections) with 1 or multiple public IPs that handle all outbound traffic. The Azure Load Balancer has a pool of IPs that can be used. In some deployments customers would like to have specific 1-to-1 NAT or NAT behind a separate public IPs for one service, server or user. These NAT scenario's are mostly requested for specific ACLs implemented at other side or validation of public IPs in case of sending email, ...
 
 The Azure Load Balancer is limited in available outbound rules direct traffic as we would like for 1-to-1 NAT or NAT of specific services. The outbound rules only applies to the primary IP configuration of a NIC (limitations can be found [here](https://docs.microsoft.com/en-us/azure/load-balancer/load-balancer-outbound-connections#limitations)). This prevents us to differentiate the traffic based on different outbound IPs on the FortiGate.
 
@@ -501,6 +501,290 @@ end
 - Azure has certain limitations on outbound connections: https://docs.microsoft.com/en-us/azure/load-balancer/load-balancer-outbound-connections#limitations
 - Traffic not matching the firewall policy created here will use the standard NAT via the Azure Load Balancer
 - Failover using the SDN connector is dependant on the execution time of the Azure API. If that timing is not acceptable it is possible to configure a public IP on both NICs and not use the SDN connector. The downside is that each firewall has a different public IP address
+
+## Cloud-init
+
+Microsoft Azure offers the possibility to inject a configuration during deployment. This method is referred to as Cloud-Init. Both using templates (ARM or Terraform) or via CLI (Powershell, AzureCLI), it is possible to provide a file with this configuration. In the case of FortiGate there are 3 options available.
+
+### Inline configuration file
+
+In this ARM template, a FortiGate configuration is passed via the customdata field used by Azure for the Cloud-Init process. Using variables and parameters you can customize the configuration based on the input provided during deployment. The full configuration injected during deployment with the default parameters can be found [here](config-provisioning.md).
+
+```text
+...
+    "fgaCustomData": "[base64(concat('config system...
+...
+  "osProfile": {
+...
+    "customData": "[variables('fgaCustomData')]"
+  },
+...
+```
+
+### Inline configuration and license file
+
+To provide the configuration and the license during deployment it is required to encode both using MIME. Part 1 will contain the FortiGate configuration and part 2 can contain the FortiGate license file. The code snippet below requires the config and license file content in the respective bold text placeholders.
+
+```text
+Content-Type: multipart/mixed; boundary="===============0086047718136476635=="
+MIME-Version: 1.0
+
+--===============0086047718136476635==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: attachment; filename="config"
+
+<b>Your FortiGate configuration file</b>
+
+--===============0086047718136476635==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: attachment; filename="${fgt_license_file}"
+
+<b>Your FortiGate license file content</b>
+
+--===============0086047718136476635==--
+
+```
+
+If you want to inject the license file via the AzureCLI, Powershell or via the Azure Portal (Custom Deployment) as a string, you need to remove the newline characters. The string in the 'fortiGateLicenseBYOLA' or 'fortiGateLicenseBYOLB' parameters should be a without newline. To remove the newline or carriage return out of the license file retrieved from Fortinet support you can use the below command:
+
+Bash
+```text
+$ tr -d '\r\n' < FGVMXXXXXXXXXXXX.lic
+
+-----BEGIN FGT VM LICENSE-----YourLicenseCode-----END FGT VM LICENSE-----
+```
+
+Powershell
+```text
+> (Get-Content 'FGVMXXXXXXXXXXXX.lic') -join ''
+
+-----BEGIN FGT VM LICENSE-----YourLicenseCode-----END FGT VM LICENSE-----
+```
+
+### Externally loaded configuration and/or license file
+
+In certain environments it is possible to pull a configuration and license from a central repository. For example an Azure Storage Account or configuration management system. It is possible to provide these instead of the full configuration. The configURI and licenseURI need to be replaced with a HTTP(S) url that is accessible by the FortiGate during deployment.
+
+```text
+{
+  "config-url": "<b>configURI</b>",
+  "license-url": "<b>licenseURI</b>"
+}
+```
+
+It is recommended to secure the access to the configuration and license file using an SAS token. More information can be found [here](https://docs.microsoft.com/en-us/azure/storage/common/storage-sas-overview).
+
+### More information
+
+These links give you more information on these provisioning techniques:
+
+- [https://docs.microsoft.com/en-us/azure/virtual-machines/custom-data](https://docs.microsoft.com/en-us/azure/virtual-machines/custom-data)
+- [https://docs.fortinet.com/document/fortigate-public-cloud/7.4.0/azure-administration-guide/61731/bootstrapping-the-fortigate-cli-and-byol-license-at-initial-bootup-using-user-data](https://docs.fortinet.com/document/fortigate-public-cloud/7.4.0/azure-administration-guide/61731/bootstrapping-the-fortigate-cli-and-byol-license-at-initial-bootup-using-user-data)
+
+### Debugging
+
+After deployment, it is possible to review the cloudinit data on the FortiGate by running the command 'diag debug cloudinit show'
+
+```text
+FTNT-FGT-A # diagnose debug cloudinit show
+ >> Checking metadata source azure
+ >> Azure waiting for customdata file
+ >> Azure waiting for customdata file
+ >> Azure customdata file found
+ >> Azure cloudinit decrypt successfully
+ >> MIME parsed config script
+ >> MIME parsed VM license
+ >> Azure customdata processed successfully
+ >> Trying to install vmlicense ...
+ >> Run config script
+ >> Finish running script
+ >> FTNT-FGT-A $  config system sdn-connector
+ >> FTNT-FGT-A (sdn-connector) $  edit AzureSDN
+ >> FTNT-FGT-A (AzureSDN) $  set type azure
+ >> FTNT-FGT-A (AzureSDN) $  next
+ >> FTNT-FGT-A (sdn-connector) $  end
+ >> FTNT-FGT-A $  config router static
+ >> FTNT-FGT-A (static) $  edit 1
+...
+```
+
+## Availability Zone
+
+Microsoft defines an Availability Zone to have the following properties:
+
+- Unique physical location with an Azure Region
+- Each zone is made up of one or more datacenter(s)
+- Independent power, cooling and networking
+- Inter Availability Zone network latency < 2ms (radius of +/- 100km)
+- Fault-tolerant to protect from datacenter failure
+
+Based on information in the presentation ['Inside Azure datacenter architecture with Mark Russinovich' at Microsoft Ignite 2019](https://www.youtube.com/watch?v=X-0V6bYfTpA)
+
+![active/passive design](images/fgt-ap-az.png)
+
+## Default configuration
+
+After deployment, the below configuration has been automatically injected during the deployment. The bold sections are the default values. If parameters have been changed during deployment these values will be different.
+
+## FortiGate A
+
+<pre><code>
+config system sdn-connector
+  edit AzureSDN
+    set type azure
+  next
+end
+config router static
+  edit 1
+    set gateway <b>172.16.136.1</b>
+    set device port1
+  next
+  edit 2
+    set dst <b>172.16.136.0/22</b>
+    set device port2
+    set gateway <b>172.16.136.65</b>
+  next
+  edit 3
+    set dst 168.63.129.16 255.255.255.255
+    set device port2
+    set gateway <b>172.16.136.65</b>
+  next
+  edit 4
+    set dst 168.63.129.16 255.255.255.255
+    set device port1
+    set gateway <b>172.16.136.1</b>
+  next
+end
+config system probe-response
+  set http-probe-value OK
+  set mode http-probe
+end
+config system interface
+  edit port1
+    set mode static
+    set ip <b>172.16.136.5/26</b>
+    set description external
+    set allowaccess probe-response
+  next
+  edit port2
+    set mode static
+    set ip <b>172.16.136.69/26</b>
+    set description internal
+    set allowaccess probe-response
+  next
+  edit port3
+    set mode static
+    set ip <b>172.16.136.133/26</b>
+    set description hasyncport
+  next
+  edit port4
+    set mode static
+    set ip <b>172.16.136.197/26</b>
+    set description hammgmtport
+    set allowaccess ping https ssh ftm
+  next
+end
+config system ha
+  set group-name AzureHA
+  set mode a-p
+  set hbdev port3 100
+  set session-pickup enable
+  set session-pickup-connectionless enable
+  set ha-mgmt-status enable
+  config ha-mgmt-interfaces
+    edit 1
+      set interface port4
+      set gateway <b>172.16.136.193</b>
+    next
+  end
+  set override disable
+  set priority 255
+  set unicast-hb enable
+  set unicast-hb-peerip <b>172.16.136.134</b>
+end
+</code></pre>
+
+## FortiGate B
+
+<pre><code>
+config system sdn-connector
+  edit AzureSDN
+    set type azure
+  next
+end
+config router static
+  edit 1
+    set gateway <b>172.16.136.1</b>
+    set device port1
+  next
+  edit 2
+    set dst <b>172.16.136.0/22</b>
+    set device port2
+    set gateway <b>172.16.136.65</b>
+  next
+  edit 3
+    set dst 168.63.129.16 255.255.255.255
+    set device port2
+    set gateway <b>172.16.136.65</b>
+  next
+  edit 4
+    set dst 168.63.129.16 255.255.255.255
+    set device port1
+    set gateway <b>172.16.136.1</b>
+  next
+end
+config system probe-response
+  set http-probe-value OK
+  set mode http-probe
+end
+config system interface
+  edit port1
+    set mode static
+    set ip <b>172.16.136.6/26</b>
+    set description external
+    set allowaccess probe-response
+  next
+  edit port2
+    set mode static
+    set ip <b>172.16.136.70/26</b>
+    set description internal
+    set allowaccess probe-response
+  next
+  edit port3
+    set mode static
+    set ip <b>172.16.136.134/26</b>
+    set description hasyncport
+  next
+  edit port4
+    set mode static
+    set ip <b>172.16.136.198/26</b>
+    set description hammgmtport
+    set allowaccess ping https ssh ftm
+  next
+end
+config system ha
+  set group-name AzureHA
+  set mode a-p
+  set hbdev port3 100
+  set session-pickup enable
+  set session-pickup-connectionless enable
+  set ha-mgmt-status enable
+  config ha-mgmt-interfaces
+    edit 1
+      set interface port4
+      set gateway <b>172.16.136.193</b>
+    next
+  end
+  set override disable
+  set priority 1
+  set unicast-hb enable
+  set unicast-hb-peerip <b>172.16.136.133</b>
+end
+</code></pre>
 
 ## Troubleshooting
 
