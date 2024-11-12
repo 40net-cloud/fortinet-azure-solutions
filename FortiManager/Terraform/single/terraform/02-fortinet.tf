@@ -6,8 +6,8 @@
 ##############################################################################################################
 
 resource "azurerm_network_security_group" "fmgnsg" {
-  name                = "${var.PREFIX}-FMG-NSG"
-  location            = var.LOCATION
+  name                = "${var.prefix}-FMG-NSG"
+  location            = var.location
   resource_group_name = azurerm_resource_group.resourcegroup.name
 }
 
@@ -82,19 +82,19 @@ resource "azurerm_network_security_rule" "fmgnsgallowdevregin" {
 }
 
 resource "azurerm_public_ip" "fmgpip" {
-  name                = "${var.PREFIX}-FMG-PIP"
-  location            = var.LOCATION
+  name                = "${var.prefix}-FMG-PIP"
+  location            = var.location
   resource_group_name = azurerm_resource_group.resourcegroup.name
   allocation_method   = "Static"
   sku                 = "Standard"
-  domain_name_label   = format("%s-%s-%s", lower(var.PREFIX), "fmg", random_string.random.result)
+  domain_name_label   = format("%s-%s-%s", lower(var.prefix), "fmg", random_string.random.result)
 }
 
 resource "azurerm_network_interface" "fmgifc" {
-  name                 = "${var.PREFIX}-FMG-IFC"
+  name                 = "${var.prefix}-FMG-IFC"
   location             = azurerm_resource_group.resourcegroup.location
   resource_group_name  = azurerm_resource_group.resourcegroup.name
-  enable_ip_forwarding = true
+  ip_forwarding_enabled = true
 
   ip_configuration {
     name                          = "interface1"
@@ -111,7 +111,7 @@ resource "azurerm_network_interface_security_group_association" "fmgnsg" {
 }
 
 resource "azurerm_linux_virtual_machine" "fmgvm" {
-  name                  = "${var.PREFIX}-FMG-VM"
+  name                  = "${var.prefix}-FMG-VM"
   location              = azurerm_resource_group.resourcegroup.location
   resource_group_name   = azurerm_resource_group.resourcegroup.name
   network_interface_ids = [azurerm_network_interface.fmgifc.id]
@@ -135,19 +135,19 @@ resource "azurerm_linux_virtual_machine" "fmgvm" {
   }
 
   os_disk {
-    name                 = "${var.PREFIX}-FMG-OSDISK"
+    name                 = "${var.prefix}-FMG-OSDISK"
     caching              = "ReadWrite"
     storage_account_type = "Standard_LRS"
   }
 
-  admin_username                  = var.USERNAME
-  admin_password                  = var.PASSWORD
+  admin_username                  = var.username
+  admin_password                  = var.password
   disable_password_authentication = false
   custom_data = base64encode(templatefile("${path.module}/customdata.tpl", {
-    fmg_vm_name           = "${var.PREFIX}-FMG"
+    fmg_vm_name           = "${var.prefix}-FMG"
     fmg_license_file      = var.FMG_BYOL_LICENSE_FILE
     fmg_license_fortiflex = var.FMG_BYOL_FORTIFLEX_LICENSE_TOKEN
-    fmg_username          = var.USERNAME
+    fmg_username          = var.username
     fmg_ssh_public_key    = var.FMG_SSH_PUBLIC_KEY_FILE
     fmg_ipaddr            = var.fmg_ipaddress_a["1"]
     fmg_mask              = var.subnetmask["1"]

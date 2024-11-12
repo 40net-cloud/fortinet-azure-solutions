@@ -11,8 +11,8 @@
 
 output "deployment_summary" {
   value = templatefile("${path.module}/summary.tpl", {
-    location               = var.LOCATION
-    fmg_username           = var.USERNAME
+    location               = var.location
+    fmg_username           = var.username
     fmg_public_ip_address  = data.azurerm_public_ip.fmgpip.ip_address
     fmg_private_ip_address = azurerm_network_interface.fmgifc.private_ip_address
   })
