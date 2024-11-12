@@ -10,8 +10,8 @@
 ##############################################################################################################
 
 resource "azurerm_image" "osdiskvhd" {
-  name                = "${var.PREFIX}-FTS-IMAGE"
-  location            = var.LOCATION
+  name                = "${var.prefix}-FTS-IMAGE"
+  location            = var.location
   resource_group_name = azurerm_resource_group.resourcegroup.name
 
   os_disk {
@@ -25,8 +25,8 @@ resource "azurerm_image" "osdiskvhd" {
 ##############################################################################################################
 
 resource "azurerm_network_security_group" "ftsnsg" {
-  name                = "${var.PREFIX}-FTS-NSG"
-  location            = var.LOCATION
+  name                = "${var.prefix}-FTS-NSG"
+  location            = var.location
   resource_group_name = azurerm_resource_group.resourcegroup.name
 }
 
@@ -87,21 +87,21 @@ resource "azurerm_network_security_rule" "ftsnsgallowhttpsin" {
 }
 
 resource "azurerm_public_ip" "ftspip" {
-  name                = "${var.PREFIX}-FTS-PIP"
-  location            = var.LOCATION
+  name                = "${var.prefix}-FTS-PIP"
+  location            = var.location
   resource_group_name = azurerm_resource_group.resourcegroup.name
   allocation_method   = "Static"
   sku                 = "Basic"
-  domain_name_label   = format("%s-%s", lower(var.PREFIX), "fts-pip")
+  domain_name_label   = format("%s-%s", lower(var.prefix), "fts-pip")
 }
 
 
 resource "azurerm_network_interface" "ftsifc1" {
-  name                          = "${var.PREFIX}-FTS-MGMT"
+  name                          = "${var.prefix}-FTS-MGMT"
   location                      = azurerm_resource_group.resourcegroup.location
   resource_group_name           = azurerm_resource_group.resourcegroup.name
-  enable_ip_forwarding          = true
-  enable_accelerated_networking = var.ACCELERATED_NETWORKING
+  ip_forwarding_enabled          = true
+  accelerated_networking_enabled = var.ACCELERATED_NETWORKING
 
   ip_configuration {
     name                          = "ipconfig1"
@@ -113,11 +113,11 @@ resource "azurerm_network_interface" "ftsifc1" {
 }
 
 resource "azurerm_network_interface" "ftsifc2" {
-  name                          = "${var.PREFIX}-FTS-PORT1"
+  name                          = "${var.prefix}-FTS-PORT1"
   location                      = azurerm_resource_group.resourcegroup.location
   resource_group_name           = azurerm_resource_group.resourcegroup.name
-  enable_ip_forwarding          = true
-  enable_accelerated_networking = var.ACCELERATED_NETWORKING
+  ip_forwarding_enabled          = true
+  accelerated_networking_enabled = var.ACCELERATED_NETWORKING
 
   ip_configuration {
     name                          = "ipconfig1"
@@ -128,11 +128,11 @@ resource "azurerm_network_interface" "ftsifc2" {
 }
 
 resource "azurerm_network_interface" "ftsifc3" {
-  name                          = "${var.PREFIX}-FTS-PORT2"
+  name                          = "${var.prefix}-FTS-PORT2"
   location                      = azurerm_resource_group.resourcegroup.location
   resource_group_name           = azurerm_resource_group.resourcegroup.name
-  enable_ip_forwarding          = true
-  enable_accelerated_networking = var.ACCELERATED_NETWORKING
+  ip_forwarding_enabled          = true
+  accelerated_networking_enabled = var.ACCELERATED_NETWORKING
 
   ip_configuration {
     name                          = "interface1"
@@ -148,7 +148,7 @@ resource "azurerm_network_interface_security_group_association" "ftsnsg" {
 }
 
 resource "azurerm_virtual_machine" "ftsvm" {
-  name                         = "${var.PREFIX}-FTS-VM"
+  name                         = "${var.prefix}-FTS-VM"
   location                     = azurerm_resource_group.resourcegroup.location
   resource_group_name          = azurerm_resource_group.resourcegroup.name
   network_interface_ids        = [azurerm_network_interface.ftsifc1.id, azurerm_network_interface.ftsifc2.id, azurerm_network_interface.ftsifc3.id]
@@ -177,14 +177,14 @@ resource "azurerm_virtual_machine" "ftsvm" {
   #  }
 
   storage_os_disk {
-    name              = "${var.PREFIX}-FTS-OSDISK"
+    name              = "${var.prefix}-FTS-OSDISK"
     caching           = "ReadWrite"
     create_option     = "FromImage"
     managed_disk_type = "StandardSSD_LRS"
   }
 
   storage_data_disk {
-    name              = "${var.PREFIX}-FTS-DATADISK"
+    name              = "${var.prefix}-FTS-DATADISK"
     managed_disk_type = "StandardSSD_LRS"
     create_option     = "Empty"
     lun               = 0
@@ -192,9 +192,9 @@ resource "azurerm_virtual_machine" "ftsvm" {
   }
 
   os_profile {
-    computer_name  = "${var.PREFIX}-FTS-A"
-    admin_username = var.USERNAME
-    admin_password = var.PASSWORD
+    computer_name  = "${var.prefix}-FTS-A"
+    admin_username = var.username
+    admin_password = var.password
     custom_data    = data.template_file.fts_custom_data.rendered
   }
 
@@ -209,9 +209,9 @@ data "template_file" "fts_custom_data" {
   template = file("${path.module}/customdata-fts.tpl")
 
   vars = {
-    fts_vm_name        = "${var.PREFIX}-FTS-A"
+    fts_vm_name        = "${var.prefix}-FTS-A"
     fts_license_file   = var.FTS_BYOL_LICENSE_FILE
-    fts_username       = var.USERNAME
+    fts_username       = var.username
     fts_ssh_public_key = var.FTS_SSH_PUBLIC_KEY_FILE
     fts_ipaddr         = var.fts_ipaddress["1"]
     fts_mask           = var.subnetmask["1"]

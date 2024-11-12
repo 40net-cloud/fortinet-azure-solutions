@@ -6,8 +6,8 @@
 ##############################################################################################################
 
 resource "azurerm_network_security_group" "fgtnsg" {
-  name                = "${var.PREFIX}-FGT-NSG"
-  location            = var.LOCATION
+  name                = "${var.prefix}-FGT-NSG"
+  location            = var.location
   resource_group_name = azurerm_resource_group.resourcegroup.name
 }
 
@@ -40,20 +40,20 @@ resource "azurerm_network_security_rule" "fgtnsgallowallin" {
 }
 
 resource "azurerm_public_ip" "fgtpip" {
-  name                = "${var.PREFIX}-FGT-PIP"
-  location            = var.LOCATION
+  name                = "${var.prefix}-FGT-PIP"
+  location            = var.location
   resource_group_name = azurerm_resource_group.resourcegroup.name
   allocation_method   = "Static"
   sku                 = "Standard"
-  domain_name_label   = format("%s-%s", lower(var.PREFIX), "fgt-pip")
+  domain_name_label   = format("%s-%s", lower(var.prefix), "fgt-pip")
 }
 
 resource "azurerm_network_interface" "fgtifcmgmt" {
-  name                          = "${var.PREFIX}-FGT-VM-IFC-MGMT"
+  name                          = "${var.prefix}-FGT-VM-IFC-MGMT"
   location                      = azurerm_resource_group.resourcegroup.location
   resource_group_name           = azurerm_resource_group.resourcegroup.name
-  enable_ip_forwarding          = true
-  enable_accelerated_networking = var.ACCELERATED_NETWORKING
+  ip_forwarding_enabled          = true
+  accelerated_networking_enabled = var.ACCELERATED_NETWORKING
 
   ip_configuration {
     name                          = "interface1"
@@ -71,11 +71,11 @@ resource "azurerm_network_interface_security_group_association" "fgtifcmgmtnsg" 
 
 
 resource "azurerm_network_interface" "fgtifcext" {
-  name                          = "${var.PREFIX}-FGT-VM-IFC-EXT"
+  name                          = "${var.prefix}-FGT-VM-IFC-EXT"
   location                      = azurerm_resource_group.resourcegroup.location
   resource_group_name           = azurerm_resource_group.resourcegroup.name
-  enable_ip_forwarding          = true
-  enable_accelerated_networking = var.ACCELERATED_NETWORKING
+  ip_forwarding_enabled          = true
+  accelerated_networking_enabled = var.ACCELERATED_NETWORKING
 
   ip_configuration {
     name                          = "interface1"
@@ -99,11 +99,11 @@ resource "azurerm_network_interface_security_group_association" "fgtifcextnsg" {
 }
 
 resource "azurerm_network_interface" "fgtifcint" {
-  name                          = "${var.PREFIX}-FGT-VM-IFC-INT"
+  name                          = "${var.prefix}-FGT-VM-IFC-INT"
   location                      = azurerm_resource_group.resourcegroup.location
   resource_group_name           = azurerm_resource_group.resourcegroup.name
-  enable_ip_forwarding          = true
-  enable_accelerated_networking = var.ACCELERATED_NETWORKING
+  ip_forwarding_enabled          = true
+  accelerated_networking_enabled = var.ACCELERATED_NETWORKING
 
   ip_configuration {
     name                          = "interface1"
@@ -119,7 +119,7 @@ resource "azurerm_network_interface_security_group_association" "fgtifcintnsg" {
 }
 
 resource "azurerm_virtual_machine" "fgtvm" {
-  name                         = "${var.PREFIX}-FGT-VM"
+  name                         = "${var.prefix}-FGT-VM"
   location                     = azurerm_resource_group.resourcegroup.location
   resource_group_name          = azurerm_resource_group.resourcegroup.name
   network_interface_ids        = [azurerm_network_interface.fgtifcmgmt.id, azurerm_network_interface.fgtifcext.id, azurerm_network_interface.fgtifcint.id]
@@ -144,16 +144,16 @@ resource "azurerm_virtual_machine" "fgtvm" {
   }
 
   storage_os_disk {
-    name              = "${var.PREFIX}-FGT-VM-OSDISK"
+    name              = "${var.prefix}-FGT-VM-OSDISK"
     caching           = "ReadWrite"
     create_option     = "FromImage"
     managed_disk_type = "StandardSSD_LRS"
   }
 
   os_profile {
-    computer_name  = "${var.PREFIX}-FGT-VM"
-    admin_username = var.USERNAME
-    admin_password = var.PASSWORD
+    computer_name  = "${var.prefix}-FGT-VM"
+    admin_username = var.username
+    admin_password = var.password
     custom_data    = data.template_file.fgt_custom_data.rendered
   }
 
@@ -168,11 +168,11 @@ data "template_file" "fgt_custom_data" {
   template = file("${path.module}/customdata-fgt.tpl")
 
   vars = {
-    fgt_vm_name           = "${var.PREFIX}-FGT-VM"
+    fgt_vm_name           = "${var.prefix}-FGT-VM"
     fgt_license_file      = var.FGT_BYOL_LICENSE_FILE
     fgt_license_fortiflex = var.FGT_BYOL_FORTIFLEX_LICENSE_TOKEN
-    fgt_username          = var.USERNAME
-    fgt_password          = var.PASSWORD
+    fgt_username          = var.username
+    fgt_password          = var.password
     fgt_ssh_public_key    = var.FGT_SSH_PUBLIC_KEY_FILE
     fgt_mgmt_ipaddr       = var.fgt_ipaddress["1"]
     fgt_mgmt_mask         = var.subnetmask["1"]

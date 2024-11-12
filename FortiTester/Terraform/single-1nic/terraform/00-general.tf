@@ -6,19 +6,19 @@
 ##############################################################################################################
 
 # Prefix for all resources created for this deployment in Microsoft Azure
-variable "PREFIX" {
+variable "prefix" {
   description = "Added name to each deployed resource"
 }
 
-variable "LOCATION" {
+variable "location" {
   description = "Azure region"
 }
 
-variable "USERNAME" {
-}
+variable "username" {}
 
-variable "PASSWORD" {
-}
+variable "password" {}
+
+variable "subscription_id" {}
 
 variable "FTSOSDISKVHDURI" {
   description = "Link to a FortiTester VHD expanded and stored in an Azure Storage Account."
@@ -98,6 +98,7 @@ terraform {
 
 provider "azurerm" {
   features {}
+  subscription_id = var.subscription_id
 }
 
 ##############################################################################################################
@@ -187,8 +188,8 @@ variable "fortinet_tags" {
 ##############################################################################################################
 
 resource "azurerm_resource_group" "resourcegroup" {
-  name     = "${var.PREFIX}-RG"
-  location = var.LOCATION
+  name     = "${var.prefix}-RG"
+  location = var.location
 }
 
 ##############################################################################################################
