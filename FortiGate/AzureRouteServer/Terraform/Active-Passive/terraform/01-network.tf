@@ -10,42 +10,42 @@
 ##############################################################################################################
 
 resource "azurerm_virtual_network" "vnet" {
-  name                = "${var.PREFIX}-VNET"
+  name                = "${var.prefix}-VNET"
   address_space       = [var.vnet]
   location            = azurerm_resource_group.resourcegroup.location
   resource_group_name = azurerm_resource_group.resourcegroup.name
 }
 
 resource "azurerm_subnet" "subnet1" {
-  name                 = "${var.PREFIX}-SUBNET-FGT-EXTERNAL"
+  name                 = "${var.prefix}-SUBNET-FGT-EXTERNAL"
   resource_group_name  = azurerm_resource_group.resourcegroup.name
   virtual_network_name = azurerm_virtual_network.vnet.name
   address_prefixes     = [var.subnet["1"]]
 }
 
 resource "azurerm_subnet" "subnet2" {
-  name                 = "${var.PREFIX}-SUBNET-FGT-INTERNAL"
+  name                 = "${var.prefix}-SUBNET-FGT-INTERNAL"
   resource_group_name  = azurerm_resource_group.resourcegroup.name
   virtual_network_name = azurerm_virtual_network.vnet.name
   address_prefixes     = [var.subnet["2"]]
 }
 
 resource "azurerm_subnet" "subnet3" {
-  name                 = "${var.PREFIX}-SUBNET-FGT-HASYNC"
+  name                 = "${var.prefix}-SUBNET-FGT-HASYNC"
   resource_group_name  = azurerm_resource_group.resourcegroup.name
   virtual_network_name = azurerm_virtual_network.vnet.name
   address_prefixes     = [var.subnet["3"]]
 }
 
 resource "azurerm_subnet" "subnet4" {
-  name                 = "${var.PREFIX}-SUBNET-FGT-MGMT"
+  name                 = "${var.prefix}-SUBNET-FGT-MGMT"
   resource_group_name  = azurerm_resource_group.resourcegroup.name
   virtual_network_name = azurerm_virtual_network.vnet.name
   address_prefixes     = [var.subnet["4"]]
 }
 
 resource "azurerm_subnet" "subnet5" {
-  name                 = "${var.PREFIX}-SUBNET-PROTECTED-A"
+  name                 = "${var.prefix}-SUBNET-PROTECTED-A"
   resource_group_name  = azurerm_resource_group.resourcegroup.name
   virtual_network_name = azurerm_virtual_network.vnet.name
   address_prefixes     = [var.subnet["5"]]
@@ -59,16 +59,16 @@ resource "azurerm_subnet" "subnet6" {
 }
 
 resource "azurerm_public_ip" "arspip" {
-  name                = "${var.PREFIX}-ARS-PIP"
-  location            = var.LOCATION
+  name                = "${var.prefix}-ARS-PIP"
+  location            = var.location
   resource_group_name = azurerm_resource_group.resourcegroup.name
   allocation_method   = "Static"
   sku                 = "Standard"
-  domain_name_label   = format("%s-%s", lower(var.PREFIX), "ars-pip")
+  domain_name_label   = format("%s-%s", lower(var.prefix), "ars-pip")
 }
 
 resource "azurerm_route_server" "routeserver" {
-  name                             = "${var.PREFIX}-ARS"
+  name                             = "${var.prefix}-ARS"
   resource_group_name              = azurerm_resource_group.resourcegroup.name
   location                         = azurerm_resource_group.resourcegroup.location
   sku                              = "Standard"
@@ -99,8 +99,8 @@ resource "azurerm_subnet_route_table_association" "subnet4rt" {
 }
 
 resource "azurerm_route_table" "rtfgt" {
-  name                = "${var.PREFIX}-RT-FGT"
-  location            = var.LOCATION
+  name                = "${var.prefix}-RT-FGT"
+  location            = var.location
   resource_group_name = azurerm_resource_group.resourcegroup.name
 
   route {
