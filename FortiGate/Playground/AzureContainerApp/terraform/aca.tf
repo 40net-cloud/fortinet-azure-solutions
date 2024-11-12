@@ -7,7 +7,7 @@
 ##############################################################################################################
 
 resource "azurerm_log_analytics_workspace" "loganalytics" {
-  name                = "${var.PREFIX}-loganalytics"
+  name                = "${var.prefix}-loganalytics"
   location            = azurerm_resource_group.resourcegroup.location
   resource_group_name = azurerm_resource_group.resourcegroup.name
   sku                 = "PerGB2018"
@@ -16,7 +16,7 @@ resource "azurerm_log_analytics_workspace" "loganalytics" {
 	
 resource "azapi_resource" "containerapp_environment" {
   type      = "Microsoft.App/managedEnvironments@2022-03-01"
-  name      = "${var.PREFIX}-azurecontainerapp-environment"
+  name      = "${var.prefix}-azurecontainerapp-environment"
   parent_id = azurerm_resource_group.resourcegroup.id
   location  = azurerm_resource_group.resourcegroup.location
  
