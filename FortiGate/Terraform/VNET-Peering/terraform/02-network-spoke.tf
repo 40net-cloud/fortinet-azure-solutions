@@ -16,14 +16,14 @@
 # SPOKE 1
 ##############################################################################################################
 resource "azurerm_virtual_network" "vnetspoke1" {
-  name                = "${var.PREFIX}-VNET-SPOKE1"
-  location            = var.LOCATION
+  name                = "${var.prefix}-VNET-SPOKE1"
+  location            = var.location
   resource_group_name = azurerm_resource_group.resourcegroup.name
   address_space       = [var.vnetspoke1]
 }
 
 resource "azurerm_subnet" "subnet1spoke1" {
-  name                 = "${var.PREFIX}-SPOKE1-SUBNET1"
+  name                 = "${var.prefix}-SPOKE1-SUBNET1"
   resource_group_name  = azurerm_resource_group.resourcegroup.name
   virtual_network_name = azurerm_virtual_network.vnetspoke1.name
   address_prefixes     = [var.subnetspoke1["1"]]
@@ -87,8 +87,8 @@ resource "azurerm_subnet_route_table_association" "spoke1rt" {
 }
 
 resource "azurerm_route_table" "spoke1route" {
-  name                = "${var.PREFIX}-RT-SPOKE1"
-  location            = var.LOCATION
+  name                = "${var.prefix}-RT-SPOKE1"
+  location            = var.location
   resource_group_name = azurerm_resource_group.resourcegroup.name
 
   route {
@@ -114,7 +114,7 @@ resource "azurerm_route_table" "spoke1route" {
 # SPOKE 2
 ##############################################################################################################
 resource "azurerm_virtual_network" "vnetspoke2" {
-  name                = "${var.PREFIX}-VNET-SPOKE2"
+  name                = "${var.prefix}-VNET-SPOKE2"
   address_space       = [var.vnetspoke2]
   location            = azurerm_resource_group.resourcegroup.location
   resource_group_name = azurerm_resource_group.resourcegroup.name
@@ -169,7 +169,7 @@ resource "azurerm_virtual_network_peering" "spoke22hub" {
 }
 
 resource "azurerm_subnet" "subnet1spoke2" {
-  name                 = "${var.PREFIX}-SPOKE2-SUBNET1"
+  name                 = "${var.prefix}-SPOKE2-SUBNET1"
   resource_group_name  = azurerm_resource_group.resourcegroup.name
   virtual_network_name = azurerm_virtual_network.vnetspoke2.name
   address_prefixes     = [var.subnetspoke2["1"]]
@@ -185,8 +185,8 @@ resource "azurerm_subnet_route_table_association" "spoke2rt" {
 }
 
 resource "azurerm_route_table" "spoke2route" {
-  name                = "${var.PREFIX}-RT-SPOKE2"
-  location            = var.LOCATION
+  name                = "${var.prefix}-RT-SPOKE2"
+  location            = var.location
   resource_group_name = azurerm_resource_group.resourcegroup.name
 
   route {

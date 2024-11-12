@@ -63,7 +63,7 @@ then
 else
     prefix="$DEPLOY_PREFIX"
 fi
-export TF_VAR_PREFIX="$prefix"
+export TF_VAR_prefix="$prefix"
 echo ""
 echo "--> Using prefix $prefix for all resources ..."
 echo ""
@@ -104,5 +104,5 @@ else
 fi
 
 infracost breakdown --path terraform --show-skipped \
-                --terraform-plan-flags "-var USERNAME=$username -var PASSWORD=$password"
+                --terraform-plan-flags "-var username=$username -var password=$password"
 
