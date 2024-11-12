@@ -52,12 +52,12 @@ then
 else
     location="$DEPLOY_LOCATION"
 fi
-export TF_VAR_LOCATION="$location"
+export TF_VAR_location="$location"
 echo ""
 echo "--> Deployment in $location location ..."
 echo ""
 
-if [ -z "$DEPLOY_PREFIX" ]
+if [ -z "$DEPLOY_prefix" ]
 then
     # Input prefix
     echo -n "Enter prefix: "
@@ -69,9 +69,9 @@ then
         prefix="FORTI"
     fi
 else
-    prefix="$DEPLOY_PREFIX"
+    prefix="$DEPLOY_prefix"
 fi
-export TF_VAR_PREFIX="$prefix"
+export TF_VAR_prefix="$prefix"
 echo ""
 echo "--> Using prefix $prefix for all resources ..."
 echo ""
@@ -82,17 +82,17 @@ then
     # Input username
     echo -n "Enter username (default: azureuser): "
     stty_orig=`stty -g` # save original terminal setting.
-    read USERNAME         # read the prefix
+    read username         # read the prefix
     stty $stty_orig     # restore terminal setting.
     if [ -z "$username" ]
     then
         username="azureuser"
     fi
 else
-    USERNAME="$DEPLOY_USERNAME"
+    username="$DEPLOY_USERNAME"
 fi
 echo ""
-echo "--> Using username '$USERNAME' ..."
+echo "--> Using username '$username' ..."
 echo ""
 
 if [ -z "$DEPLOY_PASSWORD" ]
@@ -101,11 +101,11 @@ then
     echo -n "Enter password: "
     stty_orig=`stty -g` # save original terminal setting.
     stty -echo          # turn-off echoing.
-    read PASSWORD         # read the password
+    read password         # read the password
     stty $stty_orig     # restore terminal setting.
     echo ""
 else
-    PASSWORD="$DEPLOY_PASSWORD"
+    password="$DEPLOY_PASSWORD"
     echo ""
     echo "--> Using password found in env variable DEPLOY_PASSWORD ..."
     echo ""
@@ -128,8 +128,8 @@ echo ""
 echo "==> Terraform plan"
 echo ""
 terraform plan --out "$PLAN" \
-                -var "USERNAME=$USERNAME" \
-                -var "PASSWORD=$PASSWORD"
+                -var "username=$username" \
+                -var "password=$password"
 
 echo ""
 echo "==> Terraform apply"

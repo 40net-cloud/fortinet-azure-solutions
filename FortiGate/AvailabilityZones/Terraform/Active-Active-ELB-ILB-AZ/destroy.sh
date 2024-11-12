@@ -29,7 +29,7 @@ terraform init
 echo ""
 echo "==> terraform destroy"
 echo ""
-terraform destroy -var "USERNAME=x" -var "PASSWORD=x" -var "LOCATION=x" -var "PREFIX=x" -auto-approve
+terraform destroy -auto-approve
 echo "return value: [$?]"
 if [[ $? != 0 ]];
 then
