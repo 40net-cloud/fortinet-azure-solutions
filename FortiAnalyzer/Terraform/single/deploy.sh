@@ -98,6 +98,26 @@ else
 fi
 password="$passwd"
 
+if [ -z "$DEPLOY_SUBSCRIPTION_ID" ]
+then
+    detected_id=`az account show | jq ".id" -r`
+    # Input username
+    echo -n "Enter subscription ID (press enter for detected id: '$detected_id'): "
+    stty_orig=`stty -g` # save original terminal setting.
+    read subscription_id         # read the subscription id
+    stty $stty_orig     # restore terminal setting.
+    if [ -z "$subscription_id" ]
+    then
+        subscription_id="$detected_id"
+    fi
+else
+    subscription_id="$DEPLOY_SUBSCRIPTION_ID"
+fi
+export TF_VAR_subscription_id="$subscription_id"
+echo ""
+echo "--> Using subscription id '$subscription_id' ..."
+echo ""
+
 SUMMARY="summary.out"
 
 echo ""
