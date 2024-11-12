@@ -17,10 +17,10 @@ jobs:
     name: 'Terraform A-Single-VM'
     runs-on: ubuntu-latest
     env:
-      TF_VAR_PREFIX: "FORTIQA-A-Single-VM-${{ github.run_id }}-${{ github.run_number }}"
-      TF_VAR_LOCATION: "westeurope"
-      TF_VAR_USERNAME: "azureuser"
-      TF_VAR_PASSWORD: "${{ secrets.PASSWORD }}"
+      TF_VAR_prefix: "FORTIQA-A-Single-VM-${{ github.run_id }}-${{ github.run_number }}"
+      TF_VAR_location: "westeurope"
+      TF_VAR_username: "azureuser"
+      TF_VAR_password: "${{ secrets.PASSWORD }}"
       ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
       ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
       ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
