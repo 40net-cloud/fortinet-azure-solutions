@@ -1,4 +1,4 @@
-#######################################################${var.PREFIX}#######################################################
+#######################################################${var.prefix}#######################################################
 #
 # Fortinet FortiGate Terraform deployment template to deploy a IPSEC test setup
 #
@@ -145,15 +145,15 @@ resource "azurerm_linux_virtual_machine" "fgtavm" {
     storage_account_type = "StandardSSD_LRS"
   }
 
-  admin_username                  = var.USERNAME
-  admin_password                  = var.PASSWORD
+  admin_username                  = var.username
+  admin_password                  = var.password
   disable_password_authentication = false
   custom_data = base64encode(templatefile("${path.module}/../templates/customdata-fgt.tftpl", {
     fgt_vm_name              = "${local.fgt_a_vm_name}"
     fgt_license_file         = var.FGT_BYOL_LICENSE_FILE_A
     fgt_license_fortiflex    = var.FGT_BYOL_FORTIFLEX_LICENSE_TOKEN_A
-    fgt_username             = var.USERNAME
-    fgt_password             = var.PASSWORD
+    fgt_username             = var.username
+    fgt_password             = var.password
     fgt_cpumask              = var.fgt_a_cpumask
     fgt_ssh_public_key       = var.FGT_SSH_PUBLIC_KEY_FILE
     fgt_external_network     = var.subnet_fgt_external["a"]

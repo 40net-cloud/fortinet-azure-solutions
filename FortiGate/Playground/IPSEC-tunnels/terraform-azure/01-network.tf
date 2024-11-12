@@ -10,36 +10,36 @@
 ##############################################################################################################
 
 resource "azurerm_virtual_network" "vnet" {
-  name                = "${var.PREFIX}-VNET"
+  name                = "${var.prefix}-VNET"
   address_space       = [var.vnet]
   location            = azurerm_resource_group.resourcegroup.location
   resource_group_name = azurerm_resource_group.resourcegroup.name
 }
 
 resource "azurerm_subnet" "subnet1" {
-  name                 = "${var.PREFIX}-SUBNET-MGMT"
+  name                 = "${var.prefix}-SUBNET-MGMT"
   resource_group_name  = azurerm_resource_group.resourcegroup.name
   virtual_network_name = azurerm_virtual_network.vnet.name
   address_prefixes     = [var.subnet["1"]]
 }
 
 resource "azurerm_subnet" "subnet2" {
-  name                 = "${var.PREFIX}-SUBNET-PORT1"
+  name                 = "${var.prefix}-SUBNET-PORT1"
   resource_group_name  = azurerm_resource_group.resourcegroup.name
   virtual_network_name = azurerm_virtual_network.vnet.name
   address_prefixes     = [var.subnet["2"]]
 }
 
 resource "azurerm_subnet" "subnet3" {
-  name                 = "${var.PREFIX}-SUBNET-PORT2"
+  name                 = "${var.prefix}-SUBNET-PORT2"
   resource_group_name  = azurerm_resource_group.resourcegroup.name
   virtual_network_name = azurerm_virtual_network.vnet.name
   address_prefixes     = [var.subnet["3"]]
 }
 
 resource "azurerm_route_table" "subnet2router" {
-  name                = "${var.PREFIX}-RT-EXT"
-  location            = var.LOCATION
+  name                = "${var.prefix}-RT-EXT"
+  location            = var.location
   resource_group_name = azurerm_resource_group.resourcegroup.name
 
   route {
@@ -66,8 +66,8 @@ resource "azurerm_subnet_route_table_association" "subnet2rt" {
 }
 
 resource "azurerm_route_table" "subnet3router" {
-  name                = "${var.PREFIX}-RT-INT"
-  location            = var.LOCATION
+  name                = "${var.prefix}-RT-INT"
+  location            = var.location
   resource_group_name = azurerm_resource_group.resourcegroup.name
 
   route {

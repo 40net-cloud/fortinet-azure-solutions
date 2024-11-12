@@ -56,7 +56,7 @@ then
 else
     location="$DEPLOY_LOCATION"
 fi
-export TF_VAR_LOCATION="$location"
+export TF_VAR_location="$location"
 echo ""
 echo "--> Deployment in $location location ..."
 echo ""
@@ -75,7 +75,7 @@ then
 else
     prefix="$DEPLOY_PREFIX"
 fi
-export TF_VAR_PREFIX="$prefix"
+export TF_VAR_prefix="$prefix"
 echo ""
 echo "--> Using prefix $prefix for all resources ..."
 echo ""
@@ -96,17 +96,17 @@ else
     echo "--> Using password found in env variable DEPLOY_PASSWORD ..."
     echo ""
 fi
-PASSWORD="$passwd"
+password="$passwd"
 DB_PASSWORD="$passwd"
 
 if [ -z "$DEPLOY_USERNAME" ]
 then
-    USERNAME="azureuser"
+    username="azureuser"
 else
-    USERNAME="$DEPLOY_USERNAME"
+    username="$DEPLOY_USERNAME"
 fi
 echo ""
-echo "--> Using username '' ..."
+echo "--> Using username '$username' ..."
 echo ""
 
 if [ -z "$DEPLOY_VHD" ]
@@ -159,8 +159,8 @@ echo ""
 echo "==> Terraform plan"
 echo ""
 terraform plan --out "$PLAN" \
-                -var "USERNAME=" \
-                -var "PASSWORD=$PASSWORD" \
+                -var "username=$username" \
+                -var "password=$password" \
                 -var "OSDISKVHDURI=$osDiskVhdUri" \
                 -var "FGT_SSH_PUBLIC_KEY_FILE=$FGT_SSH_PUBLIC_KEY_FILE"
 

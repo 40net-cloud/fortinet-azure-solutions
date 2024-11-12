@@ -55,8 +55,8 @@ resource "aws_instance" "fgtavm" {
     fgt_vm_name              = "${local.fgt_a_vm_name}"
     fgt_license_file         = var.FGT_BYOL_LICENSE_FILE_A
     fgt_license_fortiflex    = var.FGT_BYOL_FORTIFLEX_LICENSE_TOKEN_A
-    fgt_username             = var.USERNAME
-    fgt_password             = var.PASSWORD
+    fgt_username             = var.username
+    fgt_password             = var.password
     fgt_cpumask              = var.fgt_a_cpumask
     fgt_ssh_public_key       = var.FGT_SSH_PUBLIC_KEY_FILE
     fgt_external_network     = var.subnet_fgt_external["a"]

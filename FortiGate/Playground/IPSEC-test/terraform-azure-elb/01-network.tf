@@ -19,49 +19,49 @@ resource "azurerm_virtual_network" "vnet_b" {
 }
 
 resource "azurerm_subnet" "subnet1a" {
-  name                 = "${var.PREFIX}-subnet-fgt-external-a"
+  name                 = "${var.prefix}-subnet-fgt-external-a"
   resource_group_name  = azurerm_resource_group.resourcegroup.name
   virtual_network_name = azurerm_virtual_network.vnet_a.name
   address_prefixes       = [var.subnet_fgt_external["a"]]
 }
 
 resource "azurerm_subnet" "subnet2a" {
-  name                 = "${var.PREFIX}-subnet-fgt-internal-a"
+  name                 = "${var.prefix}-subnet-fgt-internal-a"
   resource_group_name  = azurerm_resource_group.resourcegroup.name
   virtual_network_name = azurerm_virtual_network.vnet_a.name
   address_prefixes       = [var.subnet_fgt_internal["a"]]
 }
 
 resource "azurerm_subnet" "subnet3a" {
-  name                 = "${var.PREFIX}-subnet-protected-a"
+  name                 = "${var.prefix}-subnet-protected-a"
   resource_group_name  = azurerm_resource_group.resourcegroup.name
   virtual_network_name = azurerm_virtual_network.vnet_a.name
   address_prefixes       = [var.subnet_protected["a"]]
 }
 
 resource "azurerm_subnet" "subnet1b" {
-  name                 = "${var.PREFIX}-subnet-fgt-external-b"
+  name                 = "${var.prefix}-subnet-fgt-external-b"
   resource_group_name  = azurerm_resource_group.resourcegroup.name
   virtual_network_name = azurerm_virtual_network.vnet_b.name
   address_prefixes       = [var.subnet_fgt_external["b"]]
 }
 
 resource "azurerm_subnet" "subnet2b" {
-  name                 = "${var.PREFIX}-subnet-fgt-internal-b"
+  name                 = "${var.prefix}-subnet-fgt-internal-b"
   resource_group_name  = azurerm_resource_group.resourcegroup.name
   virtual_network_name = azurerm_virtual_network.vnet_b.name
   address_prefixes       = [var.subnet_fgt_internal["b"]]
 }
 
 resource "azurerm_subnet" "subnet3b" {
-  name                 = "${var.PREFIX}-subnet-protected-b"
+  name                 = "${var.prefix}-subnet-protected-b"
   resource_group_name  = azurerm_resource_group.resourcegroup.name
   virtual_network_name = azurerm_virtual_network.vnet_b.name
   address_prefixes       = [var.subnet_protected["b"]]
 }
 
 resource "azurerm_network_security_group" "fgtnsg" {
-  name                = "${var.PREFIX}-nsg"
+  name                = "${var.prefix}-nsg"
   location            = azurerm_resource_group.resourcegroup.location
   resource_group_name = azurerm_resource_group.resourcegroup.name
 }
@@ -115,8 +115,8 @@ resource "azurerm_subnet_network_security_group_association" "fgtnsgassociation4
 }
 
 resource "azurerm_route_table" "subnet3arouter" {
-  name                = "${var.PREFIX}-rt-protected-a"
-  location            = var.LOCATION
+  name                = "${var.prefix}-rt-protected-a"
+  location            = var.location
   resource_group_name = azurerm_resource_group.resourcegroup.name
 
   route {
@@ -137,8 +137,8 @@ resource "azurerm_subnet_route_table_association" "subnet3art" {
 }
 
 resource "azurerm_route_table" "subnet3brouter" {
-  name                = "${var.PREFIX}-rt-protected-b"
-  location            = var.LOCATION
+  name                = "${var.prefix}-rt-protected-b"
+  location            = var.location
   resource_group_name = azurerm_resource_group.resourcegroup.name
 
   route {

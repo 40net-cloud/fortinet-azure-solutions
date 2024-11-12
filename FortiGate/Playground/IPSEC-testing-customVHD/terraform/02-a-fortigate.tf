@@ -5,19 +5,19 @@
 ##############################################################################################################
 
 resource "azurerm_public_ip" "fgtapip" {
-  name                = "${var.PREFIX}-A-FGT-PIP"
-  location            = var.LOCATION
+  name                = "${var.prefix}-A-FGT-PIP"
+  location            = var.location
   resource_group_name = azurerm_resource_group.resourcegroupa.name
   allocation_method   = "Static"
-  domain_name_label   = format("%s-%s", lower(var.PREFIX), "a-fgt-pip")
+  domain_name_label   = format("%s-%s", lower(var.prefix), "a-fgt-pip")
 }
 
 resource "azurerm_network_interface" "fgtaifcext" {
-  name                          = "${var.PREFIX}-A-VM-FGT-IFC-EXT"
+  name                          = "${var.prefix}-A-VM-FGT-IFC-EXT"
   location                      = azurerm_resource_group.resourcegroupa.location
   resource_group_name           = azurerm_resource_group.resourcegroupa.name
-  enable_ip_forwarding          = true
-  enable_accelerated_networking = true
+  ip_forwarding_enabled          = true
+  accelerated_networking_enabled = true
 
   ip_configuration {
     name                          = "interface1"
@@ -29,11 +29,11 @@ resource "azurerm_network_interface" "fgtaifcext" {
 }
 
 resource "azurerm_network_interface" "fgtaifcint" {
-  name                          = "${var.PREFIX}-A-VM-FGT-IFC-INT"
+  name                          = "${var.prefix}-A-VM-FGT-IFC-INT"
   location                      = azurerm_resource_group.resourcegroupa.location
   resource_group_name           = azurerm_resource_group.resourcegroupa.name
-  enable_ip_forwarding          = true
-  enable_accelerated_networking = true
+  ip_forwarding_enabled          = true
+  accelerated_networking_enabled = true
 
   ip_configuration {
     name                          = "interface1"
@@ -44,7 +44,7 @@ resource "azurerm_network_interface" "fgtaifcint" {
 }
 
 resource "azurerm_virtual_machine" "fgtavm" {
-  name                         = "${var.PREFIX}-A-VM-FGT"
+  name                         = "${var.prefix}-A-VM-FGT"
   location                     = azurerm_resource_group.resourcegroupa.location
   resource_group_name          = azurerm_resource_group.resourcegroupa.name
   network_interface_ids        = ["${azurerm_network_interface.fgtaifcext.id}", "${azurerm_network_interface.fgtaifcint.id}"]
@@ -60,16 +60,16 @@ resource "azurerm_virtual_machine" "fgtavm" {
   }
 
   storage_os_disk {
-    name              = "${var.PREFIX}-A-VM-FGT-OSDISK"
+    name              = "${var.prefix}-A-VM-FGT-OSDISK"
     caching           = "ReadWrite"
     create_option     = "FromImage"
     managed_disk_type = "Premium_LRS"
   }
 
   os_profile {
-    computer_name  = "${var.PREFIX}-A-VM-FGT"
-    admin_username = var.USERNAME
-    admin_password = var.PASSWORD
+    computer_name  = "${var.prefix}-A-VM-FGT"
+    admin_username = var.username
+    admin_password = var.password
     custom_data    = data.template_file.fgt_a_custom_data.rendered
   }
 
@@ -87,9 +87,9 @@ data "template_file" "fgt_a_custom_data" {
   template = file("${path.module}/customdata.tpl")
 
   vars {
-    fgt_vm_name          = "${var.PREFIX}-A-VM-FGT"
+    fgt_vm_name          = "${var.prefix}-A-VM-FGT"
     fgt_license_file     = var.FGT_LICENSE_FILE_A
-    fgt_username         = var.USERNAME
+    fgt_username         = var.username
     fgt_ssh_public_key   = var.FGT_SSH_PUBLIC_KEY_FILE
     fgt_external_ipaddr  = var.fgt_external_ipaddress["a"]
     fgt_external_mask    = var.fgt_external_subnetmask["a"]
@@ -122,7 +122,7 @@ output "fgt_a_public_ip_address" {
 #  program = ["sh", "${path.module}/get-token.sh"]
 #  query = {
 #    fgt_public_ipaddress = "${data.azurerm_public_ip.fgtapip.ip_address}"
-#    fgt_username = "${var.USERNAME}"
+#    fgt_username = "${var.username}"
 #    fgt_ssh_private_key = "${var.FGT_SSH_PRIVATE_KEY_FILE}"
 #  }
 #  depends_on = ["azurerm_virtual_machine.fgtavm"]

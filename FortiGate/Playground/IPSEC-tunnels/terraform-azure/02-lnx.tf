@@ -6,8 +6,8 @@
 ##############################################################################################################
 
 resource "azurerm_network_security_group" "lnxnsg" {
-  name                = "${var.PREFIX}-LNX-NSG"
-  location            = var.LOCATION
+  name                = "${var.prefix}-LNX-NSG"
+  location            = var.location
   resource_group_name = azurerm_resource_group.resourcegroup.name
 }
 
@@ -68,20 +68,20 @@ resource "azurerm_network_security_rule" "lnxnsgallowhttpsin" {
 }
 
 resource "azurerm_public_ip" "lnxpip" {
-  name                = "${var.PREFIX}-LNX-PIP"
-  location            = var.LOCATION
+  name                = "${var.prefix}-LNX-PIP"
+  location            = var.location
   resource_group_name = azurerm_resource_group.resourcegroup.name
   allocation_method   = "Static"
   sku                 = "Basic"
-  domain_name_label   = format("%s-%s", lower(var.PREFIX), "lnx-pip")
+  domain_name_label   = format("%s-%s", lower(var.prefix), "lnx-pip")
 }
 
 resource "azurerm_network_interface" "lnxifc1" {
-  name                          = "${var.PREFIX}-LNX-MGMT"
+  name                          = "${var.prefix}-LNX-MGMT"
   location                      = azurerm_resource_group.resourcegroup.location
   resource_group_name           = azurerm_resource_group.resourcegroup.name
-  enable_ip_forwarding          = true
-  enable_accelerated_networking = var.ACCELERATED_NETWORKING
+  ip_forwarding_enabled          = true
+  accelerated_networking_enabled = var.ACCELERATED_NETWORKING
 
   ip_configuration {
     name                          = "ipconfig1"
@@ -93,11 +93,11 @@ resource "azurerm_network_interface" "lnxifc1" {
 }
 
 resource "azurerm_network_interface" "lnxifc2" {
-  name                          = "${var.PREFIX}-LNX-PORT1"
+  name                          = "${var.prefix}-LNX-PORT1"
   location                      = azurerm_resource_group.resourcegroup.location
   resource_group_name           = azurerm_resource_group.resourcegroup.name
-  enable_ip_forwarding          = true
-  enable_accelerated_networking = var.ACCELERATED_NETWORKING
+  ip_forwarding_enabled          = true
+  accelerated_networking_enabled = var.ACCELERATED_NETWORKING
 
   ip_configuration {
     name                          = "ipconfig1"
@@ -113,7 +113,7 @@ resource "azurerm_network_interface_security_group_association" "lnxnsg" {
 }
 
 resource "azurerm_linux_virtual_machine" "lnxvm" {
-  name                  = "${var.PREFIX}-LNX-VM"
+  name                  = "${var.prefix}-LNX-VM"
   location              = azurerm_resource_group.resourcegroup.location
   resource_group_name   = azurerm_resource_group.resourcegroup.name
   network_interface_ids = [azurerm_network_interface.lnxifc1.id, azurerm_network_interface.lnxifc2.id]
@@ -131,18 +131,18 @@ resource "azurerm_linux_virtual_machine" "lnxvm" {
   }
 
   os_disk {
-    name                 = "${var.PREFIX}-LNX-OSDISK"
+    name                 = "${var.prefix}-LNX-OSDISK"
     caching              = "ReadWrite"
     storage_account_type = "StandardSSD_LRS"
   }
 
-  admin_username                  = var.USERNAME
-  admin_password                  = var.PASSWORD
+  admin_username                  = var.username
+  admin_password                  = var.password
   disable_password_authentication = false
   custom_data                     = base64encode(templatefile("${path.module}/../templates/customdata-lnx.tftpl", {}))
 
 #  admin_ssh_key {
-#    username   = var.USERNAME
+#    username   = var.username
 #    public_key = file(var.FGT_SSH_PUBLIC_KEY_FILE)
 #  }
 
@@ -150,20 +150,20 @@ resource "azurerm_linux_virtual_machine" "lnxvm" {
 }
 
 resource "azurerm_public_ip" "lnx2pip" {
-  name                = "${var.PREFIX}-LNX2-PIP"
-  location            = var.LOCATION
+  name                = "${var.prefix}-LNX2-PIP"
+  location            = var.location
   resource_group_name = azurerm_resource_group.resourcegroup.name
   allocation_method   = "Static"
   sku                 = "Basic"
-  domain_name_label   = format("%s-%s", lower(var.PREFIX), "lnx2-pip")
+  domain_name_label   = format("%s-%s", lower(var.prefix), "lnx2-pip")
 }
 
 resource "azurerm_network_interface" "lnx2ifc1" {
-  name                          = "${var.PREFIX}-LNX2-MGMT"
+  name                          = "${var.prefix}-LNX2-MGMT"
   location                      = azurerm_resource_group.resourcegroup.location
   resource_group_name           = azurerm_resource_group.resourcegroup.name
-  enable_ip_forwarding          = true
-  enable_accelerated_networking = var.ACCELERATED_NETWORKING
+  ip_forwarding_enabled          = true
+  accelerated_networking_enabled = var.ACCELERATED_NETWORKING
 
   ip_configuration {
     name                          = "ipconfig1"
@@ -175,11 +175,11 @@ resource "azurerm_network_interface" "lnx2ifc1" {
 }
 
 resource "azurerm_network_interface" "lnx2ifc2" {
-  name                          = "${var.PREFIX}-LNX2-PORT1"
+  name                          = "${var.prefix}-LNX2-PORT1"
   location                      = azurerm_resource_group.resourcegroup.location
   resource_group_name           = azurerm_resource_group.resourcegroup.name
-  enable_ip_forwarding          = true
-  enable_accelerated_networking = var.ACCELERATED_NETWORKING
+  ip_forwarding_enabled          = true
+  accelerated_networking_enabled = var.ACCELERATED_NETWORKING
 
   ip_configuration {
     name                          = "ipconfig1"
@@ -195,7 +195,7 @@ resource "azurerm_network_interface_security_group_association" "lnx2nsg" {
 }
 
 resource "azurerm_linux_virtual_machine" "lnx2vm" {
-  name                  = "${var.PREFIX}-LNX2-VM"
+  name                  = "${var.prefix}-LNX2-VM"
   location              = azurerm_resource_group.resourcegroup.location
   resource_group_name   = azurerm_resource_group.resourcegroup.name
   network_interface_ids = [azurerm_network_interface.lnx2ifc1.id, azurerm_network_interface.lnx2ifc2.id]
@@ -213,18 +213,18 @@ resource "azurerm_linux_virtual_machine" "lnx2vm" {
   }
 
   os_disk {
-    name                 = "${var.PREFIX}-LNX2-OSDISK"
+    name                 = "${var.prefix}-LNX2-OSDISK"
     caching              = "ReadWrite"
     storage_account_type = "StandardSSD_LRS"
   }
 
-  admin_username                  = var.USERNAME
-  admin_password                  = var.PASSWORD
+  admin_username                  = var.username
+  admin_password                  = var.password
   disable_password_authentication = false
   custom_data                     = base64encode(templatefile("${path.module}/../templates/customdata-lnx2.tftpl", {}))
 
 #  admin_ssh_key {
-#    username   = var.USERNAME
+#    username   = var.username
 #    public_key = file(var.FGT_SSH_PUBLIC_KEY_FILE)
 #  }
 

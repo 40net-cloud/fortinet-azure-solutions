@@ -5,17 +5,19 @@
 ##############################################################################################################
 
 # Prefix for all resources created for this deployment in Microsoft Azure
-variable "PREFIX" {
+variable "prefix" {
   description = "Added name to each deployed resource"
 }
 
-variable "LOCATION" {
+variable "location" {
   description = "Azure region"
 }
 
-variable "USERNAME" {}
+variable "username" {}
 
-variable "PASSWORD" {}
+variable "password" {}
+
+variable "subscription_id" {}
 
 variable "OSDISKVHDURI" {
   description = "Link to a FortiGate VHD expanded and stored in an Azure Storage Account."
@@ -43,18 +45,22 @@ variable "FGT_SSH_PUBLIC_KEY_FILE" {
 }
 
 ##############################################################################################################
-# Microsoft Azure Storage Account for storage of Terraform state file
-##############################################################################################################
-
-terraform {
-  required_version = ">= 0.11"
-}
-
-##############################################################################################################
 # Deployment in Microsoft Azure
 ##############################################################################################################
 
+terraform {
+  required_version = ">= 0.12"
+  required_providers {
+    azurerm = {
+      source  = "hashicorp/azurerm"
+      version = ">=2.0.0"
+    }
+  }
+}
+
 provider "azurerm" {
+  features {}
+  subscription_id = var.subscription_id
 }
 
 ##############################################################################################################
@@ -180,13 +186,13 @@ variable "fgt_vmsize" {
 ##############################################################################################################
 
 resource "azurerm_resource_group" "resourcegroupa" {
-  name     = "${var.PREFIX}-A-RG"
-  location = var.LOCATION
+  name     = "${var.prefix}-A-RG"
+  location = var.location
 }
 
 resource "azurerm_resource_group" "resourcegroupb" {
-  name     = "${var.PREFIX}-B-RG"
-  location = var.LOCATION
+  name     = "${var.prefix}-B-RG"
+  location = var.location
 }
 ##############################################################################################################
 
@@ -195,8 +201,8 @@ resource "azurerm_resource_group" "resourcegroupb" {
 ##############################################################################################################
 
 resource "azurerm_image" "osdiskvhd" {
-  name                = "${var.PREFIX}-FGT-IMAGE"
-  location            = var.LOCATION
+  name                = "${var.prefix}-FGT-IMAGE"
+  location            = var.location
   resource_group_name = azurerm_resource_group.resourcegroupa.name
 
   os_disk {

@@ -5,19 +5,19 @@
 ##############################################################################################################
 
 resource "azurerm_public_ip" "lnxapip" {
-  name                = "${var.PREFIX}-A-LNX-PIP"
-  location            = var.LOCATION
+  name                = "${var.prefix}-A-LNX-PIP"
+  location            = var.location
   resource_group_name = azurerm_resource_group.resourcegroupa.name
   allocation_method   = "Static"
-  domain_name_label   = format("%s-%s", lower(var.PREFIX), "a-lnx-pip")
+  domain_name_label   = format("%s-%s", lower(var.prefix), "a-lnx-pip")
 }
 
 resource "azurerm_network_interface" "lnxaifc" {
-  name                          = "${var.PREFIX}-A-VM-LNX-IFC"
+  name                          = "${var.prefix}-A-VM-LNX-IFC"
   location                      = azurerm_resource_group.resourcegroupa.location
   resource_group_name           = azurerm_resource_group.resourcegroupa.name
-  enable_ip_forwarding          = false
-  enable_accelerated_networking = true
+  ip_forwarding_enabled          = false
+  accelerated_networking_enabled = true
 
   ip_configuration {
     name                          = "interface1"
@@ -29,7 +29,7 @@ resource "azurerm_network_interface" "lnxaifc" {
 }
 
 resource "azurerm_virtual_machine" "lnxavm" {
-  name                  = "${var.PREFIX}-A-VM-LNX"
+  name                  = "${var.prefix}-A-VM-LNX"
   location              = azurerm_resource_group.resourcegroupa.location
   resource_group_name   = azurerm_resource_group.resourcegroupa.name
   network_interface_ids = ["${azurerm_network_interface.lnxaifc.id}"]
@@ -43,16 +43,16 @@ resource "azurerm_virtual_machine" "lnxavm" {
   }
 
   storage_os_disk {
-    name              = "${var.PREFIX}-A-VM-LNX-OSDISK"
+    name              = "${var.prefix}-A-VM-LNX-OSDISK"
     caching           = "ReadWrite"
     create_option     = "FromImage"
     managed_disk_type = "Standard_LRS"
   }
 
   os_profile {
-    computer_name  = "${var.PREFIX}-A-VM-LNX"
-    admin_username = var.USERNAME
-    admin_password = var.PASSWORD
+    computer_name  = "${var.prefix}-A-VM-LNX"
+    admin_username = var.username
+    admin_password = var.password
     custom_data    = data.template_file.lnx_a_custom_data.rendered
   }
 

@@ -11,8 +11,8 @@
 
 output "template_file" {
   value = templatefile("${path.module}/../templates/summary.tftpl", {
-    region                      = var.LOCATION
-    username                    = var.USERNAME
+    region                      = var.location
+    username                    = var.username
     lnx_public_ip_address       = data.azurerm_public_ip.lnxpip.ip_address
     lnx_public_fqdn             = data.azurerm_public_ip.lnxpip.fqdn
     lnx_private_ip_address      = azurerm_network_interface.lnxifc1.private_ip_address

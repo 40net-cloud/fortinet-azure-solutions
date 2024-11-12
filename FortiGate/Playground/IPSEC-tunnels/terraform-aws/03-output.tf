@@ -12,7 +12,7 @@
 output "template_file" {
   value = templatefile("${path.module}/../templates/summary.tftpl", {
     region                      = var.REGION
-    username                    = var.USERNAME
+    username                    = var.username
     lnx_public_ip_address       = aws_eip.lnxpip.public_ip
     lnx_public_fqdn             = aws_eip.lnxpip.public_dns
     lnx_private_ip_address      = data.aws_network_interface.lnxnicmgmt.private_ip

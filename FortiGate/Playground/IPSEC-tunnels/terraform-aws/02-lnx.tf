@@ -14,26 +14,26 @@ resource "aws_eip" "lnxpip" {
   vpc               = true
   network_interface = aws_network_interface.lnxnicmgmt.id
   tags = {
-    Name = "${var.PREFIX}-lnx-pip"
+    Name = "${var.prefix}-lnx-pip"
   }
 }
 
 resource "aws_network_interface" "lnxnicmgmt" {
-  description = "${var.PREFIX}-lnx-mgmt"
+  description = "${var.prefix}-lnx-mgmt"
   subnet_id   = aws_subnet.subnet1.id
   private_ips = [var.lnx_ipaddress["1"]]
   tags = {
-    Name = "${var.PREFIX}-lnx-nic-mgmt"
+    Name = "${var.prefix}-lnx-nic-mgmt"
   }
 }
 
 resource "aws_network_interface" "lnxnicint" {
-  description = "${var.PREFIX}-lnx-internal"
+  description = "${var.prefix}-lnx-internal"
   subnet_id   = aws_subnet.subnet2.id
   private_ips = [var.lnx_ipaddress["2"]]
   source_dest_check = false
   tags = {
-    Name = "${var.PREFIX}-lnx-nic-int"
+    Name = "${var.prefix}-lnx-nic-int"
   }
 }
 
@@ -73,7 +73,7 @@ resource "aws_instance" "lnxvm" {
   }
 
   tags = {
-    Name = "${var.PREFIX}-lnx-vm"
+    Name = "${var.prefix}-lnx-vm"
   }
 }
 
@@ -86,26 +86,26 @@ resource "aws_eip" "lnx2pip" {
   vpc               = true
   network_interface = aws_network_interface.lnx2nicmgmt.id
   tags = {
-    Name = "${var.PREFIX}-lnx2-pip"
+    Name = "${var.prefix}-lnx2-pip"
   }
 }
 
 resource "aws_network_interface" "lnx2nicmgmt" {
-  description = "${var.PREFIX}-lnx2-mgmt"
+  description = "${var.prefix}-lnx2-mgmt"
   subnet_id   = aws_subnet.subnet1.id
   private_ips = [var.lnx2_ipaddress["1"]]
   tags = {
-    Name = "${var.PREFIX}-lnx2-nic-mgmt"
+    Name = "${var.prefix}-lnx2-nic-mgmt"
   }
 }
 
 resource "aws_network_interface" "lnx2nicint" {
-  description = "${var.PREFIX}-lnx2-internal"
+  description = "${var.prefix}-lnx2-internal"
   subnet_id   = aws_subnet.subnet3.id
   private_ips = [var.lnx2_ipaddress["2"]]
   source_dest_check = false
   tags = {
-    Name = "${var.PREFIX}-lnx2-nic-int"
+    Name = "${var.prefix}-lnx2-nic-int"
   }
 }
 
@@ -145,7 +145,7 @@ resource "aws_instance" "lnx2vm" {
   }
 
   tags = {
-    Name = "${var.PREFIX}-lnx2-vm"
+    Name = "${var.prefix}-lnx2-vm"
   }
 }
 

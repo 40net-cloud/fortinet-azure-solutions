@@ -6,16 +6,16 @@
 
 resource "azurerm_public_ip" "lnxbpip" {
   count               = var.lnx_count
-  name                = "${var.PREFIX}-LNX-B-${count.index}-pip"
-  location            = var.LOCATION
+  name                = "${var.prefix}-LNX-B-${count.index}-pip"
+  location            = var.location
   resource_group_name = azurerm_resource_group.resourcegroup.name
   allocation_method   = "Static"
-  domain_name_label   = format("%s-%s-%s", lower(var.PREFIX), "b-lnx-pip", count.index)
+  domain_name_label   = format("%s-%s-%s", lower(var.prefix), "b-lnx-pip", count.index)
 }
 
 resource "azurerm_network_interface" "lnxbifc" {
   count                         = var.lnx_count
-  name                          = "${var.PREFIX}-lnx-b-${count.index}-ifc"
+  name                          = "${var.prefix}-lnx-b-${count.index}-ifc"
   location                      = azurerm_resource_group.resourcegroup.location
   resource_group_name           = azurerm_resource_group.resourcegroup.name
   ip_forwarding_enabled          = false
@@ -31,7 +31,7 @@ resource "azurerm_network_interface" "lnxbifc" {
 
 resource "azurerm_linux_virtual_machine" "lnxbvm" {
   count                 = var.lnx_count
-  name                  = "${var.PREFIX}-lnx-b-${count.index}-vm"
+  name                  = "${var.prefix}-lnx-b-${count.index}-vm"
   location              = azurerm_resource_group.resourcegroup.location
   resource_group_name   = azurerm_resource_group.resourcegroup.name
   network_interface_ids = [azurerm_network_interface.lnxbifc[count.index].id]
@@ -45,19 +45,19 @@ resource "azurerm_linux_virtual_machine" "lnxbvm" {
   }
 
   admin_ssh_key {
-    username   = var.USERNAME
+    username   = var.username
     public_key = file(var.FGT_SSH_PUBLIC_KEY_FILE)
   }
 
   os_disk {
-    name                 = "${var.PREFIX}-lnx-b-${count.index}-osdisk"
+    name                 = "${var.prefix}-lnx-b-${count.index}-osdisk"
     caching              = "ReadWrite"
     storage_account_type = "StandardSSD_LRS"
   }
 
-  computer_name                   = "${var.PREFIX}-lnx-b-${count.index}-vm"
-  admin_username                  = var.USERNAME
-  admin_password                  = var.PASSWORD
+  computer_name                   = "${var.prefix}-lnx-b-${count.index}-vm"
+  admin_username                  = var.username
+  admin_password                  = var.password
   disable_password_authentication = false
   custom_data                     = base64encode(templatefile("${path.module}/../templates/customdata-lnx.tftpl", {}))
 

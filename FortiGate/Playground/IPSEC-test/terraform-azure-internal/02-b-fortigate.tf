@@ -6,10 +6,10 @@
 
 resource "azurerm_public_ip" "fgtbpip" {
   name                = "${local.fgt_b_prefix}-pip"
-  location            = var.LOCATION
+  location            = var.location
   resource_group_name = azurerm_resource_group.resourcegroup.name
   allocation_method   = "Static"
-  domain_name_label   = format("%s-%s", lower(var.PREFIX), "b-fgt-pip")
+  domain_name_label   = format("%s-%s", lower(var.prefix), "b-fgt-pip")
   sku                 = "Standard"
 }
 
@@ -106,16 +106,16 @@ resource "azurerm_linux_virtual_machine" "fgtbvm" {
     storage_account_type = "StandardSSD_LRS"
   }
 
-  admin_username                  = var.USERNAME
-  admin_password                  = var.PASSWORD
+  admin_username                  = var.username
+  admin_password                  = var.password
   disable_password_authentication = false
   custom_data = base64encode(templatefile("${path.module}/../templates/customdata-fgt.tftpl", {
     fgt_csp                  = "Azure"
     fgt_vm_name              = "${local.fgt_b_vm_name}"
     fgt_license_file         = var.FGT_BYOL_LICENSE_FILE_B
     fgt_license_fortiflex    = var.FGT_BYOL_FORTIFLEX_LICENSE_TOKEN_B
-    fgt_username             = var.USERNAME
-    fgt_password             = var.PASSWORD
+    fgt_username             = var.username
+    fgt_password             = var.password
     fgt_cpumask              = var.fgt_b_cpumask
     fgt_ssh_public_key       = var.FGT_SSH_PUBLIC_KEY_FILE
     fgt_external_network     = var.subnet_fgt_external["b"]

@@ -5,31 +5,31 @@
 ##############################################################################################################
 
 resource "azurerm_virtual_network" "vnetb" {
-  name                = "${var.PREFIX}-B-VNET"
+  name                = "${var.prefix}-B-VNET"
   address_space       = ["${var.vnet["b"]}"]
   location            = azurerm_resource_group.resourcegroupb.location
   resource_group_name = azurerm_resource_group.resourcegroupb.name
 }
 
 resource "azurerm_subnet" "subnetb1" {
-  name                 = "${var.PREFIX}-B-SUBNET-FGT-EXTERNAL"
+  name                 = "${var.prefix}-B-SUBNET-FGT-EXTERNAL"
   resource_group_name  = azurerm_resource_group.resourcegroupb.name
   virtual_network_name = azurerm_virtual_network.vnetb.name
-  address_prefix       = var.subnet_fgt_external["b"]
+  address_prefixes     = [var.subnet_fgt_external["b"]]
 }
 
 resource "azurerm_subnet" "subnetb2" {
-  name                 = "${var.PREFIX}-B-SUBNET-FGT-INTERNAL"
+  name                 = "${var.prefix}-B-SUBNET-FGT-INTERNAL"
   resource_group_name  = azurerm_resource_group.resourcegroupb.name
   virtual_network_name = azurerm_virtual_network.vnetb.name
-  address_prefix       = var.subnet_fgt_internal["b"]
+  address_prefixes     = [var.subnet_fgt_internal["b"]]
 }
 
 resource "azurerm_subnet" "subnetb3" {
-  name                 = "${var.PREFIX}-B-SUBNET-PROTECTED"
+  name                 = "${var.prefix}-B-SUBNET-PROTECTED"
   resource_group_name  = azurerm_resource_group.resourcegroupb.name
   virtual_network_name = azurerm_virtual_network.vnetb.name
-  address_prefix       = var.subnet_protected["b"]
+  address_prefixes     = [var.subnet_protected["b"]]
 }
 
 resource "azurerm_subnet_route_table_association" "subnetb3rt" {
@@ -38,12 +38,12 @@ resource "azurerm_subnet_route_table_association" "subnetb3rt" {
 }
 
 resource "azurerm_route_table" "protectedbroute" {
-  name                = "${var.PREFIX}-B-RT-PROTECTED"
-  location            = var.LOCATION
+  name                = "${var.prefix}-B-RT-PROTECTED"
+  location            = var.location
   resource_group_name = azurerm_resource_group.resourcegroupb.name
 
   route {
-    name                   = "${var.PREFIX}-B-ProtectedToInternet"
+    name                   = "${var.prefix}-B-ProtectedToInternet"
     address_prefix         = var.subnet_protected["a"]
     next_hop_type          = "VirtualAppliance"
     next_hop_in_ip_address = var.fgt_internal_ipaddress["b"]

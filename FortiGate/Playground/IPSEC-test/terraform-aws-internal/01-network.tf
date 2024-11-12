@@ -11,7 +11,7 @@ resource "aws_vpc" "vpc" {
   enable_dns_hostnames = true
   instance_tenancy     = "default"
   tags = {
-    Name = "${var.PREFIX}-vpc"
+    Name = "${var.prefix}-vpc"
   }
 }
 
@@ -20,7 +20,7 @@ resource "aws_subnet" "subnet1a" {
   cidr_block        = var.subnet_fgt_external["a"]
   availability_zone = local.az1
   tags = {
-    Name = "${var.PREFIX}-subnet-fgt-external-a"
+    Name = "${var.prefix}-subnet-fgt-external-a"
   }
 }
 
@@ -29,7 +29,7 @@ resource "aws_subnet" "subnet2a" {
   cidr_block        = var.subnet_fgt_internal["a"]
   availability_zone = local.az1
   tags = {
-    Name = "${var.PREFIX}-subnet-fgt-internal-a"
+    Name = "${var.prefix}-subnet-fgt-internal-a"
   }
 }
 
@@ -38,7 +38,7 @@ resource "aws_subnet" "subnet3a" {
   cidr_block        = var.subnet_protected["a"]
   availability_zone = local.az1
   tags = {
-    Name = "${var.PREFIX}-subnet-protected-a"
+    Name = "${var.prefix}-subnet-protected-a"
   }
 }
 
@@ -47,7 +47,7 @@ resource "aws_subnet" "subnet1b" {
   cidr_block        = var.subnet_fgt_external["b"]
   availability_zone = local.az1
   tags = {
-    Name = "${var.PREFIX}-subnet-fgt-external-b"
+    Name = "${var.prefix}-subnet-fgt-external-b"
   }
 }
 
@@ -56,7 +56,7 @@ resource "aws_subnet" "subnet2b" {
   cidr_block        = var.subnet_fgt_internal["b"]
   availability_zone = local.az1
   tags = {
-    Name = "${var.PREFIX}-subnet-fgt-internal-b"
+    Name = "${var.prefix}-subnet-fgt-internal-b"
   }
 }
 
@@ -65,7 +65,7 @@ resource "aws_subnet" "subnet3b" {
   cidr_block        = var.subnet_protected["b"]
   availability_zone = local.az1
   tags = {
-    Name = "${var.PREFIX}-subnet-protected-b"
+    Name = "${var.prefix}-subnet-protected-b"
   }
 }
 
@@ -73,7 +73,7 @@ resource "aws_subnet" "subnet3b" {
 resource "aws_internet_gateway" "igw" {
   vpc_id = aws_vpc.vpc.id
   tags = {
-    Name = "${var.PREFIX}-igw"
+    Name = "${var.prefix}-igw"
   }
 }
 
@@ -82,7 +82,7 @@ resource "aws_route_table" "subnet1art" {
   vpc_id = aws_vpc.vpc.id
 
   tags = {
-    Name = "${var.PREFIX}-subnet-fgt-external-a-rt"
+    Name = "${var.prefix}-subnet-fgt-external-a-rt"
   }
 }
 resource "aws_route" "subnet1atointernet" {
@@ -99,7 +99,7 @@ resource "aws_route_table" "subnet3art" {
   vpc_id = aws_vpc.vpc.id
 
   tags = {
-    Name = "${var.PREFIX}-subnet-protected-a-rt"
+    Name = "${var.prefix}-subnet-protected-a-rt"
   }
 }
 resource "aws_route" "subnet3aroutetob" {
@@ -122,7 +122,7 @@ resource "aws_route_table" "subnet1brt" {
   vpc_id = aws_vpc.vpc.id
 
   tags = {
-    Name = "${var.PREFIX}-subnet-fgt-external-b-rt"
+    Name = "${var.prefix}-subnet-fgt-external-b-rt"
   }
 }
 resource "aws_route" "subnet1btointernet" {
@@ -139,7 +139,7 @@ resource "aws_route_table" "subnet3brt" {
   vpc_id = aws_vpc.vpc.id
 
   tags = {
-    Name = "${var.PREFIX}-subnet-protected-b-rt"
+    Name = "${var.prefix}-subnet-protected-b-rt"
   }
 }
 resource "aws_route" "subnet3broutetoa" {
@@ -161,7 +161,7 @@ resource "aws_route_table_association" "subnet3brtassociate" {
 // Security Group
 
 resource "aws_security_group" "public_allow" {
-  name        = "${var.PREFIX}-public-allow"
+  name        = "${var.prefix}-public-allow"
   description = "Public Allow traffic"
   vpc_id      = aws_vpc.vpc.id
 
@@ -201,12 +201,12 @@ resource "aws_security_group" "public_allow" {
   }
 
   tags = {
-    Name = "${var.PREFIX}-public-allow"
+    Name = "${var.prefix}-public-allow"
   }
 }
 
 resource "aws_security_group" "allow_all" {
-  name        = "${var.PREFIX}-allow-all"
+  name        = "${var.prefix}-allow-all"
   description = "Allow all traffic"
   vpc_id      = aws_vpc.vpc.id
 
@@ -225,7 +225,7 @@ resource "aws_security_group" "allow_all" {
   }
 
   tags = {
-    Name = "${var.PREFIX}-allow-all"
+    Name = "${var.prefix}-allow-all"
   }
 }
 

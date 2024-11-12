@@ -10,36 +10,36 @@ resource "aws_eip" "fgtpip" {
   vpc               = true
   network_interface = aws_network_interface.fgtnicmgmt.id
   tags = {
-    Name = "${var.PREFIX}-fgt-pip"
+    Name = "${var.prefix}-fgt-pip"
   }
 }
 
 resource "aws_network_interface" "fgtnicmgmt" {
-  description = "${var.PREFIX}-fgt-mgmt"
+  description = "${var.prefix}-fgt-mgmt"
   subnet_id   = aws_subnet.subnet1.id
   private_ips = [var.fgt_ipaddress["1"]]
   tags = {
-    Name = "${var.PREFIX}-fgt-nic-mgmt"
+    Name = "${var.prefix}-fgt-nic-mgmt"
   }
 }
 
 resource "aws_network_interface" "fgtnicext" {
-  description = "${var.PREFIX}-fgt-external"
+  description = "${var.prefix}-fgt-external"
   subnet_id   = aws_subnet.subnet2.id
   private_ips = [var.fgt_ipaddress["2"]]
   source_dest_check = false
   tags = {
-    Name = "${var.PREFIX}-fgt-nic-ext"
+    Name = "${var.prefix}-fgt-nic-ext"
   }
 }
 
 resource "aws_network_interface" "fgtnicint" {
-  description = "${var.PREFIX}-fgt-internal"
+  description = "${var.prefix}-fgt-internal"
   subnet_id   = aws_subnet.subnet3.id
   private_ips = [var.fgt_ipaddress["3"]]
   source_dest_check = false
   tags = {
-    Name = "${var.PREFIX}-fgt-nic-int"
+    Name = "${var.prefix}-fgt-nic-int"
   }
 }
 
@@ -69,11 +69,11 @@ resource "aws_instance" "fgtvm" {
   key_name          = var.KEY_PAIR
   user_data = templatefile("${path.module}/../templates/customdata-fgt.tftpl", {
     fgt_csp             = "aws"
-    fgt_vm_name         = "${var.PREFIX}-fgt-vm"
+    fgt_vm_name         = "${var.prefix}-fgt-vm"
     fgt_license_file    = var.FGT_BYOL_LICENSE_FILE
     fgt_license_fortiflex  = var.FGT_BYOL_FLEXVM_LICENSE
-    fgt_username        = var.USERNAME
-    fgt_password        = var.PASSWORD
+    fgt_username        = var.username
+    fgt_password        = var.password
     fgt_ssh_public_key  = var.FGT_SSH_PUBLIC_KEY_FILE
     fgt_mgmt_ipaddr     = var.fgt_ipaddress["1"]
     fgt_mgmt_mask       = var.subnetmask["1"]
@@ -114,7 +114,7 @@ resource "aws_instance" "fgtvm" {
   }
 
   tags = {
-    Name = "${var.PREFIX}-fgt-vm"
+    Name = "${var.prefix}-fgt-vm"
   }
 }
 

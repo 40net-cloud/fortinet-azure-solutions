@@ -16,7 +16,7 @@ resource "aws_vpc" "vpc" {
   enable_dns_hostnames = true
   instance_tenancy     = "default"
   tags = {
-    Name = "${var.PREFIX}-vpc"
+    Name = "${var.prefix}-vpc"
   }
 }
 
@@ -25,7 +25,7 @@ resource "aws_subnet" "subnet1" {
   cidr_block        = var.subnet["1"]
   availability_zone = local.az1
   tags = {
-    Name = "${var.PREFIX}-subnet1"
+    Name = "${var.prefix}-subnet1"
   }
 }
 
@@ -34,7 +34,7 @@ resource "aws_subnet" "subnet2" {
   cidr_block        = var.subnet["2"]
   availability_zone = local.az1
   tags = {
-    Name = "${var.PREFIX}-subnet2"
+    Name = "${var.prefix}-subnet2"
   }
 }
 
@@ -43,7 +43,7 @@ resource "aws_subnet" "subnet3" {
   cidr_block        = var.subnet["3"]
   availability_zone = local.az1
   tags = {
-    Name = "${var.PREFIX}-subnet3"
+    Name = "${var.prefix}-subnet3"
   }
 }
 
@@ -51,7 +51,7 @@ resource "aws_subnet" "subnet3" {
 resource "aws_internet_gateway" "igw" {
   vpc_id = aws_vpc.vpc.id
   tags = {
-    Name = "${var.PREFIX}-igw"
+    Name = "${var.prefix}-igw"
   }
 }
 
@@ -60,7 +60,7 @@ resource "aws_route_table" "mgmtrt" {
   vpc_id = aws_vpc.vpc.id
 
   tags = {
-    Name = "${var.PREFIX}-mgmt-rt"
+    Name = "${var.prefix}-mgmt-rt"
   }
 }
 
@@ -68,7 +68,7 @@ resource "aws_route_table" "subnet2rt" {
   vpc_id = aws_vpc.vpc.id
 
   tags = {
-    Name = "${var.PREFIX}-subnet2-rt"
+    Name = "${var.prefix}-subnet2-rt"
   }
 }
 
@@ -76,7 +76,7 @@ resource "aws_route_table" "subnet3rt" {
   vpc_id = aws_vpc.vpc.id
 
   tags = {
-    Name = "${var.PREFIX}-subnet3-rt"
+    Name = "${var.prefix}-subnet3-rt"
   }
 }
 
@@ -139,7 +139,7 @@ resource "aws_route_table_association" "subnet3rtassociate" {
 // Security Group
 
 resource "aws_security_group" "public_allow" {
-  name        = "${var.PREFIX}-public-allow"
+  name        = "${var.prefix}-public-allow"
   description = "Public Allow traffic"
   vpc_id      = aws_vpc.vpc.id
 
@@ -180,12 +180,12 @@ resource "aws_security_group" "public_allow" {
   }
 
   tags = {
-    Name = "${var.PREFIX}-public-allow"
+    Name = "${var.prefix}-public-allow"
   }
 }
 
 resource "aws_security_group" "allow_all" {
-  name        = "${var.PREFIX}-allow-all"
+  name        = "${var.prefix}-allow-all"
   description = "Allow all traffic"
   vpc_id      = aws_vpc.vpc.id
 
@@ -204,6 +204,6 @@ resource "aws_security_group" "allow_all" {
   }
 
   tags = {
-    Name = "${var.PREFIX}-allow-all"
+    Name = "${var.prefix}-allow-all"
   }
 }

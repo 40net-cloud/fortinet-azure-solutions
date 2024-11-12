@@ -5,7 +5,7 @@
 ##############################################################################################################
 
 # Prefix for all resources created for this deployment in Microsoft Azure
-variable "PREFIX" {
+variable "prefix" {
   description = "Added name to each deployed resource"
 }
 
@@ -13,12 +13,12 @@ variable "REGION" {
   description = "AWS region"
 }
 
-variable "USERNAME" {
+variable "username" {
   description = "Default username for FortiGate-VM in AWS is admin"
   default     = "admin"
 }
 
-variable "PASSWORD" {
+variable "password" {
   description = "Default password for admin user is the instance id"
   default     = ""
 }
@@ -238,11 +238,11 @@ resource "random_string" "ipsec_psk" {
 
 locals {
   fgt_external_ipcount = 32
-  fgt_a_prefix         = "${var.PREFIX}-fgt-a"
+  fgt_a_prefix         = "${var.prefix}-fgt-a"
   fgt_a_vm_name        = "${local.fgt_a_prefix}-vm"
   fgt_a_private_ip_address_ext = cidrhost(var.subnet_fgt_external["a"], 5)
   fgt_a_private_ip_address_int = cidrhost(var.subnet_fgt_internal["a"], 5)
-  fgt_b_prefix         = "${var.PREFIX}-fgt-b"
+  fgt_b_prefix         = "${var.prefix}-fgt-b"
   fgt_b_vm_name        = "${local.fgt_b_prefix}-vm"
   fgt_b_private_ip_address_ext = cidrhost(var.subnet_fgt_external["b"], 5)
   fgt_b_private_ip_address_int = cidrhost(var.subnet_fgt_internal["b"], 5)
