@@ -6,8 +6,8 @@
 ##############################################################################################################
 
 resource "azurerm_network_security_group" "faznsg" {
-  name                = "${var.PREFIX}-faz-nsg"
-  location            = var.LOCATION
+  name                = "${var.prefix}-faz-nsg"
+  location            = var.location
   resource_group_name = azurerm_resource_group.resourcegroup.name
 }
 
@@ -82,20 +82,20 @@ resource "azurerm_network_security_rule" "faznsgallowdevregin" {
 }
 
 resource "azurerm_public_ip" "fazpip" {
-  name                = "${var.PREFIX}-faz-pip"
-  location            = var.LOCATION
+  name                = "${var.prefix}-faz-pip"
+  location            = var.location
   resource_group_name = azurerm_resource_group.resourcegroup.name
   allocation_method   = "Static"
   sku                 = "Standard"
-  domain_name_label   = format("%s-%s", lower(var.PREFIX), "faz-pip")
+  domain_name_label   = format("%s-%s", lower(var.prefix), "faz-pip")
 }
 
 
 resource "azurerm_network_interface" "fazifc" {
-  name                 = "${var.PREFIX}-faz-nic1"
+  name                 = "${var.prefix}-faz-nic1"
   location             = azurerm_resource_group.resourcegroup.location
   resource_group_name  = azurerm_resource_group.resourcegroup.name
-  enable_ip_forwarding = true
+  ip_forwarding_enabled = true
 
   ip_configuration {
     name                          = "ipconfig1"
@@ -113,7 +113,7 @@ resource "azurerm_network_interface_security_group_association" "faznsg" {
 }
 
 resource "azurerm_linux_virtual_machine" "faz" {
-  name                  = "${var.PREFIX}-faz"
+  name                  = "${var.prefix}-faz"
   location              = azurerm_resource_group.resourcegroup.location
   resource_group_name   = azurerm_resource_group.resourcegroup.name
   network_interface_ids = [azurerm_network_interface.fazifc.id]
@@ -137,17 +137,17 @@ resource "azurerm_linux_virtual_machine" "faz" {
   }
 
   os_disk {
-    name                 = "${var.PREFIX}-faz-osdisk"
+    name                 = "${var.prefix}-faz-osdisk"
     caching              = "ReadWrite"
     storage_account_type = "Standard_LRS"
   }
 
-  admin_username                  = var.USERNAME
-  admin_password                  = var.PASSWORD
+  admin_username                  = var.username
+  admin_password                  = var.password
   disable_password_authentication = false
   custom_data = base64encode(templatefile("${path.module}/customdata.tftpl", {
-    faz_vm_name           = "${var.PREFIX}-faz"
-    faz_username          = var.USERNAME
+    faz_vm_name           = "${var.prefix}-faz"
+    faz_username          = var.username
     faz_license_file      = var.FAZ_BYOL_LICENSE_FILE
     faz_license_fortiflex = var.FAZ_BYOL_FORTIFLEX_LICENSE_TOKEN
     faz_ssh_public_key    = var.FAZ_SSH_PUBLIC_KEY_FILE

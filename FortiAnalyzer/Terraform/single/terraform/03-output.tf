@@ -13,8 +13,8 @@ data "template_file" "summary" {
   template = file("${path.module}/summary.tpl")
 
   vars = {
-    location               = var.LOCATION
-    faz_username           = var.USERNAME
+    location               = var.location
+    faz_username           = var.username
     faz_public_ip_address  = data.azurerm_public_ip.fazpip.ip_address
     faz_private_ip_address = azurerm_network_interface.fazifc.private_ip_address
   }
