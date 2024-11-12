@@ -11,8 +11,8 @@
 
 output "deployment_summary" {
   value = templatefile("${path.module}/summary.tpl", {
-    username                   = var.USERNAME
-    location                   = var.LOCATION
+    username                   = var.username
+    location                   = var.location
 	elb_ipaddress                = data.azurerm_public_ip.elbpip.ip_address
     fwb_a_private_ip_address_ext = azurerm_network_interface.fwbaifcext.private_ip_address
     fwb_a_private_ip_address_int = azurerm_network_interface.fwbaifcint.private_ip_address

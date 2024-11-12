@@ -6,8 +6,8 @@
 ##############################################################################################################
 
 resource "azurerm_network_security_group" "fwbnsg" {
-  name                = "${var.PREFIX}-FWB-NSG"
-  location            = var.LOCATION
+  name                = "${var.prefix}-FWB-NSG"
+  location            = var.location
   resource_group_name = azurerm_resource_group.resourcegroup.name
 }
 
@@ -40,20 +40,20 @@ resource "azurerm_network_security_rule" "fwbnsgallowallin" {
 }
 
 resource "azurerm_public_ip" "fwbpip" {
-  name                = "${var.PREFIX}-FWB-PIP"
-  location            = var.LOCATION
+  name                = "${var.prefix}-FWB-PIP"
+  location            = var.location
   resource_group_name = azurerm_resource_group.resourcegroup.name
   allocation_method   = "Static"
   sku                 = "Standard"
-  domain_name_label   = format("%s-%s", lower(var.PREFIX), "lb-pip")
+  domain_name_label   = format("%s-%s", lower(var.prefix), "lb-pip")
 }
 
 resource "azurerm_network_interface" "fwbifcext" {
-  name                          = "${var.PREFIX}-FWB-Nic1-EXT"
+  name                          = "${var.prefix}-FWB-Nic1-EXT"
   location                      = azurerm_resource_group.resourcegroup.location
   resource_group_name           = azurerm_resource_group.resourcegroup.name
-  enable_ip_forwarding          = true
-  enable_accelerated_networking = var.FWB_ACCELERATED_NETWORKING
+  ip_forwarding_enabled          = true
+  accelerated_networking_enabled = var.FWB_ACCELERATED_NETWORKING
 
   ip_configuration {
     name                          = "interface1"
@@ -70,10 +70,10 @@ resource "azurerm_network_interface_security_group_association" "fwbifcextnsg" {
 }
 
 resource "azurerm_network_interface" "fwbifcint" {
-  name                 = "${var.PREFIX}-FWB-Nic2-INT"
+  name                 = "${var.prefix}-FWB-Nic2-INT"
   location             = azurerm_resource_group.resourcegroup.location
   resource_group_name  = azurerm_resource_group.resourcegroup.name
-  enable_ip_forwarding = true
+  ip_forwarding_enabled = true
 
   ip_configuration {
     name                          = "interface1"
@@ -89,7 +89,7 @@ resource "azurerm_network_interface_security_group_association" "fwbifcintnsg" {
 }
 
 resource "azurerm_linux_virtual_machine" "fwbvm" {
-  name                  = "${var.PREFIX}-FWB"
+  name                  = "${var.prefix}-FWB"
   location              = azurerm_resource_group.resourcegroup.location
   resource_group_name   = azurerm_resource_group.resourcegroup.name
   network_interface_ids = [azurerm_network_interface.fwbifcext.id, azurerm_network_interface.fwbifcint.id]
@@ -113,19 +113,19 @@ resource "azurerm_linux_virtual_machine" "fwbvm" {
   }
 
   os_disk {
-    name                 = "${var.PREFIX}-FWB-OSDISK"
+    name                 = "${var.prefix}-FWB-OSDISK"
     caching              = "ReadWrite"
     storage_account_type = "Standard_LRS"
   }
 
-  admin_username                  = var.USERNAME
-  admin_password                  = var.PASSWORD
+  admin_username                  = var.username
+  admin_password                  = var.password
   disable_password_authentication = false
   custom_data = base64encode(templatefile("${path.module}/customdata.tpl", {
-    fwb_vm_name           = "${var.PREFIX}-FWB"
+    fwb_vm_name           = "${var.prefix}-FWB"
     fwb_license_file      = var.FWB_BYOL_LICENSE_FILE
     fwb_license_fortiflex = var.FWB_BYOL_FORTIFLEX_LICENSE_TOKEN
-#    fwb_username          = var.USERNAME
+#    fwb_username          = var.username
 #    fwb_ssh_public_key    = var.FWB_SSH_PUBLIC_KEY_FILE
 #    fwb_external_ipaddr   = var.fwb_ipaddress["1"]
 #    fwb_external_mask     = var.subnetmask["1"]
@@ -143,7 +143,7 @@ resource "azurerm_linux_virtual_machine" "fwbvm" {
 }
 
 resource "azurerm_managed_disk" "fwbvm-datadisk" {
-  name                 = "${var.PREFIX}-FWB-DATADISK"
+  name                 = "${var.prefix}-FWB-DATADISK"
   location             = azurerm_resource_group.resourcegroup.location
   resource_group_name  = azurerm_resource_group.resourcegroup.name
   storage_account_type = "Standard_LRS"

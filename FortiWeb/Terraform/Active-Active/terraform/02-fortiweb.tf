@@ -6,8 +6,8 @@
 ##############################################################################################################
 
 resource "azurerm_network_security_group" "fwbnsg" {
-  name                = "${var.PREFIX}-FWB-NSG"
-  location            = var.LOCATION
+  name                = "${var.prefix}-FWB-NSG"
+  location            = var.location
   resource_group_name = azurerm_resource_group.resourcegroup.name
 }
 
@@ -40,22 +40,22 @@ resource "azurerm_network_security_rule" "fwbnsgallowallin" {
 }
 
 resource "azurerm_public_ip" "elbpip" {
-  name                = "${var.PREFIX}-FWB-PIP"
-  location            = var.LOCATION
+  name                = "${var.prefix}-FWB-PIP"
+  location            = var.location
   resource_group_name = azurerm_resource_group.resourcegroup.name
   allocation_method   = "Static"
   sku                 = "Standard"
-  domain_name_label   = format("%s-%s", lower(var.PREFIX), "lb-pip")
+  domain_name_label   = format("%s-%s", lower(var.prefix), "lb-pip")
 }
 
 resource "azurerm_lb" "elb" {
-  name                = "${var.PREFIX}-ExternalLoadBalancer"
-  location            = var.LOCATION
+  name                = "${var.prefix}-ExternalLoadBalancer"
+  location            = var.location
   resource_group_name = azurerm_resource_group.resourcegroup.name
   sku                 = "Standard"
 
   frontend_ip_configuration {
-    name                 = "${var.PREFIX}-ELB-PIP"
+    name                 = "${var.prefix}-ELB-PIP"
     public_ip_address_id = azurerm_public_ip.elbpip.id
   }
 }
@@ -89,7 +89,7 @@ resource "azurerm_lb_rule" "lbruletcphttp" {
   protocol                       = "Tcp"
   frontend_port                  = 80
   backend_port                   = 80
-  frontend_ip_configuration_name = "${var.PREFIX}-ELB-PIP"
+  frontend_ip_configuration_name = "${var.prefix}-ELB-PIP"
   probe_id                       = azurerm_lb_probe.elbprobehttp.id
   backend_address_pool_ids       = [azurerm_lb_backend_address_pool.elbbackend.id]
   enable_floating_ip             = true
@@ -101,7 +101,7 @@ resource "azurerm_lb_rule" "lbruletcphttps" {
   protocol                       = "Tcp"
   frontend_port                  = 443
   backend_port                   = 443
-  frontend_ip_configuration_name = "${var.PREFIX}-ELB-PIP"
+  frontend_ip_configuration_name = "${var.prefix}-ELB-PIP"
   probe_id                       = azurerm_lb_probe.elbprobehttps.id
   backend_address_pool_ids       = [azurerm_lb_backend_address_pool.elbbackend.id]
   enable_floating_ip             = true
@@ -111,50 +111,50 @@ resource "azurerm_lb_rule" "lbruletcphttps" {
 resource "azurerm_lb_nat_rule" "fwbamgmthttps" {
   resource_group_name            = azurerm_resource_group.resourcegroup.name
   loadbalancer_id                = azurerm_lb.elb.id
-  name                           = "${var.PREFIX}-FWB-A-Admin-HTTPS"
+  name                           = "${var.prefix}-FWB-A-Admin-HTTPS"
   protocol                       = "Tcp"
   frontend_port                  = 40030
   backend_port                   = 8443
-  frontend_ip_configuration_name = "${var.PREFIX}-ELB-PIP"
+  frontend_ip_configuration_name = "${var.prefix}-ELB-PIP"
 }
 
 resource "azurerm_lb_nat_rule" "fwbbmgmthttps" {
   resource_group_name            = azurerm_resource_group.resourcegroup.name
   loadbalancer_id                = azurerm_lb.elb.id
-  name                           = "${var.PREFIX}-FWB-B-Admin-HTTPS"
+  name                           = "${var.prefix}-FWB-B-Admin-HTTPS"
   protocol                       = "Tcp"
   frontend_port                  = 40031
   backend_port                   = 8443
-  frontend_ip_configuration_name = "${var.PREFIX}-ELB-PIP"
+  frontend_ip_configuration_name = "${var.prefix}-ELB-PIP"
 }
 
 resource "azurerm_lb_nat_rule" "fwbamgmtssh" {
   resource_group_name            = azurerm_resource_group.resourcegroup.name
   loadbalancer_id                = azurerm_lb.elb.id
-  name                           = "${var.PREFIX}-FWB-A-SSH"
+  name                           = "${var.prefix}-FWB-A-SSH"
   protocol                       = "Tcp"
   frontend_port                  = 50030
   backend_port                   = 22
-  frontend_ip_configuration_name = "${var.PREFIX}-ELB-PIP"
+  frontend_ip_configuration_name = "${var.prefix}-ELB-PIP"
 }
 
 resource "azurerm_lb_nat_rule" "fwbbmgmtssh" {
   resource_group_name            = azurerm_resource_group.resourcegroup.name
   loadbalancer_id                = azurerm_lb.elb.id
-  name                           = "${var.PREFIX}-FWB-B-SSH"
+  name                           = "${var.prefix}-FWB-B-SSH"
   protocol                       = "Tcp"
   frontend_port                  = 50031
   backend_port                   = 22
-  frontend_ip_configuration_name = "${var.PREFIX}-ELB-PIP"
+  frontend_ip_configuration_name = "${var.prefix}-ELB-PIP"
 }
 
 
 resource "azurerm_network_interface" "fwbaifcext" {
-  name                          = "${var.PREFIX}-FWB-A-Nic1-EXT"
+  name                          = "${var.prefix}-FWB-A-Nic1-EXT"
   location                      = azurerm_resource_group.resourcegroup.location
   resource_group_name           = azurerm_resource_group.resourcegroup.name
-  enable_ip_forwarding          = true
-  enable_accelerated_networking = var.FWB_ACCELERATED_NETWORKING
+  ip_forwarding_enabled          = true
+  accelerated_networking_enabled = var.FWB_ACCELERATED_NETWORKING
 
   ip_configuration {
     name                          = "interface1"
@@ -188,10 +188,10 @@ resource "azurerm_network_interface_nat_rule_association" "fwbamgmtsshvm" {
 }
 
 resource "azurerm_network_interface" "fwbaifcint" {
-  name                 = "${var.PREFIX}-FWB-A-Nic2-INT"
+  name                 = "${var.prefix}-FWB-A-Nic2-INT"
   location             = azurerm_resource_group.resourcegroup.location
   resource_group_name  = azurerm_resource_group.resourcegroup.name
-  enable_ip_forwarding = true
+  ip_forwarding_enabled = true
 
   ip_configuration {
     name                          = "interface1"
@@ -207,7 +207,7 @@ resource "azurerm_network_interface_security_group_association" "fwbaifcintnsg" 
 }
 
 resource "azurerm_linux_virtual_machine" "fwbavm" {
-  name                  = "${var.PREFIX}-FWB-A"
+  name                  = "${var.prefix}-FWB-A"
   location              = azurerm_resource_group.resourcegroup.location
   resource_group_name   = azurerm_resource_group.resourcegroup.name
   network_interface_ids = [azurerm_network_interface.fwbaifcext.id, azurerm_network_interface.fwbaifcint.id]
@@ -231,20 +231,20 @@ resource "azurerm_linux_virtual_machine" "fwbavm" {
   }
 
   os_disk {
-    name                 = "${var.PREFIX}-FWB-A-OSDISK"
+    name                 = "${var.prefix}-FWB-A-OSDISK"
     caching              = "ReadWrite"
     storage_account_type = "Standard_LRS"
   }
 
-  admin_username                  = var.USERNAME
-  admin_password                  = var.PASSWORD
+  admin_username                  = var.username
+  admin_password                  = var.password
   disable_password_authentication = false
   custom_data = base64encode(templatefile("${path.module}/customdata.tpl", {
-    fwb_vm_name           = "${var.PREFIX}-FWB-A"
+    fwb_vm_name           = "${var.prefix}-FWB-A"
     fwb_license_file      = var.FWB_BYOL_LICENSE_FILE_A
     fwb_license_fortiflex = var.FWB_BYOL_FORTIFLEX_LICENSE_TOKEN_A
-	fwb_ha_group_name	  = "${var.PREFIX}"
-	ha_loadblancer_name	  =	"${var.PREFIX}-ExternalLoadBalancer"
+	fwb_ha_group_name	  = "${var.prefix}"
+	ha_loadblancer_name	  =	"${var.prefix}-ExternalLoadBalancer"
 	fwb_ha_instanceId	  = 1
 	fwb_ha_priority		  = 1
 	fwb_ha_localip        = var.fwb_ipaddress_a["2"]
@@ -258,7 +258,7 @@ resource "azurerm_linux_virtual_machine" "fwbavm" {
 }
 
 resource "azurerm_managed_disk" "fwbavm-datadisk" {
-  name                 = "${var.PREFIX}-FWB-A-DATADISK"
+  name                 = "${var.prefix}-FWB-A-DATADISK"
   location             = azurerm_resource_group.resourcegroup.location
   resource_group_name  = azurerm_resource_group.resourcegroup.name
   storage_account_type = "Standard_LRS"
@@ -274,11 +274,11 @@ resource "azurerm_virtual_machine_data_disk_attachment" "fwbavm-datadisk-attach"
 }
 
 resource "azurerm_network_interface" "fwbbifcext" {
-  name                          = "${var.PREFIX}-FWB-B-Nic1-EXT"
+  name                          = "${var.prefix}-FWB-B-Nic1-EXT"
   location                      = azurerm_resource_group.resourcegroup.location
   resource_group_name           = azurerm_resource_group.resourcegroup.name
-  enable_ip_forwarding          = true
-  enable_accelerated_networking = var.FWB_ACCELERATED_NETWORKING
+  ip_forwarding_enabled          = true
+  accelerated_networking_enabled = var.FWB_ACCELERATED_NETWORKING
 
   ip_configuration {
     name                          = "interface1"
@@ -312,10 +312,10 @@ resource "azurerm_network_interface_nat_rule_association" "fwbbmgmtsshvm" {
 }
 
 resource "azurerm_network_interface" "fwbbifcint" {
-  name                 = "${var.PREFIX}-FWB-B-Nic2-INT"
+  name                 = "${var.prefix}-FWB-B-Nic2-INT"
   location             = azurerm_resource_group.resourcegroup.location
   resource_group_name  = azurerm_resource_group.resourcegroup.name
-  enable_ip_forwarding = true
+  ip_forwarding_enabled = true
 
   ip_configuration {
     name                          = "interface1"
@@ -331,7 +331,7 @@ resource "azurerm_network_interface_security_group_association" "fwbbifcintnsg" 
 }
 
 resource "azurerm_linux_virtual_machine" "fwbbvm" {
-  name                  = "${var.PREFIX}-FWB-B"
+  name                  = "${var.prefix}-FWB-B"
   location              = azurerm_resource_group.resourcegroup.location
   resource_group_name   = azurerm_resource_group.resourcegroup.name
   network_interface_ids = [azurerm_network_interface.fwbbifcext.id, azurerm_network_interface.fwbbifcint.id]
@@ -355,20 +355,20 @@ resource "azurerm_linux_virtual_machine" "fwbbvm" {
   }
 
   os_disk {
-    name                 = "${var.PREFIX}-FWB-B-OSDISK"
+    name                 = "${var.prefix}-FWB-B-OSDISK"
     caching              = "ReadWrite"
     storage_account_type = "Standard_LRS"
   }
 
-  admin_username                  = var.USERNAME
-  admin_password                  = var.PASSWORD
+  admin_username                  = var.username
+  admin_password                  = var.password
   disable_password_authentication = false
   custom_data = base64encode(templatefile("${path.module}/customdata.tpl", {
-    fwb_vm_name           = "${var.PREFIX}-FWB-B"
+    fwb_vm_name           = "${var.prefix}-FWB-B"
     fwb_license_file      = var.FWB_BYOL_LICENSE_FILE_B
     fwb_license_fortiflex = var.FWB_BYOL_FORTIFLEX_LICENSE_TOKEN_B
-	fwb_ha_group_name	  = "${var.PREFIX}"
-	ha_loadblancer_name	  =	"${var.PREFIX}-ExternalLoadBalancer"
+	fwb_ha_group_name	  = "${var.prefix}"
+	ha_loadblancer_name	  =	"${var.prefix}-ExternalLoadBalancer"
 	fwb_ha_instanceId	  = 2
 	fwb_ha_priority		  = 2
 	fwb_ha_localip       = var.fwb_ipaddress_b["2"]
@@ -382,7 +382,7 @@ resource "azurerm_linux_virtual_machine" "fwbbvm" {
 }
 
 resource "azurerm_managed_disk" "fwbbvm-datadisk" {
-  name                 = "${var.PREFIX}-FWB-B-DATADISK"
+  name                 = "${var.prefix}-FWB-B-DATADISK"
   location             = azurerm_resource_group.resourcegroup.location
   resource_group_name  = azurerm_resource_group.resourcegroup.name
   storage_account_type = "Standard_LRS"
