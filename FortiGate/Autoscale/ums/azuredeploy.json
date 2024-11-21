@@ -926,11 +926,11 @@
                 }
               }
             ]
-          }
-        },
-        "diagnosticsProfile": {
-          "bootDiagnostics": {
-            "enabled": "[variables('serialConsoleEnabled')]"
+          },
+          "diagnosticsProfile": {
+            "bootDiagnostics": {
+              "enabled": "[variables('serialConsoleEnabled')]"
+            }
           }
         }
       }
