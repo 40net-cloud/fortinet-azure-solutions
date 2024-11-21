@@ -399,20 +399,6 @@
         "description": "FortiManager serial number to add the deployed FortiGate into the FortiManager"
       }
     },
-    "fortiGateLicenseBYOL": {
-      "type": "string",
-      "defaultValue": "",
-      "metadata": {
-        "description": "FortiGate BYOL license content"
-      }
-    },
-    "fortiGateLicenseFortiFlex": {
-      "type": "string",
-      "defaultValue": "",
-      "metadata": {
-        "description": "FortiGate BYOL FortiFlex license token"
-      }
-    },
     "customImageReference": {
       "type": "string",
       "defaultValue": "",
@@ -452,13 +438,8 @@
     "subnet2Id": "[if(equals(parameters('vnetNewOrExisting'),'new'),resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet2Name')),resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet2Name')))]",
     "fgtVmName": "[if(equals(parameters('fortiGateName'),''),concat(parameters('fortiGateNamePrefix'),'-fgt'),parameters('fortiGateName'))]",
     "fmgCustomData": "[if(equals(parameters('fortiManager'),'yes'),concat('\nconfig system central-management\nset type fortimanager\n set fmg ',parameters('fortiManagerIP'),'\nset serial-number ', parameters('fortiManagerSerial'), '\nend\n config system interface\n edit port1\n append allowaccess fgfm\n end\n config system interface\n edit port2\n append allowaccess fgfm\n end\n'),'')]",
-    "customDataHeader": "Content-Type: multipart/mixed; boundary=\"12345\"\nMIME-Version: 1.0\n\n--12345\nContent-Type: text/plain; charset=\"us-ascii\"\nMIME-Version: 1.0\nContent-Transfer-Encoding: 7bit\nContent-Disposition: attachment; filename=\"config\"\n\n",
     "customDataBody": "[concat('config system global\nset hostname ', variables('fgtVmName'), '\nend\nconfig system sdn-connector\nedit AzureSDN\nset type azure\nnext\nend\nconfig router static\nedit 1\nset dst ', parameters('vnetAddressPrefix'), '\nset distance 5\nset gateway ', variables('sn2GatewayIP'), '\nset device port2\nnext\nend\nconfig system interface\nedit port1\nset mode dhcp\nset description external\nset allowaccess ping ssh https\nnext\nedit port2\nset mode dhcp\nset description internal\nset allowaccess ping ssh https\nnext\nend\n', variables('fmgCustomData'), parameters('fortiGateAdditionalCustomData'), '\n')]",
-    "customDataLicenseHeader": "--12345\nContent-Type: text/plain; charset=\"us-ascii\"\nMIME-Version: 1.0\nContent-Transfer-Encoding: 7bit\nContent-Disposition: attachment; filename=\"license\"\n\n",
-    "customDataFooter": "\n--12345--\n",
-    "customDataFortiFlex": "[if(equals(parameters('fortiGateLicenseFortiFlex'),''),'',concat('LICENSE-TOKEN:',parameters('fortiGateLicenseFortiFlex'), '\n'))]",
-    "customDataCombined": "[concat(variables('customDataHeader'),variables('customDataBody'),variables('customDataLicenseHeader'), variables('customDataFortiFlex'), parameters('fortiGateLicenseBYOL'), variables('customDataFooter'))]",
-    "fgtCustomData": "[base64(if(and(equals(parameters('fortiGateLicenseBYOL'),''),equals(parameters('fortiGateLicenseFortiFlex'),'')),variables('customDataBody'),variables('customDataCombined')))]",
+    "fgtCustomData": "[base64(variables('customDataBody'))]",
     "routeTableProtectedName": "[concat(parameters('fortiGateNamePrefix'),'-routetable')]",
     "routeTableProtectedId": "[resourceId('Microsoft.Network/routeTables',variables('routeTableProtectedName'))]",
     "fgtNic1Name": "[concat(variables('fgtVmName'),'-nic-external')]",
