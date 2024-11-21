@@ -494,8 +494,8 @@
     "externalLBBEId": "[resourceId('Microsoft.Network/loadBalancers/backendAddressPools',variables('externalLBName'),variables('externalLBBEName'))]",
     "externalLBProbeName": "lbprobe",
     "externalLBProbeId": "[resourceId('Microsoft.Network/loadBalancers/probes',variables('externalLBName'),variables('externalLBProbeName'))]",
-    "externalLBNATPoolName-web": "concat(parameters('fortiGateNamePrefix'),'-elb-natpool-web')",
-    "externalLBNATPoolName-ssh": "concat(parameters('fortiGateNamePrefix'),'-elb-natpool-ssh')",
+    "externalLBNATPoolName-web": "[concat(parameters('fortiGateNamePrefix'),'-elb-natpool-web')]",
+    "externalLBNATPoolName-ssh": "[concat(parameters('fortiGateNamePrefix'),'-elb-natpool-ssh')]",
     "imageReferenceMarketplace": {
       "publisher": "[variables('imagePublisher')]",
       "offer": "[variables('imageOffer')]",
