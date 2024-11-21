@@ -82,7 +82,7 @@
     },
     "fortiGateImageVersion_arm64": {
       "type": "string",
-      "defaultValue": "7.4.4",
+      "defaultValue": "7.4.5",
       "allowedValues": [
         "latest",
         "7.6.0",
@@ -208,32 +208,6 @@
       ],
       "metadata": {
         "description": "Virtual Machine size selection - must be F4 or other instance that supports 4 NICs"
-      }
-    },
-    "availabilityOptions": {
-      "type": "string",
-      "allowedValues": [
-        "None",
-        "Availability set",
-        "Availability zone"
-      ],
-      "defaultValue": "None",
-      "metadata": {
-        "description": "Deploy FortiGate VM in an Availability Set or Availability Zones. If Availability Zones deployment is selected but the location does not support Availability Zones an Availability Set will be deployed. If Availability Zones deployment is selected and Availability Zones are available in the location, FortiGate A will be placed in Zone 1, FortiGate B will be placed in Zone 2"
-      }
-    },
-    "existingAvailabilitySetName": {
-      "type": "string",
-      "defaultValue": "",
-      "metadata": {
-        "description": "Name of existing Availability Set in case you want to replace or add a FortiGate to an existing cluster."
-      }
-    },
-    "availabilityZoneNumber": {
-      "type": "string",
-      "defaultValue": "",
-      "metadata": {
-        "description": "Name of existing Availability Set in case you want to replace or add a FortiGate to an existing cluster."
       }
     },
     "acceleratedNetworking": {
@@ -472,15 +446,14 @@
     "fortiGateImageSKU": "[if(equals(parameters('fortiGateInstanceArchitecture'), 'arm64'), parameters('fortiGateImageSKU_arm64'), parameters('fortiGateImageSKU_x64'))]",
     "fortiGateImageVersion": "[if(equals(parameters('fortiGateInstanceArchitecture'), 'arm64'), parameters('fortiGateImageVersion_arm64'), parameters('fortiGateImageVersion_x64'))]",
     "instanceType": "[if(equals(parameters('fortiGateInstanceArchitecture'), 'arm64'), parameters('instanceType_arm64'), parameters('instanceType_x64'))]",
-    "useAZ": "[and(not(empty(pickZones('Microsoft.Compute', 'virtualMachines', parameters('location')))), equals(parameters('availabilityOptions'), 'Availability zone'))]",
-    "pipZones": "[if(variables('useAZ'), pickZones('Microsoft.Network', 'publicIPAddresses', parameters('location'), 3), json('null'))]",
+    "pipZones": "[pickZones('Microsoft.Network', 'publicIPAddresses', parameters('location'), 3)]",
     "vnetName": "[if(equals(parameters('vnetName'),''),concat(parameters('fortiGateNamePrefix'),'-vnet'),parameters('vnetName'))]",
     "subnet1Id": "[if(equals(parameters('vnetNewOrExisting'),'new'),resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet1Name')),resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet1Name')))]",
     "subnet2Id": "[if(equals(parameters('vnetNewOrExisting'),'new'),resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet2Name')),resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet2Name')))]",
     "fgtVmName": "[if(equals(parameters('fortiGateName'),''),concat(parameters('fortiGateNamePrefix'),'-fgt'),parameters('fortiGateName'))]",
     "fmgCustomData": "[if(equals(parameters('fortiManager'),'yes'),concat('\nconfig system central-management\nset type fortimanager\n set fmg ',parameters('fortiManagerIP'),'\nset serial-number ', parameters('fortiManagerSerial'), '\nend\n config system interface\n edit port1\n append allowaccess fgfm\n end\n config system interface\n edit port2\n append allowaccess fgfm\n end\n'),'')]",
     "customDataHeader": "Content-Type: multipart/mixed; boundary=\"12345\"\nMIME-Version: 1.0\n\n--12345\nContent-Type: text/plain; charset=\"us-ascii\"\nMIME-Version: 1.0\nContent-Transfer-Encoding: 7bit\nContent-Disposition: attachment; filename=\"config\"\n\n",
-    "customDataBody": "[concat('config system global\nset hostname ', variables('fgtVmName'), '\nend\nconfig system sdn-connector\nedit AzureSDN\nset type azure\nnext\nend\nconfig router static\nedit 1\nset gateway ', variables('sn1GatewayIP'), '\nset device port1\nnext\nedit 2\nset dst ', parameters('vnetAddressPrefix'), '\nset gateway ', variables('sn2GatewayIP'), '\nset device port2\nnext\nend\nconfig system interface\nedit port1\nset mode static\nset ip ',  variables('sn1IPfgt'), '/', variables('sn1CIDRmask'), '\nset description external\nset allowaccess ping ssh https\nnext\nedit port2\nset mode static\nset ip ', variables('sn2IPfgt'), '/', variables('sn2CIDRmask'), '\nset description internal\nset allowaccess ping ssh https\nnext\nend\n', variables('fmgCustomData'), parameters('fortiGateAdditionalCustomData'), '\n')]",
+    "customDataBody": "[concat('config system global\nset hostname ', variables('fgtVmName'), '\nend\nconfig system sdn-connector\nedit AzureSDN\nset type azure\nnext\nend\nconfig router static\nedit 1\nset dst ', parameters('vnetAddressPrefix'), '\nset distance 5\nset gateway ', variables('sn2GatewayIP'), '\nset device port2\nnext\nend\nconfig system interface\nedit port1\nset mode dhcp\nset description external\nset allowaccess ping ssh https\nnext\nedit port2\nset mode dhcp\nset description internal\nset allowaccess ping ssh https\nnext\nend\n', variables('fmgCustomData'), parameters('fortiGateAdditionalCustomData'), '\n')]",
     "customDataLicenseHeader": "--12345\nContent-Type: text/plain; charset=\"us-ascii\"\nMIME-Version: 1.0\nContent-Transfer-Encoding: 7bit\nContent-Disposition: attachment; filename=\"license\"\n\n",
     "customDataFooter": "\n--12345--\n",
     "customDataFortiFlex": "[if(equals(parameters('fortiGateLicenseFortiFlex'),''),'',concat('LICENSE-TOKEN:',parameters('fortiGateLicenseFortiFlex'), '\n'))]",
@@ -495,21 +468,9 @@
     "publicIP1Id": "[if(equals(parameters('publicIP1NewOrExisting'),'new'),resourceId('Microsoft.Network/publicIPAddresses',variables('publicIP1Name')),resourceId(parameters('publicIP1ResourceGroup'),'Microsoft.Network/publicIPAddresses',variables('publicIP1Name')))]",
     "nsgName": "[concat(parameters('fortiGateNamePrefix'),'-nsg')]",
     "nsgId": "[resourceID('Microsoft.Network/networkSecurityGroups/',variables('nsgName'))]",
-    "sn1IPArray": "[split(parameters('subnet1Prefix'),'.')]",
-    "sn1IPArray2ndString": "[string(variables('sn1IPArray')[3])]",
-    "sn1IPArray2nd": "[split(variables('sn1IPArray2ndString'),'/')]",
-    "sn1CIDRmask": "[string(int(variables('sn1IPArray2nd')[1]))]",
-    "sn1IPArray3": "[string(add(int(variables('sn1IPArray2nd')[0]),1))]",
-    "sn1IPArray2": "[string(int(variables('sn1IPArray')[2]))]",
-    "sn1IPArray1": "[string(int(variables('sn1IPArray')[1]))]",
-    "sn1IPArray0": "[string(int(variables('sn1IPArray')[0]))]",
-    "sn1GatewayIP": "[concat(variables('sn1IPArray0'),'.',variables('sn1IPArray1'),'.',variables('sn1IPArray2'),'.',variables('sn1IPArray3'))]",
-    "sn1IPStartAddress": "[split(parameters('subnet1StartAddress'),'.')]",
-    "sn1IPfgt": "[concat(variables('sn1IPArray0'),'.',variables('sn1IPArray1'),'.',variables('sn1IPArray2'),'.',int(variables('sn1IPStartAddress')[3]))]",
     "sn2IPArray": "[split(parameters('subnet2Prefix'),'.')]",
     "sn2IPArray2ndString": "[string(variables('sn2IPArray')[3])]",
     "sn2IPArray2nd": "[split(variables('sn2IPArray2ndString'),'/')]",
-    "sn2CIDRmask": "[string(int(variables('sn2IPArray2nd')[1]))]",
     "sn2IPArray3": "[string(add(int(variables('sn2IPArray2nd')[0]),1))]",
     "sn2IPArray2": "[string(int(variables('sn2IPArray')[2]))]",
     "sn2IPArray1": "[string(int(variables('sn2IPArray')[1]))]",
