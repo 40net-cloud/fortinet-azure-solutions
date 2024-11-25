@@ -534,20 +534,6 @@
             }
           },
           {
-            "name": "AllowRemoteAccessInbound",
-            "properties": {
-              "description": "Allow 8082 in for remote access to FortiManager",
-              "protocol": "Tcp",
-              "sourcePortRange": "*",
-              "destinationPortRange": "8082",
-              "sourceAddressPrefix": "*",
-              "destinationAddressPrefix": "*",
-              "access": "Allow",
-              "priority": 150,
-              "direction": "Inbound"
-            }
-          },
-          {
             "name": "AllowAllOutbound",
             "properties": {
               "description": "Allow all out",
