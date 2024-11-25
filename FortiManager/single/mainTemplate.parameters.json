@@ -29,9 +29,6 @@
         "publicIPResourceGroup": {
             "value": ""
         },
-        "publicIPAddressType": {
-            "value": "Static"
-        },
         "vnetNewOrExisting": {
             "value": "new"
         },

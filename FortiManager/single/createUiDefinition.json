@@ -743,7 +743,7 @@
                   "subnet1": {
                     "label": "FortiManager Subnet",
                     "defaultValue": {
-                      "name": "ProtectedSubnet",
+                      "name": "protectedsubnet",
                       "addressPrefixSize": "/26"
                     },
                     "constraints": {
