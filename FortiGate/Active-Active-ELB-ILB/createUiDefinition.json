@@ -1372,6 +1372,15 @@
                   "text": "The FortiGate will use the existing infrastructure and NAT capabilities of the VNET for outbound access, e.g. FortiGate"
                 },
                 "visible": "[and(equals(steps('publicip').outboundConnectivity.options,'external-nat-device-or-elb'),not(bool(steps('publicip').externalLoadBalancer.enabled)))]"
+              },
+              {
+                "name": "externalnatdevicetextnoelb",
+                "type": "Microsoft.Common.InfoBox",
+                "options": {
+                  "icon": "Info",
+                  "text": "This deployment will be a one-armed setup with only an internal NIC connected to an internal load balancer."
+                },
+                "visible": "[steps('publicip').1niccheck]"
               }
             ]
           }
