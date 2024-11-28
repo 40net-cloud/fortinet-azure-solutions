@@ -70,7 +70,7 @@ variable "TAGS" {
   default = {
     "environment" = "IPSEC-test"
     "publisher"   = "Fortinet"
-    "40NET-OWNER" = "jvanhoof@fortinet-us.com"
+    "FTNT-CREATOR" = "user@domain.com"
   }
 }
 
