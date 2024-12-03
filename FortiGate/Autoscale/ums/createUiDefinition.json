@@ -847,6 +847,19 @@
                   "validationMessage": "Only alphanumeric characters and a dash are allowed, and the value must be 1 to 64 characters."
                 },
                 "visible": true
+              },
+              {
+                "name": "fortimanagerregisterpassword",
+                "type": "Microsoft.Common.TextBox",
+                "label": "FortiManager Register Password",
+                "defaultValue": "",
+                "toolTip": "Provide the password used for registration on the FortiManager",
+                "constraints": {
+                  "required": false,
+                  "regex": "^[A-Za-z0-9-]{1,64}$",
+                  "validationMessage": "Only alphanumeric characters and a dash are allowed, and the value must be 1 to 64 characters."
+                },
+                "visible": true
               }
             ],
             "visible": true
@@ -1087,6 +1100,7 @@
       "fortiManager": "[steps('advanced').fortimanager.enabled]",
       "fortiManagerIP": "[steps('advanced').fortimanager.fortimanagerip]",
       "fortiManagerSerial": "[steps('advanced').fortimanager.fortimanagerserial]",
+      "fortiManagerRegisterPassword": "[steps('advanced').fortimanager.fortimanagerregisterpassword]",
       "fortiGateAdditionalCustomData": "[steps('advanced').customdata.config]",
       "customImageReference": "[steps('advanced').customvhd.resourceid]",
       "tagsByResource": "[steps('tags').tagsByResource]"
