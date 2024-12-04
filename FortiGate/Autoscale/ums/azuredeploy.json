@@ -829,7 +829,6 @@
         "zoneBalance": false,
         "doNotRunExtensionsOnOverprovisionedVMs": false,
         "platformFaultDomainCount": 5,
-        "zonalPlatformFaultDomainAlignMode": "Unaligned",
         "upgradePolicy": {
           "mode": "Manual"
         },
