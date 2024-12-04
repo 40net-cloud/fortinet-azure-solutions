@@ -670,12 +670,12 @@
       {
         "name": "fgspPeerCustomData",
         "count": 8,
-        "input": "[concat('config cluster-peer\n', ha.fgsppeers(variables('sn2IP'),parameters('fortiGateCount'),copyIndex('fgspPeerCustomData',1)), '\nend\n')]"
+        "input": "[if(lessOrEquals(parameters('fortiGateCount'),8),concat('config cluster-peer\n', ha.fgsppeers(variables('sn2IP'),parameters('fortiGateCount'),copyIndex('fgspPeerCustomData',1)), '\nend\n'),'')]"
       },
       {
         "name": "fgspCustomData",
         "count": 8,
-        "input": "[concat('config system ha\nset session-pickup enable\nset session-pickup-connectionless enable\nset session-pickup-nat enable\nset session-pickup-expectation enable\nset override disable\nend\nconfig system standalone-cluster\n', variables('fgspPeerCustomData')[copyIndex('fgspCustomData')],'\nend\n')]"
+        "input": "[if(lessOrEquals(parameters('fortiGateCount'),8),concat('config system ha\nset session-pickup enable\nset session-pickup-connectionless enable\nset session-pickup-nat enable\nset session-pickup-expectation enable\nset override disable\nend\nconfig system standalone-cluster\n', variables('fgspPeerCustomData')[copyIndex('fgspCustomData')],'\nend\n'),'')]"
       },
       {
         "name": "customDataFortiFlex",
