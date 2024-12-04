@@ -452,7 +452,7 @@
     "fgtVMSSName": "[if(equals(parameters('fortiGateName'),''),concat(parameters('fortiGateNamePrefix'),'-fgt-ums'),parameters('fortiGateName'))]",
     "customDataFMG": "[if(equals(parameters('fortiManager'),'yes'),concat('\nconfig system central-management\nset type fortimanager\n set fmg ',parameters('fortiManagerIP'),'\nset serial-number ', parameters('fortiManagerSerial'), '\nend\n config system interface\n edit port1\n append allowaccess fgfm\n end\n config system interface\n edit port2\n append allowaccess fgfm\n end\nexec central-mgmt register-device ',parameters('fortiManagerSerial'),' ',parameters('fortiManagerRegisterPassword'),'\n'),'')]",
     "customDataAutoScale": "[concat('config system auto-scale\nset status enable\nset sync-interface port2\nset hb-interval 30\nset role primary\nset callback-url ',parameters('fortiManagerIP'),'\nset cloud-mode ums\nset psksecret ',parameters('adminPassword'),'\nend\n')]",
-    "customDataBody": "[concat('config system global\nset admin-sport 8443\nset hostname ', variables('fgtVMSSName'), '\nend\nconfig system sdn-connector\nedit AzureSDN\nset type azure\nnext\nend\nconfig router static\nedit 1\nset dst ', parameters('vnetAddressPrefix'), '\nset device port2\nset distance 5\nset gateway ', variables('sn2GatewayIP'), '\nnext\nedit 2\nset dst 168.63.129.16 255.255.255.255\nset device port2\nset distance 5\nset gateway ', variables ('sn2GatewayIP'), '\nnext\nend\nconfig system interface\nedit port1\nset mode dhcp\nset description external\nset allowaccess ping ssh https\nnext\nedit port2\nset mode dhcp\nset description internal\nset allowaccess ping ssh https\nnext\nend\n', variables('customDataAutoScale'), variables('customDataFMG'), parameters('fortiGateAdditionalCustomData'), '\n')]",
+    "customDataBody": "[concat('config system global\nset admin-sport 8443\nset hostname ', variables('fgtVMSSName'), '\nend\nconfig system sdn-connector\nedit AzureSDN\nset type azure\nnext\nend\nconfig router static\nedit 1\nset dst ', parameters('vnetAddressPrefix'), '\nset device port2\nset distance 5\nset gateway ', variables('sn2GatewayIP'), '\nnext\nedit 2\nset dst 168.63.129.16 255.255.255.255\nset device port2\nset distance 5\nset gateway ', variables ('sn2GatewayIP'), '\nnext\nend\nconfig system interface\nedit port1\nset mode dhcp\nset description external\nset allowaccess ping ssh https probe-response\nnext\nedit port2\nset mode dhcp\nset description internal\nset allowaccess ping ssh https probe-response\nnext\nend\n', variables('customDataAutoScale'), variables('customDataFMG'), parameters('fortiGateAdditionalCustomData'), '\n')]",
     "fgtCustomData": "[base64(variables('customDataBody'))]",
     "routeTableProtectedName": "[concat(parameters('fortiGateNamePrefix'),'-routetable')]",
     "routeTableProtectedId": "[resourceId('Microsoft.Network/routeTables',variables('routeTableProtectedName'))]",
@@ -738,6 +738,23 @@
               "frontendPortRangeStart": 40000,
               "frontendPortRangeEnd": 40099,
               "backendPort": 8443
+            }
+          }
+        ],
+        "outboundRules": [
+          {
+            "name": "outbound",
+            "properties": {
+              "allocatedOutboundPorts": 0,
+              "frontendIPConfigurations": [
+                {
+                  "id": "[variables('externalLBFEId')]"
+                }
+              ],
+              "backendAddressPool": {
+                "id": "[variables('externalLBBEId')]"
+              },
+              "protocol": "All"
             }
           }
         ],
