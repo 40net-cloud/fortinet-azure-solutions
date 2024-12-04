@@ -824,7 +824,6 @@
       "plan": "[if(and(or(equals(variables('fortiGateImageSKU'),'fortinet_fg-vm'),equals(variables('fortiGateImageSKU'),'fortinet_fg-vm_arm64')),not(equals(parameters('customImageReference'),''))), json('null'), variables('virtualMachinePlan'))]",
       "properties": {
         "orchestrationMode": "Flexible",
-        "overprovision": false,
         "singlePlacementGroup": true,
         "zoneBalance": false,
         "doNotRunExtensionsOnOverprovisionedVMs": false,
