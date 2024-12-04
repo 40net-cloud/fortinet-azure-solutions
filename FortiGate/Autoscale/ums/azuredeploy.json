@@ -825,7 +825,6 @@
       "properties": {
         "orchestrationMode": "Flexible",
         "zoneBalance": false,
-        "platformFaultDomainCount": 5,
         "upgradePolicy": {
           "mode": "Manual"
         },
