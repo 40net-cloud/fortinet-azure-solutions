@@ -842,14 +842,18 @@
               },
               {
                 "name": "fortimanagerregisterpassword",
-                "type": "Microsoft.Common.TextBox",
-                "label": "FortiManager Register Password",
-                "defaultValue": "",
+                "type": "Microsoft.Common.PasswordBox",
+                "label": {
+                  "password": "FortiManager Register Password"
+                },
                 "toolTip": "Provide the password used for registration on the FortiManager",
                 "constraints": {
                   "required": false,
                   "regex": "^(?:(?=.*[a-z])(?:(?=.*[A-Z])(?=.*[\\d\\W])|(?=.*\\W)(?=.*\\d))|(?=.*\\W)(?=.*[A-Z])(?=.*\\d)).{12,}$",
                   "validationMessage": "Only alphanumeric characters and a dash are allowed, and the value must be 1 to 64 characters."
+                },
+                "options": {
+                  "hideConfirmation": true
                 },
                 "visible": true
               }
