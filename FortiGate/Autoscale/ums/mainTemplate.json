@@ -491,12 +491,9 @@
     "externalLBProbeId": "[resourceId('Microsoft.Network/loadBalancers/probes',variables('externalLBName'),variables('externalLBProbeName'))]",
     "externalLBNATPoolName-web": "[concat(parameters('fortiGateNamePrefix'),'-elb-natpool-web')]",
     "externalLBNATPoolName-ssh": "[concat(parameters('fortiGateNamePrefix'),'-elb-natpool-ssh')]",
-    "externalLoadBalancerInboundNatRules": [
+    "externalLoadBalancerBackendAddressPools": [
       {
-        "id": "[resourceId('Microsoft.Network/loadBalancers/inboundNatPools/', variables('externalLBName'), variables('externalLBNATPoolName-ssh'))]"
-      },
-      {
-        "id": "[resourceId('Microsoft.Network/loadBalancers/inboundNatPools/', variables('externalLBName'), variables('externalLBNATPoolName-web'))]"
+        "id": "[variables('externalLBBEId')]"
       }
     ],
     "imageReferenceMarketplace": {
@@ -758,6 +755,56 @@
       }
     },
     {
+      "type": "Microsoft.Network/loadBalancers/inboundNatRules",
+      "apiVersion": "2023-11-01",
+      "name": "[concat(variables('externalLBName'), '/', variables('fgtVMSSName'),'-1-mgmt-ssh')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/loadBalancers', variables('externalLBName'))]",
+        "[resourceId('Microsoft.Network/loadBalancers/backendAddressPools', variables('externalLBName'), variables('externalLBBEName'))]"
+      ],
+      "properties": {
+        "frontendIPConfiguration": {
+          "id": "[resourceId('Microsoft.Network/loadBalancers/frontendIPConfigurations', variables('externalLBName'), variables('externalLBFEName'))]"
+        },
+        "frontendPort": 0,
+        "backendPort": 22,
+        "enableFloatingIP": false,
+        "idleTimeoutInMinutes": 4,
+        "protocol": "Tcp",
+        "enableTcpReset": false,
+        "frontendPortRangeStart": 50000,
+        "frontendPortRangeEnd": 53599,
+        "backendAddressPool": {
+          "id": "[resourceId('Microsoft.Network/loadBalancers/backendAddressPools', variables('externalLBName'), variables('externalLBBEName'))]"
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Network/loadBalancers/inboundNatRules",
+      "apiVersion": "2023-11-01",
+      "name": "[concat(variables('externalLBName'), '/', variables('fgtVMSSName'),'-1-mgmt-https')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/loadBalancers', variables('externalLBName'))]",
+        "[resourceId('Microsoft.Network/loadBalancers/backendAddressPools', variables('externalLBName'), variables('externalLBBEName'))]"
+      ],
+      "properties": {
+        "frontendIPConfiguration": {
+          "id": "[resourceId('Microsoft.Network/loadBalancers/frontendIPConfigurations', variables('externalLBName'), variables('externalLBFEName'))]"
+        },
+        "frontendPort": 0,
+        "backendPort": 8443,
+        "enableFloatingIP": false,
+        "idleTimeoutInMinutes": 4,
+        "protocol": "Tcp",
+        "enableTcpReset": false,
+        "frontendPortRangeStart": 40000,
+        "frontendPortRangeEnd": 43599,
+        "backendAddressPool": {
+          "id": "[resourceId('Microsoft.Network/loadBalancers/backendAddressPools', variables('externalLBName'), variables('externalLBBEName'))]"
+        }
+      }
+    },
+    {
       "type": "Microsoft.Network/loadBalancers",
       "name": "[variables('internalLBName')]",
       "apiVersion": "2023-06-01",
@@ -886,7 +933,7 @@
                         "name": "ipconfig1",
                         "properties": {
                           "subnet": "[variables('subnetId')[copyIndex('networkInterfaceConfigurations')]]",
-                          "loadBalancerBackendAddressPools": "[if(equals(copyIndex('networkInterfaceConfigurations',1),1), variables('externalLoadBalancerInboundNatRules'), json('null'))]"
+                          "loadBalancerBackendAddressPools": "[if(equals(copyIndex('networkInterfaceConfigurations',1),1), variables('externalLoadBalancerBackendAddressPools'), json('null'))]"
                         }
                       }
                     ],
