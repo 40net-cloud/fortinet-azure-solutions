@@ -761,16 +761,16 @@
       "dependsOn": [
         "[variables('externalLBId')]"
       ],
-      "copy": {
-        "name": "inboundNatRulesSSH",
-        "count": "[parameters('fortiGateCount')]"
-      },
       "properties": {
         "frontendIPConfiguration": {
           "id": "[variables('externalLBFEId')]"
         },
+        "backendAddressPool": {
+          "id": "[variables('externalLBBEId')]"
+        },
         "protocol": "Tcp",
-        "frontendPort": "[copyIndex(50030)]",
+        "frontendPortRangeStart": 50030,
+        "frontendPortRangeEnd": 51000,
         "backendPort": 22,
         "enableFloatingIP": false
       }
@@ -782,17 +782,17 @@
       "dependsOn": [
         "[variables('externalLBId')]"
       ],
-      "copy": {
-        "name": "inboundNatRulesHTTPS",
-        "count": "[parameters('fortiGateCount')]"
-      },
       "properties": {
         "frontendIPConfiguration": {
           "id": "[variables('externalLBFEId')]"
         },
+        "backendAddressPool": {
+          "id": "[variables('externalLBBEId')]"
+        },
         "protocol": "Tcp",
-        "frontendPort": "[copyIndex(40030)]",
-        "backendPort": 22,
+        "frontendPortRangeStart": 40030,
+        "frontendPortRangeEnd": 41000,
+        "backendPort": 8443,
         "enableFloatingIP": false
       }
     },
@@ -936,6 +936,11 @@
                 }
               }
             ]
+          },
+          "diagnosticsProfile": {
+            "bootDiagnostics": {
+              "enabled": "[variables('serialConsoleEnabled')]"
+            }
           }
         }
       }
