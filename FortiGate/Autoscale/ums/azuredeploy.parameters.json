@@ -27,10 +27,10 @@
             "value": "x64"
         },
         "fortiGateImageVersion_x64": {
-            "value": "7.4.5"
+            "value": "7.6.1"
         },
         "fortiGateImageVersion_arm64": {
-            "value": "7.4.5"
+            "value": "7.6.1"
         },
         "fortiGateAdditionalCustomData": {
             "value": ""

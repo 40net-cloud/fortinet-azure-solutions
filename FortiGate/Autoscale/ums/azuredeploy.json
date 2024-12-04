@@ -70,11 +70,10 @@
     },
     "fortiGateImageVersion_x64": {
       "type": "string",
-      "defaultValue": "7.4.5",
+      "defaultValue": "7.6.1",
       "allowedValues": [
         "latest",
-        "7.6.0",
-        "7.4.5"
+        "7.6.1"
       ],
       "metadata": {
         "description": "Select the image version"
@@ -82,11 +81,10 @@
     },
     "fortiGateImageVersion_arm64": {
       "type": "string",
-      "defaultValue": "7.4.5",
+      "defaultValue": "7.6.1",
       "allowedValues": [
         "latest",
-        "7.6.0",
-        "7.4.5"
+        "7.6.1"
       ],
       "metadata": {
         "description": "Select the image version"
