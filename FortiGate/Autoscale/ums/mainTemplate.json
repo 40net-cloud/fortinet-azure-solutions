@@ -774,7 +774,7 @@
     {
       "type": "Microsoft.Network/loadBalancers/inboundNatRules",
       "apiVersion": "2023-11-01",
-      "name": "[concat(variables('externalLBName'), '/', variables('fgtVMSSName'), '-', copyIndex(1), '-mgmt-ssh')]",
+      "name": "[concat(variables('externalLBName'), '/', variables('fgtVMSSName'), '-mgmt-ssh')]",
       "dependsOn": [
         "[variables('externalLBId')]"
       ],
@@ -795,7 +795,7 @@
     {
       "type": "Microsoft.Network/loadBalancers/inboundNatRules",
       "apiVersion": "2023-11-01",
-      "name": "[concat(variables('externalLBName'), '/', variables('fgtVMSSName'), '-', copyIndex(1), '-mgmt-https')]",
+      "name": "[concat(variables('externalLBName'), '/', variables('fgtVMSSName'), '-mgmt-https')]",
       "dependsOn": [
         "[variables('externalLBId')]"
       ],
