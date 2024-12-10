@@ -304,13 +304,6 @@
         "description": "Subnet 1 Prefix"
       }
     },
-    "subnet1StartAddress": {
-      "type": "string",
-      "defaultValue": "172.16.136.4",
-      "metadata": {
-        "description": "Subnet 1 start address, 2 or more consecutive private IPs are required"
-      }
-    },
     "subnet2Name": {
       "type": "string",
       "defaultValue": "internalsubnet",
@@ -344,13 +337,6 @@
       "defaultValue": "172.16.136.128/26",
       "metadata": {
         "description": "Subnet 3 Prefix"
-      }
-    },
-    "subnet3StartAddress": {
-      "type": "string",
-      "defaultValue": "172.16.136.132",
-      "metadata": {
-        "description": "Subnet 3 start address, 2 or more consecutive private IPs are required"
       }
     },
     "serialConsole": {
