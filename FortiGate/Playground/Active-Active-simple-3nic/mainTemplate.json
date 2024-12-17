@@ -417,6 +417,9 @@
     "customDataNetworking": "[concat('config system interface\nedit port1\nset mode dynamic\nset description external\nset allowaccess ping probe-response\nnext\nedit port2\nset mode dynamic\nset allowaccess ping probe-response\nset description internal\nnext\nedit port3\nset mode dynamic\nset allowaccess ping ssh https probe-response\nset description management\nnext\nend\nconfig router static\nedit 1\nset dst ', parameters('vnetAddressPrefix'), '\nset gateway ', variables('sn2GatewayIP'), '\nset device port2\nnext\nedit 2\nset dst 168.63.129.16 255.255.255.255\nset device port1\nset gateway ', variables ('sn1GatewayIP'), '\nnext\nedit 3\nset dst 168.63.129.16 255.255.255.255\nset device port2\nset gateway ', variables('sn2GatewayIP'), '\nnext\nedit 4\nset gateway ', variables('sn3GatewayIP'),'\nset distance 5\nset device port3\nnext\nend\n')]",
     "customData": "[concat('config system sdn-connector\nedit AzureSDN\nset type azure\nnext\nend\nconfig system probe-response\nset mode http-probe\nend\n', variables('customDataNetworking'), variables('customDataFMG'), parameters('fortiGateAdditionalCustomData'), '\n')]",
     "serialConsoleEnabled": "[if(equals(parameters('serialConsole'),'yes'),'true','false')]",
+    "publicIP1Name": "[concat(parameters('fortiGateNamePrefix'),'-natgateway-pip')]",
+    "publicIP1Id": "[resourceId('Microsoft.Network/publicIPAddresses',variables('publicIP1Name'))]",
+    "natGWName": "[concat(parameters('fortiGateNamePrefix'),'-natgateway')]",
     "nsgName": "[concat(parameters('fortiGateNamePrefix'),'-nsg')]",
     "nsgId": "[resourceId('Microsoft.Network/networkSecurityGroups/',variables('nsgName'))]",
     "sn1GatewayIP": "[variables('sn1CidrObject').firstUsable]",
@@ -510,6 +513,56 @@
       }
     },
     {
+      "name": "[concat(variables('vnetName'),'/', parameters('subnet1Name'))]",
+      "type": "Microsoft.Network/virtualNetworks/subnets",
+      "apiVersion": "2023-06-01",
+      "dependsOn": [
+        "[variables('vnetName')]",
+        "[resourceId('Microsoft.Network/natGateways', variables('natGWName'))]"
+      ],
+      "properties": {
+        "addressPrefix": "[parameters('subnet1Prefix')]",
+        "natGateway": {
+          "id": "[resourceId('Microsoft.Network/natGateways', variables('natGWName'))]"
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Network/publicIPAddresses",
+      "name": "[concat(variables('publicIP1Name'))]",
+      "apiVersion": "2023-06-01",
+      "location": "[parameters('location')]",
+      "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Network/publicIPAddresses'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Network/publicIPAddresses']), parameters('fortinetTags')) ]",
+      "sku": {
+        "name": "Standard"
+      },
+      "zones": "[variables('pipZones')]",
+      "properties": {
+        "publicIPAllocationMethod": "static"
+      }
+    },
+    {
+      "name": "[variables('natGWName')]",
+      "type": "Microsoft.Network/natGateways",
+      "apiVersion": "2023-06-01",
+      "location": "[parameters('location')]",
+      "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Network/natGateways'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Network/natGateways']), parameters('fortinetTags')) ]",
+      "dependsOn": [
+        "[variables('publicIP1Id')]"
+      ],
+      "sku": {
+        "name": "Standard"
+      },
+      "properties": {
+        "idleTimeoutInMinutes": 4,
+        "publicIpAddresses": [
+          {
+            "id": "[variables('publicIP1Id')]"
+          }
+        ]
+      }
+    },
+    {
       "type": "Microsoft.Network/networkSecurityGroups",
       "name": "[variables('nsgName')]",
       "apiVersion": "2023-06-01",
@@ -546,27 +599,6 @@
             }
           }
         ]
-      }
-    },
-    {
-      "type": "Microsoft.Network/publicIPAddresses",
-      "name": "[concat(variables('fgtVmName') ,'-pip-',copyIndex(1))]",
-      "apiVersion": "2023-06-01",
-      "location": "[parameters('location')]",
-      "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Network/publicIPAddresses'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Network/publicIPAddresses']), parameters('fortinetTags')) ]",
-      "sku": {
-        "name": "Standard"
-      },
-      "copy": {
-        "name": "nodeCopy",
-        "count": "[parameters('fortiGateCount')]"
-      },
-      "zones": "[variables('pipZones')]",
-      "properties": {
-        "publicIPAllocationMethod": "static",
-        "dnsSettings": {
-          "domainNameLabel": "[concat(toLower(variables('fgtVmName')), '-pip-',copyIndex(1),'-',uniquestring(resourceGroup().id))]"
-        }
       }
     },
     {
@@ -725,9 +757,6 @@
             "name": "ipconfig1",
             "properties": {
               "privateIPAllocationMethod": "Dynamic",
-              "publicIPAddress": {
-                "id": "[resourceId('Microsoft.Network/publicIPAddresses',concat(parameters('fortiGateNamePrefix'),'-fgt-pip-',copyIndex(1)))]"
-              },
               "subnet": {
                 "id": "[variables('subnet3Id')]"
               }
