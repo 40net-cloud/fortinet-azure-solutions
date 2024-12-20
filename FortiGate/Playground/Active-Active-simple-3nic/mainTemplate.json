@@ -258,6 +258,20 @@
         "description": "Accelerated Connections Auxiliary SKU bandwidth Tiers"
       }
     },
+    "internalLoadBalancer": {
+      "type": "bool",
+      "defaultValue": true,
+      "metadata": {
+        "description": "Deploy a new internal load balancer."
+      }
+    },
+    "internalLoadBalancerBackendPoolId": {
+      "type": "string",
+      "metadata": {
+        "description": "Reference an existing internal load balancer backend pool."
+      }
+    },
+
     "vnetNewOrExisting": {
       "type": "string",
       "defaultValue": "new",
@@ -439,6 +453,11 @@
     "internalLBBEId": "[resourceId('Microsoft.Network/loadBalancers/backendAddressPools',variables('internalLBName'),variables('internalLBBEName'))]",
     "internalLBProbeName": "lbprobe",
     "internalLBProbeId": "[resourceId('Microsoft.Network/loadBalancers/probes',variables('internalLBName'),variables('internalLBProbeName'))]",
+    "internalLBBackendAddressPools": [
+      {
+        "id": "[if(parameters('internalLoadBalancer'),variables('internalLBBEId'),parameters('internalLoadBalancerBackendPoolId'))]"
+      }
+    ],
     "pipZones": "[pickZones('Microsoft.Network', 'publicIPAddresses', parameters('location'), 3)]",
     "imageReferenceMarketplace": {
       "publisher": "[variables('imagePublisher')]",
@@ -570,6 +589,7 @@
       }
     },
     {
+      "condition": "[parameters('internalLoadBalancer')]",
       "type": "Microsoft.Network/loadBalancers",
       "name": "[variables('internalLBName')]",
       "apiVersion": "2023-06-01",
@@ -693,11 +713,7 @@
               "subnet": {
                 "id": "[variables('subnet2Id')]"
               },
-              "loadBalancerBackendAddressPools": [
-                {
-                  "id": "[variables('internalLBBEId')]"
-                }
-              ]
+              "loadBalancerBackendAddressPools": "[if(or(parameters('internalLoadBalancer'),greater(length(parameters('internalLoadBalancerBackendPoolId')),0)),variables('internalLBBackendAddressPools'),json('null'))]"
             }
           }
         ],
