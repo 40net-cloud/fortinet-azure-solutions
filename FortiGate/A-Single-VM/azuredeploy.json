@@ -32,7 +32,9 @@
       "defaultValue": "fortinet_fg-vm",
       "allowedValues": [
         "fortinet_fg-vm",
-        "fortinet_fg-vm_payg_2023"
+        "fortinet_fg-vm_payg_2023",
+        "fortinet_fg-vm_g2",
+        "fortinet_fg-vm_payg_2023_g2"
       ],
       "metadata": {
         "description": "Identifies whether to to use PAYG (on demand licensing) or BYOL license model (where license is purchased separately"
@@ -62,9 +64,10 @@
     },
     "fortiGateImageVersion_x64": {
       "type": "string",
-      "defaultValue": "7.4.5",
+      "defaultValue": "7.4.6",
       "allowedValues": [
         "latest",
+        "7.6.1",
         "7.6.0",
         "7.4.6",
         "7.4.5",
@@ -123,7 +126,7 @@
     },
     "fortiGateImageVersion_arm64": {
       "type": "string",
-      "defaultValue": "7.4.4",
+      "defaultValue": "7.4.6",
       "allowedValues": [
         "latest",
         "7.6.1",
@@ -339,28 +342,6 @@
       "defaultValue": "",
       "metadata": {
         "description": "Public IP Resource Group, this value is required if an existing Public IP is selected"
-      }
-    },
-    "publicIP1AddressType": {
-      "type": "string",
-      "defaultValue": "Static",
-      "allowedValues": [
-        "Dynamic",
-        "Static"
-      ],
-      "metadata": {
-        "description": "Type of public IP address"
-      }
-    },
-    "publicIP1SKU": {
-      "type": "string",
-      "defaultValue": "Standard",
-      "allowedValues": [
-        "Basic",
-        "Standard"
-      ],
-      "metadata": {
-        "description": "Type of public IP address"
       }
     },
     "vnetNewOrExisting": {
@@ -762,11 +743,11 @@
       "location": "[parameters('location')]",
       "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Network/publicIPAddresses'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Network/publicIPAddresses']), parameters('fortinetTags')) ]",
       "sku": {
-        "name": "[parameters('publicIP1SKU')]"
+        "name": "Standard"
       },
       "zones": "[variables('pipZones')]",
       "properties": {
-        "publicIPAllocationMethod": "[parameters('publicIP1AddressType')]",
+        "publicIPAllocationMethod": "Static",
         "dnsSettings": {
           "domainNameLabel": "[concat(toLower(variables('fgtVmName')), '-', uniquestring(resourceGroup().id))]"
         }
@@ -903,7 +884,7 @@
   "outputs": {
     "fortiGatePublicIP": {
       "type": "string",
-      "value": "[if(and(equals(parameters('publicIP1NewOrExisting'), 'new'),equals(parameters('publicIP1AddressType'),'Standard')), reference(variables('publicIP1Id')).ipAddress, '')]"
+      "value": "[if(equals(parameters('publicIP1NewOrExisting'), 'new'), reference(variables('publicIP1Id')).ipAddress, '')]"
     },
     "fortiGateFQDN": {
       "type": "string",
