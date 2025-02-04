@@ -884,11 +884,11 @@
   "outputs": {
     "fortiGatePublicIP": {
       "type": "string",
-      "value": "[if(equals(parameters('publicIP1NewOrExisting'), 'new'), reference(variables('publicIP1Id')).ipAddress, '')]"
+      "value": "[if(not(equals(parameters('publicIP1NewOrExisting'), 'none')), reference(variables('publicIP1Id')).ipAddress, '')]"
     },
     "fortiGateFQDN": {
       "type": "string",
-      "value": "[if(equals(parameters('publicIP1NewOrExisting'), 'new'), reference(variables('publicIP1Id')).dnsSettings.fqdn, '' )]"
+      "value": "[if(not(equals(parameters('publicIP1NewOrExisting'), 'none')), reference(variables('publicIP1Id')).dnsSettings.fqdn, '' )]"
     }
   }
 }
