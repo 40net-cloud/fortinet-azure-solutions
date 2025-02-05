@@ -13,7 +13,7 @@ In Microsoft Azure, you can deploy an active/passive pair of FortiGate VMs that 
 This Azure ARM template will automatically deploy a full working environment containing the the following components.
 
   - 4 FortiGate firewall's in 2 active/passive deployments
-  - 2 Hub VNETs and 2 Spoke VNETs. Each hub ha a routeserver subnet and 4 subnets required for the FortiGate deployment (external, internal, ha mgmt and ha sync). If using an existing vnet, it must already have these 4 subnets
+  - 2 Hub VNETs and 2 Spoke VNETs. Each hub has a routeserver subnet and 4 subnets required for the FortiGate deployment (external, internal, ha mgmt and ha sync). If using an existing vnet, it must already have these 4 subnets
 	- 2x 3 public IPs. The first public IP is for cluster access to/through the active FortiGate.  The other two PIPs are for Management access. To deploy with public IPs on the FortiGate VMs you can use the 'Azure Portal Wizard - Deploy to Azure' button and select none for the the second and third public IP
   - User Defined Routes (UDR) for the FortiGate VMs
   - Azure Route Server and all configuration on the FortiGate to get started
