@@ -1475,21 +1475,12 @@
             "type": "Microsoft.Common.InfoBox",
             "options": {
               "icon": "Info",
-              "text": "Configure outbound rules on the Azure Load Balancer to prevent SNAT port exhaustion",
-              "uri": "https://learn.microsoft.com/en-us/azure/load-balancer/troubleshoot-outbound-connection#configure-load-balancer-outbound-rules-to-maximize-snat-ports-per-vm"
-            }
-          },
-          {
-            "name": "step5",
-            "type": "Microsoft.Common.InfoBox",
-            "options": {
-              "icon": "Info",
               "text": "FortiGate SDN Connector",
               "uri": "https://docs.fortinet.com/document/fortigate-public-cloud/7.6.0/azure-administration-guide/502895/configuring-an-sdn-connector-in-azure"
             }
           },
           {
-            "name": "step6",
+            "name": "step5",
             "type": "Microsoft.Common.InfoBox",
             "options": {
               "icon": "Info",
@@ -1498,7 +1489,7 @@
             }
           },
           {
-            "name": "step7",
+            "name": "step6",
             "type": "Microsoft.Common.InfoBox",
             "options": {
               "icon": "Info",
