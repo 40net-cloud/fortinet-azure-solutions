@@ -65,7 +65,7 @@ jobs:
         azPSVersion: "latest"
 
     - name: Publish Test Results
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: FGT-Active-Passive-ELB-ILB-Test-Results
         path: ./test-*.xml
