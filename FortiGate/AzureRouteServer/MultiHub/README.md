@@ -40,8 +40,6 @@ This Azure ARM template deploys a fully functional environment with the followin
 - **User Defined Routes (UDR)** for FortiGate VMs.  
 - **Azure Route Server** with preconfigured FortiGate settings for quick deployment.  
 
-
-
 ### Customization
 
 This ARM template can also be used to extend or customized based on your requirements. Additional subnets besides the one's mentioned above are not automatically generated. By adapting the ARM templates you can add additional subnets which preferably require their own routing tables.
