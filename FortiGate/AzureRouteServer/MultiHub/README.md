@@ -10,15 +10,37 @@ This ARM template deploys a High Availability pair of FortiGate Next-Generation 
 
 In Microsoft Azure, you can deploy an active/passive pair of FortiGate VMs that communicate with each other and the Azure fabric. This FortiGate setup will receive the to be inspected traffic using user defined routing (UDR) and public IPs. You can send all or specific traffic that needs inspection, going to/coming from on-prem networks or public internet by adapting the UDR routing.
 
-This Azure ARM template will automatically deploy a full working environment containing the the following components.
-
-  - 4 FortiGate firewall's in 2 active/passive deployments
-  - 2 Hub VNETs and 2 Spoke VNETs. Each hub ha a routeserver subnet and 4 subnets required for the FortiGate deployment (external, internal, ha mgmt and ha sync). If using an existing vnet, it must already have these 5 subnets
-	- 2x 3 public IPs. The first public IP is for cluster access to/through the active FortiGate.  The other two PIPs are for Management access. To deploy with public IPs on the FortiGate VMs you can use the 'Azure Portal Wizard - Deploy to Azure' button and select none for the the second and third public IP
-  - User Defined Routes (UDR) for the FortiGate VMs
-  - Azure Route Server and all configuration on the FortiGate to get started
-
 ![active/passive design](images/fgt-multihub-rs.png)
+
+## Azure ARM Template Deployment  
+
+This Azure ARM template deploys a fully functional environment with the following components:  
+
+### FortiGate Firewalls
+
+- Four FortiGate firewalls in two active/passive deployments.
+
+### Virtual Networks
+
+- Two Hub VNETs and two Spoke VNETs.  
+- Each Hub VNET includes:  
+  - A Route Server subnet (named `RouteServerSubnet`)
+  - Four required subnets for FortiGate: **external, internal, HA management, and HA sync**.  
+  - If using an existing VNET, these subnets must already be present.  
+
+### Public IPs
+
+- Two sets of three public IPs (2x3 PIPs):  
+  - One for cluster access through the active FortiGate.
+  - Two for management access.
+- To deploy FortiGate VMs without public IPs for management, use the **'Azure Portal Wizard - Deploy to Azure'** button and select **'None'** for the second and third public IPs.  
+
+### Routing  
+
+- **User Defined Routes (UDR)** for FortiGate VMs.  
+- **Azure Route Server** with preconfigured FortiGate settings for quick deployment.  
+
+### Customization
 
 This ARM template can also be used to extend or customized based on your requirements. Additional subnets besides the one's mentioned above are not automatically generated. By adapting the ARM templates you can add additional subnets which preferably require their own routing tables.
 
