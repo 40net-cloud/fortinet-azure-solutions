@@ -633,7 +633,7 @@
     "fortiGateImageSKU": "[if(equals(parameters('fortiGateInstanceArchitecture'), 'arm64'), parameters('fortiGateImageSKU_arm64'), if(equals(parameters('fortiGateInstanceArchitecture'), 'x64_g2'),parameters('fortiGateImageSKU_x64_g2'),parameters('fortiGateImageSKU_x64')))]",
     "fortiGateImageVersion": "[if(equals(parameters('fortiGateInstanceArchitecture'), 'arm64'), parameters('fortiGateImageVersion_arm64'), if(equals(parameters('fortiGateInstanceArchitecture'), 'x64_g2'),parameters('fortiGateImageVersion_x64_g2'),parameters('fortiGateImageVersion_x64')))]",
     "instanceType": "[if(equals(parameters('fortiGateInstanceArchitecture'), 'arm64'), parameters('instanceType_arm64'), if(equals(parameters('fortiGateInstanceArchitecture'), 'x64_g2'),parameters('instanceType_x64_g2'),parameters('instanceType_x64')))]",
-    "diskControllerType": "[if(and(equals(parameters('fortiGateInstanceArchitecture'), 'x64_g2'),contains(parameters('instanceType_x64_g2'), '_v6'),contains(parameters('fortiGateImageSKU_x64_g2'), '_g2')),'NVMe','SCSI')]",
+    "diskControllerType": "[if(and(equals(parameters('fortiGateInstanceArchitecture'), 'x64_g2'),contains(parameters('instanceType_x64_g2'), '_v6'),contains(parameters('fortiGateImageSKU_x64_g2'), '_g2')),'NVMe',json('null'))]",
     "availabilitySetName": "[if(equals(parameters('existingAvailabilitySetName'),''),concat(parameters('fortiGateNamePrefix'),'-AvailabilitySet'),parameters('existingAvailabilitySetName'))]",
     "availabilitySetId": {
       "id": "[resourceId('Microsoft.Compute/availabilitySets', variables('availabilitySetName'))]"
