@@ -140,6 +140,7 @@
       "defaultValue": "7.6.200",
       "allowedValues": [
         "latest",
+		    "7.6.100",
         "7.6.200"
       ],
       "metadata": {
