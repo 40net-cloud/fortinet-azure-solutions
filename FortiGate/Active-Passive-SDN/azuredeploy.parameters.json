@@ -71,35 +71,17 @@
         "publicIP1ResourceGroup": {
             "value": ""
         },
-        "publicIP1AddressType": {
-            "value": "Static"
-        },
-        "publicIP2AddressSku": {
-            "value": "Standard"
-        },
-        "publicIP2AddressType": {
-            "value": "Static"
-        },
         "publicIP2Name": {
             "value": ""
         },
         "publicIP2ResourceGroup": {
             "value": ""
         },
-        "publicIP3AddressSku": {
-            "value": "Standard"
-        },
-        "publicIP3AddressType": {
-            "value": "Static"
-        },
         "publicIP3Name": {
             "value": ""
         },
         "publicIP3ResourceGroup": {
             "value": ""
-        },
-        "publicIP1AddressSku": {
-            "value": "Standard"
         },
         "vnetNewOrExisting": {
             "value": "new"
