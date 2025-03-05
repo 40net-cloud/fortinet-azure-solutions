@@ -31,7 +31,7 @@ BeforeAll {
   $testsAdminUsername = "azureuser"
   $testsResourceGroupLocation_x64 = "westeurope"
   $testsResourceGroupLocation_x64_g2 = "germanywestcentral"
-  $testsResourceGroupLocation_arm64 = "northeurope"
+  $testsResourceGroupLocation_arm64 = "westeurope"
 
   # ARM Template Variables
   $config = "config system console `n set output standard `n end `n config system global `n set gui-theme mariner `n end `n config system admin `n edit devops `n set accprofile super_admin `n set ssh-public-key1 `""
