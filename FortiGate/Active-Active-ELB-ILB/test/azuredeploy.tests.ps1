@@ -26,9 +26,11 @@ BeforeAll {
   $testsRandom = Get-Random 10001
   $testsPrefix = "FORTIQA"
   $testsResourceGroupName_x64 = "FORTIQA-$testsRandom-$templateName-x64"
+  $testsResourceGroupName_x64_g2 = "FORTIQA-$testsRandom-$templateName-x64_g2"
   $testsResourceGroupName_arm64 = "FORTIQA-$testsRandom-$templateName-arm64"
   $testsAdminUsername = "azureuser"
   $testsResourceGroupLocation_x64 = "westeurope"
+  $testsResourceGroupLocation_x64_g2 = "germanywestcentral"
   $testsResourceGroupLocation_arm64 = "northeurope"
 
   # ARM Template Variables
@@ -42,6 +44,13 @@ BeforeAll {
     'fortiGateNamePrefix'           = $testsPrefix
     'fortiGateAdditionalCustomData' = $config
     'fortiGateCount'                = $fortiGateCount
+  }
+  $params_x64_g2 = @{ 'adminUsername'  = $testsAdminUsername
+    'adminPassword'                 = $testsResourceGroupName_x64_g2
+    'fortiGateNamePrefix'           = $testsPrefix
+    'fortiGateAdditionalCustomData' = $config
+    'fortiGateCount'                = $fortiGateCount
+    'fortiGateInstanceArchitecture' = 'x64_g2'
   }
   $params_arm64 = @{ 'adminUsername' = $testsAdminUsername
     'adminPassword'                  = $testsResourceGroupName_arm64
@@ -222,9 +231,127 @@ Describe 'FGT A/A' {
     }
   }
 
-  Context 'Cleanup x86' {
+  Context 'Cleanup x64' {
     It "Cleanup of deployment" {
       Remove-AzResourceGroup -Name $testsResourceGroupName_x64 -Force
+    }
+  }
+Context 'Deployment x64_g2' {
+
+    It "Test deployment" {
+      New-AzResourceGroup -Name $testsResourceGroupName_x64_g2 -Location "$testsResourceGroupLocation_x64_g2"
+            (Test-AzResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName_x64_g2" -TemplateFile "$templateFileLocation" -TemplateParameterObject $params_x64_g2).Count | Should -Not -BeGreaterThan 0
+    }
+    It "Deployment" {
+      $resultDeployment = New-AzResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName_x64_g2" -TemplateFile "$templateFileLocation" -TemplateParameterObject $params_x64_g2
+      Write-Host ($resultDeployment | Format-Table | Out-String)
+      Write-Host ("Deployment state: " + $resultDeployment.ProvisioningState | Out-String)
+      $resultDeployment.ProvisioningState | Should -Be "Succeeded"
+    }
+    It "Search deployment" {
+      $result = Get-AzVM | Where-Object { $_.Name -like "$testsPrefix*" }
+      Write-Host ($result | Format-Table | Out-String)
+      $result | Should -Not -Be $null
+    }
+  }
+
+  Context 'Deployment test x64_g2' {
+
+    BeforeAll {
+      $fgt = (Get-AzPublicIpAddress -Name $publicIPName -ResourceGroupName $testsResourceGroupName_x64_g2).IpAddress
+      Write-Host ("FortiGate public IP: " + $fgt)
+      $verify_commands = @'
+            get system status
+            show system interface
+            show router static
+            diag debug cloudinit show
+            exit
+'@
+      $OFS = "`n"
+    }
+    It "FGT: Ports listening" {
+      ForEach ( $port in $ports ) {
+        Write-Host ("Check port: $port" )
+        $portListening = (Test-Connection -TargetName $fgt -TCPPort $port -TimeoutSeconds 100)
+        $portListening | Should -Be $true
+      }
+    }
+    It "FGT A: Verify configuration" {
+      $result = $verify_commands | ssh -p 50030 -v -tt -i $sshkey -o StrictHostKeyChecking=no devops@$fgt
+      $LASTEXITCODE | Should -Be "0"
+      Write-Host ("FGT CLI info: " + $result) -Separator `n
+      $result | Should -Not -BeLike "*Command fail*"
+    }
+    It "FGT B: Verify configuration" {
+      $result = $verify_commands | ssh -p 50031 -v -tt -i $sshkey -o StrictHostKeyChecking=no devops@$fgt
+      $LASTEXITCODE | Should -Be "0"
+      Write-Host ("FGT CLI info: " + $result) -Separator `n
+      $result | Should -Not -BeLike "*Command fail*"
+    }
+  }
+
+  Context 'Cleanup x64_g2' {
+    It "Cleanup of deployment" {
+      Remove-AzResourceGroup -Name $testsResourceGroupName_x64_g2 -Force
+    }
+  }
+Context 'Deployment arm64' {
+
+    It "Test deployment" {
+      New-AzResourceGroup -Name $testsResourceGroupName_arm64 -Location "$testsResourceGroupLocation_arm64"
+            (Test-AzResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName_arm64" -TemplateFile "$templateFileLocation" -TemplateParameterObject $params_arm64).Count | Should -Not -BeGreaterThan 0
+    }
+    It "Deployment" {
+      $resultDeployment = New-AzResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName_arm64" -TemplateFile "$templateFileLocation" -TemplateParameterObject $params_arm64
+      Write-Host ($resultDeployment | Format-Table | Out-String)
+      Write-Host ("Deployment state: " + $resultDeployment.ProvisioningState | Out-String)
+      $resultDeployment.ProvisioningState | Should -Be "Succeeded"
+    }
+    It "Search deployment" {
+      $result = Get-AzVM | Where-Object { $_.Name -like "$testsPrefix*" }
+      Write-Host ($result | Format-Table | Out-String)
+      $result | Should -Not -Be $null
+    }
+  }
+
+  Context 'Deployment test arm64' {
+
+    BeforeAll {
+      $fgt = (Get-AzPublicIpAddress -Name $publicIPName -ResourceGroupName $testsResourceGroupName_arm64).IpAddress
+      Write-Host ("FortiGate public IP: " + $fgt)
+      $verify_commands = @'
+            get system status
+            show system interface
+            show router static
+            diag debug cloudinit show
+            exit
+'@
+      $OFS = "`n"
+    }
+    It "FGT: Ports listening" {
+      ForEach ( $port in $ports ) {
+        Write-Host ("Check port: $port" )
+        $portListening = (Test-Connection -TargetName $fgt -TCPPort $port -TimeoutSeconds 100)
+        $portListening | Should -Be $true
+      }
+    }
+    It "FGT A: Verify configuration" {
+      $result = $verify_commands | ssh -p 50030 -v -tt -i $sshkey -o StrictHostKeyChecking=no devops@$fgt
+      $LASTEXITCODE | Should -Be "0"
+      Write-Host ("FGT CLI info: " + $result) -Separator `n
+      $result | Should -Not -BeLike "*Command fail*"
+    }
+    It "FGT B: Verify configuration" {
+      $result = $verify_commands | ssh -p 50031 -v -tt -i $sshkey -o StrictHostKeyChecking=no devops@$fgt
+      $LASTEXITCODE | Should -Be "0"
+      Write-Host ("FGT CLI info: " + $result) -Separator `n
+      $result | Should -Not -BeLike "*Command fail*"
+    }
+  }
+
+  Context 'Cleanup arm64' {
+    It "Cleanup of deployment" {
+      Remove-AzResourceGroup -Name $testsResourceGroupName_arm64 -Force
     }
   }
 }
