@@ -25,9 +25,9 @@ BeforeAll {
   # Basic Variables
   $testsRandom = Get-Random 10001
   $testsPrefix = "FORTIQA"
-  $testsResourceGroupName_x64 = "FORTIQA-$testsRandom-$templateName"
-  $testsResourceGroupName_x64_g2 = "FORTIQA-$testsRandom-$templateName"
-  $testsResourceGroupName_arm64 = "FORTIQA-$testsRandom-$templateName"
+  $testsResourceGroupName_x64 = "FORTIQA-$testsRandom-$templateName-x64"
+  $testsResourceGroupName_x64_g2 = "FORTIQA-$testsRandom-$templateName-x64_g2"
+  $testsResourceGroupName_arm64 = "FORTIQA-$testsRandom-$templateName-arm64"
   $testsAdminUsername = "azureuser"
   $testsResourceGroupLocation_x64 = "westeurope"
   $testsResourceGroupLocation_x64_g2 = "germanywestcentral"
