@@ -119,7 +119,7 @@ Describe 'FGT A/P LB' {
     }
 
     It 'Contains the expected parameters' {
-      $expectedTemplateParameters = 'acceleratedConnections',
+      'acceleratedConnections',
       'acceleratedConnectionsSku',
       'acceleratedNetworking',
       'adminPassword',
