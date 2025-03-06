@@ -57,7 +57,7 @@ BeforeAll {
     'fortiGateInstanceArchitecture'    = 'x64_g2'
   }
   $params_arm64 = @{ 'adminUsername' = $testsAdminUsername
-    'adminPassword'                  = $testsResourceGroupName_x64
+    'adminPassword'                  = $testsResourceGroupName_arm64
     'fortiGateNamePrefix'            = $testsPrefix
     'fortiGateAdditionalCustomData'  = $config
     'publicIP2Name'                  = $publicIP2Name
