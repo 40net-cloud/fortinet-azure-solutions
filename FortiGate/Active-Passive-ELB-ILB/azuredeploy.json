@@ -789,7 +789,7 @@
     "externalLBBEId": "[resourceID('Microsoft.Network/loadBalancers/backendAddressPools/',variables('externalLBName'),variables('externalLBBEName'))]",
     "externalLBProbeName": "lbprobe",
     "externalLBProbeId": "[resourceId('Microsoft.Network/loadBalancers/probes/',variables('externalLBName'),variables('externalLBProbeName'))]",
-    "useAZ": "[and(not(empty(pickZones('Microsoft.Compute', 'virtualMachines', parameters('location')))), equals(parameters('availabilityOptions'), 'Availability Zones'), not(and(equals(parameters('fortiGateInstanceArchitecture'), 'x64_g2'), contains(parameters('instanceType_x64_g2'), '_v6'), contains(parameters('fortiGateImageSKU_x64_g2'), '_g2'))))]",
+    "useAZ": "[and(not(empty(pickZones('Microsoft.Compute', 'virtualMachines', parameters('location')))), equals(parameters('availabilityOptions'), 'Availability Zones'))]",
     "pipZones": "[if(variables('useAZ'), pickZones('Microsoft.Network', 'publicIPAddresses', parameters('location'), 3), json('null'))]",
     "zone1": [
       "1"
