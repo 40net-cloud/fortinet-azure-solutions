@@ -30,7 +30,7 @@ BeforeAll {
   $testsResourceGroupName_x64_g2 = "FORTIQA-$testsRandom-$templateName-x64_g2"
   $testsAdminUsername = "azureuser"
   $testsResourceGroupLocation_x64 = "West Europe"
-  $testsResourceGroupLocation_x64_g2 = "germanywestcentral"
+  $testsResourceGroupLocation_x64_g2 = "francecentral"
 
   # ARM Template Variables
   $config = "config system console `n set output standard `n end `n config system global `n set gui-theme mariner `n end `n config system admin `n edit devops `n set accprofile super_admin `n set ssh-public-key1 `""
