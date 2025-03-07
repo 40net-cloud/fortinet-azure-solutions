@@ -26,22 +26,32 @@ BeforeAll {
   # Basic Variables
   $testsRandom = Get-Random 10001
   $testsPrefix = "FORTIQA"
-  $testsResourceGroupName = "FORTIQA-$testsRandom-$templateName"
+  $testsResourceGroupName_x64 = "FORTIQA-$testsRandom-$templateName-x64"
+  $testsResourceGroupName_x64_g2 = "FORTIQA-$testsRandom-$templateName-x64_g2"
   $testsAdminUsername = "azureuser"
-  $testsResourceGroupLocation = "West Europe"
+  $testsResourceGroupLocation_x64 = "West Europe"
+  $testsResourceGroupLocation_x64_g2 = "germanywestcentral"
 
   # ARM Template Variables
   $config = "config system console `n set output standard `n end `n config system global `n set gui-theme mariner `n end `n config system admin `n edit devops `n set accprofile super_admin `n set ssh-public-key1 `""
   $config += Get-Content $sshkeypub
-  $config += "`" `n set password $testsResourceGroupName `n next `n end"
+  $config += "`" `n set password $testsResourceGroupName_x64 `n next `n end"
   $publicIP2Name = "$testsPrefix-FGT-A-MGMT-PIP"
   $publicIP3Name = "$testsPrefix-FGT-B-MGMT-PIP"
-  $params = @{ 'adminUsername'      = $testsAdminUsername
-    'adminPassword'                 = $testsResourceGroupName
+  $params_x64 = @{ 'adminUsername'      = $testsAdminUsername
+    'adminPassword'                 = $testsResourceGroupName_x64
     'fortiGateNamePrefix'           = $testsPrefix
     'fortiGateAdditionalCustomData' = $config
     'publicIP2Name'                 = $publicIP2Name
     'publicIP3Name'                 = $publicIP3Name
+  }
+  $params_x64_g2 = @{ 'adminUsername'      = $testsAdminUsername
+    'adminPassword'                 = $testsResourceGroupName_x64_g2
+    'fortiGateNamePrefix'           = $testsPrefix
+    'fortiGateAdditionalCustomData' = $config
+    'publicIP2Name'                 = $publicIP2Name
+    'publicIP3Name'                 = $publicIP3Name
+    'fortiGateInstanceArchitecture' = 'x64_g2'
   }
   $ports = @(443, 22)
 }
@@ -163,14 +173,14 @@ Describe 'FGT A/P SDN' {
     }
   }
 
-  Context 'Deployment' {
+  Context 'Deployment test x64' {
 
     It "Test Deployment" {
-      New-AzResourceGroup -Name $testsResourceGroupName -Location "$testsResourceGroupLocation"
-            (Test-AzResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName" -TemplateFile "$templateFileLocation" -TemplateParameterObject $params).Count | Should -Not -BeGreaterThan 0
+      New-AzResourceGroup -Name $testsResourceGroupName_x64 -Location "$testsResourceGroupLocation_x64"
+            (Test-AzResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName_x64" -TemplateFile "$templateFileLocation" -TemplateParameterObject $params_x64).Count | Should -Not -BeGreaterThan 0
     }
     It "Deployment" {
-      $resultDeployment = New-AzResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName" -TemplateFile "$templateFileLocation" -TemplateParameterObject $params
+      $resultDeployment = New-AzResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName_x64" -TemplateFile "$templateFileLocation" -TemplateParameterObject $params_x64
       Write-Host ($resultDeployment | Format-Table | Out-String)
       Write-Host ("Deployment state: " + $resultDeployment.ProvisioningState | Out-String)
       $resultDeployment.ProvisioningState | Should -Be "Succeeded"
@@ -182,11 +192,11 @@ Describe 'FGT A/P SDN' {
     }
   }
 
-  Context 'Deployment test' {
+  Context 'Deployment test x64' {
 
     BeforeAll {
-      $fgta = (Get-AzPublicIpAddress -Name $publicIP2Name -ResourceGroupName $testsResourceGroupName).IpAddress
-      $fgtb = (Get-AzPublicIpAddress -Name $publicIP3Name -ResourceGroupName $testsResourceGroupName).IpAddress
+      $fgta = (Get-AzPublicIpAddress -Name $publicIP2Name -ResourceGroupName $testsResourceGroupName_x64).IpAddress
+      $fgtb = (Get-AzPublicIpAddress -Name $publicIP3Name -ResourceGroupName $testsResourceGroupName_x64).IpAddress
       Write-Host ("FortiGate A public IP: " + $fgta)
       Write-Host ("FortiGate B public IP: " + $fgtb)
       chmod 400 $sshkey
@@ -226,9 +236,77 @@ Describe 'FGT A/P SDN' {
     }
   }
 
-  Context 'Cleanup' {
+  Context 'Cleanup x64' {
     It "Cleanup of deployment" {
-      Remove-AzResourceGroup -Name $testsResourceGroupName -Force
+      Remove-AzResourceGroup -Name $testsResourceGroupName_x64 -Force
+    }
+  }
+  Context 'Deployment test x64_g2' {
+
+    It "Test Deployment" {
+      New-AzResourceGroup -Name $testsResourceGroupName_x64_g2 -Location "$testsResourceGroupLocation_x64_g2"
+            (Test-AzResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName_x64_g2" -TemplateFile "$templateFileLocation" -TemplateParameterObject $params_x64_g2).Count | Should -Not -BeGreaterThan 0
+    }
+    It "Deployment" {
+      $resultDeployment = New-AzResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName_x64_g2" -TemplateFile "$templateFileLocation" -TemplateParameterObject $params_x64_g2
+      Write-Host ($resultDeployment | Format-Table | Out-String)
+      Write-Host ("Deployment state: " + $resultDeployment.ProvisioningState | Out-String)
+      $resultDeployment.ProvisioningState | Should -Be "Succeeded"
+    }
+    It "Search deployment" {
+      $result = Get-AzVM | Where-Object { $_.Name -like "$testsPrefix*" }
+      Write-Host ($result | Format-Table | Out-String)
+      $result | Should -Not -Be $null
+    }
+  }
+
+  Context 'Deployment test x64_g2' {
+
+    BeforeAll {
+      $fgta = (Get-AzPublicIpAddress -Name $publicIP2Name -ResourceGroupName $testsResourceGroupName_x64_g2).IpAddress
+      $fgtb = (Get-AzPublicIpAddress -Name $publicIP3Name -ResourceGroupName $testsResourceGroupName_x64_g2).IpAddress
+      Write-Host ("FortiGate A public IP: " + $fgta)
+      Write-Host ("FortiGate B public IP: " + $fgtb)
+      chmod 400 $sshkey
+      $verify_commands = @'
+            show system interface
+            show router static
+            diag debug cloudinit show
+            exit
+'@
+      $OFS = "`n"
+    }
+    It "FGT A: Ports listening" {
+      ForEach ( $port in $ports ) {
+        Write-Host ("Check port: $port" )
+        $portListening = (Test-Connection -TargetName $fgta -TCPPort $port -TimeoutSeconds 100)
+        $portListening | Should -Be $true
+      }
+    }
+    It "FGT B: Ports listening" {
+      ForEach ( $port in $ports ) {
+        Write-Host ("Check port: $port" )
+        $portListening = (Test-Connection -TargetName $fgtb -TCPPort $port -TimeoutSeconds 100)
+        $portListening | Should -Be $true
+      }
+    }
+    It "FGT A: Verify configuration" {
+      $result = $verify_commands | ssh -v -tt -i $sshkey -o StrictHostKeyChecking=no devops@$fgta
+      $LASTEXITCODE | Should -Be "0"
+      Write-Host ("FGT CLI info: " + $result) -Separator `n
+      $result | Should -Not -BeLike "*Command fail*"
+    }
+    It "FGT B: Verify configuration" {
+      $result = $verify_commands | ssh -v -tt -i $sshkey -o StrictHostKeyChecking=no devops@$fgtb
+      $LASTEXITCODE | Should -Be "0"
+      Write-Host ("FGT CLI info: " + $result) -Separator `n
+      $result | Should -Not -BeLike "*Command fail*"
+    }
+  }
+
+  Context 'Cleanup x64_g2' {
+    It "Cleanup of deployment" {
+      Remove-AzResourceGroup -Name $testsResourceGroupName_x64_g2 -Force
     }
   }
 }
