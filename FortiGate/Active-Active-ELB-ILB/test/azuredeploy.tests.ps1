@@ -30,7 +30,7 @@ BeforeAll {
   $testsResourceGroupName_arm64 = "FORTIQA-$testsRandom-$templateName-arm64"
   $testsAdminUsername = "azureuser"
   $testsResourceGroupLocation_x64 = "westeurope"
-  $testsResourceGroupLocation_x64_g2 = "germanywestcentral"
+  $testsResourceGroupLocation_x64_g2 = "francecentral"
   $testsResourceGroupLocation_arm64 = "westeurope"
 
   # ARM Template Variables
