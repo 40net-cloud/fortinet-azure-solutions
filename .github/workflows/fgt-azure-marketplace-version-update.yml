@@ -55,16 +55,33 @@ jobs:
           $marketplaceVersions_arm64 = @()
           $marketplaceVersionsUI_arm64 = @()
 
+          # Get all marketplace versions for x64
           $marketplaceVersions_x64 = @("latest") + $(Sort-Versions($(Get-AzVMImage -PublisherName "fortinet" -Location eastus -Offer "${env:PRODUCTOFFER}" -sku "${env:PRODUCTSKU_X64}").Version))
           $marketplaceVersions_x64 | ConvertTo-Json | Out-File -Filepath "./fgtversion_x64.json"
           $marketplaceVersions_x64 | ForEach-Object { $marketplaceVersionsUI_x64 += [pscustomobject]@{label=$_;value=$_} }
           $marketplaceVersionsUI_x64 | ConvertTo-Json | Out-File -Filepath "./fgtversionui_x64.json"
 
-          $marketplaceVersions_x64_g2 = @("latest") + $(Sort-Versions($(Get-AzVMImage -PublisherName "fortinet" -Location eastus -Offer "${env:PRODUCTOFFER}" -sku "${env:PRODUCTSKU_X64_G2}").Version))
+          # Get all marketplace versions for x64_g2
+          $allMarketplaceVersions_x64_g2 = @("latest") + $(Sort-Versions($(Get-AzVMImage -PublisherName "fortinet" -Location eastus -Offer "${env:PRODUCTOFFER}" -sku "${env:PRODUCTSKU_X64_G2}").Version))
+
+          # Filter out 7.6.1 and 7.6.2 from the marketplace versions
+          $marketplaceVersions_x64_g2 = $allMarketplaceVersions_x64_g2 | Where-Object { $_ -ne "7.6.1" -and $_ -ne "7.6.2" }
           $marketplaceVersions_x64_g2 | ConvertTo-Json | Out-File -Filepath "./fgtversion_x64_g2.json"
-          $marketplaceVersions_x64_g2 | ForEach-Object { $marketplaceVersionsUI_x64_g2 += [pscustomobject]@{label=$_;value=$_} }
+
+          # Build UI version list
+          foreach ($version in $marketplaceVersions_x64_g2) {
+            # Special mapping for 7.6.100 and 7.6.200
+            if ($version -eq "7.6.100") {
+              $marketplaceVersionsUI_x64_g2 += [pscustomobject]@{label="7.6.1";value=$version}
+            } elseif ($version -eq "7.6.200") {
+              $marketplaceVersionsUI_x64_g2 += [pscustomobject]@{label="7.6.2";value=$version}
+            } else {
+              $marketplaceVersionsUI_x64_g2 += [pscustomobject]@{label=$version;value=$version}
+            }
+          }
           $marketplaceVersionsUI_x64_g2 | ConvertTo-Json | Out-File -Filepath "./fgtversionui_x64_g2.json"
 
+          # Get all marketplace versions for arm64
           $marketplaceVersions_arm64 = @("latest") + $(Sort-Versions($(Get-AzVMImage -PublisherName "fortinet" -Location eastus -Offer "${env:PRODUCTOFFER}" -sku "${env:PRODUCTSKU_ARM64}").Version))
           $marketplaceVersions_arm64 | ConvertTo-Json | Out-File -Filepath "./fgtversion_arm64.json"
           $marketplaceVersions_arm64 | ForEach-Object { $marketplaceVersionsUI_arm64 += [pscustomobject]@{label=$_;value=$_} }
