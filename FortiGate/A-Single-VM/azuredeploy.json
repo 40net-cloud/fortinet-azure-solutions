@@ -251,7 +251,7 @@
     },
     "instanceType_x64_g2": {
       "type": "string",
-      "defaultValue": "Standard_D2_v5",
+      "defaultValue": "Standard_D2s_v6",
       "allowedValues": [
         "Standard_D2_v4",
         "Standard_D4_v4",

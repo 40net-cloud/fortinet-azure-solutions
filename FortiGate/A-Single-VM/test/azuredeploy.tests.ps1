@@ -31,7 +31,7 @@ BeforeAll {
   $testsResourceGroupName_arm64 = "FORTIQA-$testsRandom-$templateName-arm64"
   $testsAdminUsername = "azureuser"
   $testsResourceGroupLocation_x64 = "westeurope"
-  $testsResourceGroupLocation_x64_g2 = "germanywestcentral"
+  $testsResourceGroupLocation_x64_g2 = "swedencentral"
   $testsResourceGroupLocation_arm64 = "northeurope"
 
   # ARM Template Variables
@@ -217,14 +217,14 @@ Describe 'FGT Single VM' {
     It "Test Deployment" {
       New-AzResourceGroup -Name "$testsResourceGroupName_x64_g2" -Location "$testsResourceGroupLocation_x64_g2"
       $result = Test-AzResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName_x64_g2" -TemplateFile "$templateFileLocation" -TemplateParameterObject $params_x64_g2
-      Write-Host ($result | Format-Table | Out-String)
+      Write-Host ($result | Format-Table -Wrap -Autosize | Out-String)
       $result.Count | Should -Not -BeGreaterThan 0
     }
     It "Deployment" {
       Write-Host ( "Deployment name: $testsResourceGroupName_x64_g2" )
 
       $resultDeployment = New-AzResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName_x64_g2" -TemplateFile "$templateFileLocation" -TemplateParameterObject $params_x64_g2
-      Write-Host ($resultDeployment | Format-Table | Out-String)
+      Write-Host ($resultDeployment | Format-Table -Wrap -Autosize | Out-String)
       Write-Host ("Deployment state: " + $resultDeployment.ProvisioningState | Out-String)
       $resultDeployment.ProvisioningState | Should -Be "Succeeded"
     }
