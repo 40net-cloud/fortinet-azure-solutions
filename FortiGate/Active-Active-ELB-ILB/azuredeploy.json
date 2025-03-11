@@ -136,13 +136,13 @@
         "description": "Select the image version"
       }
     },
-	"fortiGateImageVersion_x64_g2": {
+    "fortiGateImageVersion_x64_g2": {
       "type": "string",
       "defaultValue": "7.6.200",
       "allowedValues": [
         "latest",
-        "7.6.100",
-        "7.6.200"
+        "7.6.200",
+        "7.6.100"
       ],
       "metadata": {
         "description": "Select the image version supporting Generation 2 VMs"
