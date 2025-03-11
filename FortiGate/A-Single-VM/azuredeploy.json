@@ -141,8 +141,8 @@
       "defaultValue": "7.6.200",
       "allowedValues": [
         "latest",
-        "7.6.100",
-        "7.6.200"
+        "7.6.200",
+        "7.6.100"
       ],
       "metadata": {
         "description": "Select the image version supporting Generation 2 VMs"
