@@ -111,7 +111,7 @@ jobs:
               if (-Not $content -match '(?<=\r\n)\z') {
                 "" | Out-File -Append "./${env:PRODUCT}/${buildingBlock}/createUiDefinition.json"
               }
-              Get-Content -Raw -Path "./${env:PRODUCT}/${buildingBlock}/createUiDefinition.json" | jq --slurpfile content "./fgtversionui_x64_g2.json" '(.parameters.steps[].elements[] | select( .name == "instancetype_x64") | .elements[] | select( .name == "fortiGateImageVersion_x64") | .constraints.allowedValues) |= $content[]' | Set-Content -Path "./${env:PRODUCT}/${buildingBlock}/createUiDefinition.json"
+              Get-Content -Raw -Path "./${env:PRODUCT}/${buildingBlock}/createUiDefinition.json" | jq --slurpfile content "./fgtversionui_x64_g2.json" '(.parameters.steps[].elements[] | select( .name == "instancetype_x64_g2") | .elements[] | select( .name == "fortiGateImageVersion_x64_g2") | .constraints.allowedValues) |= $content[]' | Set-Content -Path "./${env:PRODUCT}/${buildingBlock}/createUiDefinition.json"
               $content = Get-Content "./${env:PRODUCT}/${buildingBlock}/createUiDefinition.json" -Raw
               if (-Not $content -match '(?<=\r\n)\z') {
                 "" | Out-File -Append "./${env:PRODUCT}/${buildingBlock}/createUiDefinition.json"
