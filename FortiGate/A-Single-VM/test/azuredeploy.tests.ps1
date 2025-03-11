@@ -39,25 +39,25 @@ BeforeAll {
   $config += Get-Content $sshkeypub
   $config += "`" `n set password $testsResourceGroupName_x64 `n next `n end"
   $publicIPName = "$testsPrefix-fgt-pip"
-  $params_x64 = @{ 'adminUsername'      = $testsAdminUsername
+  $params_x64 = @{ 'adminUsername'  = $testsAdminUsername
     'adminPassword'                 = $testsResourceGroupName_x64
     'fortiGateNamePrefix'           = $testsPrefix
     'fortiGateAdditionalCustomData' = $config
     'publicIP1Name'                 = $publicIPName
   }
-  $params_x64_g2 = @{ 'adminUsername'      = $testsAdminUsername
-    'adminPassword'                 = $testsResourceGroupName_x64_g2
-    'fortiGateNamePrefix'           = $testsPrefix
-    'fortiGateAdditionalCustomData' = $config
-    'publicIP1Name'                 = $publicIPName
-    'fortiGateInstanceArchitecture' = 'x64_g2'
+  $params_x64_g2 = @{ 'adminUsername' = $testsAdminUsername
+    'adminPassword'                   = $testsResourceGroupName_x64_g2
+    'fortiGateNamePrefix'             = $testsPrefix
+    'fortiGateAdditionalCustomData'   = $config
+    'publicIP1Name'                   = $publicIPName
+    'fortiGateInstanceArchitecture'   = 'x64_g2'
   }
-  $params_arm64 = @{ 'adminUsername'      = $testsAdminUsername
-    'adminPassword'                 = $testsResourceGroupName_arm64
-    'fortiGateNamePrefix'           = $testsPrefix
-    'fortiGateAdditionalCustomData' = $config
-    'publicIP1Name'                 = $publicIPName
-    'fortiGateInstanceArchitecture' = 'arm64'
+  $params_arm64 = @{ 'adminUsername' = $testsAdminUsername
+    'adminPassword'                  = $testsResourceGroupName_arm64
+    'fortiGateNamePrefix'            = $testsPrefix
+    'fortiGateAdditionalCustomData'  = $config
+    'publicIP1Name'                  = $publicIPName
+    'fortiGateInstanceArchitecture'  = 'arm64'
   }
   $ports = @(443, 22)
 }
@@ -159,8 +159,8 @@ Describe 'FGT Single VM' {
   Context 'Deployment x64' {
 
     It "Test Deployment" {
-      New-AzResourceGroup -Name $testsResourceGroupName_x64 -Location "$testsResourceGroupLocation_x64"
-            (Test-AzResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName_x64" -TemplateFile "$templateFileLocation" -TemplateParameterObject $params_x64).Count | Should -Not -BeGreaterThan 0
+      New-AzResourceGroup -Name "$testsResourceGroupName_x64" -Location "$testsResourceGroupLocation_x64"
+      (Test-AzResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName_x64" -TemplateFile "$templateFileLocation" -TemplateParameterObject $params_x64).Count | Should -Not -BeGreaterThan 0
     }
     It "Deployment" {
       Write-Host ( "Deployment name: $testsResourceGroupName_x64" )
@@ -212,11 +212,13 @@ Describe 'FGT Single VM' {
     }
   }
 
-Context 'Deployment x64_g2' {
+  Context 'Deployment x64_g2' {
 
     It "Test Deployment" {
-      New-AzResourceGroup -Name $testsResourceGroupName_x64_g2 -Location "$testsResourceGroupLocation_x64_g2"
-            (Test-AzResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName_x64_g2" -TemplateFile "$templateFileLocation" -TemplateParameterObject $params_x64_g2).Count | Should -Not -BeGreaterThan 0
+      New-AzResourceGroup -Name "$testsResourceGroupName_x64_g2" -Location "$testsResourceGroupLocation_x64_g2"
+      $result = Test-AzResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName_x64_g2" -TemplateFile "$templateFileLocation" -TemplateParameterObject $params_x64_g2
+      Write-Host ($result | Format-Table | Out-String)
+      $result.Count | Should -Not -BeGreaterThan 0
     }
     It "Deployment" {
       Write-Host ( "Deployment name: $testsResourceGroupName_x64_g2" )
@@ -272,7 +274,7 @@ Context 'Deployment x64_g2' {
 
     It "Test Deployment" {
       New-AzResourceGroup -Name $testsResourceGroupName_arm64 -Location "$testsResourceGroupLocation_arm64"
-            (Test-AzResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName_arm64" -TemplateFile "$templateFileLocation" -TemplateParameterObject $params_arm64).Count | Should -Not -BeGreaterThan 0
+      (Test-AzResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName_arm64" -TemplateFile "$templateFileLocation" -TemplateParameterObject $params_arm64).Count | Should -Not -BeGreaterThan 0
     }
     It "Deployment" {
       Write-Host ( "Deployment name: $testsResourceGroupName_arm64" )
