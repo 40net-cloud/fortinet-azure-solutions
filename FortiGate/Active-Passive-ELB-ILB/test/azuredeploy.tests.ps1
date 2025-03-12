@@ -31,7 +31,7 @@ BeforeAll {
   $testsAdminUsername = "azureuser"
   $testsResourceGroupLocation_x64 = "westeurope"
   $testsResourceGroupLocation_x64_g2 = "francecentral"
-  $testsResourceGroupLocation_arm64 = "westeurope"
+  $testsResourceGroupLocation_arm64 = "francecentral"
 
   # ARM Template Variables
   $config = "config system console `n set output standard `n end `n config system global `n set gui-theme mariner `n end `n config system admin `n edit devops `n set accprofile super_admin `n set ssh-public-key1 `""
@@ -187,7 +187,9 @@ Describe 'FGT A/P LB' {
 
     It "Test Deployment" {
       New-AzResourceGroup -Name $testsResourceGroupName_x64 -Location "$testsResourceGroupLocation_x64"
-            (Test-AzResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName_x64" -TemplateFile "$templateFileLocation" -TemplateParameterObject $params_x64).Count | Should -Not -BeGreaterThan 0
+      $result = Test-AzResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName_x64" -TemplateFile "$templateFileLocation" -TemplateParameterObject $params_x64
+      Write-Host ($result | Format-Table -Wrap -Autosize | Out-String)
+      $result.Count | Should -Not -BeGreaterThan 0
     }
     It "Deployment" {
       $resultDeployment = New-AzResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName_x64" -TemplateFile "$templateFileLocation" -TemplateParameterObject $params_x64
@@ -256,7 +258,9 @@ Describe 'FGT A/P LB' {
 
     It "Test Deployment" {
       New-AzResourceGroup -Name $testsResourceGroupName_x64_g2 -Location "$testsResourceGroupLocation_x64_g2"
-            (Test-AzResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName_x64_g2" -TemplateFile "$templateFileLocation" -TemplateParameterObject $params_x64_g2).Count | Should -Not -BeGreaterThan 0
+      $result = Test-AzResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName_x64_g2" -TemplateFile "$templateFileLocation" -TemplateParameterObject $params_x64_g2
+      Write-Host ($result | Format-Table -Wrap -Autosize | Out-String)
+      $result.Count | Should -Not -BeGreaterThan 0
     }
     It "Deployment" {
       $resultDeployment = New-AzResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName_x64_g2" -TemplateFile "$templateFileLocation" -TemplateParameterObject $params_x64_g2
@@ -325,7 +329,9 @@ Describe 'FGT A/P LB' {
 
     It "Test Deployment" {
       New-AzResourceGroup -Name $testsResourceGroupName_arm64 -Location "$testsResourceGroupLocation_arm64"
-            (Test-AzResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName_arm64" -TemplateFile "$templateFileLocation" -TemplateParameterObject $params_arm64).Count | Should -Not -BeGreaterThan 0
+      $result = Test-AzResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName_arm64" -TemplateFile "$templateFileLocation" -TemplateParameterObject $params_arm64
+      Write-Host ($result | Format-Table -Wrap -Autosize | Out-String)
+      $result.Count | Should -Not -BeGreaterThan 0
     }
     It "Deployment" {
       $resultDeployment = New-AzResourceGroupDeployment -ResourceGroupName "$testsResourceGroupName_arm64" -TemplateFile "$templateFileLocation" -TemplateParameterObject $params_arm64

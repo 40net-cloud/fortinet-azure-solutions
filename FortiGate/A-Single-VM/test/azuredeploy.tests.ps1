@@ -30,7 +30,7 @@ BeforeAll {
   $testsResourceGroupName_x64_g2 = "FORTIQA-$testsRandom-$templateName-x64_g2"
   $testsResourceGroupName_arm64 = "FORTIQA-$testsRandom-$templateName-arm64"
   $testsAdminUsername = "azureuser"
-  $testsResourceGroupLocation_x64 = "swedencentral"
+  $testsResourceGroupLocation_x64 = "westeurope"
   $testsResourceGroupLocation_x64_g2 = "swedencentral"
   $testsResourceGroupLocation_arm64 = "swedencentral"
 
@@ -272,7 +272,7 @@ Describe 'FGT Single VM' {
     }
   }
 
-  Context 'Deployment ARM64' {
+  Context 'Deployment arm64' {
   
     It "Test Deployment" {
       New-AzResourceGroup -Name $testsResourceGroupName_arm64 -Location "$testsResourceGroupLocation_arm64"
