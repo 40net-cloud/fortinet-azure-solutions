@@ -46,7 +46,7 @@
         "fortinet_fg-vm_payg_2023_g2"
       ],
       "metadata": {
-        "description": "Identifies whether to to use PAYG (on demand licensing) or BYOL license model (where license is purchased separately"
+        "description": "Identifies whether to to use PAYG (on demand licensing) or BYOL license model (where license is purchased separately)"
       }
     },
     "fortiGateImageSKU_arm64": {
@@ -74,7 +74,7 @@
     },
     "fortiGateImageVersion_x64": {
       "type": "string",
-      "defaultValue": "7.4.6",
+      "defaultValue": "7.4.7",
       "allowedValues": [
         "latest",
         "7.6.0",
@@ -361,6 +361,16 @@
         "Standard_D8ps_v6",
         "Standard_D16ps_v6",
         "Standard_D32ps_v6",
+        "Standard_D2pds_v6",
+        "Standard_D4pds_v6",
+        "Standard_D8pds_v6",
+        "Standard_D16pds_v6",
+        "Standard_D32pds_v6",
+        "Standard_D2pls_v6",
+        "Standard_D4pls_v6",
+        "Standard_D8pls_v6",
+        "Standard_D16pls_v6",
+        "Standard_D32pls_v6",
         "Standard_D2ps_v5",
         "Standard_D4ps_v5",
         "Standard_D8ps_v5",
