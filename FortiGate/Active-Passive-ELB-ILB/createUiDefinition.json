@@ -28,7 +28,7 @@
         "name": "fortiGateInstanceArchitecture",
         "type": "Microsoft.Common.OptionsGroup",
         "label": "FortiGate VM instance Architecture",
-        "defaultValue": "X64 - Intel / AMD based processors",
+        "defaultValue": "x64 - Intel / AMD based processors",
         "toolTip": "Select FortiGate VM instance Architecture",
         "constraints": {
           "allowedValues": [
@@ -37,11 +37,11 @@
               "value": "x64"
             },
             {
-              "label": "X64 - Intel / AMD based processors - Generation 2 VM (> 7.6.1)",
+              "label": "x64 - Intel / AMD based processors - Generation 2 VM (> 7.6.1)",
               "value": "x64_g2"
             },
             {
-              "label": "ARM64 - Ampere Altra based processors",
+              "label": "ARM64 - ARM based processors (Azure Cobalt or Ampere Altra) - Generation 2 VM (> 7.2.8)",
               "value": "arm64"
             }
           ],
@@ -145,7 +145,7 @@
                 "name": "fortiGateImageVersion_x64",
                 "type": "Microsoft.Common.DropDown",
                 "label": "FortiGate Image Version",
-                "defaultValue": "7.4.6",
+                "defaultValue": "7.4.7",
                 "toolTip": "Select the FortiGate image version",
                 "constraints": {
                   "required": false,
@@ -430,7 +430,13 @@
                   "Standard_D32as_v5",
                   "Standard_D8ads_v5",
                   "Standard_D16ads_v5",
-                  "Standard_D32ads_v5"
+                  "Standard_D32ads_v5",
+                  "Standard_D8s_v6",
+                  "Standard_D16s_v6",
+                  "Standard_D32s_v6",
+                  "Standard_E8s_v6",
+                  "Standard_E16s_v6",
+                  "Standard_E32s_v6"
                 ],
                 "constraints": {
                   "allowedSizes": [
@@ -731,7 +737,7 @@
                   "offer": "fortinet_fortigate-vm_v5",
                   "sku": "[steps('instance').instancetype_x64_g2.fortiGateImageSKU_x64_g2]"
                 },
-                "count": 1,
+                "count": 2,
                 "visible": true
               },
               {
@@ -777,7 +783,7 @@
                 "name": "fortiGateImageVersion_arm64",
                 "type": "Microsoft.Common.DropDown",
                 "label": "FortiGate Image Version",
-                "defaultValue": "7.4.6",
+                "defaultValue": "7.6.2",
                 "toolTip": "Select the FortiGate image version",
                 "constraints": {
                   "required": false,
@@ -859,6 +865,12 @@
                   "Standard_D8ps_v6",
                   "Standard_D16ps_v6",
                   "Standard_D32ps_v6",
+                  "Standard_D8pds_v6",
+                  "Standard_D16pds_v6",
+                  "Standard_D32pds_v6",
+                  "Standard_D8pls_v6",
+                  "Standard_D16pls_v6",
+                  "Standard_D32pls_v6",
                   "Standard_D8ps_v5",
                   "Standard_D16ps_v5",
                   "Standard_D32ps_v5",
