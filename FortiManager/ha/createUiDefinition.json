@@ -92,7 +92,7 @@
         "type": "Microsoft.Common.DropDown",
         "label": "FortiManager Image Version",
         "defaultValue": "7.4.3",
-        "toolTip": "Only 6.x has the A/P HA feature currently",
+        "toolTip": "",
         "constraints": {
           "required": false,
           "allowedValues": [

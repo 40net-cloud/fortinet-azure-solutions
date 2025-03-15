@@ -41,7 +41,7 @@
               "value": "x64_g2"
             },
             {
-              "label": "ARM64 - Ampere Altra based processors",
+              "label": "ARM64 - ARM based processors (Azure Cobalt or Ampere Altra) - Generation 2 VM (> 7.2.8)",
               "value": "arm64"
             }
           ],
@@ -158,7 +158,7 @@
                 "name": "fortiGateImageVersion_x64",
                 "type": "Microsoft.Common.DropDown",
                 "label": "FortiGate Image Version",
-                "defaultValue": "7.4.6",
+                "defaultValue": "7.4.7",
                 "toolTip": "Select the FortiGate image version",
                 "constraints": {
                   "required": false,
@@ -467,7 +467,13 @@
                   "Standard_D4ads_v5",
                   "Standard_D8ads_v5",
                   "Standard_D16ads_v5",
-                  "Standard_D32ads_v5"
+                  "Standard_D32ads_v5",
+                  "Standard_D8s_v6",
+                  "Standard_D16s_v6",
+                  "Standard_D32s_v6",
+                  "Standard_E8s_v6",
+                  "Standard_E16s_v6",
+                  "Standard_E32s_v6"
                 ],
                 "constraints": {
                   "allowedSizes": [
@@ -885,7 +891,7 @@
                 "name": "fortiGateImageVersion_arm64",
                 "type": "Microsoft.Common.DropDown",
                 "label": "FortiGate Image Version",
-                "defaultValue": "7.4.6",
+                "defaultValue": "7.6.2",
                 "toolTip": "Select the FortiGate image version",
                 "constraints": {
                   "required": false,
@@ -969,6 +975,16 @@
                   "Standard_D8ps_v6",
                   "Standard_D16ps_v6",
                   "Standard_D32ps_v6",
+                  "Standard_D2pds_v6",
+                  "Standard_D4pds_v6",
+                  "Standard_D8pds_v6",
+                  "Standard_D16pds_v6",
+                  "Standard_D32pds_v6",
+                  "Standard_D2pls_v6",
+                  "Standard_D4pls_v6",
+                  "Standard_D8pls_v6",
+                  "Standard_D16pls_v6",
+                  "Standard_D32pls_v6",
                   "Standard_D2ps_v5",
                   "Standard_D4ps_v5",
                   "Standard_D8ps_v5",
@@ -998,7 +1014,13 @@
                   "Standard_E4pds_v5",
                   "Standard_E8pds_v5",
                   "Standard_E16pds_v5",
-                  "Standard_E32pds_v5"
+                  "Standard_E32pds_v5",
+                  "Standard_D8s_v6",
+                  "Standard_D16s_v6",
+                  "Standard_D32s_v6",
+                  "Standard_E8s_v6",
+                  "Standard_E16s_v6",
+                  "Standard_E32s_v6"
                 ],
                 "constraints": {
                   "allowedSizes": [
@@ -1007,6 +1029,16 @@
                     "Standard_D8ps_v6",
                     "Standard_D16ps_v6",
                     "Standard_D32ps_v6",
+                    "Standard_D2pds_v6",
+                    "Standard_D4pds_v6",
+                    "Standard_D8pds_v6",
+                    "Standard_D16pds_v6",
+                    "Standard_D32pds_v6",
+                    "Standard_D2pls_v6",
+                    "Standard_D4pls_v6",
+                    "Standard_D8pls_v6",
+                    "Standard_D16pls_v6",
+                    "Standard_D32pls_v6",
                     "Standard_D2ps_v5",
                     "Standard_D4ps_v5",
                     "Standard_D8ps_v5",
