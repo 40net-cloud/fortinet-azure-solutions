@@ -1282,10 +1282,12 @@
           "imageReference": "[if(and(or(equals(variables('fortiGateImageSKU'),'fortinet_fg-vm'),equals(variables('fortiGateImageSKU'),'fortinet_fg-vm_arm64')),not(equals(parameters('customImageReference'),''))), variables('imageReferenceCustomImage'), variables('imageReferenceMarketplace'))]",
           "diskControllerType": "[variables('diskControllerType')]",
           "osDisk": {
+            "name": "[concat(variables('fgaVmName'), '-osDisk')]",
             "createOption": "FromImage"
           },
           "dataDisks": [
             {
+              "name": "[concat(variables('fgaVmName'),'-dataDisk')]",
               "diskSizeGB": 30,
               "lun": 0,
               "createOption": "Empty"
@@ -1359,10 +1361,12 @@
           "imageReference": "[if(and(or(equals(variables('fortiGateImageSKU'),'fortinet_fg-vm'),equals(variables('fortiGateImageSKU'),'fortinet_fg-vm_arm64')),not(equals(parameters('customImageReference'),''))), variables('imageReferenceCustomImage'), variables('imageReferenceMarketplace'))]",
           "diskControllerType": "[variables('diskControllerType')]",
           "osDisk": {
+            "name": "[concat(variables('fgbVmName'), '-osDisk')]",
             "createOption": "FromImage"
           },
           "dataDisks": [
             {
+              "name": "[concat(variables('fgbVmName'), '-dataDisk')]",
               "diskSizeGB": 30,
               "lun": 0,
               "createOption": "Empty"
