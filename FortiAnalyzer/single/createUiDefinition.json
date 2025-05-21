@@ -91,7 +91,7 @@
         "name": "imageVersion",
         "type": "Microsoft.Common.DropDown",
         "label": "FortiAnalyzer Image Version",
-        "defaultValue": "7.4.3",
+        "defaultValue": "7.4.6",
         "toolTip": "Only 6.x has the A/P HA feature currently",
         "constraints": {
           "required": false,
@@ -109,14 +109,6 @@
               "value": "7.6.2"
             },
             {
-              "label": "7.6.1",
-              "value": "7.6.1"
-            },
-            {
-              "label": "7.6.0",
-              "value": "7.6.0"
-            },
-            {
               "label": "7.4.6",
               "value": "7.4.6"
             },
@@ -125,96 +117,12 @@
               "value": "7.4.5"
             },
             {
-              "label": "7.4.4",
-              "value": "7.4.4"
-            },
-            {
-              "label": "7.4.3",
-              "value": "7.4.3"
-            },
-            {
-              "label": "7.4.2",
-              "value": "7.4.2"
-            },
-            {
-              "label": "7.4.1",
-              "value": "7.4.1"
-            },
-            {
-              "label": "7.4.0",
-              "value": "7.4.0"
-            },
-            {
-              "label": "7.2.9",
-              "value": "7.2.9"
-            },
-            {
-              "label": "7.2.8",
-              "value": "7.2.8"
-            },
-            {
-              "label": "7.2.7",
-              "value": "7.2.7"
-            },
-            {
-              "label": "7.2.6",
-              "value": "7.2.6"
-            },
-            {
-              "label": "7.2.5",
-              "value": "7.2.5"
-            },
-            {
-              "label": "7.2.4",
-              "value": "7.2.4"
-            },
-            {
-              "label": "7.2.3",
-              "value": "7.2.3"
-            },
-            {
-              "label": "7.2.2",
-              "value": "7.2.2"
-            },
-            {
               "label": "7.2.10",
               "value": "7.2.10"
             },
             {
-              "label": "7.2.1",
-              "value": "7.2.1"
-            },
-            {
-              "label": "7.2.0",
-              "value": "7.2.0"
-            },
-            {
-              "label": "7.0.9",
-              "value": "7.0.9"
-            },
-            {
-              "label": "7.0.7",
-              "value": "7.0.7"
-            },
-            {
-              "label": "7.0.6",
-              "value": "7.0.6"
-            },
-            {
-              "label": "7.0.5",
-              "value": "7.0.5"
-            },
-            {
-              "label": "7.0.4",
-              "value": "7.0.4"
-            },
-            {
-              "label": "7.0.3",
-              "value": "7.0.3"
-            },
-            {
-              "label": "7.0.2",
-              "value": "7.0.2"
+              "label": "7.2.9",
+              "value": "7.2.9"
             },
             {
               "label": "7.0.13",
@@ -225,96 +133,12 @@
               "value": "7.0.12"
             },
             {
-              "label": "7.0.11",
-              "value": "7.0.11"
-            },
-            {
-              "label": "7.0.10",
-              "value": "7.0.10"
-            },
-            {
-              "label": "7.0.1",
-              "value": "7.0.1"
-            },
-            {
-              "label": "7.0.0",
-              "value": "7.0.0"
-            },
-            {
-              "label": "6.4.9",
-              "value": "6.4.9"
-            },
-            {
-              "label": "6.4.8",
-              "value": "6.4.8"
-            },
-            {
-              "label": "6.4.7",
-              "value": "6.4.7"
-            },
-            {
-              "label": "6.4.6",
-              "value": "6.4.6"
-            },
-            {
-              "label": "6.4.5",
-              "value": "6.4.5"
-            },
-            {
-              "label": "6.4.2",
-              "value": "6.4.2"
-            },
-            {
               "label": "6.4.15",
               "value": "6.4.15"
             },
             {
               "label": "6.4.14",
               "value": "6.4.14"
-            },
-            {
-              "label": "6.4.13",
-              "value": "6.4.13"
-            },
-            {
-              "label": "6.4.12",
-              "value": "6.4.12"
-            },
-            {
-              "label": "6.4.11",
-              "value": "6.4.11"
-            },
-            {
-              "label": "6.4.10",
-              "value": "6.4.10"
-            },
-            {
-              "label": "6.4.1",
-              "value": "6.4.1"
-            },
-            {
-              "label": "6.4.0",
-              "value": "6.4.0"
-            },
-            {
-              "label": "6.2.5",
-              "value": "6.2.5"
-            },
-            {
-              "label": "6.2.3",
-              "value": "6.2.3"
-            },
-            {
-              "label": "6.2.2",
-              "value": "6.2.2"
-            },
-            {
-              "label": "6.2.1",
-              "value": "6.2.1"
-            },
-            {
-              "label": "6.2.0",
-              "value": "6.2.0"
             }
           ]
         },
@@ -361,6 +185,10 @@
                   "Standard_D4a_v4",
                   "Standard_D8a_v4",
                   "Standard_D16a_v4",
+                  "Standard_D32a_v4",
+                  "Standard_D48a_v4",
+                  "Standard_D64a_v4",
+                  "Standard_D96a_v4",
                   "Standard_D4as_v4",
                   "Standard_D8as_v4",
                   "Standard_D16as_v4",
@@ -393,6 +221,10 @@
                     "Standard_D4a_v4",
                     "Standard_D8a_v4",
                     "Standard_D16a_v4",
+                    "Standard_D32a_v4",
+                    "Standard_D48a_v4",
+                    "Standard_D64a_v4",
+                    "Standard_D96a_v4",
                     "Standard_D4as_v4",
                     "Standard_D8as_v4",
                     "Standard_D16as_v4",
