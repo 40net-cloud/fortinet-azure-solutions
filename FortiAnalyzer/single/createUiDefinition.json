@@ -942,7 +942,6 @@
       "publicIPNewOrExisting": "[steps('publicip').publicip.newOrExistingOrNone]",
       "publicIPName": "[steps('publicip').publicip.name]",
       "publicIPResourceGroup": "[steps('publicip').publicip.resourceGroup]",
-      "publicIPAddressType": "[steps('publicip').publicip.publicIPAllocationMethod]",
       "vnetNewOrExisting": "[steps('networking').virtualnetworksection.virtualnetwork.newOrExisting]",
       "vnetName": "[steps('networking').virtualnetworksection.virtualnetwork.name]",
       "vnetResourceGroup": "[steps('networking').virtualnetworksection.virtualnetwork.resourceGroup]",
