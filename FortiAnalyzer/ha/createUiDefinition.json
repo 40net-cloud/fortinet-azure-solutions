@@ -353,14 +353,6 @@
                 "label": "Size",
                 "toolTip": "Select the instance size of your FortiAnalyzer VM solution. Minimum 4 NICs are required.",
                 "recommendedSizes": [
-                  "Standard_D4as_v4",
-                  "Standard_A6",
-                  "Standard_A7",
-                  "Standard_A8_v2",
-                  "Standard_D4",
-                  "Standard_DS4",
-                  "Standard_DS4_v2",
-                  "Standard_D3_v2",
                   "Standard_DS4_v2",
                   "Standard_DS5_v2",
                   "Standard_D4_v3",
@@ -379,17 +371,24 @@
                   "Standard_D32as_v4",
                   "Standard_D48as_v4",
                   "Standard_D64as_v4",
-                  "Standard_D96as_v4"
+                  "Standard_D96as_v4",
+                  "Standard_D4_v5",
+                  "Standard_D8_v5",
+                  "Standard_D16_v5",
+                  "Standard_D32_v5",
+                  "Standard_D48_v5",
+                  "Standard_D64_v5",
+                  "Standard_D96_v5",
+                  "Standard_D4s_v5",
+                  "Standard_D8s_v5",
+                  "Standard_D16s_v5",
+                  "Standard_D32s_v5",
+                  "Standard_D48s_v5",
+                  "Standard_D64s_v5",
+                  "Standard_D96s_v5"
                 ],
                 "constraints": {
                   "allowedValues": [
-                    "Standard_A6",
-                    "Standard_A7",
-                    "Standard_A8_v2",
-                    "Standard_D4",
-                    "Standard_DS4",
-                    "Standard_DS4_v2",
-                    "Standard_D3_v2",
                     "Standard_DS4_v2",
                     "Standard_DS5_v2",
                     "Standard_D4_v3",
@@ -408,7 +407,21 @@
                     "Standard_D32as_v4",
                     "Standard_D48as_v4",
                     "Standard_D64as_v4",
-                    "Standard_D96as_v4"
+                    "Standard_D96as_v4",
+                    "Standard_D4_v5",
+                    "Standard_D8_v5",
+                    "Standard_D16_v5",
+                    "Standard_D32_v5",
+                    "Standard_D48_v5",
+                    "Standard_D64_v5",
+                    "Standard_D96_v5",
+                    "Standard_D4s_v5",
+                    "Standard_D8s_v5",
+                    "Standard_D16s_v5",
+                    "Standard_D32s_v5",
+                    "Standard_D48s_v5",
+                    "Standard_D64s_v5",
+                    "Standard_D96s_v5"
                   ]
                 },
                 "options": {
@@ -488,7 +501,7 @@
                 "toolTip": "Number of disks to attach to the FortiAnalyzer.",
                 "constraints": {
                   "required": true,
-                  "regex": "^([0-9]|1[0-5]){1}$",
+                  "regex": "^([0-9]|1[0-5])$",
                   "validationMessage": "Value must be numeric and greater than or equal to 0"
                 }
               },
