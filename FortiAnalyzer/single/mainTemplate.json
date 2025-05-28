@@ -103,7 +103,7 @@
     },
     "instanceType": {
       "type": "string",
-      "defaultValue": "Standard_D4s_v3",
+      "defaultValue": "Standard_D4s_v5",
       "allowedValues": [
         "Standard_DS4_v2",
         "Standard_DS5_v2",
