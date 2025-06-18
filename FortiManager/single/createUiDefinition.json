@@ -91,7 +91,7 @@
         "name": "imageVersion",
         "type": "Microsoft.Common.DropDown",
         "label": "FortiManager Image Version",
-        "defaultValue": "7.4.3",
+        "defaultValue": "7.6.3",
         "toolTip": "",
         "constraints": {
           "required": false,
@@ -352,7 +352,7 @@
                 }
               },
               {
-                "name": "instancetypeselection",
+                "name": "selection",
                 "type": "Microsoft.Compute.SizeSelector",
                 "label": "Size",
                 "toolTip": "Select the instance size of your FortiManager VM solution. Minimum 4 NICs are required.",
@@ -980,7 +980,7 @@
       "adminUsername": "[basics('adminUsername')]",
       "adminPassword": "[basics('adminPassword')]",
       "location": "[location()]",
-      "instanceType": "[steps('instance').instancetype.instancetypeselection]",
+      "instanceType": "[steps('instance').instancetype.selection]",
       "dataDiskCount": "[steps('instance').datadisk.vmDataDiskCount]",
       "dataDiskSize": "[steps('instance').datadisk.vmDataDiskSize]",
       "diskType": "[steps('instance').datadisk.diskType]",

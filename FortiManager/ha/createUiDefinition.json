@@ -91,7 +91,7 @@
         "name": "imageVersion",
         "type": "Microsoft.Common.DropDown",
         "label": "FortiManager Image Version",
-        "defaultValue": "7.4.3",
+        "defaultValue": "7.6.3",
         "toolTip": "",
         "constraints": {
           "required": false,
@@ -347,7 +347,7 @@
                   "text": "For this FortiManager deployment, it is recommended to use general purpose virtual machines. A selection of supported instances sizes is listed in our documentation.",
                   "link": {
                     "label": "Learn more",
-                    "uri": "https://docs.fortinet.com/document/fortianalyzer-public-cloud/7.2.0/azure-administration-guide/351055"
+                    "uri": "https://docs.fortinet.com/document/fortimanager-public-cloud/7.6.0/azure-administration-guide/351055"
                   }
                 }
               },
