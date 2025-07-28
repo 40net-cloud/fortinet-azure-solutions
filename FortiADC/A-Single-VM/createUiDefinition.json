@@ -423,7 +423,7 @@
                   "openMode": "text",
                   "encoding": "UTF-8"
                 },
-                "visible": "[and(equals(basics('imageSku'), 'fad-vm-byol),not(steps('instance').fadLicense.fadLicenseFortiFlexCheck))]"
+                "visible": "[and(equals(basics('imageSku'), 'fad-vm-byol'),not(steps('instance').fadLicense.fadLicenseFortiFlexCheck))]"
               },
               {
                 "name": "fadflexvm",
