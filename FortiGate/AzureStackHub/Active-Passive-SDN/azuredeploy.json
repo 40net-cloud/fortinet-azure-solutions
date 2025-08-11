@@ -22,10 +22,9 @@
     },
     "fortiGateImageSKU": {
       "type": "string",
-      "defaultValue": "fortinet_fg-vm",
+      "defaultValue": "fortinet-fortigate_vm-azurestack",
       "allowedValues": [
-        "fortinet_fg-vm",
-        "fortinet_fg-vm_payg_2023"
+        "fortinet-fortigate_vm-azurestack"
       ],
       "metadata": {
         "description": "Identifies whether to to use PAYG (on demand licensing) or BYOL license model (where license is purchased separately)"
@@ -35,8 +34,7 @@
       "type": "string",
       "defaultValue": "latest",
       "allowedValues": [
-        "6.0.2",
-        "6.0.3",
+        "7.2.5",
         "latest"
       ],
       "metadata": {
@@ -400,7 +398,7 @@
   },
   "variables": {
     "imagePublisher": "fortinet",
-    "imageOffer": "fortinet_fortigate-vm_v5",
+    "imageOffer": "fortinet-fortigate_vm-azurestack",
 
     "availabilitySetName": "[concat(parameters('fortiGateNamePrefix'),'-AvailabilitySet')]",
     "availabilitySetId": "[resourceId('Microsoft.Compute/availabilitySets', variables('availabilitySetName'))]",

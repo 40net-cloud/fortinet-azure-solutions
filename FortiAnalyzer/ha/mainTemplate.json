@@ -633,7 +633,7 @@
       }
     },
     {
-      "condition": "[equals(parameters('publicIP1NewOrExisting'), 'new')]",
+      "condition": "[and(equals(parameters('publicIP1NewOrExisting'), 'new'),equals(parameters('highavailabilityMethod'),'a-p-external-vip'))]",
       "type": "Microsoft.Network/publicIPAddresses",
       "apiVersion": "2023-04-01",
       "tags": {
@@ -665,7 +665,7 @@
       }
     },
     {
-      "condition": "[equals(parameters('highavailabilityMethod'),'a-p-external-vip')]",
+      "condition": "[equals(parameters('publicIP3NewOrExisting'), 'new')]",
       "type": "Microsoft.Network/publicIPAddresses",
       "name": "[variables('publicIP3Name')]",
       "apiVersion": "2023-04-01",
