@@ -913,10 +913,6 @@
     }
   ],
   "outputs": {
-    "fortiGatePublicIP": {
-      "type": "string",
-      "value": "[if(equals(parameters('publicIP1NewOrExisting'), 'new'), reference(variables('publicIP1Id')).ipAddress, '')]"
-    },
     "fortiAnalyzerACustomData": {
       "type": "string",
       "value": "[variables('fazACustomData')]"
