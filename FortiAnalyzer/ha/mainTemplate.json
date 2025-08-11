@@ -714,7 +714,7 @@
             "properties": {
               "privateIPAddress": "[variables('sn1IPfazA2')]",
               "privateIPAllocationMethod": "Static",
-              "publicIPAddress": "[if(not(equals(parameters('publicIP2NewOrExisting'), 'none')), variables('publicIPAddress1Id') , json('null'))]",
+              "publicIPAddress": "[if(equals(parameters('highavailabilityMethod'),'a-p-external-vip'), variables('publicIPAddress1Id') , json('null'))]",
               "subnet": {
                 "id": "[variables('subnet1Id')]"
               }
