@@ -95,7 +95,7 @@ The HA configuration requires the serialnumbers of both FortiManager VMs in orde
 
 ### VRRP Automatic Failover with Public IP Attached to Secondary Private IP Address
 
-After deployment perform and validate the following three steps:
+After deployment perform and validate the following steps:
  
 - During deployment the root certificate (DigiCert Global Root G2) for management.azure.com is added. This certificate can also be downloaded [here](https://learn.microsoft.com/en-us/azure/security/fundamentals/azure-ca-details?tabs=root-and-subordinate-cas-list) and added as a local CA certificate on the FortiManager
 - For the failover process, FortiManager uses managed identity on Microsoft Azure to migrate the public IP. Assign either the network contributor or a custom role to the resource group containing the FortiManager resources (VM, network interface, public ip address, network security group). More information can be found [here](#vrrp-managed identity)
