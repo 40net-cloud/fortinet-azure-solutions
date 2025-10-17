@@ -62,11 +62,3 @@ For detailed instructions, refer to Microsoft’s [documentation](https://learn.
 - After successfully restoring the required disks, create a new FortiGate virtual machine using the restored OS disk and attach the data disks. 
 For step-by-step instructions, refer to Microsoft’s official guide [link](https://learn.microsoft.com/en-us/azure/virtual-machines/scripts/create-vm-from-managed-os-disks) form more info.
 
-## Support
-
-Fortinet-provided scripts in this and other GitHub projects do not fall under the regular Fortinet technical support scope and are not supported by FortiCare Support Services.
-For direct issues, please refer to the [Issues](https://github.com/40net-cloud/terraform-azure-fortigate/issues) tab of this GitHub project.
-
-## License
-
-[License](/../../blob/main/LICENSE) © Fortinet Technologies. All rights reserved.
