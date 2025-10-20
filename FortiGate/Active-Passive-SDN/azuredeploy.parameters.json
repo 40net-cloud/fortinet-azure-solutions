@@ -36,7 +36,7 @@
             "value": ""
         },
         "instanceType_x64": {
-            "value": "Standard_F4s"
+            "value": "Standard_D8s_v3"
         },
         "instanceType_x64_g2": {
             "value": "Standard_D8_v5"

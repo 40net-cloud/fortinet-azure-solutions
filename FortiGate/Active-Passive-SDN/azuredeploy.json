@@ -183,7 +183,7 @@
     },
     "instanceType_x64": {
       "type": "string",
-      "defaultValue": "Standard_F4s",
+      "defaultValue": "Standard_D8s_v3",
       "allowedValues": [
         "Standard_F4s",
         "Standard_F8s",

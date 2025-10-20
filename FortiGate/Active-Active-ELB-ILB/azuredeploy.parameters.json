@@ -45,7 +45,7 @@
             "value": true
         },
         "instanceType_x64": {
-            "value": "Standard_F2s"
+            "value": "Standard_D2s_v3"
         },
         "instanceType_x64_g2": {
             "value": "Standard_D2_v5"
