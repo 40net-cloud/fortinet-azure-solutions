@@ -184,10 +184,10 @@ resource "azurerm_lb_rule" "lb_haports_rule" {
 }
 
 resource "azurerm_network_interface" "fgtifc1" {
-  count                         = var.FGT_COUNT
-  name                          = "${var.prefix}-fgt-${count.index}-nic1"
-  location                      = azurerm_resource_group.resourcegroup.location
-  resource_group_name           = azurerm_resource_group.resourcegroup.name
+  count                          = var.FGT_COUNT
+  name                           = "${var.prefix}-fgt-${count.index}-nic1"
+  location                       = azurerm_resource_group.resourcegroup.location
+  resource_group_name            = azurerm_resource_group.resourcegroup.name
   ip_forwarding_enabled          = true
   accelerated_networking_enabled = var.FGT_ACCELERATED_NETWORKING
 
@@ -214,10 +214,10 @@ resource "azurerm_network_interface_backend_address_pool_association" "fgtifc1el
 }
 
 resource "azurerm_network_interface" "fgtifc2" {
-  count                = var.FGT_COUNT
-  name                 = "${var.prefix}-fgt-${count.index}-nic2"
-  location             = azurerm_resource_group.resourcegroup.location
-  resource_group_name  = azurerm_resource_group.resourcegroup.name
+  count                 = var.FGT_COUNT
+  name                  = "${var.prefix}-fgt-${count.index}-nic2"
+  location              = azurerm_resource_group.resourcegroup.location
+  resource_group_name   = azurerm_resource_group.resourcegroup.name
   ip_forwarding_enabled = true
 
   ip_configuration {
@@ -311,7 +311,7 @@ resource "azurerm_managed_disk" "fgtvm-datadisk" {
 }
 
 resource "azurerm_virtual_machine_data_disk_attachment" "fgtvm-datadisk-attach" {
-  count                = var.FGT_COUNT
+  count              = var.FGT_COUNT
   managed_disk_id    = element(azurerm_managed_disk.fgtvm-datadisk.*.id, count.index)
   virtual_machine_id = element(azurerm_linux_virtual_machine.fgtvm.*.id, count.index)
   lun                = 0
