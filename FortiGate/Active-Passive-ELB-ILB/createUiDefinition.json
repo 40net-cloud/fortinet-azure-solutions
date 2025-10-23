@@ -145,7 +145,7 @@
                 "name": "fortiGateImageVersion_x64",
                 "type": "Microsoft.Common.DropDown",
                 "label": "FortiGate Image Version",
-                "defaultValue": "7.4.7",
+                "defaultValue": "7.4.9",
                 "toolTip": "Select the FortiGate image version",
                 "constraints": {
                   "required": false,
@@ -552,7 +552,7 @@
                 "name": "fortiGateImageVersion_x64_g2",
                 "type": "Microsoft.Common.DropDown",
                 "label": "Fortigate Image Version",
-                "defaultValue": "7.6.2",
+                "defaultValue": "7.6.4",
                 "toolTip": "Only 6.x has the A/P HA feature currently",
                 "constraints": {
                   "required": false,
@@ -807,7 +807,7 @@
                 "name": "fortiGateImageVersion_arm64",
                 "type": "Microsoft.Common.DropDown",
                 "label": "FortiGate Image Version",
-                "defaultValue": "7.6.2",
+                "defaultValue": "7.6.4",
                 "toolTip": "Select the FortiGate image version",
                 "constraints": {
                   "required": false,
