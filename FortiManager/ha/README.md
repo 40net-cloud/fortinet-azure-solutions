@@ -98,7 +98,7 @@ The HA configuration requires the serialnumbers of both FortiManager VMs in orde
 After deployment perform and validate the following steps:
  
 - During deployment the root certificate (DigiCert Global Root G2) for management.azure.com is added. This certificate can also be downloaded [here](https://learn.microsoft.com/en-us/azure/security/fundamentals/azure-ca-details?tabs=root-and-subordinate-cas-list) and added as a local CA certificate on the FortiManager
-- For the failover process, FortiManager uses managed identity on Microsoft Azure to migrate the public IP. Assign either the network contributor or a custom role to the resource group containing the FortiManager resources (VM, network interface, public ip address, network security group). More information can be found [here](#vrrp-managed identity)
+- For the failover process, FortiManager uses managed identity on Microsoft Azure to migrate the public IP. Assign either the network contributor or a custom role to the resource group containing the FortiManager resources (VM, network interface, public ip address, network security group). More information can be found [here](#vrrp-managed-identity)
 - The FortiManager devices need to have outbound access to management.azure.com via either the attached public IPs or another outbound path
 - Reboot the active FortiManager if the public VIP is not reachable.
 
@@ -413,16 +413,18 @@ Then run the following commands:
 # fazutil azure imds
 # fazutil information ha-azure
 ```
+Starting with versions 7.6.0, 7.4.4, and 7.2.6, shell access has been removed.
 
 Force a failover. Run this on the active FortiManager
 ```
-# diag ha force-vrrp-reelection
+# diag ha force-vrrp-election
 ```
 
 Logging of the Azure Rest API calls
 ```
 # diagnose ha dump-cloud-api-log
 ```
+You can find additional commands for viewing and managing HA in the [official documentation](https://docs.fortinet.com/document/fortimanager/7.6.4/cli-reference/698226)
 
 ## Support
 Fortinet-provided scripts in this and other GitHub projects do not fall under the regular Fortinet technical support scope and are not supported by FortiCare Support Services.
