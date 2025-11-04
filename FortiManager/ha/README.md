@@ -97,10 +97,19 @@ The HA configuration requires the serialnumbers of both FortiManager VMs in orde
 
 After deployment perform and validate the following steps:
  
-- During deployment the root certificate (DigiCert Global Root G2) for management.azure.com is added. This certificate can also be downloaded [here](https://learn.microsoft.com/en-us/azure/security/fundamentals/azure-ca-details?tabs=root-and-subordinate-cas-list) and added as a local CA certificate on the FortiManager
+- During deployment the root certificate (DigiCert Global Root G2) for management.azure.com is added. This certificate can also be downloaded [here](https://learn.microsoft.com/en-us/azure/security/fundamentals/azure-ca-details?tabs=root-and-subordinate-cas-list) and added as a local CA certificate on the FortiManager.
+- Verify that FMG-A is the active unit and that the public VIP is assigned to fmg-a-nic1. If FMG-B is active instead, confirm that the agent status is Ready and the VM is running, then reboot FMG-B.
 - For the failover process, FortiManager uses managed identity on Microsoft Azure to migrate the public IP. Assign either the network contributor or a custom role to the resource group containing the FortiManager resources (VM, network interface, public ip address, network security group). More information can be found [here](#vrrp-managed-identity)
 - The FortiManager devices need to have outbound access to management.azure.com via either the attached public IPs or another outbound path
-- Reboot the active FortiManager if the public VIP is not reachable.
+- If the public VIP is not reachable, you have two options:
+    - Reboot FMG-A (active unit): This will trigger a failover, making FMG-B the active unit and restoring VIP reachability.
+    To switch back to FMG-A, reboot FMG-B once the system is stable.
+    - Manually force a failover: From the active FortiManager, run the following command:
+    <pre><code>
+    # diag ha force-vrrp-election
+    </code></pre>
+    Wait a few minutes before switching back to ensure HA synchronization and stability.
+
 
 FortiManager A and FortiManager B configuration should be like below:
 
