@@ -110,6 +110,7 @@ Describe 'FGT Single VM' {
       'availabilityOptions',
       'availabilityZoneNumber',
       'customImageReference',
+      'customVHDSource',
       'existingAvailabilitySetName',
       'fortiGateAdditionalCustomData',
       'fortiGateImageSKU_arm64',
