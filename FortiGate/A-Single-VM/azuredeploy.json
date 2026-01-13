@@ -633,6 +633,17 @@
         "description": "By default, the deployment will use Azure Marketplace images. In specific cases, using BYOL custom FortiGate images can be deployed from support.fortinet.com."
       }
     },
+    "customVHDSource": {
+      "type": "string",
+      "defaultValue": "fortinetsite",
+      "allowedValues": [
+        "fortinetsite",
+        "marketplace"
+      ],
+      "metadata": {
+        "description": "Select fortinetsite if the BYOL FortiGate image was downloaded from support.fortinet.com. Select marketplace if the image originates from the Azure Marketplace."
+      }
+    },
     "location": {
       "type": "string",
       "defaultValue": "[resourceGroup().location]",
@@ -973,7 +984,7 @@
         "type": "SystemAssigned"
       },
       "zones": "[if(variables('useAZ'), variables('zone1'), json('null'))]",
-      "plan": "[if(and(or(equals(variables('fortiGateImageSKU'),'fortinet_fg-vm'),equals(variables('fortiGateImageSKU'),'fortinet_fg-vm_arm64')),not(equals(parameters('customImageReference'),''))), json('null'), variables('virtualMachinePlan'))]",
+      "plan": "[if(and(or(equals(variables('fortiGateImageSKU'),'fortinet_fg-vm'),equals(variables('fortiGateImageSKU'),'fortinet_fg-vm_arm64')),not(equals(parameters('customImageReference'),'')),equals(parameters('customVHDSource'),'fortinetsite')), json('null'), variables('virtualMachinePlan'))]",
       "dependsOn": [
         "[variables('fgtNic1Id')]",
         "[variables('fgtNic2Id')]"

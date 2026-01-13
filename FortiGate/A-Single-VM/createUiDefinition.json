@@ -1691,8 +1691,29 @@
                 "type": "Microsoft.Common.InfoBox",
                 "options": {
                   "icon": "Info",
-                  "text": "For BYOL it is possible to upload a specific FortiGate image to Azure provided by support. Provide the resource ID of the required VM image version in the field below.",
+                  "text": "For BYOL deployments, you can upload a specific FortiGate image version downloaded from support.fortinet.com to an Azure Compute Gallery. You can also upload image versions sourced from the Azure Marketplace, such as images created from a FortiGate backup. Provide the resource ID of the required VM image version in the field below.",
                   "uri": "https://docs.fortinet.com/document/fortigate-public-cloud/7.4.0/azure-administration-guide/392531/deploying-fortigate-vm-from-a-vhd-image-file"
+                },
+                "visible": "[steps('advanced').customvhd.customvhdcheck]"
+              },
+              {
+                "name": "customimagesource",
+                "type": "Microsoft.Common.OptionsGroup",
+                "label": "Image Version Source",
+                "defaultValue": "fortinetsite",
+                "toolTip": "Image Version Source",
+                "constraints": {
+                  "required": false,
+                  "allowedValues": [
+                    {
+                      "label": "fortinetsite",
+                      "value": "fortinetsite"
+                    },
+                    {
+                      "label": "marketplace",
+                      "value": "marketplace"
+                    }
+                  ]
                 },
                 "visible": "[steps('advanced').customvhd.customvhdcheck]"
               },
@@ -1846,6 +1867,7 @@
       "fortiManagerSerial": "[steps('advanced').fortimanager.fortimanagerserial]",
       "fortiGateAdditionalCustomData": "[steps('advanced').customdata.config]",
       "customImageReference": "[steps('advanced').customvhd.resourceid]",
+      "customVHDSource": "[steps('advanced').customvhd.customimagesource]",
       "tagsByResource": "[steps('tags').tagsByResource]"
     }
   }

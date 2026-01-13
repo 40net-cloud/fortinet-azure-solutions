@@ -131,6 +131,9 @@
         "customImageReference": {
             "value": ""
         },
+        "customVHDSource": {
+            "value": "fortinetsite"
+        },
         "location": {
             "value": "" // TODO: Fill in parameter value
         },
