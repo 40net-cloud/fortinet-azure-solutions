@@ -35,6 +35,7 @@
       "defaultValue": "7.6.3",
       "allowedValues": [
         "latest",
+        "7.6.5",
         "7.6.4",
         "7.6.3",
         "7.6.2",
