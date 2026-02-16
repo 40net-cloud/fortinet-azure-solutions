@@ -28,16 +28,16 @@
         "name": "fortiGateInstanceArchitecture",
         "type": "Microsoft.Common.OptionsGroup",
         "label": "FortiGate VM instance Architecture",
-        "defaultValue": "X64 - Intel / AMD based processors",
+        "defaultValue": "X64 - Intel / AMD based processors | Gen1 VM FortiGate 6.4 - 7.4",
         "toolTip": "Select FortiGate VM instance Architecture",
         "constraints": {
           "allowedValues": [
             {
-              "label": "X64 - Intel / AMD based processors",
+              "label": "X64 - Intel / AMD based processors | Gen1 VM FortiGate 6.4 - 7.4",
               "value": "x64"
             },
             {
-              "label": "X64 - Intel / AMD based processors - Generation 2 VM (> 7.6.1)",
+              "label": "X64 - Intel / AMD based processors | Gen2 VM FortiGate 7.6+",
               "value": "x64_g2"
             },
             {
@@ -131,7 +131,7 @@
           {
             "name": "instancetype_x64",
             "type": "Microsoft.Common.Section",
-            "label": "Instance Type x64",
+            "label": "Instance Type x64 Generation 1",
             "elements": [
               {
                 "name": "fortiGateImageSKU_x64",

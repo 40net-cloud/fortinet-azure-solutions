@@ -28,16 +28,16 @@
         "name": "fortiGateInstanceArchitecture",
         "type": "Microsoft.Common.OptionsGroup",
         "label": "FortiGate VM instance Architecture",
-        "defaultValue": "X64 - Intel / AMD based processors",
+        "defaultValue": "X64 - Intel / AMD based processors | Gen1 VM FortiGate 6.4 - 7.4",
         "toolTip": "Select FortiGate VM instance Architecture",
         "constraints": {
           "allowedValues": [
             {
-              "label": "X64 - Intel / AMD based processors",
+              "label": "X64 - Intel / AMD based processors | Gen1 VM FortiGate 6.4 - 7.4",
               "value": "x64"
             },
             {
-              "label": "X64 - Intel / AMD based processors - Generation 2 VM (> 7.6.1)",
+              "label": "X64 - Intel / AMD based processors | Gen2 VM FortiGate 7.6+",
               "value": "x64_g2"
             },
             {
@@ -118,7 +118,7 @@
           {
             "name": "instancetype_x64",
             "type": "Microsoft.Common.Section",
-            "label": "Instance Type x64",
+            "label": "Instance Type x64 Generation 1",
             "elements": [
               {
                 "name": "fortiGateImageSKU_x64",
@@ -566,7 +566,7 @@
               {
                 "name": "versionInfo",
                 "type": "Microsoft.Common.InfoBox",
-                "visible": "[and(contains(steps('instance').instancetype_x64.selection_x64, '_v6'),not(or(equals(steps('instance').instancetype_x64.fortiGateImageVersion_x64,'7.6.1'),equals(steps('instance').instancetype_x64.fortiGateImageVersion_x64,'7.6.2'),equals(steps('instance').instancetype_x64.fortiGateImageVersion_x64,'latest'))))]",
+                "visible": "[and(contains(steps('instance').instancetype_x64.selection_x64, '_v6'),not(or(equals(steps('instance').instancetype_x64.fortiGateImageVersion_x64,'7.6.3'),equals(steps('instance').instancetype_x64.fortiGateImageVersion_x64,'7.6.4'),equals(steps('instance').instancetype_x64.fortiGateImageVersion_x64,'latest'))))]",
                 "options": {
                   "icon": "Error",
                   "text": "Dsv6 and Esv6 Instance families require a Gen2 VM Image, support for MANA network drivers and are incompatible with the selected FortiGate version, please select version 7.6.1 or higher",
@@ -579,7 +579,7 @@
           {
             "name": "instancetype_x64_g2",
             "type": "Microsoft.Common.Section",
-            "label": "Instance Type x64_g2",
+            "label": "Instance Type x64 Generation 2",
             "elements": [
               {
                 "name": "fortiGateImageSKU_x64_g2",
@@ -846,7 +846,7 @@
               {
                 "name": "versionInfo",
                 "type": "Microsoft.Common.InfoBox",
-                "visible": "[and(contains(steps('instance').instancetype_x64_g2.selection_x64_g2, '_v6'),not(or(equals(steps('instance').instancetype_x64_g2.fortiGateImageVersion_x64_g2,'7.6.100'),equals(steps('instance').instancetype_x64_g2.fortiGateImageVersion_x64_g2,'7.6.200'),equals(steps('instance').instancetype_x64_g2.fortiGateImageVersion_x64_g2,'latest'))))]",
+                "visible": "[and(contains(steps('instance').instancetype_x64_g2.selection_x64_g2, '_v6'),not(or(equals(steps('instance').instancetype_x64_g2.fortiGateImageVersion_x64_g2,'7.6.3'),equals(steps('instance').instancetype_x64_g2.fortiGateImageVersion_x64_g2,'7.6.4'),equals(steps('instance').instancetype_x64_g2.fortiGateImageVersion_x64_g2,'latest'))))]",
                 "options": {
                   "icon": "Error",
                   "text": "Dsv6 and Esv6 Instance families require a Gen2 VM Image, support for MANA network drivers and are incompatible with the selected FortiGate version, please select version 7.6.1 or higher",
@@ -1640,7 +1640,7 @@
                 "type": "Microsoft.Common.TextBox",
                 "label": "Custom Data",
                 "toolTip": "Custom Data",
-                "placeholder": "Add you required additional configuration here.",
+                "placeholder": "Add your required additional configuration here.",
                 "multiLine": true,
                 "constraints": {
                   "required": false,

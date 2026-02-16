@@ -28,16 +28,16 @@
         "name": "fortiGateInstanceArchitecture",
         "type": "Microsoft.Common.OptionsGroup",
         "label": "FortiGate VM instance Architecture",
-        "defaultValue": "x64 - Intel / AMD based processors",
+        "defaultValue": "x64 - Intel / AMD based processors | Gen1 VM FortiGate 6.4 - 7.4",
         "toolTip": "Select FortiGate VM instance Architecture",
         "constraints": {
           "allowedValues": [
             {
-              "label": "x64 - Intel / AMD based processors",
+              "label": "x64 - Intel / AMD based processors | Gen1 VM FortiGate 6.4 - 7.4",
               "value": "x64"
             },
             {
-              "label": "x64 - Intel / AMD based processors - Generation 2 VM (> 7.6.1)",
+              "label": "x64 - Intel / AMD based processors | Gen2 VM FortiGate 7.6+",
               "value": "x64_g2"
             },
             {
@@ -118,7 +118,7 @@
           {
             "name": "instancetype_x64",
             "type": "Microsoft.Common.Section",
-            "label": "Instance Type x64",
+            "label": "Instance Type x64 Generation 1",
             "elements": [
               {
                 "name": "fortiGateImageSKU_x64",
@@ -516,7 +516,7 @@
                 "imageReference": {
                   "publisher": "Fortinet",
                   "offer": "fortinet_fortigate-vm_v5",
-                  "sku": "[if(or(equals(steps('instance').instancetype_x64.fortiGateImageVersion_x64,'7.6.1'),equals(steps('instance').instancetype_x64.fortiGateImageVersion_x64,'7.6.2'),equals(steps('instance').instancetype_x64.fortiGateImageVersion_x64,'latest')),concat(steps('instance').instancetype_x64.fortiGateImageSKU_x64,'_g2'),steps('instance').instancetype_x64.fortiGateImageSKU_x64)]"
+                  "sku": "[if(or(equals(steps('instance').instancetype_x64.fortiGateImageVersion_x64,'7.6.3'),equals(steps('instance').instancetype_x64.fortiGateImageVersion_x64,'7.6.4'),equals(steps('instance').instancetype_x64.fortiGateImageVersion_x64,'latest')),concat(steps('instance').instancetype_x64.fortiGateImageSKU_x64,'_g2'),steps('instance').instancetype_x64.fortiGateImageSKU_x64)]"
                 },
                 "count": 2,
                 "visible": true
@@ -524,7 +524,7 @@
               {
                 "name": "versionInfo",
                 "type": "Microsoft.Common.InfoBox",
-                "visible": "[and(contains(steps('instance').instancetype_x64.selection_x64, '_v6'),not(or(equals(steps('instance').instancetype_x64.fortiGateImageVersion_x64,'7.6.1'),equals(steps('instance').instancetype_x64.fortiGateImageVersion_x64,'7.6.2'),equals(steps('instance').instancetype_x64.fortiGateImageVersion_x64,'latest'))))]",
+                "visible": "[and(contains(steps('instance').instancetype_x64.selection_x64, '_v6'),not(or(equals(steps('instance').instancetype_x64.fortiGateImageVersion_x64,'7.6.3'),equals(steps('instance').instancetype_x64.fortiGateImageVersion_x64,'7.6.4'),equals(steps('instance').instancetype_x64.fortiGateImageVersion_x64,'latest'))))]",
                 "options": {
                   "icon": "Error",
                   "text": "Dsv6 and Esv6 Instance families require a Gen2 VM Image, support for MANA network drivers and are incompatible with the selected FortiGate version, please select version 7.6.1 or higher",
@@ -537,7 +537,7 @@
           {
             "name": "instancetype_x64_g2",
             "type": "Microsoft.Common.Section",
-            "label": "Instance Type x64_g2",
+            "label": "Instance Type x64 Generation 2",
             "elements": [
               {
                 "name": "fortiGateImageSKU_x64_g2",
@@ -702,10 +702,6 @@
                 ],
                 "constraints": {
                   "allowedSizes": [
-                    "Standard_D4s_v3",
-                    "Standard_D8s_v3",
-                    "Standard_D16s_v3",
-                    "Standard_D32s_v3",
                     "Standard_D4_v4",
                     "Standard_D8_v4",
                     "Standard_D16_v4",
@@ -787,7 +783,7 @@
               {
                 "name": "versionInfo",
                 "type": "Microsoft.Common.InfoBox",
-                "visible": "[and(contains(steps('instance').instancetype_x64_g2.selection_x64_g2, '_v6'),not(or(equals(steps('instance').instancetype_x64_g2.fortiGateImageVersion_x64_g2,'7.6.100'),equals(steps('instance').instancetype_x64_g2.fortiGateImageVersion_x64_g2,'7.6.200'),equals(steps('instance').instancetype_x64_g2.fortiGateImageVersion_x64_g2,'latest'))))]",
+                "visible": "[and(contains(steps('instance').instancetype_x64_g2.selection_x64_g2, '_v6'),not(or(equals(steps('instance').instancetype_x64_g2.fortiGateImageVersion_x64_g2,'7.6.3'),equals(steps('instance').instancetype_x64_g2.fortiGateImageVersion_x64_g2,'7.6.4'),equals(steps('instance').instancetype_x64_g2.fortiGateImageVersion_x64_g2,'latest'))))]",
                 "options": {
                   "icon": "Error",
                   "text": "Dsv6 and Esv6 Instance families require a Gen2 VM Image, support for MANA network drivers and are incompatible with the selected FortiGate version, please select version 7.6.1 or higher",
@@ -967,6 +963,12 @@
                     "Standard_D8ps_v6",
                     "Standard_D16ps_v6",
                     "Standard_D32ps_v6",
+                    "Standard_D8pds_v6",
+                    "Standard_D16pds_v6",
+                    "Standard_D32pds_v6",
+                    "Standard_D8pls_v6",
+                    "Standard_D16pls_v6",
+                    "Standard_D32pls_v6",
                     "Standard_D8ps_v5",
                     "Standard_D16ps_v5",
                     "Standard_D32ps_v5",
