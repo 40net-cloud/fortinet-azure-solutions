@@ -1046,11 +1046,11 @@
   "outputs": {
     "fortiGatePublicIP": {
       "type": "string",
-      "value": "[if(not(equals(parameters('publicIP1NewOrExisting'), 'none')), reference(variables('publicIP1Id')).ipAddress, '')]"
+      "value": "[if(not(equals(parameters('publicIP1NewOrExisting'), 'none')), reference(variables('publicIP1Id'), '2023-06-01').ipAddress, '')]"
     },
     "fortiGateFQDN": {
       "type": "string",
-      "value": "[if(not(equals(parameters('publicIP1NewOrExisting'), 'none')), reference(variables('publicIP1Id')).dnsSettings.fqdn, '' )]"
+      "value": "[if(not(equals(parameters('publicIP1NewOrExisting'), 'none')), reference(variables('publicIP1Id'), '2023-06-01').dnsSettings.fqdn, '' )]"
     }
   }
 }
