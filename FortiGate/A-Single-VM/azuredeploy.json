@@ -197,7 +197,7 @@
     },
     "instanceType_x64": {
       "type": "string",
-      "defaultValue": "Standard_D2s_v3",
+      "defaultValue": "Standard_D4s_v5",
       "allowedValues": [
         "Standard_F2s",
         "Standard_F4s",
