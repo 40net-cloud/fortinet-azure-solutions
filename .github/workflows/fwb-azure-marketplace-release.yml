@@ -78,6 +78,7 @@ jobs:
 
               Compress-Archive -Path "./releases/${buildingBlock}/*" -DestinationPath "./releases/${env:PRODUCTL}-$($buildingBlock.ToLower())-azure-templates.zip"
             }
+            Get-ChildItem -Path "./releases/"
           azPSVersion: "latest"
 
       - name: Upload release zips
