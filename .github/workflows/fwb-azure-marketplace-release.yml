@@ -45,11 +45,11 @@ jobs:
                   FullVersion = $_
                 }
               }
-              $filteredByMajor = $parsedVersions | Where-Object { $_.Major -ge 7 }
+              $filteredByMajor = $parsedVersions | Where-Object { $_.Major -gt 8 -or ($_.Major -eq 7 -and $_.Minor -ge 2) }
               $filteredVersions = $filteredByMajor |
                 Group-Object -Property Major, Minor |
                 ForEach-Object {
-                  $_.Group | Sort-Object -Property Patch -Descending | Select-Object -First 2
+                  $_.Group | Sort-Object -Property Patch -Descending | Select-Object -First 1
               }
               $sortedVersions = $filteredVersions | Sort-Object -Property Major, Minor, Patch -Descending
               $sortedVersions.FullVersion
