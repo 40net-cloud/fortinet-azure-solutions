@@ -1207,7 +1207,7 @@
     {
       "condition": "[and(not(parameters('1nicDeployment')), equals(parameters('outboundConnectivity'),'per-node-standard-sku-pip'))]",
       "type": "Microsoft.Network/publicIPAddresses",
-      "name": "[variables('attachedpipName')[copyIndex(1)]]",
+      "name": "[variables('attachedpipName')[copyIndex()]]",
       "apiVersion": "2023-06-01",
       "location": "[parameters('location')]",
       "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Network/publicIPAddresses'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Network/publicIPAddresses']), parameters('fortinetTags')) ]",
@@ -1434,7 +1434,7 @@
         "[variables('vnetName')]",
         "[variables('nsgId')]",
         "[variables('externalLBId')]",
-        "[variables('attachedpipId')[copyIndex(1)]]",
+        "[variables('attachedpipId')[copyIndex()]]",
         "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'), concat(variables('fgVmName'),'-', copyIndex(1),'-MGMT-SSH'))]",
         "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules',variables('externalLBName'), concat(variables('fgVmName'),'-', copyIndex(1),'-MGMT-HTTPS'))]"
       ],
@@ -1445,7 +1445,7 @@
             "properties": {
               "privateIPAddress": "[variables('sn1IP')[copyIndex(1)]]",
               "privateIPAllocationMethod": "Static",
-              "publicIPAddress": "[if(equals(parameters('outboundConnectivity'),'per-node-standard-sku-pip'), variables('attachedpipaddressId')[copyIndex(1)] , json('null'))]",
+              "publicIPAddress": "[if(equals(parameters('outboundConnectivity'),'per-node-standard-sku-pip'), variables('attachedpipaddressId')[copyIndex()] , json('null'))]",
               "subnet": {
                 "id": "[variables('subnet1Id')]"
               },
