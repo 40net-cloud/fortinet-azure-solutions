@@ -53,7 +53,7 @@ BeforeAll {
     'fortiGateAdditionalCustomData' = $config
     'publicIP2Name'                 = $publicIP2Name
     'publicIP3Name'                 = $publicIP3Name
-    'fortiGateInstanceArchitecture'  = '_x64_g2'
+    'fortiGateInstanceArchitecture'  = '_g2'
     'fortiGateImageVersion_x64'     = "latest"
   }
   $params_arm64 = @{ 'adminUsername' = $testsAdminUsername

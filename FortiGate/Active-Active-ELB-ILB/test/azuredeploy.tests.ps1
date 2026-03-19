@@ -50,14 +50,14 @@ BeforeAll {
     'fortiGateNamePrefix'           = $testsPrefix
     'fortiGateAdditionalCustomData' = $config
     'fortiGateCount'                = $fortiGateCount
-    'fortiGateInstanceArchitecture' = '_x64_g2'
+    'fortiGateInstanceArchitecture' = '_g2'
   }
   $params_arm64 = @{ 'adminUsername' = $testsAdminUsername
     'adminPassword'                  = $testsResourceGroupName_arm64
     'fortiGateNamePrefix'            = $testsPrefix
     'fortiGateAdditionalCustomData'  = $config
     'fortiGateCount'                 = $fortiGateCount
-    'fortiGateInstanceArchitecture'  = 'arm64'
+    'fortiGateInstanceArchitecture'  = '_arm64'
   }
   $ports = @(40030, 50030, 40031, 50031)
 }
