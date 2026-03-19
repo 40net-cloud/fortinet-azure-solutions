@@ -323,9 +323,9 @@ Describe 'FGT Single VM' {
      }
    }
   
-   Context 'Cleanup ARM64' {
-     It "Cleanup of deployment" {
-       Remove-AzResourceGroup -Name $testsResourceGroupName_arm64 -Force
-     }
-   }
+#   Context 'Cleanup ARM64' {
+#     It "Cleanup of deployment" {
+#       Remove-AzResourceGroup -Name $testsResourceGroupName_arm64 -Force
+#     }
+#   }
 }
