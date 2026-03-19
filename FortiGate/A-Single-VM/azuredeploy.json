@@ -886,7 +886,7 @@
         "type": "SystemAssigned"
       },
       "zones": "[if(variables('useAZ'), variables('zone1'), json('null'))]",
-      "plan": "[if(and(equals(parameters('fortiGateLicenseType'),'fortinet_fg-vm_byol'),not(equals(parameters('customImageReference'),''))), json('null'), variables('virtualMachinePlan'))]",
+      "plan": "[if(and(or(equals(parameters('fortiGateLicenseType'),'fortinet_fg-vm_byol'),equals(variables('fortiGateImageSKU'),'fortinet_fg-vm_arm64')),not(equals(parameters('customImageReference'),'')),equals(parameters('customVHDSource'),'fortinetsite')), json('null'), variables('virtualMachinePlan'))]",
       "dependsOn": [
         "[variables('fgtNic1Id')]",
         "[variables('fgtNic2Id')]"
