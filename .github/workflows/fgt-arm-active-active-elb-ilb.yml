@@ -38,7 +38,7 @@ jobs:
         Invoke-Pester -Script ./armttk.ps1 -EnableExit -OutputFormat NUnitXml -OutputFile ./test-armttk.xml
 
     - name: Azure Login via Az module
-      uses: azure/login@v6
+      uses: azure/login@v3
       with:
         creds: ${{secrets.AZURE_CREDENTIALS}}
         enable-AzPSSession: true
