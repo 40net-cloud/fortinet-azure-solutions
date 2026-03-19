@@ -50,14 +50,14 @@ BeforeAll {
     'fortiGateNamePrefix'             = $testsPrefix
     'fortiGateAdditionalCustomData'   = $config
     'publicIP1Name'                   = $publicIPName
-    'fortiGateInstanceArchitecture'   = 'x64_g2'
+    'fortiGateInstanceArchitecture'   = '_g2'
   }
   $params_arm64 = @{ 'adminUsername' = $testsAdminUsername
     'adminPassword'                  = $testsResourceGroupName_arm64
     'fortiGateNamePrefix'            = $testsPrefix
     'fortiGateAdditionalCustomData'  = $config
     'publicIP1Name'                  = $publicIPName
-    'fortiGateInstanceArchitecture'  = 'arm64'
+    'fortiGateInstanceArchitecture'  = '_arm64'
   }
   $ports = @(443, 22)
 }
@@ -113,15 +113,13 @@ Describe 'FGT Single VM' {
       'customVHDSource',
       'existingAvailabilitySetName',
       'fortiGateAdditionalCustomData',
-      'fortiGateImageSKU_arm64',
-      'fortiGateImageSKU_x64',
-      'fortiGateImageSKU_x64_g2',
       'fortiGateImageVersion_arm64',
       'fortiGateImageVersion_x64',
       'fortiGateImageVersion_x64_g2',
       'fortiGateInstanceArchitecture',
       'fortiGateLicenseBYOL',
       'fortiGateLicenseFortiFlex',
+      'fortiGateLicenseType',
       'fortiGateName',
       'fortiGateNamePrefix',
       'fortiManager',
