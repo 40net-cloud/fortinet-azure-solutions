@@ -53,7 +53,7 @@ BeforeAll {
     'fortiGateAdditionalCustomData' = $config
     'publicIP2Name'                 = $publicIP2Name
     'publicIP3Name'                 = $publicIP3Name
-    'fortiGateInstanceArchitecture'  = 'x64_g2'
+    'fortiGateInstanceArchitecture'  = '_x64_g2'
     'fortiGateImageVersion_x64'     = "latest"
   }
   $params_arm64 = @{ 'adminUsername' = $testsAdminUsername
@@ -62,7 +62,7 @@ BeforeAll {
     'fortiGateAdditionalCustomData'  = $config
     'publicIP2Name'                  = $publicIP2Name
     'publicIP3Name'                  = $publicIP3Name
-    'fortiGateInstanceArchitecture'  = 'arm64'
+    'fortiGateInstanceArchitecture'  = '_arm64'
     'fortiGateImageVersion_arm64'    = "latest"
   }
   $ports = @(443, 22)
@@ -127,9 +127,6 @@ Describe 'FGT A/P LB' {
       'availabilityOptions',
       'customImageReference',
       'fortiGateAdditionalCustomData',
-      'fortiGateImageSKU_arm64',
-      'fortiGateImageSKU_x64',
-      'fortiGateImageSKU_x64_g2',
       'fortiGateImageVersion_arm64',
       'fortiGateImageVersion_x64',
       'fortiGateImageVersion_x64_g2',
