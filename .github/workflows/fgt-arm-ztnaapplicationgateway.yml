@@ -24,7 +24,7 @@ jobs:
 
     steps:
     - name: "Checkout"
-      uses: actions/checkout@v4
+      uses: actions/checkout@v6
 
     - name: ARM TTK - Test ARM Templates
       shell: pwsh
@@ -65,14 +65,14 @@ jobs:
         azPSVersion: "latest"
 
     - name: Publish Test Results
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with:
         name: FGT-ZTNAApplicationGateway-Test-Results
         path: ./test-*.xml
       if: ${{ always() }}
 
     - name: Microsoft Teams Notification
-      uses: jvhoof/notify-microsoft-teams@main
+      uses: skitionek/notify-microsoft-teams@master
       if: always()
       with:
         webhook_url: ${{ secrets.MS_TEAMS_WEBHOOK_URI }}
