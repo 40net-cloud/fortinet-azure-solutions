@@ -51,7 +51,7 @@ BeforeAll {
     'fortiGateAdditionalCustomData' = $config
     'publicIP2Name'                 = $publicIP2Name
     'publicIP3Name'                 = $publicIP3Name
-    'fortiGateInstanceArchitecture' = 'x64_g2'
+    'fortiGateInstanceArchitecture' = '_g2'
   }
   $ports = @(443, 22)
 }
@@ -117,9 +117,6 @@ Describe 'FGT A/P SDN' {
       'availabilityOptions',
       'customImageReference',
       'fortiGateAdditionalCustomData',
-      'fortiGateImageSKU_arm64',
-      'fortiGateImageSKU_x64',
-      'fortiGateImageSKU_x64_g2',
       'fortiGateImageVersion_arm64',
       'fortiGateImageVersion_x64',
       'fortiGateImageVersion_x64_g2',
@@ -128,6 +125,7 @@ Describe 'FGT A/P SDN' {
       'fortiGateLicenseBYOLB',
       'fortiGateLicenseFortiFlexA',
       'fortiGateLicenseFortiFlexB',
+      'fortiGateLicenseType',
       'fortiGateNamePrefix',
       'fortiManager',
       'fortiManagerIP',
