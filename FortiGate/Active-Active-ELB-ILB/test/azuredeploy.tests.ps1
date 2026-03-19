@@ -50,7 +50,7 @@ BeforeAll {
     'fortiGateNamePrefix'           = $testsPrefix
     'fortiGateAdditionalCustomData' = $config
     'fortiGateCount'                = $fortiGateCount
-    'fortiGateInstanceArchitecture' = 'x64_g2'
+    'fortiGateInstanceArchitecture' = '_x64_g2'
   }
   $params_arm64 = @{ 'adminUsername' = $testsAdminUsername
     'adminPassword'                  = $testsResourceGroupName_arm64
