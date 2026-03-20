@@ -77,9 +77,9 @@ jobs:
         foreach ($major in $majorVersions) {
           Write-Host "baseSku: $baseSku, major: $major"
           $skusToCheck = @{
-            x64 = "$baseSku_$major"
-            x64_g2 = "$baseSku_${major}_g2"
-            arm64 = "$baseSku_${major}_arm64"
+            x64 = "${baseSku}_${major}"
+            x64_g2 = "${baseSku}_${major}_g2"
+            arm64 = "${baseSku}_${major}_arm64"
           }
 
           foreach ($variant in $skusToCheck.Keys) {
