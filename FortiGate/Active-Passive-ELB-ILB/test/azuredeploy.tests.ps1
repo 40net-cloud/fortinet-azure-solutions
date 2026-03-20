@@ -45,7 +45,6 @@ BeforeAll {
     'fortiGateAdditionalCustomData' = $config
     'publicIP2Name'                 = $publicIP2Name
     'publicIP3Name'                 = $publicIP3Name
-    'fortiGateImageVersion_x64'     = "latest"
   }
   $params_x64_g2 = @{ 'adminUsername'  = $testsAdminUsername
     'adminPassword'                 = $testsResourceGroupName_x64_g2
@@ -54,7 +53,6 @@ BeforeAll {
     'publicIP2Name'                 = $publicIP2Name
     'publicIP3Name'                 = $publicIP3Name
     'fortiGateInstanceArchitecture'  = '_g2'
-    'fortiGateImageVersion_x64'     = "latest"
   }
   $params_arm64 = @{ 'adminUsername' = $testsAdminUsername
     'adminPassword'                  = $testsResourceGroupName_arm64
@@ -63,8 +61,7 @@ BeforeAll {
     'publicIP2Name'                  = $publicIP2Name
     'publicIP3Name'                  = $publicIP3Name
     'fortiGateInstanceArchitecture'  = '_arm64'
-    'fortiGateImageVersion_arm64'    = "latest"
-  }
+  
   $ports = @(443, 22)
 }
 
@@ -135,6 +132,7 @@ Describe 'FGT A/P LB' {
       'fortiGateLicenseBYOLB',
       'fortiGateLicenseFortiFlexA',
       'fortiGateLicenseFortiFlexB',
+      'fortiGateLicenseType',
       'fortiGateNamePrefix',
       'fortiManager',
       'fortiManagerIP',
