@@ -61,7 +61,7 @@ BeforeAll {
     'publicIP2Name'                  = $publicIP2Name
     'publicIP3Name'                  = $publicIP3Name
     'fortiGateInstanceArchitecture'  = '_arm64'
-  
+  }
   $ports = @(443, 22)
 }
 
