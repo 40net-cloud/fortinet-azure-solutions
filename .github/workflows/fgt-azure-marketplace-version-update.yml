@@ -84,6 +84,7 @@ jobs:
           foreach ($variant in $skusToCheck.Keys) {
             $skuName = $skusToCheck[$variant]
             Write-Host "variant: $variant"
+            Write-Host "skusToCheck: $skusToCheck"
             Write-Host "availableSkus: $availableSkus"
             Write-Host "skuName: $skuName"
             if ($availableSkus -contains $skuName) {
