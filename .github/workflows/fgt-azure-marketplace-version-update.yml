@@ -110,6 +110,10 @@ jobs:
         $marketplaceVersions_x64_g2 = @('latest') + (Sort-Versions(($marketplaceVersions_x64_g2 | Where-Object { $_ -ne 'latest' } | Select-Object -Unique)))
         $marketplaceVersions_arm64 = @('latest') + (Sort-Versions(($marketplaceVersions_arm64 | Where-Object { $_ -ne 'latest' } | Select-Object -Unique)))
 
+        $marketplaceVersionsUI_x64 = @()
+        $marketplaceVersionsUI_x64_g2 = @()
+        $marketplaceVersionsUI_arm64 = @()
+
         $marketplaceVersions_x64 | ConvertTo-Json | Out-File -Filepath './fgtversion_x64.json'
         foreach ($version in $marketplaceVersions_x64) {
           if ($version -eq 'latest') {
