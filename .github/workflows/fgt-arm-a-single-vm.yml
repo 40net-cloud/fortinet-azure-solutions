@@ -12,6 +12,10 @@ on:
       - 'FortiGate/A-Single-VM/*.json'
       - 'FortiGate/A-Single-VM/**.tests.ps1'
 
+permissions:
+  contents: read
+  id-token: write  # Required for OIDC authentication with Azure
+
 jobs:
   ARM_A-Single-VM:
     name: 'ARM Template A-Single-VM'
