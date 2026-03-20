@@ -84,8 +84,11 @@ jobs:
 
             foreach ($variant in $skusToCheck.Keys) {
               $skuName = $skusToCheck[$variant]
+              Write-Host "availableSkus: $availableSkus"
               if ($availableSkus -contains $skuName) {
                 $versions = Get-AzVMImage -PublisherName $publisher -Location $location -Offer $offer -Sku $skuName | Select-Object -ExpandProperty Version
+                Write-Host "skuName: $skuName"
+                Write-Host "versions: $versions"
                 if ($versions) {
                   $sorted = Sort-Versions($versions | Select-Object -Unique)
                   switch ($variant) {
