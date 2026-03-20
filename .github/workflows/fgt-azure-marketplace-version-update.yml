@@ -75,6 +75,7 @@ jobs:
         $marketplaceVersions_arm64 = @('latest')
 
         foreach ($major in $majorVersions) {
+          Write-Host "baseSku: $baseSku, major: $major"
           $skusToCheck = @{
             x64 = "$baseSku_$major"
             x64_g2 = "$baseSku_${major}_g2"
