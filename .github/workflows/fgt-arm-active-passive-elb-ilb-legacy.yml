@@ -1,0 +1,150 @@
+name: '[FGT] ARM - Active-Passive-ELB-ILB - Legacy'
+
+env:
+  ARMPath: FortiGate/Active-Passive-ELB-ILB/legacy/
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - 'FortiGate/Active-Passive-ELB-ILB/legacy/*.json'
+      - 'FortiGate/Active-Passive-ELB-ILB/legacy/test/*.ps1'
+
+jobs:
+
+  # ── Job 1: ARM Template Toolkit validation (no Azure credentials needed) ────
+  ttk:
+    name: 'ARM TTK Validation'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v6
+
+    - name: Get week (ARM TTK cache key)
+      id: week
+      run: echo "value=$(date +'%Y-%U')" >> $GITHUB_OUTPUT
+
+    - name: Cache ARM TTK
+      id: cache-armttk
+      uses: actions/cache@v5
+      with:
+        path: arm-ttk
+        key: arm-ttk-${{ steps.week.outputs.value }}
+
+    - name: Cache Pester 4.10.1
+      id: cache-pester4
+      uses: actions/cache@v5
+      with:
+        path: ~/.local/share/powershell/Modules/Pester/4.10.1
+        key: pester-4.10.1
+
+    - name: Download and extract ARM TTK
+      if: steps.cache-armttk.outputs.cache-hit != 'true'
+      shell: pwsh
+      run: |
+        Invoke-WebRequest -Uri "https://aka.ms/arm-ttk-latest" -OutFile arm-template-toolkit.zip
+        Expand-Archive -LiteralPath arm-template-toolkit.zip -DestinationPath arm-ttk
+
+    - name: Install Pester 4.10.1
+      if: steps.cache-pester4.outputs.cache-hit != 'true'
+      shell: pwsh
+      run: |
+        Install-Module -Name Pester -RequiredVersion 4.10.1 -Force -Scope CurrentUser
+
+    - name: Validate ARM templates with ARM TTK
+      shell: pwsh
+      run: |
+        Import-Module -Name Pester -RequiredVersion 4.10.1 -Force
+        Import-Module ./arm-ttk/arm-ttk/arm-ttk.psd1
+        "Test-AzTemplate -TemplatePath ${{ env.ARMPath }} -Pester" | Out-File -FilePath ./armttk.ps1
+        Invoke-Pester -Script ./armttk.ps1 -EnableExit -OutputFormat NUnitXml -OutputFile ./test-armttk.xml
+
+    - name: Publish TTK results
+      uses: actions/upload-artifact@v6
+      with:
+        name: FGT-Active-Passive-ELB-ILB-Legacy-TTK-Results
+        path: ./test-armttk.xml
+      if: always()
+
+  # ── Job 2: Deploy and test — three architectures run in parallel ────────────
+  deploy:
+    name: 'Deploy and Test - ${{ matrix.scenario }}'
+    runs-on: ubuntu-latest
+    needs: ttk                 # skip costly deployments if template is structurally broken
+    permissions:
+      contents: read
+      id-token: write          # required for OIDC authentication with Azure
+    strategy:
+      matrix:
+        scenario: [x64, x64_g2, arm64]
+      fail-fast: false         # let all scenarios finish even if one fails
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v6
+
+    - name: Generate SSH key pair
+      run: |
+        mkdir -p /home/runner/.ssh/
+        chmod 700 /home/runner/.ssh/
+        ssh-keygen -t ed25519 -f /home/runner/.ssh/id_ed25519 -C "fortigate_test@40net.cloud" -N ''
+        chmod 400 /home/runner/.ssh/id_ed25519*
+
+    - name: Azure Login
+      uses: azure/login@v3
+      with:
+        client-id: ${{ secrets.AZURE_CLIENT_ID }}
+        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+        enable-AzPSSession: true
+
+    - name: Run Pester tests - ${{ matrix.scenario }}
+      shell: pwsh
+      run: |
+        if (-not (Get-Module -ListAvailable -Name Pester | Where-Object { $_.Version -ge [version]'5.7.1' })) {
+            Set-PSRepository psgallery -InstallationPolicy trusted
+            Install-Module -Name Pester -MinimumVersion 5.7.1 -Confirm:$false -Force -SkipPublisherCheck
+        }
+        Import-Module Pester -MinimumVersion 5.7.1 -Force
+        $container = New-PesterContainer -Path "${{ env.ARMPath }}test/" -Data @{
+            sshkey    = "/home/runner/.ssh/id_ed25519"
+            sshkeypub = "/home/runner/.ssh/id_ed25519.pub"
+            scenario  = "${{ matrix.scenario }}"
+        }
+        $config = New-PesterConfiguration
+        $config.Run.Container           = $container
+        $config.Run.Exit                = $true
+        $config.Run.PassThru            = $true
+        $config.TestResult.Enabled      = $true
+        $config.TestResult.OutputFormat = "NUnitXML"
+        $config.TestResult.OutputPath   = "test-custom-${{ matrix.scenario }}.xml"
+        $config.Output.Verbosity        = 'Detailed'
+        Invoke-Pester -Configuration $config
+
+    - name: Publish test results - ${{ matrix.scenario }}
+      uses: actions/upload-artifact@v6
+      with:
+        name: FGT-Active-Passive-ELB-ILB-Legacy-Test-Results-${{ matrix.scenario }}
+        path: ./test-custom-${{ matrix.scenario }}.xml
+      if: always()
+
+  # ── Job 3: Teams notification after all jobs complete ───────────────────────
+  notify:
+    name: 'Teams Notification'
+    runs-on: ubuntu-latest
+    needs: [ttk, deploy]
+    if: always()
+
+    steps:
+    - name: Microsoft Teams Notification
+      uses: skitionek/notify-microsoft-teams@master
+      with:
+        webhook_url: ${{ secrets.MS_TEAMS_WEBHOOK_URI }}
+        needs: ${{ toJson(needs) }}
+        job: ${{ toJson(job) }}
+        steps: ${{ toJson(steps) }}
