@@ -516,7 +516,7 @@
       "condition": "[equals(parameters('serialConsole'), 'yes')]",
       "type": "Microsoft.Storage/storageAccounts",
       "name": "[variables('serialConsoleStorageAccountName')]",
-      "apiVersion": "2021-02-01",
+      "apiVersion": "2024-01-01",
       "location": "[parameters('location')]",
       "kind": "Storage",
       "sku": {
@@ -941,7 +941,7 @@
         "diagnosticsProfile": {
           "bootDiagnostics": {
             "enabled": "[variables('serialConsoleEnabled')]",
-            "storageUri": "[if(equals(parameters('serialConsole'), 'yes'), reference(variables('serialConsoleStorageAccountName'), '2021-08-01').primaryEndpoints['blob'], json('null'))]"
+            "storageUri": "[if(equals(parameters('serialConsole'), 'yes'), reference(variables('serialConsoleStorageAccountName'), '2024-01-01').primaryEndpoints['blob'], json('null'))]"
           }
         }
       }
@@ -1015,7 +1015,7 @@
         "diagnosticsProfile": {
           "bootDiagnostics": {
             "enabled": "[variables('serialConsoleEnabled')]",
-            "storageUri": "[if(equals(parameters('serialConsole'), 'yes'), reference(variables('serialConsoleStorageAccountName'), '2021-08-01').primaryEndpoints['blob'], json('null'))]"
+            "storageUri": "[if(equals(parameters('serialConsole'), 'yes'), reference(variables('serialConsoleStorageAccountName'), '2024-01-01').primaryEndpoints['blob'], json('null'))]"
           }
         }
       }

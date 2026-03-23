@@ -1,14 +1,7 @@
 {
-  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json",
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "storageAccountDomain": {
-      "type": "string",
-      "defaultValue": "core.windows.net",
-      "metadata": {
-        "description": "The domain of the storage account to be created."
-      }
-    },
     "adminUsername": {
       "type": "string",
       "metadata": {
@@ -51,9 +44,9 @@
     },
     "location": {
       "type": "string",
-      "defaultValue": "eastus2",
+      "defaultValue": "[resourceGroup().location]",
       "metadata": {
-        "description": "Location to deploy all the resources in.ex. eastus2euap"
+        "description": "Location to deploy all the resources in."
       }
     },
     "subscription_id": {
@@ -75,14 +68,11 @@
     "consumerNicName": "ConsumerNic",
     "consumerSubnetPrefix": "10.0.0.0/24",
     "consumerAddressPrefix": "10.0.0.0/16",
-    "publicIPAddressType": "Static",
-    "consumerVnetID": "[resourceId('Microsoft.Network/virtualNetworks',variables('consumerVnetName'))]",
-    "consumerSubnetRef": "[concat(variables('consumerVnetID'),'/subnets/',variables('consumerSubnetName'))]",
-    "consumerlbID": "[resourceId('Microsoft.Network/loadBalancers',variables('consumerLbName'))]"
+    "publicIPAddressType": "Static"
   },
   "resources": [
     {
-      "apiVersion": "2016-03-30",
+      "apiVersion": "2024-05-01",
       "type": "Microsoft.Network/networkSecurityGroups",
       "name": "[variables('networkSecurityGroupName')]",
       "location": "[parameters('location')]",
@@ -134,7 +124,7 @@
       }
     },
     {
-      "apiVersion": "2017-08-01",
+      "apiVersion": "2024-05-01",
       "type": "Microsoft.Network/publicIPAddresses",
       "name": "[variables('consumerPublicIPAddressName')]",
       "location": "[parameters('location')]",
@@ -147,13 +137,13 @@
       }
     },
     {
-      "apiVersion": "2015-05-01-preview",
+      "apiVersion": "2024-05-01",
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[variables('consumerNicName')]",
       "location": "[parameters('location')]",
       "dependsOn": [
-        "[concat('Microsoft.Network/virtualNetworks/', variables('consumerVnetName'))]",
-        "[concat('Microsoft.Network/loadBalancers/', variables('consumerLbName'))]"
+        "[resourceId('Microsoft.Network/virtualNetworks', variables('consumerVnetName'))]",
+        "[resourceId('Microsoft.Network/loadBalancers', variables('consumerLbName'))]"
       ],
       "properties": {
         "ipConfigurations": [
@@ -162,12 +152,11 @@
             "properties": {
               "privateIPAllocationMethod": "Dynamic",
               "subnet": {
-                "id": "[variables('consumerSubnetRef')]"
+                "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('consumerVnetName'), variables('consumerSubnetName'))]"
               },
-              "loadBalancerProbeStatus": "Up",
               "loadBalancerBackendAddressPools": [
                 {
-                  "id": "[concat(variables('consumerLbID'), '/backendAddressPools/BackendPool1')]"
+                  "id": "[resourceId('Microsoft.Network/loadBalancers/backendAddressPools', variables('consumerLbName'), 'BackendPool1')]"
                 }
               ]
             }
@@ -176,12 +165,12 @@
       }
     },
     {
-      "apiVersion": "2015-05-01-preview",
+      "apiVersion": "2024-05-01",
       "type": "Microsoft.Network/virtualNetworks",
       "name": "[variables('consumerVnetName')]",
       "location": "[parameters('location')]",
       "dependsOn": [
-        "[concat('Microsoft.Network/networkSecurityGroups/', variables('networkSecurityGroupName'))]"
+        "[resourceId('Microsoft.Network/networkSecurityGroups', variables('networkSecurityGroupName'))]"
       ],
       "properties": {
         "addressSpace": {
@@ -205,7 +194,7 @@
     {
       "type": "Microsoft.Compute/virtualMachines",
       "name": "[variables('consumerVmName')]",
-      "apiVersion": "2016-04-30-preview",
+      "apiVersion": "2024-11-01",
       "location": "[parameters('location')]",
       "dependsOn": [
         "[resourceId('Microsoft.Network/networkInterfaces', variables('consumerNicName'))]"
@@ -243,7 +232,7 @@
       }
     },
     {
-      "apiVersion": "2023-06-01",
+      "apiVersion": "2024-05-01",
       "name": "[variables('consumerLbName')]",
       "type": "Microsoft.Network/loadBalancers",
       "location": "[parameters('location')]",
@@ -251,7 +240,7 @@
         "name": "Standard"
       },
       "dependsOn": [
-        "[concat('Microsoft.Network/publicIPAddresses/', variables('consumerPublicIPAddressName'))]"
+        "[resourceId('Microsoft.Network/publicIPAddresses', variables('consumerPublicIPAddressName'))]"
       ],
       "properties": {
         "frontendIPConfigurations": [
@@ -260,11 +249,11 @@
             "properties": {
               "privateIPAllocationMethod": "Dynamic",
               "publicIPAddress": {
-                "id": "[resourceId('Microsoft.Network/publicIPAddresses',variables('consumerPublicIPAddressName'))]"
+                "id": "[resourceId('Microsoft.Network/publicIPAddresses', variables('consumerPublicIPAddressName'))]"
               },
               "privateIPAddressVersion": "IPv4",
               "gatewayLoadBalancer": {
-                "id": "[concat('/subscriptions/',parameters('subscription_id'), '/resourceGroups/', parameters('provider_rg'), '/providers/Microsoft.Network/loadBalancers/GWLB/frontendIPConfigurations/FEIpconfig1')]"
+                "id": "[resourceId(parameters('subscription_id'), parameters('provider_rg'), 'Microsoft.Network/loadBalancers/frontendIPConfigurations', 'GWLB', 'FEIpconfig1')]"
               }
             }
           }
@@ -279,10 +268,10 @@
             "name": "LBRule",
             "properties": {
               "frontendIPConfiguration": {
-                "id": "[concat(variables('consumerLbID'),'/frontendIPConfigurations/LoadBalancerFrontEnd')]"
+                "id": "[resourceId('Microsoft.Network/loadBalancers/frontendIPConfigurations', variables('consumerLbName'), 'LoadBalancerFrontEnd')]"
               },
               "backendAddressPool": {
-                "id": "[concat(variables('consumerlbID'),'/backendAddressPools/BackendPool1')]"
+                "id": "[resourceId('Microsoft.Network/loadBalancers/backendAddressPools', variables('consumerLbName'), 'BackendPool1')]"
               },
               "protocol": "tcp",
               "enableTcpReset": true,
