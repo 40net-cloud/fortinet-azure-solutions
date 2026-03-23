@@ -75,19 +75,19 @@ try {
 
 # ── Pester ───────────────────────────────────────────────────────────────────
 
-$pesterMinVersion = [version]'5.0.0'
+$pesterMinVersion = [version]'5.7.1'
 $installedPester  = Get-Module -ListAvailable -Name Pester |
     Where-Object { $_.Version -ge $pesterMinVersion } |
     Sort-Object Version -Descending |
     Select-Object -First 1
 
 if (-not $installedPester) {
-    Write-Host "Installing Pester 5 ..."
+    Write-Host "Installing Pester >= 5.7.1 ..."
     Set-PSRepository psgallery -InstallationPolicy trusted
-    Install-Module -Name Pester -MinimumVersion 5.0.0 -Confirm:$false -Force
+    Install-Module -Name Pester -MinimumVersion 5.7.1 -Confirm:$false -Force -SkipPublisherCheck
 }
 
-Import-Module Pester -MinimumVersion 5.0.0
+Import-Module Pester -MinimumVersion 5.7.1 -Force
 
 # ── Run ──────────────────────────────────────────────────────────────────────
 

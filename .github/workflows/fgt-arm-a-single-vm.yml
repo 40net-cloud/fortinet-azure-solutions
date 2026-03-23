@@ -78,9 +78,11 @@ jobs:
     - name: Run Pester tests - ${{ matrix.scenario }}
       shell: pwsh
       run: |
-        Set-PSRepository psgallery -InstallationPolicy trusted
-        Install-Module -Name Pester -RequiredVersion 5.0.4 -Confirm:$false -Force
-        Import-Module Pester -RequiredVersion 5.0.4
+        if (-not (Get-Module -ListAvailable -Name Pester | Where-Object { $_.Version -ge [version]'5.7.1' })) {
+            Set-PSRepository psgallery -InstallationPolicy trusted
+            Install-Module -Name Pester -MinimumVersion 5.7.1 -Confirm:$false -Force -SkipPublisherCheck
+        }
+        Import-Module Pester -MinimumVersion 5.7.1 -Force
         $container = New-PesterContainer -Path "${{ env.ARMPath }}test/" -Data @{
             sshkey    = "/home/runner/.ssh/id_ed25519"
             sshkeypub = "/home/runner/.ssh/id_ed25519.pub"
