@@ -25,13 +25,41 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v6
 
+    - name: Get week (ARM TTK cache key)
+      id: week
+      run: echo "value=$(date +'%Y-%U')" >> $GITHUB_OUTPUT
+
+    - name: Cache ARM TTK
+      id: cache-armttk
+      uses: actions/cache@v4
+      with:
+        path: arm-ttk
+        key: arm-ttk-${{ steps.week.outputs.value }}
+
+    - name: Cache Pester 4.10.1
+      id: cache-pester4
+      uses: actions/cache@v4
+      with:
+        path: ~/.local/share/powershell/Modules/Pester/4.10.1
+        key: pester-4.10.1
+
+    - name: Download and extract ARM TTK
+      if: steps.cache-armttk.outputs.cache-hit != 'true'
+      shell: pwsh
+      run: |
+        Invoke-WebRequest -Uri "https://aka.ms/arm-ttk-latest" -OutFile arm-template-toolkit.zip
+        Expand-Archive -LiteralPath arm-template-toolkit.zip -DestinationPath arm-ttk
+
+    - name: Install Pester 4.10.1
+      if: steps.cache-pester4.outputs.cache-hit != 'true'
+      shell: pwsh
+      run: |
+        Install-Module -Name Pester -RequiredVersion 4.10.1 -Force -Scope CurrentUser
+
     - name: Validate ARM templates with ARM TTK
       shell: pwsh
       run: |
-        Install-Module -Name Pester -RequiredVersion 4.10.1 -Force
         Import-Module -Name Pester -RequiredVersion 4.10.1 -Force
-        Invoke-WebRequest -Uri "https://aka.ms/arm-ttk-latest" -OutFile arm-template-toolkit.zip
-        Expand-Archive -LiteralPath arm-template-toolkit.zip -DestinationPath arm-ttk
         Import-Module ./arm-ttk/arm-ttk/arm-ttk.psd1
         "Test-AzTemplate -TemplatePath ${{ env.ARMPath }} -Pester" | Out-File -FilePath ./armttk.ps1
         Invoke-Pester -Script ./armttk.ps1 -EnableExit -OutputFormat NUnitXml -OutputFile ./test-armttk.xml
