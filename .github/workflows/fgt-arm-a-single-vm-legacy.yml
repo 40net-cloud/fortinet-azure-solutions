@@ -31,14 +31,14 @@ jobs:
 
     - name: Cache ARM TTK
       id: cache-armttk
-      uses: actions/cache@v4
+      uses: actions/cache@v5
       with:
         path: arm-ttk
         key: arm-ttk-${{ steps.week.outputs.value }}
 
     - name: Cache Pester 4.10.1
       id: cache-pester4
-      uses: actions/cache@v4
+      uses: actions/cache@v5
       with:
         path: ~/.local/share/powershell/Modules/Pester/4.10.1
         key: pester-4.10.1
