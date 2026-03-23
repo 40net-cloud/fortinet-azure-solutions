@@ -1,26 +1,22 @@
 #Requires -Modules Pester
 <#
 .SYNOPSIS
-    Pester v5 tests for the Active-Passive-SDN ARM template
+    Pester v5 tests for the AzureGatewayLoadBalancer ARM template
 .DESCRIPTION
     Validates the template structure, deploys to Azure, and verifies both FortiGates are
-    reachable on their individual management public IPs. Run one scenario per invocation
-    (x64, x64_g2, arm64) so that matrix jobs in GitHub Actions can execute all three
-    in parallel.
+    reachable on their individual management public IPs.
 .EXAMPLE
     Invoke-Pester
-    ./test/Invoke-Tests.ps1 -Scenario x64_g2
+    ./test/Invoke-Tests.ps1
 #>
 
 param (
     [string]$sshkey    = "",
-    [string]$sshkeypub = "",
-    [ValidateSet('x64', 'x64_g2', 'arm64')]
-    [string]$scenario  = "x64"
+    [string]$sshkeypub = ""
 )
 
 BeforeAll {
-    $templateName = "Active-Passive-SDN"
+    $templateName = "AzureGatewayLoadBalancer"
 
     # Resolve source path — works both in GitHub Actions and locally
     $sourcePath = if ($env:GITHUB_WORKSPACE) {
@@ -37,27 +33,14 @@ BeforeAll {
     $testsPrefix        = "FORTIQA"
     $testsAdminUsername = "azureuser"
 
-    # Resource names derived from template variable defaults
-    $fgtaVmName    = "$testsPrefix-fgt-a"
-    $fgtbVmName    = "$testsPrefix-fgt-b"
-    $publicIP2Name = "$testsPrefix-fgt-a-mgmt-pip"
-    $publicIP3Name = "$testsPrefix-fgt-b-mgmt-pip"
+    $testsResourceGroupLocation = "westeurope"
+    $testsResourceGroupName     = "FORTIQA-$testsRandom-$templateName"
 
-    # Scenario-specific location and resource group
-    switch ($scenario) {
-        'x64' {
-            $testsResourceGroupLocation = "westeurope"
-            $testsResourceGroupName     = "FORTIQA-$testsRandom-$templateName-x64"
-        }
-        'x64_g2' {
-            $testsResourceGroupLocation = "francecentral"
-            $testsResourceGroupName     = "FORTIQA-$testsRandom-$templateName-x64_g2"
-        }
-        'arm64' {
-            $testsResourceGroupLocation = "francecentral"
-            $testsResourceGroupName     = "FORTIQA-$testsRandom-$templateName-arm64"
-        }
-    }
+    # Resource names derived from template variable defaults
+    $fgtaVmName    = "$testsPrefix-FGT-A"
+    $fgtbVmName    = "$testsPrefix-FGT-B"
+    $publicIP1Name = "$testsPrefix-FGT-A-PIP"
+    $publicIP2Name = "$testsPrefix-FGT-B-PIP"
 
     # FortiGate cloud-init: add a devops admin with the test SSH public key
     $config = ""
@@ -76,11 +59,6 @@ BeforeAll {
         fortiGateNamePrefix         = $testsPrefix
         fortiGateAdditionalCustomData = $config
     }
-
-    switch ($scenario) {
-        'x64_g2' { $params['fortiGateInstanceArchitecture'] = '_g2'    }
-        'arm64'  { $params['fortiGateInstanceArchitecture'] = '_arm64' }
-    }
 }
 
 AfterAll {
@@ -91,7 +69,7 @@ AfterAll {
     }
 }
 
-Describe "FGT Active-Passive SDN - $scenario" {
+Describe "FGT Azure Gateway Load Balancer" {
 
     Context 'Validation' {
 
@@ -117,17 +95,13 @@ Describe "FGT Active-Passive SDN - $scenario" {
         It 'Declares the expected Azure resource types' {
             $expectedResources = @(
                 'Microsoft.Resources/deployments',
+                'Microsoft.Storage/storageAccounts',
                 'Microsoft.Compute/availabilitySets',
                 'Microsoft.Network/virtualNetworks',
-                'Microsoft.Network/routeTables',
+                'Microsoft.Network/loadBalancers',
                 'Microsoft.Network/networkSecurityGroups',
                 'Microsoft.Network/publicIPAddresses',
                 'Microsoft.Network/publicIPAddresses',
-                'Microsoft.Network/publicIPAddresses',
-                'Microsoft.Network/networkInterfaces',
-                'Microsoft.Network/networkInterfaces',
-                'Microsoft.Network/networkInterfaces',
-                'Microsoft.Network/networkInterfaces',
                 'Microsoft.Network/networkInterfaces',
                 'Microsoft.Network/networkInterfaces',
                 'Microsoft.Network/networkInterfaces',
@@ -145,31 +119,23 @@ Describe "FGT Active-Passive SDN - $scenario" {
 
         It 'Contains the expected parameters' {
             $expectedTemplateParameters = @(
-                'acceleratedConnections',
-                'acceleratedConnectionsSku',
                 'acceleratedNetworking',
                 'adminPassword',
                 'adminUsername',
                 'availabilityOptions',
-                'customImageReference',
                 'fortiGateAdditionalCustomData',
-                'fortiGateImageVersion_arm64',
-                'fortiGateImageVersion_x64',
-                'fortiGateImageVersion_x64_g2',
-                'fortiGateInstanceArchitecture',
+                'fortiGateImageSKU',
+                'fortiGateImageVersion',
                 'fortiGateLicenseBYOLA',
                 'fortiGateLicenseBYOLB',
                 'fortiGateLicenseFortiFlexA',
                 'fortiGateLicenseFortiFlexB',
-                'fortiGateLicenseType',
                 'fortiGateNamePrefix',
                 'fortiManager',
                 'fortiManagerIP',
                 'fortiManagerSerial',
                 'fortinetTags',
-                'instanceType_arm64',
-                'instanceType_x64',
-                'instanceType_x64_g2',
+                'instanceType',
                 'location',
                 'publicIP1Name',
                 'publicIP1NewOrExisting',
@@ -177,9 +143,6 @@ Describe "FGT Active-Passive SDN - $scenario" {
                 'publicIP2Name',
                 'publicIP2NewOrExisting',
                 'publicIP2ResourceGroup',
-                'publicIP3Name',
-                'publicIP3NewOrExisting',
-                'publicIP3ResourceGroup',
                 'serialConsole',
                 'subnet1Name',
                 'subnet1Prefix',
@@ -187,15 +150,6 @@ Describe "FGT Active-Passive SDN - $scenario" {
                 'subnet2Name',
                 'subnet2Prefix',
                 'subnet2StartAddress',
-                'subnet3Name',
-                'subnet3Prefix',
-                'subnet3StartAddress',
-                'subnet4Name',
-                'subnet4Prefix',
-                'subnet4StartAddress',
-                'subnet5Name',
-                'subnet5Prefix',
-                'tagsByResource',
                 'vnetAddressPrefix',
                 'vnetName',
                 'vnetNewOrExisting',
@@ -211,7 +165,7 @@ Describe "FGT Active-Passive SDN - $scenario" {
         }
     }
 
-    Context "Deployment - $scenario" {
+    Context 'Deployment' {
 
         It 'ARM template validation passes' {
             New-AzResourceGroup -Name $testsResourceGroupName -Location $testsResourceGroupLocation
@@ -245,19 +199,19 @@ Describe "FGT Active-Passive SDN - $scenario" {
         }
     }
 
-    Context "Connectivity - $scenario" {
+    Context 'Connectivity' {
 
         BeforeAll {
             # Use deployment outputs for management public IPs
             $script:fgta = if ($script:deployment -and $script:deployment.Outputs['fortiGateAManagementPublicIP']) {
                 $script:deployment.Outputs['fortiGateAManagementPublicIP'].Value
             } else {
-                (Get-AzPublicIpAddress -Name $publicIP2Name -ResourceGroupName $testsResourceGroupName).IpAddress
+                (Get-AzPublicIpAddress -Name $publicIP1Name -ResourceGroupName $testsResourceGroupName).IpAddress
             }
             $script:fgtb = if ($script:deployment -and $script:deployment.Outputs['fortiGateBManagementPublicIP']) {
                 $script:deployment.Outputs['fortiGateBManagementPublicIP'].Value
             } else {
-                (Get-AzPublicIpAddress -Name $publicIP3Name -ResourceGroupName $testsResourceGroupName).IpAddress
+                (Get-AzPublicIpAddress -Name $publicIP2Name -ResourceGroupName $testsResourceGroupName).IpAddress
             }
             Write-Host "FortiGate-A management IP: $($script:fgta)"
             Write-Host "FortiGate-B management IP: $($script:fgtb)"
