@@ -48,7 +48,7 @@ jobs:
 
 
 #    - name: Azure Login via Az module
-#      uses: azure/login@v2
+#      uses: azure/login@v3
 #      with:
 #        creds: ${{secrets.AZURE_CREDENTIALS}}
 #        enable-AzPSSession: true
