@@ -49,6 +49,8 @@ Standard Custom Template Deployment:
 [![Deploy Azure Portal Button](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.svg?sanitize=true)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2F40net-cloud%2Ffortinet-azure-solutions%2Fmain%2FFortiGate%2FActive-Passive-ELB-ILB%2Fazuredeploy.json)
 [![Visualize](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/visualizebutton.svg?sanitize=true)](http://armviz.io/#/?load=https%3A%2F%2Fraw.githubusercontent.com%2F40net-cloud%2Ffortinet-azure-solutions$2Fmain%2FFortiGate%2FActive-Passive-ELB-ILB%2Fazuredeploy.json)
 
+As of March 2026, the Azure Marketplace offers were updated for FortiGate to leverage the latest marketplace features. In certain regions and deployment scenarios, legacy SKUs are still required; for those cases, use the artifacts in the `legacy/` folder. [To deploy with legacy SKUs, use the ARM templates in the legacy folder](legacy/).
+
 ### Azure CLI
 
 For Microsoft Azure there is a second option by using the Azure Cloud Shell. The Azure Cloud Shell is an in-browser CLI that contains all tools for deployment into Microsoft Azure. It is accessible via the Azure Portal or directly via [https://shell.azure.com/](https://shell.azure.com). You can copy and past the below one-liner to get start with your deployment.
@@ -79,10 +81,14 @@ The ARM template deploys different resources and it is required to have the acce
   - It must be 12 characters or longer
   - It needs to contain characters from at least 3 of the following groups: uppercase characters, lowercase characters, numbers, and special characters excluding '\' or '-'
 - The terms for the FortiGate PAYG or BYOL image in the Azure Marketplace needs to be accepted once before usage. This is done automatically during deployment via the Azure Portal. For the Azure CLI the commands below need to be run before the first deployment in a subscription.
-  - BYOL
-`az vm image terms accept --publisher fortinet --offer fortinet_fortigate-vm_v5 --plan fortinet_fg-vm`
+  - BYOL/FLEX
+`az vm image terms accept --publisher fortinet --offer fortinet_fortigate-vm --plan fortinet_fg-vm-byol-76`
   - PAYG
-`az vm image terms accept --publisher fortinet --offer fortinet_fortigate-vm_v5 --plan fortinet_fg-vm_payg_2023`
+`az vm image terms accept --publisher fortinet --offer fortinet_fortigate-vm --plan fortinet_fg-vm_payg-76`
+- Marketplace information:
+  - Publisher: fortinet
+  - Offer: fortinet_fortigate-vm
+  - SKU / plan: fortinet_fg-vm_byol_70, fortinet_fg-vm_payg_70, fortinet_fg-vm_byol_72, fortinet_fg-vm_payg_72, fortinet_fg-vm_byol_74, fortinet_fg-vm_payg_74, fortinet_fg-vm_byol_76, fortinet_fg-vm_payg_76
 
 ## Configuration
 
