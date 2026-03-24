@@ -1,6 +1,6 @@
 # FortiGate Next-Generation Firewall - Active/Passive SDN - Legacy
 
-As of March 2026, FortiGate SKUs were introduced in the Azure Marketplace that provide access to the latest marketplace features. In specific regions and deployment scenarios, legacy SKUs are still required; this directory contains those legacy artifacts. [For current SKU documentation and deployment instructions, see the parent directory](../).
+As of March 2026, new FortiGate SKUs were introduced in the Azure Marketplace that provide access to the latest marketplace features. In specific regions and deployment scenarios, legacy SKUs (e.g. GovCloud, private offers, ...) are still required; this directory contains those legacy artifacts. [For current SKU documentation and deployment instructions, see the parent directory](../).
 
 ## Deployment
 
