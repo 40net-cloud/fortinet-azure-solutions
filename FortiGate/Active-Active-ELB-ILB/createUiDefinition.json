@@ -392,7 +392,7 @@
               {
                 "name": "versionInfo",
                 "type": "Microsoft.Common.InfoBox",
-                "visible": "[and(contains(steps('instance').instancetype_x64.selection_x64, '_v6'),not(or(equals(steps('instance').instancetype_x64.fortiGateImageVersion_x64,'7.6.3'),equals(steps('instance').instancetype_x64.fortiGateImageVersion_x64,'7.6.4'),equals(steps('instance').instancetype_x64.fortiGateImageVersion_x64,'latest'))))]",
+                "visible": "[and(contains(steps('instance').instancetype_x64_g2.selection_x64_g2, '_v6'),not(or(equals(steps('instance').instancetype_x64_g2.fortiGateImageVersion_x64_g2,'7.6.6'),equals(steps('instance').instancetype_x64_g2.fortiGateImageVersion_x64_g2,'latest'))))]",
                 "options": {
                   "icon": "Error",
                   "text": "Dsv6 and Esv6 Instance families require a Gen2 VM Image, support for MANA network drivers and are incompatible with the selected FortiGate version, please select version 7.6.1 or higher",
