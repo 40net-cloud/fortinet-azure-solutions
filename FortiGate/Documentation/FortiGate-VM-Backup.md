@@ -1,7 +1,5 @@
 # FortiGate VM Backup and Restore in Azure
 
-[![[FGT] ARM - A-Single-VM](https://github.com/40net-cloud/fortinet-azure-solutions/actions/workflows/fgt-arm-a-single-vm.yml/badge.svg)](https://github.com/40net-cloud/fortinet-azure-solutions/actions/workflows/fgt-arm-a-single-vm.yml) 
-
 :wave: - [Introduction](#introduction) - [Backup FortiGate VM with Agentless Multi-Disk Crash-Consistent](#backup-fortigate-vm-with-agentless-multi-disk-crash-consistent) - [Backup FortiGate VM with Disks Snapshots](#backup-fortigate-vm-with-disks-snapshots) - :wave:
 
 # Introduction
@@ -28,7 +26,7 @@ You can also back up only the FortiGate configuration as described in [Fortinet 
 
 Azure Backup provides agentless VM backups using multi-disk crash-consistent restore points, available only with the Enhanced VM Backup Policy and supported in all Azure public regions. It supports Premium Storage–capable VM sizes (those with an “s” in the name, e.g., DSv2).
 Unsupported disks include Ultra Disks, Premium SSD v2, Ephemeral OS Disks, Shared Disks, and Write Accelerator–enabled disks.
-For details, see [Microsoft’s guide](https://docs.fortinet.com/document/fortigate/7.6.4/administration-guide/702257).
+For details, see [Microsoft’s guide](https://learn.microsoft.com/en-us/azure/backup/backup-azure-vms-agentless-multi-disk-crash-consistent-overview).
 
 ### Backup Procedure
 
