@@ -9,64 +9,137 @@ on:
     branches:
       - main
     paths:
-      - 'FortiWeb/Active-Active/**.json'
-      - 'FortiWeb/Active-Active/**.tests.ps1'
+      - 'FortiWeb/Active-Active/*.json'
+      - 'FortiWeb/Active-Active/test/*.ps1'
 
 jobs:
-  ARM_Active-Active:
-    name: '[FWB] ARM Template Active-Active'
+
+  # ── Job 1: ARM Template Toolkit validation (no Azure credentials needed) ────
+  ttk:
+    name: 'ARM TTK Validation'
     runs-on: ubuntu-latest
-    env:
-      ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
-      ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
-      ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
-      ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+    permissions:
+      contents: read
 
     steps:
-    - name: "Checkout"
+    - name: Checkout
       uses: actions/checkout@v6
 
-    - name: Test ARM Templates - path
-      id: armttktest
-      uses: aliencube/arm-ttk-actions@v0.3
+    - name: Get week (ARM TTK cache key)
+      id: week
+      run: echo "value=$(date +'%Y-%U')" >> $GITHUB_OUTPUT
+
+    - name: Cache ARM TTK
+      id: cache-armttk
+      uses: actions/cache@v5
       with:
-        path: ${{ env.ARMPath }}
+        path: arm-ttk
+        key: arm-ttk-${{ steps.week.outputs.value }}
 
-    - name: Test result - path
-      shell: bash
-      continue-on-error: true
+    - name: Cache Pester 4.10.1
+      id: cache-pester4
+      uses: actions/cache@v5
+      with:
+        path: ~/.local/share/powershell/Modules/Pester/4.10.1
+        key: pester-4.10.1
+
+    - name: Download and extract ARM TTK
+      if: steps.cache-armttk.outputs.cache-hit != 'true'
+      shell: pwsh
       run: |
-        echo "${{ toJSON(fromJSON(steps.armttktest.outputs.results)) }}"
+        Invoke-WebRequest -Uri "https://aka.ms/arm-ttk-latest" -OutFile arm-template-toolkit.zip
+        Expand-Archive -LiteralPath arm-template-toolkit.zip -DestinationPath arm-ttk
 
-    - name: Azure Login via Az module
+    - name: Install Pester 4.10.1
+      if: steps.cache-pester4.outputs.cache-hit != 'true'
+      shell: pwsh
+      run: |
+        Install-Module -Name Pester -RequiredVersion 4.10.1 -Force -Scope CurrentUser
+
+    - name: Validate ARM templates with ARM TTK
+      shell: pwsh
+      run: |
+        Import-Module -Name Pester -RequiredVersion 4.10.1 -Force
+        Import-Module ./arm-ttk/arm-ttk/arm-ttk.psd1
+        "Test-AzTemplate -TemplatePath ${{ env.ARMPath }} -Pester" | Out-File -FilePath ./armttk.ps1
+        Invoke-Pester -Script ./armttk.ps1 -EnableExit -OutputFormat NUnitXml -OutputFile ./test-armttk.xml
+
+    - name: Publish TTK results
+      uses: actions/upload-artifact@v6
+      with:
+        name: FWB-Active-Active-TTK-Results
+        path: ./test-armttk.xml
+      if: always()
+
+  # ── Job 2: Deploy and test ───────────────────────────────────────────────────
+  deploy:
+    name: 'Deploy and Test'
+    runs-on: ubuntu-latest
+    needs: ttk                 # skip costly deployments if template is structurally broken
+    permissions:
+      contents: read
+      id-token: write          # required for OIDC authentication with Azure
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v6
+
+    - name: Generate SSH key pair
+      run: |
+        mkdir -p /home/runner/.ssh/
+        chmod 700 /home/runner/.ssh/
+        ssh-keygen -t ed25519 -f /home/runner/.ssh/id_ed25519 -C "fortiweb_test@40net.cloud" -N ''
+        chmod 400 /home/runner/.ssh/id_ed25519*
+
+    - name: Azure Login
       uses: azure/login@v3
       with:
-        creds: ${{secrets.AZURE_CREDENTIALS}}
+        client-id: ${{ secrets.AZURE_CLIENT_ID }}
+        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
         enable-AzPSSession: true
 
-    - name: Run Pester tests (pwsh)
-      uses: azure/powershell@v2
-      with:
-        inlineScript: |
-          mkdir -p /home/runner/.ssh/
-          ssh-keygen -t rsa -b 4096 -f /home/runner/.ssh/id_rsa -C "fortigate_test@40net.cloud" -N ''
-          Write-host $PSVersionTable.PSVersion.Major $PSVersionTable.PSRemotingProtocolVersion.Minor
-          Set-PSRepository psgallery -InstallationPolicy trusted
-          Install-Module -Name Pester -RequiredVersion 5.0.4 -confirm:$false -Force
-          $container = New-PesterContainer -Path "${{ env.ARMPath }}" -Data @{sshkey = "/home/runner/.ssh/id_rsa"; sshkeypub = "/home/runner/.ssh/id_rsa.pub"}
-          $config = New-PesterConfiguration
-          $config.Run.Container = $container
-          $config.Run.Exit = $true
-          $config.Run.PassThru = $true
-          $config.TestResult.OutputFormat = "NUnitXML"
-          $config.TestResult.OutputPath = "Test-Pester.XML"
-          $config.Output.Verbosity = 'Detailed'
-          Invoke-Pester -Configuration $config
-        azPSVersion: "latest"
+    - name: Run Pester tests
+      shell: pwsh
+      run: |
+        if (-not (Get-Module -ListAvailable -Name Pester | Where-Object { $_.Version -ge [version]'5.7.1' })) {
+            Set-PSRepository psgallery -InstallationPolicy trusted
+            Install-Module -Name Pester -MinimumVersion 5.7.1 -Confirm:$false -Force -SkipPublisherCheck
+        }
+        Import-Module Pester -MinimumVersion 5.7.1 -Force
+        $container = New-PesterContainer -Path "${{ env.ARMPath }}test/" -Data @{
+            sshkey    = "/home/runner/.ssh/id_ed25519"
+            sshkeypub = "/home/runner/.ssh/id_ed25519.pub"
+        }
+        $config = New-PesterConfiguration
+        $config.Run.Container           = $container
+        $config.Run.Exit                = $true
+        $config.Run.PassThru            = $true
+        $config.TestResult.Enabled      = $true
+        $config.TestResult.OutputFormat = "NUnitXML"
+        $config.TestResult.OutputPath   = "test-custom.xml"
+        $config.Output.Verbosity        = 'Detailed'
+        Invoke-Pester -Configuration $config
 
-    - name: Post result to Teams
-      uses: freenet-actions/ms-teams-deploy-card@master #  or "./" if in a local set-up
-      if: always()
+    - name: Publish test results
+      uses: actions/upload-artifact@v6
       with:
-        github-token: ${{ github.token }}
-        webhook-uri: ${{ secrets.MS_TEAMS_WEBHOOK_URI }}
+        name: FWB-Active-Active-Test-Results
+        path: ./test-custom.xml
+      if: always()
+
+  # ── Job 3: Teams notification after all jobs complete ───────────────────────
+  notify:
+    name: 'Teams Notification'
+    runs-on: ubuntu-latest
+    needs: [ttk, deploy]
+    if: always()
+
+    steps:
+    - name: Microsoft Teams Notification
+      uses: skitionek/notify-microsoft-teams@v1
+      with:
+        webhook_url: ${{ secrets.MS_TEAMS_WEBHOOK_URI }}
+        needs: ${{ toJson(needs) }}
+        job: ${{ toJson(job) }}
+        steps: ${{ toJson(steps) }}
