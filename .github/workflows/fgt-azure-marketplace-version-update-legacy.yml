@@ -158,7 +158,7 @@ jobs:
         signoff: false
         branch: fgt-vm-update-version
         delete-branch: true
-        title: '[FGT] Azure Marketplace FGT Version update'
+        title: '[FGT] Azure Marketplace FGT Version update - legacy'
         body: |
           Update report
           - Updated FGT version in building blocks: "A-Single-VM", "Active-Active-ELB-ILB","Active-Passive-ELB-ILB","Active-Passive-SDN"
