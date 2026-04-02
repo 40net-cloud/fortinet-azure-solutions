@@ -20,7 +20,7 @@
         "visible": true,
         "options": {
           "icon": "Info",
-          "text": "FortiADC Deployment Type - Active/Passive with internal Load Balancer - Availability Set or Availability Zones",
+          "text": "FortiADC Deployment Type - Active/Passive with external Load Balancer - Availability Set or Availability Zones",
           "uri": "https://github.com/fortinet/azure-templates/tree/main/FortiADC/Active-Passive-ILB"
         }
       },
@@ -282,7 +282,7 @@
         "name": "networking",
         "label": "Networking",
         "subLabel": {
-          "preValidation": "Configure internal networking",
+          "preValidation": "Configure external networking",
           "postValidation": "Done"
         },
         "elements": [
@@ -334,9 +334,9 @@
                     }
                   },
                   "subnet2": {
-                    "label": "Internal subnet",
+                    "label": "external subnet",
                     "defaultValue": {
-                      "name": "InternalSubnet",
+                      "name": "externalSubnet",
                       "addressPrefixSize": "/26"
                     },
                     "constraints": {

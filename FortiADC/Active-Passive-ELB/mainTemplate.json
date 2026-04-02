@@ -188,28 +188,28 @@
     "imagePublisher": "fortinet",
     "imageOffer": "fortinet-fortiadc",
 
-    "availabilitySetName": "[concat(parameters('fortiADCNamePrefix'),'-AvailabilitySet')]",
+    "availabilitySetName": "[concat(parameters('fortiADCNamePrefix'),'-availabilityset')]",
     "availabilitySetId": {
       "id": "[resourceId('Microsoft.Compute/availabilitySets', variables('availabilitySetName'))]"
     },
 
-    "vnetName": "[if(equals(parameters('vnetName'),''),concat(parameters('fortiADCNamePrefix'),'-VNET'),parameters('vnetName'))]",
+    "vnetName": "[if(equals(parameters('vnetName'),''),concat(parameters('fortiADCNamePrefix'),'-vnet'),parameters('vnetName'))]",
     "subnet1Id": "[if(equals(parameters('vnetNewOrExisting'),'new'),resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet1Name')),resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet1Name')))]",
     "subnet2Id": "[if(equals(parameters('vnetNewOrExisting'),'new'),resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet2Name')),resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet2Name')))]",
 
-    "fadAVmName": "[concat(parameters('fortiADCNamePrefix'),'-FAD-A')]",
-    "fadBVmName": "[concat(parameters('fortiADCNamePrefix'),'-FAD-B')]",
+    "fadAVmName": "[concat(parameters('fortiADCNamePrefix'),'-fad-a')]",
+    "fadBVmName": "[concat(parameters('fortiADCNamePrefix'),'-fad-b')]",
 
-    "fadANic1Name": "[concat(variables('fadAVmName'),'-Nic1')]",
+    "fadANic1Name": "[concat(variables('fadAVmName'),'-nic1')]",
     "fadANic1Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('fadANic1Name'))]",
-    "fadANic2Name": "[concat(variables('fadAVmName'),'-Nic2')]",
+    "fadANic2Name": "[concat(variables('fadAVmName'),'-nic2')]",
     "fadANic2Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('fadANic2Name'))]",
-    "fadBNic1Name": "[concat(variables('fadBVmName'),'-Nic1')]",
+    "fadBNic1Name": "[concat(variables('fadBVmName'),'-nic1')]",
     "fadBNic1Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('fadBNic1Name'))]",
-    "fadBNic2Name": "[concat(variables('fadBVmName'),'-Nic2')]",
+    "fadBNic2Name": "[concat(variables('fadBVmName'),'-nic2')]",
     "fadBNic2Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('fadBNic2Name'))]",
 
-    "publicIP1Name": "[if(equals(parameters('publicIP1Name'),''),concat(parameters('fortiADCNamePrefix'),'-fgt-pip'),parameters('publicIP1Name'))]",
+    "publicIP1Name": "[if(equals(parameters('publicIP1Name'),''),concat(parameters('fortiADCNamePrefix'),'-fad-pip'),parameters('publicIP1Name'))]",
     "publicIP1Id": "[if(equals(parameters('publicIP1NewOrExisting'),'new'),resourceId('Microsoft.Network/publicIPAddresses',variables('publicIP1Name')),resourceId(parameters('publicIP1ResourceGroup'),'Microsoft.Network/publicIPAddresses',variables('publicIP1Name')))]",
 
     "NSGName": "[concat(parameters('fortiADCNamePrefix'),'-',uniqueString(resourceGroup().id),'-NSG')]",
@@ -235,11 +235,11 @@
     "sn2IPfadA2": "[concat(variables('sn2IPArray0'),'.',variables('sn2IPArray1'),'.',variables('sn2IPArray2'),'.',add(int(variables('sn2IPStartAddress')[3]),3))]",
     "sn2IPfadB2": "[concat(variables('sn2IPArray0'),'.',variables('sn2IPArray1'),'.',variables('sn2IPArray2'),'.',add(int(variables('sn2IPStartAddress')[3]),4))]",
 
-    "externalLBName": "[concat(parameters('fortiADCNamePrefix'),'-InternalLoadBalancer')]",
+    "externalLBName": "[concat(parameters('fortiADCNamePrefix'),'-externalLoadBalancer')]",
     "externalLBId": "[resourceId('Microsoft.Network/loadBalancers',variables('externalLBName'))]",
-    "externalLBFEName": "[concat(parameters('fortiADCNamePrefix'),'-ELB-',parameters('subnet1Name'),'-FrontEnd')]",
+    "externalLBFEName": "[concat(parameters('fortiADCNamePrefix'),'-elb-',parameters('subnet1Name'),'-FrontEnd')]",
     "externalLBFEId": "[resourceID('Microsoft.Network/loadBalancers/frontendIPConfigurations/',variables('externalLBName'),variables('externalLBFEName'))]",
-    "externalLBBEName": "[concat(parameters('fortiADCNamePrefix'),'-ILB-',parameters('subnet1Name'),'-BackEnd')]",
+    "externalLBBEName": "[concat(parameters('fortiADCNamePrefix'),'-elb-',parameters('subnet1Name'),'-BackEnd')]",
     "externalLBBEId": "[resourceID('Microsoft.Network/loadBalancers/backendAddressPools/',variables('externalLBName'),variables('externalLBBEName'))]",
     "externalLBProbeName": "heatlhProbeHttp",
     "externalLBProbeId": "[resourceId('Microsoft.Network/loadBalancers/probes/',variables('externalLBName'),variables('externalLBProbeName'))]",
