@@ -718,6 +718,8 @@
     "fastpathtag": {
       "fastpathenabled": "[if(and(equals(parameters('acceleratedNetworking'),'true'),parameters('acceleratedConnections')),'true','false')]"
     },
+    "LegacyNVA":{"LegacyVMNVA": "Use legacy MLX ConnectX NIC"},
+    "LegacyVMNVATag":"[if(equals(parameters('fortiGateInstanceArchitecture'),'x64'),variables('LegacyNVA'),json('{}'))]",
     "auxiliaryMode": "[if(and(equals(parameters('acceleratedNetworking'),'true'),parameters('acceleratedConnections')),'AcceleratedConnections','None')]",
     "auxiliarySku": "[if(and(equals(parameters('acceleratedNetworking'),'true'),parameters('acceleratedConnections')),parameters('acceleratedConnectionsSku'),'None')]"
   },
@@ -1169,7 +1171,7 @@
       "name": "[variables('fgaVmName')]",
       "apiVersion": "2025-04-01",
       "location": "[parameters('location')]",
-      "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Compute/virtualMachines'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Compute/virtualMachines']), parameters('fortinetTags')) ]",
+      "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Compute/virtualMachines'), union(variables('LegacyVMNVATag'),parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Compute/virtualMachines']), union(variables('LegacyVMNVATag'),parameters('fortinetTags'))) ]",
       "identity": {
         "type": "SystemAssigned"
       },
@@ -1246,7 +1248,7 @@
       "name": "[variables('fgbVmName')]",
       "apiVersion": "2025-04-01",
       "location": "[parameters('location')]",
-      "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Compute/virtualMachines'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Compute/virtualMachines']), parameters('fortinetTags')) ]",
+      "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Compute/virtualMachines'), union(variables('LegacyVMNVATag'),parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Compute/virtualMachines']), union(variables('LegacyVMNVATag'),parameters('fortinetTags'))) ]",
       "identity": {
         "type": "SystemAssigned"
       },

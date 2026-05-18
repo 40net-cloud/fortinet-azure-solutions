@@ -49,12 +49,12 @@
         "name": "fortiGateInstanceArchitecture",
         "type": "Microsoft.Common.OptionsGroup",
         "label": "FortiGate VM instance Architecture",
-        "defaultValue": "X64 - Intel / AMD based processors | Gen1 VM FortiGate 6.4 - 7.4",
+        "defaultValue": "X64 - Intel / AMD based processors | Gen1 VM FortiGate 7.0 - 7.4",
         "toolTip": "Select FortiGate VM instance Architecture",
         "constraints": {
           "allowedValues": [
             {
-              "label": "X64 - Intel / AMD based processors | Gen1 VM FortiGate 6.4 - 7.4",
+              "label": "X64 - Intel / AMD based processors | Gen1 VM FortiGate 7.0 - 7.4",
               "value": "x64"
             },
             {
@@ -62,7 +62,7 @@
               "value": "_g2"
             },
             {
-              "label": "ARM64 - ARM based processors",
+              "label": "ARM64 - ARM based processors | Gen2 VM FortiGate 7.2 - 7.6",
               "value": "_arm64"
             }
           ],
@@ -681,7 +681,7 @@
                 "name": "availabilityOptions",
                 "type": "Microsoft.Common.DropDown",
                 "label": "Availability Option",
-                "defaultValue": "[if(and(equals(basics('fortiGateInstanceArchitecture'),'x64_g2'),equals(steps('instance').instancetype_x64_g2.fortiGateImageSKU_x64_g2, 'fortinet_fg-vm_g2'), contains(steps('instance').instancetype_x64_g2.selection_x64_g2, 'v6')), 'Availability Set', 'Availability Zones')]",
+                "defaultValue": "[if(and(equals(basics('fortiGateInstanceArchitecture'),'_g2'),equals(basics('fortiGateImageSKU'),'fortinet_fg-vm_byol'), contains(steps('instance').instancetype_x64_g2.selection_x64_g2, 'v6')), 'Availability Set', 'Availability Zones')]",
                 "toolTip": "Deploy FortiGate VMs in an Availability Set or Availability Zones.",
                 "constraints": {
                   "required": false,
