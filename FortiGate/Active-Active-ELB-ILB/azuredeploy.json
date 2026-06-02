@@ -858,8 +858,8 @@
     "fastpathtag": {
       "fastpathenabled": "[if(and(equals(parameters('acceleratedNetworking'),'true'),parameters('acceleratedConnections')),'true','false')]"
     },
-    "LegacyNVA":{"LegacyVMNVA": "Use legacy MLX ConnectX NIC"},
-    "LegacyVMNVATag":"[if(equals(parameters('fortiGateInstanceArchitecture'),'x64'),variables('LegacyNVA'),json('{}'))]",
+    "LegacyNVA": { "LegacyVMNVA": "Use legacy MLX ConnectX NIC" },
+    "LegacyVMNVATag": "[if(equals(parameters('fortiGateInstanceArchitecture'),'x64'),variables('LegacyNVA'),json('{}'))]",
     "auxiliaryMode": "[if(and(equals(parameters('acceleratedNetworking'),'true'),parameters('acceleratedConnections')),'AcceleratedConnections','None')]",
     "auxiliarySku": "[if(and(equals(parameters('acceleratedNetworking'),'true'),parameters('acceleratedConnections')),parameters('acceleratedConnectionsSku'),'None')]"
   },
@@ -959,13 +959,15 @@
           {
             "name": "[parameters('subnet1Name')]",
             "properties": {
-              "addressPrefix": "[parameters('subnet1Prefix')]"
+              "addressPrefix": "[parameters('subnet1Prefix')]",
+              "defaultoutboundaccess": false
             }
           },
           {
             "name": "[parameters('subnet2Name')]",
             "properties": {
-              "addressPrefix": "[parameters('subnet2Prefix')]"
+              "addressPrefix": "[parameters('subnet2Prefix')]",
+              "defaultoutboundaccess": false
             }
           }
         ]
@@ -982,6 +984,7 @@
       ],
       "properties": {
         "addressPrefix": "[parameters('subnet1Prefix')]",
+        "defaultoutboundaccess": false,
         "natGateway": {
           "id": "[resourceId('Microsoft.Network/natGateways', variables('natGWName'))]"
         }
@@ -1170,6 +1173,7 @@
               "frontendPort": 80,
               "backendPort": 80,
               "enableFloatingIP": true,
+              "disableOutboundSnat": true,
               "idleTimeoutInMinutes": 5
             },
             "name": "ExternalLBRule-FE-http"
@@ -1189,6 +1193,7 @@
               "frontendPort": 10551,
               "backendPort": 10551,
               "enableFloatingIP": true,
+              "disableOutboundSnat": true,
               "idleTimeoutInMinutes": 5
             },
             "name": "ExternalLBRule-FE-udp10551"
@@ -1203,6 +1208,25 @@
               "probeThreshold": 2
             },
             "name": "lbprobe"
+          }
+        ],
+        "outboundRules": [
+          {
+            "name": "Outbound",
+            "properties": {
+              "allocatedOutboundPorts": "[div(63976, parameters('fortiGateCount'))]",
+              "protocol": "All",
+              "enableTcpReset": false,
+              "idleTimeoutInMinutes": 4,
+              "backendAddressPool": {
+                "id": "[variables('externalLBBEId')]"
+              },
+              "frontendIPConfigurations": [
+                {
+                  "id": "[variables('externalLBFEId')]"
+                }
+              ]
+            }
           }
         ]
       }
