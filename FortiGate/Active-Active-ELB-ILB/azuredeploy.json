@@ -1214,7 +1214,7 @@
           {
             "name": "Outbound",
             "properties": {
-              "allocatedOutboundPorts": "[div(63976, parameters('fortiGateCount'))]",
+              "allocatedOutboundPorts": "0",
               "protocol": "All",
               "enableTcpReset": false,
               "idleTimeoutInMinutes": 4,
