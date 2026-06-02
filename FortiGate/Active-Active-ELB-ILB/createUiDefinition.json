@@ -841,7 +841,7 @@
                 "name": "availabilityOptions",
                 "type": "Microsoft.Common.DropDown",
                 "label": "Availability Option",
-                "defaultValue": "[if(and(equals(basics('fortiGateInstanceArchitecture'),'_g2'),equals(basics('fortiGateImageSKU'),'fortinet_fg-vm_byol'), contains(steps('instance').instancetype_x64_g2.selection_x64_g2, 'v6')), 'Availability Set', 'Availability Zones')]",
+                "defaultValue": "Availability Zones",
                 "toolTip": "Deploy FortiGate VMs in an Availability Set or Availability Zones.",
                 "constraints": {
                   "required": false,
