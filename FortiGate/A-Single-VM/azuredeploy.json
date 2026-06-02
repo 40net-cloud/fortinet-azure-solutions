@@ -700,13 +700,15 @@
           {
             "name": "[parameters('subnet1Name')]",
             "properties": {
-              "addressPrefix": "[parameters('subnet1Prefix')]"
+              "addressPrefix": "[parameters('subnet1Prefix')]",
+              "defaultoutboundaccess": false
             }
           },
           {
             "name": "[parameters('subnet2Name')]",
             "properties": {
-              "addressPrefix": "[parameters('subnet2Prefix')]"
+              "addressPrefix": "[parameters('subnet2Prefix')]",
+              "defaultoutboundaccess": false
             }
           },
           {
@@ -714,7 +716,8 @@
             "properties": {
               "addressPrefix": "[parameters('subnet3Prefix')]",
               "routeTable": {
-                "id": "[variables('routeTableProtectedId')]"
+                "id": "[variables('routeTableProtectedId')]",
+                "defaultoutboundaccess": false
               }
             }
           }
