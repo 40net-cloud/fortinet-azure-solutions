@@ -142,7 +142,7 @@ jobs:
 
     steps:
     - name: Microsoft Teams Notification
-      uses: skitionek/notify-microsoft-teams@v1
+      uses: skitionek/notify-microsoft-teams@v1.1
       with:
         webhook_url: ${{ secrets.MS_TEAMS_WEBHOOK_URI }}
         needs: ${{ toJson(needs) }}
