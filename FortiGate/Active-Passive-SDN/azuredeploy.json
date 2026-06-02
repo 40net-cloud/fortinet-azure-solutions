@@ -772,31 +772,36 @@
           {
             "name": "[parameters('subnet1Name')]",
             "properties": {
-              "addressPrefix": "[parameters('subnet1Prefix')]"
+              "addressPrefix": "[parameters('subnet1Prefix')]",
+              "defaultoutboundaccess": false
             }
           },
           {
             "name": "[parameters('subnet2Name')]",
             "properties": {
-              "addressPrefix": "[parameters('subnet2Prefix')]"
+              "addressPrefix": "[parameters('subnet2Prefix')]",
+              "defaultoutboundaccess": false
             }
           },
           {
             "name": "[parameters('subnet3Name')]",
             "properties": {
-              "addressPrefix": "[parameters('subnet3Prefix')]"
+              "addressPrefix": "[parameters('subnet3Prefix')]",
+              "defaultoutboundaccess": false
             }
           },
           {
             "name": "[parameters('subnet4Name')]",
             "properties": {
-              "addressPrefix": "[parameters('subnet4Prefix')]"
+              "addressPrefix": "[parameters('subnet4Prefix')]",
+              "defaultoutboundaccess": false
             }
           },
           {
             "name": "[parameters('subnet5Name')]",
             "properties": {
               "addressPrefix": "[parameters('subnet5Prefix')]",
+              "defaultoutboundaccess": false,
               "routeTable": {
                 "id": "[variables('routeTableId')]"
               }
