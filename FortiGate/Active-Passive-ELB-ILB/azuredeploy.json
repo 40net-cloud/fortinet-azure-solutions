@@ -57,9 +57,12 @@
     },
     "fortiGateImageVersion_x64_g2": {
       "type": "string",
-      "defaultValue": "7.6.6",
+      "defaultValue": "8.0.0",
       "allowedValues": [
-        "7.6.6"
+        "8.0.0",
+        "7.6.7",
+        "7.6.6",
+        "7.4.12"
       ],
       "metadata": {
         "description": "Select the image version supporting Generation 2 VMs"
@@ -67,9 +70,12 @@
     },
     "fortiGateImageVersion_arm64": {
       "type": "string",
-      "defaultValue": "7.6.6",
+      "defaultValue": "8.0.0",
       "allowedValues": [
+        "8.0.0",
+        "7.6.7",
         "7.6.6",
+        "7.4.12",
         "7.4.11",
         "7.2.13"
       ],
@@ -236,6 +242,24 @@
         "description": "Virtual Machine size selection - must be an instance that supports atleast 4 NICs"
       }
     },
+    "VMSecurityType": {
+      "type": "string",
+      "allowedValues": [
+        "Standard",
+        "TrustedLaunch"
+      ],
+      "defaultValue": "Standard",
+      "metadata": {
+        "description": "Deploy FortiGate VM with Advanced boot security available only for Gen2 VMs"
+      }
+    },
+    "VMSecurityTPM": {
+      "type": "bool",
+      "defaultValue": false,
+      "metadata": {
+        "description": "Accelerated connections provides an enhanced bandwidth at an additional cost"
+      }
+    },    
     "availabilityOptions": {
       "type": "string",
       "allowedValues": [
@@ -728,8 +752,17 @@
     "fastpathtag": {
       "fastpathenabled": "[if(and(equals(parameters('acceleratedNetworking'),'true'),parameters('acceleratedConnections')),'true','false')]"
     },
-    "LegacyNVA": { "LegacyVMNVA": "Use legacy MLX ConnectX NIC" },
-    "LegacyVMNVATag": "[if(equals(parameters('fortiGateInstanceArchitecture'),'x64'),variables('LegacyNVA'),json('{}'))]",
+    "LegacyNVA":{"LegacyVMNVA": "Use legacy MLX ConnectX NIC"},
+    "LegacyVMNVATag":"[if(equals(parameters('fortiGateInstanceArchitecture'),'x64'),variables('LegacyNVA'),json('{}'))]",
+    "VM.securityProfile":{
+          "securityType": "[parameters('VMSecurityType')]"
+    },
+    "VM.uefiSettings":{    
+          "uefiSettings": {
+                    "secureBootEnabled": "[equals(parameters('VMSecurityType'),'TrustedLaunch')]",
+                    "vTpmEnabled": "[parameters('VMSecurityTPM')]"
+                  }
+    },    
     "auxiliaryMode": "[if(and(equals(parameters('acceleratedNetworking'),'true'),parameters('acceleratedConnections')),'AcceleratedConnections','None')]",
     "auxiliarySku": "[if(and(equals(parameters('acceleratedNetworking'),'true'),parameters('acceleratedConnections')),parameters('acceleratedConnectionsSku'),'None')]"
   },
@@ -1402,6 +1435,7 @@
           "adminPassword": "[parameters('adminPassword')]",
           "customData": "[variables('fgaCustomData')]"
         },
+        "securityProfile": "[if(equals(parameters('VMSecurityType'),'TrustedLaunch'),union(variables('VM.securityProfile'),variables('VM.uefiSettings')),variables('VM.securityProfile'),json('null'))]",        
         "storageProfile": {
           "imageReference": "[if(and(equals(parameters('fortiGateLicenseType'),'fortinet_fg-vm_byol'),not(equals(parameters('customImageReference'),''))), variables('imageReferenceCustomImage'), variables('imageReferenceMarketplace'))]",
           "diskControllerType": "[variables('diskControllerType')]",
@@ -1456,12 +1490,12 @@
       "name": "[variables('fgbVmName')]",
       "apiVersion": "2025-04-01",
       "location": "[parameters('location')]",
-      "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Compute/virtualMachines'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Network/networkInterfaces']), parameters('fortinetTags')) ]",
+      "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Compute/virtualMachines'), union(variables('LegacyVMNVATag'),parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Compute/virtualMachines']), union(variables('LegacyVMNVATag'),parameters('fortinetTags'))) ]",
       "identity": {
         "type": "SystemAssigned"
       },
       "zones": "[if(variables('useAZ'), variables('zone2'), json('null'))]",
-      "plan": "[if(and(or(equals(variables('fortiGateImageSKU'),'fortinet_fg-vm'),equals(variables('fortiGateImageSKU'),'fortinet_fg-vm_arm64')),not(equals(parameters('customImageReference'),''))), json('null'), variables('virtualMachinePlan'))]",
+      "plan": "[if(and(equals(parameters('fortiGateLicenseType'),'fortinet_fg-vm_byol'),not(equals(parameters('customImageReference'),''))), json('null'), variables('virtualMachinePlan'))]",
       "dependsOn": [
         "[variables('fgbNic1Id')]",
         "[variables('fgbNic2Id')]",
@@ -1479,8 +1513,9 @@
           "adminPassword": "[parameters('adminPassword')]",
           "customData": "[variables('fgbCustomData')]"
         },
+        "securityProfile": "[if(equals(parameters('VMSecurityType'),'TrustedLaunch'),union(variables('VM.securityProfile'),variables('VM.uefiSettings')),variables('VM.securityProfile'),json('null'))]",       
         "storageProfile": {
-          "imageReference": "[if(and(or(equals(variables('fortiGateImageSKU'),'fortinet_fg-vm'),equals(variables('fortiGateImageSKU'),'fortinet_fg-vm_arm64')),not(equals(parameters('customImageReference'),''))), variables('imageReferenceCustomImage'), variables('imageReferenceMarketplace'))]",
+          "imageReference": "[if(and(equals(parameters('fortiGateLicenseType'),'fortinet_fg-vm_byol'),not(equals(parameters('customImageReference'),''))), variables('imageReferenceCustomImage'), variables('imageReferenceMarketplace'))]",
           "diskControllerType": "[variables('diskControllerType')]",
           "osDisk": {
             "createOption": "FromImage"

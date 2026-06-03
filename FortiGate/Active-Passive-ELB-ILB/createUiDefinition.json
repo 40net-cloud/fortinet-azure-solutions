@@ -58,11 +58,11 @@
               "value": "x64"
             },
             {
-              "label": "X64 - Intel / AMD based processors | Gen2 VM FortiGate 7.6+",
+              "label": "X64 - Intel / AMD based processors | Gen2 VM FortiGate 7.4 - 8.0+",
               "value": "_g2"
             },
             {
-              "label": "ARM64 - ARM based processors | Gen2 VM FortiGate 7.2 - 7.6",
+              "label": "ARM64 - ARM based processors | Gen2 VM FortiGate 7.2 - 8.0",
               "value": "_arm64"
             }
           ],
@@ -320,16 +320,31 @@
                 "type": "Microsoft.Common.DropDown",
                 "label": "Fortigate Image Version",
                 "multiLine": true,
-                "defaultValue": "7.6.6",
+                "defaultValue": "8.0.0",
                 "toolTip": "Select the FortiGate image version",
                 "constraints": {
                   "required": false,
                   "allowedValues": [
                     {
+                      "label": "8.0.0",
+                      "value": "8.0.0",
+                      "description": "[concat('VM PlanID : ',basics('fortiGateImageSKU'),'_','80')]"
+                    },
+                    {
+                      "label": "7.6.7",
+                      "value": "7.6.7",
+                      "description": "[concat('VM PlanID : ',basics('fortiGateImageSKU'),'_','76')]"
+                    },
+                    {
                       "label": "7.6.6",
                       "value": "7.6.6",
                       "description": "[concat('VM PlanID : ',basics('fortiGateImageSKU'),'_','76')]"
-                    }
+                    },
+                    {
+                      "label": "7.4.12",
+                      "value": "7.4.12",
+                      "description": "[concat('VM PlanID : ',basics('fortiGateImageSKU'),'_','74')]"                      
+                    }    
                   ]
                 },
                 "visible": true
@@ -515,7 +530,7 @@
               {
                 "name": "versionInfo",
                 "type": "Microsoft.Common.InfoBox",
-                "visible": "[and(contains(steps('instance').instancetype_x64_g2.selection_x64_g2, '_v6'),not(or(equals(steps('instance').instancetype_x64_g2.fortiGateImageVersion_x64_g2,'7.6.6'),equals(steps('instance').instancetype_x64_g2.fortiGateImageVersion_x64_g2,'latest'))))]",
+                "visible": "[and(contains(steps('instance').instancetype_x64_g2.selection_x64_g2, '_v6'),not(or(equals(steps('instance').instancetype_x64_g2.fortiGateImageVersion_x64_g2,'7.6.6'),equals(steps('instance').instancetype_x64_g2.fortiGateImageVersion_x64_g2,'8.0.0'))))]",
                 "options": {
                   "icon": "Error",
                   "text": "Dsv6 and Esv6 Instance families require a Gen2 VM Image, support for MANA network drivers and are incompatible with the selected FortiGate version, please select version 7.6.1 or higher",
@@ -544,16 +559,31 @@
                 "type": "Microsoft.Common.DropDown",
                 "label": "FortiGate Image Version",
                 "multiLine": true,
-                "defaultValue": "7.6.6",
+                "defaultValue": "8.0.0",
                 "toolTip": "Select the FortiGate image version",
                 "constraints": {
                   "required": false,
                   "allowedValues": [
                     {
+                      "label": "8.0.0",
+                      "value": "8.0.0",
+                      "description": "[concat('VM PlanID : ',basics('fortiGateImageSKU'),'_','80')]"
+                    },
+                    {
+                      "label": "7.6.7",
+                      "value": "7.6.7",
+                      "description": "[concat('VM PlanID : ',basics('fortiGateImageSKU'),'_','76')]"
+                    },
+                    {
                       "label": "7.6.6",
                       "value": "7.6.6",
                       "description": "[concat('VM PlanID : ',basics('fortiGateImageSKU'),'_','76')]"
                     },
+                    {
+                      "label": "7.4.12",
+                      "value": "7.4.12",
+                      "description": "[concat('VM PlanID : ',basics('fortiGateImageSKU'),'_','74')]"                      
+                    },                    
                     {
                       "label": "7.4.11",
                       "value": "7.4.11",
@@ -659,6 +689,66 @@
               }
             ],
             "visible": "[equals(basics('fortiGateInstanceArchitecture'),'_arm64')]"
+          },
+          {
+            "name": "vmsecurity",
+            "type": "Microsoft.Common.Section",
+            "label": "Virtual Machine Security",
+            "elements": [
+              {
+                "name": "VMSecurityHeader",
+                "type": "Microsoft.Common.TextBlock",
+                "visible": true,
+                "options": {
+                  "text": "Deploy FortiGate VMs with enhanced Security on Generation 2 Virtual Machines.",
+                  "link": {
+                    "label": "Learn more about Trusted Launch",
+                    "uri": "https://learn.microsoft.com/en-us/azure/virtual-machines/trusted-launch"
+                  }
+                }
+              },
+              {
+                "name": "VMSecurityType",
+                "type": "Microsoft.Common.DropDown",
+                "label": "Virtual Machine Security Type",
+                "defaultValue": "Standard",
+                "multiLine": true,
+                "toolTip": "Trusted launch helps improve the security of Azure Generation 2 virtual machines. Only FortiOS 7.6.6 and above support Trusted Launch.",
+                "constraints": {
+                  "allowedValues": [
+                    {
+                      "label": "Standard",
+                      "description": "Basic level of security for Virtual Machines",
+                      "value": "Standard"
+                    },
+                    {
+                      "label": "Trusted Launch Virtual Machine",
+                      "description": "Protects against attacks on Gen 2 virtual machines with configurable features like secure boot and virtual Trusted Platform Module (vTPM).",
+                      "value": "TrustedLaunch"
+                    }
+                  ],
+                  "required": "[or(equals(basics('fortiGateInstanceArchitecture'),'_g2'),equals(basics('fortiGateInstanceArchitecture'),'_arm64'))]"
+                },
+                "visible": "[or(equals(steps('instance').instancetype_x64_g2.fortiGateImageVersion_x64_g2,'8.0.0'),equals(steps('instance').instancetype_x64_g2.fortiGateImageVersion_x64_g2,'7.4.12'),equals(steps('instance').instancetype_arm64.fortiGateImageVersion_arm64,'8.0.0'),equals(steps('instance').instancetype_arm64.fortiGateImageVersion_arm64,'7.4.12'))]"
+              },
+              {
+                "name": "VMSecurityTPM",
+                "type": "Microsoft.Common.CheckBox",
+                "label": "Enable vTPM",
+                "toolTip": "vTPM serves as a dedicated secure vault for keys and measurements. Check this box to enable vTPM",
+                "visible": "[equals(steps('instance').vmsecurity.VMSecurityType,'TrustedLaunch')]"
+              },
+              {
+                "name": "TrustedLaunch.version.warning",
+                "type": "Microsoft.Common.InfoBox",
+                "visible": "[not(or(equals(steps('instance').instancetype_x64_g2.fortiGateImageVersion_x64_g2,'8.0.0'),equals(steps('instance').instancetype_x64_g2.fortiGateImageVersion_x64_g2,'7.4.12'),equals(steps('instance').instancetype_arm64.fortiGateImageVersion_arm64,'8.0.0'),equals(steps('instance').instancetype_arm64.fortiGateImageVersion_arm64,'7.4.12')))]",
+                "options": {
+                  "icon": "Warning",
+                  "text": "Selected FortiOS version is not Trusted Launch compatible"
+                }
+              }
+            ],
+            "visible": "[or(equals(basics('fortiGateInstanceArchitecture'),'_g2'),equals(basics('fortiGateInstanceArchitecture'),'_arm64'))]"
           },
           {
             "name": "availabilityOptions",
@@ -1367,6 +1457,15 @@
                 "visible": true
               },
               {
+                "name": "TrustedLaunch.customvhd.warning",
+                "type": "Microsoft.Common.InfoBox",
+                "visible": "[and(equals(steps('instance').vmsecurity.VMSecurityType,'TrustedLaunch'),steps('advanced').customvhd.customvhdcheck)]",
+                "options": {
+                  "icon": "Warning",
+                  "text": "Trusted Launch is selected under 'Instance' configuration, custom vHD might not work as intended"
+                }
+              },              
+              {
                 "name": "customvhdinfo",
                 "type": "Microsoft.Common.InfoBox",
                 "options": {
@@ -1427,6 +1526,16 @@
         },
         "bladeTitle": "Post Deployment Info",
         "elements": [
+          {
+            "name": "TrustedLaunch.incompatible",
+            "type": "Microsoft.Common.InfoBox",
+            "visible": "[and(equals(steps('instance').vmsecurity.VMSecurityType,'TrustedLaunch'),equals(basics('fortiGateInstanceArchitecture'),'x64'))]", 
+            "options": {
+              "icon": "Error",
+              "text": "Selected FortiOS version does not support TrustedLaunch. Change 'Virtual Machine Security Type' under Instance > Virtual Machine Security",
+              "uri": "https://learn.microsoft.com/en-us/azure/virtual-machines/trusted-launch"
+            }
+          },          
           {
             "name": "step1",
             "type": "Microsoft.Common.TextBlock",
@@ -1504,6 +1613,8 @@
       "instanceType_x64": "[steps('instance').instancetype_x64.selection_x64]",
       "instanceType_x64_g2": "[steps('instance').instancetype_x64_g2.selection_x64_g2]",
       "instanceType_arm64": "[steps('instance').instancetype_arm64.selection_arm64]",
+      "VMSecurityType": "[if(or(equals(basics('fortiGateInstanceArchitecture'),'_g2'),equals(basics('fortiGateInstanceArchitecture'),'_arm64')),steps('instance').vmsecurity.VMSecurityType,'Standard')]",
+      "VMSecurityTPM": "[if(equals(steps('instance').vmsecurity.VMSecurityType,'TrustedLaunch'),steps('instance').vmsecurity.VMSecurityTPM,false)]",      
       "availabilityOptions": "[steps('instance').availabilityOptions.availabilityOptions]",
       "fortiGateLicenseBYOLA": "[steps('instance').fgtLicense.fgtAcontent]",
       "fortiGateLicenseBYOLB": "[steps('instance').fgtLicense.fgtBcontent]",
