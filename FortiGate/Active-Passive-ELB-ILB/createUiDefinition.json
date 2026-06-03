@@ -729,7 +729,7 @@
                   ],
                   "required": "[or(equals(basics('fortiGateInstanceArchitecture'),'_g2'),equals(basics('fortiGateInstanceArchitecture'),'_arm64'))]"
                 },
-                "visible": "[or(equals(steps('instance').instancetype_x64_g2.fortiGateImageVersion_x64_g2,'8.0.0'),equals(steps('instance').instancetype_x64_g2.fortiGateImageVersion_x64_g2,'7.4.12'),equals(steps('instance').instancetype_arm64.fortiGateImageVersion_arm64,'8.0.0'),equals(steps('instance').instancetype_arm64.fortiGateImageVersion_arm64,'7.4.12'))]"
+                "visible": "[or(equals(steps('instance').instancetype_x64_g2.fortiGateImageVersion_x64_g2,'8.0.0'),equals(steps('instance').instancetype_x64_g2.fortiGateImageVersion_x64_g2,'7.6.7'),equals(steps('instance').instancetype_x64_g2.fortiGateImageVersion_x64_g2,'7.4.12'),equals(steps('instance').instancetype_arm64.fortiGateImageVersion_arm64,'8.0.0'),equals(steps('instance').instancetype_arm64.fortiGateImageVersion_arm64,'7.4.12'))]"
               },
               {
                 "name": "VMSecurityTPM",
@@ -741,7 +741,7 @@
               {
                 "name": "TrustedLaunch.version.warning",
                 "type": "Microsoft.Common.InfoBox",
-                "visible": "[not(or(equals(steps('instance').instancetype_x64_g2.fortiGateImageVersion_x64_g2,'8.0.0'),equals(steps('instance').instancetype_x64_g2.fortiGateImageVersion_x64_g2,'7.4.12'),equals(steps('instance').instancetype_arm64.fortiGateImageVersion_arm64,'8.0.0'),equals(steps('instance').instancetype_arm64.fortiGateImageVersion_arm64,'7.4.12')))]",
+                "visible": "[not(or(equals(steps('instance').instancetype_x64_g2.fortiGateImageVersion_x64_g2,'8.0.0'),equals(steps('instance').instancetype_x64_g2.fortiGateImageVersion_x64_g2,'7.6.7'),equals(steps('instance').instancetype_x64_g2.fortiGateImageVersion_x64_g2,'7.4.12'),equals(steps('instance').instancetype_arm64.fortiGateImageVersion_arm64,'8.0.0'),equals(steps('instance').instancetype_arm64.fortiGateImageVersion_arm64,'7.4.12')))]",
                 "options": {
                   "icon": "Warning",
                   "text": "Selected FortiOS version is not Trusted Launch compatible"

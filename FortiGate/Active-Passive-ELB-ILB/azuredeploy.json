@@ -1435,7 +1435,7 @@
           "adminPassword": "[parameters('adminPassword')]",
           "customData": "[variables('fgaCustomData')]"
         },
-        "securityProfile": "[if(equals(parameters('VMSecurityType'),'TrustedLaunch'),union(variables('VM.securityProfile'),variables('VM.uefiSettings')),variables('VM.securityProfile'),json('null'))]",        
+        "securityProfile": "[if(equals(parameters('VMSecurityType'),'TrustedLaunch'),union(variables('VM.securityProfile'),variables('VM.uefiSettings')),json('null'))]",        
         "storageProfile": {
           "imageReference": "[if(and(equals(parameters('fortiGateLicenseType'),'fortinet_fg-vm_byol'),not(equals(parameters('customImageReference'),''))), variables('imageReferenceCustomImage'), variables('imageReferenceMarketplace'))]",
           "diskControllerType": "[variables('diskControllerType')]",
@@ -1513,7 +1513,7 @@
           "adminPassword": "[parameters('adminPassword')]",
           "customData": "[variables('fgbCustomData')]"
         },
-        "securityProfile": "[if(equals(parameters('VMSecurityType'),'TrustedLaunch'),union(variables('VM.securityProfile'),variables('VM.uefiSettings')),variables('VM.securityProfile'),json('null'))]",       
+        "securityProfile": "[if(equals(parameters('VMSecurityType'),'TrustedLaunch'),union(variables('VM.securityProfile'),variables('VM.uefiSettings')),json('null'))]",        
         "storageProfile": {
           "imageReference": "[if(and(equals(parameters('fortiGateLicenseType'),'fortinet_fg-vm_byol'),not(equals(parameters('customImageReference'),''))), variables('imageReferenceCustomImage'), variables('imageReferenceMarketplace'))]",
           "diskControllerType": "[variables('diskControllerType')]",
