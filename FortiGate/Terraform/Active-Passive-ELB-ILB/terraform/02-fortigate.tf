@@ -467,6 +467,7 @@ resource "azurerm_linux_virtual_machine" "fgtbvm" {
     fgt_license_file      = var.FGT_BYOL_LICENSE_FILE_B
     fgt_license_fortiflex = var.FGT_BYOL_FORTIFLEX_LICENSE_TOKEN_B
     fgt_username          = var.username
+    fgt_password          = var.password
     fgt_ssh_public_key    = var.FGT_SSH_PUBLIC_KEY_FILE
     fgt_config_ha         = var.FGT_CONFIG_HA
     fgt_external_ipaddr   = var.fgt_ipaddress_b["1"]
