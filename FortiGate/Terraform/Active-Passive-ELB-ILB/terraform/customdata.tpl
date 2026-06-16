@@ -91,6 +91,7 @@ config system ha
         next
     end
     set override disable
+    set password ${fgt_password}
     set priority ${fgt_ha_priority}
     set unicast-hb enable
     set unicast-hb-peerip ${fgt_ha_peerip}
