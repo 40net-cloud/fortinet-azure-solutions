@@ -81,7 +81,7 @@
           "allowedValues": [
             {
               "label": "Bring Your Own License or FortiFlex",
-              "value": "fortinet_fortinac"
+              "value": "fortinet-fortinac"
             }
           ]
         },
@@ -91,7 +91,7 @@
         "name": "imageVersion",
         "type": "Microsoft.Common.DropDown",
         "label": "FortiNAC Image Version",
-        "defaultValue": "7.4.3",
+        "defaultValue": "7.6.1",
         "toolTip": "Only 6.x has the A/P HA feature currently",
         "constraints": {
           "required": false,
