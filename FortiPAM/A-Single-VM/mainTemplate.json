@@ -17,88 +17,31 @@
     "namePrefix": {
       "type": "string",
       "metadata": {
-        "description": "Name for FortiAnalyzer virtual appliances (A & B will be appended to the end of each respectively)"
+        "description": "Name for FortiPAM virtual appliances (A & B will be appended to the end of each respectively)"
       }
     },
     "imageSku": {
       "type": "string",
-      "defaultValue": "fortinet-fortianalyzer",
+      "defaultValue": "fortinet-fpam",
       "allowedValues": [
-        "fortinet-fortianalyzer"
+        "fortinet-fpam"
       ],
       "metadata": {
-        "description": "Identifies the license model"
+        "description": "FortiPAM marketplace plan/sku"
       }
     },
     "imageVersion": {
       "type": "string",
-      "defaultValue": "7.4.6",
+      "defaultValue": "1.9.0",
       "allowedValues": [
         "latest",
-        "7.6.6",
-        "7.6.5",
-        "7.6.4",
-        "7.6.3",
-        "7.6.2",
-        "7.6.1",
-        "7.6.0",
-        "7.4.8",
-        "7.4.7",
-        "7.4.6",
-        "7.4.5",
-        "7.4.4",
-        "7.4.3",
-        "7.4.2",
-        "7.4.1",
-        "7.4.0",
-        "7.2.9",
-        "7.2.8",
-        "7.2.7",
-        "7.2.6",
-        "7.2.5",
-        "7.2.4",
-        "7.2.3",
-        "7.2.2",
-        "7.2.11",
-        "7.2.10",
-        "7.2.1",
-        "7.2.0",
-        "7.0.9",
-        "7.0.7",
-        "7.0.6",
-        "7.0.5",
-        "7.0.4",
-        "7.0.3",
-        "7.0.2",
-        "7.0.14",
-        "7.0.13",
-        "7.0.12",
-        "7.0.11",
-        "7.0.10",
-        "7.0.1",
-        "7.0.0",
-        "6.4.9",
-        "6.4.8",
-        "6.4.7",
-        "6.4.6",
-        "6.4.5",
-        "6.4.2",
-        "6.4.15",
-        "6.4.14",
-        "6.4.13",
-        "6.4.12",
-        "6.4.11",
-        "6.4.10",
-        "6.4.1",
-        "6.4.0",
-        "6.2.5",
-        "6.2.3",
-        "6.2.2",
-        "6.2.1",
-        "6.2.0"
+        "1.9.0",
+        "1.7.0",
+        "1.3.0",
+        "1.1.2"
       ],
       "metadata": {
-        "description": "FortiAnalyzer version"
+        "description": "FortiPAM version"
       }
     },
     "additionalCustomData": {
@@ -117,20 +60,6 @@
         "Standard_D4_v3",
         "Standard_D8_v3",
         "Standard_D16_v3",
-        "Standard_D4a_v4",
-        "Standard_D8a_v4",
-        "Standard_D16a_v4",
-        "Standard_D32a_v4",
-        "Standard_D48a_v4",
-        "Standard_D64a_v4",
-        "Standard_D96a_v4",
-        "Standard_D4as_v4",
-        "Standard_D8as_v4",
-        "Standard_D16as_v4",
-        "Standard_D32as_v4",
-        "Standard_D48as_v4",
-        "Standard_D64as_v4",
-        "Standard_D96as_v4",
         "Standard_D4_v5",
         "Standard_D8_v5",
         "Standard_D16_v5",
@@ -159,21 +88,21 @@
       ],
       "defaultValue": "None",
       "metadata": {
-        "description": "Deploy FortiAnalyzer VM in an Availability Set or Availability Zones. If Availability Zones deployment is selected but the location does not support Availability Zones an Availability Set will be deployed. If Availability Zones deployment is selected and Availability Zones are available in the location, FortiAnalyzer A will be placed in Zone 1, FortiAnalyzer B will be placed in Zone 2"
+        "description": "Deploy FortiPAM VM in an Availability Set or Availability Zones. If Availability Zones deployment is selected but the location does not support Availability Zones an Availability Set will be deployed. If Availability Zones deployment is selected and Availability Zones are available in the location, FortiPAM A will be placed in Zone 1, FortiPAM B will be placed in Zone 2"
       }
     },
     "existingAvailabilitySetName": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
-        "description": "Name of existing Availability Set in case you want to replace or add a FortiAnalyzer to an existing cluster."
+        "description": "Name of existing Availability Set in case you want to replace or add a FortiPAM to an existing cluster."
       }
     },
     "availabilityZoneNumber": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
-        "description": "Name of existing Availability Set in case you want to replace or add a FortiAnalyzer to an existing cluster."
+        "description": "Name of existing Availability Set in case you want to replace or add a FortiPAM to an existing cluster."
       }
     },
     "publicIPNewOrExisting": {
@@ -185,12 +114,12 @@
         "none"
       ],
       "metadata": {
-        "description": "Choose between an existing, new or no public IP for the FortiAnalyzer VM"
+        "description": "Choose between an existing, new or no public IP for the FortiPAM VM"
       }
     },
     "publicIPName": {
       "type": "string",
-      "defaultValue": "FAZPublicIP",
+      "defaultValue": "FPAMPublicIP",
       "metadata": {
         "description": "Name of Public IP address element"
       }
@@ -236,16 +165,16 @@
     },
     "subnet1Name": {
       "type": "string",
-      "defaultValue": "FortiAnalyzerSubnet",
+      "defaultValue": "FortiPAMSubnet",
       "metadata": {
-        "description": "FortiAnalyzer Subnet"
+        "description": "FortiPAM Subnet"
       }
     },
     "subnet1Prefix": {
       "type": "string",
       "defaultValue": "172.16.137.0/24",
       "metadata": {
-        "description": "FortiAnalyzer Subnet Prefix"
+        "description": "FortiPAM Subnet Prefix"
       }
     },
     "subnet1StartAddress": {
@@ -283,30 +212,16 @@
     },
     "dataDiskSize": {
       "type": "string",
-      "defaultValue": "1024",
+      "defaultValue": "128",
       "metadata": {
-        "description": "Size of the logfile data disk"
+        "description": "Size of each FortiPAM data disk (GB). FortiPAM uses two disks: log and video (min 10 GB each, recommended log:video ratio 1:3)."
       }
     },
     "dataDiskCount": {
       "type": "int",
-      "defaultValue": 1,
+      "defaultValue": 2,
       "metadata": {
-        "description": "Number of data disk"
-      }
-    },
-    "fortiAnalyzerLicenseBYOL": {
-      "type": "string",
-      "defaultValue": "",
-      "metadata": {
-        "description": "FortiAnalyzer BYOL license content"
-      }
-    },
-    "fortiAnalyzerLicenseFortiFlex": {
-      "type": "string",
-      "defaultValue": "",
-      "metadata": {
-        "description": "FortiAnalyzer BYOL FortiFlex license token"
+        "description": "Number of data disks (FortiPAM uses 2: log + video)"
       }
     },
     "location": {
@@ -320,14 +235,14 @@
       "type": "object",
       "defaultValue": {
         "publisher": "Fortinet",
-        "template": "FortiAnalyzer",
-        "provider": "6EB3B02F-50E5-4A3E-8CB8-2E1292583FAZ"
+        "template": "FortiPAM",
+        "provider": "6EB3B02F-50E5-4A3E-8CB8-2E1292583TODO"
       }
     }
   },
   "variables": {
     "imagePublisher": "fortinet",
-    "imageOffer": "fortinet-fortianalyzer",
+    "imageOffer": "fortinet-fortipam",
     "availabilitySetName": "[if(equals(parameters('existingAvailabilitySetName'),''),concat(parameters('namePrefix'),'-availabilityset'),parameters('existingAvailabilitySetName'))]",
     "availabilitySetId": {
       "id": "[resourceId('Microsoft.Compute/availabilitySets', variables('availabilitySetName'))]"
@@ -338,17 +253,11 @@
     "zone1": "[if(equals(parameters('availabilityZoneNumber'),''),pickZones('Microsoft.Compute', 'virtualMachines', parameters('location')),array(parameters('availabilityZoneNumber')))]",
     "vnetName": "[if(equals(parameters('vnetName'),''),concat(parameters('namePrefix'),'-vnet'),parameters('vnetName'))]",
     "subnet1Id": "[if(equals(parameters('vnetNewOrExisting'),'new'),resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'), parameters('subnet1Name')),resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet1Name')))]",
-    "fazVmName": "[concat(parameters('namePrefix'),'-faz-a')]",
-    "customDataHeader": "Content-Type: multipart/mixed; boundary=\"12345\"\nMIME-Version: 1.0\n\n--12345\nContent-Type: text/plain; charset=\"us-ascii\"\nMIME-Version: 1.0\nContent-Transfer-Encoding: 7bit\nContent-Disposition: attachment; filename=\"config\"\n\n",
-    "customDataBody": "[concat('config system global\n set hostname ',  variables('fazVmName'), '\n end', parameters('additionalCustomData'), variables('customDataFortiFlex'), '\n')]",
-    "customDataLicenseHeader": "--12345\nContent-Type: text/plain; charset=\"us-ascii\"\nMIME-Version: 1.0\nContent-Transfer-Encoding: 7bit\nContent-Disposition: attachment; filename=\"fgtlicense\"\n\n",
-    "customDataFooter": "\n--12345--\n",
-    "customDataFortiFlex": "[if(equals(parameters('fortiAnalyzerLicenseFortiFlex'),''),'',concat('exec vm-license ',parameters('fortiAnalyzerLicenseFortiFlex'), '\n'))]",
-    "customDataCombined": "[concat(variables('customDataHeader'),variables('customDataBody'),variables('customDataFortiFlex'), variables('customDataLicenseHeader'), parameters('fortiAnalyzerLicenseBYOL'), variables('customDataFooter'))]",
-    "fazCustomData": "[base64(if(equals(parameters('fortiAnalyzerLicenseBYOL'),''),variables('customDataBody'),variables('customDataCombined')))]",
-    "fazNic1Name": "[concat(variables('fazVmName'),'-nic1')]",
-    "fazNic1Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('fazNic1Name'))]",
-    "publicIPName": "[if(equals(parameters('publicIPName'),''),concat(parameters('namePrefix'),'-faz-pip'),parameters('publicIPName'))]",
+    "fpamVmName": "[concat(parameters('namePrefix'),'-fpam-a')]",
+    "fpamCustomData": "[base64(parameters('additionalCustomData'))]",
+    "fpamNic1Name": "[concat(variables('fpamVmName'),'-nic1')]",
+    "fpamNic1Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('fpamNic1Name'))]",
+    "publicIPName": "[if(equals(parameters('publicIPName'),''),concat(parameters('namePrefix'),'-fpam-pip'),parameters('publicIPName'))]",
     "publicIPId": "[if(equals(parameters('publicIPNewOrExisting'),'new'),resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPName')),if(equals(parameters('publicIPNewOrExisting'),'existing'),resourceId(parameters('publicIPResourceGroup'),'Microsoft.Network/publicIPAddresses',variables('publicIPName')),''))]",
     "publicIPAddressId": {
       "id": "[variables('publicIPId')]"
@@ -360,12 +269,12 @@
     "sn1IPArray1": "[string(int(variables('sn1IPArray')[1]))]",
     "sn1IPArray0": "[string(int(variables('sn1IPArray')[0]))]",
     "sn1IPStartAddress": "[split(parameters('subnet1StartAddress'),'.')]",
-    "sn1IPfaz": "[concat(variables('sn1IPArray0'),'.',variables('sn1IPArray1'),'.',variables('sn1IPArray2'),'.',int(variables('sn1IPStartAddress')[3]))]"
+    "sn1IPfpam": "[concat(variables('sn1IPArray0'),'.',variables('sn1IPArray1'),'.',variables('sn1IPArray2'),'.',int(variables('sn1IPStartAddress')[3]))]"
   },
   "resources": [
     {
       "apiVersion": "2022-09-01",
-      "name": "pid-21c3b606-4b14-4eca-ad0d-1d8537ebd14e-partnercenter",
+      "name": "pid-00000000-0000-0000-0000-000000000000-partnercenter",
       "type": "Microsoft.Resources/deployments",
       "properties": {
         "mode": "Incremental",
@@ -428,7 +337,7 @@
           {
             "name": "AllowSSHInbound",
             "properties": {
-              "description": "Allow SSH In",
+              "description": "Allow SSH (CLI) In",
               "protocol": "Tcp",
               "sourcePortRange": "*",
               "destinationPortRange": "22",
@@ -440,23 +349,9 @@
             }
           },
           {
-            "name": "AllowHTTPInbound",
-            "properties": {
-              "description": "Allow 80 In",
-              "protocol": "Tcp",
-              "sourcePortRange": "*",
-              "destinationPortRange": "80",
-              "sourceAddressPrefix": "*",
-              "destinationAddressPrefix": "*",
-              "access": "Allow",
-              "priority": 110,
-              "direction": "Inbound"
-            }
-          },
-          {
             "name": "AllowHTTPSInbound",
             "properties": {
-              "description": "Allow 443 In",
+              "description": "Allow 443 (GUI) In",
               "protocol": "Tcp",
               "sourcePortRange": "*",
               "destinationPortRange": "443",
@@ -464,20 +359,6 @@
               "destinationAddressPrefix": "*",
               "access": "Allow",
               "priority": 120,
-              "direction": "Inbound"
-            }
-          },
-          {
-            "name": "AllowDevRegInbound",
-            "properties": {
-              "description": "Allow 514 in for device registration",
-              "protocol": "Tcp",
-              "sourcePortRange": "*",
-              "destinationPortRange": "514",
-              "sourceAddressPrefix": "*",
-              "destinationAddressPrefix": "*",
-              "access": "Allow",
-              "priority": 130,
               "direction": "Inbound"
             }
           },
@@ -524,7 +405,7 @@
         "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
       "type": "Microsoft.Network/networkInterfaces",
-      "name": "[variables('fazNic1Name')]",
+      "name": "[variables('fpamNic1Name')]",
       "location": "[parameters('location')]",
       "dependsOn": [
         "[variables('vnetName')]",
@@ -535,7 +416,7 @@
           {
             "name": "ipconfig1",
             "properties": {
-              "privateIPAddress": "[variables('sn1IPfaz')]",
+              "privateIPAddress": "[variables('sn1IPfpam')]",
               "privateIPAllocationMethod": "Static",
               "publicIPAddress": "[if(not(equals(parameters('publicIPNewOrExisting'), 'none')), variables('publicIPAddressId') , json('null'))]",
               "subnet": {
@@ -551,7 +432,7 @@
     },
     {
       "type": "Microsoft.Compute/virtualMachines",
-      "name": "[variables('fazVmName')]",
+      "name": "[variables('fpamVmName')]",
       "apiVersion": "2023-03-01",
       "tags": {
         "provider": "[toUpper(parameters('fortinetTags').provider)]"
@@ -567,7 +448,7 @@
         "product": "[variables('imageOffer')]"
       },
       "dependsOn": [
-        "[variables('fazNic1Name')]"
+        "[variables('fpamNic1Name')]"
       ],
       "properties": {
         "hardwareProfile": {
@@ -575,10 +456,10 @@
         },
         "availabilitySet": "[if(variables('useAS'), variables('availabilitySetId'), json('null'))]",
         "osProfile": {
-          "computerName": "[variables('fazVmName')]",
+          "computerName": "[variables('fpamVmName')]",
           "adminUsername": "[parameters('adminUsername')]",
           "adminPassword": "[parameters('adminPassword')]",
-          "customData": "[variables('fazCustomData')]"
+          "customData": "[variables('fpamCustomData')]"
         },
         "storageProfile": {
           "imageReference": {
@@ -598,7 +479,7 @@
               "name": "dataDisks",
               "count": "[parameters('dataDiskCount')]",
               "input": {
-                "name": "[concat(variables('fazVmName'),'-DataDisk-',copyIndex('dataDisks'))]",
+                "name": "[concat(variables('fpamVmName'),'-DataDisk-',copyIndex('dataDisks'))]",
                 "diskSizeGB": "[parameters('dataDiskSize')]",
                 "lun": "[copyIndex('dataDisks')]",
                 "createOption": "Empty",
@@ -615,7 +496,7 @@
               "properties": {
                 "primary": true
               },
-              "id": "[variables('fazNic1Id')]"
+              "id": "[variables('fpamNic1Id')]"
             }
           ]
         },
