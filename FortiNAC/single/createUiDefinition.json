@@ -163,7 +163,7 @@
                 "imageReference": {
                   "publisher": "fortinet",
                   "offer": "fortinet_fortinac",
-                  "sku": "fortinet_fortinac"
+                  "sku": "fortinet-fortinac"
                 },
                 "count": 1,
                 "visible": true

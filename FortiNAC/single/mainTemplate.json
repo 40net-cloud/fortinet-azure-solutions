@@ -22,9 +22,9 @@
     },
     "imageSku": {
       "type": "string",
-      "defaultValue": "fortinet_fortinac",
+      "defaultValue": "fortinet-fortinac",
       "allowedValues": [
-        "fortinet_fortinac"
+        "fortinet-fortinac"
       ],
       "metadata": {
         "description": "BYOL license model"
