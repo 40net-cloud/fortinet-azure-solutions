@@ -1,4 +1,4 @@
-name: '[FAZ] Azure Marketplace version update'
+name: '[FNC] Azure Marketplace version update'
 
 on:
   workflow_dispatch:
