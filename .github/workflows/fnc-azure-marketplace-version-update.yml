@@ -16,49 +16,54 @@ jobs:
   ARM-FNC-Version-Update:
     name: Update FNC version list
     runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v6
+    permissions:
+      contents: read
+      id-token: write          # required for OIDC authentication with Azure
 
-    - name: Azure Login via Az module
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v6
+
+    - name: Azure Login
       uses: azure/login@v3
       with:
-        creds: ${{secrets.AZURE_CREDENTIALS}}
+        client-id: ${{ secrets.AZURE_CLIENT_ID }}
+        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
         enable-AzPSSession: true
 
     - name: Verify FNC published version, update templates when new version found
-      uses: azure/powershell@v2
-      with:
-        inlineScript: |
-          $buildingBlocks = @("single")
-          $marketplaceVersions = @()
-          $marketplaceVersionsUI = @()
+      shell: pwsh
+      run: |
+        $buildingBlocks = @("single")
+        $marketplaceVersions = @()
+        $marketplaceVersionsUI = @()
 
-          $marketplaceVersions = $(Get-AzVMImage -PublisherName "fortinet" -Location eastus -Offer "${env:PRODUCTOFFER}" -sku "${env:PRODUCTSKU}").Version
-          $marketplaceVersions += "latest"
-          [array]::Reverse($marketplaceVersions)
-          $marketplaceVersions | ConvertTo-Json | Out-File -Filepath "./fncversion.json"
-          $marketplaceVersions | ForEach-Object { $marketplaceVersionsUI += [pscustomobject]@{label=$_;value=$_} }
-          $marketplaceVersionsUI | ConvertTo-Json | Out-File -Filepath "./fncversionui.json"
+        $marketplaceVersions = $(Get-AzVMImage -PublisherName "fortinet" -Location eastus -Offer "${env:PRODUCTOFFER}" -sku "${env:PRODUCTSKU}").Version
+        $marketplaceVersions += "latest"
+        [array]::Reverse($marketplaceVersions)
+        $marketplaceVersions | ConvertTo-Json | Out-File -Filepath "./fncversion.json"
+        $marketplaceVersions | ForEach-Object { $marketplaceVersionsUI += [pscustomobject]@{label=$_;value=$_} }
+        $marketplaceVersionsUI | ConvertTo-Json | Out-File -Filepath "./fncversionui.json"
 
-          foreach ($buildingBlock in $buildingBlocks) {
-            Get-Content -Raw -Path "./${env:PRODUCT}/${buildingBlock}/mainTemplate.json" | jq --slurpfile content "./fncversion.json" '.parameters.imageVersion.allowedValues = $content[]' | Set-Content -Path "./${env:PRODUCT}/${buildingBlock}/mainTemplate.json"
-            $content = Get-Content "./${env:PRODUCT}/${buildingBlock}/mainTemplate.json" -Raw
-            if (-Not $content -match '(?<=\r\n)\z') {
-              "" | Out-File -Append "./${env:PRODUCT}/${buildingBlock}/mainTemplate.json"
-            }
-            Get-Content -Raw -Path "./${env:PRODUCT}/${buildingBlock}/createUiDefinition.json" | jq --slurpfile content "./fncversionui.json" '(.parameters.basics[] | select( .name == "imageVersion" ) | .constraints.allowedValues) |= $content[]' | Set-Content -Path "./${env:PRODUCT}/${buildingBlock}/createUiDefinition.json"
-            $content = Get-Content "./${env:PRODUCT}/${buildingBlock}/createUiDefinition.json" -Raw
-            if (-Not $content -match '(?<=\r\n)\z') {
-              "" | Out-File -Append "./${env:PRODUCT}/${buildingBlock}/createUiDefinition.json"
-            }
+        foreach ($buildingBlock in $buildingBlocks) {
+          Get-Content -Raw -Path "./${env:PRODUCT}/${buildingBlock}/mainTemplate.json" | jq --slurpfile content "./fncversion.json" '.parameters.imageVersion.allowedValues = $content[]' | Set-Content -Path "./${env:PRODUCT}/${buildingBlock}/mainTemplate.json"
+          $content = Get-Content "./${env:PRODUCT}/${buildingBlock}/mainTemplate.json" -Raw
+          if (-Not $content -match '(?<=\r\n)\z') {
+            "" | Out-File -Append "./${env:PRODUCT}/${buildingBlock}/mainTemplate.json"
           }
-          Remove-Item "./fncversion.json"
-          Remove-Item "./fncversionui.json"
-        azPSVersion: "latest"
+          Get-Content -Raw -Path "./${env:PRODUCT}/${buildingBlock}/createUiDefinition.json" | jq --slurpfile content "./fncversionui.json" '(.parameters.basics[] | select( .name == "imageVersion" ) | .constraints.allowedValues) |= $content[]' | Set-Content -Path "./${env:PRODUCT}/${buildingBlock}/createUiDefinition.json"
+          $content = Get-Content "./${env:PRODUCT}/${buildingBlock}/createUiDefinition.json" -Raw
+          if (-Not $content -match '(?<=\r\n)\z') {
+            "" | Out-File -Append "./${env:PRODUCT}/${buildingBlock}/createUiDefinition.json"
+          }
+        }
+        Remove-Item "./fncversion.json"
+        Remove-Item "./fncversionui.json"
 
     - name: Create Pull Request
       id: cpr
-      uses: peter-evans/create-pull-request@v4
+      uses: peter-evans/create-pull-request@v8
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
         commit-message: Update report
