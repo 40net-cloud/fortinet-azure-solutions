@@ -724,6 +724,7 @@
       "existingAvailabilitySetName": "[steps('instance').availabilityOptions.availabilitySetSelector.name]",
       "availabilityZoneNumber": "[steps('instance').availabilityOptions.availabilityZoneSelector]",
       "fortiNacLicenseBYOL": "[steps('instance').fnacLicense.fnaccontent]",
+      "fortiNacLicenseFortiFlex": "[steps('instance').fnacLicense.fnacfortiflex]",
       "publicIPNewOrExisting": "[steps('publicip').publicip.newOrExistingOrNone]",
       "publicIPName": "[steps('publicip').publicip.name]",
       "publicIPResourceGroup": "[steps('publicip').publicip.resourceGroup]",

@@ -214,6 +214,13 @@
         "description": "FortiNAC BYOL license content"
       }
     },
+    "FortiNACLicenseFortiFlex": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "FortiNAC FortiFlex license content"
+      }
+    },
     "customImageReference": {
       "type": "string",
       "defaultValue": "",
