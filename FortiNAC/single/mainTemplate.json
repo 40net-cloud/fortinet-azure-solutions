@@ -35,7 +35,12 @@
       "defaultValue": "7.6.1",
       "allowedValues": [
         "latest",
-        "7.6.1"
+        "7.6.5",
+        "7.6.4",
+        "7.6.3",
+        "7.6.2",
+        "7.6.1",
+        "7.6.0"
       ],
       "metadata": {
         "description": "FortiNAC version"
