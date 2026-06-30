@@ -1,23 +1,18 @@
 #Requires -Modules Pester
 <#
 .SYNOPSIS
-    Tests a specific ARM template
+    Tests the FortiPAM A-Single-VM ARM template
 .EXAMPLE
     Invoke-Pester
 .NOTES
-    This file has been created as an example of using Pester to evaluate ARM templates
+    Docs-faithful: no customData config injection, no SSH-key injection.
+    Verifies TTK-style structure + deploy + ports 22/443 + HTTPS reachable.
 #>
-
-param (
-  [string]$sshkey,
-  [string]$sshkeypub
-)
-$VerbosePreference = "Continue"
 
 BeforeAll {
   $templateName = "A-Single-VM"
-  $sourcePath = "$env:GITHUB_WORKSPACE\FortiWeb\$templateName"
-  $scriptPath = "$env:GITHUB_WORKSPACE\FortiWeb\$templateName\test"
+  $sourcePath = "$env:GITHUB_WORKSPACE\FortiPAM\$templateName"
+  $scriptPath = "$env:GITHUB_WORKSPACE\FortiPAM\$templateName\test"
   $templateFileName = "mainTemplate.json"
   $templateFileLocation = "$sourcePath\$templateFileName"
   $templateParameterFileName = "mainTemplate.parameters.json"
@@ -30,21 +25,22 @@ BeforeAll {
   $testsAdminUsername = "azureuser"
   $testsResourceGroupLocation = "westeurope"
 
-  # ARM Template Variables
-  $config = "config system console `n set output standard `n end `n config system admin `n edit devops `n set access-profil prof_admin `n set sshkey `""
-  $config += Get-Content $sshkeypub
-  $config += "`" `n set password $testsResourceGroupName `n next `n end"
-  $publicIPName = "$testsPrefix-fwb-pip"
-  $params = @{ 'adminUsername'     = $testsAdminUsername
-    'adminPassword'                = $testsResourceGroupName
-    'fortiWebNamePrefix'           = $testsPrefix
-    'fortiWebAdditionalCustomData' = $config
-    'publicIPName'                 = $publicIPName
+  # ARM Template Variables -- docs-faithful: no customData, no license injection.
+  $publicIPName = "$testsPrefix-fpam-pip"
+  $params = @{
+    'adminUsername'      = $testsAdminUsername
+    'adminPassword'      = $testsResourceGroupName
+    'namePrefix'         = $testsPrefix
+    'imageSku'           = 'fortinet-fpam'
+    'imageVersion'       = '1.9.0'
+    'instanceType'       = 'Standard_D4s_v5'
+    'publicIPName'       = $publicIPName
+    'dataDiskCount'      = 2
   }
-  $ports = @(8443, 22)
+  $ports = @(22, 443)
 }
 
-Describe 'FWB Single VM' {
+Describe 'FPAM Single VM' {
   Context 'Validation' {
     It 'Has a JSON template' {
       $templateFileLocation | Should -Exist
@@ -68,11 +64,11 @@ Describe 'FWB Single VM' {
     }
 
     It 'Creates the expected Azure resources' {
+      # FPAM = single NIC (one networkInterfaces entry), unlike the dual-NIC variant.
       $expectedResources = 'Microsoft.Resources/deployments',
       'Microsoft.Network/virtualNetworks',
       'Microsoft.Network/networkSecurityGroups',
       'Microsoft.Network/publicIPAddresses',
-      'Microsoft.Network/networkInterfaces',
       'Microsoft.Network/networkInterfaces',
       'Microsoft.Compute/virtualMachines'
       $templateResources = (get-content $templateFileLocation | ConvertFrom-Json -ErrorAction SilentlyContinue).Resources.type
@@ -82,34 +78,28 @@ Describe 'FWB Single VM' {
     }
 
     It 'Contains the expected parameters' {
-      $expectedTemplateParameters = 'acceleratedNetworking',
+      $expectedTemplateParameters = 'additionalCustomData',
       'adminPassword',
       'adminUsername',
       'availabilityOptions',
       'availabilityZoneNumber',
+      'dataDiskCount',
+      'dataDiskSize',
+      'diskType',
       'existingAvailabilitySetName',
       'fortinetTags',
-      'fortiWebAdditionalCustomData',
-      'fortiWebLicenseBYOL',
-      'fortiWebLicenseFortiFlex',
-      'fortiWebNamePrefix',
       'imageSku',
       'imageVersion',
       'instanceType',
       'location',
+      'namePrefix',
       'publicIPName',
-      'publicIPNewOrExistingOrNone',
+      'publicIPNewOrExisting',
       'publicIPResourceGroup',
-      'publicIPSku',
-      'publicIPType',
       'serialConsole',
       'subnet1Name',
       'subnet1Prefix',
       'subnet1StartAddress',
-      'subnet2Name',
-      'subnet2Prefix',
-      'subnet2StartAddress',
-      'tagsByResource',
       'vnetAddressPrefix',
       'vnetName',
       'vnetNewOrExisting',
@@ -146,29 +136,30 @@ Describe 'FWB Single VM' {
   Context 'Deployment test' {
 
     BeforeAll {
-      $fwb = (Get-AzPublicIpAddress -Name $publicIPName -ResourceGroupName $testsResourceGroupName).IpAddress
-      Write-Host ("FortiWeb public IP: " + $fwb)
-      $verify_commands = @'
-        get system status
-        show system interface
-        diag debug cloudinit show
-        exit
-'@
-      $OFS = "`n"
+      $fpam = (Get-AzPublicIpAddress -Name $publicIPName -ResourceGroupName $testsResourceGroupName).IpAddress
+      Write-Host ("FortiPAM public IP: " + $fpam)
     }
-    It "FWB: Ports listening" {
+
+    It "FPAM: Ports listening" {
       ForEach ( $port in $ports ) {
         Write-Host ("Check port: $port" )
-        $portListening = (Test-Connection -TargetName $fwb -TCPPort $port -TimeoutSeconds 100)
+        $portListening = (Test-Connection -TargetName $fpam -TCPPort $port -TimeoutSeconds 100)
         $portListening | Should -Be $true
       }
     }
-    It "FWB: Verify FortiWeb configuration" {
-      $result = $($verify_commands | ssh -tt -i $sshkey -o StrictHostKeyChecking=no devops@$fwb)
-      $LASTEXITCODE | Should -Be "0"
-      Write-Host ("FWB CLI info: " + $result) -Separator `n
-      $result | Should -Not -BeLike "*Command fail*"
-      $result | Should -Not -BeLike "*Timeout*"
+
+    It "FPAM: HTTPS GUI reachable" {
+      # Docs-faithful: FortiPAM license is uploaded post-deploy via SCP, so the
+      # GUI may show a license-upload page rather than a login screen. We assert
+      # only that HTTPS (443) returns an HTTP response, not a specific page body.
+      $resp = $null
+      try {
+        $resp = Invoke-WebRequest -Uri "https://$fpam/" -SkipCertificateCheck -TimeoutSec 100 -UseBasicParsing
+      } catch {
+        $resp = $_.Exception.Response
+      }
+      Write-Host ("HTTPS status: " + $resp.StatusCode)
+      $resp | Should -Not -Be $null
     }
   }
 
