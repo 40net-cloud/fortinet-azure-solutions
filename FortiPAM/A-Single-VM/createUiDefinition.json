@@ -17,9 +17,9 @@
       {
         "name": "adminUsername",
         "type": "Microsoft.Common.TextBox",
-        "label": "FortiAnalyzer administrative username",
+        "label": "FortiPAM administrative username",
         "defaultValue": "",
-        "toolTip": "Username for the FortiAnalyzer virtual appliance. Most not be root, administrator or admin",
+        "toolTip": "Username for the FortiPAM virtual appliance. Most not be root, administrator or admin",
         "constraints": {
           "required": true,
           "validations": [
@@ -43,7 +43,7 @@
         "name": "adminPassword",
         "type": "Microsoft.Common.PasswordBox",
         "label": {
-          "password": "FortiAnalyzer password",
+          "password": "FortiPAM password",
           "confirmPassword": "Confirm password"
         },
         "toolTip": "Password for the Virtual Machine",
@@ -60,7 +60,7 @@
       {
         "name": "namePrefix",
         "type": "Microsoft.Common.TextBox",
-        "label": "FortiAnalyzer Name Prefix",
+        "label": "FortiPAM Name Prefix",
         "defaultValue": "",
         "toolTip": "Naming prefix for all deployed resources",
         "constraints": {
@@ -73,15 +73,15 @@
       {
         "name": "imageSku",
         "type": "Microsoft.Common.DropDown",
-        "label": "FortiAnalyzer Image SKU",
-        "defaultValue": "Bring Your Own License",
+        "label": "FortiPAM Image SKU",
+        "defaultValue": "fortinet-fpam",
         "toolTip": "BYOL license model (where license is purchased separately)",
         "constraints": {
           "required": false,
           "allowedValues": [
             {
-              "label": "Bring Your Own License",
-              "value": "fortinet-fortianalyzer"
+              "label": "fortinet-fpam",
+              "value": "fortinet-fpam"
             }
           ]
         },
@@ -90,260 +90,17 @@
       {
         "name": "imageVersion",
         "type": "Microsoft.Common.DropDown",
-        "label": "FortiAnalyzer Image Version",
-        "defaultValue": "7.6.3",
-        "toolTip": "Only 6.x has the A/P HA feature currently",
+        "label": "FortiPAM Image Version",
+        "defaultValue": "1.9.0",
+        "toolTip": "FortiPAM image version (1.9.0 is newest)",
         "constraints": {
           "required": false,
           "allowedValues": [
-            {
-              "label": "latest",
-              "value": "latest"
-            },
-            {
-              "label": "7.6.6",
-              "value": "7.6.6"
-            },
-            {
-              "label": "7.6.5",
-              "value": "7.6.5"
-            },
-            {
-              "label": "7.6.4",
-              "value": "7.6.4"
-            },
-            {
-              "label": "7.6.3",
-              "value": "7.6.3"
-            },
-            {
-              "label": "7.6.2",
-              "value": "7.6.2"
-            },
-            {
-              "label": "7.6.1",
-              "value": "7.6.1"
-            },
-            {
-              "label": "7.6.0",
-              "value": "7.6.0"
-            },
-            {
-              "label": "7.4.8",
-              "value": "7.4.8"
-            },
-            {
-              "label": "7.4.7",
-              "value": "7.4.7"
-            },
-            {
-              "label": "7.4.6",
-              "value": "7.4.6"
-            },
-            {
-              "label": "7.4.5",
-              "value": "7.4.5"
-            },
-            {
-              "label": "7.4.4",
-              "value": "7.4.4"
-            },
-            {
-              "label": "7.4.3",
-              "value": "7.4.3"
-            },
-            {
-              "label": "7.4.2",
-              "value": "7.4.2"
-            },
-            {
-              "label": "7.4.1",
-              "value": "7.4.1"
-            },
-            {
-              "label": "7.4.0",
-              "value": "7.4.0"
-            },
-            {
-              "label": "7.2.9",
-              "value": "7.2.9"
-            },
-            {
-              "label": "7.2.8",
-              "value": "7.2.8"
-            },
-            {
-              "label": "7.2.7",
-              "value": "7.2.7"
-            },
-            {
-              "label": "7.2.6",
-              "value": "7.2.6"
-            },
-            {
-              "label": "7.2.5",
-              "value": "7.2.5"
-            },
-            {
-              "label": "7.2.4",
-              "value": "7.2.4"
-            },
-            {
-              "label": "7.2.3",
-              "value": "7.2.3"
-            },
-            {
-              "label": "7.2.2",
-              "value": "7.2.2"
-            },
-            {
-              "label": "7.2.11",
-              "value": "7.2.11"
-            },
-            {
-              "label": "7.2.10",
-              "value": "7.2.10"
-            },
-            {
-              "label": "7.2.1",
-              "value": "7.2.1"
-            },
-            {
-              "label": "7.2.0",
-              "value": "7.2.0"
-            },
-            {
-              "label": "7.0.9",
-              "value": "7.0.9"
-            },
-            {
-              "label": "7.0.7",
-              "value": "7.0.7"
-            },
-            {
-              "label": "7.0.6",
-              "value": "7.0.6"
-            },
-            {
-              "label": "7.0.5",
-              "value": "7.0.5"
-            },
-            {
-              "label": "7.0.4",
-              "value": "7.0.4"
-            },
-            {
-              "label": "7.0.3",
-              "value": "7.0.3"
-            },
-            {
-              "label": "7.0.2",
-              "value": "7.0.2"
-            },
-            {
-              "label": "7.0.14",
-              "value": "7.0.14"
-            },
-            {
-              "label": "7.0.13",
-              "value": "7.0.13"
-            },
-            {
-              "label": "7.0.12",
-              "value": "7.0.12"
-            },
-            {
-              "label": "7.0.11",
-              "value": "7.0.11"
-            },
-            {
-              "label": "7.0.10",
-              "value": "7.0.10"
-            },
-            {
-              "label": "7.0.1",
-              "value": "7.0.1"
-            },
-            {
-              "label": "7.0.0",
-              "value": "7.0.0"
-            },
-            {
-              "label": "6.4.9",
-              "value": "6.4.9"
-            },
-            {
-              "label": "6.4.8",
-              "value": "6.4.8"
-            },
-            {
-              "label": "6.4.7",
-              "value": "6.4.7"
-            },
-            {
-              "label": "6.4.6",
-              "value": "6.4.6"
-            },
-            {
-              "label": "6.4.5",
-              "value": "6.4.5"
-            },
-            {
-              "label": "6.4.2",
-              "value": "6.4.2"
-            },
-            {
-              "label": "6.4.15",
-              "value": "6.4.15"
-            },
-            {
-              "label": "6.4.14",
-              "value": "6.4.14"
-            },
-            {
-              "label": "6.4.13",
-              "value": "6.4.13"
-            },
-            {
-              "label": "6.4.12",
-              "value": "6.4.12"
-            },
-            {
-              "label": "6.4.11",
-              "value": "6.4.11"
-            },
-            {
-              "label": "6.4.10",
-              "value": "6.4.10"
-            },
-            {
-              "label": "6.4.1",
-              "value": "6.4.1"
-            },
-            {
-              "label": "6.4.0",
-              "value": "6.4.0"
-            },
-            {
-              "label": "6.2.5",
-              "value": "6.2.5"
-            },
-            {
-              "label": "6.2.3",
-              "value": "6.2.3"
-            },
-            {
-              "label": "6.2.2",
-              "value": "6.2.2"
-            },
-            {
-              "label": "6.2.1",
-              "value": "6.2.1"
-            },
-            {
-              "label": "6.2.0",
-              "value": "6.2.0"
-            }
+            { "label": "latest", "value": "latest" },
+            { "label": "1.9.0", "value": "1.9.0" },
+            { "label": "1.7.0", "value": "1.7.0" },
+            { "label": "1.3.0", "value": "1.3.0" },
+            { "label": "1.1.2", "value": "1.1.2" }
           ]
         },
         "visible": true
@@ -368,10 +125,10 @@
                 "type": "Microsoft.Common.TextBlock",
                 "visible": true,
                 "options": {
-                  "text": "For this FortiAnalyzer deployment, it is recommended to use general purpose virtual machines. A selection of supported instances sizes is listed in our documentation.",
+                  "text": "For this FortiPAM deployment, it is recommended to use general purpose virtual machines. A selection of supported instances sizes is listed in our documentation.",
                   "link": {
                     "label": "Learn more",
-                    "uri": "https://docs.fortinet.com/document/fortianalyzer-public-cloud/7.2.0/azure-administration-guide/351055"
+                    "uri": "https://docs.fortinet.com/document/fortipam-public-cloud/1.9.0/azure-administration-guide"
                   }
                 }
               },
@@ -379,27 +136,13 @@
                 "name": "instancetypeselection",
                 "type": "Microsoft.Compute.SizeSelector",
                 "label": "Size",
-                "toolTip": "Select the instance size of your FortiAnalyzer VM solution. Minimum 4 NICs are required.",
+                "toolTip": "Select the instance size of your FortiPAM VM solution. Minimum 4 NICs are required.",
                 "recommendedSizes": [
                   "Standard_DS4_v2",
                   "Standard_DS5_v2",
                   "Standard_D4_v3",
                   "Standard_D8_v3",
                   "Standard_D16_v3",
-                  "Standard_D4a_v4",
-                  "Standard_D8a_v4",
-                  "Standard_D16a_v4",
-                  "Standard_D32a_v4",
-                  "Standard_D48a_v4",
-                  "Standard_D64a_v4",
-                  "Standard_D96a_v4",
-                  "Standard_D4as_v4",
-                  "Standard_D8as_v4",
-                  "Standard_D16as_v4",
-                  "Standard_D32as_v4",
-                  "Standard_D48as_v4",
-                  "Standard_D64as_v4",
-                  "Standard_D96as_v4",
                   "Standard_D4_v5",
                   "Standard_D8_v5",
                   "Standard_D16_v5",
@@ -422,20 +165,6 @@
                     "Standard_D4_v3",
                     "Standard_D8_v3",
                     "Standard_D16_v3",
-                    "Standard_D4a_v4",
-                    "Standard_D8a_v4",
-                    "Standard_D16a_v4",
-                    "Standard_D32a_v4",
-                    "Standard_D48a_v4",
-                    "Standard_D64a_v4",
-                    "Standard_D96a_v4",
-                    "Standard_D4as_v4",
-                    "Standard_D8as_v4",
-                    "Standard_D16as_v4",
-                    "Standard_D32as_v4",
-                    "Standard_D48as_v4",
-                    "Standard_D64as_v4",
-                    "Standard_D96as_v4",
                     "Standard_D4_v5",
                     "Standard_D8_v5",
                     "Standard_D16_v5",
@@ -458,8 +187,8 @@
                 "osPlatform": "Linux",
                 "imageReference": {
                   "publisher": "fortinet",
-                  "offer": "fortinet-fortianalyzer",
-                  "sku": "fortinet-fortianalyzer"
+                  "offer": "fortinet-fortipam",
+                  "sku": "fortinet-fpam"
                 },
                 "count": 1,
                 "visible": true
@@ -475,8 +204,8 @@
                 "name": "vmDataDiskCount",
                 "type": "Microsoft.Common.TextBox",
                 "label": "Number of managed disks per data node",
-                "defaultValue": "1",
-                "toolTip": "Number of disks to attach to the FortiAnalyzer.",
+                "defaultValue": "2",
+                "toolTip": "Number of disks to attach to the FortiPAM.",
                 "constraints": {
                   "required": true,
                   "regex": "^([0-9]|1[0-5])$",
@@ -488,8 +217,8 @@
                 "type": "Microsoft.Common.DropDown",
                 "label": "Size of each managed disk",
                 "visible": "[greater(steps('instance').datadisk.vmDataDiskCount, 0)]",
-                "defaultValue": "1TiB",
-                "toolTip": "The size of each data disk to attach to the FortiAnalyzer",
+                "defaultValue": "128GiB",
+                "toolTip": "The size of each data disk to attach to the FortiPAM",
                 "constraints": {
                   "allowedValues": [
                     {
@@ -587,10 +316,10 @@
                 "type": "Microsoft.Common.TextBlock",
                 "visible": true,
                 "options": {
-                  "text": "Deploy FortiAnalyzer VMs in an availability set or availability zone.",
+                  "text": "Deploy FortiPAM VMs in an availability set or availability zone.",
                   "link": {
                     "label": "Learn more",
-                    "uri": "https://github.com/fortinet/azure-templates/tree/main/FortiGate#sla"
+                    "uri": "https://github.com/40net-cloud/fortinet-azure-solutions"
                   }
                 }
               },
@@ -599,7 +328,7 @@
                 "type": "Microsoft.Common.DropDown",
                 "label": "Availability Option",
                 "defaultValue": "No infrastructure redundancy required",
-                "toolTip": "Deploy FortiAnalyzer VMs in a new or existing availability set or or a specific availability zone.",
+                "toolTip": "Deploy FortiPAM VMs in a new or existing availability set or or a specific availability zone.",
                 "constraints": {
                   "required": false,
                   "allowedValues": [
@@ -623,14 +352,14 @@
                 "name": "availabilitySetNew",
                 "type": "Microsoft.Common.CheckBox",
                 "label": "Create a new availability set?",
-                "toolTip": "Check this box if you want to create a new availability set and add the FortiAnalyzer VM to it.",
+                "toolTip": "Check this box if you want to create a new availability set and add the FortiPAM VM to it.",
                 "visible": "[equals(steps('instance').availabilityOptions.availabilityOptions,'Availability set')]"
               },
               {
                 "name": "availabilitySetSelector",
                 "type": "Microsoft.Solutions.ResourceSelector",
-                "label": "Select the availability set for your FortiAnalyzer",
-                "toolTip": "Select your existing availability set you want to add this FortiAnalyzer VM to",
+                "label": "Select the availability set for your FortiPAM",
+                "toolTip": "Select your existing availability set you want to add this FortiPAM VM to",
                 "resourceType": "Microsoft.Compute/availabilitySets",
                 "options": {
                   "filter": {
@@ -645,15 +374,15 @@
                 "type": "Microsoft.Common.InfoBox",
                 "options": {
                   "icon": "Info",
-                  "text": "The FortiAnalyzer VM and availability set are required to exist in the same resource group."
+                  "text": "The FortiPAM VM and availability set are required to exist in the same resource group."
                 },
                 "visible": "[and(not(steps('instance').availabilityOptions.availabilitySetNew),equals(steps('instance').availabilityOptions.availabilityOptions,'Availability set'))]"
               },
               {
                 "name": "availabilityZoneSelector",
                 "type": "Microsoft.Common.DropDown",
-                "label": "Select the availability zone for your FortiAnalyzer VM",
-                "toolTip": "Select the availability zone for your FortiAnalyzer VM",
+                "label": "Select the availability zone for your FortiPAM VM",
+                "toolTip": "Select the availability zone for your FortiPAM VM",
                 "defaultValue": "Zone 2",
                 "constraints": {
                   "allowedValues": [
@@ -679,61 +408,9 @@
                 "visible": true,
                 "options": {
                   "icon": "Info",
-                  "text": "If availability zone deployment is selected but the location does not support availability zone an availability set will be deployed. If availability zone deployment is selected and availability zone are available in the location, FortiAnalyzer A will be placed in Zone 1, FortiAnalyzer B will be placed in Zone 2",
+                  "text": "If availability zone deployment is selected but the location does not support availability zone an availability set will be deployed. If availability zone deployment is selected and availability zone are available in the location, FortiPAM A will be placed in Zone 1, FortiPAM B will be placed in Zone 2",
                   "uri": "https://docs.microsoft.com/en-us/azure/availability-zones/az-overview"
                 }
-              }
-            ]
-          },
-          {
-            "name": "fazLicense",
-            "type": "Microsoft.Common.Section",
-            "label": "FortiAnalyzer License",
-            "elements": [
-              {
-                "name": "fazLicenseBYOLInfo",
-                "type": "Microsoft.Common.TextBlock",
-                "visible": true,
-                "options": {
-                  "text": "The Bring Your Own license file(s), retrieved from support.fortinet.com, can be uploaded here or uploaded after deployment."
-                }
-              },
-              {
-                "name": "fazLicenseFortiFlexCheck",
-                "type": "Microsoft.Common.CheckBox",
-                "label": "My organisation is using the FortiFlex subscription service.",
-                "toolTip": "Select this box to enter a FortiFlex token",
-                "visible": true
-              },
-              {
-                "name": "fazcontent",
-                "type": "Microsoft.Common.FileUpload",
-                "label": "FortiAnalyzer License",
-                "toolTip": "Upload the license file for the FortiAnalyzer BYOL here.",
-                "constraints": {
-                  "required": false,
-                  "accept": ".lic,.txt"
-                },
-                "options": {
-                  "multiple": false,
-                  "uploadMode": "file",
-                  "openMode": "text",
-                  "encoding": "UTF-8"
-                },
-                "visible": "[not(steps('instance').fazLicense.fazLicenseFortiFlexCheck)]"
-              },
-              {
-                "name": "fazfortiflex",
-                "type": "Microsoft.Common.TextBox",
-                "label": "FortiAnalyzer FortiFlex",
-                "defaultValue": "",
-                "toolTip": "FortiAnalyzer FortiFlex license token",
-                "constraints": {
-                  "required": false,
-                  "regex": "^[A-Za-z0-9-]{1,64}$",
-                  "validationMessage": "Only alphanumeric characters and a dash are allowed, and the value must be 1 to 64 characters."
-                },
-                "visible": "[steps('instance').fazLicense.fazLicenseFortiFlexCheck]"
               }
             ]
           },
@@ -743,11 +420,11 @@
             "label": "Virtual Machine Name",
             "elements": [
               {
-                "name": "fazvmname",
+                "name": "fpamvmname",
                 "type": "Microsoft.Common.TextBox",
-                "label": "Name of the FortiAnalyzer VM",
-                "defaultValue": "[if(equals(basics('fortiAnalyzerNamePrefix'),''),'FortiAnalyzer-VM',concat(basics('fortiAnalyzerNamePrefix'),'-FGT'))]",
-                "toolTip": "Provide the name of the FortiAnalyzer VM. This is not required as a field.",
+                "label": "Name of the FortiPAM VM",
+                "defaultValue": "[if(equals(basics('namePrefix'),''),'FortiPAM-VM',concat(basics('namePrefix'),'-fpam'))]",
+                "toolTip": "Provide the name of the FortiPAM VM. This is not required as a field.",
                 "constraints": {
                   "required": false,
                   "regex": "^[A-Za-z0-9-]{1,64}$",
@@ -788,11 +465,11 @@
                   "subnets": "Subnets"
                 },
                 "toolTip": {
-                  "virtualNetwork": "Virtual Network for deployment of the FortiAnalyzer VM solution",
+                  "virtualNetwork": "Virtual Network for deployment of the FortiPAM VM solution",
                   "subnets": "Standard deployment is to have an "
                 },
                 "defaultValue": {
-                  "name": "[if(equals(basics('namePrefix'),''),'FortiAnalyzer-vnet',concat(basics('namePrefix'),'-vnet'))]",
+                  "name": "[if(equals(basics('namePrefix'),''),'FortiPAM-vnet',concat(basics('namePrefix'),'-vnet'))]",
                   "addressPrefixSize": "/24"
                 },
                 "constraints": {
@@ -803,7 +480,7 @@
                 },
                 "subnets": {
                   "subnet1": {
-                    "label": "FortiAnalyzer Subnet",
+                    "label": "FortiPAM Subnet",
                     "defaultValue": {
                       "name": "ProtectedSubnet",
                       "addressPrefixSize": "/26"
@@ -824,7 +501,7 @@
                 "options": {
                   "icon": "Info",
                   "text": "More information about the deployment can be found here.",
-                  "uri": "https://github.com/fortinet/azure-templates/tree/main/FortiAnalyzer/single"
+                  "uri": "https://github.com/40net-cloud/fortinet-azure-solutions/tree/main/FortiPAM/A-Single-VM"
                 }
               }
             ]
@@ -844,7 +521,7 @@
             "type": "Microsoft.Common.TextBlock",
             "visible": true,
             "options": {
-              "text": "The public IP will be used for connect to the FortiAnalyzer. The public IP is optional. Selecting none will result in a FortiAnalyzer that is not accessible from the public internet. Other means like VPN connection or Experess Route are needed to connect to the unit in that case."
+              "text": "The public IP will be used for connect to the FortiPAM. The public IP is optional. Selecting none will result in a FortiPAM that is not accessible from the public internet. Other means like VPN connection or Experess Route are needed to connect to the unit in that case."
             }
           },
           {
@@ -855,11 +532,11 @@
               "domainNameLabel": "Domain name label"
             },
             "toolTip": {
-              "publicIpAddress": "Public IP attached to FortiAnalyzer VM",
+              "publicIpAddress": "Public IP attached to FortiPAM VM",
               "domainNameLabel": "DNS name linked to this public IP"
             },
             "defaultValue": {
-              "publicIpAddressName": "[if(equals(basics('fortiAnalyzerNamePrefix'),''),'FAZPublicIP',concat(basics('fortiAnalyzerNamePrefix'),'-faz-pip'))]",
+              "publicIpAddressName": "[if(equals(basics('namePrefix'),''),'FPAMPublicIP',concat(basics('namePrefix'),'-fpam-pip'))]",
               "domainNameLabel": "mydomain"
             },
             "constraints": {
@@ -930,8 +607,8 @@
                 "visible": true,
                 "options": {
                   "icon": "Info",
-                  "text": "The default configuration already included in this deployment can be found on our github page. ",
-                  "uri": "https://github.com/fortinet/azure-templates/blob/main/FortiAnalyzer/single/doc/config-provisioning.md"
+                  "text": "FortiPAM is deployed without an injected configuration. License is uploaded post-deploy via SCP. See the FortiPAM Azure administration guide.",
+                  "uri": "https://docs.fortinet.com/document/fortipam-public-cloud/1.9.0/azure-administration-guide"
                 }
               }
             ]
@@ -981,8 +658,6 @@
       "availabilityOptions": "[steps('instance').availabilityOptions.availabilityOptions]",
       "existingAvailabilitySetName": "[steps('instance').availabilityOptions.availabilitySetSelector.name]",
       "availabilityZoneNumber": "[steps('instance').availabilityOptions.availabilityZoneSelector]",
-      "fortiAnalyzerLicenseBYOL": "[steps('instance').fazLicense.fazcontent]",
-      "fortiAnalyzerLicenseFortiFlex": "[steps('instance').fazLicense.fazfortiflex]",
       "publicIPNewOrExisting": "[steps('publicip').publicip.newOrExistingOrNone]",
       "publicIPName": "[steps('publicip').publicip.name]",
       "publicIPResourceGroup": "[steps('publicip').publicip.resourceGroup]",
