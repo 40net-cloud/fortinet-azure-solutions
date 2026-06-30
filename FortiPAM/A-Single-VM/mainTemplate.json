@@ -507,5 +507,11 @@
         }
       }
     }
-  ]
+  ],
+  "outputs": {
+    "resourceGroupName": {
+      "type": "string",
+      "value": "[resourceGroup().name]"
+    }
+  }
 }
