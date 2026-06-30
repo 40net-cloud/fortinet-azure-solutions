@@ -1,74 +1,72 @@
-# FortiAnalyzer
+# FortiPAM
 
 ## Introduction
 
-FortiAnalyzer - Analytics driven security management
+FortiPAM - Privileged Access Management
 
-FortiAnalyzer offers centralized network security logging and reporting for the Fortinet Security Fabric. FortiAnalyzer accepts inbound logs from multiple downstream Fortinet devices such as FortiGate, FortiMail, and FortiWeb devices etc.
-
-This ARM template deploys a single FortiAnalyzer accompanied by the required infrastructure.
+FortiPAM provides role-based access, auditing, and security options for privileged users. This ARM template deploys a single FortiPAM-VM accompanied by the required infrastructure.
 
 ## Design
 
-In Microsoft Azure, this single FortiAnalyzer-VM setup a basic setup to start exploring the capabilities of the analytics platform for the different Fortinet solutions.
+This Azure ARM template deploys a single FortiPAM-VM in a basic standalone setup to start exploring the capabilities of the FortiPAM privileged access management platform.
 
-This Azure ARM template will automatically deploy a full working environment containing the following components.
+This Azure ARM template automatically deploys a full working environment containing the following components:
 
-- 1 FortiAnalyzer VM with a 1Tb data disk for log storage
-- 1 VNETs containing a subnet for the FortiAnalyzer
-- Optional: 1 Basic public IP
+- 1 FortiPAM VM with two data disks (one for logs, one for video recordings). Minimum 10 GB each; the recommended log:video disk ratio is 1:3.
+- 1 VNET containing a subnet for the FortiPAM VM
+- Optional: 1 Standard public IP
 
-<p align="center">
-  <img src="images/faz-single-small.png" alt="FortiAnalyzer-VM azure design"/>
-</p>
+This Azure ARM template can be extended or customized based on your requirements. Additional subnets are not automatically generated.
 
-This Azure ARM template can also be extended or customized based on your requirements. Additional subnets besides the ones mentioned above are not automatically generated.
-
-The FortiAnalyzer can also be deployed without a public IP on the network interface. Select 'None' as the public IP.
-
-<p align="center">
-  <img src="images/faz-single-private-small.png" alt="FortiAnalyzer-VM azure design"/>
-</p>
+The FortiPAM VM can also be deployed without a public IP on the network interface. Select 'None' as the public IP.
 
 ## Deployment
 
-For the deployment, you can use the Azure Portal, Azure CLI, Powershell or Azure Cloud Shell. The Azure ARM templates are exclusive to Microsoft Azure and can't be used in other cloud environments. The main template is the `mainTemplate.json` which you can use in the Azure Portal. A `deploy.sh` script is provided to facilitate the deployment. You'll be prompted to provide the 4 required variables:
+For the deployment, you can use the Azure Portal, Azure CLI, PowerShell or Azure Cloud Shell. The Azure ARM templates are exclusive to Microsoft Azure. The main template is `mainTemplate.json`. A `deploy.sh` script is provided to facilitate the deployment. You will be prompted for the 4 required variables:
 
-- PREFIX : This prefix will be added to each of the resources created by the template for ease of use and visibility.
-- LOCATION : This is the Azure region where the deployment will be deployed.
-- USERNAME : The username used to login to the FortiAnalyzer GUI and SSH management UI.
-- PASSWORD : The password used for the FortiAnalyze GUI and SSH management UI.
+- PREFIX : added to each resource created by the template.
+- LOCATION : the Azure region for the deployment.
+- USERNAME : the username used to login to the FortiPAM GUI and SSH CLI.
+- PASSWORD : the password used for the FortiPAM GUI and SSH CLI.
+
+**Marketplace terms:** the FortiPAM marketplace image (`fortinet:fortinet-fortipam:fortinet-fpam`) requires terms acceptance. The `deploy.sh` script runs `az vm image terms accept` automatically before deploying.
+
+**Licensing:** FortiPAM uses a BYOL (yearly user subscription) model. The license file (`.lic`) is uploaded **after deployment via SCP or the GUI** -- it is NOT injected during deployment. "Evaluation license is not available on Azure." Each FortiPAM instance must have its own valid license.
 
 ### Azure Portal
 
 Azure Portal Wizard:
-[![Azure Portal Wizard](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.svg?sanitize=true)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2F40net-cloud%2Ffortinet-azure-solutions%2Fmain%2FFortiAnalyzer%2Fsingle%2FmainTemplate.json/createUIDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2F40net-cloud%2Ffortinet-azure-solutions%2Fmain%2FFortiAnalyzer%2Fsingle%2FcreateUiDefinition.json)
+[![Azure Portal Wizard](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.svg?sanitize=true)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2F40net-cloud%2Ffortinet-azure-solutions%2Fmain%2FFortiPAM%2FA-Single-VM%2FmainTemplate.json/createUIDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2F40net-cloud%2Ffortinet-azure-solutions%2Fmain%2FFortiPAM%2FA-Single-VM%2FcreateUiDefinition.json)
 
 Custom deployment:
-[![Deploy To Azure](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.svg?sanitize=true)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2F40net-cloud%2Ffortinet-azure-solutions%2Fmain%2FFortiAnalyzer%2Fsingle%2FmainTemplate.json)
-[![Visualize](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/visualizebutton.svg?sanitize=true)](http://armviz.io/#/?load=https%3A%2F%2Fraw.githubusercontent.com%2Ffortinet%2Fazure-templates$2Fmain%2FFortiAnalyzer%2Fsingle%2FmainTemplate.json)
+[![Deploy To Azure](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.svg?sanitize=true)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2F40net-cloud%2Ffortinet-azure-solutions%2Fmain%2FFortiPAM%2FA-Single-VM%2FmainTemplate.json)
 
 ### Azure CLI
-To fast track the deployment, use the Azure Cloud Shell. The Azure Cloud Shell is an in-browser CLI that contains Terraform and other tools for deployment into Microsoft Azure. It is accessible via the Azure Portal or directly at [https://shell.azure.com/](https://shell.azure.com). You can copy and paste the below one-liner to get started with your deployment.
 
-`cd ~/clouddrive/ && wget -qO- https://github.com/fortinet/azure-templates/archive/main.tar.gz | tar zxf - && cd ~/clouddrive/azure-templates-main/FortiAnalyzer/single/ && ./deploy.sh`
+Use the Azure Cloud Shell ([https://shell.azure.com/](https://shell.azure.com)):
 
-![Azure Cloud Shell](images/azure-cloud-shell.png)
+`cd ~/clouddrive/ && wget -qO- https://github.com/40net-cloud/fortinet-azure-solutions/archive/main.tar.gz | tar zxf - && cd ~/clouddrive/fortinet-azure-solutions-main/FortiPAM/A-Single-VM/ && ./deploy.sh`
 
-After deployment, you will be shown the IP addresses of all deployed components. This information is also stored in the output directory in the 'summary.out' file. You can access both management GUI's using the public management IP addresses using HTTPS on port 443.
+After deployment you can access the FortiPAM GUI over HTTPS on port 443 using the public IP, and the CLI over SSH on port 22.
 
 ## Requirements and limitations
 
-The Azure ARM template deployment deploys different resources and is required to have the access rights and quota in your Microsoft Azure subscription to deploy the resources.
+- The default VM size is `Standard_D4s_v5` (4 vCPU / 16 GB). FortiPAM sizing: 4-64 vCPU, 16-256 GB RAM for 20-1000 users. The FortiPAM image is x64 only.
+- A Network Security Group opens TCP 22 (SSH/CLI) and 443 (HTTPS GUI) inbound, and all outbound. Additional ports (e.g. 8443 reverse service, 4433 FortiToken Mobile) are documented in the [FortiPAM ports reference](https://docs.fortinet.com/document/fortipam/1.9.0/fortipam-ports).
+- License for FortiPAM: BYOL, uploaded post-deploy via SCP or GUI.
 
-- The template will deploy Standard D3s VMs for this architecture. Other VM instances are supported as well with a recommended minimum of 2 vCPU and 4Gb of RAM. A list can be found [here](https://docs.fortinet.com/document/fortianalyzer-public-cloud/7.2.0/azure-administration-guide/351055)
-- A Network Security Group is installed that only opens TCP port 22, 443 and 514 for access to the FortiAnalyzer. Additional ports might be needed to support your use case and are documented [here](https://docs.fortinet.com/document/fortianalyzer/7.2.0/fortianalyzer-ports/290737)
-- License for FortiAnalyzer
-  - BYOL: A demo license can be made available via your Fortinet partner or on our website. These can be injected during deployment or added after deployment.
+## TODO (attribution GUIDs -- non-blocking placeholders)
+
+Two attribution identifiers are placeholders pending confirmation:
+
+- `fortinetTags.provider` in `mainTemplate.json` + `mainTemplate.parameters.json`: currently `6EB3B02F-50E5-4A3E-8CB8-2E1292583TODO` (pending the real FortiPAM provider suffix from the repo maintainer).
+- Partner Center PID resource name in `mainTemplate.json`: currently `pid-00000000-0000-0000-0000-000000000000-partnercenter` (pending the real CUA tracking GUID from Partner Center).
+
+Both are attribution-only and do not affect deployment.
 
 ## Support
-Fortinet-provided scripts in this and other GitHub projects do not fall under the regular Fortinet technical support scope and are not supported by FortiCare Support Services.
-For direct issues, please refer to the [Issues](https://github.com/fortinet/azure-templates/issues) tab of this GitHub project.
+
+Fortinet-provided scripts in this and other GitHub projects do not fall under the regular Fortinet technical support scope and are not supported by FortiCare Support Services. For direct issues, please refer to the [Issues](https://github.com/40net-cloud/fortinet-azure-solutions/issues) tab of this GitHub project.
 
 ## License
-[License](/../../blob/main/LICENSE) © Fortinet Technologies. All rights reserved.
+[License](/../../blob/main/LICENSE) (c) Fortinet Technologies. All rights reserved.
