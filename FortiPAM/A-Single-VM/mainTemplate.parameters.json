@@ -12,25 +12,28 @@
             "value": "## TO BE DEFINED ##"
         },
         "imageSku": {
-            "value": "fortinet-fortianalyzer"
+            "value": "fortinet-fpam"
         },
         "imageVersion": {
             "value": "latest"
         },
         "instanceType": {
-            "value": "Standard_D2s_v3"
+            "value": "Standard_D4s_v5"
+        },
+        "dataDiskSize": {
+            "value": "128"
+        },
+        "dataDiskCount": {
+            "value": 2
         },
         "publicIPNewOrExisting": {
             "value": "new"
         },
         "publicIPName": {
-            "value": "FAZPublicIP"
+            "value": "FPAMPublicIP"
         },
         "publicIPResourceGroup": {
             "value": ""
-        },
-        "publicIPAddressType": {
-            "value": "Static"
         },
         "vnetNewOrExisting": {
             "value": "new"
@@ -45,13 +48,10 @@
             "value": "172.16.136.0/22"
         },
         "subnet1Name": {
-            "value": "FortiAnalyzerSubnet"
+            "value": "FortiPAMSubnet"
         },
         "subnet1Prefix": {
             "value": "172.16.137.0/24"
-        },
-        "dataDiskSize": {
-            "value": "1024"
         },
         "location": {
             "value": "[resourceGroup().location]"
@@ -59,8 +59,8 @@
         "fortinetTags": {
             "value": {
                 "publisher": "Fortinet",
-                "template": "FortiAnalyzer",
-                "provider": "6EB3B02F-50E5-4A3E-8CB8-2E1292583FAZ"
+                "template": "FortiPAM",
+                "provider": "6EB3B02F-50E5-4A3E-8CB8-2E1292583TODO"
             }
         }
     }

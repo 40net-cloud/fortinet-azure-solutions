@@ -2,13 +2,13 @@
 echo "
 ##############################################################################################################
 #
-# Deployment of a FortiAnalyzer VM
+# Deployment of a FortiPAM VM
 #
 ##############################################################################################################
 
 "
-#echo "--> Auto accepting terms for Azure Marketplace deployments ..."
-#az vm image terms accept --publisher fortinet --offer fortinet-fortianalyzer --plan fortinet-fortianalyzer
+echo "--> Accepting Azure Marketplace terms for FortiPAM (required before first deploy) ..."
+az vm image terms accept --urn fortinet:fortinet-fortipam:fortinet-fpam:1.9.0
 
 # Stop on error
 set +e
@@ -114,7 +114,7 @@ else
 echo "
 ##############################################################################################################
 #
-# FortiAnalyzer Azure deployment using ARM Template
+# FortiPAM Azure deployment using ARM Template
 #
 ##############################################################################################################
 
@@ -122,7 +122,7 @@ Deployment information:
 
 Username: $username
 
-FortiAnalyzer IP addesses
+FortiPAM IP addesses
 "
 query="[?virtualMachine.name.starts_with(@, '$prefix')].{virtualMachine:virtualMachine.name, publicIP:virtualMachine.network.publicIpAddresses[0].ipAddress,privateIP:virtualMachine.network.privateIpAddresses[0]}"
 az vm list-ip-addresses --query "$query" --output tsv
