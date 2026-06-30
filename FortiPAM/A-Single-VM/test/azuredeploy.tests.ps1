@@ -66,6 +66,7 @@ Describe 'FPAM Single VM' {
     It 'Creates the expected Azure resources' {
       # FPAM = single NIC (one networkInterfaces entry), unlike the dual-NIC variant.
       $expectedResources = 'Microsoft.Resources/deployments',
+      'Microsoft.Compute/availabilitySets',
       'Microsoft.Network/virtualNetworks',
       'Microsoft.Network/networkSecurityGroups',
       'Microsoft.Network/publicIPAddresses',
