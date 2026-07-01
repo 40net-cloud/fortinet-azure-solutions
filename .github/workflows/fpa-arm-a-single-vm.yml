@@ -1,4 +1,4 @@
-name: '[FPAM] ARM - A-Single-VM'
+name: '[FPA] ARM - A-Single-VM'
 
 env:
   ARMPath: FortiPAM/A-Single-VM/
@@ -67,7 +67,7 @@ jobs:
     - name: Publish TTK results
       uses: actions/upload-artifact@v6
       with:
-        name: FPAM-A-Single-VM-TTK-Results
+        name: FPA-A-Single-VM-TTK-Results
         path: ./test-armttk.xml
       if: always()
 
@@ -114,7 +114,7 @@ jobs:
     - name: Publish test results
       uses: actions/upload-artifact@v6
       with:
-        name: FPAM-A-Single-VM-Test-Results
+        name: FPA-A-Single-VM-Test-Results
         path: ./test-custom.xml
       if: always()
 
