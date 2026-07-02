@@ -408,8 +408,8 @@
       "name": "[variables('fpamNic1Name')]",
       "location": "[parameters('location')]",
       "dependsOn": [
-        "[variables('vnetName')]",
-        "[variables('NSGName')]"
+        "[resourceId('Microsoft.Network/virtualNetworks', variables('vnetName'))]",
+        "[resourceId('Microsoft.Network/networkSecurityGroups', variables('NSGName'))]"
       ],
       "properties": {
         "ipConfigurations": [
@@ -448,7 +448,7 @@
         "product": "[variables('imageOffer')]"
       },
       "dependsOn": [
-        "[variables('fpamNic1Name')]"
+        "[variables('fpamNic1Id')]"
       ],
       "properties": {
         "hardwareProfile": {
