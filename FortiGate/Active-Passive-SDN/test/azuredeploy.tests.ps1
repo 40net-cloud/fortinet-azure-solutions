@@ -196,6 +196,8 @@ Describe "FGT Active-Passive SDN - $scenario" {
                 'subnet5Name',
                 'subnet5Prefix',
                 'tagsByResource',
+                'VMSecurityTPM',
+                'VMSecurityType',
                 'vnetAddressPrefix',
                 'vnetName',
                 'vnetNewOrExisting',

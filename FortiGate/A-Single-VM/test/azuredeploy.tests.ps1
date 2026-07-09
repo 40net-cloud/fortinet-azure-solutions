@@ -172,6 +172,8 @@ Describe "FGT Single VM - $scenario" {
                 'subnet3Name',
                 'subnet3Prefix',
                 'tagsByResource',
+                'VMSecurityTPM',
+                'VMSecurityType',
                 'vnetAddressPrefix',
                 'vnetName',
                 'vnetNewOrExisting',

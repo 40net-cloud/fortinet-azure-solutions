@@ -200,6 +200,8 @@ Describe "FGT Active-Active ELB-ILB - $scenario" {
                 'subnet2Prefix',
                 'subnet2StartAddress',
                 'tagsByResource',
+                'VMSecurityTPM',
+                'VMSecurityType',
                 'vnetAddressPrefix',
                 'vnetName',
                 'vnetNewOrExisting',
