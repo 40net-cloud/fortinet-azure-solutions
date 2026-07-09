@@ -84,6 +84,26 @@ BeforeAll {
         'x64_g2' { $params['fortiGateInstanceArchitecture'] = '_g2'    }
         'arm64'  { $params['fortiGateInstanceArchitecture'] = '_arm64' }
     }
+
+    # Marketplace image coordinates — mirrors the template's imagePublisher /
+    # imageOffer / fortiGateImageSKU variables so the terms can be accepted
+    # before deployment (Azure rejects otherwise-valid deployments with
+    # MarketplacePurchaseEligibilityFailed if the plan hasn't been accepted).
+    $imagePublisher       = "fortinet"
+    $imageOffer           = "fortinet_fortigate-vm"
+    $fortiGateLicenseType = "fortinet_fg-vm_byol"
+    $architectureSuffix = switch ($scenario) {
+        'x64'    { '' }
+        'x64_g2' { '_g2' }
+        'arm64'  { '_arm64' }
+    }
+    $fortiGateImageVersion = switch ($scenario) {
+        'x64'    { '7.4.11' }
+        'x64_g2' { '8.0.0' }
+        'arm64'  { '8.0.0' }
+    }
+    $majorReleaseVersion = ($fortiGateImageVersion -replace '\.', '').Substring(0, 2)
+    $fortiGateImageSKU   = "${fortiGateLicenseType}_${majorReleaseVersion}${architectureSuffix}"
 }
 
 AfterAll {
@@ -228,6 +248,15 @@ Describe "FGT Active-Passive ELB-ILB - $scenario" {
                 -TemplateParameterObject $params
             Write-Host ($result | Format-Table -Wrap -AutoSize | Out-String)
             $result.Count | Should -Not -BeGreaterThan 0
+        }
+
+        It 'Accepts the FortiGate marketplace image terms' {
+            $terms = Get-AzMarketplaceTerms -Publisher $imagePublisher -Product $imageOffer -Name $fortiGateImageSKU
+            if (-not $terms.Accepted) {
+                Set-AzMarketplaceTerms -Publisher $imagePublisher -Product $imageOffer -Name $fortiGateImageSKU -Terms $terms -Accept
+                $terms = Get-AzMarketplaceTerms -Publisher $imagePublisher -Product $imageOffer -Name $fortiGateImageSKU
+            }
+            $terms.Accepted | Should -Be $true
         }
 
         It 'ARM template deploys successfully' {
