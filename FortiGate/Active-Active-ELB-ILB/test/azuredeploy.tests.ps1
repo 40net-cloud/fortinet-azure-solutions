@@ -250,10 +250,10 @@ Describe "FGT Active-Active ELB-ILB - $scenario" {
         }
 
         It 'Accepts the FortiGate marketplace image terms' {
-            $terms = Get-AzMarketplaceTerms -Publisher $imagePublisher -Product $imageOffer -Name $fortiGateImageSKU
+            $terms = Get-AzMarketplaceTerms -Publisher $imagePublisher -Product $imageOffer -Name $fortiGateImageSKU -OfferType 'virtualmachine'
             if (-not $terms.Accepted) {
                 Set-AzMarketplaceTerms -Publisher $imagePublisher -Product $imageOffer -Name $fortiGateImageSKU -Accept
-                $terms = Get-AzMarketplaceTerms -Publisher $imagePublisher -Product $imageOffer -Name $fortiGateImageSKU
+                $terms = Get-AzMarketplaceTerms -Publisher $imagePublisher -Product $imageOffer -Name $fortiGateImageSKU -OfferType 'virtualmachine'
             }
             $terms.Accepted | Should -Be $true
         }
