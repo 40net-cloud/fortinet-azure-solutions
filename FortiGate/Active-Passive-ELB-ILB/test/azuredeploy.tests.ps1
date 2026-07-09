@@ -253,7 +253,7 @@ Describe "FGT Active-Passive ELB-ILB - $scenario" {
         It 'Accepts the FortiGate marketplace image terms' {
             $terms = Get-AzMarketplaceTerms -Publisher $imagePublisher -Product $imageOffer -Name $fortiGateImageSKU
             if (-not $terms.Accepted) {
-                Set-AzMarketplaceTerms -Publisher $imagePublisher -Product $imageOffer -Name $fortiGateImageSKU -Terms $terms -Accept
+                Set-AzMarketplaceTerms -Publisher $imagePublisher -Product $imageOffer -Name $fortiGateImageSKU -Accept
                 $terms = Get-AzMarketplaceTerms -Publisher $imagePublisher -Product $imageOffer -Name $fortiGateImageSKU
             }
             $terms.Accepted | Should -Be $true
