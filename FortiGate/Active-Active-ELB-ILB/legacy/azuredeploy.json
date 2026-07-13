@@ -204,7 +204,7 @@
     },
     "instanceType_x64": {
       "type": "string",
-      "defaultValue": "Standard_D2s_v3",
+      "defaultValue": "Standard_D4s_v3",
       "allowedValues": [
         "Standard_F2s",
         "Standard_F4s",
@@ -276,7 +276,7 @@
     },
     "instanceType_x64_g2": {
       "type": "string",
-      "defaultValue": "Standard_D2_v5",
+      "defaultValue": "Standard_D4_v5",
       "allowedValues": [
         "Standard_D2_v4",
         "Standard_D4_v4",
@@ -365,7 +365,7 @@
     },
     "instanceType_arm64": {
       "type": "string",
-      "defaultValue": "Standard_D2ps_v6",
+      "defaultValue": "Standard_D4ps_v6",
       "allowedValues": [
         "Standard_D2ps_v6",
         "Standard_D4ps_v6",
