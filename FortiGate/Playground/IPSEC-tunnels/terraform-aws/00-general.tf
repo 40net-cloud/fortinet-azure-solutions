@@ -37,7 +37,7 @@ variable "KEY_PAIR" {
 ##############################################################################################################
 
 variable VERSION {
-  default = "7.2.4"
+  default = "7.6.7"
 }
 
 variable "FGT_BYOL_LICENSE_FILE" {

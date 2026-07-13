@@ -78,10 +78,10 @@ resource "aws_instance" "fgtvm" {
     fgt_mgmt_ipaddr     = var.fgt_ipaddress["1"]
     fgt_mgmt_mask       = var.subnetmask["1"]
     fgt_mgmt_gw         = var.gateway_ipaddress["1"]
-    fgt_external_ipaddr = var.fgt_ipaddress["2"]
+    fgt_external_ipaddress = var.fgt_ipaddress["2"]
     fgt_external_mask   = var.subnetmask["2"]
-    fgt_external_gw     = var.gateway_ipaddress["2"]
-    fgt_internal_ipaddr = var.fgt_ipaddress["3"]
+    fgt_external_gateway     = var.gateway_ipaddress["2"]
+    fgt_internal_ipaddress = var.fgt_ipaddress["3"]
     fgt_internal_mask   = var.subnetmask["3"]
     fgt_internal_gw     = var.gateway_ipaddress["3"]
     virtual_network     = var.vpc
