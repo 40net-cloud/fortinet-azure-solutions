@@ -15,47 +15,14 @@
     ],
     "basics": [
       {
-        "name": "adminUsername",
-        "type": "Microsoft.Common.TextBox",
-        "label": "FortiNAC administrative username",
-        "defaultValue": "",
-        "toolTip": "Username for the FortiNAC virtual appliance. Most not be root, administrator or admin",
-        "constraints": {
-          "required": true,
-          "validations": [
-            {
-              "regex": "^[a-z0-9A-Z]{1,30}$",
-              "message": "Only alphanumeric characters are allowed, and the value must be 1-30 characters long"
-            },
-            {
-              "isValid": "[not(contains(toLower(basics('adminUsername')),'root'))]",
-              "message": "Usernames must not include reserved words"
-            },
-            {
-              "isValid": "[not(contains(toLower(basics('adminUsername')),'admin'))]",
-              "message": "Usernames must not include reserved words"
-            }
-          ]
-        },
-        "visible": true
-      },
-      {
-        "name": "adminPassword",
-        "type": "Microsoft.Common.PasswordBox",
-        "label": {
-          "password": "FortiNAC password",
-          "confirmPassword": "Confirm password"
-        },
-        "toolTip": "Password for the Virtual Machine",
-        "constraints": {
-          "required": true,
-          "regex": "^(?:(?=.*[a-z])(?:(?=.*[A-Z])(?=.*[\\d\\W])|(?=.*\\W)(?=.*\\d))|(?=.*\\W)(?=.*[A-Z])(?=.*\\d)).{12,}$",
-          "validationMessage": "The password must be between 12 characters or longer, and contain characters from at least 3 of the following groups: uppercase characters, lowercase characters, numbers, and special characters excluding '\\' or '-'."
-        },
+        "name": "defaultcredentialsinfo",
+        "type": "Microsoft.Common.InfoBox",
+        "visible": true,
         "options": {
-          "hideConfirmation": false
-        },
-        "visible": true
+          "icon": "Warning",
+          "text": "No credentials are set during deployment. The FortiNAC appliance boots with factory default credentials: CLI via serial console 'admin' with an empty password, and Admin UI (HTTPS port 8443) 'root' with password 'YAMS'. Change both immediately after the first login.",
+          "uri": "https://docs.fortinet.com/document/fortinac-f/7.6.0/configuration-wizard/209349/overview"
+        }
       },
       {
         "name": "namePrefix",
@@ -415,49 +382,14 @@
             "label": "FortiNAC License",
             "elements": [
               {
-                "name": "fnacLicenseBYOLInfo",
-                "type": "Microsoft.Common.TextBlock",
+                "name": "fnacLicenseInfo",
+                "type": "Microsoft.Common.InfoBox",
                 "visible": true,
                 "options": {
-                  "text": "The Bring Your Own license file(s), retrieved from support.fortinet.com, can be uploaded here or uploaded after deployment."
+                  "icon": "Info",
+                  "text": "Licensing is done after deployment. Retrieve the UUID and MAC address from the appliance CLI with 'get hardware status', register the product on support.fortinet.com, then generate and download the license keys. Click here for the step-by-step guide.",
+                  "uri": "https://docs.fortinet.com/document/fortinac-f/7.6.0/azure-deployment-guide/14971/generate-and-download-keys"
                 }
-              },
-              {
-                "name": "fnacLicenseFortiFlexCheck",
-                "type": "Microsoft.Common.CheckBox",
-                "label": "My organisation is using the FortiFlex subscription service.",
-                "toolTip": "Select this box to enter a FortiFlex token",
-                "visible": true
-              },
-              {
-                "name": "fnaccontent",
-                "type": "Microsoft.Common.FileUpload",
-                "label": "FortiNAC License",
-                "toolTip": "Upload the license file for the FortiNAC BYOL here.",
-                "constraints": {
-                  "required": false,
-                  "accept": ".lic,.txt"
-                },
-                "options": {
-                  "multiple": false,
-                  "uploadMode": "file",
-                  "openMode": "text",
-                  "encoding": "UTF-8"
-                },
-                "visible": "[not(steps('instance').fnacLicense.fnacLicenseFortiFlexCheck)]"
-              },
-              {
-                "name": "fnacfortiflex",
-                "type": "Microsoft.Common.TextBox",
-                "label": "FortiNAC FortiFlex",
-                "defaultValue": "",
-                "toolTip": "FortiNAC FortiFlex license token",
-                "constraints": {
-                  "required": false,
-                  "regex": "^[A-Za-z0-9-]{1,64}$",
-                  "validationMessage": "Only alphanumeric characters and a dash are allowed, and the value must be 1 to 64 characters."
-                },
-                "visible": "[steps('instance').fnacLicense.fnacLicenseFortiFlexCheck]"
               }
             ]
           },
@@ -733,8 +665,6 @@
       "namePrefix": "[basics('namePrefix')]",
       "imageSku": "[basics('imageSku')]",
       "imageVersion": "[basics('imageVersion')]",
-      "adminUsername": "[basics('adminUsername')]",
-      "adminPassword": "[basics('adminPassword')]",
       "location": "[location()]",
       "instanceType": "[steps('instance').instancetype.instancetypeselection]",
       "dataDiskCount": "[steps('instance').datadisk.vmDataDiskCount]",
@@ -743,8 +673,6 @@
       "availabilityOptions": "[steps('instance').availabilityOptions.availabilityOptions]",
       "existingAvailabilitySetName": "[steps('instance').availabilityOptions.availabilitySetSelector.name]",
       "availabilityZoneNumber": "[steps('instance').availabilityOptions.availabilityZoneSelector]",
-      "fortiNacLicenseBYOL": "[steps('instance').fnacLicense.fnaccontent]",
-      "fortiNacLicenseFortiFlex": "[steps('instance').fnacLicense.fnacfortiflex]",
       "publicIPNewOrExisting": "[steps('publicip').publicip.newOrExistingOrNone]",
       "publicIPName": "[steps('publicip').publicip.name]",
       "publicIPResourceGroup": "[steps('publicip').publicip.resourceGroup]",
