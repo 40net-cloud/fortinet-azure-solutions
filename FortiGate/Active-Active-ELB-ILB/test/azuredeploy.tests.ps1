@@ -53,11 +53,11 @@ BeforeAll {
             $testsResourceGroupName     = "FORTIQA-$testsRandom-$templateName-x64"
         }
         'x64_g2' {
-            $testsResourceGroupLocation = "francecentral"
+            $testsResourceGroupLocation = "westeurope"
             $testsResourceGroupName     = "FORTIQA-$testsRandom-$templateName-x64_g2"
         }
         'arm64' {
-            $testsResourceGroupLocation = "francecentral"
+            $testsResourceGroupLocation = "westeurope"
             $testsResourceGroupName     = "FORTIQA-$testsRandom-$templateName-arm64"
         }
     }
