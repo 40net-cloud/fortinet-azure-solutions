@@ -278,6 +278,17 @@
         "description": "Accelerated Networking enables direct connection between the VM and network card. Only available on 2 CPU F/Fs and 4 CPU D/Dsv2, D/Dsv3, E/Esv3, Fsv2, Lsv2, Ms/Mms and Ms/Mmsv2"
       }
     },
+    "highAvailabilityFailoverSecondaryIP": {
+      "type": "string",
+      "defaultValue": "true",
+      "allowedValues": [
+        "true",
+        "false"
+      ],
+      "metadata": {
+        "description": "Use the failover a secondary IP address for the HA sync interface."
+      }
+    },
     "acceleratedConnections": {
       "type": "bool",
       "defaultValue": false,
@@ -410,7 +421,7 @@
     },
     "subnet1Name": {
       "type": "string",
-      "defaultValue": "ExternalSubnet",
+      "defaultValue": "externalsubnet",
       "metadata": {
         "description": "Subnet 1 Name"
       }
@@ -431,7 +442,7 @@
     },
     "subnet2Name": {
       "type": "string",
-      "defaultValue": "TransitSubnet",
+      "defaultValue": "internalsubnet",
       "metadata": {
         "description": "Subnet 2 Name"
       }
@@ -452,7 +463,7 @@
     },
     "subnet3Name": {
       "type": "string",
-      "defaultValue": "HASyncSubnet",
+      "defaultValue": "hasyncsubnet",
       "metadata": {
         "description": "Subnet 3 Name"
       }
@@ -473,7 +484,7 @@
     },
     "subnet4Name": {
       "type": "string",
-      "defaultValue": "ManagementSubnet",
+      "defaultValue": "managementsubnet",
       "metadata": {
         "description": "Subnet 4 Name"
       }
@@ -494,7 +505,7 @@
     },
     "subnet5Name": {
       "type": "string",
-      "defaultValue": "ProtectedSubnet",
+      "defaultValue": "protectedsubnet",
       "metadata": {
         "description": "Subnet 5 Name"
       }
@@ -619,8 +630,10 @@
     "fgbVmName": "[concat(parameters('fortiGateNamePrefix'),'-fgt-b')]",
     "fmgCustomData": "[if(equals(parameters('fortiManager'),'yes'),concat('\nconfig system central-management\nset type fortimanager\n set fmg ',parameters('fortiManagerIP'),'\nset serial-number ', parameters('fortiManagerSerial'), '\nend\n config system interface\n edit port1\n append allowaccess fgfm\n end\n config system interface\n edit port2\n append allowaccess fgfm\n end\n'),'')]",
     "customDataHeader": "Content-Type: multipart/mixed; boundary=\"12345\"\nMIME-Version: 1.0\n\n--12345\nContent-Type: text/plain; charset=\"us-ascii\"\nMIME-Version: 1.0\nContent-Transfer-Encoding: 7bit\nContent-Disposition: attachment; filename=\"config\"\n\n",
-    "fgaCustomDataBody": "[concat('config system global\nset allow-traffic-redirect disable\nend\nconfig system sdn-connector\nedit AzureSDN\nset type azure\nset ha-status enable\nset resource-group ', resourceGroup().name, '\nset subscription-id ', subscription().subscriptionId, '\nconfig nic\nedit ', variables('fgaNic1Name'), '\nconfig ip\nedit ipconfig1\nset public-ip ', variables('publicIP1Name'), '\nnext\nend\nnext\nend\nconfig route-table\nedit ', variables('routeTableName'), '\nconfig route\nedit toDefault\nset next-hop ', variables('sn2IPfga'), '\nnext\nend\nnext\nend\nend\nconfig router static\n edit 1\n set gateway ', variables('sn1GatewayIP'), '\n set device port1\n next\n edit 2\n set dst ', parameters('vnetAddressPrefix'), '\n set gateway ', variables('sn2GatewayIP'), '\n set device port2\n next\n edit 3\nset dst 168.63.129.16 255.255.255.255\nset device port2\n set gateway ', variables ('sn2GatewayIP'), '\n next\nedit 4\nset dst 168.63.129.16 255.255.255.255\nset device port1\n set gateway ', variables ('sn1GatewayIP'), '\n next\n end\n config system interface\n edit port1\n set mode static\n set ip ', variables('sn1IPfga'), '/', variables('sn1CIDRmask'), '\n set description external\n next\n edit port2\n set mode static\n set ip ', variables('sn2IPfga'), '/', variables('sn2CIDRmask'), '\n set description internal\n next\n edit port3\n set mode static\n set ip ', variables('sn3IPfga'), '/', variables('sn3CIDRmask'), '\n set description hasyncport\n next\n edit port4\n set mode static\n set ip ', variables('sn4IPfga'), '/', variables('sn4CIDRmask'), '\n set description hammgmtport\n set allowaccess ping https ssh ftm\n next\n end\n config system ha\n set group-id 1\n set group-name AzureHA\n set mode a-p\n set hbdev port3 100\n set session-pickup enable\n set session-pickup-connectionless enable\n set ha-mgmt-status enable\n config ha-mgmt-interfaces\n edit 1\n set interface port4\n set gateway ', variables('sn4GatewayIP'),'\n next\n end\n set override disable\n set priority 255\n set unicast-hb enable\n set unicast-hb-peerip ', variables('sn3IPfgb'), '\n set password ', parameters('adminPassword'), '\n end\n', variables('fmgCustomData'), parameters('fortiGateAdditionalCustomData'), '\n')]",
-    "fgbCustomDataBody": "[concat('config system global\nset allow-traffic-redirect disable\nend\nconfig system sdn-connector\nedit AzureSDN\nset type azure\nset ha-status enable\nset resource-group ', resourceGroup().name, '\nset subscription-id ', subscription().subscriptionId, '\nconfig nic\nedit ', variables('fgbNic1Name'), '\nconfig ip\nedit ipconfig1\nset public-ip ', variables('publicIP1Name'), '\nnext\nend\nnext\nend\nconfig route-table\nedit ', variables('routeTableName'), '\nconfig route\nedit toDefault\nset next-hop ', variables('sn2IPfgb'), '\nnext\nend\nnext\nend\nend\nconfig router static\n edit 1\n set gateway ', variables('sn1GatewayIP'), '\n set device port1\n next\n edit 2\n set dst ', parameters('vnetAddressPrefix'), '\n set gateway ', variables('sn2GatewayIP'), '\n set device port2\n next\n edit 3\nset dst 168.63.129.16 255.255.255.255\nset device port2\n set gateway ', variables ('sn2GatewayIP'), '\n next\nedit 4\nset dst 168.63.129.16 255.255.255.255\nset device port1\n set gateway ', variables ('sn1GatewayIP'), '\n next\n end\n config system interface\n edit port1\n set mode static\n set ip ', variables('sn1IPfgb'), '/', variables('sn1CIDRmask'), '\n set description external\n next\n edit port2\n set mode static\n set ip ', variables('sn2IPfgb'), '/', variables('sn2CIDRmask'), '\n set description internal\n next\n edit port3\n set mode static\n set ip ', variables('sn3IPfgb'), '/', variables('sn3CIDRmask'), '\n set description hasyncport\n next\n edit port4\n set mode static\n set ip ', variables('sn4IPfgb'), '/', variables('sn4CIDRmask'), '\n set description hammgmtport\n set allowaccess ping https ssh ftm\n next\n end\n config system ha\n set group-id 1\n set group-name AzureHA\n set mode a-p\n set hbdev port3 100\n set session-pickup enable\n set session-pickup-connectionless enable\n set ha-mgmt-status enable\n config ha-mgmt-interfaces\n edit 1\n set interface port4\n set gateway ', variables('sn4GatewayIP'),'\n next\n end\n set override disable\n set priority 1\n set unicast-hb enable\n set unicast-hb-peerip ', variables('sn3IPfga'), '\n set password ', parameters('adminPassword'), '\n end\n', variables('fmgCustomData'), parameters('fortiGateAdditionalCustomData'), '\n')]",
+    "fgaHAFailoverMethod": "[if(equals(parameters('highAvailabilityFailoverSecondaryIP'),'true')),concat('config ip\nedit ipconfig1\nset private-ip ', variables('sn2IPfga2'), '\nnext\nend\n'),concat('config route-table\nedit ', variables('routeTableName'), '\nconfig route\nedit toDefault\nset next-hop ', variables('sn2IPfga'), '\nnext\nend\nnext\nend\n')]",
+    "fgbHAFailoverMethod": "[if(equals(parameters('highAvailabilityFailoverSecondaryIP'),'true')),concat('config ip\nedit ipconfig1\nset private-ip ', variables('sn2IPfga2'), '\nnext\nend\n'),concat('config route-table\nedit ', variables('routeTableName'), '\nconfig route\nedit toDefault\nset next-hop ', variables('sn2IPfgb'), '\nnext\nend\nnext\nend\n')]",
+    "fgaCustomDataBody": "[concat('config system global\nset allow-traffic-redirect disable\nend\nconfig system sdn-connector\nedit AzureSDN\nset type azure\nset ha-status enable\nset resource-group ', resourceGroup().name, '\nset subscription-id ', subscription().subscriptionId, '\nconfig nic\nedit ', variables('fgaNic1Name'), '\nconfig ip\nedit ipconfig1\nset public-ip ', variables('publicIP1Name'), '\nnext\nend\nnext\n', variables('fgaHAFailoverMethod'), 'end\nconfig router static\nedit 1\nset gateway ', variables('sn1GatewayIP'), '\nset device port1\nnext\nedit 2\nset dst ', parameters('vnetAddressPrefix'), '\nset gateway ', variables('sn2GatewayIP'), '\nset device port2\nnext\nedit 3\nset dst 168.63.129.16 255.255.255.255\nset device port2\nset gateway ', variables ('sn2GatewayIP'), '\nnext\nedit 4\nset dst 168.63.129.16 255.255.255.255\nset device port1\nset gateway ', variables ('sn1GatewayIP'), '\nnext\nend\nconfig system interface\nedit port1\nset mode static\nset ip ', variables('sn1IPfga'), '/', variables('sn1CIDRmask'), '\nset description external\nnext\nedit port2\nset mode static\nset ip ', variables('sn2IPfga'), '/', variables('sn2CIDRmask'), '\nset description internal\nnext\nedit port3\nset mode static\nset ip ', variables('sn3IPfga'), '/', variables('sn3CIDRmask'), '\nset description hasyncport\nnext\nedit port4\nset mode static\nset ip ', variables('sn4IPfga'), '/', variables('sn4CIDRmask'), '\nset description hammgmtport\nset allowaccess ping https ssh ftm\nnext\nend\nconfig system ha\nset group-id 1\nset group-name AzureHA\nset mode a-p\nset hbdev port3 100\nset session-pickup enable\nset session-pickup-connectionless enable\nset ha-mgmt-status enable\nconfig ha-mgmt-interfaces\nedit 1\nset interface port4\nset gateway ', variables('sn4GatewayIP'),'\nnext\nend\nset override disable\nset priority 255\nset unicast-hb enable\nset unicast-hb-peerip ', variables('sn3IPfgb'), '\nset password ', parameters('adminPassword'), '\nend\n', variables('fmgCustomData'), parameters('fortiGateAdditionalCustomData'), '\n')]",
+    "fgbCustomDataBody": "[concat('config system global\nset allow-traffic-redirect disable\nend\nconfig system sdn-connector\nedit AzureSDN\nset type azure\nset ha-status enable\nset resource-group ', resourceGroup().name, '\nset subscription-id ', subscription().subscriptionId, '\nconfig nic\nedit ', variables('fgbNic1Name'), '\nconfig ip\nedit ipconfig1\nset public-ip ', variables('publicIP1Name'), '\nnext\nend\nnext\n', variables('fgbHAFailoverMethod'), 'end\nconfig router static\nedit 1\nset gateway ', variables('sn1GatewayIP'), '\nset device port1\nnext\nedit 2\nset dst ', parameters('vnetAddressPrefix'), '\nset gateway ', variables('sn2GatewayIP'), '\nset device port2\nnext\nedit 3\nset dst 168.63.129.16 255.255.255.255\nset device port2\nset gateway ', variables ('sn2GatewayIP'), '\nnext\nedit 4\nset dst 168.63.129.16 255.255.255.255\nset device port1\nset gateway ', variables ('sn1GatewayIP'), '\nnext\nend\nconfig system interface\nedit port1\nset mode static\nset ip ', variables('sn1IPfgb'), '/', variables('sn1CIDRmask'), '\nset description external\nnext\nedit port2\nset mode static\nset ip ', variables('sn2IPfgb'), '/', variables('sn2CIDRmask'), '\nset description internal\nnext\nedit port3\nset mode static\nset ip ', variables('sn3IPfgb'), '/', variables('sn3CIDRmask'), '\nset description hasyncport\nnext\nedit port4\nset mode static\nset ip ', variables('sn4IPfgb'), '/', variables('sn4CIDRmask'), '\nset description hammgmtport\nset allowaccess ping https ssh ftm\nnext\nend\nconfig system ha\nset group-id 1\nset group-name AzureHA\nset mode a-p\nset hbdev port3 100\nset session-pickup enable\nset session-pickup-connectionless enable\nset ha-mgmt-status enable\nconfig ha-mgmt-interfaces\nedit 1\nset interface port4\nset gateway ', variables('sn4GatewayIP'),'\nnext\nend\nset override disable\nset priority 1\nset unicast-hb enable\nset unicast-hb-peerip ', variables('sn3IPfga'), '\nset password ', parameters('adminPassword'), '\nend\n', variables('fmgCustomData'), parameters('fortiGateAdditionalCustomData'), '\n')]",
     "customDataLicenseHeader": "--12345\nContent-Type: text/plain; charset=\"us-ascii\"\nMIME-Version: 1.0\nContent-Transfer-Encoding: 7bit\nContent-Disposition: attachment; filename=\"fgtlicense\"\n\n",
     "customDataFooter": "\n--12345--\n",
     "fgaCustomDataFortiFlex": "[if(equals(parameters('fortiGateLicenseFortiFlexA'),''),'',concat('LICENSE-TOKEN:',parameters('fortiGateLicenseFortiFlexA'), '\n'))]",
@@ -689,6 +702,7 @@
     "sn2IPStartAddress": "[split(parameters('subnet2StartAddress'),'.')]",
     "sn2IPfga": "[concat(variables('sn2IPArray0'),'.',variables('sn2IPArray1'),'.',variables('sn2IPArray2'),'.',int(variables('sn2IPStartAddress')[3]))]",
     "sn2IPfgb": "[concat(variables('sn2IPArray0'),'.',variables('sn2IPArray1'),'.',variables('sn2IPArray2'),'.',add(int(variables('sn2IPStartAddress')[3]),1))]",
+    "sn2IPfga2": "[concat(variables('sn2IPArray0'),'.',variables('sn2IPArray1'),'.',variables('sn2IPArray2'),'.',add(int(variables('sn2IPStartAddress')[3]),1))]",
     "sn3IPArray": "[split(parameters('subnet3Prefix'),'.')]",
     "sn3IPArray2ndString": "[string(variables('sn3IPArray')[3])]",
     "sn3IPArray2nd": "[split(variables('sn3IPArray2ndString'),'/')]",
@@ -850,7 +864,7 @@
             "properties": {
               "addressPrefix": "0.0.0.0/0",
               "nextHopType": "VirtualAppliance",
-              "nextHopIPAddress": "[variables('sn2IPfga')]"
+              "nextHopIPAddress": "[if(equals(variables('highAvailabilityFailoverSecondaryIP'), 'true'),variables('sn2IPfga2'),variables('sn2IPfga'))]"
             }
           }
         ]
@@ -1026,6 +1040,16 @@
             "properties": {
               "privateIPAllocationMethod": "Static",
               "privateIPAddress": "[variables('sn2IPfga')]",
+              "subnet": {
+                "id": "[variables('subnet2Id')]"
+              }
+            }
+          },
+          {
+            "name": "ipconfig2",
+            "properties": {
+              "privateIPAllocationMethod": "Static",
+              "privateIPAddress": "[variables('sn2IPfga2')]",
               "subnet": {
                 "id": "[variables('subnet2Id')]"
               }

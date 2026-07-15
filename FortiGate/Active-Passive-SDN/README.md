@@ -91,13 +91,231 @@ The ARM template deploys different resources and it is required to have the acce
 
 The FortiGate VMs need a specific configuration to operate in your environment. This configuration can be injected during provisioning or afterwards via the different management options including GUI, CLI, FortiManager or REST API.
 
-- [Default configuration using this template](doc/config-provisioning.md)
-- [Failover configuration](doc/config-failover.md)
-- [Upload VHD](../Documentation/faq-upload-vhd.md)
+- [Fabric Connector](#fabric-connector)
+- [VNET peering](#vnet-peering)
+- [Failover configuration](#failover-configuration)
+- [Availability Zone](#availability-zone)
+- [Default configuration using this template](#default-configuration)
+- [Upload VHD](https://community.fortinet.com/t5/FortiGate-Azure-Technical/Deployment-of-FortiGate-VM-using-a-VHD-image-file/ba-p/320338)
 
 ### Fabric Connector
 
 The FortiGate-VM uses [Managed Identities](https://docs.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/) for the SDN Fabric Connector. A SDN Fabric Connector is created automatically during deployment. After deployment, it is required apply the 'Reader' role to the Azure Subscription you want to resolve Azure Resources from. More information can be found on the [Fortinet Documentation Libary](https://docs.fortinet.com/document/fortigate-public-cloud/7.6.0/azure-administration-guide/236610/configuring-an-sdn-connector-using-a-managed-identity).
+
+### VNET peering
+
+In Microsoft Azure, this central security services hub is commonly implemented using VNET peering. The central security services hub component will receive, using user-defined routing (UDR), all or specific traffic that needs inspection going to/coming from on-prem networks or the public internet. This deployment can be used as the hub section of such a [Hub-Spoke network topology](https://learn.microsoft.com/en-us/azure/architecture/networking/architecture/hub-spoke?tabs=cli#communication-through-an-nva)
+
+### Failover configuration
+
+Once, licensed and rebooted, the FortiGate Fabric Connector needs to be configured to enable the cluster IP and route table to failover. Most of this config will be specific to your environment and so must be modified. The authentication part by default is configured using [managed identities](https://docs.fortinet.com/document/fortigate-public-cloud/7.6.0/azure-administration-guide/236610/configuring-an-sdn-connector-using-a-managed-identity). It can be done a service principal as well more information can be found [here](https://docs.fortinet.com/document/fortigate-public-cloud/7.2.0/azure-administration-guide/948968/azure-sdn-connector-service-principal-configuration-requirements)
+
+#### FortiGate A
+
+```text
+config system sdn-connector
+  edit "AzureSDN"
+  set type azure
+  set ha-status enable
+  set resource-group "fortigateapha"
+  set subscription-id 00000000-0000-0000-0000-000000000000
+  config nic
+    edit "FortiGate-A-NIC1"
+      config ip
+        edit "ipconfig1"
+        set public-ip "FGTAPClusterPublicIP"
+      next
+    end
+    next
+  end
+  config route-table
+    edit "FGTDefaultAPRouteTable"
+    config route
+    edit "toDefault"
+      set next-hop "172.16.136.68"
+    next
+  end
+  next
+ end
+end
+```
+
+#### FortiGate B
+
+```text
+config system sdn-connector
+  edit "AzureSDN"
+  set type azure
+  set ha-status enable
+  set resource-group "fortigateapha"
+  set subscription-id 00000000-0000-0000-0000-000000000000
+  config nic
+    edit "FortiGate-B-NIC1"
+    config ip
+      edit "ipconfig1"
+      set public-ip "FGTAPClusterPublicIP"
+    next
+  end
+  next
+  end
+  config route-table
+    edit "FGTDefaultAPRouteTable"
+      config route
+      edit "toDefault"
+         set next-hop "172.16.136.69"
+      next
+    end
+    next
+  end
+end
+```
+
+### Availability Zone
+
+Microsoft defines an Availability Zone to have the following properties:
+
+- Unique physical location with an Azure Region
+- Each zone is made up of one or more datacenter(s)
+- Independent power, cooling and networking
+- Inter Availability Zone network latency < 2ms (radius of +/- 100km)
+- Fault-tolerant to protect from datacenter failure
+
+Based on information in the presentation ['Inside Azure datacenter architecture with Mark Russinovich' at Microsoft Ignite 2019](https://www.youtube.com/watch?v=X-0V6bYfTpA)
+
+![active/passive design](images/fgt-ap-sdn-az.png)
+
+### Default configuration
+
+After deployment, the below configuration has been automatically injected during the deployment. The bold sections are the default values. If parameters have been changed during deployment these values will be different.
+
+#### FortiGate A
+
+<pre><code>
+config system global
+  set admin-sport 8443
+end
+config router static
+  edit 1
+    set gateway <b>10.0.1.1</b>
+    set device port1
+  next
+  edit 2
+    set dst <b>10.0.0.0/16</b>
+    set gateway <b>10.0.2.1</b>
+    set device "port2"
+  next
+end
+config system interface
+  edit "port1"
+    set vdom "root"
+    set mode static
+    set ip <b>10.0.1.4 255.255.255.0</b>
+    set allowaccess ping https ssh
+    set description "external"
+  next
+  edit "port2"
+    set vdom "root"
+    set mode static
+    set ip <b>10.0.2.4 255.255.255.0</b>
+    set description "internal"
+  next
+  edit "port3"
+    set vdom "root"
+    set mode static
+    set ip <b>10.0.3.4 255.255.255.240</b>
+    set description "hasyncport"
+  next
+  edit "port4"
+    set vdom "root"
+    set mode static
+    set ip <b>10.0.4.4 255.255.255.240</b>
+    set allowaccess ping https ssh
+    set description "management"
+  next
+end
+config system ha
+  set group-name "AzureHA"
+  set mode a-p
+  set hbdev "port3" 100
+  set session-pickup enable
+  set session-pickup-connectionless enable
+  set ha-mgmt-status enable
+  config ha-mgmt-interfaces
+    edit 1
+      set interface "port4"
+      set gateway <b>10.0.4.1</b>
+    next
+  end
+  set override disable
+  set priority 255
+  set unicast-hb enable
+  set unicast-hb-peerip <b>10.0.3.5</b>
+end
+</code></pre>
+
+#### FortiGate B
+
+<pre><code>
+config system global
+  set admin-sport 8443
+end
+config router static
+  edit 1
+    set gateway <b>10.0.1.1</b>
+    set device port1
+  next
+  edit 2
+    set dst <b>10.0.0.0 255.255.0.0</b>
+    set gateway <b>10.0.2.1</b>
+  set device "port2"
+  next
+end
+config system interface
+  edit "port1"
+    set vdom "root"
+    set mode static
+    set ip <b>10.0.1.5 255.255.255.0</b>
+    set allowaccess ping https ssh
+    set description "external"
+  next
+  edit "port2"
+    set vdom "root"
+    set mode static
+    set ip <b>10.0.2.5 255.255.255.0</b>
+    set description "internal"
+  next
+  edit "port3"
+    set mode static
+    set ip <b>10.0.3.5 255.255.255.240</b>
+    set description "hasyncport"
+  next
+  edit "port4"
+    set vdom "root"
+    set mode static
+    set ip <b>10.0.4.5 255.255.255.240</b>
+    set allowaccess ping https ssh
+    set description "management"
+  next
+end
+config system ha
+  set group-name "AzureHA"
+  set mode a-p
+  set hbdev "port3" 100
+  set session-pickup enable
+  set session-pickup-connectionless enable
+  set ha-mgmt-status enable
+  config ha-mgmt-interfaces
+    edit 1
+      set interface "port4"
+      set gateway <b>10.0.4.1</b>
+    next
+  end
+  set override disable
+  set priority 1
+  set unicast-hb enable
+  set unicast-hb-peerip <b>10.0.3.4</b>
+end
+</code></pre>
 
 ## Support
 
