@@ -2,18 +2,6 @@
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "adminUsername": {
-      "type": "string",
-      "metadata": {
-        "description": "Username for the Virtual Machine"
-      }
-    },
-    "adminPassword": {
-      "type": "securestring",
-      "metadata": {
-        "description": "Password for the Virtual Machine"
-      }
-    },
     "namePrefix": {
       "type": "string",
       "metadata": {
@@ -212,20 +200,6 @@
         "description": "Number of data disk"
       }
     },
-    "FortiNACLicenseBYOL": {
-      "type": "string",
-      "defaultValue": "",
-      "metadata": {
-        "description": "FortiNAC BYOL license content"
-      }
-    },
-    "FortiNACLicenseFortiFlex": {
-      "type": "string",
-      "defaultValue": "",
-      "metadata": {
-        "description": "FortiNAC FortiFlex license content"
-      }
-    },
     "customImageReference": {
       "type": "string",
       "defaultValue": "",
@@ -250,6 +224,8 @@
     }
   },
   "variables": {
+    "osAdminUsername": "fnacazureuser",
+    "osAdminPassword": "[concat('Fnac!', uniqueString(resourceGroup().id, deployment().name))]",
     "imagePublisher": "fortinet",
     "imageOffer": "fortinet_fortinac",
     "availabilitySetName": "[if(equals(parameters('existingAvailabilitySetName'),''),concat(parameters('namePrefix'),'-availabilityset'),parameters('existingAvailabilitySetName'))]",
@@ -263,13 +239,8 @@
     "vnetName": "[if(equals(parameters('vnetName'),''),concat(parameters('namePrefix'),'-vnet'),parameters('vnetName'))]",
     "subnet1Id": "[if(equals(parameters('vnetNewOrExisting'),'new'),resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'), parameters('subnet1Name')),resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet1Name')))]",
     "fnacVmName": "[concat(parameters('namePrefix'),'-fnac-a')]",
-    "customDataHeader": "Content-Type: multipart/mixed; boundary=\"12345\"\nMIME-Version: 1.0\n\n--12345\nContent-Type: text/plain; charset=\"us-ascii\"\nMIME-Version: 1.0\nContent-Transfer-Encoding: 7bit\nContent-Disposition: attachment; filename=\"config\"\n\n",
-    "customDataBody": "[concat('config system global\n set hostname ', variables('fnacVmName'), '\n set adom-status enable\n set clone-name-option keep\n set create-revision enable\n set device-view-mode tree\n set disable-module fortiview-noc\n set import-ignore-addr-cmt enable\n set partial-install enable\n set partial-install-force enable\n set partial-install-rev enable\n set perform-improve-by-ha enable\n set policy-hit-count enable\n set policy-object-icon enable\n set search-all-adoms enable\n end\n config system admin setting\n set sdwan-monitor-history enable\n set show-add-multiple enable\n set show-checkbox-in-table enable\n set show-device-import-export enable\n set show-hostname enable\n set show_automatic_script enable\n set show_schedule_script enable\n set show_tcl_script enable\n end\nconfig system interface\nedit port1\nset mode static\nset ip ',  variables('sn1IPfnac'), '/', variables('sn1CIDRmask'), '\nset description FortiNAC\nset allowaccess ping ssh https\nnext\nend\nconfig system route\nedit 1\nset dst 0.0.0.0/0\nset gateway ', variables('sn1GatewayIP'), '\nset device port1\nnext\nend\n',parameters('additionalCustomData'),variables('customDataFortiFlex'))]",
-    "customDataLicenseHeader": "--12345\nContent-Type: text/plain; charset=\"us-ascii\"\nMIME-Version: 1.0\nContent-Transfer-Encoding: 7bit\nContent-Disposition: attachment; filename=\"fgtlicense\"\n\n",
-    "customDataFooter": "\n--12345--\n",
-    "customDataFortiFlex": "[if(equals(parameters('FortiNACLicenseFortiFlex'),''),'',concat('exec vm-license ',parameters('FortiNACLicenseFortiFlex'), '\n'))]",
-    "customDataCombined": "[concat(variables('customDataHeader'),variables('customDataBody'),variables('customDataFortiFlex'),variables('customDataLicenseHeader'),parameters('FortiNACLicenseBYOL'), variables('customDataFooter'))]",
-    "fnacCustomData": "[base64(if(equals(parameters('FortiNACLicenseBYOL'),''),variables('customDataBody'),variables('customDataCombined')))]",
+    "customDataBody": "[concat('config system global\n set hostname ', variables('fnacVmName'), '\n set adom-status enable\n set clone-name-option keep\n set create-revision enable\n set device-view-mode tree\n set disable-module fortiview-noc\n set import-ignore-addr-cmt enable\n set partial-install enable\n set partial-install-force enable\n set partial-install-rev enable\n set perform-improve-by-ha enable\n set policy-hit-count enable\n set policy-object-icon enable\n set search-all-adoms enable\n end\n config system admin setting\n set sdwan-monitor-history enable\n set show-add-multiple enable\n set show-checkbox-in-table enable\n set show-device-import-export enable\n set show-hostname enable\n set show_automatic_script enable\n set show_schedule_script enable\n set show_tcl_script enable\n end\nconfig system interface\nedit port1\nset mode static\nset ip ',  variables('sn1IPfnac'), '/', variables('sn1CIDRmask'), '\nset description FortiNAC\nset allowaccess https-adminui ssh\nnext\nend\nconfig system route\nedit 1\nset dst 0.0.0.0/0\nset gateway ', variables('sn1GatewayIP'), '\nset device port1\nnext\nend\n',parameters('additionalCustomData'))]",
+    "fnacCustomData": "[base64(variables('customDataBody'))]",
     "fnacNic1Name": "[concat(variables('fnacVmName'),'-nic1')]",
     "fnacNic1Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('fnacNic1Name'))]",
     "publicIPName": "[if(equals(parameters('publicIPName'),''),concat(parameters('namePrefix'),'-fnac-pip'),parameters('publicIPName'))]",
@@ -502,8 +473,8 @@
         "availabilitySet": "[if(variables('useAS'), variables('availabilitySetId'), json('null'))]",
         "osProfile": {
           "computerName": "[variables('fnacVmName')]",
-          "adminUsername": "[parameters('adminUsername')]",
-          "adminPassword": "[parameters('adminPassword')]",
+          "adminUsername": "[variables('osAdminUsername')]",
+          "adminPassword": "[variables('osAdminPassword')]",
           "customData": "[variables('fnacCustomData')]"
         },
         "storageProfile": {
