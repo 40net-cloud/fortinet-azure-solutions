@@ -187,6 +187,7 @@ Describe "FGT Active-Passive SDN - $scenario" {
                 'fortiManagerIP',
                 'fortiManagerSerial',
                 'fortinetTags',
+                'highAvailabilityFailoverSecondaryIP',
                 'instanceType_arm64',
                 'instanceType_x64',
                 'instanceType_x64_g2',
