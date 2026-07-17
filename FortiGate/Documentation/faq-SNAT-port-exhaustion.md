@@ -39,7 +39,7 @@ More details about Outbound rules can be fund [here](https://learn.microsoft.com
 ## 2. Configure an individual public IP on FortiGate VM
 If a public IP is assigned to a VM, all ports provided by the public IP are available to the VM. Unlike with a load balancer or a NAT gateway, the ports are only accessible to the single VM associated with the IP address.
 
-Example of such configuration is shown [here](https://github.com/40net-cloud/fortinet-azure-solutions/blob/main/FortiGate/Active-Passive-ELB-ILB/doc/config-outbound-nat-considerations.md).
+Example of such configuration is shown [here](https://github.com/40net-cloud/fortinet-azure-solutions/blob/main/FortiGate/Active-Passive-ELB-ILB/README.md#outbound-connections---nat-considerations).
 
 ## 3. Use a NAT gateway for outbound connectivity to the Internet
 

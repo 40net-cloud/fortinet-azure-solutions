@@ -107,7 +107,7 @@ The FortiGate VMs need a specific configuration to match the deployed environmen
 - [Cloud-Init](#cloud-init)
 - [Availability Zone](#availability-zone)
 - [Default configuration using this template](#default-configuration)
-- [Upload VHD](https://community.fortinet.com/t5/FortiGate-Azure-Technical/Deployment-of-FortiGate-VM-using-a-VHD-image-file/ba-p/320338)
+- [Upload VHD](https://community.fortinet.com/fortigate-azure-technical-learning-161/deployment-of-fortigate-vm-using-a-vhd-image-file-171850)
 
 ### Fabric Connector
 
