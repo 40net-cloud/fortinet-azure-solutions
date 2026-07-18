@@ -1,7 +1,7 @@
 name: '[FPA] ARM - A-Single-VM'
 
 env:
-  ARMPath: FortiPAM/A-Single-VM/
+  ARMPath: FortiPAM/single/
 
 on:
   workflow_dispatch:
@@ -9,8 +9,8 @@ on:
     branches:
       - main
     paths:
-      - 'FortiPAM/A-Single-VM/*.json'
-      - 'FortiPAM/A-Single-VM/test/*.ps1'
+      - 'FortiPAM/single/*.json'
+      - 'FortiPAM/single/test/*.ps1'
 
 jobs:
 
