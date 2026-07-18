@@ -21,31 +21,31 @@ param (
     [string]$scenario  = "x64"
 )
 
-function Invoke-SshVerify {
-    # NAT port forwarding can briefly reset the connection right after a prior
-    # SSH session to the same public IP closes, so retry a few times before
-    # failing the test.
-    param (
-        [string]$Target,
-        [int]$Port,
-        [string]$SshKey,
-        [string]$Commands
-    )
-
-    $sshArgs = @('-p', $Port, '-tt', '-i', $SshKey, '-o', 'StrictHostKeyChecking=no', "devops@$Target")
-    $attempts = 3
-    for ($i = 1; $i -le $attempts; $i++) {
-        $result = $Commands | ssh @sshArgs
-        if ($LASTEXITCODE -eq 0) { return $result }
-        if ($i -lt $attempts) {
-            Write-Host "SSH attempt $i to ${Target}:${Port} failed (exit $LASTEXITCODE), retrying..."
-            Start-Sleep -Seconds 5
-        }
-    }
-    return $result
-}
-
 BeforeAll {
+    function script:Invoke-SshVerify {
+        # NAT port forwarding can briefly reset the connection right after a prior
+        # SSH session to the same public IP closes, so retry a few times before
+        # failing the test.
+        param (
+            [string]$Target,
+            [int]$Port,
+            [string]$SshKey,
+            [string]$Commands
+        )
+
+        $sshArgs = @('-p', $Port, '-tt', '-i', $SshKey, '-o', 'StrictHostKeyChecking=no', "devops@$Target")
+        $attempts = 3
+        for ($i = 1; $i -le $attempts; $i++) {
+            $result = $Commands | ssh @sshArgs
+            if ($LASTEXITCODE -eq 0) { return $result }
+            if ($i -lt $attempts) {
+                Write-Host "SSH attempt $i to ${Target}:${Port} failed (exit $LASTEXITCODE), retrying..."
+                Start-Sleep -Seconds 5
+            }
+        }
+        return $result
+    }
+
     $templateName = "Active-Active-ELB-ILB"
 
     # Resolve source path — works both in GitHub Actions and locally
