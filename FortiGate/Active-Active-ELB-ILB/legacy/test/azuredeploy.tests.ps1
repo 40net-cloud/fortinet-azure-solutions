@@ -21,6 +21,30 @@ param (
     [string]$scenario  = "x64"
 )
 
+function Invoke-SshVerify {
+    # NAT port forwarding can briefly reset the connection right after a prior
+    # SSH session to the same public IP closes, so retry a few times before
+    # failing the test.
+    param (
+        [string]$Target,
+        [int]$Port,
+        [string]$SshKey,
+        [string]$Commands
+    )
+
+    $sshArgs = @('-p', $Port, '-tt', '-i', $SshKey, '-o', 'StrictHostKeyChecking=no', "devops@$Target")
+    $attempts = 3
+    for ($i = 1; $i -le $attempts; $i++) {
+        $result = $Commands | ssh @sshArgs
+        if ($LASTEXITCODE -eq 0) { return $result }
+        if ($i -lt $attempts) {
+            Write-Host "SSH attempt $i to ${Target}:${Port} failed (exit $LASTEXITCODE), retrying..."
+            Start-Sleep -Seconds 5
+        }
+    }
+    return $result
+}
+
 BeforeAll {
     $templateName = "Active-Active-ELB-ILB"
 
@@ -278,14 +302,14 @@ exit
         }
 
         It 'SSH: FGT-1 configuration applied correctly' {
-            $result = $script:verify_commands | ssh -p 50030 -tt -i $sshkey -o StrictHostKeyChecking=no devops@$($script:fgtPublicIP)
+            $result = Invoke-SshVerify -Target $script:fgtPublicIP -Port 50030 -SshKey $sshkey -Commands $script:verify_commands
             $LASTEXITCODE | Should -Be 0
             Write-Host ("FGT-1 CLI output:`n" + ($result -join "`n"))
             $result | Should -Not -BeLike "*Command fail*"
         }
 
         It 'SSH: FGT-2 configuration applied correctly' {
-            $result = $script:verify_commands | ssh -p 50031 -tt -i $sshkey -o StrictHostKeyChecking=no devops@$($script:fgtPublicIP)
+            $result = Invoke-SshVerify -Target $script:fgtPublicIP -Port 50031 -SshKey $sshkey -Commands $script:verify_commands
             $LASTEXITCODE | Should -Be 0
             Write-Host ("FGT-2 CLI output:`n" + ($result -join "`n"))
             $result | Should -Not -BeLike "*Command fail*"

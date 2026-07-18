@@ -21,6 +21,28 @@ param (
     [string]$scenario  = "x64"
 )
 
+function Invoke-SshVerify {
+    # The management public IP can briefly reset the connection right after a
+    # prior SSH session closes, so retry a few times before failing the test.
+    param (
+        [string]$Target,
+        [string]$SshKey,
+        [string]$Commands
+    )
+
+    $sshArgs = @('-tt', '-i', $SshKey, '-o', 'StrictHostKeyChecking=no', "devops@$Target")
+    $attempts = 3
+    for ($i = 1; $i -le $attempts; $i++) {
+        $result = $Commands | ssh @sshArgs
+        if ($LASTEXITCODE -eq 0) { return $result }
+        if ($i -lt $attempts) {
+            Write-Host "SSH attempt $i to $Target failed (exit $LASTEXITCODE), retrying..."
+            Start-Sleep -Seconds 5
+        }
+    }
+    return $result
+}
+
 BeforeAll {
     $templateName = "Active-Passive-ELB-ILB"
 
@@ -290,14 +312,14 @@ exit
         }
 
         It 'SSH: FGT-A configuration applied correctly' {
-            $result = $script:verify_commands | ssh -tt -i $sshkey -o StrictHostKeyChecking=no devops@$($script:fgta)
+            $result = Invoke-SshVerify -Target $script:fgta -SshKey $sshkey -Commands $script:verify_commands
             $LASTEXITCODE | Should -Be 0
             Write-Host ("FGT-A CLI output:`n" + ($result -join "`n"))
             $result | Should -Not -BeLike "*Command fail*"
         }
 
         It 'SSH: FGT-B configuration applied correctly' {
-            $result = $script:verify_commands | ssh -tt -i $sshkey -o StrictHostKeyChecking=no devops@$($script:fgtb)
+            $result = Invoke-SshVerify -Target $script:fgtb -SshKey $sshkey -Commands $script:verify_commands
             $LASTEXITCODE | Should -Be 0
             Write-Host ("FGT-B CLI output:`n" + ($result -join "`n"))
             $result | Should -Not -BeLike "*Command fail*"
