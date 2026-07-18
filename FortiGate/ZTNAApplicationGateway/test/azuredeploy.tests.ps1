@@ -15,6 +15,28 @@ param (
     [string]$sshkeypub = ""
 )
 
+function Invoke-SshVerify {
+    # The management public IP can briefly reset the connection right after a
+    # prior SSH session closes, so retry a few times before failing the test.
+    param (
+        [string]$Target,
+        [string]$SshKey,
+        [string]$Commands
+    )
+
+    $sshArgs = @('-tt', '-i', $SshKey, '-o', 'StrictHostKeyChecking=no', "devops@$Target")
+    $attempts = 3
+    for ($i = 1; $i -le $attempts; $i++) {
+        $result = $Commands | ssh @sshArgs
+        if ($LASTEXITCODE -eq 0) { return $result }
+        if ($i -lt $attempts) {
+            Write-Host "SSH attempt $i to $Target failed (exit $LASTEXITCODE), retrying..."
+            Start-Sleep -Seconds 5
+        }
+    }
+    return $result
+}
+
 BeforeAll {
     $templateName = "ZTNAApplicationGateway"
 
@@ -213,7 +235,7 @@ exit
         }
 
         It 'SSH: FGT configuration applied correctly' {
-            $result = $script:verify_commands | ssh -tt -i $sshkey -o StrictHostKeyChecking=no devops@$($script:fgt)
+            $result = Invoke-SshVerify -Target $script:fgt -SshKey $sshkey -Commands $script:verify_commands
             $LASTEXITCODE | Should -Be 0
             Write-Host ("FGT CLI output:`n" + ($result -join "`n"))
             $result | Should -Not -BeLike "*Command fail*"
