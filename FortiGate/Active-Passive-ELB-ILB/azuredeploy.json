@@ -90,7 +90,7 @@
     },
     "instanceType_x64": {
       "type": "string",
-      "defaultValue": "Standard_D8s_v3",
+      "defaultValue": "Standard_D8s_v5",
       "allowedValues": [
         "Standard_F4s",
         "Standard_F8s",
@@ -138,7 +138,7 @@
     },
     "instanceType_x64_g2": {
       "type": "string",
-      "defaultValue": "Standard_D8_v5",
+      "defaultValue": "Standard_D8s_v6",
       "allowedValues": [
         "Standard_D8_v4",
         "Standard_D16_v4",
