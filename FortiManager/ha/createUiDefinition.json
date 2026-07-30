@@ -91,7 +91,7 @@
         "name": "imageVersion",
         "type": "Microsoft.Common.DropDown",
         "label": "FortiManager Image Version",
-        "defaultValue": "7.6.3",
+        "defaultValue": "8.0.0",
         "toolTip": "",
         "constraints": {
           "required": false,
