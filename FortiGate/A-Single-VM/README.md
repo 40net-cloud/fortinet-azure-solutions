@@ -12,13 +12,13 @@ This ARM template deploys a single FortiGate Next-Generation Firewall accompanie
 
 ## Design
 
-In Microsoft Azure, this single FortiGate-VM setup a basic setup to start exploring the capabilities of the next generation firewall. The central system will receive, using user-defined routing (UDR), all or specific traffic that needs inspection going to/coming from on-premises networks or the public internet.
+In Microsoft Azure, this single FortiGate-VM provides a basic setup to start exploring the capabilities of the next-generation firewall. The central system will receive, using user-defined routing (UDR), all or specific traffic that needs inspection going to/coming from on-premises networks or the public internet.
 
 This Azure ARM template will automatically deploy a full working environment containing the following components.
 
 - 1 standalone FortiGate-VM
 - 1 VNET containing a protected subnet
-- 1 User Defined Routes (UDR) for the protected subnet
+- 1 User Defined Route (UDR) for the protected subnet
 
 ![FortiGate-VM azure design](images/fgt-single-vm.png)
 
@@ -26,11 +26,11 @@ This Azure ARM template can also be extended or customized based on your require
 
 ## Deployment
 
-For the deployment, you can use the Azure Portal, Azure CLI, Powershell or Azure Cloud Shell. The Azure ARM templates are exclusive to Microsoft Azure and can't be used in other cloud environments. The main template is the `azuredeploy.json` which you can use in the Azure Portal. A `deploy.sh` script is provided to facilitate the deployment. You'll be prompted to provide the 4 required variables:
+For the deployment, you can use the Azure Portal, Azure CLI, PowerShell, or Azure Cloud Shell. The Azure ARM templates are exclusive to Microsoft Azure and can't be used in other cloud environments. The main template is the `azuredeploy.json` which you can use in the Azure Portal. A `deploy.sh` script is provided to facilitate the deployment. You'll be prompted to provide the 4 required variables:
 
 - PREFIX : This prefix will be added to each of the resources created by the template for ease of use and visibility.
-- LOCATION : This is the Azure region where the deployment will be deployed.
-- USERNAME : The username used to login to the FortiGate-VM GUI and SSH management UI.
+- LOCATION : This is the Azure region where the deployment will take place.
+- USERNAME : The username used to log in to the FortiGate-VM GUI and SSH management UI.
 - PASSWORD : The password used for the FortiGate-VM GUI and SSH management UI.
 
 ### Azure Portal
@@ -68,13 +68,13 @@ The ARM template deploys several resources and it is required to have the access
 
 - By default the template will deploy Standard F2s VMs for this architecture. Other VM instances are supported as well, a minimum of 2 NICs is required. A list of supported Azure instance types can be found [here](https://docs.fortinet.com/document/fortigate-public-cloud/7.4.0/azure-administration-guide/562841/instance-type-support)
 - Licenses for FortiGate-VM
-  - BYOL: A demo license can be made available via your Fortinet partner or on our website. The license can be injected during deployment or added after deployment. Purchased licenses need to be registered on the [Fortinet support site](http://support.fortinet.com). Download the .lic file after registration. Note, these files may not work until 60 minutes after it's initial creation.
-  - FLEX: A demo FortiFlex evaluation account can be made available via you Fortinet partner. The FortiFlex token can be injected during deployment or added after deployment.
+  - BYOL: A demo license can be made available via your Fortinet partner or on our website. The license can be injected during deployment or added after deployment. Purchased licenses need to be registered on the [Fortinet support site](http://support.fortinet.com). Download the .lic file after registration. Note, these files may not work until 60 minutes after its initial creation.
+  - FLEX: A demo FortiFlex evaluation account can be made available via your Fortinet partner. The FortiFlex token can be injected during deployment or added after deployment.
   - PAYG or OnDemand: These licenses are automatically generated during the deployment of the FortiGate-VM systems.
-  - The password provided during deployment must need password complexity rules from Microsoft Azure:
+  - The password provided during deployment must meet the password complexity rules from Microsoft Azure:
   - It must be 12 characters or longer
   - It needs to contain characters from at least 3 of the following groups: uppercase characters, lowercase characters, numbers, and special characters excluding '\' or '-'
-- The terms for the FortiGate-VM PAYG or BYOL image in the Azure Marketplace needs to be accepted once before usage. This is done automatically during deployment via the Azure Portal. For the Azure CLI the commands below need to be run before the first deployment in a subscription.
+- The terms for the FortiGate-VM PAYG or BYOL image in the Azure Marketplace need to be accepted once before usage. This is done automatically during deployment via the Azure Portal. For the Azure CLI the commands below need to be run before the first deployment in a subscription.
   - BYOL/FLEX
 `az vm image terms accept --publisher fortinet --offer fortinet_fortigate-vm --plan fortinet_fg-vm-byol_76`
   - PAYG
@@ -95,7 +95,7 @@ The FortiGate-VMs need a specific configuration to match the deployed environmen
 
 ### Fabric Connector
 
-The FortiGate-VM uses [Managed Identities](https://docs.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/) or [Service Principals](https://learn.microsoft.com/en-us/entra/identity-platform/app-objects-and-service-principals) for the SDN Fabric Connector. A SDN Fabric Connector is created automatically during deployment. After deployment, it is required to apply the 'Reader' role to the Azure Subscription you want to resolve Azure Resources from. More information can be found in the Fortinet Documentation
+The FortiGate-VM uses [Managed Identities](https://docs.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/) or [Service Principals](https://learn.microsoft.com/en-us/entra/identity-platform/app-objects-and-service-principals) for the SDN Fabric Connector. A SDN Fabric Connector is created automatically during deployment. After deployment, it is required to apply the 'Reader' role to the Azure Subscription you want to resolve Azure Resources from. More information can be found in the Fortinet Documentation.
 
 - [Managed Identity](https://docs.fortinet.com/document/fortigate-public-cloud/7.6.0/azure-administration-guide/236610/configuring-an-sdn-connector-using-a-managed-identity)
 - [Service Principal](https://docs.fortinet.com/document/fortigate-public-cloud/7.6.0/azure-administration-guide/948968/azure-sdn-connector-service-principal-configuration-requirements)
@@ -112,17 +112,17 @@ In Microsoft Azure, this central security services hub is commonly implemented u
 
 East-West connections are considered the connections between internal subnets within the VNET or peered VNETs. The goal is to direct this traffic via the FortiGate-VM.
 
-To direct traffic to the FortiGate-VM, routing needs to be adapted on Microsoft Azure using User Defined Routing (UDR). With UDRs the routing in Azure can be adapted to send traffic destined for a specific network IP range to a specific destination such as Internet, VPN Gateway, Virtual Network (VNET), ... In order for the FortiGate-VM to become the destination there is a specific destination called Virtual Appliance. The private IP of the FortiGate-VM is provided. More information about User Defined Routing can be found [here](https://docs.microsoft.com/en-us/azure/virtual-network/virtual-networks-udr-overview)
+To direct traffic to the FortiGate-VM, routing needs to be adapted on Microsoft Azure using User Defined Routing (UDR). With UDRs the routing in Azure can be adapted to send traffic destined for a specific network IP range to a specific destination such as Internet, VPN Gateway, Virtual Network (VNET), ... In order for the FortiGate-VM to become the destination, there is a specific destination called Virtual Appliance. The private IP of the FortiGate-VM is provided. More information about User Defined Routing can be found [here](https://docs.microsoft.com/en-us/azure/virtual-network/virtual-networks-udr-overview)
 
 #### East-West Flow
 
-In the diagram the different steps to establish a session are layed out. This flow is based on the configuration as deployed in this template.
+In the diagram the different steps to establish a session are laid out. This flow is based on the configuration as deployed in this template.
 
 ![East west flow](images/ew-flow.png)
 
 1. Connection from client to the private IP of server. Azure routes the traffic using UDR to the internal network interface - s: 172.16.137.4 - d: 172.16.138.4
 2. FortiGate-VM inspects the packet and when allowed sends the packet to the server - s: 172.16.137.4 - d: 172.16.138.4
-3. The server responds to the request, th Azure fabric sends the packet for inspection to the FortiGate-VM internal network interface using UDR - s: 172.16.137.4 - d: 172.16.138.4
+3. The server responds to the request, the Azure fabric sends the packet for inspection to the FortiGate-VM internal network interface using UDR - s: 172.16.137.4 - d: 172.16.138.4
 4. The FortiGate-VM accepts the return packet after inspection and sends it to the client - s: 172.16.137.4 - d: 172.16.138.4
 
 #### East-West Configuration
@@ -152,7 +152,7 @@ The drawing in the [flow](#east-west-flow) section is used in the configuration 
 
 On the FortiGate-VM, a firewall policy rule needs to be created to allow traffic from specific IP ranges going in and out of the same internal interface (port2). It is also possible to use dynamic addresses using the SDN Connector to have more dynamic firewall policies.
 
-Make sure to verify that the option allow-traffic-redirect is disabled to make sure the FortiGate handles the ingress and egress traffic on the same logical interface. More information can be found in [in this article](https://community.fortinet.com/t5/FortiGate/Technical-Tip-Traffic-handled-by-FortiGate-for-packet-which/ta-p/196651).
+Make sure to verify that the option allow-traffic-redirect is disabled to make sure the FortiGate handles the ingress and egress traffic on the same logical interface. More information can be found in [this article](https://community.fortinet.com/t5/FortiGate/Technical-Tip-Traffic-handled-by-FortiGate-for-packet-which/ta-p/196651).
 
 ### Inbound Connections
 
@@ -164,7 +164,7 @@ This template will use the Standard SKU public IPs. The standard public IP by de
 
 #### Inbound Flow
 
-In the diagram the different steps to establish a session are layed out. This flow is based on the configuration as deployed in this template.
+In the diagram the different steps to establish a session are laid out. This flow is based on the configuration as deployed in this template.
 
 <p align="center">
   <img width="800px" src="images/inbound-flow.png" alt="inbound flow">
@@ -189,7 +189,7 @@ The drawing in the [flow](#inbound-flow) section is used in the configuration sc
 
 ##### Azure user-defined route (UDR) - Inbound
 
-The user-defined route (UDR) is required to route return traffic back from the internal server to the FortiGate-VM. If the UDR is not configured, one needs to SNAT the inbound packet behind the FortiGate-VM internal interface to ensure the return packet send back via the FortiGate-VM.
+The user-defined route (UDR) is required to route return traffic back from the internal server to the FortiGate-VM. If the UDR is not configured, one needs to SNAT the inbound packet behind the FortiGate-VM internal interface to ensure the return packet is sent back via the FortiGate-VM.
 
 It is possible to create more specific routes instead of the general 0.0.0.0/0 route if only specific traffic needs to pass through the FortiGate-VM.
 
@@ -206,9 +206,9 @@ Next hop type: Virtual Appliance
 Next hop IP address: 172.16.136.68
 ```
 
-The additional routes on the screenshot will provide additional functionality. The 'Subnet' route will ensure virtual machines can talk to each other without being send to the FortiGate-VM. The 'VirtualNetwork' route will send traffic for all the subnets in the VNET to the FortiGate-VM for inspection.
+The additional routes on the screenshot will provide additional functionality. The 'Subnet' route will ensure virtual machines can talk to each other without being sent to the FortiGate-VM. The 'VirtualNetwork' route will send traffic for all the subnets in the VNET to the FortiGate-VM for inspection.
 
-It is recommended to deploy servers in different subnets behind the FortiGate-VM or in peered VNETs/subnets, these networks are indicated in documentation as protected subnets. It is not recommended to deploy virtual machines whose traffic needs to pass through the FortiGate-VM to be deployed in the same network as an interface of the FortiGate-VM (external or internal). This will cause routing loops when traffic needs to be routed between a protected subnet virtual machine and a internal subnet virtual machine via the FortiGate-VM.
+It is recommended to deploy servers in different subnets behind the FortiGate-VM or in peered VNETs/subnets, these networks are indicated in documentation as protected subnets. It is not recommended to deploy virtual machines whose traffic needs to pass through the FortiGate-VM to be deployed in the same network as an interface of the FortiGate-VM (external or internal). This will cause routing loops when traffic needs to be routed between a protected subnet virtual machine and an internal subnet virtual machine via the FortiGate-VM.
 
 ##### Azure network security group (NSG) - Inbound
 
@@ -234,7 +234,7 @@ On the FortiGate-VM, the first task is to create a virtual IP. Be aware that the
   <img width="800px" src="images/inbound-vip.png" alt="inbound vip">
 </p>
 
-Once the virtual IP is configured, a firewall policy needs to be created based on the virtual IP. It is possible to have a different port on the outside map to the port running on the server internally, resulting in port address translation (PAT)
+Once the virtual IP is configured, a firewall policy needs to be created based on the virtual IP. It is possible to have a different port on the outside map to the port running on the server internally, resulting in port address translation (PAT).
 
 <p align="center">
   <img width="800px" src="images/inbound-policy.png" alt="inbound policy">
@@ -248,7 +248,7 @@ Outbound connections are considered the connections coming from the internal sub
 
 To direct traffic to the FortiGate-VM routing needs to be adapted on Microsoft Azure using User Defined Routing (UDR). With UDRs the routing in Azure can be adapted to send traffic destined for a specific network IP range to a specific destination such as Internet, VPN Gateway, Virtual Network (VNET), ... In order for the FortiGate-VM to become the destination there is a specific destination called Virtual Appliance. The private IP of the FortiGate-VM is provided. More information about User Defined Routing can be found [here](https://docs.microsoft.com/en-us/azure/virtual-network/virtual-networks-udr-overview)
 
-Which public IP is used for the outbound connections depends on the configuration and layout of your deployed setup. There are 3 options
+Which public IP is used for the outbound connections depends on the configuration and layout of your deployed setup. There are 3 options:
 
 - Public IP directly connected to a primary or secondary private IP on the NIC of the FortiGate-VM
 - NAT Gateway attached to the subnet of the external NIC of the FortiGate-VM
@@ -262,12 +262,12 @@ NAT Gateway takes precedence over a public IP directly connected to a NIC as sec
 
 #### Outbound Flow
 
-In the diagram the different steps to establish a session are layed out.
+In the diagram the different steps to establish a session are laid out.
 
 ![Outbound flow](images/outbound-flow.png)
 
 1. Connection from client to the public IP of the server. Azure routes the traffic using UDR to the internal network interface of the FortiGate-VM. - s: 172.16.137.4 - d: w.x.y.z
-2. The FortiGate-VM inspects the packet and when allowed sends the packet translated to it's external port private IP outbound. - s: 172.16.136.4 - d: a.b.c.d
+2. The FortiGate-VM inspects the packet and when allowed sends the packet translated to its external port private IP outbound. - s: 172.16.136.4 - d: a.b.c.d
 3. The Azure Fabric will translate the source private IP to the linked public IP - s: a.b.c.d - d: w.x.y.z
 4. The server responds to the request - s: w.x.y.z - d: a.b.c.d
 5. The Azure Fabric translates the destination public IP to the linked private IP - s: w.x.y.z - d: 172.16.136.4
@@ -293,7 +293,7 @@ It is possible to create more specific routes instead of the general 0.0.0.0/0 r
   <img width="800px" src="images/fgt-udr.png" alt="fgt udr">
 </p>
 
-The route needed to route internet traffic to the FortiGate-VM contains the following values and attached to one or more protected subnets:
+The route needed to route internet traffic to the FortiGate-VM contains the following values and is attached to one or more protected subnets:
 
 ``` text
 Name: Default
@@ -304,7 +304,7 @@ Next hop IP address: 172.16.136.68
 
 ##### Azure network security group (NSG) - Outbound
 
-The default deployment of the FortiGate-VM deploys a network security group (NSG) on the network interfaces. This NSG ensure that all traffic is allowed and that inbound traffic is allowed when using Standard SKU public IP addresses.
+The default deployment of the FortiGate-VM deploys a network security group (NSG) on the network interfaces. This NSG ensures that all traffic is allowed and that inbound traffic is allowed when using Standard SKU public IP addresses.
 
 <p align="center">
   <img width="800px" src="images/fgt-nsg.png" alt="fgt-nsg">

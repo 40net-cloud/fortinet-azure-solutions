@@ -8,7 +8,7 @@ In this scenario we will be connecting your on-premise FortiGate installation to
 
 ### FortiGate Single VM
 
-In the diagram the different steps to establish a session are layed out. This flow is based on the configuration as deployed in this template.
+In the diagram the different steps to establish a session are laid out. This flow is based on the configuration as deployed in this template.
 
 <p align="center">
   <img width="800px" src="../images/ipsec-singlevm-flow.png" alt="inbound flow">
@@ -17,11 +17,11 @@ In the diagram the different steps to establish a session are layed out. This fl
 1. Connection from client to the server in Azure over the IPSEC connection between both FortiGate devices - s: 172.16.248.10 - d: 172.16.137.4
 2. Packet is decrypted, inspected and forwarded when allowed to the server - s: 172.16.248.10 - d: 172.16.137.4
 3. Server responds and sends the packet using user defined routing (UDR) back to the FortiGate in Azure - s: 172.16.137.4 - d: 172.16.248.10
-4. Packet is inspected and when allowed encrypted and send to the FortiGate for decryption and forwarding to the client - s: 172.16.137.4 - d: 172.16.248.10
+4. Packet is inspected and when allowed encrypted and sent to the FortiGate for decryption and forwarding to the client - s: 172.16.137.4 - d: 172.16.248.10
 
 ### Active-Passive with SDN connector
 
-In the diagram the different steps to establish a session are layed out. This flow is based on the configuration as deployed in this template.
+In the diagram the different steps to establish a session are laid out. This flow is based on the configuration as deployed in this template.
 
 <p align="center">
   <img width="800px" src="../images/ipsec-ap-sdn-flow.png" alt="inbound flow">
@@ -30,7 +30,7 @@ In the diagram the different steps to establish a session are layed out. This fl
 1. Connection from client to the server in Azure over the IPSEC connection between both FortiGate devices - s: 172.16.248.10 - d: 172.16.137.4
 2. Packet is decrypted, inspected and forwarded when allowed to the server - s: 172.16.248.10 - d: 172.16.137.4
 3. Server responds and sends the packet using user defined routing (UDR) back to the FortiGate in Azure - s: 172.16.137.4 - d: 172.16.248.10
-4. Packet is inspected and when allowed encrypted and send to the FortiGate for decryption and forwarding to the client - s: 172.16.137.4 - d: 172.16.248.10
+4. Packet is inspected and when allowed encrypted and sent to the FortiGate for decryption and forwarding to the client - s: 172.16.137.4 - d: 172.16.248.10
 
 On failover the public IP and user defined routing is moved to point to the secondary FortiGate using the SDN connector.
 

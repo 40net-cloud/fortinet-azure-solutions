@@ -4,7 +4,7 @@
 
 The Zero-trust network access (ZTNA) solution builds on top of FortiGate and FortiClient technologies to grant access on a per-session basis to individual applications only after devices and users are verified. This ZTNA policy is also applied when users are on the network, which provides the same zero-trust model no matter the user's location. 
 
-This setup provides a easy to deploy, pre-configured FortiGate-VM setup for users to connect to. The solutions connects with FortiClient Cloud or FortiClient EMS server for the endpoint protection policies.
+This setup provides a easy to deploy, pre-configured FortiGate-VM setup for users to connect to. The solution connects with FortiClient Cloud or FortiClient EMS server for the endpoint protection policies.
 
 ## Design
 
@@ -13,7 +13,7 @@ In Microsoft Azure, this single ZTNA Application Gateway setup provides a basic 
 This Azure ARM template will automatically deploy a full working environment containing the following components.
 
 - 1 standalone FortiGate firewall
-- 1 VNETs containing a protected subnet
+- 1 VNET containing a protected subnet
 - User Defined Routes (UDR) for the protected subnets
 
 ![ZTNA Application Gateway azure design](images/ztna-overview.png)
@@ -45,7 +45,7 @@ More information can be found [here](../A-Single-VM/README.md).
 
 The FortiGate VMs need a specific configuration to match the deployed environment. This configuration can be injected during provisioning or afterwards via the different options including GUI, CLI, FortiManager or REST API.
 
-This template used the default A Single VM ARM template. This tempalte already configures different aspects of the FortiGate during deployment. This configuration can be found [here](../A-Single-VM/README.md#default-configuration). Aditionaly, the below config is injected during provisioning with the correct values in bold replaced for your environment.
+This template used the default A Single VM ARM template. This template already configures different aspects of the FortiGate during deployment. This configuration can be found [here](../A-Single-VM/README.md#default-configuration). Additionally, the below config is injected during provisioning with the correct values in bold replaced for your environment.
 
 <pre><code>
 config firewall address
@@ -124,7 +124,7 @@ config authentication rule
 end
 </code></pre>
 
-If you are select to use FortiClient Cloud. This additional configuration will be passed:
+If you selected to use FortiClient Cloud, this additional configuration will be passed:
 
 <pre><code>
 config endpoint-control fctems
@@ -136,7 +136,7 @@ config endpoint-control fctems
 end
 </code></pre>
 
-If you are select to use FortiClient EMS. This additional configuration will be passed:
+If you selected to use FortiClient EMS, this additional configuration will be passed:
 
 <pre><code>
 config endpoint-control fctems

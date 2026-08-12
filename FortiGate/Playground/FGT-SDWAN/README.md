@@ -33,25 +33,25 @@ For the deployment Terraform is required. This multi-cloud deployment tool can b
 - USERNAME : The username used to login to the FortiGate GUI and SSH management UI.
 - PASSWORD : The password used for the FortiGate GUI and SSH management UI.
 
-For Microsoft Azure there is a fast track option by using the Azure Cloud Shell. The Azure Cloud Shell is an in-browser CLI that contains Terraform and other tools for deployment into Microsoft Azure. It is accessible via the Azure Portal or directly via [https://shell.azure.com/](https://shell.azure.com). You can copy and past the below one-liner to get start with your deployment.
+For Microsoft Azure there is a fast track option by using the Azure Cloud Shell. The Azure Cloud Shell is an in-browser CLI that contains Terraform and other tools for deployment into Microsoft Azure. It is accessible via the Azure Portal or directly via [https://shell.azure.com/](https://shell.azure.com). You can copy and paste the below one-liner to get started with your deployment.
 
 `cd ~/clouddrive/ && wget -qO- https://github.com/fortinet/azure-templates/archive/master.tar.gz | tar zxf - && cd ~/clouddrive/azure-templates-master/FortiGate/Terraform/VNET-Peering/ && ./deploy.sh`
 
 ![Azure Cloud Shell](images/azure-cloud-shell.png)
 
-After deployment you will be shown the IP address of all deployed components, this information is also stored in the output directory in the summary.out file. You can access both management GUI's using the public management IP's using HTTPS on port 443.
+After deployment you will be shown the IP address of all deployed components, this information is also stored in the output directory in the summary.out file. You can access the FortiGate management GUI using the public management IP address using HTTPS on port 443.
 
 !!! Beware that the output directory, Terraform Plan file and Terraform State files contain deployment information such as password, usernames, IP addresses and others.
 
 ## Requirements and limitations
 
-The Terrafom template deploys different resources and is required to have the access rights and quota in your Microsoft Azure subscription to deploy the resources.
+The Terraform template deploys different resources and is required to have the access rights and quota in your Microsoft Azure subscription to deploy the resources.
 
 - The template will deploy Standard F4s VMs to deploy the required active/passive setup
 - Licenses for FortiGate
   - BYOL: A demo license can be made available via your Fortinet partner or on our website. These can be injected during deployment or added after deployment.
   - PAYG or OnDemand: These licenses are automatically generated during the deployment of the FortiGate systems.
-- With the current Terraform AzureRM provider (1.27.0) it is required to have the configuration for both spokes in the same terraform template file. We have observed that sometimes the VNET peering timing is gives issues with the provider not retrying. You can relaunch the script or Terraform apply command to complete the deployment. This is issues is known with Terraform and will be solved in future version of the provider. This issue is tracked [here](https://github.com/terraform-providers/terraform-provider-azurerm/issues/260).
+- With the current Terraform AzureRM provider (1.27.0) it is required to have the configuration for both spokes in the same terraform template file. We have observed that sometimes the VNET peering timing gives issues with the provider not retrying. You can relaunch the script or Terraform apply command to complete the deployment. This issue is known with Terraform and will be solved in a future version of the provider. This issue is tracked [here](https://github.com/terraform-providers/terraform-provider-azurerm/issues/260).
 
 ## Support
 Fortinet-provided scripts in this and other GitHub projects do not fall under the regular Fortinet technical support scope and are not supported by FortiCare Support Services.

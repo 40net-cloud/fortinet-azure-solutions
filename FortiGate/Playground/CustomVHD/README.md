@@ -2,7 +2,7 @@
 
 ## Introduction
 
-The FortiGate VM's are normally deployed from the Azure Marketplace using the Azure Portal, using ARM/Terraform templates or other types of deployment. Sometimes you require a specific VHD's of the FortiGate VM.
+FortiGate VMs are normally deployed from the Azure Marketplace using the Azure Portal, using ARM/Terraform templates or other types of deployment. Sometimes you require a specific VHD of the FortiGate VM.
 
 ## Design
 
@@ -10,7 +10,7 @@ In Microsoft Azure, this central security service hub is commonly implemented us
 
 This Azure ARM template will deploy a single FortiGate VM containing the following components.
 
-- 1 FortiGate firewall in a Availability Set
+- 1 FortiGate firewall in an Availability Set
 - 1 Storage account for diagnostics
 - 1 VNET with external, internal and 2 protected subnets
 - User Defined Routes (UDR) for the different protected subnets
@@ -34,13 +34,13 @@ In the Azure Portal you can deploy the template either by clicking the buttons b
 
 #### Manual deployment
 
-- Search for 'Deploy a customer template' in the top search bar of the Azure portal
+- Search for 'Deploy a custom template' in the top search bar of the Azure portal
 ![Azure Portal 1](images/azure-portal-1.png)
 - Select the option 'Build your own template in the editor
 ![Azure Portal 2](images/azure-portal-1.png)
 - Copy in the contents of the 'azuredeploy.json' file into the editor
 ![Azure Portal 3](images/azure-portal-1.png)
-- Complete the required variables. The VHD uri is created using the 'Add-AzVhd' command as explained in the [Requirements and limitations](#requirements-and-limitations)
+- Complete the required variables. The VHD URI is created using the 'Add-AzVhd' command as explained in the [Requirements and limitations](#requirements-and-limitations)
 ![Azure Portal 4](images/azure-portal-1.png)
 
 ### Azure CLI and Azure Cloud Shell
@@ -63,7 +63,7 @@ After deployment, you will be shown the IP addresses of the deployed FortiGate. 
 
 ### Powershell and Azure Cloud Shell
 
-The below is an example on how to deploy a customer VHD using powershell instead of using an ARM Template. Verify and replace the variables in the begining and run the commands one by one to verify.
+The below is an example of how to deploy a custom VHD using PowerShell instead of using an ARM Template. Verify and replace the variables in the beginning and run the commands one by one to verify.
 
 ```powershell
 
@@ -117,7 +117,7 @@ $result = New-AzVM -ResourceGroupName $rg -Location $location -VM $vm
 
 ## Requirements and limitations
 
-This template will not deploy the default Azure Marketplace images. You can deploy using this template a custom VHD. These specific VHD's can be downloaded from support.fortinet.com. Once downloaded you need to upload this VHD to an Azure storage account. You can find more information on how to create the storage account on [this link](https://docs.microsoft.com/en-us/azure/storage/common/storage-quickstart-create-account?tabs=azure-portal). Once you have the URI for the storage account you need to use the below 'Add-AzVhd' powershell command to upload the image. The FortiGate image is very compressed and needs to extracted during the upload process. This is only working well using this powershell command. In the end you need to have a 2Gb VHD in your storage account.
+This template will not deploy the default Azure Marketplace images. You can deploy using this template a custom VHD. These specific VHD's can be downloaded from support.fortinet.com. Once downloaded you need to upload this VHD to an Azure storage account. You can find more information on how to create the storage account on [this link](https://docs.microsoft.com/en-us/azure/storage/common/storage-quickstart-create-account?tabs=azure-portal). Once you have the URI for the storage account you need to use the below 'Add-AzVhd' PowerShell command to upload the image. The FortiGate image is very compressed and needs to be extracted during the upload process. This is only working well using this PowerShell command. In the end you need to have a 2 GB VHD in your storage account.
 
 `Add-AzVhd -LocalFilePath ./fortios-v6-build5163.vhd -ResourceGroupName XXX-RG -Destination 'https://xxx.blob.core.windows.net/vhds/fortiosv6build5163.vhd'`
 
@@ -125,7 +125,7 @@ This template will not deploy the default Azure Marketplace images. You can depl
 
 The Azure ARM template deployment deploys different resources and is required to have the access rights and quota in your Microsoft Azure subscription to deploy the resources.
 
-- The template will deploy Standard F2s VMs to deploy the required active/passive setup
+- The template will deploy Standard F2s VMs to deploy the required single-VM setup
 - Licenses for FortiGate
   - BYOL: A demo license can be made available via your Fortinet partner or on our website. These can be injected during deployment or added after deployment.
   - PAYG or OnDemand: These licenses are automatically generated during the deployment of the FortiGate systems.

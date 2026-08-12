@@ -12,7 +12,7 @@ In Microsoft Azure, this central security service hub is commonly implemented us
 
 This Azure ARM template will automatically deploy a full working environment containing the following components.
 
-- 1 FortiGate firewalls in an active/passive deployment
+- 1 FortiGate firewall in a single-VM deployment
 - 3 VNETs (1 hub and 2 spoke networks) with each spoke network containing 1 subnet and the hub containing 2 extra protected subnets
 - VNET peering between HUB and spoke networks
 - User Defined Routes (UDR) for the different protected subnets
@@ -44,13 +44,13 @@ To fast track the deployment, use the Azure Cloud Shell. The Azure Cloud Shell i
 
 ![Azure Cloud Shell](images/azure-cloud-shell.png)
 
-After deployment, you will be shown the IP addresses of all deployed components. This information is also stored in the output directory in the 'summary.out' file. You can access both management GUI's using the public management IP addresses using HTTPS on port 443.
+After deployment, you will be shown the IP addresses of all deployed components. This information is also stored in the output directory in the 'summary.out' file. You can access the FortiGate management GUI using the public management IP address over HTTPS on port 443.
 
 ## Requirements and limitations
 
 The Azure ARM template deployment deploys different resources and is required to have the access rights and quota in your Microsoft Azure subscription to deploy the resources.
 
-- The template will deploy Standard F4s VMs to deploy the required active/passive setup
+- The template will deploy standard F4s VMs to deploy the required single-VM setup
 - Licenses for FortiGate
   - BYOL: A demo license can be made available via your Fortinet partner or on our website. These can be injected during deployment or added after deployment.
   - PAYG or OnDemand: These licenses are automatically generated during the deployment of the FortiGate systems.

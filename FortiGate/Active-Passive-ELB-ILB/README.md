@@ -12,32 +12,32 @@ This ARM template deploys a High Availability pair of FortiGate Next-Generation 
 
 ## Design
 
-In Microsoft Azure, you can deploy an active/passive pair of FortiGate VMs that communicate with each other and the Azure fabric. This FortiGate setup will receive the traffic to be inspected traffic using user defined routing (UDR) and public IPs. You can send all or specific traffic that needs inspection, going to/coming from on-prem networks or public internet by adapting the UDR routing.
+In Microsoft Azure, you can deploy an active/passive pair of FortiGate VMs that communicate with each other and the Azure fabric. This FortiGate setup will receive the traffic to be inspected using user defined routing (UDR) and public IPs. You can send all or specific traffic that needs inspection, going to/coming from on-prem networks or public internet by adapting the UDR routing.
 
 This Azure ARM template will automatically deploy a full working environment containing the following components.
 
-- 2 FortiGate firewall's in an active/passive deployment
+- 2 FortiGate firewalls in an active/passive deployment
 - 1 external Azure Standard Load Balancer for communication with internet
-- 1 internal Azure Standard Load Balancer to receive all internal traffic and forwarding towards Azure Gateways connecting ExpressRoute or Azure VPN's
+- 1 internal Azure Standard Load Balancer to receive all internal traffic and forwarding towards Azure Gateways connecting ExpressRoute or Azure VPNs
 - 1 VNET with 1 protected subnet and 4 subnets required for the FortiGate deployment (external, internal, ha mgmt and ha sync). If using an existing vnet, it must already have 5 subnets
 - 3 public IPs. The first public IP is for cluster access to/through the active FortiGate. The other two PIPs are for Management access
 - User Defined Routes (UDR) for the protected subnets
 
 ![active/passive design](images/fgt-ap.png)
 
-To enhance the availability of the solution VM can be installed in different Availability Zones instead of an Availability Set. If Availability Zones deployment is selected but the location does not support Availability Zones an Availability Set will be deployed. If Availability Zones deployment is selected and Availability Zones are available in the location, FortiGate A will be placed in Zone 1, FortiGate B will be placed in Zone 2.
+To enhance the availability of the solution, VMs can be installed in different Availability Zones instead of an Availability Set. If Availability Zones deployment is selected but the location does not support Availability Zones an Availability Set will be deployed. If Availability Zones deployment is selected and Availability Zones are available in the location, FortiGate A will be placed in Zone 1, FortiGate B will be placed in Zone 2.
 
 ![active/passive design](images/fgt-ap-az.png)
 
-This ARM template can also be used to extend or customized based on your requirements. Additional subnets besides the one's mentioned above are not automatically generated. By adapting the ARM templates you can add additional subnets which preferably require their own routing tables.
+This ARM template can also be used to be extended or customized based on your requirements. Additional subnets besides the ones mentioned above are not automatically generated. By adapting the ARM templates you can add additional subnets which preferably require their own routing tables.
 
 ## Deployment
 
-The FortiGate solution can be deployed using the Azure Portal or Azure CLI. There are 4 variables needed to complete kickstart the deployment. The deploy.sh script will ask them automatically. When you deploy the ARM template the Azure Portal will request the variables as a requirement.
+The FortiGate solution can be deployed using the Azure Portal or Azure CLI. There are 4 variables needed to kickstart the deployment. The deploy.sh script will ask them automatically. When you deploy the ARM template the Azure Portal will request the variables as a requirement.
 
-- PREFIX : This prefix will be added to each of the resources created by the templates for easy of use, manageability and visibility.
-- LOCATION : This is the Azure region where the deployment will be deployed
-- USERNAME : The username used to login to the FortiGate GUI and SSH management UI.
+- PREFIX : This prefix will be added to each of the resources created by the templates for ease of use, manageability and visibility.
+- LOCATION : This is the Azure region where the deployment will take place.
+- USERNAME : The username used to log in to the FortiGate GUI and SSH management UI.
 - PASSWORD : The password used for the FortiGate GUI and SSH management UI.
 
 ### Azure Portal
@@ -58,7 +58,7 @@ As of March 2026, new FortiGate SKUs were introduced in the Azure Marketplace th
 
 ### Azure CLI
 
-For Microsoft Azure there is a second option by using the Azure Cloud Shell. The Azure Cloud Shell is an in-browser CLI that contains all tools for deployment into Microsoft Azure. It is accessible via the Azure Portal or directly via [https://shell.azure.com/](https://shell.azure.com). You can copy and past the below one-liner to get start with your deployment.
+For Microsoft Azure there is a second option by using the Azure Cloud Shell. The Azure Cloud Shell is an in-browser CLI that contains all tools for deployment into Microsoft Azure. It is accessible via the Azure Portal or directly via [https://shell.azure.com/](https://shell.azure.com). You can copy and paste the below one-liner to get started with your deployment.
 To deploy via Azure Cloud Shell you can connect via the Azure Portal or directly to [https://shell.azure.com/](https://shell.azure.com/).
 
 - Login into the Azure Cloud Shell
@@ -77,15 +77,15 @@ After deployment you will be shown the IP address of all deployed components. Bo
 The ARM template deploys different resources and it is required to have the access rights and quota in your Microsoft Azure subscription to deploy the resources.
 
 - The Azure Standard Load Balancer only supports TCP and UDP protocols (HTTPS, DNS, SSH, ...). To create a highly available architecture where you can use other protocols an architecture with the SDN Connector failover is preferred. More details can be found [here](https://docs.microsoft.com/en-us/azure/load-balancer/components)
-- In case of failover the Azure Load Balancer will sends existing sessions to the failed VM as explained [here](https://docs.microsoft.com/en-us/azure/load-balancer/load-balancer-custom-probe-overview#probedown).
+- In case of failover the Azure Load Balancer will send existing sessions to the failed VM as explained [here](https://docs.microsoft.com/en-us/azure/load-balancer/load-balancer-custom-probe-overview#probedown).
 - The template will deploy Standard F4s VMs for this architecture. Other VM instances are supported as well with a minimum of 4 NICs. A list can be found [here](https://docs.fortinet.com/document/fortigate-public-cloud/7.4.0/azure-administration-guide/562841/instance-type-support)
 - Licenses for FortiGate
-  - BYOL: A demo license can be made available via your Fortinet partner or on our website. These can be injected during deployment or added after deployment. Purchased licenses need to be registered on the [Fortinet support site](http://support.fortinet.com). Download the .lic file after registration. Note, these files may not work until 60 minutes after it's initial creation.
+  - BYOL: A demo license can be made available via your Fortinet partner or on our website. These can be injected during deployment or added after deployment. Purchased licenses need to be registered on the [Fortinet support site](http://support.fortinet.com). Download the .lic file after registration. Note, these files may not work until 60 minutes after its initial creation.
   - PAYG or OnDemand: These licenses are automatically generated during the deployment of the FortiGate systems.
-- The password provided during deployment must need password complexity rules from Microsoft Azure:
+- The password provided during deployment must meet the password complexity rules from Microsoft Azure:
   - It must be 12 characters or longer
   - It needs to contain characters from at least 3 of the following groups: uppercase characters, lowercase characters, numbers, and special characters excluding '\' or '-'
-- The terms for the FortiGate PAYG or BYOL image in the Azure Marketplace needs to be accepted once before usage. This is done automatically during deployment via the Azure Portal. For the Azure CLI the commands below need to be run before the first deployment in a subscription.
+- The terms for the FortiGate PAYG or BYOL image in the Azure Marketplace need to be accepted once before usage. This is done automatically during deployment via the Azure Portal. For the Azure CLI the commands below need to be run before the first deployment in a subscription.
   - BYOL/FLEX
 `az vm image terms accept --publisher fortinet --offer fortinet_fortigate-vm --plan fortinet_fg-vm-byol_76`
   - PAYG
@@ -111,7 +111,7 @@ The FortiGate VMs need a specific configuration to match the deployed environmen
 
 ### Fabric Connector
 
-The FortiGate-VM uses [Managed Identities](https://docs.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/) for the SDN Fabric Connector. A SDN Fabric Connector is created automatically during deployment. After deployment, it is required apply the 'Reader' role to the Azure Subscription you want to resolve Azure Resources from. More information can be found on the [Fortinet Documentation Libary](https://docs.fortinet.com/document/fortigate-public-cloud/7.6.0/azure-administration-guide/236610/configuring-an-sdn-connector-using-a-managed-identity).
+The FortiGate-VM uses [Managed Identities](https://docs.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/) for the SDN Fabric Connector. A SDN Fabric Connector is created automatically during deployment. After deployment, it is required to apply the 'Reader' role to the Azure Subscription you want to resolve Azure Resources from. More information can be found on the [Fortinet Documentation Library](https://docs.fortinet.com/document/fortigate-public-cloud/7.6.0/azure-administration-guide/236610/configuring-an-sdn-connector-using-a-managed-identity).
 
 ### VNET peering
 
@@ -123,13 +123,13 @@ In Microsoft Azure, this central security services hub is commonly implemented u
 
 East-West connections are considered the connections between internal subnets within the VNET or peered VNETs. The goal is to direct this traffic via the FortiGate.
 
-To direct traffic to the FortiGate NGFW routing needs to be adapted on Microsoft Azure using User Defined Routing (UDR). With UDRs the routing in Azure can be adapted to send traffic destined for a specific network IP range to a specific destination such as Internet, VPN Gateway, Virtual Network (VNET), ... In order for the FortiGate to become the destination there is a specific destination called Virtual Appliance. Either the private IP of the FortiGate or the private IP of the internal Load Balancer is provided. More information about User Defined Routing can be found [here](https://docs.microsoft.com/en-us/azure/virtual-network/virtual-networks-udr-overview)
+To direct traffic to the FortiGate NGFW routing needs to be adapted on Microsoft Azure using User Defined Routing (UDR). With UDRs the routing in Azure can be adapted to send traffic destined for a specific network IP range to a specific destination such as Internet, VPN Gateway, Virtual Network (VNET), ... In order for the FortiGate to become the destination there is a specific destination called Virtual Appliance. Either the private IP of the FortiGate or the private IP of the internal Load Balancer is provided. More information about User Defined Routing can be found [here](https://docs.microsoft.com/en-us/azure/virtual-network/virtual-networks-udr-overview).
 
-In this design an Azure Standard Load Balancer Internal is used with a specific feature called HA Ports. This feature allows fast failover between the different members of the FortiGate HA custer for all TCP, UDP and ICMP protocols. It is only available in the Standard Load Balancer and as such all load balancers connected to the FortiGate need to be of the Standard type. ALso the public IPs connected to the FortiGate need to be of the Standard type. These is no possibility to migrate between basic and standard public IP sku's. More information about HA Ports can be found [here](https://docs.microsoft.com/en-us/azure/load-balancer/load-balancer-ha-ports-overview)
+In this design an Azure Standard Load Balancer Internal is used with a specific feature called HA Ports. This feature allows fast failover between the different members of the FortiGate HA cluster for all TCP, UDP and ICMP protocols. It is only available in the Standard Load Balancer and as such all load balancers connected to the FortiGate need to be of the Standard type. Also the public IPs connected to the FortiGate need to be of the Standard type. There is no possibility to migrate between basic and standard public IP SKUs. More information about HA Ports can be found [here](https://docs.microsoft.com/en-us/azure/load-balancer/load-balancer-ha-ports-overview).
 
 #### East-West Flow
 
-In the diagram the different steps to establish a session are layed out. This flow is based on the configuration as deployed in this template.
+In the diagram the different steps to establish a session are laid out. This flow is based on the configuration as deployed in this template.
 
 ![East west flow](images/eastwest-flow.png)
 
@@ -167,23 +167,23 @@ The drawing in the [flow](#east-west-flow) section is used in the configuration 
 
 On the FortiGate VM, a firewall policy rule needs to be created to allow traffic from specific IP ranges going in and out of the same internal interface (port2).
 
-Make sure to verify that the option allow-traffic-redirect is disabled to make sure the FortiGate handles the ingress and egress traffic on the same logical interface. More information can be found in [in this article](https://community.fortinet.com/t5/FortiGate/Technical-Tip-Traffic-handled-by-FortiGate-for-packet-which/ta-p/196651).
+Make sure to verify that the option allow-traffic-redirect is disabled to make sure the FortiGate handles the ingress and egress traffic on the same logical interface. More information can be found in [this article](https://community.fortinet.com/t5/FortiGate/Technical-Tip-Traffic-handled-by-FortiGate-for-packet-which/ta-p/196651).
 
 #### Limitations
 
-- In case of failover the Azure Load Balancer will sends existing sessions to the failed VM as explained [here](https://docs.microsoft.com/en-us/azure/load-balancer/load-balancer-custom-probe-overview#probedown).
+- In case of failover the Azure Load Balancer will send existing sessions to the failed VM as explained [here](https://docs.microsoft.com/en-us/azure/load-balancer/load-balancer-custom-probe-overview#probedown).
 
 ### Inbound connections
 
-Inbound connections are considered the connections coming from the internet towards the Azure Load Balancer to publish services like a webserver or other hosted in the VNET or peered VNETs. The published services via the Azure Load Balancer are limited to the TCP and UDP protocols, as the Azure Load Balancer does not support any other protocols..
+Inbound connections are considered the connections coming from the internet towards the Azure Load Balancer to publish services like a webserver or other hosted in the VNET or peered VNETs. The published services via the Azure Load Balancer are limited to the TCP and UDP protocols, as the Azure Load Balancer does not support any other protocols.
 
 To go beyond the limitation of the Azure Load Balancer and use other protocols (e.g. ICMP,ESP,FTP,...), an instance level public IP on each of the VMs in the cluster is required. Load balancing would then be possible using Azure Traffic Manager, Azure FrontDoor or FortiGSLB services using DNS or Anycast mechanisms. Using an instance level public IP will change the behaviour of the outbound connections. The use of Azure Traffic Manager or FortiGSLB services is out of the scope of this article.
 
-There are 2 public IP SKU's: Basic and Standard. This template will use the Standard SKU as we are using the Azure Standard Load Balancer. The standard public IP by default is a static allocation. More information can be found [in the Microsoft documentation](https://docs.microsoft.com/en-us/azure/virtual-network/public-ip-addresses).
+There are 2 public IP SKUs: Basic and Standard. This template will use the Standard SKU as we are using the Azure Standard Load Balancer. The standard public IP by default is a static allocation. More information can be found [in the Microsoft documentation](https://docs.microsoft.com/en-us/azure/virtual-network/public-ip-addresses).
 
 #### Inbound flow
 
-In the diagram the different steps to establish a session are layed out. This flow is based on the configuration as deployed in this template.
+In the diagram the different steps to establish a session are laid out. This flow is based on the configuration as deployed in this template.
 
 <p align="center">
   <img width="800px" src="images/inbound-flow.png" alt="inbound flow">
@@ -211,7 +211,7 @@ An example of the configuration of the FortiGate can be found [here](#fortigate)
 
 ##### Traffic connecting to a service on the FortiGate VMs
 
-For trafic destined to terminate on the FortiGate VMs (e.g. IPSEC tunnels, SSL VPN, ...) the FortiGate is by default not aware of the public IP address attached to the Azure Load Balancer. In this case, where you have the service part of the FortiGate VMs it is best practice to disable the Floating IP option.
+For traffic destined to terminate on the FortiGate VMs (e.g. IPSEC tunnels, SSL VPN, ...) the FortiGate is by default not aware of the public IP address attached to the Azure Load Balancer. In this case, where you have the service part of the FortiGate VMs it is best practice to disable the Floating IP option.
 
 An example of the configuration of the FortiGate can be found [here](#configuration---ipsec).
 
@@ -236,12 +236,12 @@ To create a new rule you can follow the settings from the TCP/80 rule that was a
 
 - Name: Complete with a name for this specific rule
 - Frontend IP address: Select the default frontend public IP or any additional frontend IP that was added to the Azure Load Balancer
-- Protocol: What protocol is the inbound connection using TCP or UDP
+- Protocol: What protocol is the inbound connection using: TCP or UDP
 - Port: The port used by the client to connect to the public IP on the Azure Load Balancer
-- Backend port: If you want to configure port translation you can specific a different port. Otherwise the same port as in the port field is used
+- Backend port: If you want to configure port translation you can specify a different port. Otherwise the same port as in the port field is used
 - Backend pool: This needs to be the backend pool created by the template which contains FortiGate instances
-- Health probe: The Azure Load Balancer sends out a probe to a TCP/UDP port to verify if the VM is up and running. In the FortiGate a specific probe config is activate on TCP/8008
-- Session persistance: By default the Azure Load Balancer uses a 5 tuple distribution mode. If only the client IP and optionally the protocol need to provide persistancy you change this here. More information on this topic can be found [here](https://docs.microsoft.com/en-us/azure/load-balancer/load-balancer-distribution-mode)
+- Health probe: The Azure Load Balancer sends out a probe to a TCP/UDP port to verify if the VM is up and running. In the FortiGate a specific probe config is activated on TCP/8008
+- Session persistence: By default the Azure Load Balancer uses a 5 tuple distribution mode. If only the client IP and optionally the protocol need to provide persistence you change this here.. More information on this topic can be found [here](https://docs.microsoft.com/en-us/azure/load-balancer/load-balancer-distribution-mode)
 - Floating IP (direct server return): This setting needs to be enabled for any service located behind the FortiGate. This will allow the packet towards the FortiGate to contain the public IP as the destination IP. That allows for easy identification and policy enforcement of the inbound connection on the FortiGate. Services running on the FortiGate like IPSEC disable this option. It allows the IPSEC engine to pick up the traffic to the local process on the private IP of the VM.
 - Create implicit outbound rules: Enabling this option will create an outbound SNAT rule for this protocol (TCP, UDP) and frontend IP address. This allows the Azure Load Balancer to use this frontend IP address for outbound connections.
 
@@ -260,7 +260,7 @@ The Virtual IP (VIP) is used to translate the inbound packets destination IP and
 - External IP address/range: The frontend IP configured on the Azure Load Balancer for this service
 - Internal IP address/range: The internal IP of the service or internal Azure Load Balancer used to load balance multiple servers
 - Port Forwarding: The port used for the service e.g. port 80.
-***CAVEAT:***** If the Port Forwarding option is not enabled outbound connectivity might be impacted. The FortiGate will translate all outbound traffic from the internal IP address/range to the External IP address which causes Azure to drop these packet. NAT to a public IP is always managed by Microsoft Azure.**
+***CAVEAT:***** If the Port Forwarding option is not enabled outbound connectivity might be impacted. The FortiGate will translate all outbound traffic from the internal IP address/range to the External IP address which causes Azure to drop these packets. NAT to a public IP is always managed by Microsoft Azure.**
 
 <p align="center">
   <img width="500px" src="images/inbound-fgt-vip.png" alt="fortigate vip">
@@ -313,31 +313,31 @@ Connectivity is one of the main use cases for the deployment of a FortiGate NGFW
 
 Outbound connections are considered the connections coming from the internal subnets within the VNET or peered VNETs via the FortiGate towards the internet.
 
-To direct traffic to the FortiGate NGFW routing needs to be adapted on Microsoft Azure using User Defined Routing (UDR). With UDRs the routing in Azure can be adapted to send traffic destined for a specific network IP range to a specific destination such as Internet, VPN Gateway, Virtual Network (VNET), ... In order for the FortiGate to become the destination there is a specific destination called Virtual Appliance. Either the private IP of the FortiGate or the frontend IP of the internal Load Balancer is provided. More information about User Defined Routing can be found [here](https://docs.microsoft.com/en-us/azure/virtual-network/virtual-networks-udr-overview)
+To direct traffic to the FortiGate NGFW routing needs to be adapted on Microsoft Azure using User Defined Routing (UDR). With UDRs the routing in Azure can be adapted to send traffic destined for a specific network IP range to a specific destination such as Internet, VPN Gateway, Virtual Network (VNET), ... In order for the FortiGate to become the destination there is a specific destination called Virtual Appliance. Either the private IP of the FortiGate or the frontend IP of the internal Load Balancer is provided. More information about User Defined Routing can be found [here](https://docs.microsoft.com/en-us/azure/virtual-network/virtual-networks-udr-overview).
 
-In this design an Azure Standard Load Balancer Internal is used with a specific feature called HA Ports. This feature allows fast failover between the different members of the FortiGate HA custer for all TCP, UDP and ICMP protocols. It is only available in the Standard Load Balancer and as such all load balancers connected to the FortiGate need to be of the Standard type. ALso the public IPs connected to the FortiGate need to be of the Standard type. These is no possibility to migrate between basic and standard public IP sku's. More information about HA Ports can be found [here](https://docs.microsoft.com/en-us/azure/load-balancer/load-balancer-ha-ports-overview)
+In this design an Azure Standard Load Balancer Internal is used with a specific feature called HA Ports. This feature allows fast failover between the different members of the FortiGate HA cluster for all TCP, UDP and ICMP protocols. It is only available in the Standard Load Balancer and as such all load balancers connected to the FortiGate need to be of the Standard type. Also the public IPs connected to the FortiGate need to be of the Standard type. There is no possibility to migrate between basic and standard public IP SKUs. More information about HA Ports can be found [here](https://docs.microsoft.com/en-us/azure/load-balancer/load-balancer-ha-ports-overview).
 
 #### Outbound flow
 
-In the diagram the different steps to establish a session are layed out. This flow is based on the configuration as deployed in this template.
+In the diagram the different steps to establish a session are laid out. This flow is based on the configuration as deployed in this template.
 
 ![Outbound flow](images/outbound-flow.png)
 
 1. Connection from client to the public IP of server. Azure routes the traffic using UDR to the internal Load Balancer. - s: 172.16.137.4 - d: a.b.c.d
 2. Azure Internal Load Balancer probes and send the packet to the active FGT. - s: 172.16.137.4 - d: a.b.c.d
-3. FGT inspects the packet and when allowed sends the packet translated to it's external port private IP to the Azure External Load Balancer. - s: 172.16.136.5 - d: a.b.c.d
+3. FGT inspects the packet and when allowed sends the packet translated to its external port private IP to the Azure External Load Balancer. - s: 172.16.136.5 - d: a.b.c.d
 4. The Azure External Load Balancer picks one of the available public IP address attached and translates the source IP - s: w.x.y.z - d: a.b.c.d
-5. The server responds to the request - s: a.b.c.d d: w.x.y.z
+5. The server responds to the request - s: a.b.c.d - d: w.x.y.z
 6. The Azure External Load Balancer sends the returns packet to the active FortiGate - s: a.b.c.d - d: 172.16.136.5
 7. The active FGT accepts the return packet after inspection. It translates and routes the packet to the client - s: a.b.c.d - d: 172.16.137.4
 
 #### Outbound configuration
 
-Outbound connectivity in Azure has several properties that are specific to the platform. These need to be taken into account. This configuration is a basic configuration that will NAT all outbound connections behind 1 or more public IPs on the Azure Load Balancer. More specific cases are be explained [here](#outbound-connections---nat-considerations).
+Outbound connectivity in Azure has several properties that are specific to the platform. These need to be taken into account. This configuration is a basic configuration that will NAT all outbound connections behind 1 or more public IPs on the Azure Load Balancer. More specific cases are explained [here](#outbound-connections---nat-considerations).
 
 This template deploys 2 Azure Load Balancers with a standard SKU which requires standard SKU public IP connected to the VM or Load Balancer. A standard SKU public IP requires a network security group, is zone aware and always has a static assignment.
 
-For more information on outbound connections in Azure the Microsoft documentation can be found [here](https://docs.microsoft.com/en-us/azure/load-balancer/load-balancer-outbound-connections)
+For more information on outbound connections in Azure the Microsoft documentation can be found [here](https://docs.microsoft.com/en-us/azure/load-balancer/load-balancer-outbound-connections).
 
 To configure the outbound connectivity to a service there are 2 resources that need to be verified/configured:
 
@@ -352,7 +352,7 @@ After deployment of the template, the External Azure Load Balancer is available 
 
 If there is a public IP assigned to the port1 network interface of the FortiGate where also the Azure Load Balancer is connected this will take precedence outbound NAT.
 
-The inbound rules have the option enabled to create outbound rules automatically. This enables outbound SNAT using the configured frontend ip for traffic coming from the FortiGate VM with it's private ip.
+The inbound rules have the option enabled to create outbound rules automatically. This enables outbound SNAT using the configured frontend IP for traffic coming from the FortiGate VM with its private IP.
 
 <p align="center">
   <img width="500px" src="images/inbound-lbrule-create.png">
@@ -360,7 +360,7 @@ The inbound rules have the option enabled to create outbound rules automatically
 
 ##### FortiGate
 
-On the FortiGate VM, a firewall policy rule needs to be created to allow traffic from the internal interface to the external interface with any or specific ip ranges and NAT enabled using the "Outgoing Interface Address".
+On the FortiGate VM, a firewall policy rule needs to be created to allow traffic from the internal interface to the external interface with any or specific IP ranges and NAT enabled using the "Outgoing Interface Address".
 
 <p align="center">
   <img width="500px" src="images/outbound-fgt-policy.png">
@@ -371,20 +371,20 @@ The NAT behind the FortiGate outgoing interface allows for a very simple configu
 #### Limitations
 
 - Azure has certain limitations on outbound connections, [more info](https://docs.microsoft.com/en-us/azure/load-balancer/load-balancer-outbound-connections#limitations)
-- Azure has a limited number of outbound ports it can allocated per public ip. More information and optimisations can be found [here](https://docs.microsoft.com/en-us/azure/load-balancer/load-balancer-outbound-connections#preallocatedports)
-- In case of failover the Azure Load Balancer will sends existing sessions to the failed VM as explained [here](https://docs.microsoft.com/en-us/azure/load-balancer/load-balancer-custom-probe-overview#probedown).
+- Azure has a limited number of outbound ports it can allocate per public IP. More information and optimisations can be found [here](https://docs.microsoft.com/en-us/azure/load-balancer/load-balancer-outbound-connections#preallocatedports)
+- In case of failover the Azure Load Balancer will send existing sessions to the failed VM as explained [here](https://docs.microsoft.com/en-us/azure/load-balancer/load-balancer-custom-probe-overview#probedown).
 
 ### Outbound connections - NAT considerations
 
-This chapter goes beyond the [default scenario](#outbound-connections) with 1 or multiple public IPs that handle all outbound traffic. The Azure Load Balancer has a pool of IPs that can be used. In some deployments customers would like to have specific 1-to-1 NAT or NAT behind a separate public IPs for one service, server or user. These NAT scenario's are mostly requested for specific ACLs implemented at other side or validation of public IPs in case of sending email, ...
+This chapter goes beyond the [default scenario](#outbound-connections) with 1 or multiple public IPs that handle all outbound traffic. The Azure Load Balancer has a pool of IPs that can be used. In some deployments customers would like to have specific 1-to-1 NAT or NAT behind separate public IPs for one service, server or user. These NAT scenarios are mostly requested for specific ACLs implemented at the other side or for validation of public IPs in case of sending email, ...
 
-The Azure Load Balancer is limited in available outbound rules direct traffic as we would like for 1-to-1 NAT or NAT of specific services. The outbound rules only applies to the primary IP configuration of a NIC (limitations can be found [here](https://docs.microsoft.com/en-us/azure/load-balancer/load-balancer-outbound-connections#limitations)). This prevents us to differentiate the traffic based on different outbound IPs on the FortiGate.
+The Azure Load Balancer is limited in available outbound rules direct traffic as we would like for 1-to-1 NAT or NAT of specific services. The outbound rules only apply to the primary IP configuration of a NIC (limitations can be found [here](https://docs.microsoft.com/en-us/azure/load-balancer/load-balancer-outbound-connections#limitations)). This prevents us from differentiating the traffic based on different outbound IPs on the FortiGate.
 
-To achieve this NAT one or more public IPs needs to be attached to the external NIC of the FortiGate. In this Active-Passive HA cluster is best to use the SDN connector to failover the public IP from the primary to the secondary in case of failure of the primary fortigate.
+To achieve this NAT one or more public IPs needs to be attached to the external NIC of the FortiGate. In this Active-Passive HA cluster it is best to use the SDN connector to failover the public IP from the primary to the secondary in case of failure of the primary fortigate.
 
 #### Outbound NAT flow
 
-In the diagram the different steps to establish a session are layed out. This flow is based on the configuration as deployed in this template.
+In the diagram the different steps to establish a session are laid out. This flow is based on the configuration as deployed in this template.
 
 ![Outbound flow](images/outbound-121-flow.png)
 
@@ -392,15 +392,15 @@ In the diagram the different steps to establish a session are layed out. This fl
 2. Azure Internal Load Balancer probes and send the packet to the active FGT - s: 172.16.137.4 - d: a.b.c.d
 3. FGT inspects the packet and when allowed performs source NAT using IP pool settings to the secondary IP on the external interface - s: 172.16.136.7 (or 8) - d: a.b.c.d
 4. The Azure router will NAT the source IP of the packet to the attached public IP - s: w.x.y.z - d: a.b.c.d
-5. The server responds to the request - s: a.b.c.d d: w.x.y.z
-6. The Azure router NAT the destination address to the private IP of the secondary IP configuration of the external NIC attached to the public IP - s: a.b.c.d - d: 172.16.136.7 (or 8)
+5. The server responds to the request - s: a.b.c.d - d: w.x.y.z
+6. The Azure router NATs the destination address to the private IP of the secondary IP configuration of the external NIC attached to the public IP - s: a.b.c.d - d: 172.16.136.7 (or 8)
 7. The active FGT accepts the return packet after inspection. It translates and routes the packet to the client - s: a.b.c.d - d: 172.16.137.4
 
 #### Outbound NAT configuration
 
 Outbound connectivity in Azure has several properties that are specific to the platform. These need to be taken into account.
 
-For more information on outbound connections in Azure the Microsoft documentation can be found [here](https://docs.microsoft.com/en-us/azure/load-balancer/load-balancer-outbound-connections)
+For more information on outbound connections in Azure the Microsoft documentation can be found [here](https://docs.microsoft.com/en-us/azure/load-balancer/load-balancer-outbound-connections).
 
 To configure the 1-to-1 outbound connectivity to a service there are 2 resources that need to be verified/configured:
 
@@ -435,9 +435,9 @@ The drawing in the [flow](#outbound-nat-flow) section is used in the configurati
 
 ##### FortiGate
 
-On the FortiGate VM, a firewall policy rule needs to be created to allow traffic from the internal interface to the external interface with any or specific ip ranges and NAT enabled using the "Outgoing Interface Address".
+On the FortiGate VM, a firewall policy rule needs to be created to allow traffic from the internal interface to the external interface with any or specific IP ranges and NAT enabled using the "Outgoing Interface Address".
 
-1. Open the CLI of primary FortiGate and execute the below commands to make an vdom exception. This will case the IP Pool objects to not synchronized between cluster members. This feature is available in FortiOS 6.2.4, 6.4.0 or above. Each FortiGate VM needs to have unique IP Pool configured because they have unique secondary Private IP address which was configured in the Azure portal
+1. Open the CLI of primary FortiGate and execute the below commands to make a vdom exception. This will cause the IP Pool objects to not synchronize between cluster members. This feature is available in FortiOS 6.2.4, 6.4.0 or above. Each FortiGate VM needs to have a unique IP Pool configured because each has a unique secondary private IP address which was configured in the Azure portal.
 
 ```
 config system vdom-exception
@@ -465,7 +465,7 @@ end
   <img width="500px" src="images/outbound-121-fgt-policy.png">
 </p>
 
-4. Configure the Azure Fabric Connector on the FortiGate CLI. Via an API call to Azure it will move the public IP from NIC1 of primary FortiGate to NIC1 of secondary FortiGate in case HA cluster failover. To authenticate to azure either managed identity or a service principal can be use. The authentication must be configured for the Azure Fabric Connector to work and information can be found on the [Fortinet documentation site](https://docs.fortinet.com/document/fortigate-public-cloud/7.2.0/azure-administration-guide/502895/configuring-an-sdn-connector-in-azure).
+4. Configure the Azure Fabric Connector on the FortiGate CLI. Via an API call to Azure it will move the public IP from NIC1 of primary FortiGate to NIC1 of secondary FortiGate in case HA cluster failover. To authenticate to Azure either managed identity or a service principal can be used. The authentication must be configured for the Azure Fabric Connector to work and information can be found on the [Fortinet documentation site](https://docs.fortinet.com/document/fortigate-public-cloud/7.2.0/azure-administration-guide/502895/configuring-an-sdn-connector-in-azure).
 
 - Primary FortiGate
 
@@ -509,11 +509,11 @@ end
 
 - Azure has certain limitations on outbound connections: https://docs.microsoft.com/en-us/azure/load-balancer/load-balancer-outbound-connections#limitations
 - Traffic not matching the firewall policy created here will use the standard NAT via the Azure Load Balancer
-- Failover using the SDN connector is dependant on the execution time of the Azure API. If that timing is not acceptable it is possible to configure a public IP on both NICs and not use the SDN connector. The downside is that each firewall has a different public IP address
+- Failover using the SDN connector is dependent on the execution time of the Azure API. If that timing is not acceptable it is possible to configure a public IP on both NICs and not use the SDN connector. The downside is that each firewall has a different public IP address
 
 ### High Availability
 
-For this Active/Passive setup external and internal load balancers are used. These need to detect which the FortiGate VMs is online. This is done using a health probe on both Azure Load Balancers.
+For this Active/Passive setup external and internal load balancers are used. These need to detect which FortiGate VMs are online. This is done using a health probe on both Azure Load Balancers.
 
 #### High Availability probe configuration
 
@@ -521,14 +521,14 @@ For this Active/Passive setup external and internal load balancers are used. The
 
 On both the internal and the external Azure Load Balancer a probe needs to be configured and attached to Load Balancing rules for the FortiGate backend systems.
 
-On the external Azure Load Balancer this probe is needed for each port you open. On the internal Azure Load Balancer a catch all 'HA Port' rules is used.
+On the external Azure Load Balancer this probe is needed for each port you open. On the internal Azure Load Balancer a catch-all 'HA Port' rule is used.
 
 ![HA Probe](images/ha-probe1.png)
 ![HA Probe 2](images/ha-probe2.png)
 
 ##### FortiGate
 
-The probe configured on the Azure Load Balancer need to be enabled on the FortiGate. There are 4 lines of config that will enable the active FortiGate to respond on TCP port 8008 based on the state of the FGCP Unicast HA protocol.
+The probe configured on the Azure Load Balancer needs to be enabled on the FortiGate. There are 4 lines of config that will enable the active FortiGate to respond on TCP port 8008 based on the state of the FGCP Unicast HA protocol.
 
 ```text
 config system probe-response
@@ -537,9 +537,9 @@ config system probe-response
 end
 ```
 
-The Microsoft Azure Load Balancer sends out probes from a specific IP, 168.63.129.16. This IP requires to have a response from the same interface as it packet arrived from. To ensure that the probes send for the external or internal load balancer is send via the correct interface, the configuration deployed by the template adds static routes for this Microsoft probe IP for both the external and internal interface of the firewall.
+The Microsoft Azure Load Balancer sends out probes from a specific IP, 168.63.129.16. This IP requires to have a response from the same interface as it packet arrived from. To ensure that the probes sent for the external or internal load balancer are sent via the correct interface, the configuration deployed by the template adds static routes for this Microsoft probe IP for both the external and internal interface of the firewall.
 
-More information about this probe and the source IP can he found [here](https://docs.microsoft.com/en-us/azure/load-balancer/load-balancer-custom-probe-overview#probesource)
+More information about this probe and the source IP can be found [here](https://docs.microsoft.com/en-us/azure/load-balancer/load-balancer-custom-probe-overview#probesource)
 
 ```text
 config router static
@@ -558,7 +558,7 @@ end
 
 ### Cloud-init
 
-Microsoft Azure offers the possibility to inject a configuration during deployment. This method is referred to as Cloud-Init. Both using templates (ARM or Terraform) or via CLI (Powershell, AzureCLI), it is possible to provide a file with this configuration. In the case of FortiGate there are 3 options available.
+Microsoft Azure offers the possibility to inject a configuration during deployment. This method is referred to as Cloud-Init. Both using templates (ARM or Terraform) or via CLI (PowerShell, Azure CLI), it is possible to provide a file with this configuration. In the case of FortiGate there are 3 options available.
 
 #### Inline configuration file
 
@@ -603,7 +603,7 @@ Content-Disposition: attachment; filename="${fgt_license_file}"
 
 ```
 
-If you want to inject the license file via the AzureCLI, Powershell or via the Azure Portal (Custom Deployment) as a string, you need to remove the newline characters. The string in the 'fortiGateLicenseBYOLA' or 'fortiGateLicenseBYOLB' parameters should be a without newline. To remove the newline or carriage return out of the license file retrieved from Fortinet support you can use the below command:
+If you want to inject the license file via the Azure CLI, PowerShell or via the Azure Portal (Custom Deployment) as a string, you need to remove the newline characters. The string in the 'fortiGateLicenseBYOLA' or 'fortiGateLicenseBYOLB' parameters should be without newline. To remove the newline or carriage return out of the license file retrieved from Fortinet support you can use the below command:
 
 Bash
 
@@ -613,7 +613,7 @@ $ tr -d '\r\n' < FGVMXXXXXXXXXXXX.lic
 -----BEGIN FGT VM LICENSE-----YourLicenseCode-----END FGT VM LICENSE-----
 ```
 
-Powershell
+PowerShell
 
 ```text
 > (Get-Content 'FGVMXXXXXXXXXXXX.lic') -join ''
@@ -672,7 +672,7 @@ FTNT-FGT-A # diagnose debug cloudinit show
 
 Microsoft defines an Availability Zone to have the following properties:
 
-- Unique physical location with an Azure Region
+- Unique physical location within an Azure Region
 - Each zone is made up of one or more datacenter(s)
 - Independent power, cooling and networking
 - Inter Availability Zone network latency < 2ms (radius of +/- 100km)
@@ -857,7 +857,7 @@ There are different components in the whole delivery chain
 The Azure Load Balancer comes in 2 different flavors/SKUs: Basic and Standard. Due to the requirements in this deployment Standard SKU Load Balancers are used in this setup.
 Microsoft provides extensive documentation on the Azure Load Balancer [here](https://docs.microsoft.com/en-us/azure/load-balancer/load-balancer-overview). Before deployment it is advised to verify the [different components and concepts](https://docs.microsoft.com/en-us/azure/load-balancer/components) of the Azure Load Balancer.
 
-Once deployed and the traffic is somehow not flowing as expected the Azure Load Balancer, as it is in the data path, could be the source. Most of the issues seens with the Azure Load Balancer are regarding the health probes not responding. The current status of the health probes can be verified in the Azure Portal > Your Azure Load Balancer > Monitoring > Metrics > Metric - 'Health Probe Status'. The example taken from a test setup shows a health probe that stops responding around 5:30 PM.
+Once deployed and the traffic is somehow not flowing as expected the Azure Load Balancer, as it is in the data path, could be the source. Most of the issues seen with the Azure Load Balancer are regarding the health probes not responding. The current status of the health probes can be verified in the Azure Portal > Your Azure Load Balancer > Monitoring > Metrics > Metric - 'Health Probe Status'. The example taken from a test setup shows a health probe that stops responding around 5:30 PM.
 
 <p align="center">
   <img width="500px" src="images/troubleshooting-loadbalancer.png">
@@ -908,7 +908,7 @@ Below you can see an output in JSON of a log rule as they can be found on the st
 
 ### Troubleshooting Standard Public IP
 
-The standard public ip has some extra features like zone redundancy. The most important item property of this Standard SKU resource is that inbound communication fails until an network security group is associated with the network interface or subnet that allows the inbound traffic.
+The standard public IP has some extra features like zone redundancy. The most important property of this Standard SKU resource is that inbound communication fails until a network security group is associated with the network interface or subnet that allows the inbound traffic.
 
 More information can be found [here](https://docs.microsoft.com/en-us/azure/virtual-network/public-ip-addresses#standard)
 
@@ -916,10 +916,10 @@ More information can be found [here](https://docs.microsoft.com/en-us/azure/virt
 
 On the FortiGate there is a plethora of troubleshooting tools available. More can be found [here](https://docs2.fortinet.com/document/fortigate/6.4.3/administration-guide/244292/troubleshooting).
 
-For your deployment in Azure there are some specific
+For your deployment in Azure there are some specific items to be aware of:
 
 - Accelerated Networking: This enables direct connection from the VM to the backend ethernet hardware on the hypervisor and enables much better throughput.
-  - On the FortiGate you can retrieve the network interface configuration. The SR-IOV pseudo interace should only be available when accelerated networking is activated. On the driver side the driver called 'hv_netvsc' needs to be active. If the speed lists 40000full or 50000full the accelerated networking driver is active. The FortiOS GUI does not display the virtual interface.
+  - On the FortiGate you can retrieve the network interface configuration. The SR-IOV pseudo interface should only be available when accelerated networking is activated. On the driver side the driver called 'hv_netvsc' needs to be active. If the speed lists 40000full or 50000full the accelerated networking driver is active. The FortiOS GUI does not display the virtual interface.
   - On the Azure Portal it can be verified on the network interface properties pane. Alternatively this information can be requested via the Azure CLI.
 
 ```text

@@ -20,7 +20,7 @@ Terraform deploys the following components:
 ## Deployment
 To deploy the FortiGate-VM to GCP:
 1. Clone the repository.
-2. Rename the service account key file to `account.json` and put account.json file to the directory.
+2. Rename the service account key file to `account.json` and put the `account.json` file in the directory.
 3. Customize variables in the `vars.tf` file as needed.
 4. Initialize the providers and modules:
    ```sh

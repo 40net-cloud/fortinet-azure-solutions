@@ -6,7 +6,7 @@ The FortiGate-VM ARM and Terraform templates for a Single VM and Active/Passive 
 
 ## A Single VM
 
-For this architecture is this public IP used for ingress, egress as well as management functionality. If a public IP can't be attached directly to the VM a Public Load Balancer needs to be deployed in front fo the FortiGate-VM. During deployment of the FortiGate-VM from the Azure Marketplace or the ARM Templates it is possible to select none as the public IP. After the deployment a public load balancer can be installed with the FortiGate-VM as a backend.
+For this architecture is this public IP used for ingress, egress as well as management functionality. If a public IP can't be attached directly to the VM a Public Load Balancer needs to be deployed in front of the FortiGate-VM. During deployment of the FortiGate-VM from the Azure Marketplace or the ARM Templates it is possible to select none as the public IP. After the deployment a public load balancer can be installed with the FortiGate-VM as a backend.
 
 ![Single VM without a public IP](images/faq-publicip-singlevm.png)
 

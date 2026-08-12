@@ -15,7 +15,7 @@ This Azure ARM template can also be extended or customized based on your require
 
 ## Deployment
 
-For the deployment, you can use the Azure Portal, Azure CLI, Powershell or Azure Cloud Shell. The Azure ARM templates are exclusive to Microsoft Azure and can't be used in other cloud environments. The main template is the `azuredeploy.json` which you can use in the Azure Portal. A `deploy.sh` script is provided to facilitate the deployment. You'll be prompted to provide the 4 required variables:
+For the deployment, you can use the Azure Portal, Azure CLI, PowerShell or Azure Cloud Shell. The Azure ARM templates are exclusive to Microsoft Azure and can't be used in other cloud environments. The main template is the `azuredeploy.json` which you can use in the Azure Portal. A `deploy.sh` script is provided to facilitate the deployment. You'll be prompted to provide the 4 required variables:
 
 - PREFIX : This prefix will be added to each of the resources created by the template for ease of use and visibility.
 - LOCATION : This is the Azure region where the deployment will be deployed.
@@ -36,7 +36,7 @@ To fast track the deployment, use the Azure Cloud Shell. The Azure Cloud Shell i
 
 `cd ~/clouddrive/ && wget -qO- https://github.com/jvhoof/fortinet-azure-solutions/archive/main.tar.gz | tar zxf - && cd ~/clouddrive/fortinet-azure-solutions-main/FortiGate/Playground/A-Single-VM-1nic/ && ./deploy.sh`
 
-After deployment, you will be shown the IP addresses of all deployed components. This information is also stored in the output directory in the 'summary.out' file. You can access both management GUI's using the public management IP addresses using HTTPS on port 443.
+After deployment, you will be shown the IP addresses of all deployed components. This information is also stored in the output directory in the 'summary.out' file. You can access the FortiGate management GUI using the public management IP address using HTTPS on port 443.
 
 ## Requirements and limitations
 

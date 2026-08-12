@@ -12,30 +12,30 @@ This ARM template deploys a High Availability pair of FortiGate Next-Generation 
 
 ## Design
 
-In Microsoft Azure, you can deploy an active/passive pair of FortiGate VMs that communicate with each other and the Azure fabric. This FortiGate setup will receive the to be inspected traffic using user defined routing (UDR) and public IPs. You can send all or specific traffic that needs inspection, going to/coming from on-prem networks or public internet by adapting the UDR routing.
+In Microsoft Azure, you can deploy an active/passive pair of FortiGate VMs that communicate with each other and the Azure fabric. This FortiGate setup will receive the traffic to be inspected using user defined routing (UDR) and public IPs. You can send all or specific traffic that needs inspection, going to/coming from on-prem networks or public internet by adapting the UDR routing.
 
-This Azure ARM template will automatically deploy a full working environment containing the the following components.
+This Azure ARM template will automatically deploy a full working environment containing the following components.
 
-- 2 FortiGate firewall's in an active/passive deployment
-- 1 VNET with 2 protected subnets and 4 subnets required for the FortiGate deployment (external, internal, ha mgmt and ha sync). If using an existing vnet, it must already have 5 subnets
+- 2 FortiGate firewalls in an active/passive deployment
+- 1 VNET with 2 protected subnets and 4 subnets required for the FortiGate deployment (external, internal, ha mgmt and ha sync). If using an existing VNet, it must already have 5 subnets
 - 3 public IPs. The first public IP is for cluster access to/through the active FortiGate.  The other two PIPs are for Management access
 - User Defined Routes (UDR) for the protected subnets
 
 ![active/passive design](images/fgt-ap-sdn.png)
 
-To enhance the availability of the solution VM can be installed in different Availability Zones instead of an Availability Set. If Availability Zones deployment is selected but the location does not support Availability Zones an Availability Set will be deployed. If Availability Zones deployment is selected and Availability Zones are available in the location, FortiGate A will be placed in Zone 1, FortiGate B will be placed in Zone 2.
+To enhance the availability of the solution, VMs can be installed in different Availability Zones instead of an Availability Set. If Availability Zones deployment is selected but the location does not support Availability Zones an Availability Set will be deployed. If Availability Zones deployment is selected and Availability Zones are available in the location, FortiGate A will be placed in Zone 1, FortiGate B will be placed in Zone 2.
 
 ![active/passive design](images/fgt-ap-sdn-az.png)
 
-This ARM template can also be used to extend or customized based on your requirements. Additional subnets besides the one's mentioned above are not automatically generated. By adapting the ARM templates you can add additional subnets which preferably require their own routing tables.
+This ARM template can also be used to be extended or customized based on your requirements. Additional subnets besides the ones mentioned above are not automatically generated. By adapting the ARM templates you can add additional subnets which preferably require their own routing tables.
 
 ## Deployment
 
-The FortiGate solution can be deployed using the Azure Portal or Azure CLI. There are 4 variables needed to complete kickstart the deployment. The deploy.sh script will ask them automatically. When you deploy the ARM template the Azure Portal will request the variables as a requirement.
+The FortiGate solution can be deployed using the Azure Portal or Azure CLI. There are 4 variables needed to kickstart the deployment. The deploy.sh script will ask them automatically. When you deploy the ARM template the Azure Portal will request the variables as a requirement.
 
-- PREFIX : This prefix will be added to each of the resources created by the templates for easy of use, manageability and visibility.
-- LOCATION : This is the Azure region where the deployment will be deployed
-- USERNAME : The username used to login to the FortiGate GUI and SSH management UI.
+- PREFIX : This prefix will be added to each of the resources created by the templates for ease of use, manageability and visibility.
+- LOCATION : This is the Azure region where the deployment will take place.
+- USERNAME : The username used to log in to the FortiGate GUI and SSH management UI.
 - PASSWORD : The password used for the FortiGate GUI and SSH management UI.
 
 ### Azure Portal
@@ -73,15 +73,15 @@ After deployment you will be shown the IP address of all deployed components. Bo
 
 The ARM template deploys different resources and it is required to have the access rights and quota in your Microsoft Azure subscription to deploy the resources.
 
-- This architecture relies on API calls to Azure. Shifting the public IP address and gateway IP addresses of the routes takes time for Azure to complete especially if environment is larger and there are multiple Public IPs to be shifted and multiple routes to be changed. The failover time is variable depending on the platform.
+- This architecture relies on API calls to Azure. Shifting the public IP address and gateway IP addresses of the routes takes time for Azure to complete especially if the environment is larger and there are multiple public IPs to be shifted and multiple routes to be changed. The failover time is variable depending on the platform.
 - The template will deploy Standard F4s VMs for this architecture. Other VM instances are supported as well with a minimum of 4 NICs. A list can be found [here](https://docs.fortinet.com/document/fortigate-public-cloud/7.4.0/azure-administration-guide/562841/instance-type-support)
 - Licenses for FortiGate
-  - BYOL: A demo license can be made available via your Fortinet partner or on our website. These can be injected during deployment or added after deployment. Purchased licenses need to be registered on the [Fortinet support site](http://support.fortinet.com). Download the .lic file after registration. Note, these files may not work until 60 minutes after it's initial creation.
+  - BYOL: A demo license can be made available via your Fortinet partner or on our website. These can be injected during deployment or added after deployment. Purchased licenses need to be registered on the [Fortinet support site](http://support.fortinet.com). Download the .lic file after registration. Note, these files may not work until 60 minutes after its initial creation.
   - PAYG or OnDemand: These licenses are automatically generated during the deployment of the FortiGate systems.
-- The password provided during deployment must need password complexity rules from Microsoft Azure:
+- The password provided during deployment must meet the password complexity rules from Microsoft Azure:
   - It must be 12 characters or longer
   - It needs to contain characters from at least 3 of the following groups: uppercase characters, lowercase characters, numbers, and special characters excluding '\' or '-'
-- The terms for the FortiGate PAYG or BYOL image in the Azure Marketplace needs to be accepted once before usage. This is done automatically during deployment via the Azure Portal. For the Azure CLI the commands below need to be run before the first deployment in a subscription.
+- The terms for the FortiGate PAYG or BYOL image in the Azure Marketplace need to be accepted once before usage. This is done automatically during deployment via the Azure Portal. For the Azure CLI the commands below need to be run before the first deployment in a subscription.
   - BYOL/FLEX
 `az vm image terms accept --publisher fortinet --offer fortinet_fortigate-vm --plan fortinet_fg-vm-byol_76`
   - PAYG
@@ -100,15 +100,15 @@ The FortiGate VMs need a specific configuration to operate in your environment. 
 
 ### Fabric Connector
 
-The FortiGate-VM uses [Managed Identities](https://docs.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/) for the SDN Fabric Connector. A SDN Fabric Connector is created automatically during deployment. After deployment, it is required apply the 'Reader' role to the Azure Subscription you want to resolve Azure Resources from. More information can be found on the [Fortinet Documentation Libary](https://docs.fortinet.com/document/fortigate-public-cloud/7.6.0/azure-administration-guide/236610/configuring-an-sdn-connector-using-a-managed-identity).
+The FortiGate-VM uses [Managed Identities](https://docs.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/) for the SDN Fabric Connector. A SDN Fabric Connector is created automatically during deployment. After deployment, it is required to apply the 'Reader' role to the Azure Subscription you want to resolve Azure Resources from. More information can be found on the [Fortinet Documentation Library](https://docs.fortinet.com/document/fortigate-public-cloud/7.6.0/azure-administration-guide/236610/configuring-an-sdn-connector-using-a-managed-identity).
 
 ### VNET peering
 
-In Microsoft Azure, this central security services hub is commonly implemented using VNET peering. The central security services hub component will receive, using user-defined routing (UDR), all or specific traffic that needs inspection going to/coming from on-prem networks or the public internet. This deployment can be used as the hub section of such a [Hub-Spoke network topology](https://learn.microsoft.com/en-us/azure/architecture/networking/architecture/hub-spoke?tabs=cli#communication-through-an-nva)
+In Microsoft Azure, this central security services hub is commonly implemented using VNET peering. The central security services hub component will receive, using user-defined routing (UDR), all or specific traffic that needs inspection going to/coming from on-prem networks or the public internet. This deployment can be used as the hub section of such a [Hub-Spoke network topology](https://learn.microsoft.com/en-us/azure/architecture/networking/architecture/hub-spoke?tabs=cli#communication-through-an-nva).
 
 ### Failover configuration
 
-Once, licensed and rebooted, the FortiGate Fabric Connector needs to be configured to enable the cluster IP and route table to failover. Most of this config will be specific to your environment and so must be modified. The authentication part by default is configured using [managed identities](https://docs.fortinet.com/document/fortigate-public-cloud/7.6.0/azure-administration-guide/236610/configuring-an-sdn-connector-using-a-managed-identity). It can be done a service principal as well more information can be found [here](https://docs.fortinet.com/document/fortigate-public-cloud/7.2.0/azure-administration-guide/948968/azure-sdn-connector-service-principal-configuration-requirements)
+Once licensed and rebooted, the FortiGate Fabric Connector needs to be configured to enable the cluster IP and route table to failover. Most of this config will be specific to your environment and so must be modified. The authentication part by default is configured using [managed identities](https://docs.fortinet.com/document/fortigate-public-cloud/7.6.0/azure-administration-guide/236610/configuring-an-sdn-connector-using-a-managed-identity). It can also be done using a service principal; more information can be found [here](https://docs.fortinet.com/document/fortigate-public-cloud/7.2.0/azure-administration-guide/948968/azure-sdn-connector-service-principal-configuration-requirements).
 
 #### FortiGate A
 
@@ -174,7 +174,7 @@ end
 
 Microsoft defines an Availability Zone to have the following properties:
 
-- Unique physical location with an Azure Region
+- Unique physical location within an Azure Region
 - Each zone is made up of one or more datacenter(s)
 - Independent power, cooling and networking
 - Inter Availability Zone network latency < 2ms (radius of +/- 100km)

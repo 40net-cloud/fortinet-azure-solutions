@@ -2,33 +2,33 @@
 
 # Introduction
 
-More and more enterprises are turning to Microsoft Azure to extend internal data centers and take advantage of the elasticity of the public cloud. While Azure secures the infrastructure, you are responsible for protecting everything you put in it. Fortinet Security Fabric provides Azure the broad protection, native integration and automated management enabling customers with consistent enforcement and visibility across their multi-cloud infrastructure.
+More and more enterprises are turning to Microsoft Azure to extend internal data centers and take advantage of the elasticity of the public cloud. While Azure secures the infrastructure, you are responsible for protecting everything you put in it. Fortinet Security Fabric provides Azure with the broad protection, native integration and automated management enabling customers with consistent enforcement and visibility across their multi-cloud infrastructure.
 
-This ARM template deploys a High Availability pair of FortiGate Next-Generation Firewallis accompanied by the required infrastructure. Additionally, Fortinet Fabric Connectors deliver the ability to create dynamic security policies.
+This ARM template deploys a High Availability pair of FortiGate Next-Generation Firewalls accompanied by the required infrastructure. Additionally, Fortinet Fabric Connectors deliver the ability to create dynamic security policies.
 
 # Design
 
 In Microsoft Azure, you can deploy an active/passive pair of FortiGate VMs that communicate with each other and the Azure fabric. This FortiGate setup will receive the to be inspected traffic using user defined routing (UDR) and public IPs. You can send all or specific traffic that needs inspection, going to/coming from on-prem networks or public internet by adapting the UDR routing.
 
-This Azure ARM template will automatically deploy a full working environment containing the the following components.
+This Azure ARM template will automatically deploy a full working environment containing the following components.
 
-  - 2 FortiGate firewall's in an active/passive deployment
-  - 1 external Azure Standard Load Balancer for communication with internet
-  - 1 internal Azure Standard Load Balancer to receive all internal traffic and forwarding towards Azure Gateways connecting ExpressRoute or Azure VPN's
+  - 2 FortiGate firewalls in an active/passive deployment
+  - 1 external Azure Standard Load Balancer for communication with the internet
+  - 1 internal Azure Standard Load Balancer to receive all internal traffic and forwarding towards Azure Gateways connecting ExpressRoute or Azure VPNs
   - 1 VNET with 2 protected subnets and 4 subnets required for the FortiGate deployment (external, internal, ha mgmt and ha sync)
   - User Defined Routes (UDR) for the protected subnets
 
 ![VNET peering design](images/fgt-ha.png)
 
-This ARM template can also be used to extend or customized based on your requirements. Additional subnets besides the one's mentioned above are not automatically generated. By adapting the ARM templates you can add additional subnets which prefereably require their own routing tables.
+This ARM template can also be used to extend or customize based on your requirements. Additional subnets besides the ones mentioned above are not automatically generated. By adapting the ARM templates you can add additional subnets which preferably require their own routing tables.
 
 ## How to deploy
 
-The FortiGate solution can be deployed using the Azure Portal or Azure CLI. There are 4 variables needed to complete kickstart the deployment. The deploy.sh script will ask them automatically. When you deploy the ARM template the Azure Portal will request the variables as a requirement.
+The FortiGate solution can be deployed using the Azure Portal or Azure CLI. There are 4 variables needed to kickstart the deployment. The deploy.sh script will ask them automatically. When you deploy the ARM template the Azure Portal will request the variables as a requirement.
 
-  - PREFIX : This prefix will be added to each of the resources created by the templates for easy of use, manageability and visibility.
+  - PREFIX : This prefix will be added to each of the resources created by the templates for ease of use, manageability and visibility.
   - LOCATION : This is the Azure region where the deployment will be deployed
-  - USERNAME : The username used to login to the FortiGate GUI and SSH mangement UI.
+  - USERNAME : The username used to login to the FortiGate GUI and SSH management UI.
   - PASSWORD : The password used for the FortiGate GUI and SSH management UI.
 
 ### Azure Portal
@@ -42,7 +42,7 @@ The FortiGate solution can be deployed using the Azure Portal or Azure CLI. Ther
 
 ### Azure CLI
 
-For Microsoft Azure there is a second option by using the Azure Cloud Shell. The Azure Cloud Shell is an in-browser CLI that contains all tools for deployment into Microsoft Azure. It is accesible via the Azure Portal or directly via [https://shell.azure.com/](https://shell.azure.com). You can copy and past the below one-liner to get start with your deployment.
+For Microsoft Azure there is a second option by using the Azure Cloud Shell. The Azure Cloud Shell is an in-browser CLI that contains all tools for deployment into Microsoft Azure. It is accessible via the Azure Portal or directly via [https://shell.azure.com/](https://shell.azure.com). You can copy and paste the below one-liner to get started with your deployment.
 To deploy via Azure Cloud Shell you can connect via the Azure Portal or directly to [https://shell.azure.com/](https://shell.azure.com/).
 
 - Login into the Azure Cloud Shell
@@ -58,7 +58,7 @@ After deployment you will be shown the IP address of all deployed components. Bo
 
 # Requirements and limitations
 
-The ARM template deployment different resource and it is required to have the access rights and quota in your Microsoft Azure subscription to deploy the resources.
+The ARM template deploys different resources and it is required to have the access rights and quota in your Microsoft Azure subscription to deploy the resources.
 
 ### Licenses
 
@@ -68,7 +68,7 @@ The ARM template deployment different resource and it is required to have the ac
   - PAYG or OnDemand: These licenses are automatically generated during the deployment of the FortiGate systems.
 
 ### Fabric Connector
-The FortiGate-VM uses [Managed Identities](https://docs.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/) for the SDN Fabric Connector. A SDN Fabric Connector is created automatically during deployment. After deployment, it is required apply the 'Reader' role to the Azure Subscription you want to resolve Azure Resources from. More information can be found on the [Fortinet Documentation Libary](https://docs.fortinet.com/document/fortigate-public-cloud/7.6.0/azure-administration-guide/236610/configuring-an-sdn-connector-using-a-managed-identity).
+The FortiGate-VM uses [Managed Identities](https://docs.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/) for the SDN Fabric Connector. A SDN Fabric Connector is created automatically during deployment. After deployment, it is required to apply the 'Reader' role to the Azure Subscription you want to resolve Azure Resources from. More information can be found on the [Fortinet Documentation Library](https://docs.fortinet.com/document/fortigate-public-cloud/7.6.0/azure-administration-guide/236610/configuring-an-sdn-connector-using-a-managed-identity).
 
 # License
 

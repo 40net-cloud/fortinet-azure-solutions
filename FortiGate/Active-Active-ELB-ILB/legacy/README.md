@@ -4,7 +4,7 @@ As of March 2026, new FortiGate SKUs were introduced in the Azure Marketplace th
 
 ## Deployment
 
-This folder contains legacy artifacts for Active/Active EVLB/ILB FortiGate deployments. You can deploy using Azure Portal, Azure CLI, PowerShell, or Azure Cloud Shell. Azure ARM templates are specific to Microsoft Azure and cannot be used in other cloud environments. The main template is `azuredeploy.json`. A `deploy.sh` script is provided to facilitate deployment.
+This folder contains legacy artifacts for Active/Active ELB/ILB FortiGate deployments. You can deploy using Azure Portal, Azure CLI, PowerShell, or Azure Cloud Shell. Azure ARM templates are specific to Microsoft Azure and cannot be used in other cloud environments. The main template is `azuredeploy.json`. A `deploy.sh` script is provided to facilitate deployment.
 
 When the script runs, it prompts for the following required variables:
 
