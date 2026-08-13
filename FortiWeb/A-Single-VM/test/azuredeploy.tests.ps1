@@ -100,8 +100,6 @@ Describe 'FWB Single VM' {
       'publicIPName',
       'publicIPNewOrExistingOrNone',
       'publicIPResourceGroup',
-      'publicIPSku',
-      'publicIPType',
       'serialConsole',
       'subnet1Name',
       'subnet1Prefix',
