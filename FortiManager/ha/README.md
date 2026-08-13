@@ -265,7 +265,7 @@ config system central-management
 end
 </code></pre>
 
-### VRRP managed identity 
+### VRRP managed identity
 
 In case of automatic HA failover / VRRP the secondary FortiManger will become primary and start communication with Microsoft Azure to migrate the VIP (public or private IP address). For the communication, credentials are needed using a managed identity. During the deployment the system assigned managed identity is enabled on each FortiManger. It is required after deployment to provide give the FortiManager systems access to the resource group containing it's resources in Azure. This access can be using the Network Contributor role or a custom role. The following resources are updated:
 
