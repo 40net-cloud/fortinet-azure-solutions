@@ -33,7 +33,7 @@
       "defaultValue": "Standard_F2s",
       "allowedValues": [ "Standard_F2s", "Standard_F4s", "Standard_F8s", "Standard_F2", "Standard_F4", "Standard_F8", "Standard_F2s_v2", "Standard_F4s_v2", "Standard_F8s_v2" ],
       "metadata": {
-        "description": "Virtual Machine size selection"
+        "description": "Virtual machine size selection"
       }
     },
     "dataDiskSize": {
@@ -48,7 +48,7 @@
         "existing"
       ],
       "metadata": {
-        "description": "Identify whether to use a new or existing vnet"
+        "description": "Identifies whether to use a new or existing virtual network."
       }
     },
     "vnetName": {
@@ -62,7 +62,7 @@
       "type": "string",
       "defaultValue": "[resourceGroup().name]",
       "metadata": {
-        "description": "Resource Group containing the existing virtual network (with new vnet the current resourcegroup is used)"
+        "description": "Resource group containing the existing virtual network. For a new virtual network, the current resource group is used."
       }
     },
     "newVnetAddressPrefix": {
@@ -101,7 +101,7 @@
       "type": "string",
       "defaultValue": "fwbmanager-pip",
       "metadata": {
-        "description": "Name of Public IP address element"
+        "description": "Name of the public IP address resource."
       }
     },
     "existingPublicIPResourceGroup": {
@@ -218,7 +218,7 @@
           {
             "name": "AllowAllOutbound",
             "properties": {
-              "description": "Allow all out",
+              "description": "Allow all outbound traffic",
               "protocol": "*",
               "sourcePortRange": "*",
               "destinationPortRange": "*",

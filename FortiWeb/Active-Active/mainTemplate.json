@@ -28,7 +28,7 @@
         "fortinet_fw-vm_payg_v3"
       ],
       "metadata": {
-        "description": "Identifies whether to to use PAYG (on demand licensing) or BYOL license model (where license is purchased separately)"
+        "description": "Identifies whether to use PAYG (on-demand licensing) or the BYOL licensing model (where the license is purchased separately)"
       }
     },
     "imageVersion": {
@@ -64,7 +64,7 @@
         "6.1.0"
       ],
       "metadata": {
-        "description": "FortiWeb versions available in the Azure Marketplace. Additional version can be downloaded via https://support.fortinet.com/"
+        "description": "FortiWeb versions available in the Azure Marketplace. Additional versions can be downloaded from https://support.fortinet.com/"
       }
     },
     "fortiWebHaOverride": {
@@ -84,7 +84,7 @@
       "minValue": 0,
       "maxValue": 63,
       "metadata": {
-        "description": "Type a group id that identifies of HA cluster. Mininum is 0, Maximum is 63."
+        "description": "Enter a group ID that identifies the HA cluster. The minimum is 0, and the maximum is 63."
       }
     },
     "fortiWebAAdditionalCustomData": {
@@ -172,7 +172,7 @@
         "Standard_D32ads_v5"
       ],
       "metadata": {
-        "description": "Virtual Machine size selection - must be F4 or other instance that supports 4 NICs"
+        "description": "Virtual machine size selection; must be F4 or another instance that supports 4 NICs"
       }
     },
     "availabilityOptions": {
@@ -183,7 +183,7 @@
       ],
       "defaultValue": "Availability Set",
       "metadata": {
-        "description": "Deploy FortiWeb VMs in an Availability Set or Availability Zones. If Availability Zones deployment is selected but the location does not support Availability Zones an Availability Set will be deployed. If Availability Zones deployment is selected and Availability Zones are available in the location, FortiWeb A will be placed in Zone 1, FortiWeb B will be placed in Zone 2"
+        "description": "Deploy FortiWeb VMs in an availability set or availability zones. If availability zone deployment is selected but the location does not support availability zones, an availability set will be deployed. If availability zones are available in the location, FortiWeb A will be placed in Zone 1 and FortiWeb B will be placed in Zone 2."
       }
     },
     "acceleratedNetworking": {
@@ -194,7 +194,7 @@
         "true"
       ],
       "metadata": {
-        "description": "Accelerated Networking enables direct connection between the VM and network card. Only available on 2 CPU F/Fs and 4 CPU D/Dsv2, D/Dsv3, E/Esv3, Fsv2, Lsv2, Ms/Mms and Ms/Mmsv2"
+        "description": "Accelerated Networking enables a direct connection between the VM and the network card. It is available only on 2-CPU F/Fs and 4-CPU D/Dsv2, D/Dsv3, E/Esv3, Fsv2, Lsv2, Ms/Mms, and Ms/Mmsv2"
       }
     },
     "publicIPNewOrExistingOrNone": {
@@ -213,7 +213,7 @@
       "type": "string",
       "defaultValue": "fwb-pip",
       "metadata": {
-        "description": "Name of Public IP address element."
+        "description": "Name of the public IP address resource."
       }
     },
     "publicIPResourceGroup": {
@@ -231,7 +231,7 @@
         "existing"
       ],
       "metadata": {
-        "description": "Identify whether to use a new or existing vnet"
+        "description": "Identifies whether to use a new or existing virtual network."
       }
     },
     "vnetName": {
@@ -654,7 +654,7 @@
           {
             "name": "AllowAllOutbound",
             "properties": {
-              "description": "Allow all out",
+              "description": "Allow all outbound traffic",
               "protocol": "*",
               "sourcePortRange": "*",
               "destinationPortRange": "*",

@@ -2,26 +2,26 @@
 
 ## Introduction
 
-In some large-scale FortiWeb deployments, it is required to use additional FortiWeb Manager VM for managing unified configuration. FortiWeb Manager is a separate product not currently available on the Azure Marketplace and needs to be deployed from a custom VHD. Full instructions on how to download firmware from [Fortinet support portal](https://support.fortinet.com) and use it to create new VM are available [here](https://docs.fortinet.com/document/fortimanager-public-cloud/7.2.0/azure-administration-guide/889571).
+In some large-scale FortiWeb deployments, an additional FortiWeb Manager VM is required to manage a unified configuration. FortiWeb Manager is a separate product that is not currently available on the Azure Marketplace and must be deployed from a custom VHD. Full instructions for downloading firmware from the [Fortinet support portal](https://support.fortinet.com) and using it to create a new VM are available [here](https://docs.fortinet.com/document/fortimanager-public-cloud/7.2.0/azure-administration-guide/889571).
 
 ## Design
 
-This ARM template will deploy a single FortiWeb Manager VM containing the following components.
+This ARM template deploys a single FortiWeb Manager VM with the following components:
 
-- 1 VM deployed from provided image with a single NIC
+- 1 VM deployed from a provided image with a single NIC
 - 2 disks (boot and log) mounted in the VM instance
-- (optionally) 1 VNET with 1 subnet
-- (optionally) 1 Public IP Address associated with VM
+- (Optionally) 1 VNet with 1 subnet
+- (Optionally) 1 public IP address associated with the VM
 
-This Azure ARM template can also be extended or customized based on your requirements. Additional subnets besides the ones mentioned above are not automatically generated. By extending the Azure ARM templates additional subnets can be added. Additional subnets will require their own routing tables.
+This Azure ARM template can also be extended or customized based on your requirements. Additional subnets beyond those mentioned above are not automatically generated. By extending the Azure ARM template, you can add additional subnets. Each additional subnet requires its own routing table.
 
 ## Deployment
 
-For the deployment, you can use the Azure Portal, Azure CLI, Powershell or Azure Cloud Shell. The Azure ARM templates are exclusive to Microsoft Azure and can't be used in other cloud environments. The main template is the `azuredeploy.json` which you can use in the Azure Portal.
+For deployment, you can use the Azure portal, Azure CLI, PowerShell, or Azure Cloud Shell. The Azure ARM templates are exclusive to Microsoft Azure and cannot be used in other cloud environments. The main template is `azuredeploy.json`, which you can use in the Azure portal.
 
 ### Azure Portal
 
-In the Azure Portal you can deploy the template either by clicking the buttons below or by pasting the contents of the 'azuredeploy.json' file in the 'Deploy a custom template' location.
+In the Azure portal, you can deploy the template either by clicking the buttons below or by pasting the contents of the `azuredeploy.json` file into the **Deploy a custom template** page.
 
 [![Deploy to Azure](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.svg?sanitize=true)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2F40net-cloud%2Ffortinet-azure-solutions%2Fmain%2FFortiWeb%2FManager%2Fazuredeploy.json)
 
@@ -29,18 +29,18 @@ In the Azure Portal you can deploy the template either by clicking the buttons b
 
 #### Manual deployment
 
-- Search for 'Deploy a customer template' in the top search bar of the Azure portal
+- Search for **Deploy a custom template** in the Azure portal's top search bar.
 ![Azure Portal 1](https://raw.githubusercontent.com/40net-cloud/fortinet-azure-solutions/main/FortiGate/Playground/CustomVHD/images/azure-portal-1.png)
-- Select the option 'Build your own template in the editor
+- Select **Build your own template in the editor**.
 ![Azure Portal 2](https://raw.githubusercontent.com/40net-cloud/fortinet-azure-solutions/main/FortiGate/Playground/CustomVHD/images/azure-portal-2.png)
-- Copy in the contents of the 'azuredeploy.json' file into the editor
+- Copy the contents of the `azuredeploy.json` file into the editor.
 ![Azure Portal 3](https://raw.githubusercontent.com/40net-cloud/fortinet-azure-solutions/main/FortiGate/Playground/CustomVHD/images/azure-portal-3.png)
-- Complete the required variables. THe VHD uri is created using the 'Add-AzVhd' command
+- Complete the required variables. The VHD URI is created using the `Add-AzVhd` command.
 ![Azure Portal 4](https://raw.githubusercontent.com/40net-cloud/fortinet-azure-solutions/main/FortiGate/Playground/CustomVHD/images/azure-portal-4.png)
 
-### Powershell and Azure Cloud Shell
+### PowerShell and Azure Cloud Shell
 
-The below is an example on how to deploy a customer VHD using powershell instead of using an ARM Template. Verify and replace the variables in the begining and run the commands one by one to verify.
+The following example shows how to deploy a custom VHD using PowerShell instead of an ARM template. Verify and replace the variables at the beginning, then run the commands one by one.
 
 ```powershell
 
@@ -72,7 +72,7 @@ $rule4 = New-AzNetworkSecurityRuleConfig -Name "Allow_443_In" -Protocol TCP -Sou
 $rule5 = New-AzNetworkSecurityRuleConfig -Name "Allow_8989_In" -Protocol TCP -SourcePortRange * -DestinationPortRange 8989 -SourceAddressPrefix * -DestinationAddressPrefix * -Access Allow -Priority 100 -Direction Inbound
 $nsg = New-AzNetworkSecurityGroup -Name "FORTI-NSG" -ResourceGroupName $rg -Location $location -SecurityRules $rule1,$rule2
 
-# Network interfaces for external and internal of the FWB
+# Network interfaces for the FortiWeb Manager VM
 $virtualNetwork = Get-AzVirtualNetwork -Name "FORTI-VNET" -ResourceGroupName $rg
 
 $nic1 = New-AzNetworkInterface -ResourceGroupName $rg -Location $location -Name "FORTI-FWB-A-NIC1" -PublicIpAddressId $pip.Id -SubnetId $virtualNetwork.Subnets[0].Id -NetworkSecurityGroupId $nsg.Id
@@ -91,13 +91,13 @@ $result = New-AzVM -ResourceGroupName $rg -Location $location -VM $vm
 
 ## Requirements and limitations
 
-This template will not deploy the default Azure Marketplace images. You can deploy using this template a custom VHD. These specific VHD's can be downloaded from support.fortinet.com. Once downloaded you need to upload this VHD to an Azure storage account. You can find more information on how to create the storage account on [this link](https://docs.microsoft.com/en-us/azure/storage/common/storage-quickstart-create-account?tabs=azure-portal). Once you have the URI for the storage account you need to use the below 'Add-AzVhd' powershell command to upload the image (if you use the legacy Azure RM Powershell package the command is `Add-AzureRMVhd`). The FortiWeb Manager image is very compressed and needs to extracted during the upload process. This is only working well using this powershell command. In the end you need to have a 2Gb VHD in your storage account.
+This template does not deploy the default Azure Marketplace images. Instead, you can use it to deploy a custom VHD. These VHDs can be downloaded from the Fortinet support portal. After downloading the VHD, upload it to an Azure storage account. For more information about creating a storage account, see [this guide](https://docs.microsoft.com/en-us/azure/storage/common/storage-quickstart-create-account?tabs=azure-portal). Once you have the storage account URI, use the `Add-AzVhd` PowerShell command below to upload the image. If you use the legacy AzureRM PowerShell package, use `Add-AzureRMVhd` instead. The FortiWeb Manager image is highly compressed and must be extracted during the upload process; this PowerShell command handles that process. You should have a 2 GB VHD in your storage account when the upload is complete.
 
 `Add-AzVhd -LocalFilePath ./boot.vhd -ResourceGroupName XXX-RG -Destination 'https://xxx.blob.core.windows.net/vhds/boot.vhd'`
 
 ![Storage Account](https://raw.githubusercontent.com/40net-cloud/fortinet-azure-solutions/main/FortiGate/Playground/CustomVHD/images/storageaccount.png)
 
-The Azure ARM template deployment deploys different resources and is required to have the access rights and quota in your Microsoft Azure subscription to deploy the resources.
+The Azure ARM template deployment creates several resources. Ensure that your Microsoft Azure subscription has the required permissions and quotas to deploy them.
 
 ## License
 

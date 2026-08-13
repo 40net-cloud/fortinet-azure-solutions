@@ -31,12 +31,17 @@ variable "FGT_COUNT" {
 
 variable "FGT_IMAGE_SKU" {
   description = "Azure Marketplace default image sku hourly (PAYG 'fortinet_fg-vm_payg_2023') or byol (Bring your own license 'fortinet_fg-vm')"
-  default     = "fortinet_fg-vm_payg_2023"
+  default     = "fortinet_fg-vm_byol_76_g2"
+}
+
+variable "FGT_IMAGE_PRODUCT" {
+  description = "Azure Marketplace product/offer for the FortiGate image"
+  default     = "fortinet_fortigate-vm"
 }
 
 variable "FGT_VERSION" {
   description = "FortiGate version by default the 'latest' available version in the Azure Marketplace is selected"
-  default     = "latest"
+  default     = "7.6.7"
 }
 
 variable "FGT_BYOL_LICENSE_FILE" {
@@ -44,8 +49,8 @@ variable "FGT_BYOL_LICENSE_FILE" {
   description = "Map with location of license files"
 
   default = {
-    "0" = ""      # FortiGate 1
-    "1" = ""      # FortiGate 2
+    "0" = "" # FortiGate 1
+    "1" = "" # FortiGate 2
   }
 }
 
@@ -54,8 +59,8 @@ variable "FGT_BYOL_FORTIFLEX_LICENSE_TOKEN" {
   description = "Map with license tokens"
 
   default = {
-    "0" = ""      # FortiGate 1
-    "1" = ""      # FortiGate 2
+    "0" = "" # FortiGate 1
+    "1" = "" # FortiGate 2
   }
 }
 

@@ -28,7 +28,7 @@
         "fortinet_fw-vm_payg_v3"
       ],
       "metadata": {
-        "description": "Identifies whether to to use PAYG (on demand licensing) or BYOL license model (where license is purchased separately)"
+        "description": "Identifies whether to use PAYG (on-demand licensing) or the BYOL licensing model (where the license is purchased separately)"
       }
     },
     "imageVersion": {
@@ -64,7 +64,7 @@
         "6.1.0"
       ],
       "metadata": {
-        "description": "FortiWeb versions available in the Azure Marketplace. Additional version can be downloaded via https://support.fortinet.com/"
+        "description": "FortiWeb versions available in the Azure Marketplace. Additional versions can be downloaded from https://support.fortinet.com/"
       }
     },
     "instanceType": {
@@ -98,7 +98,7 @@
         "Standard_D32s_v3"
       ],
       "metadata": {
-        "description": "Virtual Machine size selection - must be F4 or other instance that supports 4 NICs"
+        "description": "Virtual machine size selection; must be F4 or another instance that supports 4 NICs"
       }
     },
     "availabilityOptions": {
@@ -127,7 +127,7 @@
       "type": "string",
       "defaultValue": "FWBAPClusterPublicIP",
       "metadata": {
-        "description": "Name of Public IP address element."
+        "description": "Name of the public IP address resource."
       }
     },
     "publicIPResourceGroup": {
@@ -167,7 +167,7 @@
         "existing"
       ],
       "metadata": {
-        "description": "Identify whether to use a new or existing vnet"
+        "description": "Identifies whether to use a new or existing virtual network."
       }
     },
     "vnetName": {
@@ -431,7 +431,7 @@
           {
             "name": "AllowDevRegInbound",
             "properties": {
-              "description": "Allow 514 in for device registration",
+              "description": "Allow inbound port 514 for device registration",
               "protocol": "Tcp",
               "sourcePortRange": "*",
               "destinationPortRange": "514",
@@ -473,7 +473,7 @@
           {
             "name": "AllowAllOutbound",
             "properties": {
-              "description": "Allow all out",
+              "description": "Allow all outbound traffic",
               "protocol": "*",
               "sourcePortRange": "*",
               "destinationPortRange": "*",

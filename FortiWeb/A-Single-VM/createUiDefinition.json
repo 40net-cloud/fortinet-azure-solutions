@@ -19,7 +19,7 @@
         "type": "Microsoft.Common.TextBox",
         "label": "FortiWeb administrative username",
         "defaultValue": "",
-        "toolTip": "Username for the FortiWeb virtual appliance. Most not be root, administrator or admin",
+        "toolTip": "Username for the FortiWeb virtual appliance. Must not be root, administrator, or admin",
         "constraints": {
           "required": true,
           "validations": [
@@ -46,7 +46,7 @@
           "password": "FortiWeb password",
           "confirmPassword": "Confirm password"
         },
-        "toolTip": "Password for the Virtual Machine",
+        "toolTip": "Password for the virtual machine",
         "constraints": {
           "required": true,
           "regex": "^(?:(?=.*[a-z])(?:(?=.*[A-Z])(?=.*[\\d\\W])|(?=.*\\W)(?=.*\\d))|(?=.*\\W)(?=.*[A-Z])(?=.*\\d)).{12,}$",
@@ -75,7 +75,7 @@
         "type": "Microsoft.Common.DropDown",
         "label": "FortiWeb Image SKU",
         "defaultValue": "Bring Your Own License",
-        "toolTip": "Identifies whether to to use PAYG (on demand licensing) or BYOL license model (where license is purchased separately)",
+        "toolTip": "Identifies whether to use PAYG (on-demand licensing) or the BYOL licensing model (where the license is purchased separately)",
         "constraints": {
           "required": false,
           "allowedValues": [
@@ -232,7 +232,7 @@
                 "type": "Microsoft.Common.TextBlock",
                 "visible": true,
                 "options": {
-                  "text": "For this FortiWeb deployment, it is recommended to use the general purpose or compute optimized virtual machines. A selection of supported instances sizes is listed in our documentation.",
+                  "text": "For this FortiWeb deployment, we recommend using general-purpose or compute-optimized virtual machines. A selection of supported instance sizes is listed in our documentation.",
                   "link": {
                     "label": "Learn more",
                     "uri": "https://docs.fortinet.com/document/fortiweb-public-cloud/latest/about-fortiweb-for-azure/527834/instance-type-support"
@@ -436,7 +436,7 @@
                 "type": "Microsoft.Common.DropDown",
                 "label": "Availability Option",
                 "defaultValue": "No infrastructure redundancy required",
-                "toolTip": "Deploy FortiWeb VMs in a new or existing availability set or or a specific availability zone.",
+                "toolTip": "Deploy FortiWeb VMs in a new or existing availability set or in a specific availability zone.",
                 "constraints": {
                   "required": false,
                   "allowedValues": [
@@ -467,7 +467,7 @@
                 "name": "availabilitySetSelector",
                 "type": "Microsoft.Solutions.ResourceSelector",
                 "label": "Select the availability set for your FortiWeb",
-                "toolTip": "Select your existing availability set you want to add this FortiWeb VM to",
+                "toolTip": "Select the existing availability set to which you want to add this FortiWeb VM.",
                 "resourceType": "Microsoft.Compute/availabilitySets",
                 "options": {
                   "filter": {
@@ -516,7 +516,7 @@
                 "visible": true,
                 "options": {
                   "icon": "Info",
-                  "text": "If availability zone deployment is selected but the location does not support availability zone an availability set will be deployed. If availability zone deployment is selected and availability zone are available in the location, FortiWeb A will be placed in Zone 1, FortiWeb B will be placed in Zone 2",
+                  "text": "If availability zone deployment is selected but the location does not support availability zones, an availability set will be deployed. If availability zone deployment is selected and availability zones are available in the location, FortiWeb A will be placed in Zone 1 and FortiWeb B will be placed in Zone 2.",
                   "uri": "https://docs.microsoft.com/en-us/azure/availability-zones/az-overview"
                 }
               }
@@ -577,7 +577,7 @@
                 "type": "Microsoft.Common.InfoBox",
                 "options": {
                   "icon": "Info",
-                  "text": "Pay As You Go licenses was selected in the basics blade and provisioned automatically durig deployment. Registration of the PAYG license is required to receive support.",
+                  "text": "The Pay As You Go license was selected in the Basics step and is provisioned automatically during deployment. Register the PAYG license to receive support.",
                   "uri": "https://docs.fortinet.com/document/fortigate-public-cloud/7.2.0/azure-administration-guide/533394/creating-a-support-account"
                 },
                 "visible": "[not(equals(basics('imageSku'), 'fortinet_fw-vm'))]"
@@ -688,7 +688,7 @@
                 "type": "Microsoft.Common.TextBlock",
                 "visible": true,
                 "options": {
-                  "text": "Enables SR-IOV support allowing direct acces from the NIC in the Azure infrastructure to the FortiWeb VM.",
+                  "text": "Enables SR-IOV support, allowing direct access from the NIC in the Azure infrastructure to the FortiWeb VM.",
                   "link": {
                     "label": "Learn more",
                     "uri": "https://docs.fortinet.com/document/fortigate-public-cloud/7.2.0/azure-administration-guide/651644/enabling-accelerated-networking-on-the-fortigate-vm"
@@ -700,7 +700,7 @@
                 "type": "Microsoft.Common.OptionsGroup",
                 "label": "Accelerated Networking",
                 "defaultValue": "Enabled",
-                "toolTip": "Accelerated Networking enables direct connection between the VM and network card. Only available on 2 CPU F/Fs and 4 CPU D/Dsv2, D/Dsv3, E/Esv3, Fsv2, Lsv2, Ms/Mms and Ms/Mmsv2",
+                "toolTip": "Accelerated Networking enables a direct connection between the VM and the network card. It is available only on 2-CPU F/Fs and 4-CPU D/Dsv2, D/Dsv3, E/Esv3, Fsv2, Lsv2, Ms/Mms, and Ms/Mmsv2",
                 "constraints": {
                   "required": false,
                   "allowedValues": [
@@ -722,7 +722,7 @@
                 "visible": true,
                 "options": {
                   "icon": "Info",
-                  "text": "Accelerated Networking is supported on most general purpose and compute-optimized instance sizes with 2 or more vCPUs. On instances that support hyperthreading, Accelerated Networking is supported on VM instances with 4 or more vCPUs. Deployment with the accelerated networking feature enabled on a host that doesn't support it will result in a failure to connect to it. The accelerated networking can be disabled after deployment from the Azure Portal or Azure CLI.",
+                  "text": "Accelerated Networking is supported on most general-purpose and compute-optimized instance sizes with two or more vCPUs. On instances that support hyperthreading, Accelerated Networking is supported on VM instances with four or more vCPUs. Enabling Accelerated Networking on an unsupported host will result in a connection failure. You can disable Accelerated Networking after deployment through the Azure portal or Azure CLI.",
                   "uri": "https://docs.microsoft.com/en-us/azure/virtual-machines/sizes"
                 }
               }
@@ -743,7 +743,7 @@
             "type": "Microsoft.Common.TextBlock",
             "visible": true,
             "options": {
-              "text": "The public IP will be used for web and api services hosted behind the FortiWeb and management of the FortiWeb virtual machine from external. The management UI of the FortiWeb virtual machine is available on port HTTPS/8443."
+              "text": "The public IP will be used for web and API services hosted behind FortiWeb and for external management of the FortiWeb virtual machine. The FortiWeb virtual machine management UI is available on HTTPS port 8443."
             }
           },
           {
@@ -802,7 +802,7 @@
                 "type": "Microsoft.Common.TextBlock",
                 "visible": true,
                 "options": {
-                  "text": "Pass a configuration file into the virtual machine while it is being provisioned. This is additional to the configuration for this architecture."
+                  "text": "Pass a configuration file to the virtual machine while it is being provisioned. This configuration is in addition to the architecture's default configuration."
                 }
               },
               {
@@ -882,7 +882,7 @@
           {
             "name": "tagsByResource",
             "type": "Microsoft.Common.TagsByResource",
-            "toolTip": "Add tags to Azure Resources",
+            "toolTip": "Add tags to Azure resources",
             "resources": [
               "Microsoft.Compute/availabilitySets",
               "Microsoft.Network/networkSecurityGroups",

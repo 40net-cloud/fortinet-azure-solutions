@@ -23,7 +23,7 @@
     "osDiskVhdUri": {
       "type": "string",
       "metadata": {
-        "description": "Uri of the existing VHD in ARM standard or premium storage"
+        "description": "URI of the existing VHD in Azure Resource Manager standard or premium storage"
       }
     },
     "fortiWebAdditionalCustomData": {
@@ -38,7 +38,7 @@
       "defaultValue": "Standard_F2s",
       "allowedValues": [ "Standard_F1s", "Standard_F2s", "Standard_F4s", "Standard_F8s", "Standard_F16s", "Standard_F1", "Standard_F2", "Standard_F4", "Standard_F8", "Standard_F16", "Standard_F2s_v2", "Standard_F4s_v2", "Standard_F8s_v2", "Standard_F16s_v2", "Standard_F32s_v2", "Standard_DS1_v2", "Standard_DS2_v2", "Standard_DS3_v2", "Standard_DS4_v2", "Standard_DS5_v2", "Standard_D2s_v3", "Standard_D4s_v3", "Standard_D8s_v3", "Standard_D16s_v3", "Standard_D32s_v3" ],
       "metadata": {
-        "description": "Virtual Machine size selection"
+        "description": "Virtual machine size selection"
       }
     },
     "acceleratedNetworking": {
@@ -49,7 +49,7 @@
         "true"
       ],
       "metadata": {
-        "description": "Accelerated Networking enables direct connection between the VM and network card. Only available on 2 CPU F/Fs and 4 CPU D/Dsv2, D/Dsv3, E/Esv3, Fsv2, Lsv2, Ms/Mms and Ms/Mmsv2"
+        "description": "Accelerated Networking enables a direct connection between the VM and the network card. It is available only on 2-CPU F/Fs and 4-CPU D/Dsv2, D/Dsv3, E/Esv3, Fsv2, Lsv2, Ms/Mms, and Ms/Mmsv2"
       }
     },
 
@@ -69,7 +69,7 @@
       "type": "string",
       "defaultValue": "",
       "metadata": {
-        "description": "Name of Public IP address element"
+        "description": "Name of the public IP address resource."
       }
     },
     "publicIPResourceGroup": {
@@ -109,7 +109,7 @@
         "existing"
       ],
       "metadata": {
-        "description": "Identify whether to use a new or existing vnet"
+        "description": "Identifies whether to use a new or existing virtual network."
       }
     },
     "vnetName": {
@@ -123,7 +123,7 @@
       "type": "string",
       "defaultValue": "",
       "metadata": {
-        "description": "Resource Group containing the existing virtual network (with new vnet the current resourcegroup is used)"
+        "description": "Resource group containing the existing virtual network. For a new virtual network, the current resource group is used."
       }
     },
     "vnetAddressPrefix": {
@@ -151,7 +151,7 @@
       "type": "string",
       "defaultValue": "172.16.136.4",
       "metadata": {
-        "description": "Subnet 1 start address, 1 consecutive private IPs are required"
+        "description": "Subnet 1 start address; 1 consecutive private IP is required"
       }
     },
     "subnet2Name": {
@@ -362,7 +362,7 @@
           {
             "name": "AllowDevRegInbound",
             "properties": {
-              "description": "Allow 514 in for device registration",
+              "description": "Allow inbound port 514 for device registration",
               "protocol": "Tcp",
               "sourcePortRange": "*",
               "destinationPortRange": "514",
@@ -404,7 +404,7 @@
           {
             "name": "AllowAllOutbound",
             "properties": {
-              "description": "Allow all out",
+              "description": "Allow all outbound traffic",
               "protocol": "*",
               "sourcePortRange": "*",
               "destinationPortRange": "*",
