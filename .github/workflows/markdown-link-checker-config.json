@@ -2,6 +2,9 @@
   "ignorePatterns": [
     {
       "pattern": "^https://portal.local.azurestack.external"
+    },
+    {
+      "pattern": "^https://community.fortinet.com/"
     }
   ],
   "replacementPatterns": [
