@@ -25,7 +25,7 @@ There are 5 variables needed to complete kickstart the deployment. The deploy.sh
 ### Azure CLI
 To fast track the deployment, use the Azure Cloud Shell. The Azure Cloud Shell is an in-browser CLI that contains Terraform and other tools for deployment into Microsoft Azure. It is accessible via the Azure Portal or directly at [https://shell.azure.com/](https://shell.azure.com). You can copy and paste the below one-liner to get started with your deployment.
 
-To provision the FortiGate BYOL systems with a license create a directory called 'license' in the presistent clouddrive directory. [Copy](https://microsoft.github.io/AzureTipsAndTricks/blog/tip127.html) the license files to the directory '~/clouddrive/license' on the Azure Cloud Shell.
+To provision the FortiGate BYOL systems with a license create a directory called 'license' in the presistent clouddrive directory. Copy the license files to the directory '~/clouddrive/license' on the Azure Cloud Shell.
 
 `cd ~/clouddrive/ && wget -qO- https://github.com/jvhoof/fortinet-azure-solutions/archive/main.tar.gz | tar zxf - && cd ~/clouddrive/fortinet-azure-solutions-main/FortiGate/Autoscale/ && ./deploy.sh`
 
