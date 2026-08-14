@@ -94,7 +94,7 @@ Once VM image version is created, you can use it to deploy a new FortiGate insta
 - After deployment you can detach the newly created data disk and attach your existing one or alternatively create a new data disk from the restore point and attach it to the FortiGate VM.
 ![Crash-Consistent restore_image7](images/restore_image7.png)
 
-#### Restore FortiGate from the Recovery Services Vault 
+#### Restore FortiGate from the Recovery Services Vault
 
 - You can restore the FortiGate VM from the Recovery Services vault by navigating Protected items > Backup items.
 Alternatively, you can restore it from the Business Continuity Center, as described in [Microsoft Official Documentation](https://learn.microsoft.com/en-us/azure/backup/backup-azure-arm-restore-vms)
