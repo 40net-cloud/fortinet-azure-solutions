@@ -102,7 +102,7 @@ the fortigate vms need a specific configuration to match the deployed environmen
   - [ipsec configuration](#inbound-ipsec-configuration)
 - [outbound connections](#outbound-connections)
   - [nat considerations: 1-to-1 and 1-to-many](#outbound-connections---nat-considerations)
-- [ipsec connectivity](../Documentation/faq-ipsec-connectivity.md)
+- [ipsec connectivity](https://community.fortinet.com/fortigate-azure-technical-learning-161/ipsec-vpn-connectivity-and-troubleshooting-for-fortigate-running-in-microsoft-azure-188604)
 - [high availability](#high-availability-probe-configuration)
 - [cloud-init](#cloud-init)
 - [availability zone](#availability-zone)
@@ -850,7 +850,7 @@ there are different components in the whole delivery chain
 - [network security groups](#troubleshooting-network-security-groups-nsg)
 - [standard public ip](#troubleshooting-standard-public-ip)
 - [fortigate](#troubleshooting-fortigate)
-- [ipsec troubleshooting](../Documentation/faq-ipsec-connectivity.md#troubleshooting)
+- [ipsec troubleshooting](https://community.fortinet.com/fortigate-azure-technical-learning-161/ipsec-vpn-connectivity-and-troubleshooting-for-fortigate-running-in-microsoft-azure-188604)
 
 ### troubleshooting azure load balancer
 
