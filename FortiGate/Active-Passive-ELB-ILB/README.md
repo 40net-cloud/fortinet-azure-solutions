@@ -974,4 +974,4 @@ for other questions related to this project, contact [github@fortinet.com](mailt
 
 ## license
 
-[license](/../../blob/main/license) © fortinet technologies. all rights reserved.
+[license](/../../blob/main/LICENSE) © fortinet technologies. all rights reserved.
