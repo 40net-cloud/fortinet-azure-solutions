@@ -10,6 +10,14 @@
       "replacement": "https://github.com/40net-cloud/fortinet-azure-solutions/"
     }
   ],
+  "httpHeaders": [
+    {
+      "urls": ["https://learn.microsoft.com/", "https://docs.microsoft.com/", "https://www.microsoft.com/", "https://marketplace.microsoft.com/"],
+      "headers": {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+      }
+    }
+  ],
   "timeout": "20s",
   "retryOn429": true,
   "retryCount": 5,
