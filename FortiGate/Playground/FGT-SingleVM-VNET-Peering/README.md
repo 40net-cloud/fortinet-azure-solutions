@@ -32,8 +32,8 @@ For the deployment, you can use the Azure Portal, Azure CLI, Powershell or Azure
 
 ### Azure Portal
 
-[![deploy azure portal button](https://raw.githubusercontent.com/azure/azure-quickstart-templates/master/1-contribution-guide/images/deploytoazure.svg?sanitize=true)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fjvhoof%2Ffortinet-azure-solutions%2Fmain%2FFortiGate%2FPlayground%2FFGT-SingleVM-VNET-Peering%2Fazuredeploy.json)
-[![visualize](https://raw.githubusercontent.com/azure/azure-quickstart-templates/master/1-contribution-guide/images/visualizebutton.svg?sanitize=true)](http://armviz.io/#/?load=https%3A%2F%2Fraw.githubusercontent.com%2Fjvhoof%2Ffortinet-azure-solutions$2Fmain%2FFortiGate%2FPlayground%2FFGT-SingleVM-VNET-Peering%2Fazuredeploy.json)
+[![deploy azure portal button](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fjvhoof%2Ffortinet-azure-solutions%2Fmain%2FFortiGate%2FPlayground%2FFGT-SingleVM-VNET-Peering%2Fazuredeploy.json)
+[![visualize](https://raw.githubusercontent.com/azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/visualizebutton.svg?sanitize=true)](http://armviz.io/#/?load=https%3A%2F%2Fraw.githubusercontent.com%2Fjvhoof%2Ffortinet-azure-solutions$2Fmain%2FFortiGate%2FPlayground%2FFGT-SingleVM-VNET-Peering%2Fazuredeploy.json)
 
 ### Azure CLI
 To fast track the deployment, use the Azure Cloud Shell. The Azure Cloud Shell is an in-browser CLI that contains Terraform and other tools for deployment into Microsoft Azure. It is accessible via the Azure Portal or directly at [https://shell.azure.com/](https://shell.azure.com). You can copy and paste the below one-liner to get started with your deployment.

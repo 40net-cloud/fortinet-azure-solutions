@@ -12,7 +12,7 @@ Pricing requires 4 components:
 
 Microsoft provides a [calculator](https://azure.microsoft.com/en-gb/pricing/calculator/) to determine your Microsoft Azure costs: [https://azure.microsoft.com/en-gb/pricing/calculator/](https://azure.microsoft.com/en-gb/pricing/calculator/)
 
-More information can be found on the FortiGate [Azure Marketplace listing](https://azuremarketplace.microsoft.com/en-us/marketplace/apps/fortinet.fortinet-fortigate?tab=overview).
+More information can be found on the FortiGate [Azure Marketplace listing](https://marketplace.microsoft.com/en-us/product/fortinet.fortinet-fortigate?tab=overview).
 
 ## Pay as you go vs Bring your own license
 
