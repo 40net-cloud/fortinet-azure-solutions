@@ -184,7 +184,7 @@
                 "type": "Microsoft.Common.TextBlock",
                 "visible": true,
                 "options": {
-                  "text": "For this FortiGate deployment, it is recommended to use the general purpose or compute optimized virtual machines. A selection of supported instances sizes is listed in our documentation. FortiGate Active/Passive HA uses the FGCP protocol for configuration sync and HA failover. This requires dedicated sync and management ports. A minimum of 4 NICs is required for the instance type.",
+                  "text": "For this FortiGate deployment, it is recommended to use the general purpose or compute optimized virtual machines. A selection of supported instances sizes is listed in our documentation. FortiGate Active/Passive HA uses the FGCP protocol for configuration sync and HA failover. This requires a dedicated sync port, and by default a dedicated management port. A minimum of 4 NICs is required for the instance type, or 3 NICs if the combined HA sync/management port (3-NIC HA Port Mode) is selected.",
                   "link": {
                     "label": "Learn more",
                     "uri": "https://docs.fortinet.com/document/fortigate-public-cloud/7.4.0/azure-administration-guide/562841/instance-type-support"
@@ -558,7 +558,7 @@
                 "type": "Microsoft.Common.TextBlock",
                 "visible": true,
                 "options": {
-                  "text": "For this FortiGate deployment, it is recommended to use the general purpose or compute optimized virtual machines. A selection of supported instances sizes is listed in our documentation. FortiGate Active/Passive HA uses the FGCP protocol for configuration sync and HA failover. This requires dedicated sync and management ports. A minimum of 4 NICs is required for the instance type.",
+                  "text": "For this FortiGate deployment, it is recommended to use the general purpose or compute optimized virtual machines. A selection of supported instances sizes is listed in our documentation. FortiGate Active/Passive HA uses the FGCP protocol for configuration sync and HA failover. This requires a dedicated sync port, and by default a dedicated management port. A minimum of 4 NICs is required for the instance type, or 3 NICs if the combined HA sync/management port (3-NIC HA Port Mode) is selected.",
                   "link": {
                     "label": "Learn more",
                     "uri": "https://docs.fortinet.com/document/fortigate-public-cloud/7.4.0/azure-administration-guide/562841/instance-type-support"
@@ -756,6 +756,47 @@
             ]
           },
           {
+            "name": "haportmode",
+            "type": "Microsoft.Common.Section",
+            "label": "HA Port Mode",
+            "elements": [
+              {
+                "name": "haportmodeHeader",
+                "type": "Microsoft.Common.TextBlock",
+                "visible": true,
+                "options": {
+                  "text": "FortiGate Active/Passive HA requires a dedicated HA sync port (port3). Starting with FortiOS 7.0.1, the HA sync and HA management functions can be combined onto a single port (port3), reducing the NIC count from 4 to 3.",
+                  "link": {
+                    "label": "Learn more",
+                    "uri": "https://docs.fortinet.com/document/fortigate/7.4.0/administration-guide/745233/ha-heartbeat-and-management-interface"
+                  }
+                }
+              },
+              {
+                "name": "fortiGateHAPortMode",
+                "type": "Microsoft.Common.OptionsGroup",
+                "label": "HA Port Mode",
+                "defaultValue": "4-NIC - separate HA sync and HA management ports",
+                "toolTip": "4-NIC deploys separate HA sync (port3) and HA mgmt (port4) interfaces. 3-NIC combines HA sync and HA mgmt onto port3, requires FortiOS 7.0.1 or later.",
+                "constraints": {
+                  "allowedValues": [
+                    {
+                      "label": "4-NIC - separate HA sync and HA management ports",
+                      "value": "4-NIC"
+                    },
+                    {
+                      "label": "3-NIC - combined HA sync and HA management port (FortiOS 7.0.1+)",
+                      "value": "3-NIC"
+                    }
+                  ],
+                  "required": true
+                },
+                "visible": true
+              }
+            ],
+            "visible": true
+          },
+          {
             "name": "fgtLicense",
             "type": "Microsoft.Common.Section",
             "label": "FortiGate License",
@@ -889,7 +930,7 @@
                 },
                 "toolTip": {
                   "virtualNetwork": "Virtual Network for deployment of the FortiGate VM solution",
-                  "subnets": "Requirement to have 4 subnets connected to the FortiGate VM: external, internal, hasync and management"
+                  "subnets": "Requires external, internal and hasync subnets connected to the FortiGate VM. A separate management subnet is also required unless the 3-NIC HA Port Mode (combined HA sync/management) was selected under Instance"
                 },
                 "defaultValue": {
                   "name": "[if(equals(basics('fortiGateNamePrefix'),''),'FortiGate-vnet',concat(basics('fortiGateNamePrefix'),'-vnet'))]",
@@ -934,7 +975,7 @@
                     },
                     "constraints": {
                       "minAddressPrefixSize": "/29",
-                      "minAddressCount": 2,
+                      "minAddressCount": "[if(equals(steps('instance').haportmode.fortiGateHAPortMode,'3-NIC'),4,2)]",
                       "requireContiguousAddresses": true
                     }
                   },
@@ -948,7 +989,8 @@
                       "minAddressPrefixSize": "/29",
                       "minAddressCount": 2,
                       "requireContiguousAddresses": true
-                    }
+                    },
+                    "visible": "[equals(steps('instance').haportmode.fortiGateHAPortMode,'4-NIC')]"
                   },
                   "subnet5": {
                     "label": "Protected subnet",
@@ -1595,6 +1637,7 @@
       "VMSecurityType": "[if(or(equals(basics('fortiGateInstanceArchitecture'),'_g2'),equals(basics('fortiGateInstanceArchitecture'),'_arm64')),steps('instance').vmsecurity.VMSecurityType,'Standard')]",
       "VMSecurityTPM": "[if(equals(steps('instance').vmsecurity.VMSecurityType,'TrustedLaunch'),steps('instance').vmsecurity.VMSecurityTPM,false)]",
       "availabilityOptions": "[steps('instance').availabilityOptions.availabilityOptions]",
+      "fortiGateHAPortMode": "[steps('instance').haportmode.fortiGateHAPortMode]",
       "fortiGateLicenseBYOLA": "[steps('instance').fgtLicense.fgtAcontent]",
       "fortiGateLicenseBYOLB": "[steps('instance').fgtLicense.fgtBcontent]",
       "fortiGateLicenseFortiFlexA": "[steps('instance').fgtLicense.fgtAfortiflex]",

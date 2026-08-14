@@ -17,6 +17,9 @@
         "fortiGateInstanceArchitecture": {
             "value": "x64"
         },
+        "fortiGateHAPortMode": {
+            "value": "4-NIC"
+        },
         "fortiGateImageVersion_x64": {
             "value": "7.4.11"
         },
