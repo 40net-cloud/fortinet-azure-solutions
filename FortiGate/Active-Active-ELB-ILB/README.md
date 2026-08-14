@@ -54,7 +54,7 @@ This design can be a use case where the public IP per instance is used for manag
 
 ![active/active design](images/fgt-aa-pip.png)
 
-### External and internal Azure Standard Load Balancer and a public IP per instance 
+### External and internal Azure Standard Load Balancer and a public IP per instance
 
 It is also possible to combine the External Load Balancer with the public IPs per instance. This allows the ingress flow to be different than the egress flow.
 
