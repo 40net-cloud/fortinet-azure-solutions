@@ -19,9 +19,11 @@ this azure arm template will automatically deploy a full working environment con
 - 2 fortigate firewalls in an active/passive deployment
 - 1 external azure standard load balancer for communication with internet
 - 1 internal azure standard load balancer to receive all internal traffic and forwarding towards azure gateways connecting expressroute or azure vpns
-- 1 vnet with 1 protected subnet and 4 subnets required for the fortigate deployment (external, internal, ha mgmt and ha sync). if using an existing vnet, it must already have 5 subnets
+- 1 vnet with 1 protected subnet and 4 subnets required for the fortigate deployment (external, internal, ha sync and ha mgmt). if using an existing vnet, it must already have 5 subnets
 - 3 public ips. the first public ip is for cluster access to/through the active fortigate. the other two pips are for management access
 - user defined routes (udr) for the protected subnets
+
+by default, the fortigate vms are deployed with 4 nics: the ha sync port (port3) and ha management port (port4) are kept on separate interfaces and subnets. starting with fortios 7.0.1 (mantis 670058), the ha sync and ha management functions can be combined onto a single port (port3), reducing the deployment to 3 nics per vm. this is controlled by the `fortiGateHAPortMode` template parameter (`4-NIC` or `3-NIC`, default `4-NIC`). when `3-NIC` is selected, the dedicated ha management subnet is not deployed and the management public ip is instead attached directly to port3's private ip. selecting `3-NIC` also allows the use of instance types with only 3 nics available.
 
 ![active/passive design](images/fgt-ap.png)
 
@@ -78,7 +80,7 @@ the arm template deploys different resources and it is required to have the acce
 
 - the azure standard load balancer only supports tcp and udp protocols (https, dns, ssh, ...). to create a highly available architecture where you can use other protocols an architecture with the sdn connector failover is preferred. more details can be found [here](https://docs.microsoft.com/en-us/azure/load-balancer/components)
 - in case of failover the azure load balancer will send existing sessions to the failed vm as explained [here](https://docs.microsoft.com/en-us/azure/load-balancer/load-balancer-custom-probe-overview#probedown).
-- the template will deploy standard f4s vms for this architecture. other vm instances are supported as well with a minimum of 4 nics. a list can be found [here](https://docs.fortinet.com/document/fortigate-public-cloud/7.4.0/azure-administration-guide/562841/instance-type-support)
+- the template will deploy standard f4s vms for this architecture. other vm instances are supported as well with a minimum of 4 nics, or 3 nics when the `fortiGateHAPortMode` parameter is set to `3-NIC` (requires fortios 7.0.1 or later). a list can be found [here](https://docs.fortinet.com/document/fortigate-public-cloud/7.4.0/azure-administration-guide/562841/instance-type-support)
 - licenses for fortigate
   - byol: a demo license can be made available via your fortinet partner or on our website. these can be injected during deployment or added after deployment. purchased licenses need to be registered on the [fortinet support site](http://support.fortinet.com). download the .lic file after registration. note, these files may not work until 60 minutes after its initial creation.
   - payg or ondemand: these licenses are automatically generated during the deployment of the fortigate systems.
@@ -106,6 +108,7 @@ the fortigate vms need a specific configuration to match the deployed environmen
 - [high availability](#high-availability-probe-configuration)
 - [cloud-init](#cloud-init)
 - [availability zone](#availability-zone)
+- [ha port mode (3-nic / 4-nic)](#ha-port-mode)
 - [default configuration using this template](#default-configuration)
 - [upload vhd](https://community.fortinet.com/fortigate-azure-technical-learning-161/deployment-of-fortigate-vm-using-a-vhd-image-file-171850)
 
@@ -682,9 +685,39 @@ based on information in the presentation ['inside azure datacenter architecture 
 
 ![active/passive design](images/fgt-ap-az.png)
 
+### ha port mode
+
+the `fortiGateHAPortMode` parameter controls whether the ha sync and ha management functions are deployed on separate ports (`4-NIC`, the default) or combined onto a single port (`3-NIC`).
+
+- **4-nic** (default): port3 is dedicated to ha sync, and port4 is dedicated to ha management with its own subnet and public ip. this is the traditional deployment and remains fully backward compatible.
+- **3-nic**: requires fortios 7.0.1 or later (mantis 670058). port3 carries both ha sync and ha management. the dedicated ha management subnet (subnet4) is not deployed, and the management public ip is attached directly to port3's private ip instead of a separate port4 interface. this mode allows deployment on instance types that only support 3 nics.
+
+example port3 configuration in `3-NIC` mode (fortigate a):
+
+```text
+config system interface
+  edit port3
+    set mode static
+    set ip 172.16.136.133/26
+    set description hasyncport
+    set allowaccess ping https ssh ftm
+  next
+end
+config system ha
+  ...
+  config ha-mgmt-interfaces
+    edit 1
+      set interface port3
+      set gateway 172.16.136.129
+    next
+  end
+  ...
+end
+```
+
 ### default configuration
 
-after deployment, the below configuration has been automatically injected during the deployment. the bold sections are the default values. if parameters have been changed during deployment these values will be different.
+after deployment, the below configuration has been automatically injected during the deployment. the bold sections are the default values. if parameters have been changed during deployment these values will be different. the example below shows the default `4-NIC` ha port mode; see [ha port mode](#ha-port-mode) for the `3-NIC` port3 configuration.
 
 #### fortigate a
 

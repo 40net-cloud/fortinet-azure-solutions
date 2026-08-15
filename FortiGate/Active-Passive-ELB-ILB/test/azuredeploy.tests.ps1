@@ -200,6 +200,7 @@ Describe "FGT Active-Passive ELB-ILB - $scenario" {
                 'availabilityOptions',
                 'customImageReference',
                 'fortiGateAdditionalCustomData',
+                'fortiGateHAPortMode',
                 'fortiGateImageVersion_arm64',
                 'fortiGateImageVersion_x64',
                 'fortiGateImageVersion_x64_g2',
