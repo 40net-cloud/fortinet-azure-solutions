@@ -975,7 +975,7 @@
                     },
                     "constraints": {
                       "minAddressPrefixSize": "/29",
-                      "minAddressCount": "[if(equals(steps('instance').haportmode.fortiGateHAPortMode,'3-NIC'),4,2)]",
+                      "minAddressCount": 2,
                       "requireContiguousAddresses": true
                     }
                   },

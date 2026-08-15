@@ -17,9 +17,11 @@ In Microsoft Azure, you can deploy an active/passive pair of FortiGate VMs that 
 This Azure ARM template will automatically deploy a full working environment containing the following components.
 
 - 2 FortiGate firewalls in an active/passive deployment
-- 1 VNET with 2 protected subnets and 4 subnets required for the FortiGate deployment (external, internal, ha mgmt and ha sync). If using an existing VNet, it must already have 5 subnets
+- 1 VNET with 2 protected subnets and 4 subnets required for the FortiGate deployment (external, internal, ha sync and ha mgmt). If using an existing VNet, it must already have 5 subnets
 - 3 public IPs. The first public IP is for cluster access to/through the active FortiGate.  The other two PIPs are for Management access
 - User Defined Routes (UDR) for the protected subnets
+
+By default, the FortiGate VMs are deployed with 4 NICs: the HA sync port (port3) and HA management port (port4) are kept on separate interfaces and subnets. Starting with FortiOS 7.0.1 (mantis 670058), the HA sync and HA management functions can be combined onto a single port (port3), reducing the deployment to 3 NICs per VM. This is controlled by the `fortiGateHAPortMode` template parameter (`4-NIC` or `3-NIC`, default `4-NIC`). When `3-NIC` is selected, the dedicated HA management subnet is not deployed and the management public IP is instead attached directly to port3's private IP. Selecting `3-NIC` also allows the use of instance types with only 3 NICs available.
 
 ![active/passive design](images/fgt-ap-sdn.png)
 
@@ -74,7 +76,7 @@ After deployment you will be shown the IP address of all deployed components. Bo
 The ARM template deploys different resources and it is required to have the access rights and quota in your Microsoft Azure subscription to deploy the resources.
 
 - This architecture relies on API calls to Azure. Shifting the public IP address and gateway IP addresses of the routes takes time for Azure to complete especially if the environment is larger and there are multiple public IPs to be shifted and multiple routes to be changed. The failover time is variable depending on the platform.
-- The template will deploy Standard F4s VMs for this architecture. Other VM instances are supported as well with a minimum of 4 NICs. A list can be found [here](https://docs.fortinet.com/document/fortigate-public-cloud/7.4.0/azure-administration-guide/562841/instance-type-support)
+- The template will deploy Standard F4s VMs for this architecture. Other VM instances are supported as well with a minimum of 4 NICs, or 3 NICs when the `fortiGateHAPortMode` parameter is set to `3-NIC` (requires FortiOS 7.0.1 or later). A list can be found [here](https://docs.fortinet.com/document/fortigate-public-cloud/7.4.0/azure-administration-guide/562841/instance-type-support)
 - Licenses for FortiGate
   - BYOL: A demo license can be made available via your Fortinet partner or on our website. These can be injected during deployment or added after deployment. Purchased licenses need to be registered on the [Fortinet support site](http://support.fortinet.com). Download the .lic file after registration. Note, these files may not work until 60 minutes after its initial creation.
   - PAYG or OnDemand: These licenses are automatically generated during the deployment of the FortiGate systems.
@@ -95,6 +97,7 @@ The FortiGate VMs need a specific configuration to operate in your environment. 
 - [VNET peering](#vnet-peering)
 - [Failover configuration](#failover-configuration)
 - [Availability Zone](#availability-zone)
+- [HA Port Mode (3-NIC / 4-NIC)](#ha-port-mode)
 - [Default configuration using this template](#default-configuration)
 - [Upload VHD](https://community.fortinet.com/fortigate-azure-technical-learning-161/deployment-of-fortigate-vm-using-a-vhd-image-file-171850)
 
@@ -184,9 +187,40 @@ Based on information in the presentation ['Inside Azure datacenter architecture 
 
 ![active/passive design](images/fgt-ap-sdn-az.png)
 
+### HA Port Mode
+
+The `fortiGateHAPortMode` parameter controls whether the HA sync and HA management functions are deployed on separate ports (`4-NIC`, the default) or combined onto a single port (`3-NIC`).
+
+- **4-NIC** (default): port3 is dedicated to HA sync, and port4 is dedicated to HA management with its own subnet and public IP. This is the traditional deployment and remains fully backward compatible.
+- **3-NIC**: requires FortiOS 7.0.1 or later (mantis 670058). Port3 carries both HA sync and HA management. The dedicated HA management subnet (subnet4) is not deployed, and the management public IP is attached directly to port3's private IP instead of a separate port4 interface. This mode allows deployment on instance types that only support 3 NICs.
+
+Example port3 configuration in `3-NIC` mode (FortiGate A):
+
+```text
+config system interface
+  edit "port3"
+    set vdom "root"
+    set mode static
+    set ip 10.0.3.4 255.255.255.240
+    set allowaccess ping https ssh
+    set description "hasyncport"
+  next
+end
+config system ha
+  ...
+  config ha-mgmt-interfaces
+    edit 1
+      set interface "port3"
+      set gateway 10.0.3.1
+    next
+  end
+  ...
+end
+```
+
 ### Default configuration
 
-After deployment, the below configuration has been automatically injected during the deployment. The bold sections are the default values. If parameters have been changed during deployment these values will be different.
+After deployment, the below configuration has been automatically injected during the deployment. The bold sections are the default values. If parameters have been changed during deployment these values will be different. The example below shows the default `4-NIC` HA Port Mode; see [HA Port Mode](#ha-port-mode) for the `3-NIC` port3 configuration.
 
 #### FortiGate A
 

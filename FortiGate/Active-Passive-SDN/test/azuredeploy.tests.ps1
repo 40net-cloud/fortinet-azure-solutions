@@ -195,6 +195,7 @@ Describe "FGT Active-Passive SDN - $scenario" {
                 'availabilityOptions',
                 'customImageReference',
                 'fortiGateAdditionalCustomData',
+                'fortiGateHAPortMode',
                 'fortiGateImageVersion_arm64',
                 'fortiGateImageVersion_x64',
                 'fortiGateImageVersion_x64_g2',

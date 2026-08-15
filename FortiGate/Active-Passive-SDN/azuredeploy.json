@@ -685,7 +685,7 @@
     "fgbHAFailoverMethod": "[if(equals(parameters('highAvailabilityFailoverSecondaryIP'),'true'),concat('config system sdn-connector\nedit AzureSDN\nconfig nic\nedit ', variables('fgbNic2Name'), '\nset peer-nic ', variables('fgaNic2Name'), '\nconfig ip\nedit ipconfig2\nset private-ip ', variables('sn2IPfga2'), '\nnext\nend\nnext\nend\nnext\nend\nconfig system interface\nedit port2\nset secondary-IP enable\nconfig secondaryip\nedit 1\nset ip ', variables('sn2IPfga2'), '/', variables('sn1CIDRmask'), '\nset allowaccess ping\nnext\nend\nnext\nend\n'),concat('config system sdn-connector\nedit AzureSDN\nconfig route-table\nedit ', variables('routeTableName'), '\nconfig route\nedit toDefault\nset next-hop ', variables('sn2IPfgb'), '\nnext\nend\nnext\nend\nnext\nend\n'))]",
     "fgaCustomDataPrelude": "[concat('get system interface\nshow system interface\nconfig system global\nset allow-traffic-redirect disable\nend\nconfig system sdn-connector\nedit AzureSDN\nset type azure\nset ha-status enable\nset resource-group ', resourceGroup().name, '\nset subscription-id ', subscription().subscriptionId, '\nconfig nic\nedit ', variables('fgaNic1Name'), '\nconfig ip\nedit ipconfig1\nset public-ip ', variables('publicIP1Name'), '\nnext\nend\nnext\nend\nend\nconfig router static\nedit 1\nset gateway ', variables('sn1GatewayIP'), '\nset device port1\nnext\nedit 2\nset dst ', parameters('vnetAddressPrefix'), '\nset gateway ', variables('sn2GatewayIP'), '\nset device port2\nnext\nedit 3\nset dst 168.63.129.16 255.255.255.255\nset device port2\nset gateway ', variables ('sn2GatewayIP'), '\nnext\nedit 4\nset dst 168.63.129.16 255.255.255.255\nset device port1\nset gateway ', variables ('sn1GatewayIP'), '\nnext\nend\nconfig system interface\nedit port1\nset mode static\nset ip ', variables('sn1IPfga'), '/', variables('sn1CIDRmask'), '\nset description external\nnext\nedit port2\nset mode static\nset ip ', variables('sn2IPfga'), '/', variables('sn2CIDRmask'), '\nset description internal\nnext\n')]",
     "fgaPort34Config4Nic": "[concat('edit port3\nset mode static\nset ip ', variables('sn3IPfga'), '/', variables('sn3CIDRmask'), '\nset description hasyncport\nnext\nedit port4\nset mode static\nset ip ', variables('sn4IPfga'), '/', variables('sn4CIDRmask'), '\nset description hammgmtport\nset allowaccess ping https ssh ftm\nnext\n')]",
-    "fgaPort34Config3Nic": "[concat('edit port3\nset mode static\nset ip ', variables('sn3IPfga'), '/', variables('sn3CIDRmask'), '\nset description hasyncport\nset allowaccess ping https ssh ftm\nconfig secondaryip\nedit 1\nset ip ', variables('sn3IPfga2'), '/', variables('sn3CIDRmask'), '\nset allowaccess ping https ssh ftm\nnext\nend\nnext\n')]",
+    "fgaPort34Config3Nic": "[concat('edit port3\nset mode static\nset ip ', variables('sn3IPfga'), '/', variables('sn3CIDRmask'), '\nset description hasyncport\nset allowaccess ping https ssh ftm\nnext\n')]",
     "fgaHaCore": "end\nconfig system ha\nset group-id 1\nset group-name AzureHA\nset mode a-p\nset hbdev port3 100\nset session-pickup enable\nset session-pickup-connectionless enable\nset ha-mgmt-status enable\n",
     "fgaHaMgmtInterfaces4Nic": "[concat('config ha-mgmt-interfaces\nedit 1\nset interface port4\nset gateway ', variables('sn4GatewayIP'),'\nnext\nend\n')]",
     "fgaHaMgmtInterfaces3Nic": "[concat('config ha-mgmt-interfaces\nedit 1\nset interface port3\nset gateway ', variables('sn3GatewayIP'),'\nnext\nend\n')]",
@@ -693,7 +693,7 @@
     "fgaCustomDataBody": "[concat(variables('fgaCustomDataPrelude'), if(equals(parameters('fortiGateHAPortMode'),'4-NIC'), variables('fgaPort34Config4Nic'), variables('fgaPort34Config3Nic')), variables('fgaHaCore'), if(equals(parameters('fortiGateHAPortMode'),'4-NIC'), variables('fgaHaMgmtInterfaces4Nic'), variables('fgaHaMgmtInterfaces3Nic')), variables('fgaHaTail'), variables('fgaHAFailoverMethod'), variables('fmgCustomData'), parameters('fortiGateAdditionalCustomData'), '\n')]",
     "fgbCustomDataPrelude": "[concat('get system interface\nshow system interface\nconfig system global\nset allow-traffic-redirect disable\nend\nconfig system sdn-connector\nedit AzureSDN\nset type azure\nset ha-status enable\nset resource-group ', resourceGroup().name, '\nset subscription-id ', subscription().subscriptionId, '\nconfig nic\nedit ', variables('fgbNic1Name'), '\nconfig ip\nedit ipconfig1\nset public-ip ', variables('publicIP1Name'), '\nnext\nend\nnext\nend\nend\nconfig router static\nedit 1\nset gateway ', variables('sn1GatewayIP'), '\nset device port1\nnext\nedit 2\nset dst ', parameters('vnetAddressPrefix'), '\nset gateway ', variables('sn2GatewayIP'), '\nset device port2\nnext\nedit 3\nset dst 168.63.129.16 255.255.255.255\nset device port2\nset gateway ', variables ('sn2GatewayIP'), '\nnext\nedit 4\nset dst 168.63.129.16 255.255.255.255\nset device port1\nset gateway ', variables ('sn1GatewayIP'), '\nnext\nend\nconfig system interface\nedit port1\nset mode static\nset ip ', variables('sn1IPfgb'), '/', variables('sn1CIDRmask'), '\nset description external\nnext\nedit port2\nset mode static\nset ip ', variables('sn2IPfgb'), '/', variables('sn2CIDRmask'), '\nset description internal\nnext\n')]",
     "fgbPort34Config4Nic": "[concat('edit port3\nset mode static\nset ip ', variables('sn3IPfgb'), '/', variables('sn3CIDRmask'), '\nset description hasyncport\nnext\nedit port4\nset mode static\nset ip ', variables('sn4IPfgb'), '/', variables('sn4CIDRmask'), '\nset description hammgmtport\nset allowaccess ping https ssh ftm\nnext\n')]",
-    "fgbPort34Config3Nic": "[concat('edit port3\nset mode static\nset ip ', variables('sn3IPfgb'), '/', variables('sn3CIDRmask'), '\nset description hasyncport\nset allowaccess ping https ssh ftm\nconfig secondaryip\nedit 1\nset ip ', variables('sn3IPfgb2'), '/', variables('sn3CIDRmask'), '\nset allowaccess ping https ssh ftm\nnext\nend\nnext\n')]",
+    "fgbPort34Config3Nic": "[concat('edit port3\nset mode static\nset ip ', variables('sn3IPfgb'), '/', variables('sn3CIDRmask'), '\nset description hasyncport\nset allowaccess ping https ssh ftm\nnext\n')]",
     "fgbHaCore": "end\nconfig system ha\nset group-id 1\nset group-name AzureHA\nset mode a-p\nset hbdev port3 100\nset session-pickup enable\nset session-pickup-connectionless enable\nset ha-mgmt-status enable\n",
     "fgbHaMgmtInterfaces4Nic": "[concat('config ha-mgmt-interfaces\nedit 1\nset interface port4\nset gateway ', variables('sn4GatewayIP'),'\nnext\nend\n')]",
     "fgbHaMgmtInterfaces3Nic": "[concat('config ha-mgmt-interfaces\nedit 1\nset interface port3\nset gateway ', variables('sn3GatewayIP'),'\nnext\nend\n')]",
@@ -741,19 +741,8 @@
       {
         "name": "ipconfig1",
         "properties": {
-          "primary": "true",
           "privateIPAllocationMethod": "Static",
           "privateIPAddress": "[variables('sn3IPfga')]",
-          "subnet": {
-            "id": "[variables('subnet3Id')]"
-          }
-        }
-      },
-      {
-        "name": "ipconfig2",
-        "properties": {
-          "privateIPAllocationMethod": "Static",
-          "privateIPAddress": "[variables('sn3IPfga2')]",
           "publicIPAddress": "[if(not(equals(parameters('publicIP2NewOrExisting'), 'none')), variables('publicIPAddress2Id') , json('null'))]",
           "subnet": {
             "id": "[variables('subnet3Id')]"
@@ -777,19 +766,8 @@
       {
         "name": "ipconfig1",
         "properties": {
-          "primary": "true",
           "privateIPAllocationMethod": "Static",
           "privateIPAddress": "[variables('sn3IPfgb')]",
-          "subnet": {
-            "id": "[variables('subnet3Id')]"
-          }
-        }
-      },
-      {
-        "name": "ipconfig2",
-        "properties": {
-          "privateIPAllocationMethod": "Static",
-          "privateIPAddress": "[variables('sn3IPfgb2')]",
           "publicIPAddress": "[if(not(equals(parameters('publicIP3NewOrExisting'), 'none')), variables('publicIPAddress3Id') , json('null'))]",
           "subnet": {
             "id": "[variables('subnet3Id')]"
@@ -944,8 +922,6 @@
     "sn3IPStartAddress": "[split(parameters('subnet3StartAddress'),'.')]",
     "sn3IPfga": "[concat(variables('sn3IPArray0'),'.',variables('sn3IPArray1'),'.',variables('sn3IPArray2'),'.',int(variables('sn3IPStartAddress')[3]))]",
     "sn3IPfgb": "[concat(variables('sn3IPArray0'),'.',variables('sn3IPArray1'),'.',variables('sn3IPArray2'),'.',add(int(variables('sn3IPStartAddress')[3]),1))]",
-    "sn3IPfga2": "[concat(variables('sn3IPArray0'),'.',variables('sn3IPArray1'),'.',variables('sn3IPArray2'),'.',add(int(variables('sn3IPStartAddress')[3]),2))]",
-    "sn3IPfgb2": "[concat(variables('sn3IPArray0'),'.',variables('sn3IPArray1'),'.',variables('sn3IPArray2'),'.',add(int(variables('sn3IPStartAddress')[3]),3))]",
     "sn4IPArray": "[split(parameters('subnet4Prefix'),'.')]",
     "sn4IPArray2ndString": "[string(variables('sn4IPArray')[3])]",
     "sn4IPArray2nd": "[split(variables('sn4IPArray2ndString'),'/')]",
