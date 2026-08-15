@@ -989,8 +989,7 @@
                       "minAddressPrefixSize": "/29",
                       "minAddressCount": 2,
                       "requireContiguousAddresses": true
-                    },
-                    "visible": "[equals(steps('instance').haportmode.fortiGateHAPortMode,'4-NIC')]"
+                    }
                   },
                   "subnet5": {
                     "label": "Protected subnet",
@@ -1006,6 +1005,15 @@
                   }
                 },
                 "visible": true
+              },
+              {
+                "name": "haMgmtSubnetUnusedInfo",
+                "type": "Microsoft.Common.InfoBox",
+                "visible": "[equals(steps('instance').haportmode.fortiGateHAPortMode,'3-NIC')]",
+                "options": {
+                  "icon": "Info",
+                  "text": "3-NIC HA Port Mode is selected. The HA Management subnet entered above will not be used — HA sync and HA management are combined onto port3, and the management public IP is attached directly to port3's address."
+                }
               },
               {
                 "name": "virtualnetworkinfo",
