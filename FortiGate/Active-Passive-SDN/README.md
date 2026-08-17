@@ -54,7 +54,7 @@ As of March 2026, new FortiGate SKUs were introduced in the Azure Marketplace th
 - Marketplace information:
   - Publisher: fortinet
   - Offer: fortinet_fortigate-vm
-  - SKU / plan: fortinet_fg-vm_byol_70, fortinet_fg-vm_payg_70, fortinet_fg-vm_byol_72, fortinet_fg-vm_payg_72, fortinet_fg-vm_byol_74, fortinet_fg-vm_payg_74, fortinet_fg-vm_byol_76, fortinet_fg-vm_payg_76
+  - SKU / plan: fortinet_fg-vm_byol_70, fortinet_fg-vm_payg_70, fortinet_fg-vm_byol_72, fortinet_fg-vm_payg_72, fortinet_fg-vm_byol_72_arm64, fortinet_fg-vm_payg_72_arm64, fortinet_fg-vm_byol_74, fortinet_fg-vm_payg_74, fortinet_fg-vm_byol_74_arm64, fortinet_fg-vm_payg_74_arm64, fortinet_fg-vm_byol_74_g2, fortinet_fg-vm_payg_74_g2, fortinet_fg-vm_byol_76, fortinet_fg-vm_payg_76, fortinet_fg-vm_byol_76_arm64, fortinet_fg-vm_payg_76_arm64, fortinet_fg-vm_byol_76_g2, fortinet_fg-vm_payg_76_g2, fortinet_fg-vm_byol_80, fortinet_fg-vm_payg_80, fortinet_fg-vm_byol_80_arm64, fortinet_fg-vm_payg_80_arm64, fortinet_fg-vm_byol_80_g2, fortinet_fg-vm_payg_80_g2
 
 ### Azure CLI
 
