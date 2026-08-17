@@ -8,6 +8,12 @@
     },
     {
       "pattern": "^https://github.com/terraform-providers/terraform-provider-azurerm/issues/260"
+    },
+    {
+      "pattern": "https://azuremarketplace.microsoft.com/"
+    },
+    {
+      "pattern": "https://marketplace.microsoft.com/"
     }
   ],
   "replacementPatterns": [
