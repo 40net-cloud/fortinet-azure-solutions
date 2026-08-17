@@ -45,11 +45,11 @@ the fortigate solution can be deployed using the azure portal or azure cli. ther
 ### azure portal
 
 azure portal wizard template deployment:
-[![deploy azure portal button](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/microsoft.template/uri/https%3a%2f%2fraw.githubusercontent.com%2f40net-cloud%2ffortinet-azure-solutions%2fmain%2ffortigate%2factive-passive-elb-ilb%2fazuredeploy.json/createuidefinitionuri/https%3a%2f%2fraw.githubusercontent.com%2f40net-cloud%2ffortinet-azure-solutions%2fmain%2ffortigate%2factive-passive-elb-ilb%2fcreateuidefinition.json)
+[![deploy azure portal button](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/microsoft.template/uri/https%3a%2f%2fraw.githubusercontent.com%2f40net-cloud%2ffortinet-azure-solutions%2fmain%2ffortigate%2fActive-Passive-ELB-ILB%2fazuredeploy.json/createuidefinitionuri/https%3a%2f%2fraw.githubusercontent.com%2f40net-cloud%2ffortinet-azure-solutions%2fmain%2ffortigate%2fActive-Passive-ELB-ILB%2fcreateuidefinition.json)
 
 standard custom template deployment:
-[![deploy azure portal button](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/microsoft.template/uri/https%3a%2f%2fraw.githubusercontent.com%2f40net-cloud%2ffortinet-azure-solutions%2fmain%2ffortigate%2factive-passive-elb-ilb%2fazuredeploy.json)
-[![visualize](https://raw.githubusercontent.com/azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/visualizebutton.svg?sanitize=true)](http://armviz.io/#/?load=https%3a%2f%2fraw.githubusercontent.com%2f40net-cloud%2ffortinet-azure-solutions$2fmain%2ffortigate%2factive-passive-elb-ilb%2fazuredeploy.json)
+[![deploy azure portal button](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/microsoft.template/uri/https%3a%2f%2fraw.githubusercontent.com%2f40net-cloud%2ffortinet-azure-solutions%2fmain%2ffortigate%2fActive-Passive-ELB-ILB%2fazuredeploy.json)
+[![visualize](https://raw.githubusercontent.com/azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/visualizebutton.svg?sanitize=true)](http://armviz.io/#/?load=https%3a%2f%2fraw.githubusercontent.com%2f40net-cloud%2ffortinet-azure-solutions$2fmain%2ffortigate%2fActive-Passive-ELB-ILB%2fazuredeploy.json)
 
 as of march 2026, new fortigate skus were introduced in the azure marketplace that provide access to the latest marketplace features. in specific regions (e.g. govcloud, private offers, ...) and deployment scenarios, legacy skus are still required; [those templates can be found in the legacy directory](legacy/).
 
