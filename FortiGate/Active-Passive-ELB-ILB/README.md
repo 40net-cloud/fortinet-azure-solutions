@@ -45,7 +45,7 @@ the fortigate solution can be deployed using the azure portal or azure cli. ther
 ### azure portal
 
 azure portal wizard template deployment:
-[![deploy azure portal button](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/microsoft.template/uri/https%3a%2f%2fraw.githubusercontent.com%2f40net-cloud%2ffortinet-azure-solutions%2fmain%2fFortiGate%2fActive-Passive-ELB-ILB%2fazuredeploy.json/createuidefinitionuri/https%3a%2f%2fraw.githubusercontent.com%2f40net-cloud%2ffortinet-azure-solutions%2fmain%2fFortiGate%2fActive-Passive-ELB-ILB%2fcreateUiDefinition.json)
+[![deploy azure portal button](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/microsoft.template/uri/https%3a%2f%2fraw.githubusercontent.com%2f40net-cloud%2ffortinet-azure-solutions%2fmain%2fFortiGate%2fActive-Passive-ELB-ILB%2fazuredeploy.json/createUIDefinitionUri/https%3a%2f%2fraw.githubusercontent.com%2f40net-cloud%2ffortinet-azure-solutions%2fmain%2fFortiGate%2fActive-Passive-ELB-ILB%2fcreateUiDefinition.json)
 
 standard custom template deployment:
 [![deploy azure portal button](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/microsoft.template/uri/https%3a%2f%2fraw.githubusercontent.com%2f40net-cloud%2ffortinet-azure-solutions%2fmain%2fFortiGate%2fActive-Passive-ELB-ILB%2fazuredeploy.json)
