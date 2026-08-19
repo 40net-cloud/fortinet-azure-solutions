@@ -21,13 +21,17 @@ This Azure ARM template will automatically deploy a full working environment con
 - 3 public IPs. The first public IP is for cluster access to/through the active FortiGate.  The other two PIPs are for Management access
 - User Defined Routes (UDR) for the protected subnets
 
-By default, the FortiGate VMs are deployed with 4 NICs: the HA sync port (port3) and HA management port (port4) are kept on separate interfaces and subnets. Starting with FortiOS 7.0.1 (mantis 670058), the HA sync and HA management functions can be combined onto a single port (port3), reducing the deployment to 3 NICs per VM. This is controlled by the `fortiGateHAPortMode` template parameter (`4-NIC` or `3-NIC`, default `4-NIC`). When `3-NIC` is selected, the dedicated HA management subnet is not deployed and the management public IP is instead attached directly to port3's private IP. Selecting `3-NIC` also allows the use of instance types with only 3 NICs available.
-
 ![active/passive design](images/fgt-ap-sdn.png)
+
+By default, the 2 FortiGate VMs are deployed with 4 NICs: the ha sync port (port3) and ha management port (port4) are kept on separate interfaces and subnets. Starting with fortios 7.0.1 (bug id 670058), the ha sync and ha management functions can be combined onto a single port (port3), reducing the deployment to 3 NICs per vm. When `3-NIC` is selected, the dedicated ha management subnet is not deployed and the management public ip is instead attached directly to port3's private ip. selecting `3-NIC` also allows the use of instance types with only 3 NICs available.
+
+![active/passive design](images/fgt-ap-sdn-3nic.png)
 
 To enhance the availability of the solution, VMs can be installed in different Availability Zones instead of an Availability Set. If Availability Zones deployment is selected but the location does not support Availability Zones an Availability Set will be deployed. If Availability Zones deployment is selected and Availability Zones are available in the location, FortiGate A will be placed in Zone 1, FortiGate B will be placed in Zone 2.
 
 ![active/passive design](images/fgt-ap-sdn-az.png)
+
+![active/passive design](images/fgt-ap-sdn-az-3nic.png)
 
 This ARM template can also be used to be extended or customized based on your requirements. Additional subnets besides the ones mentioned above are not automatically generated. By adapting the ARM templates you can add additional subnets which preferably require their own routing tables.
 
@@ -90,7 +94,7 @@ After deployment you will be shown the IP address of all deployed components. Bo
 The ARM template deploys different resources and it is required to have the access rights and quota in your Microsoft Azure subscription to deploy the resources.
 
 - This architecture relies on API calls to Azure. Shifting the public IP address and gateway IP addresses of the routes takes time for Azure to complete especially if the environment is larger and there are multiple public IPs to be shifted and multiple routes to be changed. The failover time is variable depending on the platform.
-- The template will deploy Standard F4s VMs for this architecture. Other VM instances are supported as well with a minimum of 4 NICs, or 3 NICs when the `fortiGateHAPortMode` parameter is set to `3-NIC` (requires FortiOS 7.0.1 or later). A list can be found [here](https://docs.fortinet.com/document/fortigate-public-cloud/7.4.0/azure-administration-guide/562841/instance-type-support)
+- Different instance types are supported, the template contain a default option other vm instances are supported as well with a minimum of 4 NICs, or 3 NICs when the `fortiGateHAPortMode` parameter is set to `3-NIC` (requires fortios 7.0.1 or later). Aa list can be found [here](https://docs.fortinet.com/document/fortigate-public-cloud/7.4.0/azure-administration-guide/562841/instance-type-support)
 - Licenses for FortiGate
   - BYOL: A demo license can be made available via your Fortinet partner or on our website. These can be injected during deployment or added after deployment. Purchased licenses need to be registered on the [Fortinet support site](http://support.fortinet.com). Download the .lic file after registration. Note, these files may not work until 60 minutes after its initial creation.
   - PAYG or OnDemand: These licenses are automatically generated during the deployment of the FortiGate systems.
@@ -111,7 +115,7 @@ The FortiGate VMs need a specific configuration to operate in your environment. 
 - [VNET peering](#vnet-peering)
 - [Failover configuration](#failover-configuration)
 - [Availability Zone](#availability-zone)
-- [HA Port Mode (3-NIC / 4-NIC)](#ha-port-mode)
+- [FGCP High Availability mode ports](#fgcp-high-availability-mode-ports)
 - [Default configuration using this template](#default-configuration)
 - [Upload VHD](https://community.fortinet.com/fortigate-azure-technical-learning-161/deployment-of-fortigate-vm-using-a-vhd-image-file-171850)
 
@@ -201,31 +205,32 @@ Based on information in the presentation ['Inside Azure datacenter architecture 
 
 ![active/passive design](images/fgt-ap-sdn-az.png)
 
-### HA Port Mode
+### FGCP high availability mode ports
 
-The `fortiGateHAPortMode` parameter controls whether the HA sync and HA management functions are deployed on separate ports (`4-NIC`, the default) or combined onto a single port (`3-NIC`).
+FGCP support both having separate ha sync and ha management ports (`4-NIC`, the default) or combined onto a single port (`3-NIC`). During deployment you can select the either of these HA modes. Newer instances types on Microsoft Azure support 3 Nic starting from 3 vCPUs.
 
-- **4-NIC** (default): port3 is dedicated to HA sync, and port4 is dedicated to HA management with its own subnet and public IP. This is the traditional deployment and remains fully backward compatible.
-- **3-NIC**: requires FortiOS 7.0.1 or later (mantis 670058). Port3 carries both HA sync and HA management. The dedicated HA management subnet (subnet4) is not deployed, and the management public IP is attached directly to port3's private IP instead of a separate port4 interface. This mode allows deployment on instance types that only support 3 NICs.
+When using the ARM template for customization, the `fortiGateHAPortMode` ARM template parameter controls the ports used (`4-NIC` or `3-NIC`, default `4-NIC`).
 
-Example port3 configuration in `3-NIC` mode (FortiGate A):
+- **4-nic** (default): port3 is dedicated to ha sync, and port4 is dedicated to ha management with its own subnet and public ip. this is the traditional deployment and remains fully backward compatible
+- **3-nic**: requires fortios 7.0.1 or later (bug id 670058). port3 carries both ha sync and ha management. the dedicated ha management subnet (subnet4) is not deployed, and the management public ip is attached directly to port3's private ip instead of a separate port4 interface. this mode allows deployment on instance types that only support 3 NICs
+
+example port3 configuration in `3-NIC` mode (fortigate a):
 
 ```text
 config system interface
-  edit "port3"
-    set vdom "root"
+  edit port3
     set mode static
-    set ip 10.0.3.4 255.255.255.240
-    set allowaccess ping https ssh
-    set description "hasyncport"
+    set ip 172.16.136.133/26
+    set description hasyncport
+    set allowaccess ping https ssh ftm
   next
 end
 config system ha
   ...
   config ha-mgmt-interfaces
     edit 1
-      set interface "port3"
-      set gateway 10.0.3.1
+      set interface port3
+      set gateway 172.16.136.129
     next
   end
   ...
@@ -234,7 +239,7 @@ end
 
 ### Default configuration
 
-After deployment, the below configuration has been automatically injected during the deployment. The bold sections are the default values. If parameters have been changed during deployment these values will be different. The example below shows the default `4-NIC` HA Port Mode; see [HA Port Mode](#ha-port-mode) for the `3-NIC` port3 configuration.
+After deployment, the below configuration has been automatically injected during the deployment. the bold sections are the default values. If parameters have been changed during deployment these values will be different. The example below shows the default `4-NIC` ha port mode. For the `3-NIC` port3 configuration, review the [FGCP high availability mode ports](#fgcp-high-availability-mode-ports).
 
 #### FortiGate A
 
