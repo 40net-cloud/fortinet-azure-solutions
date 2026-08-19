@@ -583,7 +583,7 @@ Microsoft Azure offers the possibility to inject a configuration during deployme
 
 #### Inline configuration file
 
-In this ARM template, a FortiGate configuration is passed via the customdata field used by Azure for the Cloud-Init process. Using variables and parameters you can customize the configuration based on the input provided during deployment. The full configuration injected during deployment with the default parameters can be found [here](config-provisioning.md).
+In this ARM template, a FortiGate configuration is passed via the customdata field used by Azure for the Cloud-Init process. Using variables and parameters you can customize the configuration based on the input provided during deployment. The full configuration injected during deployment with the default parameters can be found [here](#default-configuration).
 
 ```text
 ...
