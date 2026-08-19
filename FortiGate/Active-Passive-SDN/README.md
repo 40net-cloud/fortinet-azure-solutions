@@ -114,6 +114,7 @@ The FortiGate VMs need a specific configuration to operate in your environment. 
 - [Fabric Connector](#fabric-connector)
 - [VNET peering](#vnet-peering)
 - [Failover configuration](#failover-configuration)
+- [Secondary IP failover](#secondary-ip-failover)
 - [Availability Zone](#availability-zone)
 - [FGCP High Availability mode ports](#fgcp-high-availability-mode-ports)
 - [Default configuration using this template](#default-configuration)
@@ -191,6 +192,72 @@ config system sdn-connector
 end
 ```
 
+### Secondary IP failover
+
+By default, failover is handled by having the Fabric Connector update the route table's next-hop (as shown above) so that traffic is redirected to the internal IP of the active unit's port2. Setting the `highAvailabilityFailoverSecondaryIP` ARM template parameter to `true` (default `false`) changes this behavior: instead of moving a route table next-hop, the Fabric Connector moves a floating secondary IP address between port2 of FortiGate A and FortiGate B.
+
+With this method, each unit's `AzureSDN` connector is configured with a `nic` entry for its own port2, pointing to the peer's port2 NIC via `peer-nic`. Both units share the same floating private IP address on `ipconfig2` of that NIC; on failover, the Fabric Connector re-assigns this IP configuration to the NIC of the unit that becomes active. Locally, that same floating IP is also added as a secondary IP on port2 so it can be used as a gateway/next-hop by other resources in the VNET (for example, as a UDR next-hop pointing at this floating IP instead of at the route table entries above).
+
+#### FortiGate A
+
+```text
+config system sdn-connector
+  edit "AzureSDN"
+  config nic
+    edit "FortiGate-A-NIC2"
+      set peer-nic "FortiGate-B-NIC2"
+      config ip
+        edit "ipconfig2"
+        set private-ip "10.0.2.6"
+      next
+    end
+    next
+  end
+  next
+end
+config system interface
+  edit "port2"
+    set secondary-IP enable
+    config secondaryip
+      edit 1
+        set ip "10.0.2.6" "255.255.255.0"
+        set allowaccess ping
+      next
+    end
+  next
+end
+```
+
+#### FortiGate B
+
+```text
+config system sdn-connector
+  edit "AzureSDN"
+  config nic
+    edit "FortiGate-B-NIC2"
+      set peer-nic "FortiGate-A-NIC2"
+      config ip
+        edit "ipconfig2"
+        set private-ip "10.0.2.6"
+      next
+    end
+    next
+  end
+  next
+end
+config system interface
+  edit "port2"
+    set secondary-IP enable
+    config secondaryip
+      edit 1
+        set ip "10.0.2.6" "255.255.255.0"
+        set allowaccess ping
+      next
+    end
+  next
+end
+```
+
 ### Availability Zone
 
 Microsoft defines an Availability Zone to have the following properties:
@@ -214,7 +281,7 @@ When using the ARM template for customization, the `fortiGateHAPortMode` ARM tem
 - **4-nic** (default): port3 is dedicated to ha sync, and port4 is dedicated to ha management with its own subnet and public ip. this is the traditional deployment and remains fully backward compatible
 - **3-nic**: requires fortios 7.0.1 or later (bug id 670058). port3 carries both ha sync and ha management. the dedicated ha management subnet (subnet4) is not deployed, and the management public ip is attached directly to port3's private ip instead of a separate port4 interface. this mode allows deployment on instance types that only support 3 NICs
 
-example port3 configuration in `3-NIC` mode (fortigate a):
+example port3 configuration in `3-NIC` mode (FortiGate a):
 
 ```text
 config system interface
