@@ -23,7 +23,7 @@ This Azure ARM template will automatically deploy a full working environment con
 
 ![active/passive design](images/fgt-ap-sdn.png)
 
-By default, the 2 FortiGate VMs are deployed with 4 NICs: the ha sync port (port3) and ha management port (port4) are kept on separate interfaces and subnets. Starting with fortios 7.0.1 (bug id 670058), the ha sync and ha management functions can be combined onto a single port (port3), reducing the deployment to 3 NICs per vm. When `3-NIC` is selected, the dedicated ha management subnet is not deployed and the management public ip is instead attached directly to port3's private ip. selecting `3-NIC` also allows the use of instance types with only 3 NICs available.
+By default, the 2 FortiGate VMs are deployed with 4 NICs: the ha sync port (port3) and ha management port (port4) are kept on separate interfaces and subnets. Starting with fortios 7.0.1 ([bug id 670058](https://docs.fortinet.com/document/fortigate/7.0.1/fortios-release-notes/743723/new-features-or-enhancements)), the ha sync and ha management functions can be combined onto a single port (port3), reducing the deployment to 3 NICs per vm. When `3-NIC` is selected, the dedicated ha management subnet is not deployed and the management public ip is instead attached directly to port3's private ip. selecting `3-NIC` also allows the use of instance types with only 3 NICs available.
 
 ![active/passive design](images/fgt-ap-sdn-3nic.png)
 
@@ -279,7 +279,7 @@ FGCP support both having separate ha sync and ha management ports (`4-NIC`, the 
 When using the ARM template for customization, the `fortiGateHAPortMode` ARM template parameter controls the ports used (`4-NIC` or `3-NIC`, default `4-NIC`).
 
 - **4-nic** (default): port3 is dedicated to ha sync, and port4 is dedicated to ha management with its own subnet and public ip. this is the traditional deployment and remains fully backward compatible
-- **3-nic**: requires fortios 7.0.1 or later (bug id 670058). port3 carries both ha sync and ha management. the dedicated ha management subnet (subnet4) is not deployed, and the management public ip is attached directly to port3's private ip instead of a separate port4 interface. this mode allows deployment on instance types that only support 3 NICs
+- **3-nic**: requires fortios 7.0.1 or later ([bug id 670058](https://docs.fortinet.com/document/fortigate/7.0.1/fortios-release-notes/743723/new-features-or-enhancements)). port3 carries both ha sync and ha management. the dedicated ha management subnet (subnet4) is not deployed, and the management public ip is attached directly to port3's private ip instead of a separate port4 interface. this mode allows deployment on instance types that only support 3 NICs
 
 example port3 configuration in `3-NIC` mode (FortiGate a):
 
