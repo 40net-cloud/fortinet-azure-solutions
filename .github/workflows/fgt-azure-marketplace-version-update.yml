@@ -152,6 +152,8 @@ jobs:
         }
         $marketplaceVersionsUI_arm64 | ConvertTo-Json | Out-File -Filepath './fgtversion_arm64_ui.json'
 
+        $buildingBlocks = @("A-Single-VM","Active-Passive-ELB-ILB","Active-Active-ELB-ILB","Active-Passive-SDN")
+
         foreach ($buildingBlock in $buildingBlocks) {
           if (Test-Path -Path "./${env:PRODUCT}/${buildingBlock}/mainTemplate.json" -PathType Leaf) {
             Get-Content -Raw -Path "./${env:PRODUCT}/${buildingBlock}/mainTemplate.json" | jq --slurpfile content "./fgtversion_x64.json" '.parameters.fortiGateImageVersion_x64.allowedValues = $content[]' | Set-Content -Path "./${env:PRODUCT}/${buildingBlock}/mainTemplate.json"
@@ -206,31 +208,35 @@ jobs:
           }
         }
 
-        $buildingBlocks = @("AzureApplicationGateway/scenario1","AzureApplicationGateway/scenario2","AzureApplicationGateway/scenario3","AzureGatewayLoadBalancer","AzureRouteServer/Active-Passive","ZTNAApplicationGateway")
-
-        foreach ($buildingBlock in $buildingBlocks) {
-          if (Test-Path -Path "./${env:PRODUCT}/${buildingBlock}/mainTemplate.json" -PathType Leaf) {
-            Get-Content -Raw -Path "./${env:PRODUCT}/${buildingBlock}/mainTemplate.json" | jq --slurpfile content "./fgtversion_x64.json" '.parameters.fortiGateImageVersion.allowedValues = $content[]' | Set-Content -Path "./${env:PRODUCT}/${buildingBlock}/mainTemplate.json"
-            $content = Get-Content "./${env:PRODUCT}/${buildingBlock}/mainTemplate.json" -Raw
-            if (-Not $content -match '(?<=\r\n)\z') {
-              "" | Out-File -Append "./${env:PRODUCT}/${buildingBlock}/mainTemplate.json"
-            }
-          }
-          if (Test-Path -Path "./${env:PRODUCT}/${buildingBlock}/azuredeploy.json" -PathType Leaf) {
-            Get-Content -Raw -Path "./${env:PRODUCT}/${buildingBlock}/azuredeploy.json" | jq --slurpfile content "./fgtversion_x64.json" '.parameters.fortiGateImageVersion.allowedValues = $content[]' | Set-Content -Path "./${env:PRODUCT}/${buildingBlock}/azuredeploy.json"
-            $content = Get-Content "./${env:PRODUCT}/${buildingBlock}/azuredeploy.json" -Raw
-            if (-Not $content -match '(?<=\r\n)\z') {
-              "" | Out-File -Append "./${env:PRODUCT}/${buildingBlock}/azuredeploy.json"
-            }
-          }
-          if (Test-Path -Path "./${env:PRODUCT}/${buildingBlock}/createUiDefinition.json" -PathType Leaf) {
-            Get-Content -Raw -Path "./${env:PRODUCT}/${buildingBlock}/createUiDefinition.json" | jq --slurpfile content "./fgtversionui_x64.json" '(.parameters.basics[] | select( .name == "fortiGateImageVersion") | .constraints.allowedValues) |= $content[]' | Set-Content -Path "./${env:PRODUCT}/${buildingBlock}/createUiDefinition.json"
-            $content = Get-Content "./${env:PRODUCT}/${buildingBlock}/createUiDefinition.json" -Raw
-            if (-Not $content -match '(?<=\r\n)\z') {
-              "" | Out-File -Append "./${env:PRODUCT}/${buildingBlock}/createUiDefinition.json"
-            }
-          }
-        }
+        # Disabled: these building blocks (AzureApplicationGateway, AzureGatewayLoadBalancer,
+        # AzureRouteServer/Active-Passive, ZTNAApplicationGateway) still use the legacy
+        # single-field fortiGateImageVersion schema and have not yet migrated to the
+        # x64/x64_g2/arm64 SKU split. Re-enable once they adopt the new SKUs.
+        # $buildingBlocks = @("AzureApplicationGateway/scenario1","AzureApplicationGateway/scenario2","AzureApplicationGateway/scenario3","AzureGatewayLoadBalancer","AzureRouteServer/Active-Passive","ZTNAApplicationGateway")
+        #
+        # foreach ($buildingBlock in $buildingBlocks) {
+        #   if (Test-Path -Path "./${env:PRODUCT}/${buildingBlock}/mainTemplate.json" -PathType Leaf) {
+        #     Get-Content -Raw -Path "./${env:PRODUCT}/${buildingBlock}/mainTemplate.json" | jq --slurpfile content "./fgtversion_x64.json" '.parameters.fortiGateImageVersion.allowedValues = $content[]' | Set-Content -Path "./${env:PRODUCT}/${buildingBlock}/mainTemplate.json"
+        #     $content = Get-Content "./${env:PRODUCT}/${buildingBlock}/mainTemplate.json" -Raw
+        #     if (-Not $content -match '(?<=\r\n)\z') {
+        #       "" | Out-File -Append "./${env:PRODUCT}/${buildingBlock}/mainTemplate.json"
+        #     }
+        #   }
+        #   if (Test-Path -Path "./${env:PRODUCT}/${buildingBlock}/azuredeploy.json" -PathType Leaf) {
+        #     Get-Content -Raw -Path "./${env:PRODUCT}/${buildingBlock}/azuredeploy.json" | jq --slurpfile content "./fgtversion_x64.json" '.parameters.fortiGateImageVersion.allowedValues = $content[]' | Set-Content -Path "./${env:PRODUCT}/${buildingBlock}/azuredeploy.json"
+        #     $content = Get-Content "./${env:PRODUCT}/${buildingBlock}/azuredeploy.json" -Raw
+        #     if (-Not $content -match '(?<=\r\n)\z') {
+        #       "" | Out-File -Append "./${env:PRODUCT}/${buildingBlock}/azuredeploy.json"
+        #     }
+        #   }
+        #   if (Test-Path -Path "./${env:PRODUCT}/${buildingBlock}/createUiDefinition.json" -PathType Leaf) {
+        #     Get-Content -Raw -Path "./${env:PRODUCT}/${buildingBlock}/createUiDefinition.json" | jq --slurpfile content "./fgtversionui_x64.json" '(.parameters.basics[] | select( .name == "fortiGateImageVersion") | .constraints.allowedValues) |= $content[]' | Set-Content -Path "./${env:PRODUCT}/${buildingBlock}/createUiDefinition.json"
+        #     $content = Get-Content "./${env:PRODUCT}/${buildingBlock}/createUiDefinition.json" -Raw
+        #     if (-Not $content -match '(?<=\r\n)\z') {
+        #       "" | Out-File -Append "./${env:PRODUCT}/${buildingBlock}/createUiDefinition.json"
+        #     }
+        #   }
+        # }
 
         Remove-Item "./fgtversion_x64.json"
         Remove-Item "./fgtversionui_x64.json"
