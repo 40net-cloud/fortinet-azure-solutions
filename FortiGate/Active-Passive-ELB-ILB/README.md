@@ -391,6 +391,7 @@ The NAT behind the FortiGate outgoing interface allows for a very simple configu
 
 #### Limitations
 
+- In the template, the setting `allocatedOutboundPorts` to 0 enables automatic, dynamic port allocation on your Azure Load Balancer or NAT Gateway. Instead of giving every backend virtual machine a fixed number of ports, Azure dynamically adjusts how many SNAT (Source Network Address Translation) ports are given to each backend instance based on the total number of machines in the pool. It is important to review your specific deployment and requirements to avoid any SNAT port exhaustion.
 - Azure has certain limitations on outbound connections, [more info](https://docs.microsoft.com/en-us/azure/load-balancer/load-balancer-outbound-connections#limitations)
 - Azure has a limited number of outbound ports it can allocated per public ip. More information and optimisations can be found [here](https://docs.microsoft.com/en-us/azure/load-balancer/load-balancer-outbound-connections#preallocatedports)
 - In case of failover the Azure Load Balancer will sends existing sessions to the failed VM as explained [here](https://docs.microsoft.com/en-us/azure/load-balancer/load-balancer-custom-probe-overview#probedown).
