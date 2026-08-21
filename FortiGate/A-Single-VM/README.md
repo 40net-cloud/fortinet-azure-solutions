@@ -28,10 +28,10 @@ This Azure ARM template can also be extended or customized based on your require
 
 For the deployment, you can use the Azure Portal, Azure CLI, PowerShell, or Azure Cloud Shell. The Azure ARM templates are exclusive to Microsoft Azure and can't be used in other cloud environments. The main template is the `azuredeploy.json` which you can use in the Azure Portal. A `deploy.sh` script is provided to facilitate the deployment. You'll be prompted to provide the 4 required variables:
 
-- PREFIX : This prefix will be added to each of the resources created by the template for ease of use and visibility.
-- LOCATION : This is the Azure region where the deployment will take place.
-- USERNAME : The username used to log in to the FortiGate-VM GUI and SSH management UI.
-- PASSWORD : The password used for the FortiGate-VM GUI and SSH management UI.
+- PREFIX : This prefix will be added to each of the resources created by the template for ease of use and visibility
+- LOCATION : This is the Azure region where the deployment will take place
+- USERNAME : The username used to log in to the FortiGate-VM GUI and SSH management UI
+- PASSWORD : The password used for the FortiGate-VM GUI and SSH management UI
 
 ### Azure Portal
 

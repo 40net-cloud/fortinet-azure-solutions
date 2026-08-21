@@ -19,7 +19,7 @@ This Azure ARM template will automatically deploy a full working environment con
 - 2 FortiGate firewall's in an active/passive deployment
 - 1 external Azure Standard Load Balancer for communication with internet
 - 1 internal Azure Standard Load Balancer to receive all internal traffic and forwarding towards Azure Gateways connecting ExpressRoute or Azure VPN's
-- 1 VNET with 1 protected subnet and 4 subnets required for the FortiGate deployment (external, internal, ha sync and (optional)ha mgmt). If using an existing vnet, it must already have 5 subnets
+- 1 VNET with 1 protected subnet and 4 subnets required for the FortiGate deployment (external, internal, ha sync and (optional)ha management). If using an existing vnet, it must already have 5 subnets
 - 3 public IPs. The first public IP is for cluster access to/through the active FortiGate. The other two PIPs are for Management access
 - User Defined Routes (UDR) for the protected subnets
 
@@ -1023,7 +1023,7 @@ Azure CLI NIC information
 ## Support
 
 Fortinet-provided scripts in this and other GitHub projects do not fall under the regular Fortinet technical support scope and are not supported by FortiCare Support Services.
-For direct issues, please refer to the [Issues](https://github.com/fortinet/azure-templates/issues) tab of this GitHub project.
+For direct issues, please refer to the [Issues](https://github.com/40net-cloud/fortinet-azure-solutions/issues) tab of this GitHub project.
 For other questions related to this project, contact [github@fortinet.com](mailto:github@fortinet.com).
 
 ## License

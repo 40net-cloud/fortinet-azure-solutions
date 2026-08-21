@@ -280,7 +280,7 @@
     },
     "highAvailabilityFailoverSecondaryIP": {
       "type": "string",
-      "defaultValue": "false",
+      "defaultValue": "true",
       "allowedValues": [
         "true",
         "false"

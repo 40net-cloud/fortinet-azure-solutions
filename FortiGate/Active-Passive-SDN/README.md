@@ -23,7 +23,7 @@ This Azure ARM template will automatically deploy a full working environment con
 
 ![active/passive design](images/fgt-ap-sdn.png)
 
-By default, the 2 FortiGate VMs are deployed with 4 NICs: the ha sync port (port3) and ha management port (port4) are kept on separate interfaces and subnets. Starting with fortios 7.0.1 ([bug id 670058](https://docs.fortinet.com/document/fortigate/7.0.1/fortios-release-notes/743723/new-features-or-enhancements)), the ha sync and ha management functions can be combined onto a single port (port3), reducing the deployment to 3 NICs per vm. When `3-NIC` is selected, the dedicated ha management subnet is not deployed and the management public ip is instead attached directly to port3's private ip. selecting `3-NIC` also allows the use of instance types with only 3 NICs available.
+By default, the 2 FortiGate VMs are deployed with 4 NICs: the ha sync port (port3) and ha management port (port4) are kept on separate interfaces and subnets. Starting with fortios 7.0.1 ([bug id 670058](https://docs.fortinet.com/document/fortigate/7.0.1/fortios-release-notes/743723/new-features-or-enhancements)), the ha sync and ha management functions can be combined onto a single port (port3), reducing the deployment to 3 NICs per vm. When `3-NIC` is selected during deployment, the dedicated ha management subnet is not deployed and the management public ip is instead attached directly to port3's private ip. Selecting `3-NIC` also allows the use of instance types with only 3 NICs available.
 
 ![active/passive design](images/fgt-ap-sdn-3nic.png)
 
@@ -49,11 +49,11 @@ The FortiGate solution can be deployed using the Azure Portal or Azure CLI. Ther
 Azure Portal Wizard:
 [![Deploy Azure Portal Button](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2F40net-cloud%2Ffortinet-azure-solutions%2Fmain%2FFortiGate%2FActive-Passive-SDN%2Fazuredeploy.json/createUIDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2F40net-cloud%2Ffortinet-azure-solutions%2Fmain%2FFortiGate%2FActive-Passive-SDN%2FcreateUiDefinition.json)
 
-Custom deployment:
+Standard Custom Template Deployment:
 [![Deploy Azure Portal Button](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2F40net-cloud%2Ffortinet-azure-solutions%2Fmain%2FFortiGate%2FActive-Passive-SDN%2Fazuredeploy.json)
 [![Visualize](https://raw.githubusercontent.com/azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/visualizebutton.svg?sanitize=true)](http://armviz.io/#/?load=https%3A%2F%2Fraw.githubusercontent.com%2F40net-cloud%2Ffortinet-azure-solutions$2Fmain%2FFortiGate%2FActive-Passive-SDN%2Fazuredeploy.json)
 
-As of March 2026, new FortiGate SKUs were introduced in the Azure Marketplace that provide access to the latest marketplace features. In specific regions (e.g. GovCloud, private offers, ...) and deployment scenarios, legacy SKUs are still required; [those templates can be found in the legacy directory](legacy/).
+As of March 2026, new FortiGate SKUs were introduced in the Azure Marketplace that provide access to the latest marketplace features. In specific regions (e.g. GovCloud, private offers, ...) and deployment scenarios, legacy SKUs are still required; [those templates can be found in the legacy directory](legacy/). FortiGate version 7.6 on generation 1 VMs, the templates focus on new deployments and Microsoft direction is generation 2 VMs, Azure Boost and the mana driver. More information can be found in this [technical tip](https://community.fortinet.com/fortigate-3/technical-tip-fortigate-vms-in-microsoft-azure-using-generation-1-vs-generation-2-vms-228759)
 
 - Marketplace information:
   - Publisher: fortinet
@@ -440,7 +440,7 @@ end
 ## Support
 
 Fortinet-provided scripts in this and other GitHub projects do not fall under the regular Fortinet technical support scope and are not supported by FortiCare Support Services.
-For direct issues, please refer to the [Issues](https://github.com/fortinet/azure-templates/issues) tab of this GitHub project.
+For direct issues, please refer to the [Issues](https://github.com/40net-cloud/fortinet-azure-solutions/issues) tab of this GitHub project.
 For other questions related to this project, contact [github@fortinet.com](mailto:github@fortinet.com).
 
 ## License
