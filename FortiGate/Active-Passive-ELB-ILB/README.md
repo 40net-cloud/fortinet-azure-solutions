@@ -25,7 +25,7 @@ This Azure ARM template will automatically deploy a full working environment con
 
 ![active/passive design](images/fgt-ap.png)
 
-By default, the 2 FortiGate VMs are deployed with 4 NICs: the ha sync port (port3) and ha management port (port4) are kept on separate interfaces and subnets. Starting with fortios 7.0.1 ([bug id 670058](https://docs.fortinet.com/document/fortigate/7.0.1/fortios-release-notes/743723/new-features-or-enhancements)), the ha sync and ha management functions can be combined onto a single port (port3), reducing the deployment to 3 NICs per vm. When `3-NIC` is selected, the dedicated ha management subnet is not deployed and the management public ip is instead attached directly to port3's private ip. selecting `3-NIC` also allows the use of instance types with only 3 NICs available.
+By default, the 2 FortiGate VMs are deployed with 4 NICs: the ha sync port (port3) and ha management port (port4) are kept on separate interfaces and subnets. Starting with fortios 7.0.1 ([bug id 670058](https://docs.fortinet.com/document/fortigate/7.0.1/fortios-release-notes/743723/new-features-or-enhancements)), the ha sync and ha management functions can be combined onto a single port (port3), reducing the deployment to 3 NICs per vm. When `3-NIC` is selected during deployment, the dedicated ha management subnet is not deployed and the management public ip is instead attached directly to port3's private ip. Selecting `3-NIC` also allows the use of instance types with only 3 NICs available.
 
 ![active/passive design](images/fgt-ap-3nic.png)
 
@@ -55,7 +55,7 @@ Standard Custom Template Deployment:
 [![deploy azure portal button](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/microsoft.template/uri/https%3a%2f%2fraw.githubusercontent.com%2f40net-cloud%2ffortinet-azure-solutions%2fmain%2fFortiGate%2fActive-Passive-ELB-ILB%2fazuredeploy.json)
 [![visualize](https://raw.githubusercontent.com/azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/visualizebutton.svg?sanitize=true)](http://armviz.io/#/?load=https%3a%2f%2fraw.githubusercontent.com%2f40net-cloud%2ffortinet-azure-solutions$2fmain%2fFortiGate%2fActive-Passive-ELB-ILB%2fazuredeploy.json)
 
-As of March 2026, new FortiGate SKUs were introduced in the Azure Marketplace that provide access to the latest marketplace features. In specific regions (e.g. GovCloud, private offers, ...) and deployment scenarios, legacy SKUs are still required; [those templates can be found in the legacy directory](legacy/).
+As of March 2026, new FortiGate SKUs were introduced in the Azure Marketplace that provide access to the latest marketplace features. In specific regions (e.g. GovCloud, private offers, ...) and deployment scenarios, legacy SKUs are still required; [those templates can be found in the legacy directory](legacy/). FortiGate version 7.6 on generation 1 VMs, the templates focus on new deployments and Microsoft direction is generation 2 VMs, Azure Boost and the mana driver. More information can be found in this [technical tip](https://community.fortinet.com/fortigate-3/technical-tip-fortigate-vms-in-microsoft-azure-using-generation-1-vs-generation-2-vms-228759)
 
 - marketplace information:
   - publisher: fortinet
@@ -98,7 +98,7 @@ The ARM template deploys different resources and it is required to have the acce
 
 - The Azure Standard Load Balancer only supports TCP and UDP protocols (HTTPS, DNS, SSH, ...). To create a highly available architecture where you can use other protocols an architecture with the SDN Connector failover is preferred. More details can be found [here](https://docs.microsoft.com/en-us/azure/load-balancer/components)
 - In case of failover the Azure Load Balancer will sends existing sessions to the failed VM as explained [here](https://docs.microsoft.com/en-us/azure/load-balancer/load-balancer-custom-probe-overview#probedown).
-- Different instance types are supported, the template contain a default option other vm instances are supported as well with a minimum of 4 NICs, or 3 NICs when the `fortiGateHAPortMode` parameter is set to `3-NIC` (requires fortios 7.0.1 or later). Aa list can be found [here](https://docs.fortinet.com/document/fortigate-public-cloud/7.4.0/azure-administration-guide/562841/instance-type-support)
+- Different instance types are supported, the template contain a default option, other vm instances are supported as well with a minimum of 4 NICs, or 3 NICs when the `fortiGateHAPortMode` parameter is set to `3-NIC` (requires fortios 7.0.1 or later). A list of supprted instance types can be found [here](https://docs.fortinet.com/document/fortigate-public-cloud/7.4.0/azure-administration-guide/562841/instance-type-support)
 - Licenses for FortiGate
   - BYOL: A demo license can be made available via your Fortinet partner or on our website. These can be injected during deployment or added after deployment. Purchased licenses need to be registered on the [Fortinet support site](http://support.fortinet.com). Download the .lic file after registration. Note, these files may not work until 60 minutes after it's initial creation.
   - PAYG or OnDemand: These licenses are automatically generated during the deployment of the FortiGate systems.
