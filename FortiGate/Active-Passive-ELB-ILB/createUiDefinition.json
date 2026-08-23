@@ -25,25 +25,25 @@
         }
       },
       {
-       "name": "fortiGateImageSKU",
-       "type": "Microsoft.Common.DropDown",
-       "label": "Fortigate-VM License Type",
-       "defaultValue": "Bring Your Own License or FortiFlex",
-         "toolTip": "Identifies whether to to use PAYG (on demand licensing) or BYOL license model (where license is purchased separately)",
-         "constraints": {
-         "required": false,
-         "allowedValues": [
-           {
+        "name": "fortiGateImageSKU",
+        "type": "Microsoft.Common.DropDown",
+        "label": "Fortigate-VM License Type",
+        "defaultValue": "Bring Your Own License or FortiFlex",
+        "toolTip": "Identifies whether to to use PAYG (on demand licensing) or BYOL license model (where license is purchased separately)",
+        "constraints": {
+          "required": false,
+          "allowedValues": [
+            {
               "label": "Bring Your Own License or FortiFlex",
               "value": "fortinet_fg-vm_byol"
-          },
-          {
+            },
+            {
               "label": "Pay As You Go",
               "value": "fortinet_fg-vm_payg"
-          }
-        ]
+            }
+          ]
         },
-       "visible": true
+        "visible": true
       },
       {
         "name": "fortiGateInstanceArchitecture",
@@ -161,9 +161,24 @@
                   "required": false,
                   "allowedValues": [
                     {
+                      "label": "latest",
+                      "value": "latest",
+                      "description": "[concat('VM PlanID : ',basics('fortiGateImageSKU'))]"
+                    },
+                    {
+                      "label": "8.0.0",
+                      "value": "8.0.0",
+                      "description": "[concat('VM PlanID : ',basics('fortiGateImageSKU'),'_','80')]"
+                    },
+                    {
+                      "label": "7.6.6",
+                      "value": "7.6.6",
+                      "description": "[concat('VM PlanID : ',basics('fortiGateImageSKU'),'_','76')]"
+                    },
+                    {
                       "label": "7.4.11",
                       "value": "7.4.11",
-                      "description": "[concat('VM PlanID : ',basics('fortiGateImageSKU'),'_','74')]"                      
+                      "description": "[concat('VM PlanID : ',basics('fortiGateImageSKU'),'_','74')]"
                     },
                     {
                       "label": "7.2.13",
@@ -326,6 +341,11 @@
                   "required": false,
                   "allowedValues": [
                     {
+                      "label": "latest",
+                      "value": "latest",
+                      "description": "[concat('VM PlanID : ',basics('fortiGateImageSKU'))]"
+                    },
+                    {
                       "label": "8.0.0",
                       "value": "8.0.0",
                       "description": "[concat('VM PlanID : ',basics('fortiGateImageSKU'),'_','80')]"
@@ -336,10 +356,20 @@
                       "description": "[concat('VM PlanID : ',basics('fortiGateImageSKU'),'_','76')]"
                     },
                     {
+                      "label": "7.6.6",
+                      "value": "7.6.6",
+                      "description": "[concat('VM PlanID : ',basics('fortiGateImageSKU'),'_','76')]"
+                    },
+                    {
                       "label": "7.4.12",
                       "value": "7.4.12",
-                      "description": "[concat('VM PlanID : ',basics('fortiGateImageSKU'),'_','74')]"                      
-                    }    
+                      "description": "[concat('VM PlanID : ',basics('fortiGateImageSKU'),'_','74')]"
+                    },
+                    {
+                      "label": "7.4.11",
+                      "value": "7.4.11",
+                      "description": "[concat('VM PlanID : ',basics('fortiGateImageSKU'),'_','74')]"
+                    }
                   ]
                 },
                 "visible": true
@@ -362,63 +392,63 @@
                 "label": "Size",
                 "toolTip": "Select the instance size of your FortiGate VM solution. Minimum 4 NICs are required.",
                 "recommendedSizes": [
-                    "Standard_D8s_v6",
-                    "Standard_D8_v4",
-                    "Standard_D16_v4",
-                    "Standard_D32_v4",
-                    "Standard_D8s_v4",
-                    "Standard_D16s_v4",
-                    "Standard_D32s_v4",
-                    "Standard_D8a_v4",
-                    "Standard_D16a_v4",
-                    "Standard_D32a_v4",
-                    "Standard_D8as_v4",
-                    "Standard_D16as_v4",
-                    "Standard_D32as_v4",
-                    "Standard_D8_v5",
-                    "Standard_D16_v5",
-                    "Standard_D32_v5",
-                    "Standard_D8s_v5",
-                    "Standard_D16s_v5",
-                    "Standard_D32s_v5",
-                    "Standard_D8as_v5",
-                    "Standard_D16as_v5",
-                    "Standard_D32as_v5",
-                    "Standard_D8ads_v5",
-                    "Standard_D16ads_v5",
-                    "Standard_D32ads_v5",
-                    "Standard_D16s_v6",
-                    "Standard_D32s_v6",
-                    "Standard_D8ls_v6",
-                    "Standard_D16ls_v6",
-                    "Standard_D32ls_v6",
-                    "Standard_D8as_v6",
-                    "Standard_D16as_v6",
-                    "Standard_D32as_v6",
-                    "Standard_E8s_v6",
-                    "Standard_E16s_v6",
-                    "Standard_E32s_v6",
-                    "Standard_F2als_v7",
-                    "Standard_F4als_v7",
-                    "Standard_F8als_v7",
-                    "Standard_F16als_v7",
-                    "Standard_F32als_v7",
-                    "Standard_D2s_v7",
-                    "Standard_D4s_v7",
-                    "Standard_D8s_v7",
-                    "Standard_D16s_v7",
-                    "Standard_D32s_v7",
-                    "Standard_D2ls_v7",
-                    "Standard_D4ls_v7",
-                    "Standard_D8ls_v7",
-                    "Standard_D16ls_v7",
-                    "Standard_D32ls_v7",
-                    "Standard_D8as_v7",
-                    "Standard_D16as_v7",
-                    "Standard_D32as_v7",
-                    "Standard_D8als_v7",
-                    "Standard_D16als_v7",
-                    "Standard_D32als_v7"
+                  "Standard_D8s_v6",
+                  "Standard_D8_v4",
+                  "Standard_D16_v4",
+                  "Standard_D32_v4",
+                  "Standard_D8s_v4",
+                  "Standard_D16s_v4",
+                  "Standard_D32s_v4",
+                  "Standard_D8a_v4",
+                  "Standard_D16a_v4",
+                  "Standard_D32a_v4",
+                  "Standard_D8as_v4",
+                  "Standard_D16as_v4",
+                  "Standard_D32as_v4",
+                  "Standard_D8_v5",
+                  "Standard_D16_v5",
+                  "Standard_D32_v5",
+                  "Standard_D8s_v5",
+                  "Standard_D16s_v5",
+                  "Standard_D32s_v5",
+                  "Standard_D8as_v5",
+                  "Standard_D16as_v5",
+                  "Standard_D32as_v5",
+                  "Standard_D8ads_v5",
+                  "Standard_D16ads_v5",
+                  "Standard_D32ads_v5",
+                  "Standard_D16s_v6",
+                  "Standard_D32s_v6",
+                  "Standard_D8ls_v6",
+                  "Standard_D16ls_v6",
+                  "Standard_D32ls_v6",
+                  "Standard_D8as_v6",
+                  "Standard_D16as_v6",
+                  "Standard_D32as_v6",
+                  "Standard_E8s_v6",
+                  "Standard_E16s_v6",
+                  "Standard_E32s_v6",
+                  "Standard_F2als_v7",
+                  "Standard_F4als_v7",
+                  "Standard_F8als_v7",
+                  "Standard_F16als_v7",
+                  "Standard_F32als_v7",
+                  "Standard_D2s_v7",
+                  "Standard_D4s_v7",
+                  "Standard_D8s_v7",
+                  "Standard_D16s_v7",
+                  "Standard_D32s_v7",
+                  "Standard_D2ls_v7",
+                  "Standard_D4ls_v7",
+                  "Standard_D8ls_v7",
+                  "Standard_D16ls_v7",
+                  "Standard_D32ls_v7",
+                  "Standard_D8as_v7",
+                  "Standard_D16as_v7",
+                  "Standard_D32as_v7",
+                  "Standard_D8als_v7",
+                  "Standard_D16als_v7",
+                  "Standard_D32als_v7"
                 ],
                 "constraints": {
                   "allowedSizes": [
@@ -531,6 +561,11 @@
                   "required": false,
                   "allowedValues": [
                     {
+                      "label": "latest",
+                      "value": "latest",
+                      "description": "[concat('VM PlanID : ',basics('fortiGateImageSKU'))]"
+                    },
+                    {
                       "label": "8.0.0",
                       "value": "8.0.0",
                       "description": "[concat('VM PlanID : ',basics('fortiGateImageSKU'),'_','80')]"
@@ -541,10 +576,15 @@
                       "description": "[concat('VM PlanID : ',basics('fortiGateImageSKU'),'_','76')]"
                     },
                     {
+                      "label": "7.6.6",
+                      "value": "7.6.6",
+                      "description": "[concat('VM PlanID : ',basics('fortiGateImageSKU'),'_','76')]"
+                    },
+                    {
                       "label": "7.4.12",
                       "value": "7.4.12",
-                      "description": "[concat('VM PlanID : ',basics('fortiGateImageSKU'),'_','74')]"                      
-                    },                    
+                      "description": "[concat('VM PlanID : ',basics('fortiGateImageSKU'),'_','74')]"
+                    },
                     {
                       "label": "7.4.11",
                       "value": "7.4.11",
@@ -786,8 +826,14 @@
                 "toolTip": "4-NIC deploys separate HA sync (port3) and HA mgmt (port4) interfaces. 3-NIC combines HA sync and HA mgmt onto port3, requires FortiOS 7.0.1 or later.",
                 "constraints": {
                   "allowedValues": [
-                    { "label": "4-NIC - separate HA sync and HA management ports", "value": "4-NIC" },
-                    { "label": "3-NIC - combined HA sync and HA management port (FortiOS 7.0.1+)", "value": "3-NIC" }
+                    {
+                      "label": "4-NIC - separate HA sync and HA management ports",
+                      "value": "4-NIC"
+                    },
+                    {
+                      "label": "3-NIC - combined HA sync and HA management port (FortiOS 7.0.1+)",
+                      "value": "3-NIC"
+                    }
                   ],
                   "required": true
                 },
@@ -1469,7 +1515,7 @@
                   "icon": "Warning",
                   "text": "Trusted Launch is selected under 'Instance' configuration, custom vHD might not work as intended"
                 }
-              },              
+              },
               {
                 "name": "customvhdinfo",
                 "type": "Microsoft.Common.InfoBox",
@@ -1534,13 +1580,13 @@
           {
             "name": "TrustedLaunch.incompatible",
             "type": "Microsoft.Common.InfoBox",
-            "visible": "[and(equals(steps('instance').vmsecurity.VMSecurityType,'TrustedLaunch'),equals(basics('fortiGateInstanceArchitecture'),'x64'))]", 
+            "visible": "[and(equals(steps('instance').vmsecurity.VMSecurityType,'TrustedLaunch'),equals(basics('fortiGateInstanceArchitecture'),'x64'))]",
             "options": {
               "icon": "Error",
               "text": "Selected FortiOS version does not support TrustedLaunch. Change 'Virtual Machine Security Type' under Instance > Virtual Machine Security",
               "uri": "https://learn.microsoft.com/en-us/azure/virtual-machines/trusted-launch"
             }
-          },          
+          },
           {
             "name": "step1",
             "type": "Microsoft.Common.TextBlock",
@@ -1619,7 +1665,7 @@
       "instanceType_x64_g2": "[steps('instance').instancetype_x64_g2.selection_x64_g2]",
       "instanceType_arm64": "[steps('instance').instancetype_arm64.selection_arm64]",
       "VMSecurityType": "[if(or(equals(basics('fortiGateInstanceArchitecture'),'_g2'),equals(basics('fortiGateInstanceArchitecture'),'_arm64')),steps('instance').vmsecurity.VMSecurityType,'Standard')]",
-      "VMSecurityTPM": "[if(equals(steps('instance').vmsecurity.VMSecurityType,'TrustedLaunch'),steps('instance').vmsecurity.VMSecurityTPM,false)]",      
+      "VMSecurityTPM": "[if(equals(steps('instance').vmsecurity.VMSecurityType,'TrustedLaunch'),steps('instance').vmsecurity.VMSecurityTPM,false)]",
       "availabilityOptions": "[steps('instance').availabilityOptions.availabilityOptions]",
       "fortiGateHAPortMode": "[steps('instance').haportmode.fortiGateHAPortMode]",
       "fortiGateLicenseBYOLA": "[steps('instance').fgtLicense.fgtAcontent]",
