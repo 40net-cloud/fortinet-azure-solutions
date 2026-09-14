@@ -54,6 +54,9 @@
       "type": "string",
       "defaultValue": "7.4.11",
       "allowedValues": [
+        "latest",
+        "8.0.0",
+        "7.6.6",
         "7.4.11",
         "7.2.13",
         "7.0.19"
@@ -66,9 +69,12 @@
       "type": "string",
       "defaultValue": "8.0.0",
       "allowedValues": [
+        "latest",
         "8.0.0",
         "7.6.7",
-        "7.4.12"        
+        "7.6.6",
+        "7.4.12",
+        "7.4.11"
       ],
       "metadata": {
         "description": "Select the image version supporting Generation 2 VMs"
@@ -78,9 +84,11 @@
       "type": "string",
       "defaultValue": "8.0.0",
       "allowedValues": [
+        "latest",
         "8.0.0",
         "7.6.7",
-        "7.4.12",        
+        "7.6.6",
+        "7.4.12",
         "7.4.11",
         "7.2.13"
       ],
@@ -886,17 +894,19 @@
     "fastpathtag": {
       "fastpathenabled": "[if(and(equals(parameters('acceleratedNetworking'),'true'),parameters('acceleratedConnections')),'true','false')]"
     },
-    "LegacyNVA":{"LegacyVMNVA": "Use legacy MLX ConnectX NIC"},
-    "LegacyVMNVATag": "[if(or(equals(variables('MajorReleaseVersion'),'74'),equals(variables('MajorReleaseVersion'),'72'),equals(variables('MajorReleaseVersion'),'70')),variables('LegacyNVA'),json('{}'))]",
-    "VM.securityProfile":{
-          "securityType": "[parameters('VMSecurityType')]"
+    "LegacyNVA": {
+      "LegacyVMNVA": "Use legacy MLX ConnectX NIC"
     },
-    "VM.uefiSettings":{    
-          "uefiSettings": {
-                    "secureBootEnabled": "[equals(parameters('VMSecurityType'),'TrustedLaunch')]",
-                    "vTpmEnabled": "[parameters('VMSecurityTPM')]"
-                  }
-    },    
+    "LegacyVMNVATag": "[if(or(equals(variables('MajorReleaseVersion'),'74'),equals(variables('MajorReleaseVersion'),'72'),equals(variables('MajorReleaseVersion'),'70')),variables('LegacyNVA'),json('{}'))]",
+    "VM.securityProfile": {
+      "securityType": "[parameters('VMSecurityType')]"
+    },
+    "VM.uefiSettings": {
+      "uefiSettings": {
+        "secureBootEnabled": "[equals(parameters('VMSecurityType'),'TrustedLaunch')]",
+        "vTpmEnabled": "[parameters('VMSecurityTPM')]"
+      }
+    },
     "auxiliaryMode": "[if(and(equals(parameters('acceleratedNetworking'),'true'),parameters('acceleratedConnections')),'AcceleratedConnections','None')]",
     "auxiliarySku": "[if(and(equals(parameters('acceleratedNetworking'),'true'),parameters('acceleratedConnections')),parameters('acceleratedConnectionsSku'),'None')]"
   },
@@ -1495,7 +1505,7 @@
           "adminPassword": "[parameters('adminPassword')]",
           "customData": "[variables('customData')[copyIndex()]]"
         },
-        "securityProfile": "[if(equals(parameters('VMSecurityType'),'TrustedLaunch'),union(variables('VM.securityProfile'),variables('VM.uefiSettings')),json('null'))]",      
+        "securityProfile": "[if(equals(parameters('VMSecurityType'),'TrustedLaunch'),union(variables('VM.securityProfile'),variables('VM.uefiSettings')),json('null'))]",
         "storageProfile": {
           "imageReference": "[if(and(equals(parameters('fortiGateLicenseType'),'fortinet_fg-vm_byol'),not(equals(parameters('customImageReference'),''))), variables('imageReferenceCustomImage'), variables('imageReferenceMarketplace'))]",
           "diskControllerType": "[variables('diskControllerType')]",
