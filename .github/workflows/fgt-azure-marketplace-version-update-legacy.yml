@@ -156,7 +156,7 @@ jobs:
         committer: GitHub <noreply@github.com>
         author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
         signoff: false
-        branch: fgt-vm-update-version
+        branch: fgt-vm-update-version-legacy
         delete-branch: true
         title: '[FGT] Azure Marketplace FGT Version update - legacy'
         body: |
