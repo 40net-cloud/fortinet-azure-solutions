@@ -43,12 +43,11 @@ jobs:
         path: ~/.local/share/powershell/Modules/Pester/4.10.1
         key: pester-4.10.1
 
-    - name: Download and extract ARM TTK
+    - name: Clone ARM TTK
       if: steps.cache-armttk.outputs.cache-hit != 'true'
       shell: pwsh
       run: |
-        Invoke-WebRequest -Uri "https://aka.ms/arm-ttk-latest" -OutFile arm-template-toolkit.zip
-        Expand-Archive -LiteralPath arm-template-toolkit.zip -DestinationPath arm-ttk
+        git clone --depth 1 https://github.com/Azure/arm-ttk.git arm-ttk
 
     - name: Install Pester 4.10.1
       if: steps.cache-pester4.outputs.cache-hit != 'true'
