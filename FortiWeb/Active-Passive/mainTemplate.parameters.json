@@ -11,10 +11,10 @@
         "fortiWebNamePrefix": {
             "value": "## TO BE DEFINED ##"
         },
-        "fortiWebImageSKU": {
+        "imageSku": {
             "value": "fortinet_fw-vm"
         },
-        "fortiWebImageVersion": {
+        "imageVersion": {
             "value": "latest"
         },
         "instanceType": {

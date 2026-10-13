@@ -31,22 +31,13 @@ BeforeAll {
   $testsResourceGroupLocation = "westeurope"
 
   # ARM Template Variables
-  $config = "config system console `n set output standard `n end `n config system admin `n edit devops `n set access-profil prof_admin `n set sshkey `""
-  $config += Get-Content $sshkeypub
-  $config += "`" `n set password $testsResourceGroupName `n next `n end"
   $publicIPName = "$testsPrefix-fwb-pip"
   $params = @{ 'adminUsername'      = $testsAdminUsername
     'adminPassword'                 = $testsResourceGroupName
     'fortiWebNamePrefix'            = $testsPrefix
-    'fortiWebAAdditionalCustomData' = $config
-    'fortiWebBAdditionalCustomData' = $config
     'publicIPName'                  = $publicIPName
     'imageSku'                      = "fortinet_fw-vm_payg_v3"
     'availabilityOptions'           = "Availability Zones"
-    'haApplicationId'               = $env:ARM_CLIENT_ID
-    'haApplicationSecret'           = $env:ARM_CLIENT_SECRET
-    'haSubscriptionId'              = $env:ARM_SUBSCRIPTION_ID
-    'haTenantId'                    = $env:ARM_TENANT_ID
   }
   $ports = @(40030, 50030, 40031, 50031)
 }
@@ -96,10 +87,11 @@ Describe 'FWB Active/Passive' {
     It 'Contains the expected parameters' {
       $expectedTemplateParameters = 'adminPassword',
       'adminUsername',
+      'availabilityOptions',
       'fortinetTags',
       'fortiWebNamePrefix',
-      'imageSKU',
-      'iuageVersion',
+      'imageSku',
+      'imageVersion',
       'instanceType',
       'location',
       'publicIPName',
