@@ -138,28 +138,6 @@
         "description": "Resource group to which the Public IP belongs."
       }
     },
-    "publicIPType": {
-      "type": "string",
-      "defaultValue": "Static",
-      "allowedValues": [
-        "Dynamic",
-        "Static"
-      ],
-      "metadata": {
-        "description": "Type of public IP address"
-      }
-    },
-    "publicIPSKU": {
-      "type": "string",
-      "defaultValue": "Basic",
-      "allowedValues": [
-        "Basic",
-        "Standard"
-      ],
-      "metadata": {
-        "description": "SKU of public IP address"
-      }
-    },
     "vnetNewOrExisting": {
       "type": "string",
       "defaultValue": "new",
@@ -498,11 +476,14 @@
         "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
       "sku": {
-        "name": "[parameters('publicIPSKU')]"
+        "name": "Standard"
       },
       "zones": "[variables('pipZones')]",
       "properties": {
-        "publicIPAllocationMethod": "[parameters('publicIPType')]"
+        "publicIPAllocationMethod": "Static",
+        "dnsSettings": {
+          "domainNameLabel": "[concat(toLower(parameters('fortiWebNamePrefix')), '-', uniquestring(resourceGroup().id))]"
+        }
       }
     },
     {
@@ -514,7 +495,7 @@
         "provider": "[toUpper(parameters('fortinetTags').provider)]"
       },
       "sku": {
-        "name": "[parameters('publicIPSKU')]"
+        "name": "Standard"
       },
       "dependsOn": [
         "[variables('publicIPName')]"
@@ -927,13 +908,13 @@
     }
   ],
   "outputs": {
-    "fortiGatePublicIP": {
+    "fortiWebPublicIP": {
       "type": "string",
-      "value": "[if(equals(parameters('publicIPNewOrExisting'), 'new'), reference(variables('publicIPId')).ipAddress, '')]"
+      "value": "[if(equals(parameters('publicIPNewOrExisting'), 'new'), reference(variables('publicIPId'), '2025-05-01').ipAddress, '')]"
     },
-    "fortiGateFQDN": {
+    "fortiWebFQDN": {
       "type": "string",
-      "value": "[if(equals(parameters('publicIPNewOrExisting'), 'new'), reference(variables('publicIPId')).dnsSettings.fqdn, '')]"
+      "value": "[if(equals(parameters('publicIPNewOrExisting'), 'new'), reference(variables('publicIPId'), '2025-05-01').dnsSettings.fqdn, '')]"
     }
   }
 }

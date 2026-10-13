@@ -498,7 +498,7 @@
             "visible": true,
             "options": {
               "icon": "Info",
-              "text": "This deployment can use Standard or Basic SKU public IPs and load balancers. For production, Microsoft recommends Standard SKU public IPs. Select the Standard SKU in the create-new option, or choose a Standard SKU public IP that you have already created. Microsoft Azure offers a migration path from a Basic SKU to a Standard SKU public IP.",
+              "text": "This deployment uses a Standard SKU Azure Load Balancer and requires a Standard SKU public IP. Basic SKU public IPs have been retired. Microsoft Azure offers a migration path from a Basic to Standard SKU public IP.",
               "uri": "https://docs.microsoft.com/en-us/azure/virtual-network/virtual-network-public-ip-address-upgrade?tabs=option-upgrade-cli%2Coption-migrate-powershell"
             }
           }
@@ -517,8 +517,6 @@
       "publicIPNewOrExisting": "[steps('publicip').loadbalancerpublicip.newOrExistingOrNone]",
       "publicIPName": "[steps('publicip').loadbalancerpublicip.name]",
       "publicIPResourceGroup": "[steps('publicip').loadbalancerpublicip.resourceGroup]",
-      "publicIPType": "[steps('publicip').loadbalancerpublicip.publicIPAllocationMethod]",
-      "publicIPSKU": "[steps('publicip').loadbalancerpublicip.sku]",
       "vnetNewOrExisting": "[steps('networking').virtualnetworksection.virtualnetwork.newOrExisting]",
       "vnetName": "[steps('networking').virtualnetworksection.virtualnetwork.name]",
       "vnetResourceGroup": "[steps('networking').virtualnetworksection.virtualnetwork.resourceGroup]",

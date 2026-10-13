@@ -90,8 +90,6 @@ Describe 'FWB Single VM' {
                                           'publicIPName',
                                           'publicIPNewOrExisting',
                                           'publicIPResourceGroup',
-                                          'publicIPSKU',
-                                          'publicIPType',
                                           'subnet1Name',
                                           'subnet1Prefix',
                                           'subnet1StartAddress',

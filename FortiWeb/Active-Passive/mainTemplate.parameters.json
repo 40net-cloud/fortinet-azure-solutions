@@ -29,12 +29,6 @@
         "publicIPResourceGroup": {
             "value": ""
         },
-        "publicIPType": {
-            "value": "Static"
-        },
-        "publicIPSKU": {
-            "value": "Basic"
-        },
         "vnetNewOrExisting": {
             "value": "new"
         },
