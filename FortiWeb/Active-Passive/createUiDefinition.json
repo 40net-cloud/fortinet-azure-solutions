@@ -473,7 +473,7 @@
                   "subnets": "2 subnet will be deployed: external and internal"
                 },
                 "defaultValue": {
-                  "name": "FortiWeb-VNET",
+                  "name": "[if(equals(basics('fortiWebNamePrefix'),''),'FortiWeb-vnet',concat(basics('fortiWebNamePrefix'),'-vnet'))]",
                   "addressPrefixSize": "/20"
                 },
                 "constraints": {
@@ -552,7 +552,7 @@
               "domainNameLabel": "DNS name linked to this public IP"
             },
             "defaultValue": {
-              "publicIpAddressName": "FWBAPClusterPublicIP",
+              "publicIpAddressName": "[if(equals(basics('fortiWebNamePrefix'),''),'FWBAPClusterPublicIP',concat(basics('fortiWebNamePrefix'),'-fwb-pip'))]",
               "domainNameLabel": "mydomain"
             },
             "constraints": {
