@@ -222,7 +222,7 @@
     },
     "fortiWebHaOverride": {
       "type": "string",
-      "defaultValue": "disable",
+      "defaultValue": "enable",
       "allowedValues": [
         "enable",
         "disable"
