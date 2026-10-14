@@ -169,7 +169,7 @@
     },
     "subnet1Name": {
       "type": "string",
-      "defaultValue": "ExternalSubnet",
+      "defaultValue": "externalsubnet",
       "metadata": {
         "description": "Subnet 1 Name"
       }
@@ -190,7 +190,7 @@
     },
     "subnet2Name": {
       "type": "string",
-      "defaultValue": "InternalSubnet",
+      "defaultValue": "internalsubnet",
       "metadata": {
         "description": "Subnet 2 Name"
       }
