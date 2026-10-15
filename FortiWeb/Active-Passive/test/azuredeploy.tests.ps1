@@ -85,7 +85,8 @@ Describe 'FWB Active/Passive' {
     }
 
     It 'Contains the expected parameters' {
-      $expectedTemplateParameters = 'adminPassword',
+      $expectedTemplateParameters = 'acceleratedNetworking',
+      'adminPassword',
       'adminUsername',
       'availabilityOptions',
       'fortinetTags',
@@ -116,6 +117,7 @@ Describe 'FWB Active/Passive' {
       'subnet2Name',
       'subnet2Prefix',
       'subnet2StartAddress',
+      'tagsByResource',
       'vnetAddressPrefix',
       'vnetName',
       'vnetNewOrExisting',

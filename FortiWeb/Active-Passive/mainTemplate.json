@@ -96,7 +96,7 @@
         "Standard_D32s_v3"
       ],
       "metadata": {
-        "description": "Virtual machine size selection; must be F4 or another instance that supports 4 NICs"
+        "description": "Virtual machine size selection; any supported instance type with 2 vNICs."
       }
     },
     "availabilityOptions": {
@@ -108,6 +108,17 @@
       "defaultValue": "Availability Set",
       "metadata": {
         "description": "Deploy FortiWeb VMs in an Availability Set or Availability Zones. If Availability Zones deployment is selected but the location does not support Availability Zones an Availability Set will be deployed. If Availability Zones deployment is selected and Availability Zones are available in the location, FortiGate A will be placed in Zone 1, FortiGate B will be placed in Zone 2"
+      }
+    },
+    "acceleratedNetworking": {
+      "type": "string",
+      "defaultValue": "false",
+      "allowedValues": [
+        "false",
+        "true"
+      ],
+      "metadata": {
+        "description": "Accelerated Networking enables a direct connection between the VM and the network card. It is available only on 2-CPU F/Fs and 4-CPU D/Dsv2, D/Dsv3, E/Esv3, Fsv2, Lsv2, Ms/Mms, and Ms/Mmsv2"
       }
     },
     "publicIPNewOrExisting": {
@@ -222,7 +233,7 @@
     },
     "fortiWebHaOverride": {
       "type": "string",
-      "defaultValue": "enable",
+      "defaultValue": "disable",
       "allowedValues": [
         "enable",
         "disable"
@@ -316,6 +327,10 @@
       "metadata": {
         "description": "Location for all resources."
       }
+    },
+    "tagsByResource": {
+      "type": "object",
+      "defaultValue": {}
     },
     "fortinetTags": {
       "type": "object",
@@ -458,9 +473,7 @@
       "apiVersion": "2025-04-01",
       "name": "[variables('availabilitySetName')]",
       "location": "[parameters('location')]",
-      "tags": {
-        "provider": "[toUpper(parameters('fortinetTags').provider)]"
-      },
+      "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Compute/availabilitySets'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Compute/availabilitySets']), parameters('fortinetTags')) ]",
       "properties": {
         "platformFaultDomainCount": 2,
         "platformUpdateDomainCount": 2
@@ -475,9 +488,7 @@
       "apiVersion": "2025-05-01",
       "name": "[variables('vnetName')]",
       "location": "[parameters('location')]",
-      "tags": {
-        "provider": "[toUpper(parameters('fortinetTags').provider)]"
-      },
+      "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Network/virtualNetworks'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Network/virtualNetworks']), parameters('fortinetTags')) ]",
       "properties": {
         "addressSpace": {
           "addressPrefixes": [
@@ -507,9 +518,7 @@
       "name": "[variables('NSGName')]",
       "apiVersion": "2025-05-01",
       "location": "[parameters('location')]",
-      "tags": {
-        "provider": "[toUpper(parameters('fortinetTags').provider)]"
-      },
+      "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Network/networkSecurityGroups'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Network/networkSecurityGroups']), parameters('fortinetTags')) ]",
       "properties": {
         "securityRules": [
           {
@@ -619,9 +628,7 @@
       "name": "[variables('publicIPName')]",
       "apiVersion": "2025-05-01",
       "location": "[parameters('location')]",
-      "tags": {
-        "provider": "[toUpper(parameters('fortinetTags').provider)]"
-      },
+      "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Network/publicIPAddresses'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Network/publicIPAddresses']), parameters('fortinetTags')) ]",
       "sku": {
         "name": "Standard"
       },
@@ -638,9 +645,7 @@
       "type": "Microsoft.Network/loadBalancers",
       "name": "[variables('externalLBName')]",
       "location": "[parameters('location')]",
-      "tags": {
-        "provider": "[toUpper(parameters('fortinetTags').provider)]"
-      },
+      "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Network/loadBalancers'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Network/loadBalancers']), parameters('fortinetTags')) ]",
       "sku": {
         "name": "Standard"
       },
@@ -801,9 +806,7 @@
       "name": "[variables('fwbANic1Name')]",
       "apiVersion": "2025-05-01",
       "location": "[parameters('location')]",
-      "tags": {
-        "provider": "[toUpper(parameters('fortinetTags').provider)]"
-      },
+      "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Network/networkInterfaces'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Network/networkInterfaces']), parameters('fortinetTags')) ]",
       "dependsOn": [
         "[variables('vnetName')]",
         "[variables('externalLBId')]",
@@ -836,6 +839,7 @@
           }
         ],
         "enableIPForwarding": false,
+        "enableAcceleratedNetworking": "[parameters('acceleratedNetworking')]",
         "networkSecurityGroup": {
           "id": "[variables('NSGId')]"
         }
@@ -845,9 +849,7 @@
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[variables('fwbBNic1Name')]",
       "apiVersion": "2025-05-01",
-      "tags": {
-        "provider": "[toUpper(parameters('fortinetTags').provider)]"
-      },
+      "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Network/networkInterfaces'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Network/networkInterfaces']), parameters('fortinetTags')) ]",
       "location": "[parameters('location')]",
       "dependsOn": [
         "[variables('vnetName')]",
@@ -881,6 +883,7 @@
           }
         ],
         "enableIPForwarding": false,
+        "enableAcceleratedNetworking": "[parameters('acceleratedNetworking')]",
         "networkSecurityGroup": {
           "id": "[variables('NSGId')]"
         }
@@ -890,9 +893,7 @@
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[variables('fwbANic2Name')]",
       "apiVersion": "2025-05-01",
-      "tags": {
-        "provider": "[toUpper(parameters('fortinetTags').provider)]"
-      },
+      "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Network/networkInterfaces'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Network/networkInterfaces']), parameters('fortinetTags')) ]",
       "location": "[parameters('location')]",
       "dependsOn": [
         "[variables('vnetName')]"
@@ -910,16 +911,15 @@
             }
           }
         ],
-        "enableIPForwarding": false
+        "enableIPForwarding": false,
+        "enableAcceleratedNetworking": "[parameters('acceleratedNetworking')]"
       }
     },
     {
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[variables('fwbBNic2Name')]",
       "apiVersion": "2025-05-01",
-      "tags": {
-        "provider": "[toUpper(parameters('fortinetTags').provider)]"
-      },
+      "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Network/networkInterfaces'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Network/networkInterfaces']), parameters('fortinetTags')) ]",
       "location": "[parameters('location')]",
       "dependsOn": [
         "[variables('vnetName')]"
@@ -937,7 +937,8 @@
             }
           }
         ],
-        "enableIPForwarding": false
+        "enableIPForwarding": false,
+        "enableAcceleratedNetworking": "[parameters('acceleratedNetworking')]"
       }
     },
     {
@@ -945,9 +946,7 @@
       "name": "[variables('fwbAVmName')]",
       "apiVersion": "2025-04-01",
       "location": "[parameters('location')]",
-      "tags": {
-        "provider": "[toUpper(parameters('fortinetTags').provider)]"
-      },
+      "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Compute/virtualMachines'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Compute/virtualMachines']), parameters('fortinetTags')) ]",
       "identity": {
         "type": "SystemAssigned"
       },
@@ -1018,9 +1017,7 @@
       "name": "[variables('fwbBVmName')]",
       "apiVersion": "2025-04-01",
       "location": "[parameters('location')]",
-      "tags": {
-        "provider": "[toUpper(parameters('fortinetTags').provider)]"
-      },
+      "tags": "[ if(contains(parameters('tagsByResource'), 'Microsoft.Compute/virtualMachines'), union(parameters('fortinetTags'),parameters('tagsByResource')['Microsoft.Compute/virtualMachines']), parameters('fortinetTags')) ]",
       "identity": {
         "type": "SystemAssigned"
       },
