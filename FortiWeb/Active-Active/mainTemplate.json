@@ -106,12 +106,10 @@
       "type": "string",
       "defaultValue": "Standard_F2s_v2",
       "allowedValues": [
-        "Standard_F1s",
         "Standard_F2s",
         "Standard_F4s",
         "Standard_F8s",
         "Standard_F16s",
-        "Standard_F1",
         "Standard_F2",
         "Standard_F4",
         "Standard_F8",
@@ -121,7 +119,6 @@
         "Standard_F8s_v2",
         "Standard_F16s_v2",
         "Standard_F32s_v2",
-        "Standard_DS1_v2",
         "Standard_DS2_v2",
         "Standard_DS3_v2",
         "Standard_DS4_v2",
@@ -173,7 +170,7 @@
         "Standard_D32ads_v5"
       ],
       "metadata": {
-        "description": "Virtual machine size selection; must be F4 or another instance that supports 4 NICs"
+        "description": "Virtual machine size selection; any supported instance type with 2 vNICs."
       }
     },
     "availabilityOptions": {
@@ -258,7 +255,7 @@
     },
     "subnet1Name": {
       "type": "string",
-      "defaultValue": "ExternalSubnet",
+      "defaultValue": "externalsubnet",
       "metadata": {
         "description": "Subnet 1 Name"
       }
@@ -279,7 +276,7 @@
     },
     "subnet2Name": {
       "type": "string",
-      "defaultValue": "InternalSubnet",
+      "defaultValue": "internalsubnet",
       "metadata": {
         "description": "Subnet 2 Name"
       }
@@ -455,7 +452,7 @@
     "fwbBNic2Name": "[concat(variables('fwbBVmName'),'-nic2')]",
     "fwbBNic2Id": "[resourceId('Microsoft.Network/networkInterfaces',variables('fwbBNic2Name'))]",
     "serialConsoleEnabled": "[if(equals(parameters('serialConsole'),'yes'),'true','false')]",
-    "publicIPName": "[if(equals(parameters('publicIPName'),''),concat(parameters('fortiWebNamePrefix'),'-FWB-PIP'),parameters('publicIPName'))]",
+    "publicIPName": "[if(equals(parameters('publicIPName'),''),concat(parameters('fortiWebNamePrefix'),'-fwb-pip'),parameters('publicIPName'))]",
     "publicIPId": "[if(equals(parameters('publicIPNewOrExistingOrNone'),'new'),resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPName')),resourceId(parameters('publicIPResourceGroup'),'Microsoft.Network/publicIPAddresses',variables('publicIPName')))]",
     "publicIPAddressId": {
       "id": "[variables('publicIPId')]"
@@ -683,7 +680,7 @@
       "properties": {
         "publicIPAllocationMethod": "static",
         "dnsSettings": {
-          "domainNameLabel": "[concat(toLower(variables('externalLBName')), '-', uniquestring(resourceGroup().id))]"
+          "domainNameLabel": "[concat(toLower(parameters('fortiWebNamePrefix')), '-', uniquestring(resourceGroup().id))]"
         }
       }
     },
@@ -1112,11 +1109,11 @@
   "outputs": {
     "fortiWebPublicIP": {
       "type": "string",
-      "value": "[if(equals(parameters('publicIPNewOrExistingOrNone'), 'new'), reference(variables('publicIPId')).ipAddress, '')]"
+      "value": "[if(equals(parameters('publicIPNewOrExistingOrNone'), 'new'), reference(variables('publicIPId'), '2025-05-01').ipAddress, '')]"
     },
     "fortiWebFQDN": {
       "type": "string",
-      "value": "[if(equals(parameters('publicIPNewOrExistingOrNone'), 'new'), reference(variables('publicIPId')).dnsSettings.fqdn, '' )]"
+      "value": "[if(equals(parameters('publicIPNewOrExistingOrNone'), 'new'), reference(variables('publicIPId'), '2025-05-01').dnsSettings.fqdn, '' )]"
     },
     "fwbACustomData": {
       "type": "string",

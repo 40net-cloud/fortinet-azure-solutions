@@ -257,7 +257,7 @@
                 "name": "selection",
                 "type": "Microsoft.Compute.SizeSelector",
                 "label": "Size",
-                "toolTip": "Select the instance size of your FortiWeb VM solution. Minimum 4 NICs are required.",
+                "toolTip": "Select the instance size of your FortiWeb VM solution. Any supported instance type with 2 vNICs.",
                 "recommendedSizes": [
                   "Standard_F2s_v2",
                   "Standard_F1",
@@ -628,7 +628,7 @@
                   "subnet1": {
                     "label": "External Subnet",
                     "defaultValue": {
-                      "name": "ExternalSubnet",
+                      "name": "externalsubnet",
                       "addressPrefixSize": "/26"
                     },
                     "constraints": {
@@ -640,7 +640,7 @@
                   "subnet2": {
                     "label": "Internal subnet",
                     "defaultValue": {
-                      "name": "InternalSubnet",
+                      "name": "internalsubnet",
                       "addressPrefixSize": "/26"
                     },
                     "constraints": {
