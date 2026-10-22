@@ -678,10 +678,7 @@
       },
       "zones": "[variables('pipZones')]",
       "properties": {
-        "publicIPAllocationMethod": "static",
-        "dnsSettings": {
-          "domainNameLabel": "[concat(toLower(parameters('fortiWebNamePrefix')), '-', uniquestring(resourceGroup().id))]"
-        }
+        "publicIPAllocationMethod": "static"
       }
     },
     {
@@ -1110,10 +1107,6 @@
     "fortiWebPublicIP": {
       "type": "string",
       "value": "[if(equals(parameters('publicIPNewOrExistingOrNone'), 'new'), reference(variables('publicIPId'), '2025-05-01').ipAddress, '')]"
-    },
-    "fortiWebFQDN": {
-      "type": "string",
-      "value": "[if(equals(parameters('publicIPNewOrExistingOrNone'), 'new'), reference(variables('publicIPId'), '2025-05-01').dnsSettings.fqdn, '' )]"
     },
     "fwbACustomData": {
       "type": "string",
