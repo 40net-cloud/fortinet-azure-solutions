@@ -181,6 +181,11 @@
                       "description": "[concat('VM PlanID : ',basics('fortiGateImageSKU'),'_','74')]"
                     },
                     {
+                      "label": "7.2.14",
+                      "value": "7.2.14",
+                      "description": "[concat('VM PlanID : ',basics('fortiGateImageSKU'),'_','72')]"
+                    },
+                    {
                       "label": "7.2.13",
                       "value": "7.2.13",
                       "description": "[concat('VM PlanID : ',basics('fortiGateImageSKU'),'_','72')]"
@@ -340,6 +345,11 @@
                       "description": "[concat('VM PlanID : ',basics('fortiGateImageSKU'))]"
                     },
                     {
+                      "label": "8.0.2",
+                      "value": "8.0.2",
+                      "description": "[concat('VM PlanID : ',basics('fortiGateImageSKU'),'_','80')]"
+                    },
+                    {
                       "label": "8.0.1",
                       "value": "8.0.1",
                       "description": "[concat('VM PlanID : ',basics('fortiGateImageSKU'),'_','80')]"
@@ -350,6 +360,11 @@
                       "description": "[concat('VM PlanID : ',basics('fortiGateImageSKU'),'_','80')]"
                     },
                     {
+                      "label": "7.6.8",
+                      "value": "7.6.8",
+                      "description": "[concat('VM PlanID : ',basics('fortiGateImageSKU'),'_','76')]"
+                    },
+                    {
                       "label": "7.6.7",
                       "value": "7.6.7",
                       "description": "[concat('VM PlanID : ',basics('fortiGateImageSKU'),'_','76')]"
@@ -358,6 +373,11 @@
                       "label": "7.6.6",
                       "value": "7.6.6",
                       "description": "[concat('VM PlanID : ',basics('fortiGateImageSKU'),'_','76')]"
+                    },
+                    {
+                      "label": "7.4.13",
+                      "value": "7.4.13",
+                      "description": "[concat('VM PlanID : ',basics('fortiGateImageSKU'),'_','74')]"
                     },
                     {
                       "label": "7.4.12",
@@ -565,6 +585,11 @@
                       "description": "[concat('VM PlanID : ',basics('fortiGateImageSKU'))]"
                     },
                     {
+                      "label": "8.0.2",
+                      "value": "8.0.2",
+                      "description": "[concat('VM PlanID : ',basics('fortiGateImageSKU'),'_','80')]"
+                    },
+                    {
                       "label": "8.0.1",
                       "value": "8.0.1",
                       "description": "[concat('VM PlanID : ',basics('fortiGateImageSKU'),'_','80')]"
@@ -573,6 +598,11 @@
                       "label": "8.0.0",
                       "value": "8.0.0",
                       "description": "[concat('VM PlanID : ',basics('fortiGateImageSKU'),'_','80')]"
+                    },
+                    {
+                      "label": "7.6.8",
+                      "value": "7.6.8",
+                      "description": "[concat('VM PlanID : ',basics('fortiGateImageSKU'),'_','76')]"
                     },
                     {
                       "label": "7.6.7",
@@ -585,6 +615,11 @@
                       "description": "[concat('VM PlanID : ',basics('fortiGateImageSKU'),'_','76')]"
                     },
                     {
+                      "label": "7.4.13",
+                      "value": "7.4.13",
+                      "description": "[concat('VM PlanID : ',basics('fortiGateImageSKU'),'_','74')]"
+                    },
+                    {
                       "label": "7.4.12",
                       "value": "7.4.12",
                       "description": "[concat('VM PlanID : ',basics('fortiGateImageSKU'),'_','74')]"
@@ -593,6 +628,11 @@
                       "label": "7.4.11",
                       "value": "7.4.11",
                       "description": "[concat('VM PlanID : ',basics('fortiGateImageSKU'),'_','74')]"
+                    },
+                    {
+                      "label": "7.2.14",
+                      "value": "7.2.14",
+                      "description": "[concat('VM PlanID : ',basics('fortiGateImageSKU'),'_','72')]"
                     },
                     {
                       "label": "7.2.13",
