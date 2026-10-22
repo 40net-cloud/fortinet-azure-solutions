@@ -61,7 +61,7 @@
     },
     "fortiGateImageVersion_x64_g2": {
       "type": "string",
-      "defaultValue": "8.0.0",
+      "defaultValue": "8.0.2",
       "allowedValues": [
         "latest",
         "8.0.2",
@@ -80,7 +80,7 @@
     },
     "fortiGateImageVersion_arm64": {
       "type": "string",
-      "defaultValue": "8.0.0",
+      "defaultValue": "8.0.2",
       "allowedValues": [
         "latest",
         "8.0.2",

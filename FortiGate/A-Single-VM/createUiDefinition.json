@@ -382,7 +382,7 @@
                 "type": "Microsoft.Common.DropDown",
                 "label": "Fortigate Image Version",
                 "multiLine": true,
-                "defaultValue": "8.0.0",
+                "defaultValue": "8.0.2",
                 "toolTip": "Select the FortiGate image version",
                 "constraints": {
                   "required": false,
@@ -678,7 +678,7 @@
                 "type": "Microsoft.Common.DropDown",
                 "label": "Fortigate Image Version",
                 "multiLine": true,
-                "defaultValue": "8.0.0",
+                "defaultValue": "8.0.2",
                 "toolTip": "Only 6.x has the A/P HA feature currently",
                 "constraints": {
                   "required": false,

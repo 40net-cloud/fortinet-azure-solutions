@@ -431,7 +431,7 @@
                 "type": "Microsoft.Common.DropDown",
                 "label": "FortiGate Image Version",
                 "multiLine": true,
-                "defaultValue": "8.0.0",
+                "defaultValue": "8.0.2",
                 "toolTip": "Only 6.x has the A/P HA feature currently",
                 "constraints": {
                   "required": false,
@@ -698,7 +698,7 @@
               {
                 "name": "versionInfo",
                 "type": "Microsoft.Common.InfoBox",
-                "visible": "[and(or(contains(steps('instance').instancetype_x64_g2.selection_x64_g2, '_v6'),contains(steps('instance').instancetype_x64_g2.selection_x64_g2, '_v7')),not(or(equals(steps('instance').instancetype_x64_g2.fortiGateImageVersion_x64_g2,'7.6.7'),equals(steps('instance').instancetype_x64_g2.fortiGateImageVersion_x64_g2,'8.0.0'))))]",
+                "visible": "[and(or(contains(steps('instance').instancetype_x64_g2.selection_x64_g2, '_v6'),contains(steps('instance').instancetype_x64_g2.selection_x64_g2, '_v7')),not(or(equals(steps('instance').instancetype_x64_g2.fortiGateImageVersion_x64_g2,'7.6.8'),equals(steps('instance').instancetype_x64_g2.fortiGateImageVersion_x64_g2,'8.0.2'))))]",
                 "options": {
                   "icon": "Error",
                   "text": "v6 and v7 based Instance families require a Gen2 VM Image, support for MANA network drivers and are incompatible with the selected FortiGate version, please select version 7.6.1 or higher",
@@ -727,7 +727,7 @@
                 "type": "Microsoft.Common.DropDown",
                 "label": "FortiGate Image Version",
                 "multiLine": true,
-                "defaultValue": "8.0.0",
+                "defaultValue": "8.0.2",
                 "toolTip": "Select the FortiGate image version",
                 "constraints": {
                   "required": false,
