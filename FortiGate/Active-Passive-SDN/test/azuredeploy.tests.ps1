@@ -90,6 +90,7 @@ BeforeAll {
         $config += "config system admin`nedit devops`nset accprofile super_admin`n"
         $config += "set ssh-public-key1 `"$pubkey`"`n"
         $config += "set password $testsResourceGroupName`nnext`nend"
+        $config += "config system interface`nedit port3`nappend allowaccess ssh`nnext`nend"
     }
 
     $params = @{
