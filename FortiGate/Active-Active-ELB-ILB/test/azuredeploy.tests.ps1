@@ -94,8 +94,8 @@ BeforeAll {
         $config += "config system global`nset gui-theme mariner`nend`n"
         $config += "config system admin`nedit devops`nset accprofile super_admin`n"
         $config += "set ssh-public-key1 `"$pubkey`"`n"
-        $config += "set password $testsResourceGroupName`nnext`nend"
-        $config += "config system interface`nedit port1`nappend allowaccess ssh`nnext`nend"
+        $config += "set password $testsResourceGroupName`nnext`nend`n"
+        $config += "config system interface`nedit port1`nappend allowaccess ssh`nnext`nend`n"
     }
 
     $params = @{
