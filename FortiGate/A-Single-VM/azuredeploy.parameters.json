@@ -110,6 +110,12 @@
         "fortiManager": {
             "value": "no"
         },
+        "externalSsh": {
+            "value": "no"
+        },
+        "managementTrustedHosts": {
+            "value": "0.0.0.0/0"
+        },
         "fortiManagerIP": {
             "value": ""
         },

@@ -93,6 +93,7 @@ BeforeAll {
         fortiGateNamePrefix         = $testsPrefix
         fortiGateAdditionalCustomData = $config
         externalSsh                 = 'yes'
+        managementTrustedHosts      = '0.0.0.0/0'
     }
 
     switch ($scenario) {
