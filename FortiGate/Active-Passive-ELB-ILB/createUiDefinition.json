@@ -1464,6 +1464,35 @@
             "visible": true
           },
           {
+            "name": "externalssh",
+            "type": "Microsoft.Common.Section",
+            "label": "SSH access",
+            "elements": [
+              {
+                "name": "enabled",
+                "type": "Microsoft.Common.OptionsGroup",
+                "label": "Enable SSH on the HA management interface (port4 in 4-NIC, port3 in 3-NIC)",
+                "defaultValue": "no",
+                "toolTip": "SSH access on the HA management interface (port4 in 4-NIC, port3 in 3-NIC) is disabled by default. Enable to allow SSH.",
+                "constraints": {
+                  "allowedValues": [
+                    {
+                      "label": "yes",
+                      "value": "yes"
+                    },
+                    {
+                      "label": "no",
+                      "value": "no"
+                    }
+                  ],
+                  "required": true
+                },
+                "visible": true
+              }
+            ],
+            "visible": true
+          },
+          {
             "name": "customdata",
             "type": "Microsoft.Common.Section",
             "label": "Custom Data",
@@ -1753,6 +1782,7 @@
       "subnet5Name": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet5.name]",
       "subnet5Prefix": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet5.addressPrefix]",
       "serialConsole": "[steps('advanced').serialconsole.enabled]",
+      "externalSsh": "[steps('advanced').externalssh.enabled]",
       "fortiManager": "[steps('advanced').fortimanager.enabled]",
       "fortiManagerIP": "[steps('advanced').fortimanager.fortimanagerip]",
       "fortiManagerSerial": "[steps('advanced').fortimanager.fortimanagerserial]",

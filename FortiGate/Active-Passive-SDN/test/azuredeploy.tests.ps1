@@ -90,7 +90,6 @@ BeforeAll {
         $config += "config system admin`nedit devops`nset accprofile super_admin`n"
         $config += "set ssh-public-key1 `"$pubkey`"`n"
         $config += "set password $testsResourceGroupName`nnext`nend`n"
-        $config += "config system interface`nedit port4`nappend allowaccess ssh`nnext`nend`n"
     }
 
     $params = @{
@@ -98,6 +97,7 @@ BeforeAll {
         adminPassword               = $testsResourceGroupName
         fortiGateNamePrefix         = $testsPrefix
         fortiGateAdditionalCustomData = $config
+        externalSsh                 = 'yes'
     }
 
     switch ($scenario) {
@@ -195,6 +195,7 @@ Describe "FGT Active-Passive SDN - $scenario" {
                 'adminUsername',
                 'availabilityOptions',
                 'customImageReference',
+                'externalSsh',
                 'fortiGateAdditionalCustomData',
                 'fortiGateHAPortMode',
                 'fortiGateImageVersion_arm64',

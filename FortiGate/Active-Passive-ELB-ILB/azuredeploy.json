@@ -556,6 +556,17 @@
         "description": "Connect to FortiManager"
       }
     },
+    "externalSsh": {
+      "type": "string",
+      "defaultValue": "no",
+      "allowedValues": [
+        "yes",
+        "no"
+      ],
+      "metadata": {
+        "description": "Enable SSH access on the HA management interface (port4 in 4-NIC mode, port3 in 3-NIC mode)"
+      }
+    },
     "fortiManagerIP": {
       "type": "string",
       "defaultValue": "",
@@ -684,6 +695,7 @@
     "vnetSubnets3Nic": "[createArray(variables('subnetExternal'), variables('subnetInternal'), variables('subnetHaSync'), variables('subnetProtected'))]",
     "fgaVmName": "[concat(parameters('fortiGateNamePrefix'),'-fgt-a')]",
     "fgbVmName": "[concat(parameters('fortiGateNamePrefix'),'-fgt-b')]",
+    "sshCustomData": "[if(equals(parameters('externalSsh'),'yes'),concat('\nconfig system interface\nedit ', if(equals(parameters('fortiGateHAPortMode'),'4-NIC'),'port4','port3'), '\nappend allowaccess ssh\nend\n'),'')]",
     "fmgCustomData": "[if(equals(parameters('fortiManager'),'yes'),concat('\nconfig system central-management\nset type fortimanager\n set fmg ',parameters('fortiManagerIP'),'\nset serial-number ', parameters('fortiManagerSerial'), '\nend\n config system interface\n edit port1\n append allowaccess fgfm\n end\n config system interface\n edit port2\n append allowaccess fgfm\n end\n'),'')]",
     "customDataHeader": "Content-Type: multipart/mixed; boundary=\"12345\"\nMIME-Version: 1.0\n\n--12345\nContent-Type: text/plain; charset=\"us-ascii\"\nMIME-Version: 1.0\nContent-Transfer-Encoding: 7bit\nContent-Disposition: attachment; filename=\"config\"\n\n",
     "fgaCustomDataPrelude": "[concat('config system global\nset allow-traffic-redirect disable\nend\nconfig system sdn-connector\nedit AzureSDN\nset type azure\nnext\nend\nconfig router static\n edit 1\n set gateway ', variables('sn1GatewayIP'), '\n set device port1\n next\n edit 2\n set dst ', parameters('vnetAddressPrefix'), '\n set gateway ', variables('sn2GatewayIP'), '\n set device port2\n next\n edit 3\nset dst 168.63.129.16 255.255.255.255\nset device port2\n set gateway ', variables ('sn2GatewayIP'), '\n next\nedit 4\nset dst 168.63.129.16 255.255.255.255\nset device port1\n set gateway ', variables ('sn1GatewayIP'), '\n next\n end\n config system probe-response\n set http-probe-value OK\n set mode http-probe\n end\n config system interface\n edit port1\n set mode static\n set ip ', variables('sn1IPfga'), '/', variables('sn1CIDRmask'), '\n set description external\n set allowaccess probe-response\n next\n edit port2\n set mode static\n set ip ', variables('sn2IPfga'), '/', variables('sn2CIDRmask'), '\n set description internal\n set allowaccess probe-response\n next\n')]",
@@ -693,7 +705,7 @@
     "fgaHaMgmtInterfaces4Nic": "[concat(' config ha-mgmt-interfaces\n edit 1\n set interface port4\n set gateway ', variables('sn4GatewayIP'),'\n next\n end\n')]",
     "fgaHaMgmtInterfaces3Nic": "[concat(' config ha-mgmt-interfaces\n edit 1\n set interface port3\n set gateway ', variables('sn3GatewayIP'),'\n next\n end\n')]",
     "fgaHaTail": "[concat(' set override disable\n set priority 255\n set unicast-hb enable\n set unicast-hb-peerip ', variables('sn3IPfgb'), '\n set password ', parameters('adminPassword'), '\n end\n')]",
-    "fgaCustomDataBody": "[concat(variables('fgaCustomDataPrelude'), if(equals(parameters('fortiGateHAPortMode'),'4-NIC'), variables('fgaPort34Config4Nic'), variables('fgaPort34Config3Nic')), variables('fgaHaCore'), if(equals(parameters('fortiGateHAPortMode'),'4-NIC'), variables('fgaHaMgmtInterfaces4Nic'), variables('fgaHaMgmtInterfaces3Nic')), variables('fgaHaTail'), variables('fmgCustomData'), parameters('fortiGateAdditionalCustomData'), '\n')]",
+    "fgaCustomDataBody": "[concat(variables('fgaCustomDataPrelude'), if(equals(parameters('fortiGateHAPortMode'),'4-NIC'), variables('fgaPort34Config4Nic'), variables('fgaPort34Config3Nic')), variables('fgaHaCore'), if(equals(parameters('fortiGateHAPortMode'),'4-NIC'), variables('fgaHaMgmtInterfaces4Nic'), variables('fgaHaMgmtInterfaces3Nic')), variables('fgaHaTail'), variables('sshCustomData'), variables('fmgCustomData'), parameters('fortiGateAdditionalCustomData'), '\n')]",
     "fgbCustomDataPrelude": "[concat('config system global\nset allow-traffic-redirect disable\nend\nconfig system sdn-connector\nedit AzureSDN\nset type azure\nnext\nend\nconfig router static\n edit 1\n set gateway ', variables('sn1GatewayIP'), '\n set device port1\n next\n edit 2\n set dst ', parameters('vnetAddressPrefix'), '\n set gateway ', variables('sn2GatewayIP'), '\n set device port2\n next\n edit 3\nset dst 168.63.129.16 255.255.255.255\nset device port2\n set gateway ', variables ('sn2GatewayIP'), '\n next\nedit 4\nset dst 168.63.129.16 255.255.255.255\nset device port1\n set gateway ', variables ('sn1GatewayIP'), '\n next\n end\n config system probe-response\n set http-probe-value OK\n set mode http-probe\n end\n config system interface\n edit port1\n set mode static\n set ip ', variables('sn1IPfgb'), '/', variables('sn1CIDRmask'), '\n set description external\n set allowaccess probe-response\n next\n edit port2\n set mode static\n set ip ', variables('sn2IPfgb'), '/', variables('sn2CIDRmask'), '\n set description internal\n set allowaccess probe-response\n next\n')]",
     "fgbPort34Config4Nic": "[concat('edit port3\n set mode static\n set ip ', variables('sn3IPfgb'), '/', variables('sn3CIDRmask'), '\n set description hasyncport\n next\n edit port4\n set mode static\n set ip ', variables('sn4IPfgb'), '/', variables('sn4CIDRmask'), '\n set description hammgmtport\n set allowaccess ping https\n next\n')]",
     "fgbPort34Config3Nic": "[concat('edit port3\n set mode static\n set ip ', variables('sn3IPfgb'), '/', variables('sn3CIDRmask'), '\n set description hasyncport\n set allowaccess ping https\n next\n')]",
@@ -701,7 +713,7 @@
     "fgbHaMgmtInterfaces4Nic": "[concat(' config ha-mgmt-interfaces\n edit 1\n set interface port4\n set gateway ', variables('sn4GatewayIP'),'\n next\n end\n')]",
     "fgbHaMgmtInterfaces3Nic": "[concat(' config ha-mgmt-interfaces\n edit 1\n set interface port3\n set gateway ', variables('sn3GatewayIP'),'\n next\n end\n')]",
     "fgbHaTail": "[concat(' set override disable\n set priority 1\n set unicast-hb enable\n set unicast-hb-peerip ', variables('sn3IPfga'), '\n set password ', parameters('adminPassword'), '\n end\n')]",
-    "fgbCustomDataBody": "[concat(variables('fgbCustomDataPrelude'), if(equals(parameters('fortiGateHAPortMode'),'4-NIC'), variables('fgbPort34Config4Nic'), variables('fgbPort34Config3Nic')), variables('fgbHaCore'), if(equals(parameters('fortiGateHAPortMode'),'4-NIC'), variables('fgbHaMgmtInterfaces4Nic'), variables('fgbHaMgmtInterfaces3Nic')), variables('fgbHaTail'), variables('fmgCustomData'), parameters('fortiGateAdditionalCustomData'), '\n')]",
+    "fgbCustomDataBody": "[concat(variables('fgbCustomDataPrelude'), if(equals(parameters('fortiGateHAPortMode'),'4-NIC'), variables('fgbPort34Config4Nic'), variables('fgbPort34Config3Nic')), variables('fgbHaCore'), if(equals(parameters('fortiGateHAPortMode'),'4-NIC'), variables('fgbHaMgmtInterfaces4Nic'), variables('fgbHaMgmtInterfaces3Nic')), variables('fgbHaTail'), variables('sshCustomData'), variables('fmgCustomData'), parameters('fortiGateAdditionalCustomData'), '\n')]",
     "customDataLicenseHeader": "--12345\nContent-Type: text/plain; charset=\"us-ascii\"\nMIME-Version: 1.0\nContent-Transfer-Encoding: 7bit\nContent-Disposition: attachment; filename=\"license\"\n\n",
     "customDataFooter": "\n--12345--\n",
     "fgaCustomDataFortiFlex": "[if(equals(parameters('fortiGateLicenseFortiFlexA'),''),'',concat('LICENSE-TOKEN:',parameters('fortiGateLicenseFortiFlexA'), '\n'))]",

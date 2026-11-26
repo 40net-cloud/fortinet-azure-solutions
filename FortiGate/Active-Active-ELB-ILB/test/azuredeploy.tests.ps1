@@ -95,7 +95,6 @@ BeforeAll {
         $config += "config system admin`nedit devops`nset accprofile super_admin`n"
         $config += "set ssh-public-key1 `"$pubkey`"`n"
         $config += "set password $testsResourceGroupName`nnext`nend`n"
-        $config += "config system interface`nedit port1`nappend allowaccess ssh`nnext`nend`n"
     }
 
     $params = @{
@@ -103,6 +102,7 @@ BeforeAll {
         adminPassword               = $testsResourceGroupName
         fortiGateNamePrefix         = $testsPrefix
         fortiGateAdditionalCustomData = $config
+        externalSsh                 = 'yes'
         fortiGateCount              = $fortiGateCount
     }
 
@@ -202,6 +202,7 @@ Describe "FGT Active-Active ELB-ILB - $scenario" {
                 'availabilityOptions',
                 'customImageReference',
                 'externalLoadBalancer',
+                'externalSsh',
                 'fortiGateAdditionalCustomData',
                 'fortiGateCount',
                 'fortiGateImageVersion_arm64',

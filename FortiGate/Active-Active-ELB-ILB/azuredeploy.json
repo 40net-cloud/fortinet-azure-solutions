@@ -529,6 +529,17 @@
         "description": "Connect to FortiManager"
       }
     },
+    "externalSsh": {
+      "type": "string",
+      "defaultValue": "no",
+      "allowedValues": [
+        "yes",
+        "no"
+      ],
+      "metadata": {
+        "description": "Enable SSH access on the external interface (port1)"
+      }
+    },
     "fortiManagerIP": {
       "type": "string",
       "defaultValue": "",
@@ -699,6 +710,7 @@
     "subnet1Id": "[if(equals(parameters('vnetNewOrExisting'),'new'),resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet1Name')),resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet1Name')))]",
     "subnet2Id": "[if(equals(parameters('vnetNewOrExisting'),'new'),resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet2Name')),resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks/subnets', variables('vnetName'),parameters('subnet2Name')))]",
     "fgVmName": "[concat(parameters('fortiGateNamePrefix'),'-fgt')]",
+    "sshCustomData": "[if(equals(parameters('externalSsh'),'yes'),'\nconfig system interface\nedit port1\nappend allowaccess ssh\nend\n','')]",
     "fmgCustomData": "[if(equals(parameters('fortiManager'),'yes'),concat('\nconfig system central-management\nset type fortimanager\nset fmg ',parameters('fortiManagerIP'),'\nset serial-number ', parameters('fortiManagerSerial'), '\nend\nconfig system interface\nedit port1\nappend allowaccess fgfm\nend\nconfig system interface\nedit port2\nappend allowaccess fgfm\nend\n'),'')]",
     "customDataHeader": "Content-Type: multipart/mixed; boundary=\"12345\"\nMIME-Version: 1.0\n\n--12345\nContent-Type: text/plain; charset=\"us-ascii\"\nMIME-Version: 1.0\nContent-Transfer-Encoding: 7bit\nContent-Disposition: attachment; filename=\"config\"\n\n",
     "customDataBodyShared": "[concat('config system global\nset allow-traffic-redirect disable\nend\nconfig system sdn-connector\nedit AzureSDN\nset type azure\nnext\nend\nconfig system probe-response\nset mode http-probe\nend\n', parameters('fortiGateAdditionalCustomData'), '\n')]",
@@ -764,7 +776,7 @@
       {
         "name": "interfaceCustomData1Nic",
         "count": 8,
-        "input": "[concat('config system interface\nedit port1\nset ip ',variables('sn2IP')[copyIndex('interfaceCustomData1Nic',1)],'/',variables('sn1CidrObject').cidr,'\nset mode static\nset description internal\nset allowaccess ping ssh https ', if(parameters('fortiGateProbeResponse'),' probe-response','') ,'\nnext\nend\nconfig router static\nedit 1\nset dst 0.0.0.0/0\nset device port1\nset gateway ', variables('sn2GatewayIP'), '\nnext\nedit 2\nset dst 168.63.129.16 255.255.255.255\nset device port1\nset gateway ', variables ('sn2GatewayIP'), '\nnext\nend\n')]"
+        "input": "[concat('config system interface\nedit port1\nset ip ',variables('sn2IP')[copyIndex('interfaceCustomData1Nic',1)],'/',variables('sn1CidrObject').cidr,'\nset mode static\nset description internal\nset allowaccess ping https ', if(parameters('fortiGateProbeResponse'),' probe-response','') ,'\nnext\nend\nconfig router static\nedit 1\nset dst 0.0.0.0/0\nset device port1\nset gateway ', variables('sn2GatewayIP'), '\nnext\nedit 2\nset dst 168.63.129.16 255.255.255.255\nset device port1\nset gateway ', variables ('sn2GatewayIP'), '\nnext\nend\n')]"
       },
       {
         "name": "fgspPeerCustomData",
@@ -784,7 +796,7 @@
       {
         "name": "customDataBody",
         "count": "[length(range(1, 8))]",
-        "input": "[concat(if(parameters('1nicDeployment'), variables('interfaceCustomData1Nic')[copyIndex('customDataBody')], variables('interfaceCustomData2Nic')[copyIndex('customDataBody')]), variables('fmgCustomData'), variables('customDataBodyShared'),if(parameters('fortiGateSessionSync'),variables('fgspCustomData')[copyIndex('customDataBody')],''))]"
+        "input": "[concat(if(parameters('1nicDeployment'), variables('interfaceCustomData1Nic')[copyIndex('customDataBody')], variables('interfaceCustomData2Nic')[copyIndex('customDataBody')]), variables('sshCustomData'), variables('fmgCustomData'), variables('customDataBodyShared'),if(parameters('fortiGateSessionSync'),variables('fgspCustomData')[copyIndex('customDataBody')],''))]"
       },
       {
         "name": "customDataCombined",
