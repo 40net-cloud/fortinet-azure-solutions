@@ -85,7 +85,6 @@ BeforeAll {
         $config += "config system admin`nedit devops`nset accprofile super_admin`n"
         $config += "set ssh-public-key1 `"$pubkey`"`n"
         $config += "set password $testsResourceGroupName`nnext`nend`n"
-        $config += "config system interface`nedit port1`nappend allowaccess ssh`nnext`nend`n"
     }
 
     $params = @{
@@ -93,6 +92,7 @@ BeforeAll {
         adminPassword               = $testsResourceGroupName
         fortiGateNamePrefix         = $testsPrefix
         fortiGateAdditionalCustomData = $config
+        externalSsh                 = 'yes'
     }
 
     switch ($scenario) {
@@ -184,6 +184,7 @@ Describe "FGT Single VM - $scenario" {
                 'customImageReference',
                 'customVHDSource',
                 'existingAvailabilitySetName',
+                'externalSsh',
                 'fortiGateAdditionalCustomData',
                 'fortiGateImageVersion_arm64',
                 'fortiGateImageVersion_x64',
