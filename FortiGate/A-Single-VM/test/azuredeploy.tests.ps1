@@ -203,6 +203,7 @@ Describe "FGT Single VM - $scenario" {
                 'instanceType_x64',
                 'instanceType_x64_g2',
                 'location',
+                'managementTrustedHosts',
                 'publicIP1Name',
                 'publicIP1NewOrExisting',
                 'publicIP1ResourceGroup',

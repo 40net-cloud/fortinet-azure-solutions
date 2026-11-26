@@ -1484,6 +1484,27 @@
             "visible": true
           },
           {
+            "name": "managementaccess",
+            "type": "Microsoft.Common.Section",
+            "label": "Management access",
+            "elements": [
+              {
+                "name": "trustedhosts",
+                "type": "Microsoft.Common.TextBox",
+                "label": "Allowed management IP addresses",
+                "defaultValue": "0.0.0.0/0",
+                "toolTip": "Comma separated list (max 10) of IPv4 addresses or CIDR ranges allowed to access the GUI, SSH and API of the FortiGate (admin trusted hosts). 0.0.0.0/0 allows access from anywhere.",
+                "constraints": {
+                  "required": true,
+                  "regex": "^\\s*(25[0-5]|2[0-4][0-9]|1?[0-9]{1,2})(\\.(25[0-5]|2[0-4][0-9]|1?[0-9]{1,2})){3}(/(3[0-2]|[12]?[0-9]))?(\\s*,\\s*(25[0-5]|2[0-4][0-9]|1?[0-9]{1,2})(\\.(25[0-5]|2[0-4][0-9]|1?[0-9]{1,2})){3}(/(3[0-2]|[12]?[0-9]))?){0,9}\\s*$",
+                  "validationMessage": "Provide up to 10 comma separated IPv4 addresses or CIDR ranges, for example 203.0.113.10,198.51.100.0/24."
+                },
+                "visible": true
+              }
+            ],
+            "visible": true
+          },
+          {
             "name": "customdata",
             "type": "Microsoft.Common.Section",
             "label": "Custom Data",
@@ -1763,6 +1784,7 @@
       "subnet3Prefix": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet3.addressPrefix]",
       "serialConsole": "[steps('advanced').serialconsole.enabled]",
       "fortiManager": "[steps('advanced').fortimanager.enabled]",
+      "managementTrustedHosts": "[steps('advanced').managementaccess.trustedhosts]",
       "externalSsh": "[steps('advanced').externalssh.enabled]",
       "fortiManagerIP": "[steps('advanced').fortimanager.fortimanagerip]",
       "fortiManagerSerial": "[steps('advanced').fortimanager.fortimanagerserial]",
