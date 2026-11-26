@@ -1455,6 +1455,35 @@
             "visible": true
           },
           {
+            "name": "externalssh",
+            "type": "Microsoft.Common.Section",
+            "label": "External SSH access",
+            "elements": [
+              {
+                "name": "enabled",
+                "type": "Microsoft.Common.OptionsGroup",
+                "label": "Enable SSH on external interface",
+                "defaultValue": "no",
+                "toolTip": "SSH access on the external interface (port1) is disabled by default. Enable to allow SSH from the internet.",
+                "constraints": {
+                  "allowedValues": [
+                    {
+                      "label": "yes",
+                      "value": "yes"
+                    },
+                    {
+                      "label": "no",
+                      "value": "no"
+                    }
+                  ],
+                  "required": true
+                },
+                "visible": true
+              }
+            ],
+            "visible": true
+          },
+          {
             "name": "customdata",
             "type": "Microsoft.Common.Section",
             "label": "Custom Data",
@@ -1734,6 +1763,7 @@
       "subnet3Prefix": "[steps('networking').virtualnetworksection.virtualnetwork.subnets.subnet3.addressPrefix]",
       "serialConsole": "[steps('advanced').serialconsole.enabled]",
       "fortiManager": "[steps('advanced').fortimanager.enabled]",
+      "externalSsh": "[steps('advanced').externalssh.enabled]",
       "fortiManagerIP": "[steps('advanced').fortimanager.fortimanagerip]",
       "fortiManagerSerial": "[steps('advanced').fortimanager.fortimanagerserial]",
       "fortiGateAdditionalCustomData": "[steps('advanced').customdata.config]",
